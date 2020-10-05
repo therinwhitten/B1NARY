@@ -47,8 +47,17 @@ public class ScriptParser : MonoBehaviour
 
     void parseLine(string line)
     {
+        Debug.Log(line);
+        if (line.Contains("<b>"))
+        {
+            Debug.Log("Bold line found!");
+            dialogue.Say(line);
+            readNextLine();
+            return;
+        }
         if (line.Contains("::"))
         {
+            Debug.Log("Line contains new speaker");
             string newSpeaker = line.Split(new[] { "::" }, System.StringSplitOptions.None)[0];
             dialogue.speakerNameText.text = newSpeaker;
             // update character sprite to current speaker sprite
