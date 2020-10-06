@@ -45,6 +45,9 @@ public class EmotesSystem : MonoBehaviour
             case "worried":
                 characterSprite.sprite = Resources.Load<Sprite>("img/Characters/saki/saki_worried");
                 break;
+            case "normal":
+                characterSprite.sprite = Resources.Load<Sprite>("img/Characters/saki/saki_normal");
+                break;
             default:
                 characterSprite.sprite = Resources.Load<Sprite>("img/Characters/saki/saki_normal");
                 break;
