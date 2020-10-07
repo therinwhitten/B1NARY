@@ -12,6 +12,7 @@ public class DialogueSystem : MonoBehaviour
 
     public ELEMENTS elements;
 
+    public bool additiveTextEnabled = false;
     void Awake()
     {
         instance = this;
@@ -29,36 +30,40 @@ public class DialogueSystem : MonoBehaviour
     {
         StopSpeaking();
 
-        speaking = StartCoroutine(Speaking(speech, false, speaker));
+        speechText.text = targetSpeech;
+
+        speaking = StartCoroutine(Speaking(speech, speaker));
     }
 
     /// <summary>
     /// Say something to be added to what is already on the speech box.
     /// </summary>
-    public void SayAdd(string speech, string speaker = "")
-    {
-        StopSpeaking();
+    // public void SayAdd(string speech, string speaker = "")
+    // {
+    //     StopSpeaking();
 
-        speechText.text = targetSpeech;
+    //     speechText.text = targetSpeech;
 
-        speaking = StartCoroutine(Speaking(speech, true, speaker));
-    }
+    //     speaking = StartCoroutine(Speaking(speech, speaker));
+    // }
 
     public void SayRich(string speech, string speaker = "")
     {
         StopSpeaking();
 
-        speaking = StartCoroutine(Speaking(speech, false, speaker, true));
-    }
-
-    public void sayAddRich(string speech, string speaker = "")
-    {
-        StopSpeaking();
-
         speechText.text = targetSpeech;
 
-        speaking = StartCoroutine(Speaking(speech, true, speaker, true));
+        speaking = StartCoroutine(Speaking(speech, speaker, true));
     }
+
+    // public void sayAddRich(string speech, string speaker = "")
+    // {
+    //     StopSpeaking();
+
+    //     speechText.text = targetSpeech;
+
+    //     speaking = StartCoroutine(Speaking(speech, speaker, true));
+    // }
 
     public void StopSpeaking()
     {
@@ -76,16 +81,18 @@ public class DialogueSystem : MonoBehaviour
 
     public string targetSpeech = "";
     Coroutine speaking = null;
-    IEnumerator Speaking(string speech, bool additive, string speaker = "", bool rich = false)
+    IEnumerator Speaking(string speech, string speaker = "", bool rich = false)
     {
         speechPanel.SetActive(true);
         targetSpeech = speech;
 
-        if (!additive)
+        if (!additiveTextEnabled)
             speechText.text = "";
         else
             targetSpeech = speechText.text + " " + targetSpeech;
 
+        targetSpeech = targetSpeech.Trim();
+        speechText.text = speechText.text.Trim();
         speakerNameText.text = DetermineSpeaker(speaker);//temporary
 
         isWaitingForUserInput = false;

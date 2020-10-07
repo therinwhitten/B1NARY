@@ -4,20 +4,21 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Linq;
+
 
 public class ScriptParser : MonoBehaviour
 {
-    string path = "Assets/Resources/Docs/TestScript.txt";
+    string path = "Assets/Resources/Docs/TestScript2.txt";
 
     DialogueSystem dialogue;
 
     EmotesSystem emotes;
 
+    CommandsManager commands;
     StreamReader reader = null;
 
     string currentLine;
-
-    private bool additiveText = false;
 
     // regex for grabbing rich text tags
     Regex richRegex = new Regex("<(.*?)>");
@@ -25,12 +26,20 @@ public class ScriptParser : MonoBehaviour
     // regex for grabbing emotes
     Regex emoteRegex = new Regex("\\[(.*?)\\]");
 
+    // regex for commands
+    Regex commandRegex = new Regex("\\{(.*?)\\}");
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
         dialogue = DialogueSystem.instance;
         emotes = EmotesSystem.instance;
+        commands = new CommandsManager(dialogue, emotes);
         reader = new StreamReader(path);
+
     }
 
 
@@ -90,6 +99,33 @@ public class ScriptParser : MonoBehaviour
             string emote = line.Trim(tagChars);
             // Debug.Log(emote);
             emotes.changeEmote(emote);
+            readNextLine();
+            parseLine(currentLine);
+            return;
+        }
+
+        // COMMANDS
+        // These will be any other type of commands 
+        // that aren't rich text tags or emotion controls
+        if (commandRegex.IsMatch(line))
+        {
+            char[] tagChars = { '{', '}', ' ' };
+            string command = line.Trim(tagChars);
+
+
+            if (command.Contains(":"))
+            {
+                ArrayList commandWords = new ArrayList(command.Split(':'));
+                command = commandWords.Cast<string>().ElementAt(0);
+                commandWords.RemoveAt(0);
+                ArrayList args = commandWords;
+
+                commands.handleWithArgs(command, args);
+            }
+            else
+            {
+                commands.handle(command);
+            }
             readNextLine();
             parseLine(currentLine);
             return;
