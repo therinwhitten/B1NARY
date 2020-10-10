@@ -7,11 +7,13 @@ public class CommandsManager
     DialogueSystem dialogue;
     EmotesSystem emotes;
 
-    public CommandsManager(DialogueSystem dialogue, EmotesSystem emotes)
-    {
-        this.dialogue = dialogue;
-        this.emotes = emotes;
+    CharacterManager characterManager;
 
+    public CommandsManager()
+    {
+        this.dialogue = DialogueSystem.instance;
+        this.emotes = EmotesSystem.instance;
+        this.characterManager = CharacterManager.instance;
     }
 
     public void handle(string command)
@@ -35,6 +37,9 @@ public class CommandsManager
                     dialogue.additiveTextEnabled = false;
                     Debug.Log("Set additive text to off!");
                 }
+                break;
+            case "spawnChar":
+                characterManager.spawnCharacter(args[0].ToString());
                 break;
         }
     }

@@ -9,13 +9,14 @@ using System.Linq;
 
 public class ScriptParser : MonoBehaviour
 {
-    string path = "Assets/Resources/Docs/TestScript2.txt";
+    string path = "Assets/Resources/Docs/CharacterPrefabTestScript.txt";
 
     DialogueSystem dialogue;
 
     EmotesSystem emotes;
 
     CommandsManager commands;
+
     StreamReader reader = null;
 
     string currentLine;
@@ -37,9 +38,8 @@ public class ScriptParser : MonoBehaviour
     {
         dialogue = DialogueSystem.instance;
         emotes = EmotesSystem.instance;
-        commands = new CommandsManager(dialogue, emotes);
+        commands = new CommandsManager();
         reader = new StreamReader(path);
-
     }
 
 
