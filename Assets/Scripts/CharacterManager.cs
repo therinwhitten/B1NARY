@@ -6,7 +6,7 @@ public class CharacterManager : MonoBehaviour
 {
     static string prefabsPath = "Characters/Prefabs/";
 
-    [SerializeField] GameObject characterLayer;
+    [SerializeField] public GameObject characterLayer;
     // Start is called before the first frame update
 
     public static CharacterManager instance;
@@ -25,8 +25,15 @@ public class CharacterManager : MonoBehaviour
     public void spawnCharacter(string name)
     {
         name = name.Trim();
-        GameObject character;
-        character = Instantiate(Resources.Load<GameObject>(prefabsPath + name));
-        character.transform.parent = characterLayer.transform;
+        foreach (Transform transform in characterLayer.transform)
+        {
+            if (transform.childCount == 0)
+            {
+                GameObject character = Instantiate(Resources.Load<GameObject>(prefabsPath + name));
+                character.transform.parent = transform;
+                character.transform.position = transform.position;
+                return;
+            }
+        }
     }
 }
