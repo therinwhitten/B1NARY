@@ -9,7 +9,7 @@ using System.Linq;
 
 public class ScriptParser : MonoBehaviour
 {
-    string path = Application.streamingAssetsPath + "/Docs/CharacterPrefabTestScript.txt";
+    string path = Application.streamingAssetsPath + "/Docs/AnimationTesting.txt";
 
     DialogueSystem dialogue;
 
@@ -78,11 +78,11 @@ public class ScriptParser : MonoBehaviour
             dialogue.SayRich(currentLine);
             return;
         }
-        // handles speaker change. Also handles which character's emotes are being controlled
+        // handles speaker change. Also handles which character's emotes/animations are being controlled
         if (line.Contains("::"))
         {
             string newSpeaker = line.Split(new[] { "::" }, System.StringSplitOptions.None)[0];
-            dialogue.speakerNameText.text = newSpeaker;
+            dialogue.currentSpeaker = newSpeaker;
 
             // update character sprite to current speaker sprite
             readNextLine();

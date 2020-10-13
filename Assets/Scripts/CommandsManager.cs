@@ -41,6 +41,9 @@ public class CommandsManager
             case "spawnChar":
                 characterManager.spawnCharacter(args[0].ToString());
                 break;
+            case "anim":
+                characterManager.changeAnimation(dialogue.currentSpeaker, args[0].ToString());
+                break;
         }
     }
 }

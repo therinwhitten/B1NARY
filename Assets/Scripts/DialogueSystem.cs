@@ -10,6 +10,7 @@ public class DialogueSystem : MonoBehaviour
 {
     public static DialogueSystem instance;
 
+    public string currentSpeaker = "";
     public ELEMENTS elements;
 
     public bool additiveTextEnabled = false;
@@ -26,13 +27,13 @@ public class DialogueSystem : MonoBehaviour
     /// <summary>
     /// Say something and show it on the speech box.
     /// </summary>
-    public void Say(string speech, string speaker = "")
+    public void Say(string speech)
     {
         StopSpeaking();
 
         speechText.text = targetSpeech;
 
-        speaking = StartCoroutine(Speaking(speech, speaker));
+        speaking = StartCoroutine(Speaking(speech));
     }
 
     /// <summary>
@@ -47,13 +48,13 @@ public class DialogueSystem : MonoBehaviour
     //     speaking = StartCoroutine(Speaking(speech, speaker));
     // }
 
-    public void SayRich(string speech, string speaker = "")
+    public void SayRich(string speech)
     {
         StopSpeaking();
 
         speechText.text = targetSpeech;
 
-        speaking = StartCoroutine(Speaking(speech, speaker, true));
+        speaking = StartCoroutine(Speaking(speech, true));
     }
 
     // public void sayAddRich(string speech, string speaker = "")
@@ -81,7 +82,7 @@ public class DialogueSystem : MonoBehaviour
 
     public string targetSpeech = "";
     Coroutine speaking = null;
-    IEnumerator Speaking(string speech, string speaker = "", bool rich = false)
+    IEnumerator Speaking(string speech, bool rich = false)
     {
         speechPanel.SetActive(true);
         targetSpeech = speech;
@@ -93,7 +94,7 @@ public class DialogueSystem : MonoBehaviour
 
         targetSpeech = targetSpeech.Trim();
         speechText.text = speechText.text.Trim();
-        speakerNameText.text = DetermineSpeaker(speaker);//temporary
+        speakerNameText.text = currentSpeaker;
 
         isWaitingForUserInput = false;
 
@@ -188,14 +189,14 @@ public class DialogueSystem : MonoBehaviour
         StopSpeaking();
     }
 
-    string DetermineSpeaker(string s)
-    {
-        string retVal = speakerNameText.text;//default return is the current name
-        if (s != speakerNameText.text && s != "")
-            retVal = (s.ToLower().Contains("narrator")) ? "" : s;
+    // string DetermineSpeaker(string s)
+    // {
+    //     string retVal = speakerNameText.text;//default return is the current name
+    //     if (s != speakerNameText.text && s != "")
+    //         retVal = (s.ToLower().Contains("narrator")) ? "" : s;
 
-        return retVal;
-    }
+    //     return retVal;
+    // }
 
     private string getClosingTag(string tag)
     {
