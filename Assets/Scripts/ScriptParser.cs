@@ -9,7 +9,7 @@ using System.Linq;
 
 public class ScriptParser : MonoBehaviour
 {
-    string path = "Assets/Resources/Docs/CharacterPrefabTestScript.txt";
+    string path = Application.streamingAssetsPath + "/Docs/CharacterPrefabTestScript.txt";
 
     DialogueSystem dialogue;
 
@@ -36,6 +36,8 @@ public class ScriptParser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // TextAsset textFile = Resources.Load<TextAsset>("Docs/CharacterPrefabTestScript");
+
         dialogue = DialogueSystem.instance;
         emotes = EmotesSystem.instance;
         commands = new CommandsManager();
