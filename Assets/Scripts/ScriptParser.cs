@@ -9,11 +9,10 @@ using System.Linq;
 
 public class ScriptParser : MonoBehaviour
 {
-    string path = Application.streamingAssetsPath + "/Docs/AnimationTesting.txt";
+    string path = Application.streamingAssetsPath + "/Docs/ExpressionsTest.txt";
 
     DialogueSystem dialogue;
 
-    EmotesSystem emotes;
 
     CommandsManager commands;
 
@@ -24,7 +23,7 @@ public class ScriptParser : MonoBehaviour
     // regex for grabbing rich text tags
     Regex richRegex = new Regex("<(.*?)>");
 
-    // regex for grabbing emotes
+    // regex for grabbing expressions
     Regex emoteRegex = new Regex("\\[(.*?)\\]");
 
     // regex for commands
@@ -39,7 +38,6 @@ public class ScriptParser : MonoBehaviour
         // TextAsset textFile = Resources.Load<TextAsset>("Docs/CharacterPrefabTestScript");
 
         dialogue = DialogueSystem.instance;
-        emotes = EmotesSystem.instance;
         commands = new CommandsManager();
         reader = new StreamReader(path);
     }
@@ -78,7 +76,7 @@ public class ScriptParser : MonoBehaviour
             dialogue.SayRich(currentLine);
             return;
         }
-        // handles speaker change. Also handles which character's emotes/animations are being controlled
+        // handles speaker change. Also handles which character's expressions/animations are being controlled
         if (line.Contains("::"))
         {
             string newSpeaker = line.Split(new[] { "::" }, System.StringSplitOptions.None)[0];
@@ -91,16 +89,15 @@ public class ScriptParser : MonoBehaviour
         }
 
 
-        // CHANGING EMOTES
-        // emotes in the script will be written like this: [happy]
-        // emotes must be on their own lines 
+        // CHANGING EXPRESSIONS
+        // expressions in the script will be written like this: [happy]
+        // expressions must be on their own lines 
         if (emoteRegex.IsMatch(line))
         {
             // Debug.Log(line);
             char[] tagChars = { '[', ']', ' ' };
-            string emote = line.Trim(tagChars);
-            // Debug.Log(emote);
-            emotes.changeEmote(emote);
+            string expression = line.Trim(tagChars);
+            CharacterManager.instance.changeExpression(dialogue.currentSpeaker, expression);
             readNextLine();
             parseLine(currentLine);
             return;

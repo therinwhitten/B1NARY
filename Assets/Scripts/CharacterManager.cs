@@ -10,12 +10,12 @@ public class CharacterManager : MonoBehaviour
     public static CharacterManager instance;
     GameObject testChar;
 
-    Dictionary<string, GameObject> charactersInScene;
+    Dictionary<string, Character> charactersInScene;
 
     void Start()
     {
         instance = this;
-        charactersInScene = new Dictionary<string, GameObject>();
+        charactersInScene = new Dictionary<string, Character>();
     }
 
     // Update is called once per frame
@@ -31,9 +31,11 @@ public class CharacterManager : MonoBehaviour
         {
             if (transform.childCount == 0)
             {
-                GameObject character = Instantiate(Resources.Load<GameObject>(prefabsPath + name));
-                character.transform.parent = transform;
-                character.transform.position = transform.position;
+                GameObject characterObject = Instantiate(Resources.Load<GameObject>(prefabsPath + name));
+                characterObject.transform.parent = transform;
+                characterObject.transform.position = transform.position;
+                Character character = new Character(name);
+                character.gameObject = characterObject;
                 charactersInScene.Add(name, character);
                 return;
             }
@@ -42,13 +44,20 @@ public class CharacterManager : MonoBehaviour
 
     public void emptyScene()
     {
-        charactersInScene = new Dictionary<string, GameObject>();
+        charactersInScene = new Dictionary<string, Character>();
     }
 
     public void changeAnimation(string charName, string animName)
     {
-        GameObject character;
+        Character character;
         charactersInScene.TryGetValue(charName, out character);
-        character.GetComponent<Animator>().SetTrigger(animName.Trim());
+        character.animate(animName);
+    }
+
+    public void changeExpression(string charName, string exrpName)
+    {
+        Character character;
+        charactersInScene.TryGetValue(charName, out character);
+        character.changeExpression(exrpName);
     }
 }
