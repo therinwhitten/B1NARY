@@ -10,12 +10,12 @@ public class CharacterManager : MonoBehaviour
     public static CharacterManager instance;
     GameObject testChar;
 
-    Dictionary<string, Character> charactersInScene;
+    Dictionary<string, GameObject> charactersInScene;
 
     void Start()
     {
         instance = this;
-        charactersInScene = new Dictionary<string, Character>();
+        charactersInScene = new Dictionary<string, GameObject>();
     }
 
     // Update is called once per frame
@@ -34,9 +34,7 @@ public class CharacterManager : MonoBehaviour
                 GameObject characterObject = Instantiate(Resources.Load<GameObject>(prefabsPath + name));
                 characterObject.transform.parent = transform;
                 characterObject.transform.position = transform.position;
-                Character character = new Character(name);
-                character.gameObject = characterObject;
-                charactersInScene.Add(name, character);
+                charactersInScene.Add(name, characterObject);
                 return;
             }
         }
@@ -44,20 +42,20 @@ public class CharacterManager : MonoBehaviour
 
     public void emptyScene()
     {
-        charactersInScene = new Dictionary<string, Character>();
+        charactersInScene = new Dictionary<string, GameObject>();
     }
 
     public void changeAnimation(string charName, string animName)
     {
-        Character character;
+        GameObject character;
         charactersInScene.TryGetValue(charName, out character);
-        character.animate(animName);
+        character.GetComponent<CharacterScript>().animate(animName);
     }
 
     public void changeExpression(string charName, string exrpName)
     {
-        Character character;
+        GameObject character;
         charactersInScene.TryGetValue(charName, out character);
-        character.changeExpression(exrpName);
+        character.GetComponent<CharacterScript>().changeExpression(exrpName);
     }
 }

@@ -3,24 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using Live2D.Cubism.Framework.Expression;
 
-public class Character
+public class CharacterScript : MonoBehaviour
 {
     public string charName;
     public CharacterLibrary library;
     public CharacterEntry libraryEntry;
-    protected string[] expressions;
-    public GameObject gameObject;
-    public Character(string name)
-    {
-        library = CharacterLibrary.instance;
-
-        this.charName = name;
-        libraryEntry = library.getEntry(charName);
-
-        expressions = libraryEntry.expressions;
-
-        // gameObject.GetComponent<CubismExpressionController>().changeExpre;
-    }
+    public string[] expressions;
 
     public void animate(string animName)
     {
