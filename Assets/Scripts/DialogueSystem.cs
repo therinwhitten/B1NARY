@@ -36,18 +36,6 @@ public class DialogueSystem : MonoBehaviour
         speaking = StartCoroutine(Speaking(speech));
     }
 
-    /// <summary>
-    /// Say something to be added to what is already on the speech box.
-    /// </summary>
-    // public void SayAdd(string speech, string speaker = "")
-    // {
-    //     StopSpeaking();
-
-    //     speechText.text = targetSpeech;
-
-    //     speaking = StartCoroutine(Speaking(speech, speaker));
-    // }
-
     public void SayRich(string speech)
     {
         StopSpeaking();
@@ -56,15 +44,6 @@ public class DialogueSystem : MonoBehaviour
 
         speaking = StartCoroutine(Speaking(speech, true));
     }
-
-    // public void sayAddRich(string speech, string speaker = "")
-    // {
-    //     StopSpeaking();
-
-    //     speechText.text = targetSpeech;
-
-    //     speaking = StartCoroutine(Speaking(speech, speaker, true));
-    // }
 
     public void StopSpeaking()
     {

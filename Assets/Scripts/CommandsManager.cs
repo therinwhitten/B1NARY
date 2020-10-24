@@ -26,23 +26,36 @@ public class CommandsManager
         switch (command)
         {
             case "additive":
-                if (args[0].Equals("on"))
+                if (args[0].ToString().Trim().Equals("on"))
                 {
                     dialogue.Say("");
                     dialogue.additiveTextEnabled = true;
                     Debug.Log("Set additive text to on!");
                 }
-                else if (args[0].Equals("off"))
+                else if (args[0].ToString().Trim().Equals("off"))
                 {
                     dialogue.additiveTextEnabled = false;
                     Debug.Log("Set additive text to off!");
                 }
                 break;
             case "spawnChar":
-                characterManager.spawnCharacter(args[0].ToString());
+                if (args.Count == 1)
+                {
+                    characterManager.spawnCharacter(args[0].ToString().Trim());
+                }
+                else
+                {
+                    characterManager.spawnCharacter(args[0].ToString().Trim(), args[1].ToString().Trim());
+                }
                 break;
             case "anim":
-                characterManager.changeAnimation(dialogue.currentSpeaker, args[0].ToString());
+                characterManager.changeAnimation(dialogue.currentSpeaker, args[0].ToString().Trim());
+                break;
+            case "moveChar":
+                characterManager.moveCharacter(args[0].ToString().Trim(), args[1].ToString().Trim());
+                break;
+            case "changeBG":
+                TransitionManager.TransitionBG(args[0].ToString().Trim());
                 break;
         }
     }

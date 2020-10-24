@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Live2D.Cubism.Framework.Motion;
 
 public class CharacterManager : MonoBehaviour
 {
@@ -24,31 +23,53 @@ public class CharacterManager : MonoBehaviour
 
     }
 
-    public void spawnCharacter(string name)
+    public void spawnCharacter(string name, string positionRaw = "0.5")
     {
-        name = name.Trim();
-        foreach (Transform transform in characterLayer.transform)
-        {
-            if (transform.childCount == 0)
-            {
-                GameObject character = Instantiate(Resources.Load<GameObject>(prefabsPath + name));
-                character.transform.parent = transform;
-                character.transform.position = transform.position;
-                charactersInScene.Add(name, character);
-                return;
-            }
-        }
+        Transform transform = characterLayer.transform;
+
+        GameObject characterObject = Instantiate(Resources.Load<GameObject>(prefabsPath + name), transform);
+        characterObject.SetActive(true);
+        characterObject.transform.position = new Vector3(transform.position.x, characterObject.transform.position.y, characterObject.transform.position.z);
+        characterObject.GetComponent<CharacterScript>().SetPosition(new Vector2(float.Parse(positionRaw), 0));
+        charactersInScene.Add(name, characterObject);
+        return;
+
     }
 
+    // deletes all characters in the scene
     public void emptyScene()
     {
         charactersInScene = new Dictionary<string, GameObject>();
+        foreach (Transform transform in characterLayer.transform)
+        {
+            GameObject.Destroy(transform.gameObject);
+        }
     }
 
     public void changeAnimation(string charName, string animName)
     {
         GameObject character;
         charactersInScene.TryGetValue(charName, out character);
-        character.GetComponent<Animator>().SetTrigger(animName.Trim());
+        character.GetComponent<CharacterScript>().animate(animName);
+    }
+
+    public void changeExpression(string charName, string exrpName)
+    {
+        GameObject character;
+        charactersInScene.TryGetValue(charName, out character);
+        character.GetComponent<CharacterScript>().changeExpression(exrpName);
+    }
+
+    // moves a character horizontally to a position.
+    public void moveCharacter(string charName, string positionRaw)
+    {
+        GameObject character;
+        charactersInScene.TryGetValue(charName, out character);
+
+        positionRaw = positionRaw.Trim();
+        float positionx = float.Parse(positionRaw);
+
+        Vector2 targetPosition = new Vector2(positionx, 0);
+        character.GetComponent<CharacterScript>().MoveTo(targetPosition, 5, true);
     }
 }

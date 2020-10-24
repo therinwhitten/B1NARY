@@ -9,11 +9,10 @@ using System.Linq;
 
 public class ScriptParser : MonoBehaviour
 {
-    string path = Application.streamingAssetsPath + "/Docs/AnimationTesting.txt";
+    string path = Application.streamingAssetsPath + "/Docs/Positioning.txt";
 
     DialogueSystem dialogue;
 
-    EmotesSystem emotes;
 
     CommandsManager commands;
 
@@ -24,7 +23,7 @@ public class ScriptParser : MonoBehaviour
     // regex for grabbing rich text tags
     Regex richRegex = new Regex("<(.*?)>");
 
-    // regex for grabbing emotes
+    // regex for grabbing expressions
     Regex emoteRegex = new Regex("\\[(.*?)\\]");
 
     // regex for commands
@@ -39,7 +38,6 @@ public class ScriptParser : MonoBehaviour
         // TextAsset textFile = Resources.Load<TextAsset>("Docs/CharacterPrefabTestScript");
 
         dialogue = DialogueSystem.instance;
-        emotes = EmotesSystem.instance;
         commands = new CommandsManager();
         reader = new StreamReader(path);
     }
@@ -61,8 +59,12 @@ public class ScriptParser : MonoBehaviour
                 // else grab next line
                 readNextLine();
                 parseLine(currentLine);
-                // Say(lines[index]);
-                // index++;
+            }
+            else
+            // if the dialogue is still being written out just skip to the end of the line
+            {
+                dialogue.StopSpeaking();
+                dialogue.speechText.text = dialogue.targetSpeech;
             }
         }
     }
@@ -78,7 +80,7 @@ public class ScriptParser : MonoBehaviour
             dialogue.SayRich(currentLine);
             return;
         }
-        // handles speaker change. Also handles which character's emotes/animations are being controlled
+        // handles speaker change. Also handles which character's expressions/animations are being controlled
         if (line.Contains("::"))
         {
             string newSpeaker = line.Split(new[] { "::" }, System.StringSplitOptions.None)[0];
@@ -91,16 +93,15 @@ public class ScriptParser : MonoBehaviour
         }
 
 
-        // CHANGING EMOTES
-        // emotes in the script will be written like this: [happy]
-        // emotes must be on their own lines 
+        // CHANGING EXPRESSIONS
+        // expressions in the script will be written like this: [happy]
+        // expressions must be on their own lines 
         if (emoteRegex.IsMatch(line))
         {
             // Debug.Log(line);
             char[] tagChars = { '[', ']', ' ' };
-            string emote = line.Trim(tagChars);
-            // Debug.Log(emote);
-            emotes.changeEmote(emote);
+            string expression = line.Trim(tagChars);
+            CharacterManager.instance.changeExpression(dialogue.currentSpeaker, expression);
             readNextLine();
             parseLine(currentLine);
             return;
@@ -120,13 +121,17 @@ public class ScriptParser : MonoBehaviour
                 ArrayList commandWords = new ArrayList(command.Split(':'));
                 command = commandWords.Cast<string>().ElementAt(0);
                 commandWords.RemoveAt(0);
-                ArrayList args = commandWords;
+                ArrayList args = new ArrayList(commandWords[0].ToString().Split(','));
 
                 commands.handleWithArgs(command, args);
             }
             else
             {
                 commands.handle(command);
+            }
+            if (TransitionManager.transitioningBG != null)
+            {
+                return;
             }
             readNextLine();
             parseLine(currentLine);
