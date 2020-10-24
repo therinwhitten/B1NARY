@@ -2,7 +2,7 @@ public class CharacterEntry
 {
     public CharacterEntry()
     {
-
+        
     }
-    public string[] expressions;
+        public string[] expressions;
 }
