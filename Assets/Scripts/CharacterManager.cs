@@ -28,6 +28,7 @@ public class CharacterManager : MonoBehaviour
         Transform transform = characterLayer.transform;
 
         GameObject characterObject = Instantiate(Resources.Load<GameObject>(prefabsPath + name), transform);
+        characterObject.SetActive(true);
         characterObject.transform.position = new Vector3(transform.position.x, characterObject.transform.position.y, characterObject.transform.position.z);
         characterObject.GetComponent<CharacterScript>().SetPosition(new Vector2(float.Parse(positionRaw), 0));
         charactersInScene.Add(name, characterObject);

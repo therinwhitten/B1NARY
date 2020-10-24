@@ -129,6 +129,10 @@ public class ScriptParser : MonoBehaviour
             {
                 commands.handle(command);
             }
+            if (TransitionManager.transitioningBG != null)
+            {
+                return;
+            }
             readNextLine();
             parseLine(currentLine);
             return;

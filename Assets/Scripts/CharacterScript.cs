@@ -15,7 +15,7 @@ public class CharacterScript : MonoBehaviour
 
     public Vector2 anchorPadding { get { return rectTransform.anchorMax - rectTransform.anchorMin; } }
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
         rectTransform = gameObject.GetComponent<RectTransform>();

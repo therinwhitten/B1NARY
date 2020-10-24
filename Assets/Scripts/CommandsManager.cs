@@ -54,6 +54,9 @@ public class CommandsManager
             case "moveChar":
                 characterManager.moveCharacter(args[0].ToString().Trim(), args[1].ToString().Trim());
                 break;
+            case "changeBG":
+                TransitionManager.TransitionBG(args[0].ToString().Trim());
+                break;
         }
     }
 }
