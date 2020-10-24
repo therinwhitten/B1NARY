@@ -9,7 +9,7 @@ using System.Linq;
 
 public class ScriptParser : MonoBehaviour
 {
-    string path = Application.streamingAssetsPath + "/Docs/ExpressionsTest.txt";
+    string path = Application.streamingAssetsPath + "/Docs/Positioning.txt";
 
     DialogueSystem dialogue;
 
@@ -59,8 +59,12 @@ public class ScriptParser : MonoBehaviour
                 // else grab next line
                 readNextLine();
                 parseLine(currentLine);
-                // Say(lines[index]);
-                // index++;
+            }
+            else
+            // if the dialogue is still being written out just skip to the end of the line
+            {
+                dialogue.StopSpeaking();
+                dialogue.speechText.text = dialogue.targetSpeech;
             }
         }
     }
@@ -117,7 +121,7 @@ public class ScriptParser : MonoBehaviour
                 ArrayList commandWords = new ArrayList(command.Split(':'));
                 command = commandWords.Cast<string>().ElementAt(0);
                 commandWords.RemoveAt(0);
-                ArrayList args = commandWords;
+                ArrayList args = new ArrayList(commandWords[0].ToString().Split(','));
 
                 commands.handleWithArgs(command, args);
             }
