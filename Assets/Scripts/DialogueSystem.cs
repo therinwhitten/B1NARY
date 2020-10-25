@@ -6,24 +6,25 @@ using UnityEngine.UI;
 using System.Linq;
 
 
-public class DialogueSystem : MonoBehaviour
+public class DialogueSystem : Singleton<DialogueSystem>
 {
-    public static DialogueSystem instance;
 
     public string currentSpeaker = "";
     public ELEMENTS elements;
 
     public bool additiveTextEnabled = false;
-    void Awake()
-    {
-        instance = this;
-    }
 
     // Use this for initialization
     void Start()
     {
+        initialize();
     }
-
+    public override void initialize()
+    {
+        elements.speechPanel = GameObject.Find("Panel-Speech");
+        elements.speakerNameText = GameObject.Find("SpeakerName").GetComponent<Text>();
+        elements.speechText = GameObject.Find("SpeechText").GetComponent<Text>();
+    }
     /// <summary>
     /// Say something and show it on the speech box.
     /// </summary>
@@ -167,15 +168,6 @@ public class DialogueSystem : MonoBehaviour
 
         StopSpeaking();
     }
-
-    // string DetermineSpeaker(string s)
-    // {
-    //     string retVal = speakerNameText.text;//default return is the current name
-    //     if (s != speakerNameText.text && s != "")
-    //         retVal = (s.ToLower().Contains("narrator")) ? "" : s;
-
-    //     return retVal;
-    // }
 
     private string getClosingTag(string tag)
     {

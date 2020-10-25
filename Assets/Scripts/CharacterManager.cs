@@ -2,19 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterManager : MonoBehaviour
+public class CharacterManager : Singleton<CharacterManager>
 {
     static string prefabsPath = "Characters/Prefabs/";
     [SerializeField] public GameObject characterLayer;
-    public static CharacterManager instance;
-    GameObject testChar;
 
-    Dictionary<string, GameObject> charactersInScene;
+    public Dictionary<string, GameObject> charactersInScene;
 
     void Start()
     {
-        instance = this;
         charactersInScene = new Dictionary<string, GameObject>();
+        initialize();
+    }
+    public override void initialize()
+    {
+        charactersInScene = new Dictionary<string, GameObject>();
+        characterLayer = GameObject.Find("CharacterLayer");
+        if (characterLayer.transform.childCount != 0)
+        {
+            foreach (Transform transform in characterLayer.transform)
+            {
+                charactersInScene.Add(transform.gameObject.name, transform.gameObject);
+            }
+        }
     }
 
 

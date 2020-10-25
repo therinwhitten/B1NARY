@@ -7,14 +7,16 @@ using System.Text.RegularExpressions;
 using System.Linq;
 
 
-public class ScriptParser : MonoBehaviour
+public class ScriptParser : Singleton<ScriptParser>
 {
-    string path = Application.streamingAssetsPath + "/Docs/Positioning.txt";
 
-    DialogueSystem dialogue;
+    public string scriptName = "SceneTransitionTesting";
+    string path { get { return Application.streamingAssetsPath + "/Docs/" + scriptName + ".txt"; } }
+
+    DialogueSystem dialogue { get { return DialogueSystem.Instance; } }
 
 
-    CommandsManager commands;
+    CommandsManager commands { get { return CommandsManager.Instance; } }
 
     StreamReader reader = null;
 
@@ -36,17 +38,28 @@ public class ScriptParser : MonoBehaviour
     void Start()
     {
         // TextAsset textFile = Resources.Load<TextAsset>("Docs/CharacterPrefabTestScript");
-
-        dialogue = DialogueSystem.instance;
-        commands = new CommandsManager();
+        DontDestroyOnLoad(this.gameObject);
+        initialize();
         reader = new StreamReader(path);
+
     }
 
-
+    public override void initialize()
+    {
+    }
+    public void changeScriptFile(string newScript)
+    {
+        scriptName = newScript;
+        reader = new StreamReader(path);
+    }
 
     // Update is called once per frame
     void Update()
     {
+        if (TransitionManager.transitioningBG != null || TransitionManager.transitioningScene != null)
+        {
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -69,13 +82,28 @@ public class ScriptParser : MonoBehaviour
             }
         }
     }
-
+    private void waitThenDO(System.Action action)
+    {
+        Instance.StartCoroutine(waitForTransitionsThenDo(action));
+    }
+    IEnumerator waitForTransitionsThenDo(System.Action action)
+    {
+        while (TransitionManager.transitioningBG != null || TransitionManager.transitioningScene != null)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        action();
+    }
     void parseLine(string line)
     {
         // RICH TEXT
         // Unity already supports rich text natively,
         // we just need to make sure the typewriter
         // works properly with it
+        if (line == null)
+        {
+            return;
+        }
         if (richRegex.IsMatch(line))
         {
             dialogue.SayRich(currentLine);
@@ -102,7 +130,7 @@ public class ScriptParser : MonoBehaviour
             // Debug.Log(line);
             char[] tagChars = { '[', ']', ' ' };
             string expression = line.Trim(tagChars);
-            CharacterManager.instance.changeExpression(dialogue.currentSpeaker, expression);
+            waitThenDO(() => CharacterManager.Instance.changeExpression(dialogue.currentSpeaker, expression));
             readNextLine();
             parseLine(currentLine);
             return;
@@ -124,11 +152,11 @@ public class ScriptParser : MonoBehaviour
                 commandWords.RemoveAt(0);
                 ArrayList args = new ArrayList(commandWords[0].ToString().Split(','));
 
-                commands.handleWithArgs(command, args);
+                waitThenDO(() => commands.handleWithArgs(command, args));
             }
             else
             {
-                commands.handle(command);
+                waitThenDO(() => commands.handle(command));
             }
             if (TransitionManager.transitioningBG != null)
             {

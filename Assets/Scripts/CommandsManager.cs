@@ -1,21 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System;
 
-public class CommandsManager
+public class CommandsManager : Singleton<CommandsManager>
 {
-    DialogueSystem dialogue;
-    EmotesSystem emotes;
+    DialogueSystem dialogue { get { return DialogueSystem.Instance; } }
 
-    CharacterManager characterManager;
+    CharacterManager characterManager { get { return CharacterManager.Instance; } }
 
-    public CommandsManager()
+    void Start()
     {
-        this.dialogue = DialogueSystem.instance;
-        this.emotes = EmotesSystem.instance;
-        this.characterManager = CharacterManager.instance;
+        initialize();
     }
-
+    public override void initialize()
+    {
+        Debug.Log("Commands manager initialized");
+    }
     public void handle(string command)
     {
         Debug.Log("Non-argument command found!");
@@ -57,6 +59,29 @@ public class CommandsManager
             case "changeBG":
                 TransitionManager.TransitionBG(args[0].ToString().Trim());
                 break;
+            case "changeScene":
+                TransitionManager.transitionScene(args[0].ToString().Trim());
+                // TransitionManager.TransitionBG(args[0].ToString().Trim());
+                break;
+            case "changeScript":
+                ScriptParser.Instance.changeScriptFile(args[0].ToString().Trim());
+                // Instance.StartCoroutine(waitForTransitionsThenChangeScript(args[0].ToString().Trim()));
+                // TransitionManager.TransitionBG(args[0].ToString().Trim());
+                break;
+            case "emptyScene":
+                CharacterManager.Instance.emptyScene();
+                break;
+        }
+
+
+
+        IEnumerator waitForTransitionsThenDo(Action action)
+        {
+            while (TransitionManager.transitioningBG != null || TransitionManager.transitioningScene != null)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+            action();
         }
     }
 }
