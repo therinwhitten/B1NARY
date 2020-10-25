@@ -17,6 +17,7 @@ public class CharacterManager : MonoBehaviour
         charactersInScene = new Dictionary<string, GameObject>();
     }
 
+
     // Update is called once per frame
     void Update()
     {
@@ -40,14 +41,17 @@ public class CharacterManager : MonoBehaviour
     public void emptyScene()
     {
         charactersInScene = new Dictionary<string, GameObject>();
+
         foreach (Transform transform in characterLayer.transform)
         {
             GameObject.Destroy(transform.gameObject);
         }
     }
 
+
     public void changeAnimation(string charName, string animName)
     {
+
         GameObject character;
         charactersInScene.TryGetValue(charName, out character);
         character.GetComponent<CharacterScript>().animate(animName);
