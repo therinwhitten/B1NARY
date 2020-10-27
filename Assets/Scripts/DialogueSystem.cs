@@ -72,6 +72,8 @@ public class DialogueSystem : Singleton<DialogueSystem>
         else
             targetSpeech = speechText.text + " " + targetSpeech;
 
+
+
         targetSpeech = targetSpeech.Trim();
         speechText.text = speechText.text.Trim();
         speakerNameText.text = currentSpeaker;
@@ -80,6 +82,10 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
         if (rich)
         {
+            if (additiveTextEnabled)
+                targetSpeech = " " + speech;
+
+
             Stack<string> tags = new Stack<string>();
             string newTag = "";
             bool tagFound = false;
@@ -105,7 +111,8 @@ public class DialogueSystem : Singleton<DialogueSystem>
                     if (tags.Count == 0 && !newTag.Contains('/'))
                     {
                         tags.Push(newTag);
-                        initialText = buffer[0] + buffer[1] + buffer[2];
+                        // speechText.text = initialText;
+                        initialText += buffer[0] + buffer[1] + buffer[2];
 
                         buffer[0] = newTag;
                         buffer[1] = "";
@@ -146,7 +153,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
                 if (!tagFound)
                 {
                     buffer[1] += c;
-                    // Debug.Log(buffer[0] + buffer[1] + buffer[2]);
                     speechText.text = initialText + buffer[0] + buffer[1] + buffer[2];
                     yield return new WaitForEndOfFrame();
 

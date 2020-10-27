@@ -14,6 +14,8 @@ public class TransitionManager : Singleton<TransitionManager>
     public Texture2D texIn;
     public Texture2D texOut;
 
+    public string transitionColor = "pitchBlack";
+
     public VideoPlayer animatedBG;
     public Image staticBG;
 
@@ -29,11 +31,13 @@ public class TransitionManager : Singleton<TransitionManager>
     public override void initialize()
     {
         transitionMatPrefab = Resources.Load<Material>("Transitions/TransitionEffects/TransSoft");
+        Texture transitionColorTex = Resources.Load<Texture>("Transitions/Colors/" + transitionColor);
         GameObject UILayer = GameObject.Find("UI");
         GameObject panel = UILayer.transform.Find("OverlayPanel").gameObject;
         panel.SetActive(true);
         overlayImage = GameObject.Find("OverlayPanel").GetComponent<RawImage>();
         overlayImage.material = new Material(transitionMatPrefab);
+        overlayImage.texture = transitionColorTex;
 
         GameObject bgCanvas = GameObject.Find("BG-Canvas");
         animatedBG = bgCanvas.GetComponentInChildren<VideoPlayer>();

@@ -75,13 +75,13 @@ public class CommandsManager : Singleton<CommandsManager>
 
 
 
-        IEnumerator waitForTransitionsThenDo(Action action)
-        {
-            while (TransitionManager.transitioningBG != null || TransitionManager.transitioningScene != null)
-            {
-                yield return new WaitForEndOfFrame();
-            }
-            action();
-        }
+        // IEnumerator waitForTransitionsThenDo(Action action)
+        // {
+        //     while (TransitionManager.transitioningBG != null || TransitionManager.transitioningScene != null)
+        //     {
+        //         yield return new WaitForEndOfFrame();
+        //     }
+        //     action();
+        // }
     }
 }
