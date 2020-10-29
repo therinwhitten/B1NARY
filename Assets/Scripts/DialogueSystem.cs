@@ -6,24 +6,25 @@ using UnityEngine.UI;
 using System.Linq;
 
 
-public class DialogueSystem : MonoBehaviour
+public class DialogueSystem : Singleton<DialogueSystem>
 {
-    public static DialogueSystem instance;
 
     public string currentSpeaker = "";
     public ELEMENTS elements;
 
     public bool additiveTextEnabled = false;
-    void Awake()
-    {
-        instance = this;
-    }
 
     // Use this for initialization
     void Start()
     {
+        initialize();
     }
-
+    public override void initialize()
+    {
+        elements.speechPanel = GameObject.Find("Panel-Speech");
+        elements.speakerNameText = GameObject.Find("SpeakerName").GetComponent<Text>();
+        elements.speechText = GameObject.Find("SpeechText").GetComponent<Text>();
+    }
     /// <summary>
     /// Say something and show it on the speech box.
     /// </summary>
@@ -63,6 +64,7 @@ public class DialogueSystem : MonoBehaviour
     Coroutine speaking = null;
     IEnumerator Speaking(string speech, bool rich = false)
     {
+        speechText.text = speechText.text.Trim();
         speechPanel.SetActive(true);
         targetSpeech = speech;
 
@@ -72,24 +74,29 @@ public class DialogueSystem : MonoBehaviour
             targetSpeech = speechText.text + " " + targetSpeech;
 
         targetSpeech = targetSpeech.Trim();
-        speechText.text = speechText.text.Trim();
+
         speakerNameText.text = currentSpeaker;
 
         isWaitingForUserInput = false;
 
         if (rich)
         {
+            // if (additiveTextEnabled)
+            //     targetSpeech = " " + speech;
+
             Stack<string> tags = new Stack<string>();
             string newTag = "";
             bool tagFound = false;
             string[] buffer = { "", "", "" };
             string initialText = speechText.text;
-            foreach (char c in targetSpeech)
+            for (int i = speechText.text.Length; i < targetSpeech.Length; i++)
             {
+                char c = targetSpeech[i];
                 if (tagFound)
                 {
                     newTag += c;
                 }
+
                 if (c.Equals('<'))
                 {
                     tagFound = true;
@@ -104,7 +111,7 @@ public class DialogueSystem : MonoBehaviour
                     if (tags.Count == 0 && !newTag.Contains('/'))
                     {
                         tags.Push(newTag);
-                        initialText = buffer[0] + buffer[1] + buffer[2];
+                        initialText += buffer[0] + buffer[1] + buffer[2];
 
                         buffer[0] = newTag;
                         buffer[1] = "";
@@ -118,9 +125,6 @@ public class DialogueSystem : MonoBehaviour
                             tags.Pop();
 
                             // remove tags from buffer
-                            // ArrayList bufferWords = new ArrayList(buffer[0].Split(' '));
-                            // bufferWords.RemoveAt(bufferWords.Count - 1);
-                            // buffer[0] = System.String.Join(null, bufferWords.Cast<string>());
                             initialText += buffer[0] + buffer[1];
                             buffer[0] = "";
                             buffer[1] = "";
@@ -145,10 +149,8 @@ public class DialogueSystem : MonoBehaviour
                 if (!tagFound)
                 {
                     buffer[1] += c;
-                    // Debug.Log(buffer[0] + buffer[1] + buffer[2]);
                     speechText.text = initialText + buffer[0] + buffer[1] + buffer[2];
                     yield return new WaitForEndOfFrame();
-
                 }
             }
         }
@@ -158,8 +160,6 @@ public class DialogueSystem : MonoBehaviour
                 yield return new WaitForEndOfFrame();
             }
 
-
-
         //text finished
         isWaitingForUserInput = true;
         while (isWaitingForUserInput)
@@ -167,15 +167,6 @@ public class DialogueSystem : MonoBehaviour
 
         StopSpeaking();
     }
-
-    // string DetermineSpeaker(string s)
-    // {
-    //     string retVal = speakerNameText.text;//default return is the current name
-    //     if (s != speakerNameText.text && s != "")
-    //         retVal = (s.ToLower().Contains("narrator")) ? "" : s;
-
-    //     return retVal;
-    // }
 
     private string getClosingTag(string tag)
     {

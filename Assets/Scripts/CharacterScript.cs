@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Live2D.Cubism.Framework.Expression;
 
+
 public class CharacterScript : MonoBehaviour
 {
     public string charName;
@@ -82,11 +83,10 @@ public class CharacterScript : MonoBehaviour
         {
             rectTransform.anchorMin = (!smooth) ? Vector2.MoveTowards(rectTransform.anchorMin, minAnchorTarget, speed) : Vector2.Lerp(rectTransform.anchorMin, minAnchorTarget, speed);
             rectTransform.anchorMax = rectTransform.anchorMin + padding;
-
-            if (Input.GetKeyUp(KeyCode.Space))
-            {
-                SetPosition(target);
-            }
+            // if (Input.GetKeyDown(KeyCode.Space))
+            // {
+            //     SetPosition(target);
+            // }
 
             yield return new WaitForEndOfFrame();
         }
