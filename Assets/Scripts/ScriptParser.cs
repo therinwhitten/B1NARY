@@ -51,7 +51,13 @@ public class ScriptParser : Singleton<ScriptParser>
     {
         scriptName = newScript;
         reader = new StreamReader(path);
+        waitThenDO(() =>
+        {
+            readNextLine();
+            parseLine(currentLine);
+        });
     }
+
 
     // Update is called once per frame
     void Update()
@@ -88,7 +94,7 @@ public class ScriptParser : Singleton<ScriptParser>
     }
     IEnumerator waitForTransitionsThenDo(System.Action action)
     {
-        while (TransitionManager.transitioningBG != null || TransitionManager.transitioningScene != null)
+        while (!TransitionManager.Instance.commandsAllowed)
         {
             yield return new WaitForEndOfFrame();
         }
@@ -100,75 +106,83 @@ public class ScriptParser : Singleton<ScriptParser>
         // Unity already supports rich text natively,
         // we just need to make sure the typewriter
         // works properly with it
-        if (line == null)
+        waitThenDO(() =>
         {
-            return;
-        }
-        if (richRegex.IsMatch(line))
-        {
-            dialogue.SayRich(currentLine);
-            return;
-        }
-        // handles speaker change. Also handles which character's expressions/animations are being controlled
-        if (line.Contains("::"))
-        {
-            string newSpeaker = line.Split(new[] { "::" }, System.StringSplitOptions.None)[0];
-            dialogue.currentSpeaker = newSpeaker;
-
-            // update character sprite to current speaker sprite
-            readNextLine();
-            parseLine(currentLine);
-            return;
-        }
-
-
-        // CHANGING EXPRESSIONS
-        // expressions in the script will be written like this: [happy]
-        // expressions must be on their own lines 
-        if (emoteRegex.IsMatch(line))
-        {
-            // Debug.Log(line);
-            char[] tagChars = { '[', ']', ' ' };
-            string expression = line.Trim(tagChars);
-            waitThenDO(() => CharacterManager.Instance.changeExpression(dialogue.currentSpeaker, expression));
-            readNextLine();
-            parseLine(currentLine);
-            return;
-        }
-
-        // COMMANDS
-        // These will be any other type of commands 
-        // that aren't rich text tags or emotion controls
-        if (commandRegex.IsMatch(line))
-        {
-            char[] tagChars = { '{', '}', ' ' };
-            string command = line.Trim(tagChars);
-
-
-            if (command.Contains(":"))
-            {
-                ArrayList commandWords = new ArrayList(command.Split(':'));
-                command = commandWords.Cast<string>().ElementAt(0);
-                commandWords.RemoveAt(0);
-                ArrayList args = new ArrayList(commandWords[0].ToString().Split(','));
-
-                waitThenDO(() => commands.handleWithArgs(command, args));
-            }
-            else
-            {
-                waitThenDO(() => commands.handle(command));
-            }
-            if (TransitionManager.transitioningBG != null)
+            if (line == null)
             {
                 return;
             }
-            readNextLine();
-            parseLine(currentLine);
-            return;
-        }
+            if (richRegex.IsMatch(line))
+            {
+                dialogue.SayRich(currentLine);
+                return;
+            }
+            // handles speaker change. Also handles which character's expressions/animations are being controlled
+            if (line.Contains("::"))
+            {
+                string newSpeaker = line.Split(new[] { "::" }, System.StringSplitOptions.None)[0];
+                dialogue.currentSpeaker = newSpeaker;
 
-        // if it's not a command simply display the text
-        dialogue.Say(currentLine);
+                // update character sprite to current speaker sprite
+                readNextLine();
+                parseLine(currentLine);
+                return;
+            }
+
+
+            // CHANGING EXPRESSIONS
+            // expressions in the script will be written like this: [happy]
+            // expressions must be on their own lines 
+            if (emoteRegex.IsMatch(line))
+            {
+                // Debug.Log(line);
+                char[] tagChars = { '[', ']', ' ' };
+                string expression = line.Trim(tagChars);
+                CharacterManager.Instance.changeExpression(dialogue.currentSpeaker, expression);
+                readNextLine();
+                parseLine(currentLine);
+                return;
+            }
+
+            // COMMANDS
+            // These will be any other type of commands 
+            // that aren't rich text tags or emotion controls
+            if (commandRegex.IsMatch(line))
+            {
+                char[] tagChars = { '{', '}', ' ' };
+                string command = line.Trim(tagChars);
+
+
+                if (command.Contains(":"))
+                {
+                    ArrayList commandWords = new ArrayList(command.Split(':'));
+                    command = commandWords.Cast<string>().ElementAt(0);
+                    commandWords.RemoveAt(0);
+                    ArrayList args = new ArrayList(commandWords[0].ToString().Split(','));
+
+                    commands.handleWithArgs(command, args);
+                }
+                else
+                {
+                    commands.handle(command);
+                }
+                if (TransitionManager.transitioningBG != null)
+                {
+                    return;
+                }
+                readNextLine();
+                parseLine(currentLine);
+                return;
+            }
+
+            // if it's not a command simply display the text
+            dialogue.Say(currentLine);
+        });
+
+    }
+    private void OnApplicationQuit()
+    {
+        reader.Close();
     }
     void readNextLine()
     {

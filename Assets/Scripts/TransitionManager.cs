@@ -18,7 +18,7 @@ public class TransitionManager : Singleton<TransitionManager>
 
     public VideoPlayer animatedBG;
     public Image staticBG;
-
+    public bool commandsAllowed = true;
 
     private void Awake()
     {
@@ -87,6 +87,8 @@ public class TransitionManager : Singleton<TransitionManager>
     // the function we actually call
     public static void TransitionBG(string newBG, float speed = 10)
     {
+        Instance.commandsAllowed = false;
+
         Instance.overlayImage.material.SetFloat("_Cutoff", 1);
         Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texIn);
 
@@ -104,11 +106,13 @@ public class TransitionManager : Singleton<TransitionManager>
             Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
             yield return new WaitForEndOfFrame();
         }
+        Instance.commandsAllowed = true;
 
         // change background clip
         VideoClip newClip = Resources.Load<VideoClip>("Backgrounds/" + newBG);
         Instance.animatedBG.clip = newClip;
         Instance.animatedBG.Play();
+
 
         // change overlay and pull it out
         Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texOut);
@@ -127,6 +131,8 @@ public class TransitionManager : Singleton<TransitionManager>
 
     public static void transitionScene(string newScene)
     {
+        Instance.commandsAllowed = false;
+
         Instance.overlayImage.material.SetFloat("_Cutoff", 1);
         Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texIn);
 
@@ -135,7 +141,6 @@ public class TransitionManager : Singleton<TransitionManager>
 
     static IEnumerator TransitioningScene(string newScene, float speed = 1)
     {
-
         float targetVal = 0;
         float currentVal = Instance.overlayImage.material.GetFloat("_Cutoff"); //should be 1
         // pull in overlay
@@ -152,9 +157,10 @@ public class TransitionManager : Singleton<TransitionManager>
         {
             yield return null;
         }
+        Instance.commandsAllowed = true;
         // re-initialize singletons
         DialogueSystem.Instance.initialize();
-        DialogueSystem.Instance.speechText.text = DialogueSystem.Instance.targetSpeech;
+        // DialogueSystem.Instance.speechText.text = DialogueSystem.Instance.targetSpeech;
         ScriptParser.Instance.initialize();
         CharacterManager.Instance.initialize();
         CommandsManager.Instance.initialize();
