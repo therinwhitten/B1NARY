@@ -64,6 +64,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     Coroutine speaking = null;
     IEnumerator Speaking(string speech, bool rich = false)
     {
+        speechText.text = speechText.text.Trim();
         speechPanel.SetActive(true);
         targetSpeech = speech;
 
@@ -72,31 +73,30 @@ public class DialogueSystem : Singleton<DialogueSystem>
         else
             targetSpeech = speechText.text + " " + targetSpeech;
 
-
-
         targetSpeech = targetSpeech.Trim();
-        speechText.text = speechText.text.Trim();
+
         speakerNameText.text = currentSpeaker;
 
         isWaitingForUserInput = false;
 
         if (rich)
         {
-            if (additiveTextEnabled)
-                targetSpeech = " " + speech;
-
+            // if (additiveTextEnabled)
+            //     targetSpeech = " " + speech;
 
             Stack<string> tags = new Stack<string>();
             string newTag = "";
             bool tagFound = false;
             string[] buffer = { "", "", "" };
             string initialText = speechText.text;
-            foreach (char c in targetSpeech)
+            for (int i = speechText.text.Length; i < targetSpeech.Length; i++)
             {
+                char c = targetSpeech[i];
                 if (tagFound)
                 {
                     newTag += c;
                 }
+
                 if (c.Equals('<'))
                 {
                     tagFound = true;
@@ -111,7 +111,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
                     if (tags.Count == 0 && !newTag.Contains('/'))
                     {
                         tags.Push(newTag);
-                        // speechText.text = initialText;
                         initialText += buffer[0] + buffer[1] + buffer[2];
 
                         buffer[0] = newTag;
@@ -126,9 +125,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
                             tags.Pop();
 
                             // remove tags from buffer
-                            // ArrayList bufferWords = new ArrayList(buffer[0].Split(' '));
-                            // bufferWords.RemoveAt(bufferWords.Count - 1);
-                            // buffer[0] = System.String.Join(null, bufferWords.Cast<string>());
                             initialText += buffer[0] + buffer[1];
                             buffer[0] = "";
                             buffer[1] = "";
@@ -155,7 +151,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
                     buffer[1] += c;
                     speechText.text = initialText + buffer[0] + buffer[1] + buffer[2];
                     yield return new WaitForEndOfFrame();
-
                 }
             }
         }
@@ -164,8 +159,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
                 speechText.text += targetSpeech[speechText.text.Length];
                 yield return new WaitForEndOfFrame();
             }
-
-
 
         //text finished
         isWaitingForUserInput = true;
