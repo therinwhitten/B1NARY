@@ -1,0 +1,137 @@
+*****************************************************************************
+All commands need to be on their own line. Example:
+{command}
+Dialogue
+Speaker::
+[Happy]
+Other dialogue
+*****************************************************************************
+                                BASIC COMMANDS
+*****************************************************************************
+
+1. SPEAKER/FOCUS ASSIGNMENT                        Speaker1::
+    
+    - Used to specify which character will speak the next line. This won't be
+    displayed in game until an actual line of dialogue is spoken. This way the
+    command can be used to change things behind the scenes.
+
+    - Because this command is not actually used to spawn characters in the scene, 
+    the speaker does not need to have a model in the game. For example you can
+    have dialogue speaken by the narrator or by passersby.  
+
+    - Used to change which character the system is focusing on. For example,
+    if you want to change the expression of a character, you write:
+        Character1::
+        [Expression]
+
+    EXAMPLES:
+    
+    Asterella::                         Changes the the speaker to Asterella
+    I am alive!                         and displays the dialogue line         
+
+
+    Speaker1::                          Speaker1 says some heresy. This displeases Speaker2,
+    I like pineapple on pizza!          Thus, they will display an angry expression.
+    Speaker2::                          Because Speaker2 does not say anything, their name will not 
+    [Angry]                             be displayed, but the command will still be processed,      
+    Speaker1::                          changing the expression in the background.
+    [Surprised]                         NOTE: This assumes that both speakers have character models. 
+    What's with that face?              They cannot scream if they have no mouth.
+
+
+
+
+2. EXPRESSIONS                                  [Expression]
+    
+    - Used for changing the expression on the currently focused character
+    - Character must have a correctly configured expression list in the prefab.
+    If you would like a guide on how to set those up, bug Xplicit
+*****************************************************************************
+                                MISC COMMANDS                                
+*****************************************************************************
+{command: parameter1, parameter2, etc.}
+   
+    - Used for more complex manipulation of game objects
+
+1. ADDITIVE TEXT                             {additive: on/off}
+    
+    - Used to change back and forth between additive and non-additive text.
+    - Additive text is turned off by default
+    - When off, the text box will be emptied before displaying the new line
+    - When on, each new line will be added to the next. You will need to manually change
+    additive to off when you want to wipe the text box.
+
+    EXAMPLES:
+    {additive: off}
+    This is the first line of dialogue.
+    This is the second line. The previous one gotwiped before this one displayed.
+    Next, each line will be added to the previous:
+    {additive: on}
+    This
+    is
+    a
+    whole
+    sentence!
+
+
+2. CHARACTER SPAWNING                           {spawnChar: characterName, position}
+    
+    - Spawns specified character at the specified position (duh)
+    
+    PARAMETERS:
+    - characterName: MUST match the name of the prefab in Resources/Characters/Prefabs
+
+    - (OPTIONAL) postition: a floating point number between 0 and 1 signifying
+    the position the character will be spawned at on the X axis, with 0 being 
+    to the far left and 1 being to the far right. If the parameter is not specified,
+    the caracter will be spawned in the center of the screen.
+
+    EXAMPLES:
+    {spawnChar: Character1}                     Spawns Character1 in the center
+                                                of the screen
+    
+    {spawnChar: Character1, 0.25}               Spawns Character1 in the middle of 
+                                                the left half of the screen
+
+3. CHARACTER MOVEMENT                           {moveChar: characterName, position}
+
+    - Moves a character to the specified position with a smooth sliding animation.
+    Character MUST have already been spawned
+
+4. CHARACTER ANIMATION                          {anim: animationName}
+
+    - Animates currently focused character (see speaker/focus assignment in basic commands)
+    - Animation name MUST match the trigger in the animator attached to the character prefab
+
+5. BACKGROUND TRANSITION                        {changeBG: bgName}
+
+    - Plays a transition animation and changes the background
+    - bgName MUST match the name of a video file in Resources/Backgrounds
+
+6. SCENE TRANSITION                             {changeScene: sceneName}
+
+    - Same as with background transitions but changes the entire scene.
+    - sceneName MUST match the name of a Scene file in Assets/Scenes
+
+    NOTE: All game objects are destroyed on scene change. If you want the characters to persist
+    after a scene change you need to either manually add them to the new scene from the 
+    scene prefab (not recommended) OR spawn them again via script after the new scene is loaded
+
+7. SCRIPT CHANGE                                {changeScript: newScript}
+
+    - Changes the script file the system is following.
+    - We will use a more advanced version of this to implement player choice and story progression
+    - newScript MUST match the name of a text file in Assets/StreamingAssets/Docs
+
+8. EMPTY SCENE                                  {emptyScene}
+
+    -Wipes all characters from a scene
+
+*****************************************************************************
+                                    TO DO
+*****************************************************************************
+Expand positioning system to allow for two layers
+
+Voice acting functionality
+
+Player choice
