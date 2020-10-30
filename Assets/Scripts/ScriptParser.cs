@@ -9,7 +9,7 @@ using System.Linq;
 
 public class ScriptParser : Singleton<ScriptParser>
 {
-
+    public bool scriptChanged = false;
     public string scriptName = "SceneTransitionTesting";
     string path { get { return Application.streamingAssetsPath + "/Docs/" + scriptName + ".txt"; } }
 
@@ -41,6 +41,8 @@ public class ScriptParser : Singleton<ScriptParser>
         DontDestroyOnLoad(this.gameObject);
         initialize();
         reader = new StreamReader(path);
+        readNextLine();
+        parseLine(currentLine);
 
     }
 
@@ -51,18 +53,17 @@ public class ScriptParser : Singleton<ScriptParser>
     {
         scriptName = newScript;
         reader = new StreamReader(path);
-        waitThenDO(() =>
-        {
-            readNextLine();
-            parseLine(currentLine);
-        });
+
+        readNextLine();
+        parseLine(currentLine);
+        scriptChanged = false;
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        if (TransitionManager.transitioningBG != null || TransitionManager.transitioningScene != null)
+        if (!TransitionManager.Instance.commandsAllowed)
         {
             return;
         }
@@ -166,7 +167,7 @@ public class ScriptParser : Singleton<ScriptParser>
                 {
                     commands.handle(command);
                 }
-                if (TransitionManager.transitioningBG != null)
+                if (scriptChanged)
                 {
                     return;
                 }

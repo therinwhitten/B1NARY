@@ -16,11 +16,11 @@ public class CommandsManager : Singleton<CommandsManager>
     }
     public override void initialize()
     {
-        Debug.Log("Commands manager initialized");
+        // Debug.Log("Commands manager initialized");
     }
     public void handle(string command)
     {
-        Debug.Log("Non-argument command found!");
+        // Debug.Log("Non-argument command found!");
     }
 
     public void handleWithArgs(string command, ArrayList args)
@@ -64,6 +64,7 @@ public class CommandsManager : Singleton<CommandsManager>
                 // TransitionManager.TransitionBG(args[0].ToString().Trim());
                 break;
             case "changeScript":
+                ScriptParser.Instance.scriptChanged = true;
                 ScriptParser.Instance.changeScriptFile(args[0].ToString().Trim());
                 // Instance.StartCoroutine(waitForTransitionsThenChangeScript(args[0].ToString().Trim()));
                 // TransitionManager.TransitionBG(args[0].ToString().Trim());
