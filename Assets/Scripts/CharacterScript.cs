@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Live2D.Cubism.Framework.Expression;
+using Live2D.Cubism.Rendering;
 
 
 public class CharacterScript : MonoBehaviour
@@ -12,15 +13,57 @@ public class CharacterScript : MonoBehaviour
     public string[] expressions;
     public RectTransform rectTransform;
 
+    public AudioClip[] voiceLines;
+
+    AudioSource voice;
+    int currentVoiceIndex = 0;
     public CharacterScript instance;
 
+    public CubismRenderer[] renderers;
+
+    public Material lighting;
     public Vector2 anchorPadding { get { return rectTransform.anchorMax - rectTransform.anchorMin; } }
 
     private void Awake()
     {
         instance = this;
         rectTransform = gameObject.GetComponent<RectTransform>();
+        voice = gameObject.GetComponent<AudioSource>();
+        grabVoiceLines();
+        renderers = gameObject.GetComponentsInChildren<CubismRenderer>();
+        changeLighting();
     }
+    public void changeLighting()
+    {
+        lighting = GameObject.Find("LightingOverlay").GetComponent<SpriteRenderer>().material;
+        // lighting.
+
+        foreach (CubismRenderer renderer in renderers)
+        {
+            if (lighting != null)
+            {
+                renderer.Material = lighting;
+            }
+            else
+            {
+                // renderer.Material = ;
+            }
+        }
+    }
+
+    public void grabVoiceLines()
+    {
+        voiceLines = null;
+        voiceLines = Resources.LoadAll<AudioClip>("Voice/" + ScriptParser.Instance.scriptName + "/" + charName);
+    }
+
+    public void speak()
+    {
+        voice.clip = voiceLines[currentVoiceIndex];
+        voice.Play();
+        currentVoiceIndex++;
+    }
+
 
     public void animate(string animName)
     {

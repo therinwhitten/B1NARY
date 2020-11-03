@@ -47,6 +47,7 @@ public class CharacterManager : Singleton<CharacterManager>
 
     }
 
+
     // deletes all characters in the scene
     public void emptyScene()
     {
