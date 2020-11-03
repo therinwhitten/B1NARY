@@ -101,6 +101,16 @@ public class ScriptParser : Singleton<ScriptParser>
         }
         action();
     }
+    void playVA()
+    {
+        GameObject charObject = null;
+        CharacterManager.Instance.charactersInScene.TryGetValue(DialogueSystem.Instance.currentSpeaker, out charObject);
+        if (charObject != null)
+        {
+            CharacterScript charScript = charObject.GetComponent<CharacterScript>();
+            charScript.speak();
+        }
+    }
     void parseLine(string line)
     {
         // RICH TEXT
@@ -115,6 +125,7 @@ public class ScriptParser : Singleton<ScriptParser>
             }
             if (richRegex.IsMatch(line))
             {
+                playVA();
                 dialogue.SayRich(currentLine);
                 return;
             }
@@ -177,6 +188,7 @@ public class ScriptParser : Singleton<ScriptParser>
             }
 
             // if it's not a command simply display the text
+            playVA();
             dialogue.Say(currentLine);
         });
 
