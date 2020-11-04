@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FrameLimiter : MonoBehaviour
 {
+    // DON'T PUT THIS IN THE FINAL BUILD!!!!!!!!!!!!
     public int target = 120;
 
     void Awake()

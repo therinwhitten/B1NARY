@@ -126,6 +126,7 @@ public class ScriptParser : Singleton<ScriptParser>
             if (richRegex.IsMatch(line))
             {
                 playVA();
+                CharacterManager.Instance.changeLightingFocus();
                 dialogue.SayRich(currentLine);
                 return;
             }
@@ -189,6 +190,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
             // if it's not a command simply display the text
             playVA();
+            CharacterManager.Instance.changeLightingFocus();
             dialogue.Say(currentLine);
         });
 
