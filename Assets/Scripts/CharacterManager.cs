@@ -87,4 +87,38 @@ public class CharacterManager : Singleton<CharacterManager>
         Vector2 targetPosition = new Vector2(positionx, 0);
         character.GetComponent<CharacterScript>().MoveTo(targetPosition, 5, true);
     }
+
+    public void changeLightingFocus()
+    {
+        foreach (string key in charactersInScene.Keys)
+        {
+            GameObject obj;
+            charactersInScene.TryGetValue(key, out obj);
+            CharacterScript script = obj.GetComponent<CharacterScript>();
+
+            if (script.focused)
+            {
+                if (key.Equals(DialogueSystem.Instance.currentSpeaker))
+                {
+                    continue;
+                }
+                else
+                {
+                    script.lightingOutOfFocus();
+                }
+            }
+            else
+            {
+                if (key.Equals(DialogueSystem.Instance.currentSpeaker))
+                {
+                    script.lightingIntoFocus();
+                }
+                else
+                {
+                    continue;
+                }
+            }
+
+        }
+    }
 }
