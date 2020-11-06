@@ -10,7 +10,7 @@ using System.Linq;
 public class ScriptParser : Singleton<ScriptParser>
 {
     public bool scriptChanged = false;
-    public string scriptName = "SceneTransitionTesting";
+    public string scriptName;
     string path { get { return Application.streamingAssetsPath + "/Docs/" + scriptName + ".txt"; } }
 
     DialogueSystem dialogue { get { return DialogueSystem.Instance; } }
@@ -39,15 +39,14 @@ public class ScriptParser : Singleton<ScriptParser>
     {
         // TextAsset textFile = Resources.Load<TextAsset>("Docs/CharacterPrefabTestScript");
         DontDestroyOnLoad(this.gameObject);
-        initialize();
-        reader = new StreamReader(path);
-        readNextLine();
-        parseLine(currentLine);
-
+        // initialize();
     }
 
     public override void initialize()
     {
+        reader = new StreamReader(path);
+        readNextLine();
+        parseLine(currentLine);
     }
     public void changeScriptFile(string newScript)
     {
@@ -107,8 +106,16 @@ public class ScriptParser : Singleton<ScriptParser>
         CharacterManager.Instance.charactersInScene.TryGetValue(DialogueSystem.Instance.currentSpeaker, out charObject);
         if (charObject != null)
         {
-            CharacterScript charScript = charObject.GetComponent<CharacterScript>();
-            charScript.speak();
+            try
+            {
+                CharacterScript charScript = charObject.GetComponent<CharacterScript>();
+                charScript.speak();
+            }
+            catch (System.IndexOutOfRangeException)
+            {
+                Debug.LogWarning("Character has no voice!");
+            }
+
         }
     }
     void parseLine(string line)
