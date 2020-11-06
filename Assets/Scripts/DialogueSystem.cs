@@ -15,9 +15,8 @@ public class DialogueSystem : Singleton<DialogueSystem>
     public bool additiveTextEnabled = false;
 
     // Use this for initialization
-    void Start()
+    void Awake()
     {
-        initialize();
     }
     public override void initialize()
     {

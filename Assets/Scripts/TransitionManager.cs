@@ -161,7 +161,7 @@ public class TransitionManager : Singleton<TransitionManager>
         // re-initialize singletons
         DialogueSystem.Instance.initialize();
         // DialogueSystem.Instance.speechText.text = DialogueSystem.Instance.targetSpeech;
-        ScriptParser.Instance.initialize();
+        // ScriptParser.Instance.initialize();
         CharacterManager.Instance.initialize();
         CommandsManager.Instance.initialize();
         Instance.initialize();
