@@ -123,7 +123,14 @@ public class CharacterScript : MonoBehaviour
         }
         catch (System.IndexOutOfRangeException)
         {
-            Debug.LogWarning("End of Voicelines array reached!");
+            if (voiceLines.Length == 0)
+            {
+                Debug.LogWarning("Character " + charName + " has no voicelines!");
+            }
+            else
+            {
+                Debug.LogWarning("End of Voicelines array reached!");
+            }
         }
     }
 

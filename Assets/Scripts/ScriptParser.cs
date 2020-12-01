@@ -180,11 +180,11 @@ public class ScriptParser : Singleton<ScriptParser>
                     commandWords.RemoveAt(0);
                     ArrayList args = new ArrayList(commandWords[0].ToString().Split(','));
 
-                    commands.handleWithArgs(command, args);
+                    commands.handleWithArgs(command.ToLower(), args);
                 }
                 else
                 {
-                    commands.handle(command);
+                    commands.handle(command.ToLower());
                 }
                 if (scriptChanged)
                 {
