@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class MenuButton : MonoBehaviour
 {
     [SerializeField] Animator animator;
+    public int x = 0, y = 0;
     [SerializeField] AudioSource audio;
     [SerializeField] AudioClip select, press;
     // Start is called before the first frame update
