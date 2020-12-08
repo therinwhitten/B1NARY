@@ -8,7 +8,7 @@ public class MenuButton : MonoBehaviour
     [SerializeField] Animator animator;
     public int x = 0, y = 0;
     [SerializeField] AudioSource audio;
-    [SerializeField] AudioClip select, press;
+    [SerializeField] AudioClip selectSound, pressSound;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,10 +23,7 @@ public class MenuButton : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        audio.Stop();
-        audio.PlayOneShot(select);
-        animator.SetBool("selected", true);
-        Debug.Log("Mouse Enter");
+        select();
     }
     private void OnMouseExit()
     {
@@ -36,12 +33,18 @@ public class MenuButton : MonoBehaviour
     private void OnMouseDown()
     {
         audio.Stop();
-        audio.PlayOneShot(press);
+        audio.PlayOneShot(pressSound);
         animator.SetBool("pressed", true);
         Debug.Log("Clicked");
     }
     private void OnMouseUp()
     {
         animator.SetBool("pressed", false);
+    }
+    public void select()
+    {
+        audio.Stop();
+        audio.PlayOneShot(selectSound);
+        animator.SetBool("selected", true);
     }
 }
