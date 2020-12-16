@@ -9,22 +9,21 @@ public class CharacterManager : Singleton<CharacterManager>
 
     public Dictionary<string, GameObject> charactersInScene;
 
-    void Start()
+    void Awake()
     {
-        charactersInScene = new Dictionary<string, GameObject>();
         initialize();
     }
     public override void initialize()
     {
         charactersInScene = new Dictionary<string, GameObject>();
         characterLayer = GameObject.Find("CharacterLayer");
-        if (characterLayer.transform.childCount != 0)
-        {
-            foreach (Transform transform in characterLayer.transform)
-            {
-                charactersInScene.Add(transform.gameObject.name, transform.gameObject);
-            }
-        }
+        // if (characterLayer.transform.childCount != 0)
+        // {
+        //     foreach (Transform transform in characterLayer.transform)
+        //     {
+        //         charactersInScene.Add(transform.gameObject.name, transform.gameObject);
+        //     }
+        // }
     }
 
 
@@ -34,29 +33,46 @@ public class CharacterManager : Singleton<CharacterManager>
 
     }
 
-    public void spawnCharacter(string name, string positionRaw = "0.5")
+    public void spawnCharacter(string prefabName, string positionRaw, string charName = "")
     {
         Transform transform = characterLayer.transform;
 
-        GameObject characterObject = Instantiate(Resources.Load<GameObject>(prefabsPath + name), transform);
+        GameObject characterObject = Instantiate(Resources.Load<GameObject>(prefabsPath + prefabName), transform);
         characterObject.SetActive(true);
         characterObject.transform.position = new Vector3(transform.position.x, characterObject.transform.position.y, characterObject.transform.position.z);
         characterObject.GetComponent<CharacterScript>().SetPosition(new Vector2(float.Parse(positionRaw), 0));
-        charactersInScene.Add(name, characterObject);
-        return;
+        // if (charactersInScene == null)
+        // {
+        //     charactersInScene = new Dictionary<string, GameObject>();
+        // }
+        if (charName != "")
+        {
+            charactersInScene.Add(charName, characterObject);
+            characterObject.GetComponent<CharacterScript>().charName = charName;
+        }
+        else
+        {
 
+            charactersInScene.Add(prefabName, characterObject);
+        }
+        return;
     }
 
 
     // deletes all characters in the scene
     public void emptyScene()
     {
+        foreach (GameObject character in charactersInScene.Values)
+        {
+            Debug.Log("Destroying " + character.GetComponent<CharacterScript>().charName);
+            Destroy(character);
+        }
         charactersInScene = new Dictionary<string, GameObject>();
 
-        foreach (Transform transform in characterLayer.transform)
-        {
-            GameObject.Destroy(transform.gameObject);
-        }
+        // foreach (Transform transform in characterLayer.transform)
+        // {
+        //     GameObject.Destroy(transform.gameObject);
+        // }
     }
 
 
@@ -90,16 +106,17 @@ public class CharacterManager : Singleton<CharacterManager>
 
     public void changeLightingFocus()
     {
-        foreach (string key in charactersInScene.Keys)
+        foreach (string key in Instance.charactersInScene.Keys)
         {
             GameObject obj;
-            charactersInScene.TryGetValue(key, out obj);
+            Instance.charactersInScene.TryGetValue(key, out obj);
             CharacterScript script = obj.GetComponent<CharacterScript>();
 
             if (script.focused)
             {
-                if (key.Equals(DialogueSystem.Instance.currentSpeaker))
+                if (key.Trim().Equals(DialogueSystem.Instance.currentSpeaker.Trim()))
                 {
+                    // script.lightingIntoFocus();
                     continue;
                 }
                 else
@@ -109,12 +126,13 @@ public class CharacterManager : Singleton<CharacterManager>
             }
             else
             {
-                if (key.Equals(DialogueSystem.Instance.currentSpeaker))
+                if (key.Trim().Equals(DialogueSystem.Instance.currentSpeaker.Trim()))
                 {
                     script.lightingIntoFocus();
                 }
                 else
                 {
+                    // script.lightingOutOfFocus();
                     continue;
                 }
             }

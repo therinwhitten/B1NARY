@@ -37,9 +37,9 @@ public class ScriptParser : Singleton<ScriptParser>
     // Start is called before the first frame update
     void Start()
     {
-        // TextAsset textFile = Resources.Load<TextAsset>("Docs/CharacterPrefabTestScript");
+        TextAsset textFile = Resources.Load<TextAsset>("Docs/CharacterPrefabTestScript");
         DontDestroyOnLoad(this.gameObject);
-        // initialize();
+        initialize();
     }
 
     public override void initialize()
@@ -184,7 +184,7 @@ public class ScriptParser : Singleton<ScriptParser>
                 }
                 else
                 {
-                    commands.handle(command.ToLower());
+                    commands.handleWithArgs(command.ToLower(), null);
                 }
                 if (scriptChanged)
                 {

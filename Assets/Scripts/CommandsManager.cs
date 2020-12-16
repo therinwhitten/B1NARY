@@ -42,13 +42,13 @@ public class CommandsManager : Singleton<CommandsManager>
                 }
                 break;
             case "spawnchar":
-                if (args.Count == 1)
+                if (args.Count == 2)
                 {
-                    characterManager.spawnCharacter(args[0].ToString().Trim());
+                    characterManager.spawnCharacter(args[0].ToString().Trim(), args[1].ToString().Trim(), "");
                 }
                 else
                 {
-                    characterManager.spawnCharacter(args[0].ToString().Trim(), args[1].ToString().Trim());
+                    characterManager.spawnCharacter(args[0].ToString().Trim(), args[1].ToString().Trim(), args[2].ToString().Trim());
                 }
                 break;
             case "anim":

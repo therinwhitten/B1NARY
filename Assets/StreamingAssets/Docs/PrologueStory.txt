@@ -1,26 +1,26 @@
-{changeScene: Times Square Static}
 {startEFA Times Square Crowd}
-{changeBG: Times Square Static}
-{spawnChar: malesilo, .25}
-{spawnChar: femalesilo, .50}
-{spawnChar: malesilo1, .75}
-Male Bystander::
+{spawnChar: malesilo, -1, Male bystander}
+{moveChar: Male bystander, 0.10}
+Male bystander::
 I can't believe they are going through with this! That Poor Sod. What a frickin idiot. 
-Female Bystander:: 
+{spawnChar: femalesilo, -1,Female bystander}
+{moveChar: Female bystander, .50}
+Female bystander:: 
 You would not catch me in that room at all. Why isn't VR good enough for people? Imagine being that kid's parents? I wonder what they think about this? 
 <i>She shakes her head and sighs.</i>
-The way it looks to me, it just seems like the kid is suicidal.
-Male Bystander 2::
+{spawnChar: malesilo, 2,Male bystander 2}
+{moveChar: Male bystander 2, 0.80}
+Male bystander 2::
 Fuck it! You only live once right? I mean....who wouldn't want to live in a virtual world? You just do what the fuck you want right?
-Male Bystander::
+Male bystander::
 <i>Scoffs and looks up at the Broadcast</i>
 Yeah, the power goes out on whatever server you are on, does your brain get scrambled? Come on, haven't you been following the news? From what they said, you have to stay on a live server. And let's not talk about the Machine! They have failed many, many mock tests before this event.  
-Female Bystander::
+Female bystander:: 
 Quiet, they are starting!
-{emptyScene}
 {changeBG: Times Square Animated}
+{emptyscene}
 {changeBG: Times Square News Static}
-{spawnChar: malesilo, .75}
+{spawnChar: malesilo, .75, Barry}
 {startMusic: News Music Intro}
 {stopMusic: News Music Intro}
 Barry::
@@ -53,16 +53,16 @@ Wait what? The person's soul is tranferred? Meaning no one is home in the body?
 John::
 Yep! It's original purpose was to transfer a cancer patient's mind to a cyborg, or to allow astronauts time to learn new skills in cryostasis. But there are many applications this technology can be used for. 
 They named it the Digital Imaging Human Interface, or DIHI for short.
-Female Bystander::
+femalesilo::
 You mean the Brain Sucking Chair John?
-Male Bystander 2::
+malesilo1::
 WOW! That is hype man! I didn't know they actually did it?! Porn, here I come! 
-Female Bystander::
+femalesilo::
 So typical........
-Male Bystander 2::
+malesilo1::
 Hey! We all know that is the primary reason for the internet! Imagine.....if you will, being able to visit all the porn stars! 
 Yeah totally awesome. I am wondering if I should apply for the next test?
-Male Bystander:: 
+Male bystander:: 
 How can you two be loud enough to drown out the broadcast? Both of you quiet down please???
 {spawnChar: malesilo3 .25}
 Narrator::

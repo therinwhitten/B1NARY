@@ -110,9 +110,10 @@ public class TransitionManager : Singleton<TransitionManager>
 
         // change background clip
         VideoClip newClip = Resources.Load<VideoClip>("Backgrounds/" + newBG);
+        if(newClip != null){
         Instance.animatedBG.clip = newClip;
         Instance.animatedBG.Play();
-
+        }
 
         // change overlay and pull it out
         Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texOut);
