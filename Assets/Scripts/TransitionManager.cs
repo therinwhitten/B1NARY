@@ -110,9 +110,10 @@ public class TransitionManager : Singleton<TransitionManager>
 
         // change background clip
         VideoClip newClip = Resources.Load<VideoClip>("Backgrounds/" + newBG);
-        if(newClip != null){
-        Instance.animatedBG.clip = newClip;
-        Instance.animatedBG.Play();
+        if (newClip != null)
+        {
+            Instance.animatedBG.clip = newClip;
+            Instance.animatedBG.Play();
         }
 
         // change overlay and pull it out
@@ -178,5 +179,13 @@ public class TransitionManager : Singleton<TransitionManager>
         transitioningScene = null;
     }
 
-
+    public void playBG(string bgName)
+    {
+        if (bgName != "")
+        {
+            VideoClip clip = Resources.Load<VideoClip>("Backgrounds/" + bgName);
+            animatedBG.clip = clip;
+        }
+        animatedBG.Play();
+    }
 }

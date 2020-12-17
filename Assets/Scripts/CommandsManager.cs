@@ -73,6 +73,19 @@ public class CommandsManager : Singleton<CommandsManager>
             case "emptyscene":
                 CharacterManager.Instance.emptyScene();
                 break;
+            case "loopbg":
+                TransitionManager.Instance.animatedBG.isLooping = args[0].ToString().ToLower().Trim().Equals("true");
+                break;
+            case "playbg":
+                string bgName;
+                if (args != null)
+                { bgName = args[0].ToString().ToLower().Trim(); }
+                else { bgName = ""; }
+                TransitionManager.Instance.playBG(bgName);
+                break;
+            case "changename":
+                CharacterManager.Instance.changeName(args[0].ToString().Trim(), args[1].ToString().Trim());
+                break;
         }
 
 

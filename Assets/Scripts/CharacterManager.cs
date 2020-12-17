@@ -139,4 +139,18 @@ public class CharacterManager : Singleton<CharacterManager>
 
         }
     }
+
+    public void changeName(string oldName, string newName)
+    {
+        GameObject character = null;
+        charactersInScene.TryGetValue(oldName, out character);
+
+        if (character != null)
+        {
+            charactersInScene.Remove(oldName);
+            charactersInScene.Add(newName, character);
+        }
+    }
 }
+
+

@@ -17,18 +17,20 @@ Male Bystander::
 Yeah, the power goes out on whatever server you are on, does your brain get scrambled? Come on, haven't you been following the news? From what they said, you have to stay on a live server. And let's not talk about the Machine! They have failed many, many mock tests before this event.  
 Female Bystander:: 
 Quiet, they are starting!
-{changeBG: Times Square Animated}
+{loopBG: false}
+{playBG: Times_Square_Pan_Up}
 {emptyscene}
-{changeBG: Times Square News Static}
-{spawnChar: malesilo, .75, Barry}
+{spawnChar: malesilo, 2, Barry}
+{moveChar: Barry, .75}
 {startMusic: News Music Intro}
 {stopMusic: News Music Intro}
 Barry::
 Today, Digital Horizons attempts to etch themselves into the history books by digitizing the first human, a feat which continues to be just a plot device in most science fiction movies. Ladies and gentlemen, we have a front row seat. At the Lab, we have our correspondant. John? Are you there?
-{changeScene: DIHI Room 60fps 1080p}
+{changeScene: Brain Sucking Chair Side}
 {startEFA: Laptop Lab Scene}
 {startEFA1: smallgroupwhisper}
-{spawnChar: malesilo2, .75}
+{spawnChar: malesilo, 2, John}
+{moveChar: John, .75}
 Narrator::
 <i>In front of the screen is a man in his 40s, dressed in a sharp dark grey suit, one hand fiddling with the ear piece. As he listens in, he nods curtly. He smiles broadly at the camera.</i>
 John::
@@ -53,21 +55,22 @@ Wait what? The person's soul is tranferred? Meaning no one is home in the body?
 John::
 Yep! It's original purpose was to transfer a cancer patient's mind to a cyborg, or to allow astronauts time to learn new skills in cryostasis. But there are many applications this technology can be used for. 
 They named it the Digital Imaging Human Interface, or DIHI for short.
-femalesilo::
+Female Bystander::
 You mean the Brain Sucking Chair John?
-malesilo1::
+Male Bystander::
 WOW! That is hype man! I didn't know they actually did it?! Porn, here I come! 
-femalesilo::
+Female Bystander::
 So typical........
-malesilo1::
+Male Bystander 2::
 Hey! We all know that is the primary reason for the internet! Imagine.....if you will, being able to visit all the porn stars! 
 Yeah totally awesome. I am wondering if I should apply for the next test?
 Male Bystander:: 
 How can you two be loud enough to drown out the broadcast? Both of you quiet down please???
-{spawnChar: malesilo3 .25}
+{spawnChar: malesilo, -1, Lab Tech }
+{moveChar: Lab Tech, .25}
 Narrator::
-<i>John is now standing next to a lab tech, talking in hushed tones. He stands tall and lanky, wearing glasses too large for the bridge of his nose. On the screen, his shoulders are slumped a bit, as if he is being crushed by all of the camera's gazes. His voice, however, defies that impression.
-The Lab Tech fingers his large glasses back up his nose.</i>
+<i>John is now standing next to a lab tech, talking in hushed tones. He stands tall and lanky, wearing glasses too large for the bridge of his nose. On the screen, his shoulders are slumped a bit, as if he is being crushed by all of the camera's gazes. His voice, however, defies that impression.</i>
+<i>The Lab Tech fingers his large glasses back up his nose.</i>
 Lab Tech::
 Once transferred, the subject will remain in our closed servers for a period of around four days, give or take. While they are in there, their body will remain in a form of warm air stasis. This is to prevent abrupt changes in the chemical makeup. These changes can theoretically cause "Brain Discharges" that we want to avoid until we have a better understanding. The process.....
 John::
@@ -85,6 +88,7 @@ John::
 Question er....
 Lab Tech::
 Name is Shirobi.
+{changeName: Lab Tech, Shirobi}
 John::
 Shirobi. What happens if something goes wrong while they are inside the server? What if you do see deterioration and need to get them out as fast as possible? What are the steps to that process?
 Shirobi::
@@ -102,18 +106,3 @@ Narrator::
 <i>The lab tech smiles for the first time at the sound of the door. He starts guiding all the press into the lab with an air of excitement.</i>
 Shirobi::
 Why, the fearless, and amazing......
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
