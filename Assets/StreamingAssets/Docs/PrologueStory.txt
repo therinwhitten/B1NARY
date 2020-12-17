@@ -17,8 +17,13 @@ Male Bystander::
 Yeah, the power goes out on whatever server you are on, does your brain get scrambled? Come on, haven't you been following the news? From what they said, you have to stay on a live server. And let's not talk about the Machine! They have failed many, many mock tests before this event.  
 Female Bystander:: 
 Quiet, they are starting!
+{moveChar: Male Bystander, -1}
+{moveChar: Female Bystander, -1}
+{moveChar: Male Bystander 2, 2}
 {loopBG: false}
 {playBG: Times_Square_Pan_Up}
+Narrator::
+<i>A sharply dressed news caster starts speaking on the massive hologram in the sky</i>
 {emptyscene}
 {spawnChar: malesilo, 2, Barry}
 {moveChar: Barry, .75}
