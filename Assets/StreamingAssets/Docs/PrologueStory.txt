@@ -2,7 +2,7 @@
 Narrator::
 <i>Times Square in New York City: The year is 2040. On a normal day, most people can be seen milling around, heading to work, the cacophony of vehicles, pedestrians, and advertisements, matching beat in a perfect harmmony. Not today.</i>
 <i>Today, everyone's attention is fixed on the largest of the holoscreens in the sky. Cars are stopped dead in a silent gridlock. The pedestrians are all mute, gazing up. In fact, if you look around, all of the holodisplays are streaming the same news broadcast.</i>
-<i>
+<i>No. Today may be a pivot in humanity's history. The first attempt at digitizing a human is today.</i>
 {spawnChar: malesilo, -1, Male Bystander}
 {moveChar: Male Bystander, 0.10}
 Male Bystander::
@@ -19,15 +19,17 @@ Fuck it! You only live once right? I mean....who wouldn't want to live in a virt
 Male Bystander::
 <i>Scoffs and looks up at the Broadcast</i>
 Yeah, the power goes out on whatever server you are on, does your brain get scrambled? Come on, haven't you been following the news? From what they said, you have to stay on a live server. And let's not talk about the Machine! They have failed many, many mock tests before this event.  
-Female Bystander:: 
-Quiet, they are starting!
+Female Bystander::
+<i>Looks at Male Bystander with exasperation.</i> 
+I don't think they would allow someone in that chair without at least knowing it will fail without killing the poor soul. I don't agree, but I do trust they are doing everything they can to be safe. 
+OHHHHH quiet! I think they are starting now!
 {moveChar: Male Bystander, -1}
 {moveChar: Female Bystander, -1}
 {moveChar: Male Bystander 2, 2}
 {loopBG: false}
 {playBG: Times_Square_Pan_Up}
 Narrator::
-<i>A sharply dressed news caster starts speaking on the massive hologram in the sky</i>
+<i>The Holoviewer, which before was on a short commercial, abruptly changes to the image of a sharply dressed Anchorman. He smiles a car salesman, tooth-filled grin. With a small cough, he gets serious.</i>
 {emptyscene}
 {spawnChar: malesilo, 2, Barry}
 {moveChar: Barry, .75}
@@ -38,8 +40,8 @@ Today, Digital Horizons attempts to etch themselves into the history books by di
 {changeScene: Brain Sucking Chair Side}
 {startEFA: Laptop Lab Scene}
 {startEFA1: smallgroupwhisper}
-{spawnChar: malesilo, 2, John}
-{moveChar: John, .75}
+{spawnChar: malesilo, -1, John}
+{moveChar: John, .10}
 Narrator::
 <i>In front of the screen is a man in his 40s, dressed in a sharp dark grey suit, one hand fiddling with the ear piece. As he listens in, he nods curtly. He smiles broadly at the camera.</i>
 John::
@@ -75,8 +77,8 @@ Hey! We all know that is the primary reason for the internet! Imagine.....if you
 Yeah totally awesome. I am wondering if I should apply for the next test?
 Male Bystander:: 
 How can you two be loud enough to drown out the broadcast? Both of you quiet down please???
-{spawnChar: malesilo, -1, Lab Tech }
-{moveChar: Lab Tech, .25}
+{spawnChar: malesilo, 2, Lab Tech }
+{moveChar: Lab Tech, .85}
 Narrator::
 <i>John is now standing next to a lab tech, talking in hushed tones. He stands tall and lanky, wearing glasses too large for the bridge of his nose. On the screen, his shoulders are slumped a bit, as if he is being crushed by all of the camera's gazes. His voice, however, defies that impression.</i>
 <i>The Lab Tech fingers his large glasses back up his nose.</i>
