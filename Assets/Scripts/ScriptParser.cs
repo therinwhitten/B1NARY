@@ -39,7 +39,7 @@ public class ScriptParser : Singleton<ScriptParser>
     {
         TextAsset textFile = Resources.Load<TextAsset>("Docs/CharacterPrefabTestScript");
         DontDestroyOnLoad(this.gameObject);
-        initialize();
+        // initialize();
     }
 
     public override void initialize()
