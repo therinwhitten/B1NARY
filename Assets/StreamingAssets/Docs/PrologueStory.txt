@@ -1,27 +1,36 @@
 {startEFA Times Square Crowd}
 Narrator::
-<i>Times Square in New York City: The year is 2040. On a normal day, most people can be seen milling around, heading to work, the cacophony of vehicles, pedestrians, and advertisements, matching beat in a perfect harmony. Not today...</i>
-<i>Today, everyone's attention is fixed on the largest of the holoscreens in the sky. Cars are stopped dead in a silent gridlock. The pedestrians are all mute, gazing up. In fact, if you look around, all of the holodisplays are streaming the same news broadcast.</i>
+<i>Times Square in New York City: The year is 2040. Midday on a blistering Summer Day.</i>
+<i> On a normal day, most people can be seen milling around, heading to work, the cacophony of vehicles, pedestrians, and advertisements, matching beat in a perfect harmony.</i>
+<i>Not today...</i>
+<i>Today, everyone's attention is fixed on the largest of the holoscreens in the sky.</i>
+<i>Cars are stopped dead in a silent gridlock. The pedestrians are all murmuring, gazing up. In fact, if you look around, all of the holodisplays are streaming the same news broadcast.</i>
 <i>No. Today may be a pivot in humanity's history. The first attempt at digitizing a human is today.</i>
 {spawnChar: malesilo, -1, Male Bystander}
 {moveChar: Male Bystander, 0.10}
 Male Bystander::
-I can't believe they are going through with this! That Poor Sod. What a frickin idiot. 
+I can't believe they are going through with this! What are they thinking?!
+The test subject is either a frickin idiot, or they don't care about themselves. 
 {spawnChar: femalesilo, -1,Female Bystander}
 {moveChar: Female Bystander, .50}
 Female Bystander:: 
-You would not catch me in that room at all. Why isn't VR good enough for people? Imagine being that kid's parents? I wonder what they think about this? 
+You could not pay me enough to even stand in that room! Why isn't VR good enough for people? 
+Imagine being that kid's parents? I wonder what they think about this? 
 <i>She shakes her head and sighs.</i>
 {spawnChar: malesilo, 2,Male Bystander 2}
 {moveChar: Male Bystander 2, 0.80}
 Male Bystander 2::
 Fuck it! You only live once right? I mean....who wouldn't want to live in a virtual world? You just do what the fuck you want right?
+Imagine all of the fun you could have? And to be the first! 
 Male Bystander::
 <i>Scoffs and looks up at the Broadcast</i>
-Yeah, the power goes out on whatever server you are on, does your brain get scrambled? Come on, haven't you been following the news? From what they said, you have to stay on a live server. And let's not talk about the Machine! They have failed many, many mock tests before this event.  
+Yeah, the power goes out on whatever server you are on, does your brain get scrambled? 
+Come on, haven't you been following the News? From what they said, you have to stay on a live server. 
+And let's not talk about the Machine! They have failed many, many mock tests before this event. I am surprised they even let humans near that pile of junk.
 Female Bystander::
 <i>Looks at Male Bystander with exasperation.</i> 
-I don't think they would allow someone in that chair without at least knowing it will fail without killing the poor soul. I don't agree, but I do trust they are doing everything they can to be safe. 
+I don't think they would allow someone in that chair without at least knowing it will be as safe. They do have to worry about being sued.
+There is so much pressure on that kid. 
 OHHHHH quiet! I think they are starting now!
 {moveChar: Male Bystander, -1}
 {moveChar: Female Bystander, -1}
@@ -29,26 +38,34 @@ OHHHHH quiet! I think they are starting now!
 {loopBG: false}
 {playBG: Times Square Pan Up}
 Narrator::
-<i>The Holoviewer, which before was on a short commercial, abruptly changes to the image of a sharply dressed Anchorman. He smiles a car salesman, tooth-filled grin. With a small cough, he gets serious.</i>
+<i>The Holoviewer, which before was on a short commercial, abruptly changes to the image of a sharply dressed Anchorman.</i>
+<i> He smiles a car salesman, tooth-filled grin. With a small cough, he gets serious.</i>
 {emptyscene}
 {spawnChar: malesilo, 2, Barry}
 {moveChar: Barry, .75}
 {startMusic: News Music Intro}
 {stopMusic: News Music Intro}
 Barry::
-Today, Digital Horizons attempts to etch themselves into the history books by digitizing the first human, a feat which continues to be just a plot device in most science fiction movies. Ladies and gentlemen, we have a front row seat. At the Lab, we have our correspondant. John? Are you there?
+Today, Digital Horizons attempts to etch themselves into the history books by digitizing the first human, a feat which continues to be just a plot device in most science fiction movies. 
+Ladies and gentlemen, we have a front row seat. At the Lab, we have our correspondant, Lead News Reporter, John Casnik.
+John? Are you there?
 {changeScene: Brain Sucking Chair Side}
 {startEFA: Laptop Lab Scene}
 {startEFA1: smallgroupwhisper}
 {spawnChar: malesilo, -1, John}
 {moveChar: John, .10}
 Narrator::
-<i>In front of the screen is a man in his 40s, dressed in a sharp dark grey suit, one hand fiddling with the ear piece. As he listens in, he nods curtly. He smiles broadly at the camera.</i>
+<i>In front of the screen is a man in his 40s, dressed in a sharp dark grey suit, one hand fiddling with the ear piece.</i>
+<i> As he listens in, he nods curtly. He smiles broadly at the camera.</i>
 John::
-Thanks Barry! As you can see now, I am at the door of the main lab, where we will soon see the first human to be digtized, walk through that door, <i>He motions off screen.</i> and become the first human to be transferred completely to the realm of the internet. Oh, sorry guys.
+Thanks Barry! As you can see now, I am at the door of the main lab, where we will soon see the first human to be digtized, walk through that door, <i>He motions off screen.</i> and become the first human to be transferred completely to the realm of the internet.
 {startEFA2: openclosedoor}
 {stopEFA2: openclosedoor}
-Sorry about that! Where was I? Oh yeah! Digital Horizons is a company at the forefront of AI technology, developing brain pattern machines for over a decade. These copies function normally as AI clones of V-Tubers. Most of the time these Synthgens are being used on a day off, or when someone retires. 
+Oh excuse me gentlemen. 
+<i>He sidesteps awkwardly as a few labtechs push past him in front of the camera.</i>
+Sorry about that! Where was I?
+ Oh yeah! Digital Horizons is a company at the forefront of AI technology, developing brain pattern replicators for over a decade.
+These copies function normally as AI clones of V-Tubers. Most of the time these Synthgens are being used when the streamer is offline,  or when someone retires. 
 Barry::
 John, John....
 John::
@@ -57,12 +74,14 @@ Barry::
 Um...... we already have Synthgens. What makes this machine different? 
 John::
 I was getting to that. 
-The copies, or clones, break down over time. There is no brain to keep the patterns together. So, just like any vegetable or fruit, it "rots" over time. Then the copies have to be recopied. It is not a perfect solution. 
+The copies, or clones, break down over time. There is no brain to keep the patterns together. 
+So, just like any vegetable or fruit, it "rots" over time. 
+Then the copies have to be recopied, and replaced from the host each time.  It is not a perfect solution. 
 What Digital Horizons has been working on so long is to TRANSFER a human mind completely into the internet.......
 Narrator::
 <i>The silence grows uncomfortable on the other end of the broadcast.</i>
 Barry::
-Wait what? The person's soul is tranferred? Meaning no one is home in the body?
+Wait a second. Let me get this straight. ? The person's soul is tranferred? Meaning no one is home in the body?
 John::
 Yep! It's original purpose was to transfer a cancer patient's mind to a cyborg, or to allow astronauts time to learn new skills in cryostasis. But there are many applications this technology can be used for. 
 They named it the Digital Imaging Human Interface, or DIHI for short.
