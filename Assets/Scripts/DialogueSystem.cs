@@ -14,6 +14,9 @@ public class DialogueSystem : Singleton<DialogueSystem>
 
     public bool additiveTextEnabled = false;
 
+    public int textFontSize = 30;
+
+    public int nameTextFontSize = 30;
     // Use this for initialization
     void Awake()
     {
@@ -24,6 +27,9 @@ public class DialogueSystem : Singleton<DialogueSystem>
         elements.speechPanel = GameObject.Find("Panel-Speech");
         elements.speakerNameText = GameObject.Find("SpeakerName").GetComponent<Text>();
         elements.speechText = GameObject.Find("SpeechText").GetComponent<Text>();
+
+        elements.speechText.fontSize = textFontSize;
+        elements.speakerNameText.fontSize = nameTextFontSize;
     }
     /// <summary>
     /// Say something and show it on the speech box.
@@ -60,7 +66,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     public bool isSpeaking { get { return speaking != null; } }
     [HideInInspector] public bool isWaitingForUserInput = false;
 
-    public string targetSpeech = "";
+    [HideInInspector] public string targetSpeech = "";
     Coroutine speaking = null;
     IEnumerator Speaking(string speech, bool rich = false)
     {
