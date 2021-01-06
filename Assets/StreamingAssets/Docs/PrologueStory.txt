@@ -4,7 +4,7 @@ Narrator::
 <i> On a normal day, most people can be seen milling around, heading to work, the cacophony of vehicles, pedestrians, and advertisements, matching beat in a perfect harmony.</i>
 <i>Not today...</i>
 <i>Today, everyone's attention is fixed on the largest of the holoscreens in the sky.</i>
-<i>Cars are stopped dead in a silent gridlock. The pedestrians are all murmuring, gazing up. In fact, if you look around, all of the holodisplays are streaming the same news broadcast.</i>
+<i>Cars are stopped dead in a silent gridlock. Pedestrians are murmuring, gazing up. In fact, if you look around, all of the holodisplays are streaming the same news broadcast.</i>
 <i>No. Today may be a pivot in humanity's history. The first attempt at digitizing a human is today.</i>
 {spawnChar: malesilo, -1, Male Bystander}
 {moveChar: Male Bystander, 0.10}
@@ -15,40 +15,46 @@ The test subject is either a frickin idiot, or they don't care about themselves.
 {moveChar: Female Bystander, .50}
 Female Bystander:: 
 You could not pay me enough to even stand in that room! Why isn't VR good enough for people? 
-Imagine being that kid's parents? I wonder what they think about this? 
+Imagine being that kid's parents? I wonder what they think about this?
+Narrator::
 <i>She shakes her head and sighs.</i>
 {spawnChar: malesilo, 2,Male Bystander 2}
 {moveChar: Male Bystander 2, 0.80}
 Male Bystander 2::
 Fuck it! You only live once right? I mean....who wouldn't want to live in a virtual world? You just do what the fuck you want right?
-Imagine all of the fun you could have? And to be the first! 
+Imagine all of the fun you could have? And to be the first to experience it?  Sign me on man!
+Narrator::
+<i>Male Bystander scoffs audibly and looks up at the Broadcast</i>
 Male Bystander::
-<i>Scoffs and looks up at the Broadcast</i>
 Yeah, the power goes out on whatever server you are on, does your brain get scrambled? 
 Come on, haven't you been following the News? From what they said, you have to stay on a live server. 
-And let's not talk about the Machine! They have failed many, many mock tests before this event. I am surprised they even let humans near that pile of junk.
+And let's not talk about the Machine! They have failed many mock tests before this event. I am surprised they even let humans near that pile of junk.
+Narrator::
+<i>Female Bystander looks at Male Bystander with exasperation.</i> 
 Female Bystander::
-<i>Looks at Male Bystander with exasperation.</i> 
-I don't think they would allow someone in that chair without at least knowing it will be as safe. They do have to worry about being sued.
-There is so much pressure on that kid. 
-OHHHHH quiet! I think they are starting now!
+I don't think they would allow someone in that chair without at least knowing it will be safe. They do have to worry about being sued.
+Imagine how nervous that kid is? Imagine the pressure of sitting in that chair, in front of millions......
+I think they are starting now!
+Shhhhh!
 {moveChar: Male Bystander, -1}
 {moveChar: Female Bystander, -1}
 {moveChar: Male Bystander 2, 2}
 {loopBG: false}
 {playBG: Times Square Pan Up}
 Narrator::
-<i>The Holoviewer, which before was on a short commercial, abruptly changes to the image of a sharply dressed Anchorman.</i>
-<i> He smiles a car salesman, tooth-filled grin. With a small cough, he gets serious.</i>
+<i>The Holoviewer, which before was on a short commercial, abruptly changes to the image of a sharply dressed Anchorwoman.</i>
+<i> She smiles sweetly and looks towards the camera with a serious look.</i>
 {emptyscene}
-{spawnChar: malesilo, 2, Barry}
-{moveChar: Barry, .75}
+{spawnChar: femalesilo, 2, Cindy}
+{moveChar: Cindy, .75}
 {startMusic: News Music Intro}
 {stopMusic: News Music Intro}
-Barry::
-Today, Digital Horizons attempts to etch themselves into the history books by digitizing the first human, a feat which continues to be just a plot device in most science fiction movies. 
-Ladies and gentlemen, we have a front row seat. At the Lab, we have our correspondant, Lead News Reporter, John Casnik.
-John? Are you there?
+Cindy::
+Today, Digital Horizons, the primary brain imaging company, attempts to etch themselves into the history books.
+What do they plan to do? They plan to digitize the first human, a feat which continues to be just a plot device in most science fiction movies. 
+And guess what Ladies and gentlemen? We seem to have an invitation to a front row seat. 
+At the DH Lab, we have our correspondant, Lead News Reporter, John Casnik.
+John? Are you there? 
 {changeScene: Brain Sucking Chair Side}
 {startEFA: Laptop Lab Scene}
 {startEFA1: smallgroupwhisper}
@@ -58,60 +64,101 @@ Narrator::
 <i>In front of the screen is a man in his 40s, dressed in a sharp dark grey suit, one hand fiddling with the ear piece.</i>
 <i> As he listens in, he nods curtly. He smiles broadly at the camera.</i>
 John::
-Thanks Barry! As you can see now, I am at the door of the main lab, where we will soon see the first human to be digtized, walk through that door, <i>He motions off screen.</i> and become the first human to be transferred completely to the realm of the internet.
+Thanks Cindy! How have you been?
+Cindy::
+Ohhhh John, I have been great! How are the kids?
+John::
+They have been studying hard for the final exams in college. Thank you for asking!
+Cindy:: 
+So John, the viewers have no idea what they are looking at here. All I see is a very scary looking chair....is that what I think it is?
+John::
+Why yes it is. It is the chair. 
+Cindy::
+Well be my guest, John. Do the honors. Walk us through it.
+John::
+As you can see, I am at the door of the main lab. Very soon, we will meet the first human to be digtized.
+Narrator::
+<i>John motions off screen.</i> 
+John::
+And they will come through that door....
+Oh excuse me gentlemen. 
 {startEFA2: openclosedoor}
 {stopEFA2: openclosedoor}
-Oh excuse me gentlemen. 
-<i>He sidesteps awkwardly as a few labtechs push past him in front of the camera.</i>
+Narrator::
+<i>John sidesteps awkwardly as a few labtechs push past him in front of the camera.</i>
+John::
 Sorry about that! Where was I?
- Oh yeah! Digital Horizons is a company at the forefront of AI technology, developing brain pattern replicators for over a decade.
-These copies function normally as AI clones of V-Tubers. Most of the time these Synthgens are being used when the streamer is offline,  or when someone retires. 
-Barry::
-John, John....
+Oh yeah! And Digital Horizons is a company at the forefront of this technology, developing brain pattern replicators for over a decade.
+Now you see Cindy, and the viewers at home, these copies function normally as AI clones of V-Tubers.
+Most of the time these Synthgens are being used when the streamer is offline, or when someone retires. 
+Cindy::
+John, John? I am confused. 
 John::
 Yes?
-Barry::
+Cindy::
 Um...... we already have Synthgens. What makes this machine different? 
+Narrator::
+<i>John waggles his finger at the camera as if scolding an impatient child.</i>
 John::
 I was getting to that. 
-The copies, or clones, break down over time. There is no brain to keep the patterns together. 
-So, just like any vegetable or fruit, it "rots" over time. 
-Then the copies have to be recopied, and replaced from the host each time.  It is not a perfect solution. 
-What Digital Horizons has been working on so long is to TRANSFER a human mind completely into the internet.......
+Now these copies, or clones, break down over time. There is no brain to keep the patterns together. 
+So, just like any vegetable or fruit, it "rots" over time. Expires naturally.
+Then new copies have to be recorded, and used to replace the deteriorated, old ones. 
+It is far from a perfect solution.
+So, what Digital Horizons has been working on so long is to TRANSFER a human mind completely into the internet.......
 Narrator::
 <i>The silence grows uncomfortable on the other end of the broadcast.</i>
-Barry::
-Wait a second. Let me get this straight. ? The person's soul is tranferred? Meaning no one is home in the body?
+Cindy::
+Wait a second. Let me get this straight.
+The person's soul is tranferred? Meaning no one is home in the body?
 John::
-Yep! It's original purpose was to transfer a cancer patient's mind to a cyborg, or to allow astronauts time to learn new skills in cryostasis. But there are many applications this technology can be used for. 
+Yep! It's original purpose was to transfer a cancer patient's mind to a cyborg, or to allow astronauts time to learn new skills in cryostasis.
+But there are many applications this technology can be used for. 
 They named it the Digital Imaging Human Interface, or DIHI for short.
 Female Bystander::
 You mean the Brain Sucking Chair John?
 Male Bystander::
-WOW! That is hype man! I didn't know they actually did it?! Porn, here I come! 
+WOW! That is hype man! Forget what I said before man!
+Immersive porn, here I come! 
 Female Bystander::
 So typical........
+Narrator::
+<i>Male Bystander 2 Chuckles</i>
 Male Bystander 2::
-Hey! We all know that is the primary reason for the internet! Imagine.....if you will, being able to visit all the porn stars! 
-Yeah totally awesome. I am wondering if I should apply for the next test?
-Male Bystander:: 
-How can you two be loud enough to drown out the broadcast? Both of you quiet down please???
+Hey! We all know that is the primary reason for the internet! Right?
+Narrator::
+<i>Male Bystander 2 spreads his arms out in a grand gesture, looking at the sky.</i>
+Male Bystander 2::
+Imagine.....if you will, being able to visit all the porn stars! Or having fun in VR??
+Man, that is totally awesome! I am wondering if I should apply for the next test?
+Female Bystander:: 
+You two are drowning out the broadcast. Both of you quiet down please???
 {spawnChar: malesilo, 2, Lab Tech }
 {moveChar: Lab Tech, .85}
 Narrator::
-<i>John is now standing next to a lab tech, talking in hushed tones. He stands tall and lanky, wearing glasses too large for the bridge of his nose. On the screen, his shoulders are slumped a bit, as if he is being crushed by all of the camera's gazes. His voice, however, defies that impression.</i>
+<i>John is now standing next to a lab tech, talking in hushed tones.</i>
+<i>He stands tall and lanky, wearing glasses too large for the bridge of his nose.</i>
+<i>On the screen, his shoulders are slumped a bit, as if he is being crushed by all of the camera's gazes. His voice, however, defies that impression.</i>
 <i>The Lab Tech fingers his large glasses back up his nose.</i>
 Lab Tech::
-Once transferred, the subject will remain in our closed servers for a period of around four days, give or take. While they are in there, their body will remain in a form of warm air stasis. This is to prevent abrupt changes in the chemical makeup. These changes can theoretically cause "Brain Discharges" that we want to avoid until we have a better understanding. The process.....
-John::
+Once transferred, the subject will remain in our closed servers for a period of around four days, give or take. 
+While they are in there, their body will remain in a form of warm air stasis. This is to prevent abrupt changes in the chemical makeup. 
+These changes can theoretically cause "Brain Discharges" that we want to avoid until we have a better understanding. The process.....
+Narrator::
+<i>John frowns slightly..</i>
 Wait....."Brain Discharges" ?
+Narrator::
+<i>The Lab Tech looks at the camera with a withering look, and tsks, shaking his head.</i>
 Lab Tech::
 Yes, a brain discharge. It is really to complicated to explain on air. Let us move on. I have things to attend to soon. 
-This process is currently untested on a human subject. However, monkey trials have been successful with little to no side affects. We will conduct the same tests we performed on the monkeys. They will stay awake and concious in the server, conduct motor skills, recite poems, sing songs. Many things to test different parts of the brain. 
-We want to see how much of the brain is active in cyberspace, and to be sure we can measure any deterioration, if present. 
-After about four days, we will reanimate their body, reinsert the brain patterns back into their fleshy mind, and put them in quarantine for a couple of months to ensure no permanent damage was done. 
-Barry::
-Ask him if the monkeys are still ok John.
+Now, this process is currently untested on a human subject. 
+However, monkey trials have been successful with little to no side affects.
+We will conduct the same tests we performed on the monkeys. They will stay awake and concious in the server, conduct motor skill tests, recite poems, sing songs, and so on. 
+There will be many things to test that will activate different parts of the brain. 
+We want to see how much of the brain is active in cyberspace, and to be sure we can measure any deterioration, if present....
+After about four days, we will reanimate their body, reinsert the brain patterns back into their fleshy brain, and put them in quarantine for a couple of months to ensure no permanent damage was done. 
+Cindy::
+Ask him if the monkeys from the first test are still ok John. John?
 Narrator::
 <i>John taps the headphone and looks toward the Lab Tech.</i>
 John::
@@ -120,16 +167,17 @@ Lab Tech::
 Name is Shirobi.
 {changeName: Lab Tech, Shirobi}
 John::
-Shirobi. What happens if something goes wrong while they are inside the server? What if you do see deterioration and need to get them out as fast as possible? What are the steps to that process?
+Shirobi. What happens if something goes wrong while they are inside the server? What if you DO see deterioration and need to get them out as fast as possible? What are the steps to that process?
 Shirobi::
 If there are any issues that cause alarm, we will immediately transfer them back to their body. There will be a crew 24/7 monitoring both the body and the mind in the server. 
 Narrator::
 <i>Shirobi looks directly into the camera, face serious but confident.</i>
 Shirobi::
-The subject of this test is well aware of the risks. And they are ready to be a pioneer in the field, and make some history. I have complete confidence that this test will succeed with little or no issues. 
+The subject of this test is well aware of the risks. And they are ready to be a pioneer in the field, and make some history.
+I have complete confidence that this test will succeed with little or no issues. 
 That is my personal opinion, of coarse. 
 John::
-And who is this pioneer, dare we say, even heroic, person that has decided to brave the unknown of the internet?
+And who is this pioneer of the future, the amazing person that has decided to brave the unknown of the internet?
 {startEFA2: openclosedoor}
 {stopEFA2: openclosedoor}
 Narrator::
