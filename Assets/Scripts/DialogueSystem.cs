@@ -17,7 +17,7 @@ public class DialogueSystem : Singleton<DialogueSystem>
     // Use this for initialization
     void Awake()
     {
-        initialize();
+        // initialize();
     }
     public override void initialize()
     {
