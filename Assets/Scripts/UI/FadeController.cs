@@ -24,6 +24,7 @@ public class FadeController : MonoBehaviour
         }
         if (canvas.alpha == 0)
         {
+            canvas.interactable = false;
             fadingOut = false;
         }
         if (fadingIn && canvas.alpha < 1)
@@ -33,8 +34,9 @@ public class FadeController : MonoBehaviour
         if (canvas.alpha == 1)
         {
             fadingIn = false;
-            canvas.gameObject.SetActive(false);
+            canvas.interactable = true;
         }
+
 
     }
     public void fadeIn()

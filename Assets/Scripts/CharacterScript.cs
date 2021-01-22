@@ -4,7 +4,6 @@ using UnityEngine;
 using Live2D.Cubism.Framework.Expression;
 using Live2D.Cubism.Rendering;
 
-
 public class CharacterScript : MonoBehaviour
 {
     public string charName;

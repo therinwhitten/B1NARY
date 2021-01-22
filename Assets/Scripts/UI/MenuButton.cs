@@ -6,13 +6,21 @@ using UnityEngine.EventSystems;
 public class MenuButton : MonoBehaviour
 {
     [SerializeField] Animator animator;
-    public int x = 0, y = 0;
+    // public int x = 0, y = 0;
     [SerializeField] AudioSource audio;
     [SerializeField] AudioClip selectSound, pressSound;
+
+    [SerializeField]
+    GameObject controller;
+    CanvasGroup canvasGroup;
+    bool interactable { get { return canvasGroup.interactable; } }
+
+    [SerializeField]
+    string action;
     // Start is called before the first frame update
     void Start()
     {
-
+        canvasGroup = controller.GetComponent<CanvasGroup>();
     }
 
     // Update is called once per frame
@@ -23,19 +31,22 @@ public class MenuButton : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        select();
+        if (interactable)
+            select();
     }
     private void OnMouseExit()
     {
         animator.SetBool("selected", false);
-        Debug.Log("Mouse Exit");
     }
     private void OnMouseDown()
     {
-        audio.Stop();
-        audio.PlayOneShot(pressSound);
-        animator.SetBool("pressed", true);
-        Debug.Log("Clicked");
+        if (interactable)
+        {
+            audio.Stop();
+            audio.PlayOneShot(pressSound);
+            animator.SetBool("pressed", true);
+            controller.SendMessage(action);
+        }
     }
     private void OnMouseUp()
     {
