@@ -334,11 +334,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 6232538127753737759}
-  x: 0
-  y: 0
   audio: {fileID: 1868500650256885568}
   selectSound: {fileID: 8300000, guid: 48daf9eeb8c8b7940bd8ca8a3dd76245, type: 3}
   pressSound: {fileID: 8300000, guid: 143910da7ea779246b2b68e4c95dd431, type: 3}
+  controller: {fileID: 0}
+  action: 
 --- !u!222 &212721867285897755
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -411,7 +411,8 @@ AudioSource:
   m_GameObject: {fileID: 3814372706678797558}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 704485296697243133, guid: e149b04e0d2c2174a925c5eaaf359315,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1

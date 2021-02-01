@@ -42,8 +42,9 @@ public class MenuButton : MonoBehaviour
     {
         if (interactable)
         {
-            audio.Stop();
-            audio.PlayOneShot(pressSound);
+            // audio.Stop();
+            // audio.PlayOneShot(pressSound);
+            AudioManager.Instance.Play("Button-Press", true);
             animator.SetBool("pressed", true);
             controller.SendMessage(action);
         }
@@ -54,8 +55,9 @@ public class MenuButton : MonoBehaviour
     }
     public void select()
     {
-        audio.Stop();
-        audio.PlayOneShot(selectSound);
+        // audio.Stop();
+        // audio.PlayOneShot(selectSound);
+        AudioManager.Instance.Play("Button-Select", true);
         animator.SetBool("selected", true);
     }
 }

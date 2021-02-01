@@ -1,4 +1,4 @@
-{startEFA Times Square Crowd}
+{fadeinsound:Times-Square-Crowd,10}
 Narrator::
 <i>Times Square in New York City: The year is 2040. Midday on a blistering Summer Day.</i>
 <i> On a normal day, most people can be seen milling around, heading to work, the cacophony of vehicles, pedestrians, and advertisements, matching beat in a perfect harmony.</i>
@@ -41,7 +41,6 @@ Shhhhh!
 {moveChar: Male Bystander 2, 2}
 {loopBG: false}
 {playBG: Times Square Pan Up}
-{emptyscene}
 {spawnChar: femalesilo, 2, Cindy}
 {moveChar: Cindy, .75}
 Narrator::
@@ -56,8 +55,10 @@ And guess what Ladies and gentlemen? We seem to have an invitation to a front ro
 At the DH Lab, we have our correspondant, Lead News Reporter, John Casnik.
 John? Are you there? 
 {changeScene: Brain Sucking Chair Side}
-{startEFA: Laptop Lab Scene}
-{startEFA1: smallgroupwhisper}
+{fadeoutsound:Times-Square-Crowd,2}
+{fadeinsound:Laptop-Lab,2}
+{fadeinsound:Small-Group-Whisper,2}
+{fadeinsound:Brain-Sucking-Chair,10}
 {spawnChar: malesilo, -1, John}
 {moveChar: John, .10}
 Narrator::
@@ -82,8 +83,7 @@ Narrator::
 John::
 And they will come through that door....
 Oh excuse me gentlemen. 
-{startEFA2: openclosedoor}
-{stopEFA2: openclosedoor}
+{fadeinsound: Door,00.1}
 Narrator::
 <i>John sidesteps awkwardly as a few labtechs push past him in front of the camera.</i>
 John::
@@ -178,8 +178,7 @@ I have complete confidence that this test will succeed with little or no issues.
 That is my personal opinion, of coarse. 
 John::
 And who is this pioneer of the future, the amazing person that has decided to brave the unknown of the internet?
-{startEFA2: openclosedoor}
-{stopEFA2: openclosedoor}
+{fadeinsound: Door,0.1}
 Narrator::
 <i>The lab tech smiles for the first time at the sound of the door. He starts guiding all the press into the lab with an air of excitement.</i>
 Shirobi::

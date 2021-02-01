@@ -27,7 +27,6 @@ public class DialogueSystem : Singleton<DialogueSystem>
         elements.speechPanel = GameObject.Find("Panel-Speech");
         elements.speakerNameText = GameObject.Find("SpeakerName").GetComponent<Text>();
         elements.speechText = GameObject.Find("SpeechText").GetComponent<Text>();
-
         elements.speechText.fontSize = textFontSize;
         elements.speakerNameText.fontSize = nameTextFontSize;
     }

@@ -86,6 +86,12 @@ public class CommandsManager : Singleton<CommandsManager>
             case "changename":
                 CharacterManager.Instance.changeName(args[0].ToString().Trim(), args[1].ToString().Trim());
                 break;
+            case "fadeinsound":
+                AudioManager.Instance.FadeIn(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim()));
+                break;
+            case "fadeoutsound":
+                AudioManager.Instance.FadeOut(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim()));
+                break;
         }
 
 

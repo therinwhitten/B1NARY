@@ -25,6 +25,7 @@ public class MainMenuController : MonoBehaviour
     // BUTTON BEHAVIOURS
     void NewGame()
     {
+        AudioManager.Instance.Play("Game-Start");
         gameObject.SendMessage("fadeOut");
         DialogueSystem.Instance.initialize();
         ScriptParser.Instance.initialize();
@@ -38,7 +39,7 @@ public class MainMenuController : MonoBehaviour
     void Exit()
     {
         Debug.Log("Quitting");
-        EditorApplication.isPlaying = false;
+        // EditorApplication.isPlaying = false;
         Application.Quit();
     }
 
