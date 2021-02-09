@@ -9,10 +9,17 @@ using System.Linq;
 
 public class ScriptParser : Singleton<ScriptParser>
 {
+
     public bool scriptChanged = false;
     public string scriptName;
+    public bool paused = false;
+    bool choice = false;
+    int lineIndex = 0;
+    int continueIndex = 0;
+
     string path { get { return Application.streamingAssetsPath + "/Docs/" + scriptName + ".txt"; } }
 
+    public Dictionary<string, List<string>> currentChoiceOptions;
     DialogueSystem dialogue { get { return DialogueSystem.Instance; } }
 
 
@@ -44,6 +51,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
     public override void initialize()
     {
+        lineIndex = 0;
         reader = new StreamReader(path);
         readNextLine();
         parseLine(currentLine);
@@ -52,7 +60,7 @@ public class ScriptParser : Singleton<ScriptParser>
     {
         scriptName = newScript;
         reader = new StreamReader(path);
-
+        lineIndex = 0;
         readNextLine();
         parseLine(currentLine);
         scriptChanged = false;
@@ -67,7 +75,7 @@ public class ScriptParser : Singleton<ScriptParser>
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !paused)
         {
             if (!dialogue.isSpeaking || dialogue.isWaitingForUserInput)
             {
@@ -126,7 +134,7 @@ public class ScriptParser : Singleton<ScriptParser>
         // works properly with it
         waitThenDO(() =>
         {
-            if (line == null)
+            if (line == null || paused)
             {
                 return;
             }
@@ -202,6 +210,66 @@ public class ScriptParser : Singleton<ScriptParser>
         });
 
     }
+    public void parseChoice(string choiceTitle = "")
+    {
+        paused = true;
+        choice = true;
+        DialogueSystem.Instance.Say(choiceTitle);
+        StreamReader newReader = new StreamReader(path);
+        currentChoiceOptions = new Dictionary<string, List<string>>();
+        List<string> choiceStrings = new List<string>();
+        continueIndex = 0;
+        string line = "";
+        while (continueIndex < lineIndex)
+        {
+            line = newReader.ReadLine();
+            continueIndex++;
+        }
+        string choiceName = "";
+        newReader.ReadLine();
+
+        while (!line.Trim().Equals("}"))
+        {
+            line = newReader.ReadLine();
+            choiceStrings.Add(line);
+            continueIndex++;
+        }
+        choiceStrings.RemoveAt(choiceStrings.Count - 1);
+        continueIndex += 2;
+        for (int i = 0; i < choiceStrings.Count; i++)
+        {
+            string item = choiceStrings[i].Trim();
+            if (item.Equals("["))
+            {
+                int j = i + 1;
+                List<string> choiceLines = new List<string>();
+                while (!choiceStrings[j].Trim().Equals("]"))
+                {
+                    choiceLines.Add(choiceStrings[j].Trim());
+                    j++;
+                }
+                // Debug.Log("choice lines found: " + choiceLines.Count);
+                currentChoiceOptions.Add(choiceName, choiceLines);
+                i = j;
+                continue;
+            }
+            choiceName = item;
+
+            // Debug.Log("choice name found: " + choiceName);
+        }
+        ChoiceController choiceController = GameObject.Find("Choice Panel").GetComponent<ChoiceController>();
+        choiceController.newChoice();
+    }
+
+    public void selectChoice(string choiceName)
+    {
+        Debug.Log("Selected option: " + choiceName);
+
+
+    }
+
+
+
     private void OnApplicationQuit()
     {
         reader.Close();
@@ -209,5 +277,6 @@ public class ScriptParser : Singleton<ScriptParser>
     void readNextLine()
     {
         currentLine = reader.ReadLine();
+        lineIndex++;
     }
 }

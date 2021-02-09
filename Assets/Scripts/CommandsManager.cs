@@ -92,6 +92,9 @@ public class CommandsManager : Singleton<CommandsManager>
             case "fadeoutsound":
                 AudioManager.Instance.FadeOut(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim()));
                 break;
+            case "choice":
+                ScriptParser.Instance.parseChoice(args[0].ToString().Trim());
+                break;
         }
 
 

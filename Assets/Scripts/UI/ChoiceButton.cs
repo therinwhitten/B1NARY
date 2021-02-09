@@ -1,32 +1,48 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-
-public class MenuButton : MonoBehaviour
+using UnityEngine.UI;
+public class ChoiceButton : MonoBehaviour
 {
+
     [SerializeField] Animator animator;
     // public int x = 0, y = 0;
-    // [SerializeField] AudioSource audio;
-    // [SerializeField] AudioClip selectSound, pressSound;
-
-    [SerializeField]
     GameObject controller;
+    public Text text;
+    string choiceName;
     CanvasGroup canvasGroup;
+    BoxCollider2D col;
+    private bool resized = false;
+    RectTransform rect;
     bool interactable { get { return canvasGroup.interactable; } }
-
-    [SerializeField]
-    string action;
     // Start is called before the first frame update
     void Start()
     {
+        col = gameObject.GetComponent<BoxCollider2D>();
+        rect = gameObject.GetComponent<RectTransform>();
+        controller = GameObject.Find("Choice Panel");
         canvasGroup = controller.GetComponent<CanvasGroup>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        // i really hate that I have to do this but I can't find
+        // a better way to resize the collider after I generate the text
+        // at least I'm not comparing the two values on every frame
+        if (!resized)
+        {
+            if (col.size != rect.sizeDelta)
+            {
+                col.size = rect.sizeDelta;
+                resized = true;
+            }
+        }
+    }
+    public void assignName(string name)
+    {
+        choiceName = name;
+        text.text = name;
     }
 
     private void OnMouseEnter()
@@ -44,9 +60,10 @@ public class MenuButton : MonoBehaviour
         {
             // audio.Stop();
             // audio.PlayOneShot(pressSound);
+            ScriptParser.Instance.selectChoice(choiceName);
             AudioManager.Instance.Play("Button-Press", true);
             animator.SetBool("pressed", true);
-            controller.SendMessage(action);
+            // controller.SendMessage(action);
         }
     }
     private void OnMouseUp()
