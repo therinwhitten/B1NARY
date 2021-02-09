@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Text;
 using System.Linq;
-
+using System;
 
 public class ScriptParser : Singleton<ScriptParser>
 {
@@ -56,12 +57,15 @@ public class ScriptParser : Singleton<ScriptParser>
         readNextLine();
         parseLine(currentLine);
     }
-    public void changeScriptFile(string newScript)
+    public void changeScriptFile(string newScript, int position = 1)
     {
         scriptName = newScript;
         reader = new StreamReader(path);
         lineIndex = 0;
-        readNextLine();
+        while (lineIndex != position)
+        {
+            readNextLine();
+        }
         parseLine(currentLine);
         scriptChanged = false;
     }
@@ -264,8 +268,19 @@ public class ScriptParser : Singleton<ScriptParser>
     public void selectChoice(string choiceName)
     {
         Debug.Log("Selected option: " + choiceName);
-
-
+        MemoryStream temp = new MemoryStream();
+        List<string> mylist = currentChoiceOptions[choiceName];
+        string continuestr = "{changescript: " + scriptName + ", " + continueIndex + "}";
+        // Debug.Log(continuestr);
+        mylist.Add(continuestr);
+        string text = string.Join("\n", mylist.ToArray());
+        byte[] buffer = Encoding.UTF8.GetBytes(text);
+        temp.Write(buffer, 0, buffer.Length);
+        paused = false;
+        temp.Position = 0;
+        reader = new StreamReader(temp);
+        readNextLine();
+        parseLine(currentLine);
     }
 
 

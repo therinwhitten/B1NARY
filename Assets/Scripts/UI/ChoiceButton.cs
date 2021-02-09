@@ -63,6 +63,7 @@ public class ChoiceButton : MonoBehaviour
             ScriptParser.Instance.selectChoice(choiceName);
             AudioManager.Instance.Play("Button-Press", true);
             animator.SetBool("pressed", true);
+            controller.SendMessage("fadeOut");
             // controller.SendMessage(action);
         }
     }

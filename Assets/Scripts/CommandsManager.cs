@@ -66,7 +66,14 @@ public class CommandsManager : Singleton<CommandsManager>
                 break;
             case "changescript":
                 ScriptParser.Instance.scriptChanged = true;
-                ScriptParser.Instance.changeScriptFile(args[0].ToString().Trim());
+                if (args.Count == 2)
+                {
+                    ScriptParser.Instance.changeScriptFile(args[0].ToString().Trim(), int.Parse(args[1].ToString().Trim()));
+                }
+                else
+                {
+                    ScriptParser.Instance.changeScriptFile(args[0].ToString().Trim());
+                }
                 // Instance.StartCoroutine(waitForTransitionsThenChangeScript(args[0].ToString().Trim()));
                 // TransitionManager.TransitionBG(args[0].ToString().Trim());
                 break;
