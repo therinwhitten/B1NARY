@@ -10,12 +10,15 @@ public class OptionsMenuController : MonoBehaviour
     // bool keyDown;
     [SerializeField]
     GameObject mainMenu;
+
+    [SerializeField]
+    GameObject[] audioOptions;
     // Start is called before the first frame update
     void Start()
     {
         // x = 0;
         // y = 0;
-
+        openSettings();
 
     }
 
@@ -25,6 +28,28 @@ public class OptionsMenuController : MonoBehaviour
     {
         gameObject.SendMessage("fadeOut");
         mainMenu.SendMessage("fadeIn");
+        openSettings();
+    }
+
+    void openSettings()
+    {
+        foreach (GameObject audioOption in audioOptions)
+        {
+            Slider slider = audioOption.GetComponentInChildren<Slider>();
+
+            slider.value = PlayerPrefs.GetFloat(audioOption.name, 1f);
+        }
+    }
+
+    void Save()
+    {
+        foreach (GameObject audioOption in audioOptions)
+        {
+            Slider slider = audioOption.GetComponentInChildren<Slider>();
+            PlayerPrefs.SetFloat(audioOption.name, slider.value);
+        }
+        PlayerPrefs.Save();
+        Back();
     }
 
 

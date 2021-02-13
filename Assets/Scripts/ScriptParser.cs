@@ -254,11 +254,19 @@ public class ScriptParser : Singleton<ScriptParser>
                 }
                 // Debug.Log("choice lines found: " + choiceLines.Count);
                 currentChoiceOptions.Add(choiceName, choiceLines);
+                choiceName = "";
                 i = j;
                 continue;
             }
-            choiceName = item;
-
+            choiceName.Trim();
+            if (choiceName == "")
+            {
+                choiceName = item.Trim();
+            }
+            else
+            {
+                choiceName += System.Environment.NewLine + item.Trim();
+            }
             // Debug.Log("choice name found: " + choiceName);
         }
         ChoiceController choiceController = GameObject.Find("Choice Panel").GetComponent<ChoiceController>();

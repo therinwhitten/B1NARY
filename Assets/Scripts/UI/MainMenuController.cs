@@ -35,6 +35,7 @@ public class MainMenuController : MonoBehaviour
     {
         gameObject.SendMessage("fadeOut");
         optionsMenu.SendMessage("fadeIn");
+        optionsMenu.SendMessage("openSettings");
     }
     void Exit()
     {

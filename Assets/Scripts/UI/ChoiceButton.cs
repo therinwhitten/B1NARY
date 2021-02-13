@@ -11,15 +11,15 @@ public class ChoiceButton : MonoBehaviour
     public Text text;
     string choiceName;
     CanvasGroup canvasGroup;
+    bool resized = false;
     BoxCollider2D col;
-    private bool resized = false;
     RectTransform rect;
     bool interactable { get { return canvasGroup.interactable; } }
     // Start is called before the first frame update
     void Start()
     {
         col = gameObject.GetComponent<BoxCollider2D>();
-        rect = gameObject.GetComponent<RectTransform>();
+        rect = text.gameObject.GetComponent<RectTransform>();
         controller = GameObject.Find("Choice Panel");
         canvasGroup = controller.GetComponent<CanvasGroup>();
     }
@@ -30,19 +30,22 @@ public class ChoiceButton : MonoBehaviour
         // i really hate that I have to do this but I can't find
         // a better way to resize the collider after I generate the text
         // at least I'm not comparing the two values on every frame
+
         if (!resized)
         {
             if (col.size != rect.sizeDelta)
             {
                 col.size = rect.sizeDelta;
-                resized = true;
             }
+            resized = true;
         }
     }
     public void assignName(string name)
     {
+        rect = text.gameObject.GetComponent<RectTransform>();
         choiceName = name;
         text.text = name;
+        LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
     }
 
     private void OnMouseEnter()
