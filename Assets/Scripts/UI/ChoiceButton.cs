@@ -19,7 +19,7 @@ public class ChoiceButton : MonoBehaviour
     void Start()
     {
         col = gameObject.GetComponent<BoxCollider2D>();
-        rect = text.gameObject.GetComponent<RectTransform>();
+        rect = gameObject.GetComponent<RectTransform>();
         controller = GameObject.Find("Choice Panel");
         canvasGroup = controller.GetComponent<CanvasGroup>();
     }
@@ -42,7 +42,7 @@ public class ChoiceButton : MonoBehaviour
     }
     public void assignName(string name)
     {
-        rect = text.gameObject.GetComponent<RectTransform>();
+        rect = gameObject.GetComponent<RectTransform>();
         choiceName = name;
         text.text = name;
         LayoutRebuilder.ForceRebuildLayoutImmediate(rect);
