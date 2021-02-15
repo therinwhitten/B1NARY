@@ -14,19 +14,27 @@ public class MenuButton : MonoBehaviour
     GameObject controller;
     CanvasGroup canvasGroup;
     bool interactable { get { return canvasGroup.interactable; } }
+    bool resized = false;
+    BoxCollider2D col;
+    RectTransform rect;
 
     [SerializeField]
     string action;
     // Start is called before the first frame update
     void Start()
     {
+        col = gameObject.GetComponent<BoxCollider2D>();
+        rect = gameObject.GetComponent<RectTransform>();
         canvasGroup = controller.GetComponent<CanvasGroup>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        if (col.size != rect.sizeDelta)
+        {
+            col.size = rect.sizeDelta;
+        }
     }
 
     private void OnMouseEnter()
