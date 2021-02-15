@@ -79,7 +79,10 @@ public class ScriptParser : Singleton<ScriptParser>
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && !paused)
+        if ((Input.GetKeyDown(KeyCode.Space)
+        || Input.GetKeyDown(KeyCode.Mouse0)
+        || Input.GetKey(KeyCode.LeftControl))
+         && !paused)
         {
             if (!dialogue.isSpeaking || dialogue.isWaitingForUserInput)
             {
