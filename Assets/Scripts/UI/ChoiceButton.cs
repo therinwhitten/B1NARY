@@ -39,6 +39,7 @@ public class ChoiceButton : MonoBehaviour
             }
             resized = true;
         }
+        col.enabled = interactable;
     }
     public void assignName(string name)
     {
