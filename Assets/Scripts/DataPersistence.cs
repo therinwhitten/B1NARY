@@ -9,7 +9,6 @@ public class DataPersistence : Singleton<DataPersistence>
     public override void initialize()
     {
         path = Application.persistentDataPath;
-        Debug.Log(path);
     }
     private void Start()
     {
