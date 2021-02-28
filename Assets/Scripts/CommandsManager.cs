@@ -102,6 +102,27 @@ public class CommandsManager : Singleton<CommandsManager>
             case "choice":
                 ScriptParser.Instance.parseChoice(args[0].ToString().Trim());
                 break;
+            case "setbool":
+                PersistentData.Instance.state.bools.Add(args[0].ToString().Trim(), bool.Parse(args[1].ToString().Trim()));
+                break;
+            case "if":
+                Debug.Log("If block recognized");
+                List<string> block = ScriptParser.Instance.getOptionalBlock();
+                bool var = PersistentData.Instance.state.bools[args[0].ToString().Trim()];
+                bool val = bool.Parse(args[1].ToString().Trim());
+                if (var == val)
+                {
+                    Debug.Log("Condition met. Playing optional block...");
+                    ScriptParser.Instance.playOptionalBlock(block);
+
+                }
+                else
+                {
+                    Debug.Log("Condition not met. Skipping...");
+                    ScriptParser.Instance.paused = false;
+                    ScriptParser.Instance.changeScriptFile(ScriptParser.Instance.scriptName, ScriptParser.Instance.continueIndex);
+                }
+                break;
         }
 
 
