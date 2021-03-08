@@ -35,6 +35,7 @@ public class MenuButton : MonoBehaviour
         {
             col.size = rect.sizeDelta;
         }
+        col.enabled = interactable;
     }
 
     private void OnMouseEnter()

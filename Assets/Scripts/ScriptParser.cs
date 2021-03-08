@@ -15,8 +15,8 @@ public class ScriptParser : Singleton<ScriptParser>
     public string scriptName;
     public bool paused = false;
     bool choice = false;
-    int lineIndex = 0;
-    int continueIndex = 0;
+    public int lineIndex = 0;
+    public int continueIndex = 0;
 
     string path { get { return Application.streamingAssetsPath + "/Docs/" + scriptName + ".txt"; } }
 
@@ -293,7 +293,46 @@ public class ScriptParser : Singleton<ScriptParser>
         readNextLine();
         parseLine(currentLine);
     }
+    public List<string> getOptionalBlock()
+    {
+        paused = true;
+        StreamReader newReader = new StreamReader(path);
+        List<string> choiceStrings = new List<string>();
+        continueIndex = 0;
+        string line = "";
+        while (continueIndex < lineIndex)
+        {
+            line = newReader.ReadLine();
+            continueIndex++;
+        }
+        // newReader.ReadLine();
 
+        while (!line.Trim().Equals("}"))
+        {
+            line = newReader.ReadLine();
+            choiceStrings.Add(line);
+            continueIndex++;
+        }
+        choiceStrings.RemoveAt(choiceStrings.Count - 1);
+        // continueIndex++;
+        return choiceStrings;
+    }
+
+    public void playOptionalBlock(List<string> block)
+    {
+        string continuestr = "{changescript: " + scriptName + ", " + continueIndex + "}";
+        // Debug.Log(continuestr);
+        MemoryStream temp = new MemoryStream();
+        block.Add(continuestr);
+        string text = string.Join("\n", block.ToArray());
+        byte[] buffer = Encoding.UTF8.GetBytes(text);
+        temp.Write(buffer, 0, buffer.Length);
+        paused = false;
+        temp.Position = 0;
+        reader = new StreamReader(temp);
+        readNextLine();
+        parseLine(currentLine);
+    }
 
 
     private void OnApplicationQuit()

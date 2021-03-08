@@ -27,6 +27,8 @@ public class ChoiceController : MonoBehaviour
         }
         // show choice panel
         gameObject.SendMessage("fadeIn");
+    
+        // Debug.Log("If u read this u are the gae");
     }
 
     // Update is called once per frame
