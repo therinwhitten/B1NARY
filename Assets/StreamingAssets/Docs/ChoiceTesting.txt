@@ -1,28 +1,25 @@
 {spawnchar: Haru, 0.5}
 Haru::
 Hi!
-{choice: Wan sum fuk?}
+{choice: What do you do?}
 {
-    Yes
+    Go get food
     [
-        {setbool: wansfuk,true}
+        {setbool: gotfood,true}
         Haru::
         [Smile]
         Yay!
     ]
-    No
+    Go home
     [
-        {setbool: wansfuk,false}
+        {setbool: gotfood,false}
         Haru::
         [Sad]
         Aw :'(
     ]
 }
-{if: wansfuk,true}
+{if: gotfood,true}
 {
-    Narrator::
-    And then they fuk'd.
-    Haru::
-    That was great, let's do it again!
+
 }
 The End!

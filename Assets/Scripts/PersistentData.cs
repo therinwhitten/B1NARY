@@ -23,6 +23,10 @@ public class PersistentData : Singleton<PersistentData>
         state = new GameState();
     }
 
+    public void SaveGame()
+    {
+
+    }
     // Update is called once per frame
     void Update()
     {
