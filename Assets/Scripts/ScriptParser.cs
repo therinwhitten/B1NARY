@@ -28,7 +28,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
     StreamReader reader = null;
 
-    string currentLine;
+    string currentLine { get { return currentNode.getCurrentLine(); } }
 
     // regex for grabbing rich text tags
     Regex richRegex = new Regex("<(.*?)>");
@@ -38,7 +38,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
     // regex for commands
     Regex commandRegex = new Regex("\\{(.*?)\\}");
-
+    DialogueNode currentNode;
 
 
 
@@ -54,22 +54,30 @@ public class ScriptParser : Singleton<ScriptParser>
     {
         lineIndex = 0;
         reader = new StreamReader(path);
+        currentNode = new DialogueNode(getLines());
         readNextLine();
         parseLine(currentLine);
     }
-    public void changeScriptFile(string newScript, int position = 1)
+    public void changeScriptFile(string newScript, int position = 0)
     {
         scriptName = newScript;
         reader = new StreamReader(path);
-        lineIndex = 0;
-        while (lineIndex != position)
-        {
-            readNextLine();
-        }
+        currentNode = new DialogueNode(getLines());
+        currentNode.moveIndex(position);
         parseLine(currentLine);
         scriptChanged = false;
     }
 
+    List<string> getLines()
+    {
+        List<string> lines = new List<string>();
+        while (!reader.EndOfStream)
+        {
+            lines.Add(reader.ReadLine());
+        }
+        reader.Close();
+        return lines;
+    }
 
     // Update is called once per frame
     void Update()
@@ -87,7 +95,7 @@ public class ScriptParser : Singleton<ScriptParser>
             if (!dialogue.isSpeaking || dialogue.isWaitingForUserInput)
             {
                 // if end of file has been reached
-                if (reader.Peek() == -1)
+                if (currentNode.endReached())
                 {
                     return;
                 }
@@ -341,7 +349,6 @@ public class ScriptParser : Singleton<ScriptParser>
     }
     void readNextLine()
     {
-        currentLine = reader.ReadLine();
-        lineIndex++;
+        currentNode.nextLine();
     }
 }
