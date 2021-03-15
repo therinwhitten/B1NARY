@@ -64,7 +64,7 @@ public class ChoiceButton : MonoBehaviour
         {
             // audio.Stop();
             // audio.PlayOneShot(pressSound);
-            ScriptParser.Instance.selectChoice(choiceName);
+            ScriptParser.Instance.currentNode.selectChoice(choiceName);
             AudioManager.Instance.Play("Button-Press", true);
             animator.SetBool("pressed", true);
             controller.SendMessage("fadeOut");

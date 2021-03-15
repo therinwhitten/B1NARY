@@ -28,7 +28,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
     StreamReader reader = null;
 
-    string currentLine { get { return currentNode.getCurrentLine(); } }
+    // public string currentNode.getCurrentLine() { get { return currentNode.getCurrentLine(); } }
 
     // regex for grabbing rich text tags
     Regex richRegex = new Regex("<(.*?)>");
@@ -38,14 +38,13 @@ public class ScriptParser : Singleton<ScriptParser>
 
     // regex for commands
     Regex commandRegex = new Regex("\\{(.*?)\\}");
-    DialogueNode currentNode;
+    public DialogueNode currentNode;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        TextAsset textFile = Resources.Load<TextAsset>("Docs/CharacterPrefabTestScript");
         DontDestroyOnLoad(this.gameObject);
         // initialize();
     }
@@ -55,8 +54,8 @@ public class ScriptParser : Singleton<ScriptParser>
         lineIndex = 0;
         reader = new StreamReader(path);
         currentNode = new DialogueNode(getLines());
-        readNextLine();
-        parseLine(currentLine);
+        // readNextLine();
+        parseLine(currentNode.getCurrentLine());
     }
     public void changeScriptFile(string newScript, int position = 0)
     {
@@ -64,7 +63,7 @@ public class ScriptParser : Singleton<ScriptParser>
         reader = new StreamReader(path);
         currentNode = new DialogueNode(getLines());
         currentNode.moveIndex(position);
-        parseLine(currentLine);
+        parseLine(currentNode.getCurrentLine());
         scriptChanged = false;
     }
 
@@ -97,11 +96,23 @@ public class ScriptParser : Singleton<ScriptParser>
                 // if end of file has been reached
                 if (currentNode.endReached())
                 {
-                    return;
+                    if (currentNode.previous != null)
+                    {
+                        // if we reached the end of the node but there's a parent node,
+                        // continue from where we left off
+                        DialogueNode previousNode = currentNode.previous;
+                        currentNode = previousNode;
+                        // currentNode.index--;
+                        parseLine(currentNode.getCurrentLine());
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
                 // else grab next line
                 readNextLine();
-                parseLine(currentLine);
+                parseLine(currentNode.getCurrentLine());
             }
             else
             // if the dialogue is still being written out just skip to the end of the line
@@ -141,7 +152,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
         }
     }
-    void parseLine(string line)
+    public void parseLine(string line)
     {
         // RICH TEXT
         // Unity already supports rich text natively,
@@ -157,7 +168,7 @@ public class ScriptParser : Singleton<ScriptParser>
             {
                 playVA();
                 CharacterManager.Instance.changeLightingFocus();
-                dialogue.SayRich(currentLine);
+                dialogue.SayRich(currentNode.getCurrentLine());
                 return;
             }
             // handles speaker change. Also handles which character's expressions/animations are being controlled
@@ -168,7 +179,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
                 // update character sprite to current speaker sprite
                 readNextLine();
-                parseLine(currentLine);
+                parseLine(currentNode.getCurrentLine());
                 return;
             }
 
@@ -183,7 +194,7 @@ public class ScriptParser : Singleton<ScriptParser>
                 string expression = line.Trim(tagChars);
                 CharacterManager.Instance.changeExpression(dialogue.currentSpeaker, expression);
                 readNextLine();
-                parseLine(currentLine);
+                parseLine(currentNode.getCurrentLine());
                 return;
             }
 
@@ -214,14 +225,14 @@ public class ScriptParser : Singleton<ScriptParser>
                     return;
                 }
                 readNextLine();
-                parseLine(currentLine);
+                parseLine(currentNode.getCurrentLine());
                 return;
             }
 
             // if it's not a command simply display the text
             playVA();
             CharacterManager.Instance.changeLightingFocus();
-            dialogue.Say(currentLine);
+            dialogue.Say(currentNode.getCurrentLine());
         });
 
     }
@@ -299,7 +310,7 @@ public class ScriptParser : Singleton<ScriptParser>
         temp.Position = 0;
         reader = new StreamReader(temp);
         readNextLine();
-        parseLine(currentLine);
+        parseLine(currentNode.getCurrentLine());
     }
     public List<string> getOptionalBlock()
     {
@@ -339,7 +350,7 @@ public class ScriptParser : Singleton<ScriptParser>
         temp.Position = 0;
         reader = new StreamReader(temp);
         readNextLine();
-        parseLine(currentLine);
+        parseLine(currentNode.getCurrentLine());
     }
 
 

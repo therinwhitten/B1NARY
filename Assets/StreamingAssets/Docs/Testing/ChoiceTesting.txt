@@ -5,6 +5,7 @@ Hi!
 {
     Go get food
     [
+        123
         {setbool: gotfood,true}
         Haru::
         [Smile]
@@ -15,11 +16,14 @@ Hi!
         {setbool: gotfood,false}
         Haru::
         [Sad]
-        Aw :'(
+        Aw :'(    
     ]
 }
+This is where we continue
+This is where we don't continue
 {if: gotfood,true}
 {
-
+    Narrator::
+    And then they got food
 }
 The End!

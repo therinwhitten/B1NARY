@@ -100,27 +100,31 @@ public class CommandsManager : Singleton<CommandsManager>
                 AudioManager.Instance.FadeOut(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim()));
                 break;
             case "choice":
-                ScriptParser.Instance.parseChoice(args[0].ToString().Trim());
+                ScriptParser.Instance.paused = true;
+                ScriptParser.Instance.currentNode.parseChoice(args[0].ToString().Trim());
                 break;
             case "setbool":
                 PersistentData.Instance.state.bools[args[0].ToString().Trim()] = bool.Parse(args[1].ToString().Trim());
                 break;
             case "if":
                 // Debug.Log("If block recognized");
-                List<string> block = ScriptParser.Instance.getOptionalBlock();
+                DialogueNode node = ScriptParser.Instance.currentNode.makeConditionalNode();
+                DialogueNode conditional = node; ;
                 bool var = PersistentData.Instance.state.bools[args[0].ToString().Trim()];
                 bool val = bool.Parse(args[1].ToString().Trim());
                 if (var == val)
                 {
                     // Debug.Log("Condition met. Playing optional block...");
-                    ScriptParser.Instance.playOptionalBlock(block);
-
+                    ScriptParser.Instance.currentNode = conditional;
+                    ScriptParser.Instance.paused = false;
+                    ScriptParser.Instance.parseLine(conditional.getCurrentLine());
                 }
                 else
                 {
                     // Debug.Log("Condition not met. Skipping...");
                     ScriptParser.Instance.paused = false;
-                    ScriptParser.Instance.changeScriptFile(ScriptParser.Instance.scriptName, ScriptParser.Instance.continueIndex);
+                    ScriptParser.Instance.currentNode.index--;
+                    ScriptParser.Instance.parseLine(node.getCurrentLine());
                 }
                 break;
         }

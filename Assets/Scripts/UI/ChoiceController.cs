@@ -19,7 +19,7 @@ public class ChoiceController : MonoBehaviour
             Destroy(child.gameObject);
         }
         // generate a button for each choice from the parser
-        foreach (string choice in ScriptParser.Instance.currentChoiceOptions.Keys)
+        foreach (string choice in ScriptParser.Instance.currentNode.choices.Keys)
         {
             GameObject choiceButton = Instantiate(Resources.Load<GameObject>("UI/Choice/Choice Button"), panel.transform);
             ChoiceButton choiceScript = choiceButton.GetComponent<ChoiceButton>();
@@ -27,7 +27,7 @@ public class ChoiceController : MonoBehaviour
         }
         // show choice panel
         gameObject.SendMessage("fadeIn");
-    
+
         // Debug.Log("If u read this u are the gae");
     }
 
