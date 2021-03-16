@@ -93,23 +93,23 @@ public class ScriptParser : Singleton<ScriptParser>
         {
             if (!dialogue.isSpeaking || dialogue.isWaitingForUserInput)
             {
-                // if end of file has been reached
-                if (currentNode.endReached())
-                {
-                    if (currentNode.previous != null)
-                    {
-                        // if we reached the end of the node but there's a parent node,
-                        // continue from where we left off
-                        DialogueNode previousNode = currentNode.previous;
-                        currentNode = previousNode;
-                        // currentNode.index--;
-                        parseLine(currentNode.getCurrentLine());
-                    }
-                    else
-                    {
-                        return;
-                    }
-                }
+                // // if end of file has been reached
+                // if (currentNode.endReached())
+                // {
+                //     if (currentNode.previous != null)
+                //     {
+                //         // if we reached the end of the node but there's a parent node,
+                //         // continue from where we left off
+                //         DialogueNode previousNode = currentNode.previous;
+                //         currentNode = previousNode;
+                //         currentNode.index--;
+                //         parseLine(currentNode.getCurrentLine());
+                //     }
+                //     else
+                //     {
+                //         return;
+                //     }
+                // }
                 // else grab next line
                 readNextLine();
                 parseLine(currentNode.getCurrentLine());
@@ -236,123 +236,6 @@ public class ScriptParser : Singleton<ScriptParser>
         });
 
     }
-    public void parseChoice(string choiceTitle = "")
-    {
-        paused = true;
-        choice = true;
-        DialogueSystem.Instance.Say(choiceTitle);
-        StreamReader newReader = new StreamReader(path);
-        currentChoiceOptions = new Dictionary<string, List<string>>();
-        List<string> choiceStrings = new List<string>();
-        continueIndex = 0;
-        string line = "";
-        while (continueIndex < lineIndex)
-        {
-            line = newReader.ReadLine();
-            continueIndex++;
-        }
-        string choiceName = "";
-        newReader.ReadLine();
-
-        while (!line.Trim().Equals("}"))
-        {
-            line = newReader.ReadLine();
-            choiceStrings.Add(line);
-            continueIndex++;
-        }
-        choiceStrings.RemoveAt(choiceStrings.Count - 1);
-        continueIndex += 2;
-        for (int i = 0; i < choiceStrings.Count; i++)
-        {
-            string item = choiceStrings[i].Trim();
-            if (item.Equals("["))
-            {
-                int j = i + 1;
-                List<string> choiceLines = new List<string>();
-                while (!choiceStrings[j].Trim().Equals("]"))
-                {
-                    choiceLines.Add(choiceStrings[j].Trim());
-                    j++;
-                }
-                // Debug.Log("choice lines found: " + choiceLines.Count);
-                currentChoiceOptions.Add(choiceName, choiceLines);
-                choiceName = "";
-                i = j;
-                continue;
-            }
-            choiceName.Trim();
-            if (choiceName == "")
-            {
-                choiceName = item.Trim();
-            }
-            else
-            {
-                choiceName += System.Environment.NewLine + item.Trim();
-            }
-            // Debug.Log("choice name found: " + choiceName);
-        }
-        ChoiceController choiceController = GameObject.Find("Choice Panel").GetComponent<ChoiceController>();
-        choiceController.newChoice();
-    }
-
-    public void selectChoice(string choiceName)
-    {
-        Debug.Log("Selected option: " + choiceName);
-        MemoryStream temp = new MemoryStream();
-        List<string> mylist = currentChoiceOptions[choiceName];
-        string continuestr = "{changescript: " + scriptName + ", " + continueIndex + "}";
-        // Debug.Log(continuestr);
-        mylist.Add(continuestr);
-        string text = string.Join("\n", mylist.ToArray());
-        byte[] buffer = Encoding.UTF8.GetBytes(text);
-        temp.Write(buffer, 0, buffer.Length);
-        paused = false;
-        temp.Position = 0;
-        reader = new StreamReader(temp);
-        readNextLine();
-        parseLine(currentNode.getCurrentLine());
-    }
-    public List<string> getOptionalBlock()
-    {
-        paused = true;
-        StreamReader newReader = new StreamReader(path);
-        List<string> choiceStrings = new List<string>();
-        continueIndex = 0;
-        string line = "";
-        while (continueIndex < lineIndex)
-        {
-            line = newReader.ReadLine();
-            continueIndex++;
-        }
-        // newReader.ReadLine();
-
-        while (!line.Trim().Equals("}"))
-        {
-            line = newReader.ReadLine();
-            choiceStrings.Add(line);
-            continueIndex++;
-        }
-        choiceStrings.RemoveAt(choiceStrings.Count - 1);
-        // continueIndex++;
-        return choiceStrings;
-    }
-
-    public void playOptionalBlock(List<string> block)
-    {
-        string continuestr = "{changescript: " + scriptName + ", " + continueIndex + "}";
-        // Debug.Log(continuestr);
-        MemoryStream temp = new MemoryStream();
-        block.Add(continuestr);
-        string text = string.Join("\n", block.ToArray());
-        byte[] buffer = Encoding.UTF8.GetBytes(text);
-        temp.Write(buffer, 0, buffer.Length);
-        paused = false;
-        temp.Position = 0;
-        reader = new StreamReader(temp);
-        readNextLine();
-        parseLine(currentNode.getCurrentLine());
-    }
-
 
     private void OnApplicationQuit()
     {

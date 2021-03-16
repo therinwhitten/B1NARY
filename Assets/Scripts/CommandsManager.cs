@@ -108,23 +108,26 @@ public class CommandsManager : Singleton<CommandsManager>
                 break;
             case "if":
                 // Debug.Log("If block recognized");
-                DialogueNode node = ScriptParser.Instance.currentNode.makeConditionalNode();
-                DialogueNode conditional = node; ;
+                ScriptParser.Instance.paused = true;
+
+                DialogueNode conditional = ScriptParser.Instance.currentNode.makeConditionalNode();
                 bool var = PersistentData.Instance.state.bools[args[0].ToString().Trim()];
                 bool val = bool.Parse(args[1].ToString().Trim());
                 if (var == val)
                 {
                     // Debug.Log("Condition met. Playing optional block...");
+                    // conditional.index--;
                     ScriptParser.Instance.currentNode = conditional;
                     ScriptParser.Instance.paused = false;
-                    ScriptParser.Instance.parseLine(conditional.getCurrentLine());
+
+                    ScriptParser.Instance.parseLine(conditional.lines[0]);
                 }
                 else
                 {
                     // Debug.Log("Condition not met. Skipping...");
                     ScriptParser.Instance.paused = false;
-                    ScriptParser.Instance.currentNode.index--;
-                    ScriptParser.Instance.parseLine(node.getCurrentLine());
+                    // ScriptParser.Instance.currentNode.index--;
+                    // ScriptParser.Instance.parseLine(node.getCurrentLine());
                 }
                 break;
         }

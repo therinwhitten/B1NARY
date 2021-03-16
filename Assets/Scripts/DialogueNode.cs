@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 public class DialogueNode
 {
     public DialogueNode previous;
-    List<string> lines;
+    public List<string> lines;
     public int index;
     Regex commandRegex = new Regex("\\{(.*?)\\}");
 
@@ -29,10 +29,29 @@ public class DialogueNode
 
     public string getCurrentLine()
     {
-        return lines[index];
+        try
+        {
+            return lines[index];
+        }
+        catch (System.ArgumentOutOfRangeException)
+        {
+            Debug.Log("End reached. Returning to parent node...");
+            ScriptParser.Instance.currentNode = previous;
+            return previous.getCurrentLine();
+        }
     }
+
     public void nextLine()
     {
+        // index = Mathf.Clamp(index, 0, lines.Count);
+        // if (index == lines.Count)
+        // {
+        //     ScriptParser.Instance.currentNode = previous;
+        // }
+        // else
+        // {
+        //     index++;
+        // }
         index++;
     }
     public void moveIndex(int newIndex)
@@ -48,9 +67,16 @@ public class DialogueNode
         ScriptParser.Instance.paused = true;
         choices = new Dictionary<string, DialogueNode>();
         DialogueSystem.Instance.Say(choiceTitle);
-        List<string> block = getOptionalBlock(commandRegex, lines, index);
+        List<string> block = getOptionalBlock(lines, '{', '}', index);
+        int id = index;
+        // foreach (string line in block)
+        // {
+        //     Debug.Log(id + ": " + line);
+        //     id++;
+        // }
         int continueIndex = index + block.Count;
-        Debug.Log(lines[continueIndex]);
+        // Debug.Log("ContinueIndex = " + continueIndex);
+        // Debug.Log(lines[continueIndex]);
         removeEnclosers(block, '{', '}');
         string choiceName = "";
         for (int i = 0; i < block.Count; i++)
@@ -59,14 +85,17 @@ public class DialogueNode
             {
                 if (choiceName == "")
                 {
-                    choiceName = block[i];
+                    choiceName = block[i].Trim();
                 }
                 else
                 {
-                    choiceName += System.Environment.NewLine + block[i];
+                    choiceName += System.Environment.NewLine + block[i].Trim();
                 }
-                List<string> choiceBlock = getOptionalBlock(emoteRegex, block, i);
-                i += choiceBlock.Count;
+            }
+            else
+            {
+                List<string> choiceBlock = getOptionalBlock(block, '[', ']', i - 1);
+                i += choiceBlock.Count - 1;
                 removeEnclosers(choiceBlock, '[', ']');
                 DialogueNode choice = new DialogueNode(choiceBlock);
                 choice.previous = this;
@@ -74,49 +103,68 @@ public class DialogueNode
                 choiceName = "";
             }
         }
-        index = continueIndex - 1;
+        index = continueIndex;
         ChoiceController choiceController = GameObject.Find("Choice Panel").GetComponent<ChoiceController>();
         choiceController.newChoice();
     }
     public void selectChoice(string choiceName)
     {
+        // Debug.Log(choiceName);
+        // Debug.Log(choices.Keys.Count);
+        // foreach (string key in choices.Keys)
+        // {
+        //     Debug.Log(key);
+        // }
         ScriptParser.Instance.currentNode = choices[choiceName];
         ScriptParser.Instance.paused = false;
         ScriptParser.Instance.parseLine(choices[choiceName].getCurrentLine());
     }
     public DialogueNode makeConditionalNode()
     {
-        List<string> block = getOptionalBlock(commandRegex, lines, index);
-        int continueIndex = index + block.Count + 1;
-        Debug.Log(index);
-        Debug.Log(continueIndex);
-        index = continueIndex;
+        List<string> block = getOptionalBlock(lines, '{', '}', index);
+        int continueIndex = index + block.Count;
+
         removeEnclosers(block, '{', '}');
+        foreach (string line in block)
+        {
+            Debug.Log(line);
+        }
         DialogueNode conditional = new DialogueNode(block);
         conditional.previous = this;
+        index = continueIndex;
         return conditional;
     }
-    public List<string> getOptionalBlock(Regex regex, List<string> lines, int i)
+    public List<string> getOptionalBlock(List<string> lines, char b, char e, int id)
     {
-        i++;
+        id++;
+        int depth = 0;
+        bool found = false;
         List<string> Blines = new List<string>();
-        string Rlines = "";
+        // Regex commandRegex = new Regex("\\{(.*?)\\}");
+        Regex regex = new Regex("\\" + b + "(.*?)\\" + e);
         // grabs the optional block - enclosed with {}
         // we use Rlines to check for the {abc} pattern across multiple lines,
         // without including the script commands
-        while (!regex.IsMatch(Rlines))
+        for (int i = id; i < lines.Count; i++)
         {
             if (regex.IsMatch(lines[i]))
             {
                 Blines.Add(lines[i]);
-                i++;
                 continue;
             }
-            else
+            if (lines[i].Contains(b.ToString()))
             {
-                Blines.Add(lines[i]);
-                Rlines += (" " + lines[i]);
-                i++;
+                found = true;
+                depth++;
+            }
+            else if (lines[i].Contains(e.ToString()))
+            {
+                depth--;
+            }
+            Blines.Add(lines[i]);
+            if (depth == 0 && found)
+            {
+                break;
             }
         }
         return Blines;
@@ -159,6 +207,7 @@ public class DialogueNode
             if (block[i].Equals(""))
             {
                 block.RemoveAt(i);
+                i--;
             }
         }
     }

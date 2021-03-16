@@ -1,11 +1,10 @@
 {spawnchar: Haru, 0.5}
 Haru::
-Hi!
-{choice: What do you do?}
+[Sad]
+{choice: I'm hungry!}
 {
-    Go get food
+    Let's go get food!
     [
-        123
         {setbool: gotfood,true}
         Haru::
         [Smile]
@@ -16,14 +15,42 @@ Hi!
         {setbool: gotfood,false}
         Haru::
         [Sad]
-        Aw :'(    
+        Aw :'(
+        {choice: U sure?}
+        {
+            Yes I'm sure
+            [
+                {setbool: gotfood,false}
+                Haru::
+                [Angry]
+                Ugh fine!
+                [Sad]
+                I'll just cook for myself...
+            ]
+            Nah let's go grab some food
+            [
+                {setbool: gotfood,true}
+                Haru::
+                [Smile]
+                Yay!
+            ]
+        }
     ]
 }
-This is where we continue
-This is where we don't continue
+Test
+Test2
 {if: gotfood,true}
 {
-    Narrator::
-    And then they got food
+    {choice: What do you want to get?}
+    {
+        Pizza
+        [
+            Ok let's go to Papa Jonathan's!
+        ]
+        Chinese
+        [
+            Alright shall we go to 巴巴布伊 then?
+        ]
+    }
 }
 The End!
