@@ -28,7 +28,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
     StreamReader reader = null;
 
-    string currentLine;
+    // public string currentNode.getCurrentLine() { get { return currentNode.getCurrentLine(); } }
 
     // regex for grabbing rich text tags
     Regex richRegex = new Regex("<(.*?)>");
@@ -38,14 +38,13 @@ public class ScriptParser : Singleton<ScriptParser>
 
     // regex for commands
     Regex commandRegex = new Regex("\\{(.*?)\\}");
-
+    public DialogueNode currentNode;
 
 
 
     // Start is called before the first frame update
     void Start()
     {
-        TextAsset textFile = Resources.Load<TextAsset>("Docs/CharacterPrefabTestScript");
         DontDestroyOnLoad(this.gameObject);
         // initialize();
     }
@@ -54,22 +53,30 @@ public class ScriptParser : Singleton<ScriptParser>
     {
         lineIndex = 0;
         reader = new StreamReader(path);
-        readNextLine();
-        parseLine(currentLine);
+        currentNode = new DialogueNode(getLines());
+        // readNextLine();
+        parseLine(currentNode.getCurrentLine());
     }
-    public void changeScriptFile(string newScript, int position = 1)
+    public void changeScriptFile(string newScript, int position = 0)
     {
         scriptName = newScript;
         reader = new StreamReader(path);
-        lineIndex = 0;
-        while (lineIndex != position)
-        {
-            readNextLine();
-        }
-        parseLine(currentLine);
+        currentNode = new DialogueNode(getLines());
+        currentNode.moveIndex(position);
+        parseLine(currentNode.getCurrentLine());
         scriptChanged = false;
     }
 
+    List<string> getLines()
+    {
+        List<string> lines = new List<string>();
+        while (!reader.EndOfStream)
+        {
+            lines.Add(reader.ReadLine());
+        }
+        reader.Close();
+        return lines;
+    }
 
     // Update is called once per frame
     void Update()
@@ -86,14 +93,26 @@ public class ScriptParser : Singleton<ScriptParser>
         {
             if (!dialogue.isSpeaking || dialogue.isWaitingForUserInput)
             {
-                // if end of file has been reached
-                if (reader.Peek() == -1)
-                {
-                    return;
-                }
+                // // if end of file has been reached
+                // if (currentNode.endReached())
+                // {
+                //     if (currentNode.previous != null)
+                //     {
+                //         // if we reached the end of the node but there's a parent node,
+                //         // continue from where we left off
+                //         DialogueNode previousNode = currentNode.previous;
+                //         currentNode = previousNode;
+                //         currentNode.index--;
+                //         parseLine(currentNode.getCurrentLine());
+                //     }
+                //     else
+                //     {
+                //         return;
+                //     }
+                // }
                 // else grab next line
                 readNextLine();
-                parseLine(currentLine);
+                parseLine(currentNode.getCurrentLine());
             }
             else
             // if the dialogue is still being written out just skip to the end of the line
@@ -133,7 +152,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
         }
     }
-    void parseLine(string line)
+    public void parseLine(string line)
     {
         // RICH TEXT
         // Unity already supports rich text natively,
@@ -149,7 +168,7 @@ public class ScriptParser : Singleton<ScriptParser>
             {
                 playVA();
                 CharacterManager.Instance.changeLightingFocus();
-                dialogue.SayRich(currentLine);
+                dialogue.SayRich(currentNode.getCurrentLine());
                 return;
             }
             // handles speaker change. Also handles which character's expressions/animations are being controlled
@@ -160,7 +179,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
                 // update character sprite to current speaker sprite
                 readNextLine();
-                parseLine(currentLine);
+                parseLine(currentNode.getCurrentLine());
                 return;
             }
 
@@ -175,7 +194,7 @@ public class ScriptParser : Singleton<ScriptParser>
                 string expression = line.Trim(tagChars);
                 CharacterManager.Instance.changeExpression(dialogue.currentSpeaker, expression);
                 readNextLine();
-                parseLine(currentLine);
+                parseLine(currentNode.getCurrentLine());
                 return;
             }
 
@@ -206,134 +225,17 @@ public class ScriptParser : Singleton<ScriptParser>
                     return;
                 }
                 readNextLine();
-                parseLine(currentLine);
+                parseLine(currentNode.getCurrentLine());
                 return;
             }
 
             // if it's not a command simply display the text
             playVA();
             CharacterManager.Instance.changeLightingFocus();
-            dialogue.Say(currentLine);
+            dialogue.Say(currentNode.getCurrentLine());
         });
 
     }
-    public void parseChoice(string choiceTitle = "")
-    {
-        paused = true;
-        choice = true;
-        DialogueSystem.Instance.Say(choiceTitle);
-        StreamReader newReader = new StreamReader(path);
-        currentChoiceOptions = new Dictionary<string, List<string>>();
-        List<string> choiceStrings = new List<string>();
-        continueIndex = 0;
-        string line = "";
-        while (continueIndex < lineIndex)
-        {
-            line = newReader.ReadLine();
-            continueIndex++;
-        }
-        string choiceName = "";
-        newReader.ReadLine();
-
-        while (!line.Trim().Equals("}"))
-        {
-            line = newReader.ReadLine();
-            choiceStrings.Add(line);
-            continueIndex++;
-        }
-        choiceStrings.RemoveAt(choiceStrings.Count - 1);
-        continueIndex += 2;
-        for (int i = 0; i < choiceStrings.Count; i++)
-        {
-            string item = choiceStrings[i].Trim();
-            if (item.Equals("["))
-            {
-                int j = i + 1;
-                List<string> choiceLines = new List<string>();
-                while (!choiceStrings[j].Trim().Equals("]"))
-                {
-                    choiceLines.Add(choiceStrings[j].Trim());
-                    j++;
-                }
-                // Debug.Log("choice lines found: " + choiceLines.Count);
-                currentChoiceOptions.Add(choiceName, choiceLines);
-                choiceName = "";
-                i = j;
-                continue;
-            }
-            choiceName.Trim();
-            if (choiceName == "")
-            {
-                choiceName = item.Trim();
-            }
-            else
-            {
-                choiceName += System.Environment.NewLine + item.Trim();
-            }
-            // Debug.Log("choice name found: " + choiceName);
-        }
-        ChoiceController choiceController = GameObject.Find("Choice Panel").GetComponent<ChoiceController>();
-        choiceController.newChoice();
-    }
-
-    public void selectChoice(string choiceName)
-    {
-        Debug.Log("Selected option: " + choiceName);
-        MemoryStream temp = new MemoryStream();
-        List<string> mylist = currentChoiceOptions[choiceName];
-        string continuestr = "{changescript: " + scriptName + ", " + continueIndex + "}";
-        // Debug.Log(continuestr);
-        mylist.Add(continuestr);
-        string text = string.Join("\n", mylist.ToArray());
-        byte[] buffer = Encoding.UTF8.GetBytes(text);
-        temp.Write(buffer, 0, buffer.Length);
-        paused = false;
-        temp.Position = 0;
-        reader = new StreamReader(temp);
-        readNextLine();
-        parseLine(currentLine);
-    }
-    public List<string> getOptionalBlock()
-    {
-        paused = true;
-        StreamReader newReader = new StreamReader(path);
-        List<string> choiceStrings = new List<string>();
-        continueIndex = 0;
-        string line = "";
-        while (continueIndex < lineIndex)
-        {
-            line = newReader.ReadLine();
-            continueIndex++;
-        }
-        // newReader.ReadLine();
-
-        while (!line.Trim().Equals("}"))
-        {
-            line = newReader.ReadLine();
-            choiceStrings.Add(line);
-            continueIndex++;
-        }
-        choiceStrings.RemoveAt(choiceStrings.Count - 1);
-        // continueIndex++;
-        return choiceStrings;
-    }
-
-    public void playOptionalBlock(List<string> block)
-    {
-        string continuestr = "{changescript: " + scriptName + ", " + continueIndex + "}";
-        // Debug.Log(continuestr);
-        MemoryStream temp = new MemoryStream();
-        block.Add(continuestr);
-        string text = string.Join("\n", block.ToArray());
-        byte[] buffer = Encoding.UTF8.GetBytes(text);
-        temp.Write(buffer, 0, buffer.Length);
-        paused = false;
-        temp.Position = 0;
-        reader = new StreamReader(temp);
-        readNextLine();
-        parseLine(currentLine);
-    }
-
 
     private void OnApplicationQuit()
     {
@@ -341,7 +243,6 @@ public class ScriptParser : Singleton<ScriptParser>
     }
     void readNextLine()
     {
-        currentLine = reader.ReadLine();
-        lineIndex++;
+        currentNode.nextLine();
     }
 }

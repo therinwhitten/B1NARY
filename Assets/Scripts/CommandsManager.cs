@@ -62,7 +62,6 @@ public class CommandsManager : Singleton<CommandsManager>
                 break;
             case "changescene":
                 TransitionManager.transitionScene(args[0].ToString().Trim());
-                // TransitionManager.TransitionBG(args[0].ToString().Trim());
                 break;
             case "changescript":
                 ScriptParser.Instance.scriptChanged = true;
@@ -74,8 +73,6 @@ public class CommandsManager : Singleton<CommandsManager>
                 {
                     ScriptParser.Instance.changeScriptFile(args[0].ToString().Trim());
                 }
-                // Instance.StartCoroutine(waitForTransitionsThenChangeScript(args[0].ToString().Trim()));
-                // TransitionManager.TransitionBG(args[0].ToString().Trim());
                 break;
             case "emptyscene":
                 CharacterManager.Instance.emptyScene();
@@ -100,27 +97,30 @@ public class CommandsManager : Singleton<CommandsManager>
                 AudioManager.Instance.FadeOut(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim()));
                 break;
             case "choice":
-                ScriptParser.Instance.parseChoice(args[0].ToString().Trim());
+                ScriptParser.Instance.paused = true;
+                ScriptParser.Instance.currentNode.parseChoice(args[0].ToString().Trim());
                 break;
             case "setbool":
                 PersistentData.Instance.state.bools[args[0].ToString().Trim()] = bool.Parse(args[1].ToString().Trim());
                 break;
             case "if":
                 // Debug.Log("If block recognized");
-                List<string> block = ScriptParser.Instance.getOptionalBlock();
+                ScriptParser.Instance.paused = true;
+
+                DialogueNode conditional = ScriptParser.Instance.currentNode.makeConditionalNode();
                 bool var = PersistentData.Instance.state.bools[args[0].ToString().Trim()];
                 bool val = bool.Parse(args[1].ToString().Trim());
                 if (var == val)
                 {
                     // Debug.Log("Condition met. Playing optional block...");
-                    ScriptParser.Instance.playOptionalBlock(block);
-
+                    ScriptParser.Instance.currentNode = conditional;
+                    ScriptParser.Instance.paused = false;
                 }
                 else
                 {
                     // Debug.Log("Condition not met. Skipping...");
+                    ScriptParser.Instance.currentNode.index--;
                     ScriptParser.Instance.paused = false;
-                    ScriptParser.Instance.changeScriptFile(ScriptParser.Instance.scriptName, ScriptParser.Instance.continueIndex);
                 }
                 break;
         }
