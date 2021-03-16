@@ -62,7 +62,6 @@ public class CommandsManager : Singleton<CommandsManager>
                 break;
             case "changescene":
                 TransitionManager.transitionScene(args[0].ToString().Trim());
-                // TransitionManager.TransitionBG(args[0].ToString().Trim());
                 break;
             case "changescript":
                 ScriptParser.Instance.scriptChanged = true;
@@ -74,8 +73,6 @@ public class CommandsManager : Singleton<CommandsManager>
                 {
                     ScriptParser.Instance.changeScriptFile(args[0].ToString().Trim());
                 }
-                // Instance.StartCoroutine(waitForTransitionsThenChangeScript(args[0].ToString().Trim()));
-                // TransitionManager.TransitionBG(args[0].ToString().Trim());
                 break;
             case "emptyscene":
                 CharacterManager.Instance.emptyScene();
@@ -116,18 +113,14 @@ public class CommandsManager : Singleton<CommandsManager>
                 if (var == val)
                 {
                     // Debug.Log("Condition met. Playing optional block...");
-                    // conditional.index--;
                     ScriptParser.Instance.currentNode = conditional;
                     ScriptParser.Instance.paused = false;
-                    // ScriptParser.Instance.parseLine(conditional.getCurrentLine());
                 }
                 else
                 {
                     // Debug.Log("Condition not met. Skipping...");
                     ScriptParser.Instance.currentNode.index--;
                     ScriptParser.Instance.paused = false;
-                    // ScriptParser.Instance.currentNode.index--;
-                    // ScriptParser.Instance.parseLine(node.getCurrentLine());
                 }
                 break;
         }
