@@ -23,7 +23,6 @@ public class DialogueNode
     }
     public void readLine()
     {
-        // ScriptParser.Instance.parseLine(lines[index]);
         index++;
     }
 
@@ -36,22 +35,20 @@ public class DialogueNode
         catch (System.ArgumentOutOfRangeException)
         {
             Debug.Log("End reached. Returning to parent node...");
-            ScriptParser.Instance.currentNode = previous;
-            return previous.getCurrentLine();
+            if (previous != null)
+            {
+                ScriptParser.Instance.currentNode = previous;
+                return previous.getCurrentLine();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 
     public void nextLine()
     {
-        // index = Mathf.Clamp(index, 0, lines.Count);
-        // if (index == lines.Count)
-        // {
-        //     ScriptParser.Instance.currentNode = previous;
-        // }
-        // else
-        // {
-        //     index++;
-        // }
         index++;
     }
     public void moveIndex(int newIndex)
@@ -68,15 +65,12 @@ public class DialogueNode
         choices = new Dictionary<string, DialogueNode>();
         DialogueSystem.Instance.Say(choiceTitle);
         List<string> block = getOptionalBlock(lines, '{', '}', index);
-        int id = index;
-        // foreach (string line in block)
-        // {
-        //     Debug.Log(id + ": " + line);
-        //     id++;
-        // }
-        int continueIndex = index + block.Count;
-        // Debug.Log("ContinueIndex = " + continueIndex);
-        // Debug.Log(lines[continueIndex]);
+
+        foreach (string line in block)
+        {
+            lines.RemoveAt(index);
+        }
+        lines.RemoveAt(index);
         removeEnclosers(block, '{', '}');
         string choiceName = "";
         for (int i = 0; i < block.Count; i++)
@@ -103,40 +97,42 @@ public class DialogueNode
                 choiceName = "";
             }
         }
-        index = continueIndex;
+        index--;
         ChoiceController choiceController = GameObject.Find("Choice Panel").GetComponent<ChoiceController>();
         choiceController.newChoice();
     }
-    public void selectChoice(string choiceName)
+    public void selectChoice(DialogueNode choice)
     {
-        // Debug.Log(choiceName);
-        // Debug.Log(choices.Keys.Count);
-        // foreach (string key in choices.Keys)
-        // {
-        //     Debug.Log(key);
-        // }
-        ScriptParser.Instance.currentNode = choices[choiceName];
+        ScriptParser.Instance.currentNode = choice;
         ScriptParser.Instance.paused = false;
-        ScriptParser.Instance.parseLine(choices[choiceName].getCurrentLine());
+        ScriptParser.Instance.parseLine(choice.getCurrentLine());
     }
     public DialogueNode makeConditionalNode()
     {
         List<string> block = getOptionalBlock(lines, '{', '}', index);
-        int continueIndex = index + block.Count;
 
-        removeEnclosers(block, '{', '}');
         foreach (string line in block)
         {
-            Debug.Log(line);
+            lines.RemoveAt(index);
         }
+        lines.RemoveAt(index);
+        int id = 1;
+        foreach (string line in lines)
+        {
+            Debug.Log(id + ": " + line);
+            id++;
+        }
+        removeEnclosers(block, '{', '}');
+
+        // 5HEAD MOVE
+        block.Insert(0, "");
+
         DialogueNode conditional = new DialogueNode(block);
         conditional.previous = this;
-        index = continueIndex;
         return conditional;
     }
     public List<string> getOptionalBlock(List<string> lines, char b, char e, int id)
     {
-        id++;
         int depth = 0;
         bool found = false;
         List<string> Blines = new List<string>();
@@ -145,7 +141,7 @@ public class DialogueNode
         // grabs the optional block - enclosed with {}
         // we use Rlines to check for the {abc} pattern across multiple lines,
         // without including the script commands
-        for (int i = id; i < lines.Count; i++)
+        for (int i = id + 1; i < lines.Count; i++)
         {
             if (regex.IsMatch(lines[i]))
             {

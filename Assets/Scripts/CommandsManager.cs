@@ -119,12 +119,12 @@ public class CommandsManager : Singleton<CommandsManager>
                     // conditional.index--;
                     ScriptParser.Instance.currentNode = conditional;
                     ScriptParser.Instance.paused = false;
-
-                    ScriptParser.Instance.parseLine(conditional.lines[0]);
+                    // ScriptParser.Instance.parseLine(conditional.getCurrentLine());
                 }
                 else
                 {
                     // Debug.Log("Condition not met. Skipping...");
+                    ScriptParser.Instance.currentNode.index--;
                     ScriptParser.Instance.paused = false;
                     // ScriptParser.Instance.currentNode.index--;
                     // ScriptParser.Instance.parseLine(node.getCurrentLine());

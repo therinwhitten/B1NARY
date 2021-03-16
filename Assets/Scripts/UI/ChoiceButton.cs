@@ -15,6 +15,7 @@ public class ChoiceButton : MonoBehaviour
     BoxCollider2D col;
     RectTransform rect;
     bool interactable { get { return canvasGroup.interactable; } }
+    public DialogueNode node;
     // Start is called before the first frame update
     void Start()
     {
@@ -64,7 +65,7 @@ public class ChoiceButton : MonoBehaviour
         {
             // audio.Stop();
             // audio.PlayOneShot(pressSound);
-            ScriptParser.Instance.currentNode.selectChoice(choiceName);
+            ScriptParser.Instance.currentNode.selectChoice(node);
             AudioManager.Instance.Play("Button-Press", true);
             animator.SetBool("pressed", true);
             controller.SendMessage("fadeOut");

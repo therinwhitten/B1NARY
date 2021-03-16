@@ -24,6 +24,7 @@ public class ChoiceController : MonoBehaviour
             GameObject choiceButton = Instantiate(Resources.Load<GameObject>("UI/Choice/Choice Button"), panel.transform);
             ChoiceButton choiceScript = choiceButton.GetComponent<ChoiceButton>();
             choiceScript.assignName(choice);
+            choiceScript.node = ScriptParser.Instance.currentNode.choices[choice];
         }
         // show choice panel
         gameObject.SendMessage("fadeIn");
