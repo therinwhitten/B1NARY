@@ -1,0 +1,29 @@
+{spawnchar: Haru, 0.5}
+Haru::
+[Sad]
+{choice: I'm hungry!}
+{
+    Let's go get food!
+    [
+        {setbool: gotfood,true}
+        Haru::
+        [Smile]
+        Yay!
+    ]
+    Go home
+    [
+        {setbool: gotfood,false}
+        Haru::
+        [Sad]
+        Aw :'(
+    ]
+}
+Test
+Test2
+{if: gotfood,true}
+{
+    1
+    2
+    3
+}
+The End!
