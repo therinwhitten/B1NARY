@@ -280,3 +280,19 @@ Narrator::
 <i>The lab tech smiles for the first time at the sound of the door. He starts guiding all the press into the lab with an air of excitement.</i>
 Shirobi::
 "Why, the courageous, pioneering spirit....."
+Narrator:: 
+{choice: Which Route?}
+ {
+    Male Route
+    [
+       Narrator::
+       "Male Route it is!"
+       {changeScript: Male/Prologue}
+    ]
+    Female Route
+    [
+       Narrator::
+       "Female Route it is!"
+       {changeScript: Female/Prologue} 
+    ]
+ }
