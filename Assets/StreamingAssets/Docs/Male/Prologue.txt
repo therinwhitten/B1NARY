@@ -133,6 +133,7 @@ MC::
 {fadeinsound: LeavingFootsteps, .3}
 {fadeinsound: Door, .1}
 {fadeoutsound: LabAmbience, .1}
+{fadeoutsound: Lab Ambience Music Light, 2}
 <i>The sound of the DIHI suddenly changes, and the feel of ionizing in the air increases.</i>
 {fadeinsound: DIHI Up Close, 1}
 <i>I look into the observation lounge window, where reporters, and lab technicians are chatting.</i>
@@ -173,7 +174,6 @@ Shirobi::
 MC::
 <i>I walk to the center of the room, looking straight at the chair.</i>
 {changeScene: The Lab}
-{fadeoutsound:Lab Ambience Music Light}
 {fadeinsound: FastHeartbeat, .5}
 {fadeinsound: DIHI Up Close, .1}
 {fadeinsound: DIHI High Power, .1}
@@ -204,7 +204,7 @@ MC::
  "Light me up Shirobi."
 Shirobi::
 "Jeez dude! Poor choice of words." 
-<i>He sighs, looking at the expectant press in the observation room.<i>
+<i>He sighs, looking at the expectant press in the observation room.</i>
 "It will be ok man. Just lean your head back, relax, and close your eyes."
 MC::
 {additive: on}
@@ -227,6 +227,16 @@ MC::
 <i>I feel my head start to tingle.</i>
 <i>The sounds of the chair is all I hear other than my own heartbeat.</i>
 <i>No press, no coworkers; just my heartbeat, the thrum of the chair, and my sudden fear of being alone. </i>
+{fadeoutsound: FastHeartbeat, .1}
+{fadeoutsound: Fast Keyboard Typing, .1}
+{fadeoutsound: Lab Computer Room Beeps 2, .1}
+{fadeoutsound: DIHI Low Power, .1}
+{fadeoutsound: DIHI Up Close, .1}
+{fadeoutsound: DIHI High Power, .1}
+{fadeoutsound: Laptop-Lab,.1}
 <i>Then, with an almost gut wrenching lurch, everything suddenly feels like it is being pulled to the top of my head.......</i>
-{fadeinsound: Brain Sucking Chair Activate, .2}
-{changeScript: Male/Prologue II}}
+{fadeinsound: Brain Sucking Chair Activate, .5}
+{changeBG: Black Screen}
+
+
+{changeScript: Male/Prologue II}
