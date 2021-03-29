@@ -32,7 +32,7 @@ Today may be a pivot in humanity's history.
 The first attempt at digitizing a human is today.
 {additive: off}
 {spawnChar: malesilo, -1, Male Bystander}
-{moveChar: Male Bystander, 0.10}
+{moveChar: Male Bystander, 0.20}
 Male Bystander::
 "I can't believe they are going through with this!"
 "What are they thinking?!"
@@ -57,7 +57,11 @@ Male Bystander::
 <i>Male Bystander scoffs audibly and looks up at the Broadcast</i>
 "Yeah, the power goes out on whatever server you are on, does your brain get scrambled?" 
 "Come on, haven't you been following the News? From what they said, you have to stay on a live server."
-"And let's not talk about the Machine! They have failed many mock tests before this event. I am surprised they even let humans near that pile of junk."
+{additive:on}
+"And let's not talk about the Machine! 
+They have failed many mock tests before this event.
+I am surprised they even let humans near that pile of junk."
+{additive:off}
 Female Bystander::
 <i>Female Bystander looks at Male Bystander with exasperation.</i> 
 "You might be a bit misinformed."
@@ -79,7 +83,7 @@ Just IMAGINE the pressure of sitting in that chair, in front of millions......"
 {moveChar: Female Bystander, -1}
 {moveChar: Male Bystander 2, 2}
 {loopBG: false}
-{playBG: Times Square Pan Up}
+{playBG: Prologue/Times Square Pan Up}
 {spawnChar: femalesilo, 2, Cindy}
 {moveChar: Cindy, .75}
 Narrator::
@@ -99,7 +103,6 @@ Cindy::
 {fadeoutsound: Times-Square-Crowd,2}
 {fadeinsound: Laptop-Lab,2}
 {fadeinsound: Fast Keyboard Typing, 2}
-{fadeinsound: Small-Group-Whisper,2}
 {fadeinsound: DIHI Low Power,5}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
