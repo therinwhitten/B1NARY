@@ -62,9 +62,12 @@ public class ScriptParser : Singleton<ScriptParser>
         scriptName = newScript;
         reader = new StreamReader(path);
         currentNode = new DialogueNode(getLines());
+        position -= 2;
+        position = Mathf.Clamp(position, 0, int.MaxValue);
         currentNode.moveIndex(position);
-        parseLine(currentNode.getCurrentLine());
         scriptChanged = false;
+
+        parseLine(currentNode.getCurrentLine());
     }
 
     List<string> getLines()
