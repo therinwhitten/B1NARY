@@ -11,13 +11,16 @@ public class AudioManager : Singleton<AudioManager>
     public Sound[] sounds;
 
     private Dictionary<String, AudioSource> sources;
+    private Dictionary<String, Sound> lib;
 
 
     private void Awake()
     {
         sources = new Dictionary<string, AudioSource>();
+        lib = new Dictionary<string, Sound>();
         foreach (Sound s in sounds)
         {
+            lib.Add(s.name, s);
             AudioSource source = gameObject.AddComponent<AudioSource>();
             source.clip = s.clip;
             source.loop = s.loop;
@@ -37,7 +40,7 @@ public class AudioManager : Singleton<AudioManager>
             Debug.LogWarning("Sound: " + sound + " not found!");
             return;
         }
-        float targetVolume = source.volume;
+        float targetVolume = lib[sound].volume;
         source.volume = 0f;
         source.Play();
         StartCoroutine(StartFade(source, duration, targetVolume));
