@@ -109,12 +109,13 @@ public class CharacterScript : MonoBehaviour
         try
         {
             // Debug.Log("Speaking line " + Line.index.ToString() + ": " + Line.line);
-            float volume = voice.volume;
-            voice.volume = 0f;
-            voice.Stop();
-            voice.clip = ScriptParser.Instance.voiceLines[Line.index.ToString()];
-            voice.volume = volume;
-            voice.Play();
+            AudioManager.Instance.PlayVoice(voice, voiceLines[Line.index.ToString()]);
+            // float volume = voice.volume;
+            // voice.volume = 0f;
+            // voice.Stop();
+            // voice.clip = ScriptParser.Instance.voiceLines[Line.index.ToString()];
+            // voice.volume = volume;
+            // voice.Play();
         }
         catch (KeyNotFoundException)
         {
