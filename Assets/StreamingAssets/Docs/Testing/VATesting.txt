@@ -1,11 +1,21 @@
 {spawnChar: Haru, 0}
 Haru::
 [Smile]
-I'M BLUE DABA DE DABA DIE
+Blah blah blah desu
 [Surprised]
-nani something something
-[Blushing]
-Eeh? Something something
+{choice: nani something something?}
+{
+    choice 1
+    [
+        [Blushing]
+        Eeh? Something something
+    ]
+    choice 2
+    [
+        [Normal]
+        Hm? Nande something?
+    ]
+}
 [Normal]
 Hm? Nande something?
 Sawari something something.
