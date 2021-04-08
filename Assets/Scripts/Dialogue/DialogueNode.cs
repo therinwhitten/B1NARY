@@ -7,14 +7,14 @@ using System.Text.RegularExpressions;
 public class DialogueNode
 {
     public DialogueNode previous;
-    public List<string> lines;
+    public List<DialogueLine> lines;
     public int index;
     Regex commandRegex = new Regex("\\{(.*?)\\}");
 
     Regex emoteRegex = new Regex("\\[(.*?)\\]");
 
     public Dictionary<string, DialogueNode> choices;
-    public DialogueNode(List<string> lines)
+    public DialogueNode(List<DialogueLine> lines)
     {
         previous = null;
         this.choices = new Dictionary<string, DialogueNode>();
@@ -26,7 +26,7 @@ public class DialogueNode
         index++;
     }
 
-    public string getCurrentLine()
+    public DialogueLine getCurrentLine()
     {
         try
         {
@@ -63,10 +63,11 @@ public class DialogueNode
     {
         ScriptParser.Instance.paused = true;
         choices = new Dictionary<string, DialogueNode>();
+        ScriptParser.Instance.playVA(lines[index]);
         DialogueSystem.Instance.Say(choiceTitle);
-        List<string> block = getOptionalBlock(lines, '{', '}', index);
+        List<DialogueLine> block = getOptionalBlock(lines, '{', '}', index);
 
-        foreach (string line in block)
+        foreach (DialogueLine line in block)
         {
             lines.RemoveAt(index);
         }
@@ -75,20 +76,20 @@ public class DialogueNode
         string choiceName = "";
         for (int i = 0; i < block.Count; i++)
         {
-            if (!block[i].Contains("["))
+            if (!block[i].line.Contains("["))
             {
                 if (choiceName == "")
                 {
-                    choiceName = block[i].Trim();
+                    choiceName = block[i].line.Trim();
                 }
                 else
                 {
-                    choiceName += System.Environment.NewLine + block[i].Trim();
+                    choiceName += System.Environment.NewLine + block[i].line.Trim();
                 }
             }
             else
             {
-                List<string> choiceBlock = getOptionalBlock(block, '[', ']', i - 1);
+                List<DialogueLine> choiceBlock = getOptionalBlock(block, '[', ']', i - 1);
                 i += choiceBlock.Count - 1;
                 removeEnclosers(choiceBlock, '[', ']');
                 DialogueNode choice = new DialogueNode(choiceBlock);
@@ -109,15 +110,15 @@ public class DialogueNode
     }
     public DialogueNode makeConditionalNode()
     {
-        List<string> block = getOptionalBlock(lines, '{', '}', index);
+        List<DialogueLine> block = getOptionalBlock(lines, '{', '}', index);
 
-        foreach (string line in block)
+        foreach (DialogueLine line in block)
         {
             lines.RemoveAt(index);
         }
         lines.RemoveAt(index);
         int id = 1;
-        foreach (string line in lines)
+        foreach (DialogueLine line in lines)
         {
             Debug.Log(id + ": " + line);
             id++;
@@ -125,17 +126,18 @@ public class DialogueNode
         removeEnclosers(block, '{', '}');
 
         // 5HEAD MOVE
-        block.Insert(0, "");
+        block.Insert(0, new DialogueLine("", -1));
 
         DialogueNode conditional = new DialogueNode(block);
         conditional.previous = this;
         return conditional;
     }
-    public List<string> getOptionalBlock(List<string> lines, char b, char e, int id)
+    public List<DialogueLine> getOptionalBlock(List<DialogueLine> lines, char b, char e, int id)
     {
+
         int depth = 0;
         bool found = false;
-        List<string> Blines = new List<string>();
+        List<DialogueLine> Blines = new List<DialogueLine>();
         // Regex commandRegex = new Regex("\\{(.*?)\\}");
         Regex regex = new Regex("\\" + b + "(.*?)\\" + e);
         // grabs the optional block - enclosed with {}
@@ -143,17 +145,17 @@ public class DialogueNode
         // without including the script commands
         for (int i = id + 1; i < lines.Count; i++)
         {
-            if (regex.IsMatch(lines[i]))
+            if (regex.IsMatch(lines[i].line))
             {
                 Blines.Add(lines[i]);
                 continue;
             }
-            if (lines[i].Contains(b.ToString()))
+            if (lines[i].line.Contains(b.ToString()))
             {
                 found = true;
                 depth++;
             }
-            else if (lines[i].Contains(e.ToString()))
+            else if (lines[i].line.Contains(e.ToString()))
             {
                 depth--;
             }
@@ -167,7 +169,7 @@ public class DialogueNode
     }
     // removes enclosing brackets from a given block of text.
     // removes resulting empty lines if there are any
-    private void removeEnclosers(List<string> block, char encloser1, char encloser2)
+    private void removeEnclosers(List<DialogueLine> block, char encloser1, char encloser2)
     {
         // List<string> block = lineBlock;
         int enclosersFound = 0;
@@ -175,10 +177,10 @@ public class DialogueNode
 
         for (int i = 0; i < block.Count && enclosersFound == 0; i++)
         {
-            if (block[i].Contains(encloser1.ToString()))
+            if (block[i].line.Contains(encloser1.ToString()))
             {
-                block[i] = block[i].Trim();
-                block[i] = block[i].TrimStart(encloser1);
+                block[i].line = block[i].line.Trim();
+                block[i].line = block[i].line.TrimStart(encloser1);
                 enclosersFound++;
             }
         }
@@ -187,10 +189,10 @@ public class DialogueNode
         for (int i = block.Count - 1; i >= 0 && enclosersFound == 1; i--)
         {
 
-            if (block[i].Contains(encloser2.ToString()))
+            if (block[i].line.Contains(encloser2.ToString()))
             {
-                block[i] = block[i].Trim();
-                block[i] = block[i].TrimEnd(encloser2);
+                block[i].line = block[i].line.Trim();
+                block[i].line = block[i].line.TrimEnd(encloser2);
                 enclosersFound++;
             }
         }
@@ -199,8 +201,8 @@ public class DialogueNode
         // also trim the block of empty spaces
         for (int i = 0; i < block.Count; i++)
         {
-            block[i] = block[i].Trim();
-            if (block[i].Equals(""))
+            block[i].line = block[i].line.Trim();
+            if (block[i].line.Equals(""))
             {
                 block.RemoveAt(i);
                 i--;

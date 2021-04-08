@@ -18,6 +18,8 @@ public class ScriptParser : Singleton<ScriptParser>
     public int lineIndex = 0;
     public int continueIndex = 0;
 
+    public Dictionary<string, AudioClip> voiceLines;
+
     string path { get { return Application.streamingAssetsPath + "/Docs/" + scriptName + ".txt"; } }
 
     public Dictionary<string, List<string>> currentChoiceOptions;
@@ -55,13 +57,28 @@ public class ScriptParser : Singleton<ScriptParser>
         reader = new StreamReader(path);
         currentNode = new DialogueNode(getLines());
         // readNextLine();
+        grabVoiceLines();
+
         parseLine(currentNode.getCurrentLine());
+    }
+    public void grabVoiceLines()
+    {
+        voiceLines = null;
+        AudioClip[] clips = Resources.LoadAll<AudioClip>("Voice/" + scriptName);
+        voiceLines = new Dictionary<string, AudioClip>();
+
+        foreach (AudioClip clip in clips)
+        {
+            // Debug.Log(clip.name.Trim());
+            voiceLines.Add(clip.name.Trim(), clip);
+        }
     }
     public void changeScriptFile(string newScript, int position = 0)
     {
         scriptName = newScript;
         reader = new StreamReader(path);
         currentNode = new DialogueNode(getLines());
+        grabVoiceLines();
         position -= 2;
         position = Mathf.Clamp(position, 0, int.MaxValue);
         currentNode.moveIndex(position);
@@ -70,12 +87,15 @@ public class ScriptParser : Singleton<ScriptParser>
         parseLine(currentNode.getCurrentLine());
     }
 
-    List<string> getLines()
+    List<DialogueLine> getLines()
     {
-        List<string> lines = new List<string>();
+        List<DialogueLine> lines = new List<DialogueLine>();
+        int i = 1;
         while (!reader.EndOfStream)
         {
-            lines.Add(reader.ReadLine());
+            DialogueLine line = new DialogueLine(reader.ReadLine(), i);
+            lines.Add(line);
+            i++;
         }
         reader.Close();
         return lines;
@@ -137,7 +157,7 @@ public class ScriptParser : Singleton<ScriptParser>
         }
         action();
     }
-    void playVA()
+    public void playVA(DialogueLine Line)
     {
         GameObject charObject = null;
         CharacterManager.Instance.charactersInScene.TryGetValue(DialogueSystem.Instance.currentSpeaker, out charObject);
@@ -146,7 +166,7 @@ public class ScriptParser : Singleton<ScriptParser>
             try
             {
                 CharacterScript charScript = charObject.GetComponent<CharacterScript>();
-                charScript.speak();
+                charScript.speak(Line);
             }
             catch (System.IndexOutOfRangeException)
             {
@@ -155,23 +175,26 @@ public class ScriptParser : Singleton<ScriptParser>
 
         }
     }
-    public void parseLine(string line)
+    public void parseLine(DialogueLine Line)
     {
+
         // RICH TEXT
         // Unity already supports rich text natively,
         // we just need to make sure the typewriter
         // works properly with it
         waitThenDO(() =>
         {
-            if (line == null || paused)
+            if (Line == null || paused)
             {
                 return;
             }
+            string line = Line.line;
+            int index = Line.index;
             if (richRegex.IsMatch(line))
             {
-                playVA();
+                playVA(Line);
                 CharacterManager.Instance.changeLightingFocus();
-                dialogue.SayRich(currentNode.getCurrentLine());
+                dialogue.SayRich(currentNode.getCurrentLine().line);
                 return;
             }
             // handles speaker change. Also handles which character's expressions/animations are being controlled
@@ -233,9 +256,9 @@ public class ScriptParser : Singleton<ScriptParser>
             }
 
             // if it's not a command simply display the text
-            playVA();
+            playVA(Line);
             CharacterManager.Instance.changeLightingFocus();
-            dialogue.Say(currentNode.getCurrentLine());
+            dialogue.Say(line);
         });
 
     }

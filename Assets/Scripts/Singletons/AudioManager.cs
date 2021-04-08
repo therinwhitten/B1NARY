@@ -95,7 +95,29 @@ public class AudioManager : Singleton<AudioManager>
         yield break;
     }
 
-
+    public void PlayVoice(AudioSource source, AudioClip clip)
+    {
+        StartCoroutine(InterruptVoice(source, clip));
+    }
+    IEnumerator InterruptVoice(AudioSource source, AudioClip newClip)
+    {
+        float currentTime = 0;
+        float start = source.volume;
+        while (currentTime < 0.1f)
+        {
+            currentTime += Time.deltaTime;
+            source.volume = Mathf.Lerp(start, 0, currentTime / 0.1f);
+            yield return null;
+        }
+        if (source.volume == 0)
+        {
+            source.Stop();
+            source.clip = newClip;
+            source.volume = start;
+            source.Play();
+        }
+        yield break;
+    }
 
 
 
