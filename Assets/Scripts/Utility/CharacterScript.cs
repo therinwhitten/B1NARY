@@ -11,9 +11,8 @@ public class CharacterScript : MonoBehaviour
     public CharacterEntry libraryEntry;
     public string[] expressions;
     public RectTransform rectTransform;
-    public AudioClip[] voiceLines;
+    Dictionary<string, AudioClip> voiceLines { get { return ScriptParser.Instance.voiceLines; } }
     AudioSource voice;
-    int currentVoiceIndex = 0;
     public CharacterScript instance;
 
     public CubismRenderer[] renderers;
@@ -31,7 +30,6 @@ public class CharacterScript : MonoBehaviour
         rectTransform = gameObject.GetComponent<RectTransform>();
         originalScale = rectTransform.localScale;
         voice = gameObject.GetComponent<AudioSource>();
-        grabVoiceLines();
         renderers = gameObject.GetComponentsInChildren<CubismRenderer>();
         initLighting();
     }
@@ -106,29 +104,23 @@ public class CharacterScript : MonoBehaviour
         }
     }
 
-    public void grabVoiceLines()
-    {
-        voiceLines = null;
-        voiceLines = Resources.LoadAll<AudioClip>("Voice/" + ScriptParser.Instance.scriptName + "/" + charName);
-    }
-
-    public void speak()
+    public void speak(DialogueLine Line)
     {
         try
         {
-            voice.clip = voiceLines[currentVoiceIndex];
-            voice.Play();
-            currentVoiceIndex++;
+            // Debug.Log("Speaking line " + Line.index.ToString() + ": " + Line.line);
+            AudioManager.Instance.PlayVoice(voice, voiceLines[Line.index.ToString()]);
+            // float volume = voice.volume;
+            // voice.volume = 0f;
+            // voice.Stop();
+            // voice.clip = ScriptParser.Instance.voiceLines[Line.index.ToString()];
+            // voice.volume = volume;
+            // voice.Play();
         }
-        catch (System.IndexOutOfRangeException)
+        catch (KeyNotFoundException)
         {
-            if (voiceLines.Length == 0)
             {
-                Debug.LogWarning("Character " + charName + " has no voicelines!");
-            }
-            else
-            {
-                Debug.LogWarning("End of Voicelines array reached!");
+                Debug.LogWarning("Voice line not found: Line " + Line.index);
             }
         }
     }
