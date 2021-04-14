@@ -124,6 +124,7 @@ if: henable, false
 
 She is short, her head only coming up to my mid chest.
 Being a gentleman, I lock eyes with her. 
+Those gorgeous eyes......
 
 The scent of her billows into small space of air between us: brimstone with a mix of lavender.
 It's intoxicating.....
@@ -190,6 +191,7 @@ MC::
 I pipe in.
 "What would you say if I came from the Twatch servers?"
 She smiles sweetly, one that doesn't reach her eyes.
+A glint starts to ignite in her eyes dangerously.
 Careful MC.....
 Asterella::
 "And that would be a complete lie."
@@ -206,41 +208,186 @@ Asterella::
 "Or, perhaps, the rest of the Circles of Hell?"
 MC::
 Do I?
+I have nothing to do with any of this. I am a clueless explorer. 
+I don't even know where I am actually at. 
 "No, nothing like that."
 I laugh it off, genuinely.
 "If I did, why would I just waltz in here as a prisoner?"
 It was her turn to laugh.
 Asterella::
-"Touche, MC. I suppose we are at an information impasse."
+"Touche, MC. I suppose we are at an information impasse...."
+"For now, anyway."
 MC::
 {additive:on}
 She regards me carefully, 
 studying me over her glass, 
 those penetrating eyes softening.
 {additive:off}
-"You refuse to disclose where you came form. And yet, I sense no malice from that."
+"You refuse to disclose where you came form."
+MC::
+Her eyes narrow just a touch.
+Asterella::
+"And yet, I sense no malice from that."
 MC:: 
 She takes another sip and moves a bit closer to me on the couch. 
-The scent of her returns to my nostrils.
+{additive: on}
+The scent of her returns to my nostrils, 
+heady and thick.
+{additive:off}
+Close enough for thighs to touch, she looks up at me through her lashes suggestively.
 Asterella::
 "There are other ways to get information from you."
 MC::
-WHAT DOES THAT MEAN?!
+WHAT......DOES THAT MEAN?!
 I swallow again. 
 The vibes are unmistakable.
 She confirms them by placing a gentle hand on my leg.
 {fadeinsound: Heartbeat, 1}
+Play it cool, MC. Play it cool......
 Asterella::
-"Don't play dumb with me, MC. You are cute, and I am a bit 'thirsty'."
-"And it is not for more wine."
+"Don't play dumb with me, MC. You are a cute, and exotic-looking elf boy,  and I am a bit 'thirsty'."
+"And it's not for more wine."
 MC::
-The look on her face spoke volumes on what her true intentions were.
+The look on her face speaks volumes on what her true intentions were.
 
 **TODO: henable**
 
-if: henabled, true
+if: henable, true
 
 And.....like a true virgin (it's been that long), my fickle pickle rises like the dark knight.
+{additive:on}
+At least I know it works now right?
+Being digitized and all. 
+{additive:off}
+Honestly, I almost embarrass myself by choking on my wine. 
+
+if: henable, false
+
+My heart leaps to my throat. The gentle feeling becomes more assertive. 
+Honestly, I almost embarrass myself by choking on my wine. 
+
+"Wait, right now?"
+I manage to keep my voice from squeaking. 
+Quite proud of that one. 
+Star gently begins caressing my leg......
+
+**TODO: henable**
+
+if: henable, true
+Getting incredibly close to my crotch.
+I feel my little man twitch. 
+
+if: henable, false
+This is getting serious fast. 
+{additive: on}
+Those eyes:
+pleading, 
+yet aggressive and sure.
+{additive:off} 
+
+A sure smile slowly envelopes her face: a smile of satisfaction.
+Asterella::
+"Your body cannot lie to me, MC. I know you want this."
+"I, too, want to drink the ambrosia."
+MC:: 
+She looks almost pouty, her cheeks puffing just slightly.
+Asterella::
+{additive:on}
+"You wouldn't deny a Demon Lord, 
+in her own domain, 
+would you?"
+{additive:off}
+"As an intruder to boot...."
+MC:: 
+What do I say?
+She is breathtaking: soft in all the right places. 
+Demon Lord role aside, as a woman: she is graceful, confident, and daring.
+Qualities I admire in a woman. 
+Yet, the suddeness of this situation has me a bit hesitant.
+My body is screaming for me to take her offer. 
+My mind is screaming she is a Demon Lord. 
+I am in an unknown situation, with unknowns all around me.
+Not to mention that demon "enjoying" himself in the dungeon tonight can cause problems with either decision I make. 
+Am I hurting the realm if I hurt her feelings?
+Will Szycrotic be enraged if I go with Star's suggestions?
+
+{choice: What should I do?}
+{
+    I answer her by pulling her to my chest, gently raising her chin.
+    [
+        {setbool: starbed,true}
+        Asterella::
+        "Good boy......."
+        MC::
+        She murmurs quietly.
+        Asterella::
+        "Such a very good boy..."
+        MC:: 
+        Truth escapes my lips.
+        "How can I say no?"
+    ]
+    I very gently push her away, regret already sinking in.
+    [
+        {setbool: starbed,false}
+        Asterella::
+        "You deny me? Even now?"
+        MC::
+        Her eyes, vulnerable, betray a hint of disappointment and anger. 
+        {choice: Are you sure you want to do this?}
+        {
+            I can't. I just can't.........
+            [
+                {setbool: starbed,false}
+                MC::
+                We sit, frozen in time. 
+                I very gently put her hand in her lap.
+                "I'm sorry, Star."
+                "I don't know you. It just.....doesn't feel right to me."
+                {changeScript: Male/Prologue/Star II FriendZoned}
+            ]
+            Screw it! I can't deny those eyes!
+            [
+                {setbool: starbed,true}
+                I cup her face gently in my hands, and pull her lips to mine.
+                Drinking deeply.
+                The digital world, the fears, all fade. 
+                I am lost in Star's presense.
+                Our lips part....
+            ]
+        }
+    ]
+}
+{if: starbed,true}
+{
+    {choice: Top or Bottom?}
+    {
+        Top: You lead.
+        [
+            I pick her up, without hesitation. 
+            My mind is made up.  
+            She is as light as feather in my arms, soft in the right places. 
+            I feel my face going red just a little bit though. 
+            The night gown hides little......
+            Asterella::
+            "Show me a good time, MC."
+            MC::
+            Her head is resting on my chest. 
+            And I take her to bed.
+        ]
+        Bottom: Let her lead.
+        [
+            Asterella::
+            "Let's go to bed."
+            MC::
+            Star stands up in one fluid motion, grabbing my hand with solid grip.
+            A hungry grip.
+            "As you wish."
+            I follow her lead, her steps leading both of us to the large bed....
+        ]
+    }
+    {changeScript: Male/Prologue/Star II Hentai}
+}
+
 
 
 
