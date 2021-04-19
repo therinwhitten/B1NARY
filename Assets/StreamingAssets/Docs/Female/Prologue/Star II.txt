@@ -5,6 +5,125 @@
 {spawnChar: femalesilo, 2, Asterella}
 {moveChar: Szycrotic, .25}
 MC::
-It took at least 5 mins of walking to get here. 
-The mansion is almost a small village by itself, with many different rooms.
-I lost count at 50 people in the short time I was counting. 
+Large swaths of livid orchid contrasts with dark oak throughout most of the manor.
+Dozens of rooms, a whole staff, at least 40 people I count so far work here.
+{additive:on} 
+Some of those people didn't look human.  
+Some wear horns, 
+and others had long sweeping tails. 
+{additive:off}
+So many rooms, and I could see at least two waiting rooms, a ball room, and a library. 
+Szycrotic was humming some unidentifiable tune, I could not recognize. 
+Everytime I tried to ask him what it is, he would hush me and motion forward. 
+This room is no different. 
+Everything is set up in a simple, yet elegant decor. 
+Dark Purples and ancient oak.
+Oh....my GOD....
+There she is!
+{moveChar: Asterella, .75}
+{additive:on}
+Reading a large book, 
+Asterella Star, 
+Lord of the 69th Circle of Hell,
+leaning back in comfort on the crushed velvet sofa.
+{additive:off}
+She looks up as we come in, shifting a bit, exposing pale, bare skin underneath a veneer, lavender shift.
+I can't mistake her: the long, delicate horns, the floating crown of blue diamonds. 
+She is shorter than I thought she would be. Her curves though......
+{fadeinsound: Heart Thump, .1}
+She opens her mouth, a tone of impatience, and light annoyance coloring her speech.
+Asterella::
+"Szy, it's about time you brought our 'guest'."
+She closes the book with a finality.
+Szycrotic::
+"Look woman, she wanted to see the garden. Don't blame me!"
+MC::
+Szycrotic shoots a sidelong glance at me. 
+He seems to get an idea....
+Szycrotic::
+{additive:on}
+"How can you deny that face? 
+Look at her! 
+She was almost floating on clouds when she was in the garden!"
+{additive:off}
+MC::
+Asterella makes eye contact with me. I feel the red rushing to my cheeks. 
+Asterella::
+"She <i>is</i> cute! I could just EAT her up!"
+MC::
+Panic rises. 
+Star laughs, placing the book on the coffee table.
+Asterella::
+"I don't eat humans, dear. So, calm yourself."
+MC::
+Her voice becomes a mockingly serious. 
+Asterella::
+"Szy, I can't forgive lateness."
+"I think a night in the dungeon should rectify making me wait longer than necessary."
+MC::
+What?
+{additive:on}
+"Wait! You can't! 
+He has been kind to me!"
+{additive:off}
+What am I doing?
+{choice: Take the blame?}
+{
+        It's my fault!
+        [
+            {setbool: starbed, true}
+            MC::
+            "Please...it was my fault. I am to blame."
+            The admission feels weird, this man scared the shit out of me, at first anyway.
+            He is also a demon. 
+            "It was my fault we are late Lord Star!"
+            "If punishing me eases his, I will take it!"
+            Asterella smiles, and it only touches her mouth.
+            Asterella::
+            "I could do that if you were willing, after all."
+            "But he loves his punishment."
+        ]
+        Say nothing more. 
+        [
+            {setbool: starbed, false}
+            I can't. 
+            He scared the shit out of me. 
+            I am technically a prisoner right now. 
+            A small part of me knows he is a good "demon".
+            Well.....if there is such a thing.
+        ]
+    }
+{if: starbed, true}
+{
+    {choice: Will you take Star's offer?}
+    {
+        Yes, I am ready for whatever she has planned.
+        [
+            Ok let's go to Papa Jonathan's!
+        ]
+        Nevermind, I can't do this!
+        [
+            Alright shall we go to 巴巴布伊 then?
+        ]
+    }
+}
+Oh my god I am choking.
+I need to calm down.
+Asterella raises her eyebrows, standing up. 
+Asterella::
+"Oh? Do I need to increase the punishment?"
+MC::
+I stand aghast. I don't want to add more to his pain...
+Szycrotic::
+"Oh yeah dommy mommy, give me the punishment I deserve."
+MC::
+He laughs heartily, walks up, and kisses Star on the forehead. 
+With a wave as he opens the door, he replies.
+Szycrotic::
+"You two have fun!"
+{fadeinsound: Door, 1}
+{moveChar: Szycrotic, -1}
+{moveChar: Asterella, .50}
+
+
+
