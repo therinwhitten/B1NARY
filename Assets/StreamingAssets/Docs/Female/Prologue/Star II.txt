@@ -1,5 +1,5 @@
 {changeScene: Scenes/Star/Bedroom}
-{fadeinsound: Star edm 1, 1}
+{fadeinsound: starandszy, 1}
 {fadeinsound: fireplace, 1}
 {spawnChar: malesilo, -1, Szycrotic}
 {spawnChar: femalesilo, 2, Asterella}
@@ -185,16 +185,21 @@ I can't read the title.
 {additive: on}
 I lean forward more to try and see if I recognize the language, 
 but it looks like gibberish to me.
+Some old, archaic language, I think.
+But I am no expert.
 {additive:off}
 Does...she know something?
-"If I am not an intruder though, who am I?"
+"If you do not consider me an intruder, then who am I to you?"
+I follow that up quickly.....
+Maybe a bit too desperate.
 "I can assure you, it was not intentional for me to be here."
 {fadeinsond: woodwine1, .1}
 Asterella::
-"I surmised as much. However, that doesn't clear you."
+"I surmised as much. But that doesn't clear you."
 {fadeinsound: woodwine2, .1}
 {fadeinsound: glasspouring, 1}
 "You still haven't told me where you came from."
+"And you don't seem to be a Synthgen. It doesn't feel right to me."
 {fadeinsound: glasspouring, 1}
 MC::
 She grabs the glasses and glides gracefully to the couch, proffering one to me.
@@ -204,12 +209,13 @@ I take it gratefully.
         Be honest and forward.
         [
             "I really can't tell you that without knowing more about you, and exactly how I got here."
-            "I am most likely more cluess than you, but I mean no harm to you, or your subjects."
-            There honest, holding back the infomation I DARE not disclose. 
+            "I am most likely more clueless than you, but I mean no harm to you, or your subjects."
+            There. The truth, yet holding back the infomation I DARE not disclose. 
             I hope it was good enough....
             She traces the edge of her wineglass thoughtfully.
             Asterella::
             "Fair enough. I can accept that for now."
+            "Questions will come later though, I promise."
             MC::
         ]
         Make up something.
@@ -225,10 +231,16 @@ I take it gratefully.
           This is my only warning."
           {additive:off}
           MC::
-          I knew it.
-          "Ok, but it is because I really don't know you personally, and I probably know less than you right now."
-          "I hope you understand."
-          She studies me, the dark suspicion that was starting to creep in vanish in an instant.
+          I knew it. I blanch.
+          {additive:on}
+          "I'm sorry. 
+          You are right. 
+          I probably know less than you right now about my current situation."
+          {additive: off}
+          "I don't feel comfortable talking to you about this yet."
+          I quickly follow that up.
+          "I don't mean harm to your domain, nor your people. That much is certain."
+          She studies me, did I detect a bit of suspicion in that look?
           Asterella::
           "I will accept that for now. I can understand that position."
           MC::
@@ -239,8 +251,99 @@ She seats herself close to me.
 Only a foot or two separates us.
 {additive:off}
 I stare at the glass, the dark, pungent liquid sparkling in the light of the crackling fire.
+Asterella::
+"To future relationships."
+MC::
 She brings her glass towards mine, and we toast.
 {fadeinsound: winetoast, .1} 
+MC::
+"Future relationships."
+We take the first sip in silence. The taste is very smokey, and clean. 
+I resist the urge to drink it too fast. 
+"So why all the ceremony for just me?"
+A small smile touches her lips.
+Asterella::
+{additive:on}
+"Straight to the point. 
+I like that."
+{additive:off}
+MC::
+The voice is almost sultry as she looks up from her glass.
+She takes another sip and puts the glass down on the table carefully. 
+{fadeinsound: wineglassdown, 1}
+A pause.
+Asterella::
+"Two things..." 
+MC::
+She holds up one finger. 
+Asterella::
+"Number one."
+"You have come to my realm without my permission."
+{additive:on}
+"That is not so easily done here. 
+So...either you have an impressive level of power....
+or you are not a part of the system."
+{additive:off}
+MC::
+She looks at me, musing to herself.
+Asterella::
+{additive:on}
+"I want to assume it's the latter. But.....obviously, 
+I can't do that without...
+studying you."
+{additive:off}
+MC::
+She tries to read my eyes, looking for something?
+A bit of frustration leaks out in her sigh.
+Astrella::
+{additive:on}
+"You see, MC, 
+you have piqued my interest.
+I assure you, that is a good thing."
+{additive:off}
+MC::
+She pointedly makes direct eye contact.
+"Way better than the alternative."
+MC::
+I audibly gulp a bit. She is scary and sensual at the same time.
+"And the second thing?"
+Star's eyes turn hungry.
+Asterella::
+"Second?"
+MC::
+She leans forward and places a hand on my thigh.
+Asterella::
+"You see, MC, you are exactly my type."
+"We demons have a way of easing each other's minds."
+MC::
+She watches her hand lazily make circles on my thigh. 
+Asterella::
+"Intimate interactions help form bonds, that would be nigh to impossible in our realm."
+MC::
+I can't believe what I am hearing....
+Is she asking for....
+"Me?"
+It was all I can say.
+I take a deep pull of the wine, covering my blushing face behind the action.
+Asterella Star is asking me to "spend the night" with her. 
+She looks up at me, with the question in her eyes. 
+{choice:}
+    {
+        Yes, I am ok with this.
+        [
+            MC::
+            Tentatively, I reach out, touching her hand, trapping it on my leg.
+            She looks at me with soft eyes. 
+            "Yes."
+            {changeScript: Female/Prologue/Star II Hentai, }
+        ]
+        No. This is going to fast. 
+        [
+            {changeScript: Female/Prologue/Star II FriendZoned}
+        ]
+    }
+
+
 
 
 
