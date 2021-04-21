@@ -70,7 +70,7 @@ He has been kind to me!"
 What am I doing?
 {choice: Take the blame?}
 {
-        It's my fault! (H-Scene)
+        It's my fault!
         [
             {setbool: starbed, true}
             MC::
@@ -100,11 +100,110 @@ What am I doing?
 {
     {choice: Will you take Star's offer?}
     {
-        Yes, I am ready for whatever she has planned. (H-Scene)
+        Yes, I am ready for whatever she has planned. 
         [
            MC::
            "Yes, if it eases his punishment. I will take whatever comes."
-           {changeScript: Female/Prologue/Star II Hentai}
+           What form of punishment will it be?
+           I am serious about this though. 
+           I won't back down!
+           Asterella::
+           "Look at that cute, pouty face, Szy."
+           "That is so precious!"
+           Szycrotic::
+           "I am touched, MC. You don't even know me!"
+           "Not gonna lie, you <i>might</i> be a bit crazy."
+           Asterella:: 
+           {additive:on}
+           "Very well. 
+           If you glady take the punishment for Szy's lack of proper respect,
+           then close your eyes."
+           {additive:off}
+           MC::
+           **TODO: Close Eyes Tranisition**
+           {changeBG: Black Trans}
+           I close my eyes shut, suddenly nervous.
+           What is going to happen to me?
+           I feel a surge of regret. 
+           I WILL stand my ground!
+           I can hear the shuffling of bare feet on the floor, coming towards me.
+           Szycrotic::
+           "Don't woman. Even I am not fucked up enough to do that!"
+           MC::
+           ................
+           Asterella::
+           "Ok now, are you ready MC?"
+           MC::
+           I see nothing, and Star's voice is incredibly close.
+           I can hear the shifting of silk against skin, and the fire crackle. 
+           "Yes."
+           I prepare to flinch....
+           {fadeinsound: body punch hard, 1}
+           The very center of my forehead feels a sharp stab of pain.
+           "OWWWWW!"
+           **TODO: Open Eyes Transition**
+           {changeBG: Star Bedroom Night Animated}
+           {additive:on}
+           I open my eyes to see Star, 
+           inches from my face, 
+           her breath lightly caressing my face.
+           {additive:off}
+           Did she flick me with her finger??
+           The expression on Star's face is one of light amusement. 
+           Asterella::
+           "There."
+           MC:: 
+           Star seems satisfied. And close to laughing.
+           Asterella::
+           "There really is no need to protect anyone, especially Szycrotic."
+           MC::
+           Star pushes my hair away and kisses my wounded forehead lightly. 
+           {fadeinsound: Heart Thump, 1}
+           Asterella::
+           "He will be fine. Szy loves his punishment, and it has nothing to do with his performance."
+           "Unless, he has done something very, very GOOD."
+           MC::
+           I am slightly inexperienced, but I am sensing some serious BDSM vibes here....
+           Szycrotic::
+           "Speaking of which, I will let you two have fun."
+           {moveChar: Szycrotic, .1}
+           MC::
+           Szy stops at the door....
+           Szycrotic::
+           "Star, if she does anything...."
+           MC::
+           Asterella smiles, dismissing Szy's comment with a wave of her hand.
+           Asterella::
+           {additive:on}
+           "Szy you worry too much. 
+           I am a big girl."
+           {additive:off}
+           {additive:on}
+           "And your Lord......
+           you <i>will</i> obey me."
+           {additive:off}
+           MC::
+           He bows deeply, in a mocking way somehow, a chuckle breaking his otherwise, serious performance.
+           Szycrotic::
+           "I live to serve only you, my lady."
+           MC::
+           {fadeinsound: Door, 1}
+           {moveChar: Szycrotic, -1}
+           {moveChar: Asterella, .50}
+           We are alone. Star and I.
+           The kiss on the forehead burns more than the sting to my pride, or the finger flick.
+           She is...beautiful.
+           Regal, confident, and slightly sadistic.
+           All the things a demon lord should be?
+           I touch my forehead lightly.
+           Asterella::
+           "Did it hurt?"
+           MC::
+           I laugh nervously.
+           "It wasn't the finger flick..."
+           Asterella::
+           "Well, MC. We do have some things to talk about."
+           {changeScript: Female/Prologue/Star II, 261}
         ]
         Nevermind, I can't do this!
         [
@@ -329,13 +428,14 @@ Asterella Star is asking me to "spend the night" with her.
 She looks up at me, with the question in her eyes. 
 {choice:}
     {
-        Yes, I am ok with this.
+        Yes, I am ok with this. (Hentai Scene)
         [
             MC::
             Tentatively, I reach out, touching her hand, trapping it on my leg.
             She looks at me with soft eyes. 
-            "Yes."
-            {changeScript: Female/Prologue/Star II Hentai, }
+            "It will be my first time with a woman."
+            "Be Gentle."
+            {changeScript: Female/Prologue/Star II Hentai}
         ]
         No. This is going to fast. 
         [
