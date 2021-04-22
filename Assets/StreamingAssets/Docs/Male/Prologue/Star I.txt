@@ -55,7 +55,7 @@ Masked Punk::
 "What the fuck?
 Who the FUCK are you?"
 {additive: off}
-{fadeinsound: Szy Dark, 2}
+{fadeinsound: Szy Dark, 3}
 {fadeoutsound: Star Piano, 2}
 {fadeinsound: Flashstep, .3}
 {moveChar: Masked Punk, .50}
@@ -64,17 +64,16 @@ MC::
 With inhuman speed, this..... demon, comes flying out of the treeline.
 {additive:on}
 Like a rocket, 
-he comes flying, 
+he appears, 
 planting his feet, 
 not two feet in front of me.
 {additive:off}
-The wind of his movement smacks me directly in the face. 
+The wind of his movement buffets my face. 
 He is not human, he may be wearing normal clothes but...
-The way he moves, is inhuman. 
 He stands before me, his mask like an extension of his face. 
 Like it IS his face. His mask even blinks.
 An eerie green glow pulses from under his hood. 
-No, this is NOT the server.
+No, this is NOT the server I was meant to land in.
 I am somewhere else, or this is a bad dream. 
 My body still recuperating, I can only remain silent, and watch.
 I can't move..... I am
@@ -87,6 +86,7 @@ MC::
 I swallow.
 "Name is MC, I just got here."
 "Nice to meet you??"
+I left it an open-ended question.
 NO way I can run. He is too fast. 
 He looks...very capable of instant violence. 
 There is nothing else I can do. 
@@ -104,7 +104,8 @@ So, the only thing I can do....is offer my hand.
 "I was teleported here. I didn't mean to encroach on your property."
 He looks at my hand, pausing, as if waiting for something.
 Masked Punk::
-"Encroach? What the fuck? What does that mean?!"
+"Encroach? What the fuck?" 
+"What does that mean?!"
 "Are you insulting me?!"
 MC:: 
 Oh shit...
@@ -136,20 +137,21 @@ His gaze pierces right through me.
 Szycrotic::
 "It wasn't a request. You WILL come with me." 
 "Lord Asterella will figure out what to do with you."
-"You are <i>Encroaching</i> after all."
+"You are <i>encroaching</i> after all."
 MC::
 I only have a few seconds of reaction here. 
 The dude is fast. 
 If I go with him, this "Lord" may skewer me. 
 Then again, I might be able to dodge him enough and get into the forest. 
+I have about 10 feet of distance between us. I <i>might</i> just be able to get to full speed.
 {choice: What should I do? Don't get me killed player.}
  {
-    Are you crazy? Run!
+    Are you stupid? Run!
     [
        Ok, here goes nothing!
        {changeScript: Male/Prologue/Star I A}
     ]
-    Caution. Death can happen here too. 
+    Did you forget how he <i>appeared</i> in front of you? 
     [
        I don't think it's wise to anger a demon. I am alive, for now. 
     ]
@@ -171,13 +173,15 @@ Szycrotic::
 MC::
 Play it safe, for now. 
 "I just ended up here by accident. I can't really go into detail."
+The name is tickling my memory, but I can't quite place it.....
+I shake my head.
 {additive:on}
 Safe and true. 
 I mean, who would believe me?
 {additive: off}
 I almost walk beside him. I mean there is only one path.
 MC::
-"Asterella Star? Is that this Lord's name?"
+"Asterella Star? Is that the Lord's name?"
 Szycrotic nods approvingly, glancing sideways at me, reassessing me.
 Szycrotic::
 "Yes. You seem to know her. Are you a Demon Lord? Or...."
@@ -204,6 +208,7 @@ Ironmouse and Star are like sisters."
 {additive: off}
 MC::
 Wait Ironmouse too?
+What did I walk into? This brings up so many questions......
 Maybe they are just roleplaying?
 "Are you saying IronMouse is in charge of all the Demon Lords in Hell?"
 "And..........Asterella Star is one of them?"
@@ -212,6 +217,7 @@ Szycrotic::
 "But.....Ironmouse doesn't take her job that serious man." 
 MC::
 I can't help but just stare down the path at the outer wall.
+This is crazy! Are they not human streamers?
 The demon looks back at me with an amused glance.
 Szycrotic::
 {additive: on}
@@ -242,9 +248,9 @@ It is a too big to be anything but a field.
 {additive:off} 
 Spread out across it are very carefully placed oaks, and ash, with small sitting spots and flowerbeds. 
 Black, marble benches, are set in a mathmatically pleasing way, down the main walkthroughs. 
-I still have to mainstain speed, so I try to soak in more. 
+I still have to maintain speed, so I try to soak in more. 
 {fadeoutsound: waterfountain, 5}
-Like the HUGE waist deep fountain directly center of the main doors into the the Manor proper. 
+Like the <i>enormous,</i> waist deep, fountain directly center of the main doors into the the Manor proper. 
 {fadeoutsound: walkingongravel, 1}
 {moveChar: Szycrotic, .50}
 We stop in front of the 10 foot tall, ancient wooden doors. 
@@ -258,9 +264,9 @@ He pulls on the handle.
 Szycrotic::
 "Better yet, wait until you meet Her."
 MC::
-We go into the largest mansion I have ever seen.......
+And with those words, we saunter into the largest mansion I have ever seen.......
 {changeScene: Scenes/Star/Bedroom}
-{fadeinsound: Star edm 1, 1}
+{fadeinsound: starandszy, 1}
 {fadeinsound: fireplace, 1}
 {spawnChar: malesilo, -1, Szycrotic}
 {spawnChar: femalesilo, 2, Asterella}
@@ -268,9 +274,14 @@ We go into the largest mansion I have ever seen.......
 MC::
 It took at least 5 mins of walking to get here. 
 The mansion is almost a small village by itself, with many different rooms.
-I lost count at 50 people in the short time I was counting. 
+I lost count at 50 people in the short time I was counting.
+Alot of them were not human. Some had horns, tails, and scales here and there. 
+Some cat girls too.
+MC::
+Mah Heart! 
 And.....
 Szycrotic has been humming songs under his breath the entire way. 
+I don't recognize the tune at all. It's alien to me.
 {moveChar: Asterella, .75}
 {additive: on}
 As we come in, 
@@ -300,18 +311,22 @@ I did not see that capability of polish to be in him.
 {additive:off}
 It brings it's own problems though. 
 Asterella Star is a Demon Lord, in charge of a realm.
-Whether or not I believe it to be genuine. THEY DO.
+Whether or not I believe it to be genuine. <i>They do.</i>
 I remain silent.
 Szycrotic::
 "Was that good? I feel like that was good."
 MC::
 Still in mid bow, he looks back at me for support.....
 I shrug... confused. 
+MC::
+"Do I look like an expert on etiquette?"
+I get a very satisfying scowl.
 Asterella::
 "Szy...... that wasn't too bad, actually."
 MC::
 The welcome surprise in her voice reflects mine.
 She closes the book with an air of finality, placing it on the table.
+For the first time since entering the room, she looks at both of us.
 With one smooth motion, she is standing.
 I stay in the half bow position with Szy.
 The voice confirmed it. This is the Asterella Star from Twatch.
@@ -365,7 +380,7 @@ MC::
 {fadeinsound: Door, 1}
 Star watches Szy close the door, with a look of satisfaction on her face. 
 When the door closes, she sighs, closing her eyes for a brief moment.
-{changeScript: Male/Prologue/Star II, 110}
+{changeScript: Male/Prologue/Star II, 116}
 
 
 
