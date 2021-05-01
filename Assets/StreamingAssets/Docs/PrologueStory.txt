@@ -1,38 +1,38 @@
 {fadeinsound:Times-Square-Crowd,5}
 Narrator::
-Times Square in New York City: The year is 2040. Midday on a blistering Summer Day.
+Times Square in New York City: the year is 2040. Midday on a blistering Summer Day.
 On a normal day, most people can be seen milling around, heading to work, the cacophony of vehicles, pedestrians, and advertisements, matching beat in a perfect harmony.
 {additive: on}
 Cacophony?
-Who wrote this?! Who says this word?!
+Who wrote this? Who says this word in this day and age?
 {additive: off} 
-Wait........ 
+Wait...
 {fadeinsound: Annoying Keyboard,.2}
-You hear the quick typing of a keyboard loudly in the microphone.
-Cough  
-.....a harsh discordant mixture of sounds?
+<i>You hear the quick typing of a keyboard loudly in the microphone.</i>
+<i>Cough</i>  
+...a harsh discordant mixture of sounds?
 Well who am I to question the choices of words the writer uses.
 Moving on. Ahem!
 Not today...
 Today, everyone's attention is fixed on the largest of the holoscreens in the sky.
 Cars are stopped dead in a silent gridlock. Pedestrians are murmuring, gazing up.
-In fact, if you look around, all of the holo-displays are streaming the same news broadcast.
+In fact, if you look around, all the holo-displays are streaming the same news broadcast.
 {additive: on}
 No.
-Today may be a pivot in humanity's history.
+Today may be a pivotal moment in humanity's history.
 The first attempt at digitizing a human is today.
 {additive: off}
 {spawnChar: malesilo, -1, Male Bystander}
 {moveChar: Male Bystander, 0.20}
 Male Bystander::
 "I can't believe they are going through with this!"
-"What are they thinking?!"
-"The test subject is either a frickin idiot, or they don't care about themselves." 
+"Who gave this project a green light?"
+"The test subject is either a frickin idiot, or they want to die. I can't decide which." 
 {spawnChar: femalesilo, -1,Female Bystander}
 {moveChar: Female Bystander, .50}
 Female Bystander::
 {additive: on} 
-"You could not pay me enough to even stand in that room! 
+"You could not pay me enough!
 Why isn't VR good enough for people?"
 {additive: off}
 "Imagine being that kid's parents? I wonder what they think about this?"
@@ -40,35 +40,36 @@ She shakes her head and sighs.
 {spawnChar: malesilo, 2,Male Bystander 2}
 {moveChar: Male Bystander 2, 0.80}
 Male Bystander 2::
-"Ahhh why are you worrying so much?!"
+"Stuck in the past, both of you."
 "You only live once right? It's not like YOU are up there."
 {additive: on}
-"I mean....who wouldn't want to live in a virtual world? 
-You just do what the fuck you want right?"
+"Who wouldn't want to live in a virtual world? 
+Think about the cool shit you can do?"
 {additive: off}
 {additive:on}
-"Imagine all of the fun you could have? And to be the first to experience it?  
-Sign me on man!"
+"And to be the first to experience it?  
+Just gives me shivers just thinking about it!"
 {additive:off}
 Male Bystander::
-Male Bystander scoffs audibly and looks up at the Broadcast.
-"Yeah, the power goes out on whatever server you are on, doesn't your brain get scrambled?" 
+Male Bystander scoffs audibly and looks up at the broadcast.
+"The power goes out on whatever server you are on, doesn't your brain get scrambled?" 
+"That's it. Dead. Just...like...that."
 {additive: on}
-"Come on,
-haven't you been following the News? 
-From what they said, you have to stay on a live server."
+"Haven't you been following the news? 
+They don't even know if you can be stored on hard drives. You can <i>only</i> be on a running server. "
 {additive: off}
 {additive:on}
-"And let's not talk about the Machine! 
-They have failed many mock tests before this event.
-I am surprised they even let humans near that pile of junk."
+"Don't get me started on that...'machine" they have in that room. 
+According to Goggles, it hasn't worked successfully, even once. 
+Unless they have tested it in secret....
+Frankly, I am surprised they even let humans near that pile of junk."
 {additive:off}
 Female Bystander::
 Female Bystander looks at Male Bystander with exasperation.
-"You might be just a bit misinformed, sir."
-"I don't think they would allow someone in that chair without ensuring it will be safe." 
+"I think you need to check your sources."
+"I don't think they would allow anyone in that chair without ensuring it will be safe." 
 {additive: on}
-"You know, they do have to worry about being sued.
+"Class action lawsuits exist, you know.
 After all, 
 this <i>is</i> 2040."
 {additive: off}
@@ -79,7 +80,7 @@ Just <i>imagine</i> the pressure of sitting in that chair, in front of millions.
 {additive: off}
 {fadeinsound: News Music Intro, .2}
 "I think they are starting now!"
-"Shhhhh!"
+"Quiet please. I want to hear this!"
 {moveChar: Male Bystander, -1}
 {moveChar: Female Bystander, -1}
 {moveChar: Male Bystander 2, 2}
@@ -88,24 +89,26 @@ Just <i>imagine</i> the pressure of sitting in that chair, in front of millions.
 {spawnChar: femalesilo, 2, Cindy}
 {moveChar: Cindy, .75}
 Narrator::
-The Holoviewer, which before was on a short commercial, abruptly changes to the image of a sharply dressed Anchorwoman.
+The Holo-viewer, which before was on a short commercial, abruptly changes to the image of a sharply dressed anchorwoman.
+She smiles sweetly off screen. 
+When she gazes at the front camera, her face takes on a more serious expression.
 Cindy::
-She smiles sweetly and looks towards the camera with a serious look.
+"Good afternoon America!"
 {additive: on}
 "Today, Digital Horizons, 
-the primary brain imaging company, 
+the biggest brain imaging company in the nation, 
 attempts to etch themselves into the history books."
 {additive: off}
 {additive: on}
-"What do they plan to do?
-They plan to digitize the first human:
-a feat which has been unreachable until this point." 
+"And how do they plan to do that?
+Well, by digitizing the first human being, 
+that is how." 
 {additive: off}
 {additive:on}
-"And guess what Ladies, Gentlemen, and non-binary persons?"
+"And guess what?"
 We seem to have a ticket to a front row seat." 
 {additive: off}
-"At the DH Lab, we have our correspondant, Lead News Reporter, John Casnik."
+"At the Digital Horizons Lab, we have our correspondant, lead news reporter, John Casnik."
 "John? Are you there?"
 {changeScene: Brain Sucking Chair Side}
 {fadeoutsound: Times-Square-Crowd,2}
@@ -118,7 +121,7 @@ We seem to have a ticket to a front row seat."
 {spawnChar: malesilo, -1, John}
 {moveChar: John, .20}
 Narrator::
-In front of the screen is a man in his 40s, dressed in a sharp dark grey suit, one hand fiddling with the ear piece.
+In front of the screen is a man in his 40s, dressed in a sharp dark-grey suit, one hand fiddling with the ear piece.
 John::
 As he listens in, he nods curtly. 
 He smiles broadly at the camera.
@@ -130,12 +133,12 @@ How are the kids?"
 {additive:off}
 John::
 "They are good!"
-"They have been studying hard for the final exams in college."
+"They have been studying so hard for the final exams in college."
 "Thank you for asking!"
 Cindy:: 
-"I am soo happy for you, John! Tell Margaret, I said hi ok?"
+"I am soo happy for you, John! Tell Margaret I said hi ok?"
 {additive: on}
-"Now John.
+"Now, John.
 The viewers have no idea what they are looking at here.
 All I see is a very scary looking chair....
 is that what I think it is?"
@@ -154,19 +157,19 @@ Walk us through it."
 {additive: off}
 John::
 "As you can see, I am at the door of the main lab." 
-"Very soon, we will meet the first human to be digtized."
+"Very soon we will meet the first human to be digtized."
 John motions off screen.
 "And they will come through THAT door...."
+John sidesteps awkwardly as a few lab techs push past him in front of the camera.
 "Oh excuse me gentlemen." 
-John sidesteps awkwardly as a few labtechs push past him in front of the camera.
 {fadeinsound: Door, 0.1}
 {additive: on}
 "Sorry about that!
 Where was I?"
 {additive: off}
 {additive: on}
-"Oh yeah!
-And Digital Horizons is a company at the forefront of this technology, developing brain pattern replicators for over a decade."
+"Yes. Almost lost my train of thought there!
+Digital Horizons is a company at the forefront of this technology, developing brain pattern replicators for over a decade."
 {additive: off}
 "Now you see Cindy, and the viewers at home, these copies function normally as AI clones of V-Tubers."
 "Most of the time these Synthgens are being used when the streamer is offline, or when someone retires." 
@@ -175,11 +178,12 @@ Cindy::
 John::
 "Yes?"
 Cindy::
-"Um...... we already have Synthgens. What makes this machine different?" 
+"Um...we already have Synthgens. What makes this machine different?" 
 John::
 John waggles his finger at the camera as if scolding an impatient child.
 "I was getting to that." 
 "Now these copies, or clones, break down over time. There is no brain to keep the patterns together." 
+John's expression changes on camera. Focus sits behind his eyes. 
 "So, just like any vegetable or fruit, it 'rots' over time. Expires naturally."
 "Then new copies have to be recorded, and used to replace the deteriorated, old ones." 
 "It is far from a perfect solution."
@@ -191,16 +195,19 @@ As in, what exactly?
 Oh no, 
 oh no
 no
-no! HAHAHAHAHA
-Is this <i>another</i> Isekai?
+no! 
 {additive: off}
+<i>Narrator laughs away from the microphone.</i>
+Is this <i>another</i> Isekai?
 Anyways, I guess I should keep reading.
+<i>The narrator clears his throat.</i>
 The silence grows uncomfortable on the other end of the broadcast.
 Cindy::
-"Wait a second. Let me get this straight."
+"Wait a second. Let me get this straight..."
 "The person's soul is tranferred? Meaning no one is home in the body?"
 John::
-"Yep! It's original purpose was to transfer a cancer patient's mind to a cyborg, or to allow astronauts time to learn new skills in cryostasis."
+"Yep!" 
+"It's original purpose was to transfer a cancer patient's mind to a cyborg, or to allow astronauts time to learn new skills in cryostasis."
 "But there are many applications this technology can be used for." 
 "They named it the Digital Imaging Human Interface, or DIHI for short."
 Female Bystander::
@@ -208,11 +215,12 @@ Female Bystander::
 "You mean the 
 Brain
 Sucking 
-Chair John?" 
+Chair, 
+right John?"
+Female Bystander says sweetly. 
 {additive: off}
-Female Bystander says sweetly.
 Male Bystander::
-"WOW! That is hype man!" 
+"WOW! That is...impressive!" 
 "Forget what I said before man!"
 "Immersive porn, here I come!"
 Female Bystander::
@@ -223,15 +231,15 @@ Male Bystander 2 Chuckles
 {additive: on}
 "Hey!
 We all know that is the primary reason for the internet!
-Am I Right?"
+Am I right?"
 {additive: off}
-Male Bystander 2::
+"All jokes aside though..."
 Male Bystander 2 spreads his arms out in a grand gesture, looking at the sky.
 {additive: on}
 "Imagine.....if you will,
 a world open to your every whim! 
 Want to jump of Mount Everest? You can!
-Go into the live streams of porn? You can do that too!
+Go into the live streams of porn and join in? You can do that too!
 The sky is the limit, my man!"
 {additive: off}
 "Man, this changes everything! I am wondering if I should apply for the next test?"
@@ -244,33 +252,36 @@ The quip is sharp.
 Narrator::
 John is now standing next to a lab tech, talking in hushed tones.
 He stands tall and lanky, wearing glasses too large for the bridge of his nose.
-On the screen, his shoulders are slumped a bit, as if he is being crushed by all of the camera's gazes. His voice, however, defies that impression.
+His dark hair is touseled, as if he has been in lab for days without a proper bed. 
+On the screen, his shoulders are slumped a bit, as if he is being crushed by all the camera's gazes. His voice, however, defies that impression.
 The Lab Tech fingers his large glasses back up his nose.
+<i>Narrator scoffs off screen.</i>
 Oh COME ON! How cliche can you get?! 
 Shonen powers activate!
 Lab Tech::
 "Once transferred, the subject will remain in our closed servers for a period of around four days, give or take." 
 "While they are in there, their body will remain in a form of warm air stasis. This is to prevent abrupt changes in the chemical makeup." 
-"These chemical changes can create 'confusion' with the brain."
-"Which can theoretically cause "Brain Discharges" that we want to avoid until we have a better understanding." 
-"The process....."
+"These chemical changes can create 'confusion' within the brain."
+"This can theoretically cause "Brain Discharges" that we want to avoid until we have a better understanding." 
+"The process-"
 John::
 John frowns slightly...
-"Wait.....'Brain Discharges'?"
+"Wait...'Brain Discharges'?"
 Lab Tech::
 The Lab Tech looks at the camera with a withering look, and tsks, shaking his head.
 {additive: on}
-"Yes.......John, is it? 
+"Yes...John, is it? 
 A brain discharge. 
 It is really too complicated to explain on air. 
 Let us move on. I have things to attend to soon."
 {additive: off}
+The lab tech dismisses the reporter's confusion.
 "Now, this process is currently untested on a human subject." 
 "However, monkey trials have been successful with little to no side affects."
-"We will conduct the same tests we performed on the monkeys."
+"We will conduct the same tests we have performed on the monkeys."
 "They will stay awake and concious in the server, conduct motor skill tests, recite poems, sing songs, and so on." 
 "The purpose is to activate all the parts of the brain to ensure full congnitino and awareness." 
-"We want to see how much of the brain is active in cyberspace, and to be sure we can measure any deterioration, if any......"
+"We want to see how much of the brain is active in cyberspace, and to be sure we can measure any deterioration, if any..."
 "After about four days, we will reanimate their body, reinsert the brain patterns back into their fleshy vessel, and put them in quarantine for a couple of months to ascertain no permanent damage was done." 
 Cindy::
 "Ask him if the monkeys from the first test are still ok John. John?"
@@ -283,18 +294,18 @@ The lab tech takes a sip of water and closes the lid tight.
 {changeName: Lab Tech, Shirobi}
 John::
 "Shirobi. What happens if something goes wrong while they are inside the server?" 
-"What if you DO see deterioration and need to get them out as fast as possible?" 
+"What if you DO see deterioration, and need to get them out as fast as possible?" 
 "What are the steps to that process?"
 Shirobi::
 Shrobi shrugs nonchalantly. 
 "If there are any issues that cause alarm, we will immediately transfer them back to their body."
 "There will be a crew 24/7 monitoring both the body and the mind in the server." 
 Shirobi looks directly into the camera, face serious, but confident.
-"The subject of this test is well aware of the risks. And they are ready to be a pioneer in the field, and make some history."
+"The subject of this test is well aware of the risks. And they are ready to be a pioneer in the field, making history in the process."
 "I have complete confidence that this test will succeed with little or no issues." 
 "That is my personal opinion, of coarse." 
 John::
-"And who is this pioneer of the future, the amazing person that has decided to brave the unknown of the internet?"
+"And who is this pioneer of the future, the person that has decided to brave the unknown of the internet?"
 {fadeinsound: Door,0.1}
 Narrator::
 The lab tech smiles for the first time at the sound of the door.
@@ -302,7 +313,7 @@ He starts guiding all the press out of the lab with an air of excitement.
 Shirobi::
 "Why, the courageous, pioneering spirit....."
 Narrator:: 
-{choice: It's time to make your first choice. This is a placeholder until the Menu is complete. You will also be able to put in your own name. So..... Which Route would you like to go down?}
+{choice: It's time to make your first choice. This is a placeholder until the Menu is complete. You will also be able to put in your own name. So...which route would you like to go down?}
  {
     Male Route
     [
