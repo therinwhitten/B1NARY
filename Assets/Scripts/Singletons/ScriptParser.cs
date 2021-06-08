@@ -10,13 +10,13 @@ using System;
 
 public class ScriptParser : Singleton<ScriptParser>
 {
-
+    [HideInInspector]
     public bool scriptChanged = false;
     public string scriptName;
     public bool paused = false;
     bool choice = false;
-    public int lineIndex = 0;
-    public int continueIndex = 0;
+    // public int lineIndex = 0;
+    // public int continueIndex = 0;
 
     public Dictionary<string, AudioClip> voiceLines;
 
@@ -53,7 +53,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
     public override void initialize()
     {
-        lineIndex = 0;
+        // lineIndex = 0;
         reader = new StreamReader(path);
         currentNode = new DialogueNode(getLines());
         // readNextLine();
