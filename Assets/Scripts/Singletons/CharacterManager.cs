@@ -78,7 +78,6 @@ public class CharacterManager : Singleton<CharacterManager>
 
     public void changeAnimation(string charName, string animName)
     {
-
         GameObject character;
         charactersInScene.TryGetValue(charName, out character);
         character.GetComponent<CharacterScript>().animate(animName);
