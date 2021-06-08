@@ -57,7 +57,7 @@ public class CommandsManager : Singleton<CommandsManager>
                 }
                 break;
             case "anim":
-                characterManager.changeAnimation(dialogue.currentSpeaker, args[0].ToString().Trim());
+                characterManager.changeAnimation(args[0].ToString().Trim(), args[1].ToString().Trim());
                 break;
             case "movechar":
                 characterManager.moveCharacter(args[0].ToString().Trim(), args[1].ToString().Trim());
