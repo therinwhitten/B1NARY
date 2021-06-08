@@ -13,11 +13,12 @@ public class AudioManager : Singleton<AudioManager>
     private Dictionary<String, AudioSource> sources;
     private Dictionary<String, Sound> lib;
 
-
+    private Dictionary<String, IEnumerator> threads;
     private void Awake()
     {
         sources = new Dictionary<string, AudioSource>();
         lib = new Dictionary<string, Sound>();
+        threads = new Dictionary<String, IEnumerator>();
         foreach (Sound s in sounds)
         {
             lib.Add(s.name, s);
@@ -43,7 +44,8 @@ public class AudioManager : Singleton<AudioManager>
         float targetVolume = lib[sound].volume;
         source.volume = 0f;
         source.Play();
-        StartCoroutine(StartFade(source, duration, targetVolume));
+        IEnumerator thread = StartFade(source, duration, targetVolume);
+        SafeStartCoroutine(source.clip.name, thread);
     }
     public void FadeOut(string sound, float duration)
     {
@@ -54,7 +56,8 @@ public class AudioManager : Singleton<AudioManager>
             return;
         }
         float targetVolume = 0f;
-        StartCoroutine(StartFade(source, duration, targetVolume));
+        IEnumerator thread = StartFade(source, duration, targetVolume);
+        SafeStartCoroutine(source.clip.name, thread);
     }
 
     public void Play(string sound, bool unique = true)
@@ -79,6 +82,7 @@ public class AudioManager : Singleton<AudioManager>
 
     IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)
     {
+        Debug.Log("Fading sound: " + audioSource.clip.name);
         float currentTime = 0;
         float start = audioSource.volume;
 
@@ -91,6 +95,10 @@ public class AudioManager : Singleton<AudioManager>
         if (audioSource.volume == 0)
         {
             audioSource.Stop();
+        }
+        if (audioSource.volume == targetVolume)
+        {
+            threads[audioSource.clip.name] = null;
         }
         yield break;
     }
@@ -117,6 +125,29 @@ public class AudioManager : Singleton<AudioManager>
             source.Play();
         }
         yield break;
+    }
+    private void SafeStartCoroutine(String name, IEnumerator thread)
+    {
+        try
+        {
+            if (threads[name] == null)
+            {
+                threads[name] = thread;
+                StartCoroutine(thread);
+            }
+            else
+            {
+                StopCoroutine(threads[name]);
+                threads[name] = thread;
+                StartCoroutine(thread);
+            }
+        }
+        catch (KeyNotFoundException)
+        {
+            threads.Add(name, thread);
+            StartCoroutine(thread);
+        }
+
     }
 
 
