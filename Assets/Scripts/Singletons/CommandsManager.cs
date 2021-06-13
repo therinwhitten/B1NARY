@@ -35,15 +35,15 @@ public class CommandsManager : Singleton<CommandsManager>
                     dialogue.additiveTextEnabled = true;
                     Debug.Log("Set additive text to on!");
 
-                    ScriptParser.Instance.currentNode.nextLine();
-                    ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.getCurrentLine());
+                    // ScriptParser.Instance.currentNode.nextLine();
+                    // ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.getCurrentLine());
                 }
                 else if (args[0].ToString().ToLower().Trim().Equals("off"))
                 {
                     dialogue.additiveTextEnabled = false;
                     Debug.Log("Set additive text to off!");
-                    ScriptParser.Instance.currentNode.nextLine();
-                    ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.getCurrentLine());
+                    // ScriptParser.Instance.currentNode.nextLine();
+                    // ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.getCurrentLine());
                 }
                 break;
             case "spawnchar":
