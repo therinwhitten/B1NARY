@@ -13,6 +13,7 @@ public class AudioManager : Singleton<AudioManager>
     private Dictionary<String, AudioSource> sources;
     private Dictionary<String, Sound> lib;
     String lastSpeaker;
+    AudioSource lastSource;
     private Dictionary<String, IEnumerator> threads;
     private void Awake()
     {
@@ -103,29 +104,30 @@ public class AudioManager : Singleton<AudioManager>
         yield break;
     }
 
-    public void PlayVoice(String name, AudioSource source, AudioClip clip)
+    public void PlayVoice(String name, float volume, AudioSource source, AudioClip clip)
     {
         if (lastSpeaker == name || lastSpeaker == null)
         {
-            IEnumerator thread = InterruptVoice(source, clip);
+            IEnumerator thread = InterruptVoice(source, volume, clip);
             SafeStartCoroutine(name, thread);
             lastSpeaker = name;
+            lastSource = source;
         }
         else
         {
-            AudioSource lastSource = CharacterManager.Instance.charactersInScene[lastSpeaker].GetComponent<CharacterScript>().voice;
-            IEnumerator thread = InterruptVoice(lastSource, null);
+            IEnumerator thread = InterruptVoice(lastSource, volume, null);
             SafeStartCoroutine(lastSpeaker, thread);
 
-            thread = InterruptVoice(source, clip);
+            thread = InterruptVoice(source, volume, clip);
             SafeStartCoroutine(name, thread);
             lastSpeaker = name;
+            lastSource = source;
         }
     }
-    IEnumerator InterruptVoice(AudioSource source, AudioClip newClip)
+    IEnumerator InterruptVoice(AudioSource source, float volume, AudioClip newClip)
     {
         float currentTime = 0;
-        float start = source.volume;
+        float start = volume;
         while (currentTime < 0.1f)
         {
             currentTime += Time.deltaTime;
@@ -141,6 +143,7 @@ public class AudioManager : Singleton<AudioManager>
         }
         yield break;
     }
+
     private void SafeStartCoroutine(String name, IEnumerator thread)
     {
         try

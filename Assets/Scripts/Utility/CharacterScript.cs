@@ -23,7 +23,7 @@ public class CharacterScript : MonoBehaviour
     public bool focused = false;
     public Vector2 anchorPadding { get { return rectTransform.anchorMax - rectTransform.anchorMin; } }
     private Vector3 originalScale;
-
+    float voicevolume = 1f;
     private void Awake()
     {
         instance = this;
@@ -109,7 +109,7 @@ public class CharacterScript : MonoBehaviour
         try
         {
             // Debug.Log("Speaking line " + Line.index.ToString() + ": " + Line.line);
-            AudioManager.Instance.PlayVoice(name, voice, voiceLines[Line.index.ToString()]);
+            AudioManager.Instance.PlayVoice(name, voicevolume, voice, voiceLines[Line.index.ToString()]);
             // float volume = voice.volume;
             // voice.volume = 0f;
             // voice.Stop();
