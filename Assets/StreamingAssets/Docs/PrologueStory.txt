@@ -21,6 +21,7 @@ Male Bystander::
 "The test subject is either a frickin idiot, or they want to die... I can't decide which." 
 {spawnChar: femalesilo, -1,Female Bystander}
 {moveChar: Female Bystander, .50}
+{anim: Female Bystander, pose1}
 Female Bystander::
 {additive: on} 
 "You couldn't pay me enough!
@@ -30,6 +31,7 @@ Isn't VR good enough for people?"
 She shakes her head and sighs.
 {spawnChar: malesilo, 2,Male Bystander 2}
 {moveChar: Male Bystander 2, 0.80}
+{anim: Male Bystander 2, kime1}
 Male Bystander 2::
 "You're stuck in the past, both of you."
 "You only live once right? It's not like <i>either</i> of <i>you</i> are up there."
@@ -39,7 +41,7 @@ Think about the cool shit you can do."
 {additive: off}
 {additive:on}
 "And to be the first to experience it?  
-Gives me shivers just thinking about it!"
+Gives me shivers just thinking about it."
 {additive:off}
 Male Bystander::
 Male Bystander scoffs audibly and looks up at the broadcast.
@@ -69,6 +71,7 @@ Just <i>imagine</i> the pressure of sitting in that chair, in front of millions.
 {loopBG: false}
 {playBG: Prologue/Times Square Pan Up}
 {spawnChar: femalesilo, 2, Cindy}
+{anim: Cindy, m20}
 {moveChar: Cindy, .75}
 Narrator::
 The Holo-viewer, which before was on a short commercial break, abruptly changes to the image of a sharply dressed anchorwoman.
@@ -97,6 +100,12 @@ Let's find out together. LIVE!"
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {spawnChar: malesilo, -1, John}
+{spawnChar: femalesilo, 1.75, Cindy}
+{spawnChar: malesilo, -1, Male Bystander}
+{spawnChar: malesilo, -1.5, Male Bystander 2}
+{spawnChar: femalesilo, 2, Female Bystander}
+{spawnChar: malesilo, 1.5, Narrator}
+{anim: John, kime2}
 {moveChar: John, .20}
 Narrator::
 In front of the screen is a man in his 40s, dressed in a sharp dark-grey suit, one hand fiddling with his ear piece.
@@ -128,6 +137,7 @@ All I see behind you is a terrifying looking chair...
 Is that what I think it is?"
 {additive: off}
 John::
+{anim: John, kime1}
 A curt nod.
 {additive: on}
 "This is it, Cindy.
@@ -225,6 +235,7 @@ Female Bystander::
 "You two are drowning out the broadcast."
 The quip is sharp...
 {spawnChar: malesilo, 2, Lab Tech }
+{anim: Lab Tech, kime2}
 {moveChar: Lab Tech, .85}
 Narrator::
 John is now standing next to a lab tech.
