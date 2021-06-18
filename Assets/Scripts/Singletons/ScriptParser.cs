@@ -160,19 +160,19 @@ public class ScriptParser : Singleton<ScriptParser>
     public void playVA(DialogueLine Line)
     {
         GameObject charObject = null;
-        CharacterManager.Instance.charactersInScene.TryGetValue(DialogueSystem.Instance.currentSpeaker, out charObject);
+        string currentSpeaker = DialogueSystem.Instance.currentSpeaker;
+        CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out charObject);
         if (charObject != null)
         {
             try
             {
                 CharacterScript charScript = charObject.GetComponent<CharacterScript>();
-                charScript.speak(Line);
+                charScript.speak(currentSpeaker, Line);
             }
             catch (System.IndexOutOfRangeException)
             {
                 Debug.LogWarning("Character has no voice!");
             }
-
         }
     }
     public void parseLine(DialogueLine Line)
