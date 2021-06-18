@@ -12,7 +12,7 @@ public class CharacterScript : MonoBehaviour
     public string[] expressions;
     public RectTransform rectTransform;
     Dictionary<string, AudioClip> voiceLines { get { return ScriptParser.Instance.voiceLines; } }
-    AudioSource voice;
+    public AudioSource voice;
     public CharacterScript instance;
 
     public CubismRenderer[] renderers;
@@ -104,12 +104,12 @@ public class CharacterScript : MonoBehaviour
         }
     }
 
-    public void speak(DialogueLine Line)
+    public void speak(string name, DialogueLine Line)
     {
         try
         {
             // Debug.Log("Speaking line " + Line.index.ToString() + ": " + Line.line);
-            AudioManager.Instance.PlayVoice(voice, voiceLines[Line.index.ToString()]);
+            AudioManager.Instance.PlayVoice(name, voice, voiceLines[Line.index.ToString()]);
             // float volume = voice.volume;
             // voice.volume = 0f;
             // voice.Stop();

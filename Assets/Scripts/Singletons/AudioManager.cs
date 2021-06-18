@@ -12,7 +12,7 @@ public class AudioManager : Singleton<AudioManager>
 
     private Dictionary<String, AudioSource> sources;
     private Dictionary<String, Sound> lib;
-
+    String lastSpeaker;
     private Dictionary<String, IEnumerator> threads;
     private void Awake()
     {
@@ -103,9 +103,24 @@ public class AudioManager : Singleton<AudioManager>
         yield break;
     }
 
-    public void PlayVoice(AudioSource source, AudioClip clip)
+    public void PlayVoice(String name, AudioSource source, AudioClip clip)
     {
-        StartCoroutine(InterruptVoice(source, clip));
+        if (lastSpeaker == name || lastSpeaker == null)
+        {
+            IEnumerator thread = InterruptVoice(source, clip);
+            SafeStartCoroutine(name, thread);
+            lastSpeaker = name;
+        }
+        else
+        {
+            AudioSource lastSource = CharacterManager.Instance.charactersInScene[lastSpeaker].GetComponent<CharacterScript>().voice;
+            IEnumerator thread = InterruptVoice(lastSource, null);
+            SafeStartCoroutine(lastSpeaker, thread);
+
+            thread = InterruptVoice(source, clip);
+            SafeStartCoroutine(name, thread);
+            lastSpeaker = name;
+        }
     }
     IEnumerator InterruptVoice(AudioSource source, AudioClip newClip)
     {
@@ -117,7 +132,7 @@ public class AudioManager : Singleton<AudioManager>
             source.volume = Mathf.Lerp(start, 0, currentTime / 0.1f);
             yield return null;
         }
-        if (source.volume == 0)
+        if (source.volume == 0 && newClip != null)
         {
             source.Stop();
             source.clip = newClip;
