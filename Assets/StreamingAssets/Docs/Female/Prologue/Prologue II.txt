@@ -2,6 +2,10 @@
 {fadeinsound: DIHI Power Down, .2}
 {fadeinsound: Laptop-Lab,2}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
+{spawnChar: malesilo, -1, Narrator}
+{spawnChar: malesilo, -1.5, John}
+{spawnChar: femalesilo, 2, Cindy}
+{spawnChar: femalesilo, 2, Female Reporter}
 Narrator::
 {additive: on}
 Finally,
@@ -32,8 +36,8 @@ With a pneumatic swoosh, the stasis chamber closes with the MC inside.
 {fadeinsound: Cyrotube Close, .1}
 {fadeinsound: Slow Heartbeat Machine, .1}
 The stasis chamber looks like nothing John has ever seen before, touchscreens covering the top of the lid.
-John can hear the heart rate monitor, even in the "press room." Even through the thick panel of glass. 
-<i>John looks around.</i>
+The veteran reporter can hear the heart rate monitor, even in the "press room." Even through the thick panel of glass. 
+John looks around.
 "Press room." It is basically the lab techs' break room. 
 At least for the young lady, Digital Horizons has spared no expense. 
 That knowledge does little to settle the onlookers though. 
@@ -63,7 +67,7 @@ that was some great footage... What's happening now?"
 Narrator::
 John cups one hand to his ear, activating the auto talk function.
 John::
-"Standy by Cindy. I think the Lead Lab Supervisor is about to speak."
+"Standy by Cindy. I think the Lab Supervisor is about to speak."
 Narrator::
 He continues to observe closely. Something is different.
 The Lab Supervisor, Cliff, is leaning over a lab tech's laptop, his back to the room. 
@@ -90,7 +94,6 @@ Her body is stable and in room temperature stasis in our medical lab."
 {additive: off}
 "Tests are still being conducted to ensure she is aware of her location and fully cognizant." 
 "With that being said, I officially pronounce this experiment a resounding success!"
-Narrator::
 Narrator::
 {fadeinsound: Press Conference, 1}
 The symphony of camera shutters, and the flashing of lights, erupts as he makes his announcement to the world.
