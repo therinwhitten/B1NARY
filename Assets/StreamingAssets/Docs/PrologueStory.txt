@@ -28,6 +28,7 @@ Female Bystander::
 Isn't VR good enough for people?"
 {additive: off}
 "Imagine being that kid's parents? I wonder what they think about this?"
+Narrator::
 She shakes her head and sighs.
 {spawnChar: malesilo, 2,Male Bystander 2}
 {moveChar: Male Bystander 2, 0.80}
@@ -43,8 +44,9 @@ Think about the cool shit you can do."
 "And to be the first to experience it?  
 Gives me shivers just thinking about it."
 {additive:off}
-Male Bystander::
+Narrator::
 Male Bystander scoffs audibly and looks up at the broadcast.
+Male Bystander::
 "What if the power goes out on whatever server you are on? Doesn't your brain get scrambled?" 
 "Can you imagine? Dead. Just... like... that."
 {additive:on}
@@ -52,8 +54,9 @@ Male Bystander scoffs audibly and looks up at the broadcast.
 According to Goggles, it hasn't worked successfully even once." 
 {additive:off}
 "Unless they tested it in secret..."
-Female Bystander::
+Narrator::
 Female Bystander looks at Male Bystander with exasperation.
+Female Bystander::
 "That can't be the truth."
 "They wouldn't let a human near that thing unless it works."
 "I don't agree with this experiment, but even I know a failed experiment on a world broadcast would be PR suicide." 
@@ -109,9 +112,9 @@ Let's find out together. LIVE!"
 {moveChar: John, .20}
 Narrator::
 In front of the screen is a man in his 40s, dressed in a sharp dark-grey suit, one hand fiddling with his ear piece.
-John::
-As the news correspondant listens in, he nods curtly. 
+As the news correspondent listens in, he nods curtly. 
 John smiles broadly at the camera.
+John::
 "Thanks Cindy! How have you been?"
 Cindy::
 {additive: on}
@@ -136,9 +139,10 @@ The viewers have no idea what they're looking at here.
 All I see behind you is a terrifying looking chair...
 Is that what I think it is?"
 {additive: off}
-John::
+Narrator::
 {anim: John, kime1}
-A curt nod.
+John answers with a nod.
+John::
 {additive: on}
 "This is it, Cindy.
 The Digital Imaging Human Interface. Or DIHI for short."
@@ -152,9 +156,13 @@ Walk us through it."
 John::
 "As you can see, I'm at the door of the main lab." 
 "Very soon we'll meet the first human chosen to be digitized."
+Narrator::
 John motions off screen.
+John::
 "And they will come through <i>that</i> door..."
+Narrator::
 John sidesteps awkwardly as a few lab techs push past him in front of the camera.
+John::
 "Oh, excuse me gentlemen." 
 {fadeinsound: Door, 0.1}
 {additive: on}
@@ -173,12 +181,15 @@ John::
 "Yes?"
 Cindy::
 "Um... we already have Synthgens. What makes this machine different?" 
+Narrator::
+The reporter waggles his finger at the camera as if scolding an impatient child.
 John::
-John waggles his finger at the camera as if scolding an impatient child.
 "I was getting to that." 
 "The standard Synthgens have a huge drawback." 
 "The copies break down over time. There is no brain to keep the patterns together." 
+Narrator::
 John's expression changes on camera. Focus sits behind his eyes. 
+John::
 "So, just like any vegetable or fruit, it 'rots' over time. Expires naturally."
 "Then new copies have to be recorded, and used to replace the deteriorated, old ones." 
 "It is far from a perfect solution."
@@ -211,12 +222,14 @@ Male Bystander 2::
 "Innovation, and groundbreaking... and other stuff."
 "Man I would love to be digitized."
 "I could help out with the, uh ground breaking and stuff. Not to mention experience the more...entertaining parts of the internet."
+Narrator::
+A tired sigh escapes the Female Bystander's lips.
 Female Bystander::
-Female Bystander let's out a tired sigh.
 "So typical..." 
 "Let me guess... Porn?"
-Male Bystander 2::
+Narrator::
 Male Bystander 2 chuckles knowingly.
+Male Bystander 2::
 {additive: on}
 "You know it babe!
 We all know that's the primary reason for the internet.
@@ -248,11 +261,13 @@ Lab Tech::
 "These chemical changes can create 'confusion' within the brain."
 "We call this phenomenon 'Brain Discharge.' We want to avoid this effect until we have a better understanding of the long term implications." 
 "The process-"
+Narrator::
+The correspondent frowns slightly. 
 John::
-John frowns slightly.
 "Wait...'Brain Discharges'?"
-Lab Tech::
+Narrator::
 The Lab Tech looks at the camera with a withering look, and tsks, shaking his head.
+Lab Tech::
 {additive: on}
 "Yes... John, is it? 
 A brain discharge. 
@@ -271,22 +286,27 @@ Lab Tech::
 "After about four days, we will reanimate their body, reinsert the brain patterns back into their fleshy vessel, and put them in quarantine for a couple of months to ascertain no permanent damage was done." 
 Cindy::
 "Ask him if the synthgens from the first test are still ok John. John?"
-John::
+Narrator::
 John taps the ear piece and looks toward the Lab Tech.
+John::
 "Question er...."
-Lab Tech::
+Narrator::
 The lab tech takes a sip of water and closes the lid tight.
+Lab Tech::
 "Name is Shirobi."
 {changeName: Lab Tech, Shirobi}
 John::
 "Shirobi. What happens if something goes wrong while they are inside the server?" 
 "What if you do see deterioration, and need to get them out as fast as possible?" 
 "What are the steps to that process?"
+Narrator::
+Shrobi shrugs nonchalantly, unperturbed.
 Shirobi::
-Shrobi shrugs nonchalantly. 
 "If there are any issues that cause alarm, we will immediately transfer them back to their body."
 "There will be a crew 24/7 monitoring both the body and the mind in the server." 
+Narrator::
 Shirobi looks directly into the camera, face serious, but confident.
+Shirobi::
 "The subject of this test is well aware of the risks, and they are ready to be a pioneer in the field; making history in the process."
 "I have complete confidence that this test will succeed with little or no issues." 
 "That is <i>my</i> personal opinion, of course." 
