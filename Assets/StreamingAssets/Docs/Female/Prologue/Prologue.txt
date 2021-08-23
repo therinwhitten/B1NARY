@@ -9,6 +9,7 @@
 {spawnChar: malesilo, 2, MC}
 {spawnChar: malesilo, 2, Shirobi}
 Shirobi:: 
+{anim: Shirobi, kime2}
 "MC! She has been an intern with the company for over a year now..."
 MC::
 The brain sucking chair...
@@ -45,8 +46,9 @@ I squeak, the sound coming out of it's own volition.
 The lights of the cameras blind me.
 I attempt to blink away the glaring brightness, raising my hand to shade my eyes.
 {spawnChar: malesilo, 2, Old Reporter}
-{moveChar: Old Reporter, .85}
 Old Reporter::
+{anim: Old Reporter, kime1}
+{moveChar: Old Reporter, .85}
 "There she is! MC?"
 "Are you ok? You don't look very chipper."
 The old coot laughs, the sound straining to combat the tension in the air.
@@ -68,7 +70,10 @@ I look at the camera closest to me.
 "I won't let you down!" 
 {additive: off}
 {spawnChar: malesilo, -1, Cliff}
+Cliff::
+{anim: Cliff, kime2}
 {moveChar: Cliff, .25}  
+MC::
 My eyes start to adjust. I notice Cliff, the lead project manager, behind the press, arms crossed and a look of concern on his face.
 Why is no one saying anything?
 Suddenly uncomfortable, I keep silent, watching everyone study me.
@@ -120,7 +125,10 @@ He may be, to most, an annoying person. To me? He is a trustworthy friend.
 Look at him, PDA in hand, watching my expression, his face betraying his worry.
 {additive: on}
 I smile my best smile,
-which always makes him blush a bit. 
+which always makes him blush a bit.
+Shirobi::
+{anim: Shirobi, kime1}
+MC:: 
 His posture abruptly relaxes.
 {additive: off}
 I love to tease him, and he knows it. 
@@ -165,14 +173,16 @@ MC::
 Shibi taps his temple.
 Shirobi::
 "However, no one will be there."
-"We'll store your shell immediately in stasis." 
-"So, no worries MC, you'll be well taken care of." 
+"We'll store your body immediately in stasis." 
+"So, no worries MC, you'll be taken care of." 
 "I promise."
 {changeScene: The Lab}
 {fadeinsound: FastHeartbeat, .5}
 {fadeinsound: DIHI Up Close, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
+{spawnChar: malesilo, 2, MC}
+{spawnChar: malesilo, 2, Shirobi}
 MC::
 I center myself in front of the portal to the Digital Realm.
 It feels so surreal.
