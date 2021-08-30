@@ -1,4 +1,5 @@
-{changeScene: Press Room Animated}
+{changeScene: Press Room Animated 1}
+{fadeinsound: labtension, .2}
 {fadeinsound: DIHI Power Down, .2}
 {fadeinsound: Laptop-Lab,2}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
@@ -10,7 +11,7 @@ Narrator::
 {additive: on}
 Finally,
 after what seems like an eternity, 
-the MC's face completely relaxes.
+her face completely relaxes.
 It was hell watching the girl's panicked expression. 
 {additive: off}
 Her eyes slowly close, peaceful now, devoid of any expression. 
@@ -23,16 +24,16 @@ the inert body limp on the seat.
 {fadeinsound: LeavingFootsteps, .2}
 {fadeinsound: LabAmbience, .2}
 {fadeinsound: Fast Keyboard Typing, .5}
-As the press looks on, cameras rolling as a team of medics with a cryotube slowly enter through the doorway with medical equipment, efficiently prepping the the cryochamber.
+As the press looks on, cameras rolling, a team of medics with a cryotube slowly enter through the doorway with medical equipment, efficiently prepping the the cryochamber.
 {fadeinsound: Medic Stretcher, .1}
 Inside the press room, the silence is palpable.
 The press share glances, sip coffee, scribble down notes, as they wait impatiently for the announcement.
 It feels like several hours to some, but time plays tricks on you when you are focusing.
 It only takes a few minutes. Then, the lights in the lab comes back on.
-Medics grab her body, carefully placing her into the cyrotube and applying sensors to the different sections of her body.
+The medics grab her body, carefully placing her into the cyrotube and applying sensors to the different sections of her body.
 The body looks so dead. It unnerves the veteran journalist. 
 John wipes a bit of sweat off his head.  
-With a pneumatic swoosh, the stasis chamber closes with the MC inside. 
+With a pneumatic swoosh, the stasis chamber closes with her inside. 
 {fadeinsound: Cyrotube Close, .1}
 {fadeinsound: Slow Heartbeat Machine, .1}
 The stasis chamber looks like nothing John has ever seen before, touchscreens covering the top of the lid.
@@ -76,6 +77,7 @@ As he asks questions,
 you could see the tension stiffening his back.
 {additive: off}
 {spawnChar: malesilo, -1, Cliff}
+{anim: Cliff, kime2}
 {moveChar: Cliff, .50}
 Cliff stands up straight with confidence, turning to the press window.
 With a dramatic clearing of his throat, he speaks, projecting his voice. 
@@ -96,6 +98,7 @@ Her body is stable and in room temperature stasis in our medical lab."
 "With that being said, I officially pronounce this experiment a resounding success!"
 Narrator::
 {fadeinsound: Press Conference, 1}
+{fadeinsound: Small-Group-Whisper, 1}
 The symphony of camera shutters, and the flashing of lights, erupts as he makes his announcement to the world.
 {additive: on}
 That simple statement brings considerable excitement.
@@ -106,16 +109,19 @@ John::
 Narrator::
 The raising of hands, like a wave themselves, plead for Cliff's attention.  
 Cliff points to one young reporter, a lady from another news channel.
+{anim: Cliff, kime1}
 Cliff::
 "Yes, you there. Go ahead with your question."
+{anim: Cliff, kime2}
 Narrator::
 She purses her lips, nervous.
 Female Reporter::
 "There are many concerns about the risks involved with an experiment like this one."
 "We would like to hear from her, <i>personally</i>, if that is possible..."
-"When will we be able to talk to MC? Perhaps something more... Like an interview while she is in the servers?"
+"When can we talk to them? Perhaps something more... Like an interview while they are in the servers?"
 Narrator::
 The other news reporters stop whispering. All eyes lock on the Lab Supervisor. 
+{fadeoutsound: Small-Group-Whisper, 1}
 Cliff pauses for a few seconds, his face betraying no emotion.
 Cliff::
 "Well, that is still up in the air. We must remain on high alert through this first test."
@@ -127,6 +133,7 @@ It is crucial we keep her calm and safe.
 Because of this, we plan to keep the first four-day test private."
 {additive: off}
 Narrator::
+{fadeinsound: Small-Group-Whisper, 1}
 The reporters raise their hands even higher, more urgent, as if they were grade school kids again. 
 Cliff sighs visibly, a touch of irritability cracking his normally calm facade.
 Cliff::
@@ -156,6 +163,9 @@ John::
 Narrator::
 No one seems to notice the sweat on Cliff's forehead as the window turns into a solid wall, blocking the truth out......
 {moveChar: Cliff, -1}
+{fadeoutsound: Small-Group-Whisper, 1}
+{fadeoutsound: labtension, .2}
+
 
 **TODO: Fade to Black**
 {changeScript: Female/Prologue/Prologue III}
