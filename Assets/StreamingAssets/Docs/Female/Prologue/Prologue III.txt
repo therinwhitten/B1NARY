@@ -8,6 +8,9 @@
 {spawnChar: malesilo, -1, Cliff}
 {spawnChar: femalesilo, -1.5, Becks}
 {spawnChar: malesilo, -1.5, Narrator}
+{anim: Cliff, idle}
+{anim: Shirobi, kime2}
+{anim: Becks, g_m17}
 Narrator::
 The window changes, becoming dark as midnight.
 No one dares make a sound.
@@ -105,6 +108,7 @@ Narrator::
 Becks moves the mouse over and clicks open the network settings.
 Becks::
 "Here."
+{anim: Becks, gm 05}
 Narrator::
 As Becks clicks on the network status, they both see the problem.
 No local servers... none. One through ten should be there... 
@@ -117,13 +121,15 @@ Cliff starts pacing, mumbling to himself, the words unrecognizable, even to the 
 He pauses in his rambling and focuses his attention to Shirobi.
 Panic, anger, and a light dose of despair paint his features clearly. 
 Cliff::
-"Good news, the DIHI is fine. MC was not scrambled at least."
+"Good news, the DIHI's fine. MC was not scrambled at least."
 Narrator::
 {fadeoutsound: Fast Keyboard Typing, .5}
 Shirobi stops typing, looking up. 
 Cliff::
 "That isn't the problem: The problem is the DIHI is not connected to the servers. It's connected to the internet."
 Narrator::
+{anim: Shirobi, kime1}
+{anim: Cliff, kime2}
 Shirobi groans as he places his head between his hands.
 Shirobi::
 "Ohhhhhh FUCK!"
@@ -144,13 +150,14 @@ If they do, we won't be able to find her."
 "Will ransomware or malware hurt her? There are so many unknown dangers that we have no clue on..."
 Narrator::
 Shirobi, listening carefully, brightens up. 
+{anim: Shirobi, idle}
 Shirobi::
 "I got it! The browser history! It's so simple!" 
 {additive: on}
 "We can start there. 
 How does that sound Chief? 
 It can at least focus our efforts. Youbtube is so <i>huge</i> now...
-We wouldn't know where an AI actually dwells without being a part of a structure."
+We wouldn't know where the AI actually dwells without being a part of the structure."
 {additive: off}
 Narrator:: 
 Cliff nods, never taking his eyes off the screen, grim determination replacing panic.
@@ -168,6 +175,7 @@ Cliff::
 "Get MC's thought pattern impressions inputted into the mainframe and start training the AI."
 "Hopefully, we can start a full search pattern in 12 hours."
 Becks::
+{anim: Becks, g m03}
 "What about the press Sir?"
 Narrator::
 Cliff glances over at Becks.
@@ -178,7 +186,7 @@ Narrator::
 He ends the sentence with a bit of irony.
 Cliff::
 "We at least, can use that stereotype to buy us some time."
-"In the meantime, you try to figure out a good way to explain to the world what is happening." 
+"In the meantime, try to figure out a good way to explain to the world what is happening." 
 "If we can't find her by then, there will be some serious backlash on this."
 Narrator::
 Cliff's path clear, his confidence comes back.
