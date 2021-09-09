@@ -3,6 +3,8 @@
 {fadeinsound: fireplace, 1}
 {spawnChar: malesilo, -1, Szycrotic}
 {spawnChar: femalesilo, 2, Asterella}
+{spawnChar: femalesilo, 2, MC}
+{anim: Szycrotic, idle}
 {moveChar: Szycrotic, .25}
 MC::
 Large swaths of regal orchid contrasts with dark oak throughout most of the manor.
@@ -35,6 +37,7 @@ Ara Ara...
 {fadeinsound: Heart Thump, .1}
 She opens her mouth, an impression of impatience and light annoyance coloring her speech.
 Asterella::
+[annoyed]
 "Bruh."
 "It's about time you brought our 'guest'."
 MC::
@@ -55,6 +58,7 @@ She was almost floating on clouds when she was in the garden!"
 MC::
 Asterella makes eye contact with me. I feel the red rushing to my cheeks. 
 Asterella::
+[happy]
 "She <i>is</i> cute."
 "So cute, I could just <i>eat</i> her up!"
 MC::
@@ -120,9 +124,11 @@ What am I doing?
            "Look at that cute, determined face, Szy."
            "That's so precious!"
            Szycrotic::
+           [surprised]
            "I'm touched, MC. You don't even know me!"
            "Not gonna lie, you <i>might</i> be a bit crazy."
            Asterella:: 
+           [serious]
            {additive:on}
            "Very well. 
            If you wish to willingly take the punishment for Szy's lack of proper respect,
@@ -160,6 +166,7 @@ What am I doing?
            Did she flick me with her finger?
            The expression on Star's face is one of light amusement. 
            Asterella::
+           {anim: Asterella, smug}
            "There. All fixed."
            MC:: 
            Star seems satisfied and close to laughing.
@@ -169,6 +176,7 @@ What am I doing?
            Star pushes my hair away and kisses my wounded forehead lightly. 
            {fadeinsound: Heart Thump, 1}
            Asterella::
+           {anim: Asterella, idle}
            "He will be fine. Szy loves his punishment, and it has nothing to do with his performance."
            "I promise, ok?"
            MC::
@@ -183,6 +191,7 @@ What am I doing?
            MC::
            Asterella smiles, dismissing Szy's comment with a wave of her hand.
            Asterella::
+           [happy]
            {additive:on}
            "Szy, you worry too much. 
            I am a big girl."
@@ -207,13 +216,15 @@ What am I doing?
            All the things a Demon Lord should be?
            I touch my forehead lightly.
            Asterella::
+           [sad]
            "Did it hurt?"
            MC::
            I laugh nervously.
            "It wasn't the finger flick..."
            Asterella::
+           [happy]
            "Well, MC. We do have some things to talk about."
-           {changeScript: Female/Prologue/Star II, 271}
+           {changeScript: Female/Prologue/Star II, 288}
         ]
         Never mind, I can't do this!
         [
@@ -235,11 +246,13 @@ Asterella::
 MC::
 I stand aghast. I don't want to add more to his pain.
 Szycrotic::
+[horny]
 "Oh yeah dommy mommy, give me the punishment I deserve."
 MC::
 He laughs heartily, walks up, and kisses Star on the forehead. 
 With a wave, he opens the door.
 Szycrotic::
+[happy]
 "You two have fun!"
 {fadeinsound: Door, 1}
 {moveChar: Szycrotic, -1}
@@ -252,6 +265,7 @@ She is a bit shorter than me, but her presence of authority is palpable.
 Despite myself, I feel myself wanting to surrender to her. 
 She is every inch a Lord. 
 Asterella::
+{anim: Asterella, thinking}
 "So, do you have a name?"
 MC::
 She lets the question hang there open. 
@@ -265,8 +279,10 @@ From where she's standing, I can see that her underwear underneath is pretty rev
 Almost transparent. 
 I can smell lavender and... brimstone?
 She's that close. 
+{anim: Asterella, idle}
 She nods and smiles a genuine smile. 
 Asterella::
+[happy]
 "That's a very nice name, MC."
 {additive: on}
 "Before we talk business, 
@@ -325,6 +341,7 @@ I take it gratefully.
             There. The truth yet holding back the information I <i>dare</i> not disclose. 
             I hope it was good enough...
             She traces the edge of her wineglass thoughtfully.
+            {anim: Asterella, thinking}
             Asterella::
             "Fair enough. I can accept that for now."
             "Questions will come later though, I promise."
@@ -338,6 +355,7 @@ I take it gratefully.
           And neither will she.
           Star frowns. The air suddenly feels cold. 
           Asterella::
+          [angry]
           {additive: on}
           "There are very few things I will not tolerate.
           One of those things is lying.
@@ -354,6 +372,7 @@ I take it gratefully.
           I quickly follow that up.
           "I don't mean harm to your domain, nor your people. That much is certain."
           She studies me. Did I detect a bit of suspicion in that look?
+          [happy]
           Asterella::
           "I will accept that for now. I can understand that position."
           MC::
@@ -365,6 +384,7 @@ Only a foot or two separates us.
 {additive:off}
 I stare at the glass, the dark, pungent liquid sparkling in the light of the crackling fire.
 Asterella::
+[happy]
 "To future relationships."
 MC::
 She brings her glass towards mine, and we toast.
@@ -403,10 +423,12 @@ Asterella::
 {additive:on}
 "I want to assume it's the latter. But obviously, 
 I can't do that without...
+[horny]
 studying you."
 {additive:off}
 MC::
 She tries to read my eyes, looking for something?
+{anim: Asterella, pouting}
 A bit of frustration leaks out in her sigh.
 Astrella::
 {additive:on}
@@ -417,6 +439,8 @@ I assure you, that's a good thing."
 MC::
 She pointedly makes direct eye contact.
 Asterella::
+{anim: Asterella, idle}
+[horny]
 "Way better than the alternative."
 MC::
 I audibly gulp a bit. She is scary and sensual at the same time.
