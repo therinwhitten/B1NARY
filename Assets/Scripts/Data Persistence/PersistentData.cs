@@ -51,7 +51,17 @@ public class PersistentData : Singleton<PersistentData>
         state = formatter.Deserialize(stream) as GameState;
         stream.Close();
         // reconstruct game state based on state object
-        // TransitionManager.transitionScene(state.scene);
+        TransitionManager.transitionScene(state.scene);
+        Coroutine stateLoader = Instance.StartCoroutine(loadStateAsync());
+        // CharacterManager.Instance
+        // unpause script
+    }
+    IEnumerator loadStateAsync()
+    {
+        while (!TransitionManager.Instance.commandsAllowed)
+        {
+            yield return new WaitForEndOfFrame();
+        }
         CharacterManager.Instance.emptyScene();
         foreach (GameState.CharacterSnapshot character in state.characters)
         {
@@ -64,9 +74,7 @@ public class PersistentData : Singleton<PersistentData>
             CharacterManager.Instance.changeAnimation(character.name, character.animation);
             // CharacterManager.Instance.moveCharacter(character.name, character.positionX.ToString());
         }
-        ScriptParser.Instance.changeScriptFile(state.script, state.index + 1);
-        // CharacterManager.Instance
-        // unpause script
+        ScriptParser.Instance.changeScriptFile(state.script, state.index + 2);
     }
     // Update is called once per frame
     void Update()
