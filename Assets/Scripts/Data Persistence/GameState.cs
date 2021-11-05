@@ -20,6 +20,8 @@ public class GameState
     // line index of current script
     public int index;
     public string scene;
+    public bool additiveTextEnabled;
+    public string textBoxContent;
 
     [System.Serializable]
     public class CharacterSnapshot
@@ -58,6 +60,16 @@ public class GameState
 
     public void captureState()
     {
+        additiveTextEnabled = DialogueSystem.Instance.additiveTextEnabled;
+        if (additiveTextEnabled)
+        {
+            textBoxContent = DialogueSystem.Instance.targetSpeech;
+        }
+        else
+        {
+            textBoxContent = "";
+        }
+
         characters.Clear();
         scene = SceneManager.GetActiveScene().name;
         script = ScriptParser.Instance.scriptName;

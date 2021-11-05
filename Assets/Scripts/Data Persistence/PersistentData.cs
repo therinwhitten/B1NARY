@@ -74,6 +74,10 @@ public class PersistentData : Singleton<PersistentData>
             CharacterManager.Instance.changeAnimation(character.name, character.animation);
             // CharacterManager.Instance.moveCharacter(character.name, character.positionX.ToString());
         }
+        DialogueSystem.Instance.additiveTextEnabled = false;
+        DialogueSystem.Instance.Say("");
+        // DialogueSystem.Instance.Say(state.textBoxContent);
+        DialogueSystem.Instance.additiveTextEnabled = state.additiveTextEnabled;
         ScriptParser.Instance.changeScriptFile(state.script, state.index + 2);
     }
     // Update is called once per frame
