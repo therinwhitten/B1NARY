@@ -6,7 +6,10 @@
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {fadeinsound: Heartbeat, 1}
+{spawnChar: malesilo, 2, MC}
+{spawnChar: malesilo, 2, Shirobi}
 Shirobi:: 
+{anim: Shirobi, kime2}
 "MC! She has been an intern with the company for over a year now..."
 MC::
 The brain sucking chair...
@@ -25,10 +28,9 @@ right...
 {additive:off}
 Someone grabs my shoulder, instantly causing me to jump.
 I squeak, the sound coming out of it's own volition.
-
 {choice: Do I face them?}
 {
-     I am scared! Stay put.
+     I am scared! I should probably stay put.
      [
          I feel the hand grip me tight. And twirl me around.
      ]
@@ -42,17 +44,18 @@ I squeak, the sound coming out of it's own volition.
 {fadeinsound: Press Cameras, .2}
 The lights of the cameras blind me.
 I attempt to blink away the glaring brightness, raising my hand to shade my eyes.
-{spawnChar: malesilo, 2, John}
-{moveChar: John, .85}
-John::
+{spawnChar: malesilo, 2, Old Reporter}
+Old Reporter::
+{anim: Old Reporter, kime1}
+{moveChar: Old Reporter, .85}
 "There she is! MC?"
 "Are you ok? You don't look very chipper."
-John laughs, the sound straining to combat the tension in the air.
+The old coot laughs, the sound straining to combat the tension in the air.
 "Must be nerve wracking for billions of people to watch you make history, am I right?"
 MC::
 Why do they have to make the lighting so harsh in here?! 
 And why did he have to point out how many are watching?! 
-I'm going to throw up...
+I think I'm going to throw up...
 I control my breathing, trying to push back the nausea with sheer force of will.
 "Yes, I'm ok."
 I paint on my best smile. Nothing is wrong, reporter guy.
@@ -62,20 +65,24 @@ My eyes narrow for just a second.
 "But so much has been done to make this happen!
 I'm pumped to get to work!"
 {additive:off}
+I look at the camera closest to me.
 "I won't let you down!" 
 {additive: off}
 {spawnChar: malesilo, -1, Cliff}
+Cliff::
+{anim: Cliff, kime2}
 {moveChar: Cliff, .25}  
+MC::
 My eyes start to adjust. I notice Cliff, the lead project manager, behind the press, arms crossed and a look of concern on his face.
 Why is no one saying anything?
 Suddenly uncomfortable, I keep silent, watching everyone study me.
 {additive: on}
-There is a surprising amount of people whispering in this tiny room!
+There is a surprising amount of people whispering in this tiny room.
 I feel very small, wanting to compress myself, 
 but there's nowhere to go,
 except the chair.
 {additive: off}
-In my pockets, sits the letter from mom I received this morning, full of praise and excitement.
+In my pockets, sits the letter from my mom I received this morning, full of praise and excitement.
 {additive: on}
 To be a part of this project,
 and to spearhead such a huge change of direction in humanity's future,
@@ -98,12 +105,11 @@ It just doesn't feel right to the people watching.
 I don't condemn others for choosing otherwise. They have their own reasons, surely. 
 And I respect that. 
 When given a chance, I leapt at it.
-Imagine if people can transport into the internet at will in the future because of this experiment?
+Imagine if people can transport into the internet at will in the future because of this experiment.
 Don't think too much of it, MC. You're already insanely nervous.
 I look down, my hands shaking of their own volition.
 {moveChar: Cliff, -1}
-{moveChar: John, 2}
-{spawnChar: malesilo, 2, Shirobi}
+{moveChar: Old Reporter, 2}
 {moveChar: Shirobi, .75}
 {additive: on}
 Scratching the back of my neck,
@@ -118,7 +124,10 @@ He may be, to most, an annoying person. To me? He is a trustworthy friend.
 Look at him, PDA in hand, watching my expression, his face betraying his worry.
 {additive: on}
 I smile my best smile,
-which always makes him blush a bit. 
+which always makes him blush a bit.
+Shirobi::
+{anim: Shirobi, kime1}
+MC:: 
 His posture abruptly relaxes.
 {additive: off}
 I love to tease him, and he knows it. 
@@ -126,15 +135,15 @@ I could hear some of the press chuckling over that.
 "Shibi, MC reporting as ordered!" 
 My tone is mockingly serious. I even throw in a salute.
 He also hates when I call him Shibi. He takes himself way too seriously sometimes. 
-Shirobi::
 He nods sagely, a slight smile curving his lips.
 He motions towards the DIHI. 
+Shirobi::
 {additive: on}
 "I'm in charge of watching all your vitals.
 So please... take this seriously?
 {additive:off}
 "It's four days in. That's it."
-"No trying to stay in the servers, MC... Ok?"
+"No trying to stay in the servers, MC. Ok?"
 MC::
 My eyebrows raise on their own accord. 
 "I'll be good, I promise. Wouldn't want you to get worried."  
@@ -163,14 +172,16 @@ MC::
 Shibi taps his temple.
 Shirobi::
 "However, no one will be there."
-"We'll store your shell immediately in stasis." 
-"So, no worries MC, you'll be well taken care of." 
+"We'll store your body immediately in stasis." 
+"So, no worries MC, you will be taken care of." 
 "I promise."
 {changeScene: The Lab}
 {fadeinsound: FastHeartbeat, .5}
 {fadeinsound: DIHI Up Close, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
+{spawnChar: malesilo, 2, MC}
+{spawnChar: malesilo, 2, Shirobi}
 MC::
 I center myself in front of the portal to the Digital Realm.
 It feels so surreal.
@@ -185,7 +196,7 @@ When he shuts down the pre-scanners, the path opens to the chair. The hum lowers
 Shirobi::
 "Ok. It begins here."
 "Just have a seat."
-"I'll see you on the other side, ok?"
+"I will see you on the other side, ok?"
 MC:: 
 Shirobi, looking a little nervous himself, motions to the seat.
 I swallow down my fear, realizing it's already too late to go back.
@@ -209,7 +220,7 @@ The calming touch allows me to breathe.
 {additive: off}
 I pivot my head slightly, my eyes meet Shirobi's. He smiles briefly one more time. 
 Shirobi::
-"Close your eyes... baka."
+"Just close your eyes... baka."
 MC::
 "Baka?"
 I laugh forcibly.
@@ -219,14 +230,16 @@ I comply, closing my eyes.
 I manage wryly.
 The fear keeps me talking more than I normally would have. Anything to release some tension at this point.
 Shirobi lightly flicks my forehead.
+{fadeinsound: fingerflick, .01}
 "Hey!"
 Shirobi::
-"Hush you. Try and contain yourself ok? And will you stop trying to match me already?"
+"Hush you. Try to contain yourself ok? And will you stop trying to match me already?"
 MC::
+{fadeinsound: touchscreentaps, .01}
 I could hear him fiddle with switches and tap the screen of his pad.
 It's odd how loud it is over the sound the chair.
-{fadeinsound: DIHI Power Up, 1}
 I honestly don't know what to expect, and that unknown scares me more as the seconds move forward.
+{fadeinsound: DIHI Power Up, .5}
 I can hear the build of power. The chair's resonation syncs and becomes all one sound, screeching inside my skull.
 Putting on a brave face no longer suits me. I clench the chair's arm rests. I hold back a scream. 
 I don't want to die. 

@@ -5,14 +5,17 @@
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
+{spawnChar: malesilo, 2, Shirobi}
+{spawnChar: malesilo, 2, MC}
 {fadeinsound: Heartbeat, 1}
-Shirobi:: 
-"He's been an intern with the company for over a year now..."
+Shirobi::
+{anim: Shirobi, idle} 
+"He has been an intern with the company for over a year now-"
 "The amazing, handsome, and downright cool human being, MC!" 
 MC::
 The noise registers as words for a split second as I am being escorted into the brain sucking room.
 {additive: on}
-The lab techs hate when I call it that, but to look at that...
+The lab techs hate when I call it that, but to look at that
 <i>thing</i> as anything else,
 would be an excerise of blatant brainwashing.
 {additive: off}
@@ -23,10 +26,10 @@ I hear my heartbeat thumping rhythmically in my ears.
 Mechanical whirring of laptops, server fans, and the hum of the EM fields surrounding the chair, resonate inside my skull.
 {fadeinsound: slowfootsteps, .2}
 {additive:on}
-Left...
-right...
-left...
-right...
+Left.
+right.
+left.
+right.
 {additive: off}
 {additive: on}
 I focus on my feet.
@@ -40,11 +43,11 @@ someone grabs my shoulder, instantly causing me to jump.
 {additive: off}
 {choice: Do I turn around?}
 {
-     Don't turn around...
+     Don't turn around.
      [
         I feel the hand grip me tight. And twirl me around.
      ]
-     Face your assailant...
+     Face your assailant.
      [
         I whirl.
      ]    
@@ -52,14 +55,17 @@ someone grabs my shoulder, instantly causing me to jump.
 {changeBG: DIHI Room Animated}
 {fadeoutsound: Heartbeat, 1}
 {fadeinsound: Press Cameras, .2}
-My eyes get a full blast of white light from those high tech digital cameras.
+My eyes get a full blast of white light from those high tech cameras.
 The light erases my distractions, and I attempt to blink away the brightness.
-{spawnChar: malesilo, 2, John}
-{moveChar: John, .85}
-John::
+{spawnChar: malesilo, 2, Smug Reporter}
+{anim: Smug Reporter, kime1}
+{moveChar: Smug Reporter, .85}
+Smug Reporter::
 "MC! 
-Are you ok? You look... unsteady."
-John laughs to allievate the obvious tension in the room. 
+Are you ok? You look unsteady."
+MC::
+The smug reporter laughs to allievate the obvious tension in the room. 
+Smug Reporter::
 "Must be nerve wracking for billions of people to watch you make history, am I right?"
 MC::
 Damn lights!
@@ -76,6 +82,7 @@ I swallow some acid down. I lick my chapping lips a bit.
 Gesturing at the behemoth sitting in the center of the room, I clarify.
 "I would be lying if I didn't say the DIHI makes me nervous."
 {spawnChar: malesilo, -1, Cliff}
+{anim: Cliff, kime2}
 {moveChar: Cliff, .20}
 Eyes start to adjust, and I notice Cliff, the lead project manager, behind the press, his arms crossing in combination to a stern face.
 His posture is clearly saying, "If you mess this up, there goes your pay for a year."
@@ -90,45 +97,45 @@ Would I even be the same person if I lost my memories?
 My mom and dad never really cared about how I am doing.
 I spend most of my time just watching streams, anime, and some hentai on the side.
 So, the notion of going into the digital world has always caught my curiosity. 
-How cool would it be to live in the Internet? Would I be able to just sit in a streaming site, or watch a Youbtube video?
+How cool would it be to live in the Internet? Would I be able to just sit in a stream site, or watch a Youbtube video?
 {additive: on}
 Would I need to eat?
 Sleep?
 {additive: off}
 Or perhaps, more questionable things? Would it even feel the same in the digital world?
 I mentally shove my thoughts aside. They can tell I am spacing out now. 
-I am feeling a bit awkward here. So, I try to smile and put a thumb up.
+I feel a bit awkward here. So, I try to smile and put a thumb up.
 I hear a chuckle somewhere... The voice sounds familiar.
 Damn lights!
 {moveChar: Cliff, -1}
-{moveChar: John, 2}
-{spawnChar: malesilo, 2, Shirobi}
+{moveChar: Smug Reporter, 2}
 {moveChar: Shirobi, .75}
 Shirobi::
+{anim: Shirobi, idle} 
 "Well, at least he seems to have calmed down a bit. I was starting to worry, to be frank." 
 MC::
 My eyes shoot daggers at him.
 That nasal, little otaku ass!
-That is Shirobi, my roommate, the lead tech intern. 
+This is Shirobi, my roommate, the lead tech intern. 
 So annoying when he thinks he is right, or looking cool, he always pushes up his glasses like he is some protagonist in an anime.
 {additive: on}
 He is a cool friend sometimes though. He is always willing to help a buddy out:
 either with some advice, or some light novels. 
 {additive: off}
-I intake a breath.
- "Hey Shirobi... I hope you're ready for me..."
-Shirobi::
+I take in breath.
+"Hey Shirobi... I hope you're ready for me..."
 Shirobi walks up and puts a hand on my shoulder.
+Shirobi::
+{anim: Shirobi, kime1} 
 "Don't worry MC. I will be watching your vitals, to ensure nothing happens."
-"You know... I wouldn't let you get near this chair unless it was safe. Right?" 
-"Four days. Then we'll pull you out. Ok?"
+"You know... I wouldn't let you get near this chair unless it's safe. Right?" 
+"Four days. Then we will pull you out. Ok?"
 MC::
 I nod, taking in the room.
 The press are being guided outside of the room. The only people inside were me, the lab techs, and Cliff. 
 {fadeinsound: LeavingFootsteps, .3}
 {fadeinsound: Door, .1}
 {fadeoutsound: LabAmbience, .1}
-{fadeoutsound: Lab Ambience Music Light, 2}
 The sound of the DIHI suddenly changes, the feel of ionizing in the air increases.
 {fadeinsound: DIHI Up Close, 1}
 I look into the observation lounge window, where reporters, and lab technicians are chatting.
@@ -139,8 +146,8 @@ My body won't do anything weird
 like have a zombie stiffy... right?
 {additive: off}
 Oh please no. Maybe I should ask...
-Shirobi::
 Shirobi snorts, obviously stifling laughter.
+Shirobi::
 {additive: on}
 "Really?
 Going to be sitting on a multi-billion dollar chair, and that's what you think about?" 
@@ -152,17 +159,21 @@ Own it.
 "Well? Will I?"
 Shirobi::
 "The answer is no. You won't sit in stasis with a stiffy."
+MC::
 He leans in closer to avoid the microphones. 
+Shirobi::
 "And there will be no nurses taking advantage of you, I promise."
+MC:: 
 He speaks in a louder tone as he turns. 
-"The stasis is top tech, man. Remember the briefings..." 
+Shirobi::
+"The stasis pod is top tech. Man, remember the briefings..." 
 MC::
 Yeah the briefings I slept through...
 Like I am going to tell him that. 
 Shirobi::
-"So no worries. I will make sure we have a team watching you 24/7."
+"So no worries. We will make sure we have a team watching you 24/7."
 MC::
-I laugh, it bursting out a little louder than I intend.
+I laugh, it bursting out a little louder than I intended.
 "Ok then, I guess no time like the present."
 I look grimly at Shirobi, my eyes imploring him to take this seriously.
 "Shirobi, I'm putting my complete and utter faith in you."
@@ -173,9 +184,9 @@ and I mean
 touches my 'collection'
 ok?"
 {additive: off}
-Shirobi::
 Shirobi's withering look is a great reward. 
-"I got you man. Just focus on making history ok?"
+Shirobi::
+"Yes, no touching business, I've got you man. Just focus on making history ok?"
 MC::
 I walk to the center of the room, looking straight at the chair.
 {changeScene: The Lab}
@@ -183,6 +194,9 @@ I walk to the center of the room, looking straight at the chair.
 {fadeinsound: DIHI Up Close, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
+{fadeoutsound: Lab Ambience Music Light, 2} 
+{spawnChar: malesilo, 2, MC}
+{spawnChar: malesilo, 2, Shirobi}
 It vibrates my bones as I get closer.
 The DIHI fills my whole vision.
 {additive: on}
@@ -199,21 +213,23 @@ Shirobi moves to the console that attaches to the chair. He hits a few buttons a
 The hum lowers in volume a bit. 
 Shirobi::
 "It's ready MC. Just sit down, and relax." 
+MC::
 Shirobi motions with a curt nod towards the solid, metallic chair.
-MC:: 
 The last step.
 I can't hear anything but my heart, and the background hum of the brain-sucking chair. 
 It's resonating with my bones.
 All the pulsing light eats at the darkness surrounding it, enveloping me as well.
 The hum vibrates the metal paneling under my feet. 
-I stare at the "digitation throne of horrifyng implications".
+I stare at the "digitation throne of horrifying implications".
 With a sudden burst of courage, I pivot and sit down, with the humming droning in my skull.
 I can barely hear anything.
 With my breath quick in my ears, I exhale, forcing it to slow.
 "Light me up Shirobi."
 Shirobi::
 "Jeez dude! Poor choice of words." 
+MC::
 He sighs, looking at the expectant press in the observation room.
+Shirobi::
 "It will be ok man. Just lean your head back, relax, and close your eyes."
 MC::
 {additive: on}
@@ -224,15 +240,14 @@ You can do this!
 I close my eyes, losing myself in the vibration of the chair. 
 "See you in a couple of hours!"
 "Wait!"
-I open my eyes and send a sidelong glance at my roomate.
+I open my eyes and send a sidelong glance at my room mate.
 "Wait..."
 "will I know how to breathe and all that?" 
-Shirobi::
 Shirobi's face, deadpan as he could possibly make it...
-"We forgot to teach you how, MC..."
+Shirobi::
+"Ah... yes, I guess we forgot to teach you how, MC..."
 "Just close your eyes man." 
 MC::
-{fadeinsound: DIHI Power Up, 1}
 I close my eyes, suddenly feeling like I have alot more to lose than I previously expected.
 They have never succeeded.
 Not with a human being. 
@@ -240,6 +255,7 @@ My heart skips a beat, loud in my ears.
 A wave of panic grips me...
 I start to tear up. 
 Is this my last moment of being aware of myself?
+{fadeinsound: DIHI Power Up, 1}
 I feel my head start to tingle.
 The sounds of the chair is all I hear other than my own heartbeat.
 No press, no coworkers: just my heartbeat, the thrum of the chair, and my sudden fear of being alone. 
@@ -252,7 +268,7 @@ No press, no coworkers: just my heartbeat, the thrum of the chair, and my sudden
 {fadeoutsound: Laptop-Lab,.1}
 <i>Then, with an almost gut-wrenching lurch, everything suddenly feels like it is being pulled to the top of my head...</i>
 {fadeinsound: Brain Sucking Chair Activate, .5}
-{changeBG: Black Screen}
+
 
 **TODO:Fade To Black**
 
