@@ -110,6 +110,8 @@ Other dialogue
 
 6. SCENE TRANSITION                             {changeScene: sceneName}
 
+**Change Scene using folders = {changeScene: Scenes/(Folder)/(Scene)**
+
     - Same as with background transitions but changes the entire scene.
     - sceneName MUST match the name of a Scene file in Assets/Scenes
 
@@ -118,6 +120,7 @@ Other dialogue
     scene prefab (not recommended) OR spawn them again via script after the new scene is loaded
 
 7. SCRIPT CHANGE                                {changeScript: newScript}
+                         command format is {changeScript: <script name>, <line number>}
 
     - Changes the script file the system is following.
     - We will use a more advanced version of this to implement player choice and story progression
@@ -135,3 +138,17 @@ Expand positioning system to allow for two layers
 Voice acting functionality
 
 Player choice
+
+Play video
+
+
+
+Changing from Animated background at end of loop and tranistion to a static image?
+
+
+
+
+
+
+
+
