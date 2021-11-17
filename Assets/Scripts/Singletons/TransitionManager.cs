@@ -159,14 +159,13 @@ public class TransitionManager : Singleton<TransitionManager>
         {
             yield return null;
         }
-        Instance.commandsAllowed = true;
         // re-initialize singletons
         DialogueSystem.Instance.initialize();
-        // DialogueSystem.Instance.speechText.text = DialogueSystem.Instance.targetSpeech;
         // ScriptParser.Instance.initialize();
         CharacterManager.Instance.initialize();
         CommandsManager.Instance.initialize();
         Instance.initialize();
+        Instance.commandsAllowed = true;
         // pull off overlay
         Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texOut);
         targetVal = 1;

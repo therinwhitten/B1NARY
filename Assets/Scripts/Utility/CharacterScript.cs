@@ -6,21 +6,30 @@ using Live2D.Cubism.Rendering;
 
 public class CharacterScript : MonoBehaviour
 {
+    [HideInInspector]
+    public CharacterScript instance;
+
+    [HideInInspector]
+    public string currentExpression;
+    [HideInInspector]
+    public string prefabName;
+
+    [HideInInspector]
+    public string currentAnimation = "idle";
+
+    private string defaultAnimation = "idle";
     public string charName;
-    public CharacterLibrary library;
-    public CharacterEntry libraryEntry;
     public string[] expressions;
+    [HideInInspector]
     public RectTransform rectTransform;
     Dictionary<string, AudioClip> voiceLines { get { return ScriptParser.Instance.voiceLines; } }
     public AudioSource voice;
-    public CharacterScript instance;
-
     public CubismRenderer[] renderers;
-
     private Material lighting;
     private Material lightingFocus;
     private Material lightingNoFocus;
     public bool focused = false;
+
     public Vector2 anchorPadding { get { return rectTransform.anchorMax - rectTransform.anchorMin; } }
     private Vector3 originalScale;
     float voicevolume = 1f;
@@ -128,24 +137,50 @@ public class CharacterScript : MonoBehaviour
 
     public void animate(string animName)
     {
-        gameObject.GetComponent<Animator>().SetTrigger(animName.Trim());
+        currentAnimation = animName;
+        try
+        {
+            gameObject.GetComponent<Animator>().SetTrigger(animName.Trim());
+        }
+        catch (System.Exception)
+        {
+            Debug.LogWarning("Error! Animation "
+            + animName +
+            " not found in animation list of character: "
+            + charName +
+            ". Reverting to default animation");
+            gameObject.GetComponent<Animator>().SetTrigger(defaultAnimation.Trim());
+            currentAnimation = defaultAnimation;
+        }
     }
 
     public void changeExpression(string expressionName)
     {
+        currentExpression = expressionName;
         int expressionIndex = System.Array.IndexOf(expressions, expressionName);
         // Debug.Log("Changing expression of character " + charName + ". Name: " + expressionName + ". Index: " + expressionIndex);
-        gameObject.GetComponent<CubismExpressionController>().CurrentExpressionIndex = expressionIndex;
+        try
+        {
+            gameObject.GetComponent<CubismExpressionController>().CurrentExpressionIndex = expressionIndex;
+        }
+        catch (System.NullReferenceException)
+        {
+            Debug.LogWarning("Error! Expression " + expressionName + " not found in expression list of character: " + charName);
+        }
     }
 
-    Vector2 targetPosition;
+    [HideInInspector]
+    public Vector2 targetPosition;
+    public Vector2 currentPosition;
     Coroutine moving;
-    bool isMoving { get { return moving != null; } }
+    [HideInInspector]
+    public bool isMoving { get { return moving != null; } }
 
     public void MoveTo(Vector2 Target, float speed, bool smooth = true)
     {
         StopMoving();
         moving = StartCoroutine(Moving(Target, speed, smooth));
+        currentPosition = Target;
     }
     public void StopMoving(bool goToTarget = true)
     {
@@ -157,10 +192,12 @@ public class CharacterScript : MonoBehaviour
                 SetPosition(targetPosition);
             }
         }
+        // currentPosition = targetPosition;
         moving = null;
     }
     public void SetPosition(Vector2 target)
     {
+        currentPosition = target;
         Vector2 padding = anchorPadding;
 
         float maxX = 1f - padding.x;
@@ -169,7 +206,6 @@ public class CharacterScript : MonoBehaviour
         Vector2 minAnchorTarget = new Vector2(maxX * target.x, maxY * target.y);
         rectTransform.anchorMin = minAnchorTarget;
         rectTransform.anchorMax = rectTransform.anchorMin + padding;
-
     }
     IEnumerator Moving(Vector2 target, float speed, bool smooth)
     {
@@ -189,6 +225,7 @@ public class CharacterScript : MonoBehaviour
             rectTransform.anchorMax = rectTransform.anchorMin + padding;
             yield return new WaitForEndOfFrame();
         }
+        currentPosition = target;
         StopMoving();
     }
 

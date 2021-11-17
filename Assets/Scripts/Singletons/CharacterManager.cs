@@ -33,7 +33,7 @@ public class CharacterManager : Singleton<CharacterManager>
 
     }
 
-    public void spawnCharacter(string prefabName, string positionRaw, string charName = "")
+    public GameObject spawnCharacter(string prefabName, string positionRaw, string charName = "")
     {
         Transform transform = characterLayer.transform;
 
@@ -41,6 +41,7 @@ public class CharacterManager : Singleton<CharacterManager>
         characterObject.SetActive(true);
         characterObject.transform.position = new Vector3(transform.position.x, characterObject.transform.position.y, characterObject.transform.position.z);
         characterObject.GetComponent<CharacterScript>().SetPosition(new Vector2(float.Parse(positionRaw), 0));
+        characterObject.GetComponent<CharacterScript>().prefabName = prefabName;
         // if (charactersInScene == null)
         // {
         //     charactersInScene = new Dictionary<string, GameObject>();
@@ -55,19 +56,23 @@ public class CharacterManager : Singleton<CharacterManager>
 
             charactersInScene.Add(prefabName, characterObject);
         }
-        return;
+        return characterObject;
     }
 
 
     // deletes all characters in the scene
     public void emptyScene()
     {
-        foreach (GameObject character in charactersInScene.Values)
+        // foreach (GameObject character in charactersInScene.Values)
+        // {
+        //     Debug.Log("Destroying " + character.GetComponent<CharacterScript>().charName);
+        //     Destroy(character);
+        // }
+        foreach (Transform child in characterLayer.transform)
         {
-            Debug.Log("Destroying " + character.GetComponent<CharacterScript>().charName);
-            Destroy(character);
+            GameObject.Destroy(child.gameObject);
         }
-        charactersInScene = new Dictionary<string, GameObject>();
+        charactersInScene.Clear();
 
         // foreach (Transform transform in characterLayer.transform)
         // {

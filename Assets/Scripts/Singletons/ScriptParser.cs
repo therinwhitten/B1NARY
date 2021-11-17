@@ -79,6 +79,8 @@ public class ScriptParser : Singleton<ScriptParser>
         reader = new StreamReader(path);
         currentNode = new DialogueNode(getLines());
         grabVoiceLines();
+        // This is fucking retarded. I don't remember why I did this and now
+        // I'm too afraid to change it
         position -= 2;
         position = Mathf.Clamp(position, 0, int.MaxValue);
         currentNode.moveIndex(position);
