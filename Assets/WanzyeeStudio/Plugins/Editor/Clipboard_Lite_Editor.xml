@@ -1,0 +1,1755 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>E:/Temp/New Unity Project/Assets/WanzyeeStudio/Plugins/Editor/Clipboard_Lite_Editor</name>
+    </assembly>
+    <members>
+        <member name="T:WanzyeeStudio.Editrix.Extension.MenuExtension">
+            <summary>
+            Extension methods for <c>UnityEditor.GenericMenu</c>.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Extension.MenuExtension.AddItem``1(UnityEditor.GenericMenu,System.String,System.Action{``0},``0,System.Boolean,System.Boolean)">
+            <summary>
+            Add an item to the menu, it will be disabled if the function isn't assigned.
+            </summary>
+            <param name="menu">Menu.</param>
+            <param name="content">Content.</param>
+            <param name="func">The function to call when the menu item is selected.</param>
+            <param name="param">The parameter to pass to the function.</param>
+            <param name="check">Whether to show the item is currently activated.</param>
+            <param name="enable">If set to <c>false</c> to enforce disabled.</param>
+            <typeparam name="T">The parameter type.</typeparam>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Extension.MenuExtension.AddItem(UnityEditor.GenericMenu,System.String,System.Action,System.Boolean,System.Boolean)">
+            <summary>
+            Add an item to the menu, it will be disabled if the function isn't assigned.
+            </summary>
+            <param name="menu">Menu.</param>
+            <param name="content">Content.</param>
+            <param name="func">The function to call when the menu item is selected.</param>
+            <param name="check">Whether to show the item is currently activated.</param>
+            <param name="enable">If set to <c>false</c> to enforce disabled.</param>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.AuxCursor">
+            <summary>
+            Draw an auxiliary icon follows the cursor globally.
+            </summary>
+            <remarks>
+            Used to provide a cross windows hint for reasons below:
+            	1. <c>DragAndDrop.visualMode</c> only works when using <c>UnityEditor.DragAndDrop</c> system.
+            	2. <c>EditorGUIUtility.AddCursorRect()</c> only applies inside the current window.
+            </remarks>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.AuxCursor._instance">
+            <summary>
+            The singleton of <c>AuxCursor</c>.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.AuxCursor._cursors">
+            <summary>
+            The visual modes paired with corresponding icon texture.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.AuxCursor._mode">
+            <summary>
+            The visual mode of cursor to show.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.AuxCursor._icon">
+            <summary>
+            The texture of cursor to show.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.AuxCursor._offset">
+            <summary>
+            The pixel offset from the system cursor.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.AuxCursor._size">
+            <summary>
+            The pixel size to draw if set, otherwise use texture size.
+            </summary>
+        </member>
+        <member name="P:WanzyeeStudio.Editrix.AuxCursor.mode">
+            <summary>
+            The visual mode of cursor to show, to set this will override the <c>icon</c>.
+            </summary>
+            <value>The mode.</value>
+        </member>
+        <member name="P:WanzyeeStudio.Editrix.AuxCursor.icon">
+            <summary>
+            The texture of cursor to show, to set this will override the <c>mode</c>.
+            </summary>
+            <value>The icon.</value>
+        </member>
+        <member name="P:WanzyeeStudio.Editrix.AuxCursor.offset">
+            <summary>
+            The pixel offset between the auxiliary icon and the system cursor.
+            </summary>
+            <value>The offset.</value>
+        </member>
+        <member name="P:WanzyeeStudio.Editrix.AuxCursor.size">
+            <summary>
+            The pixel size of the auxiliary icon, set <c>Vector2.zero</c> to use the default texture size.
+            </summary>
+            <value>The size.</value>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.AuxCursor.SetCursor(UnityEditor.DragAndDropVisualMode,UnityEngine.Texture)">
+            <summary>
+            Set the cursor with specified visual mode and icon texture.
+            Also create the singleton if need to show and not existing.
+            </summary>
+            <param name="mode">Mode.</param>
+            <param name="icon">Icon.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.AuxCursor.OnEnable">
+            <summary>
+            OnEnable, set the size limit and check the singleton.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.AuxCursor.Update">
+            <summary>
+            Update, check if to close, otherwise constantly repaint.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.AuxCursor.OnGUI">
+            <summary>
+            OnGUI, follow the cursor, and draw the <c>icon</c> is assigned, otherwise draw icon of the <c>mode</c>.
+            </summary>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.EditrixGUI">
+            <summary>
+            Include some convenient methods for editor GUI.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.GetLabelWidth(System.Single)">
+            <summary>
+            Get the label width within the specified view width.
+            </summary>
+            <remarks>
+            Commonly used for a prefix label in a resizable window.
+            Use <c>EditorGUIUtility.currentViewWidth</c> instead if not assign.
+            </remarks>
+            <returns>The label width.</returns>
+            <param name="viewWidth">View width.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.SetIconForObject(UnityEngine.Object,UnityEngine.Texture2D)">
+            <summary>
+            Set the icon for the specified <c>UnityEngine.Object</c> to show in the Inspector or Project window.
+            </summary>
+            <remarks>
+            This wraps the internal <c>EditorGUIUtility.SetIconForObject()</c>:
+            	1. It applies to all the same type objects, also the <c>UnityEditor.MonoScript</c> declares the type.
+            	2. You may pass the script asset to set without any object instance.
+            	3. To restore to default, pass a <c>null</c> icon.
+            </remarks>
+            <remarks>
+            The opposite methods below to get the icon:
+            	1. <c>AssetPreview.GetMiniThumbnail()</c> to get by <c>UnityEngine.Object</c>.
+            	2. <c>AssetPreview.GetMiniTypeThumbnail()</c> to get by <c>System.Type</c>.
+            	3. <c>EditorGUIUtility.ObjectContent()</c> to get by both.
+            </remarks>
+            <param name="obj">Object.</param>
+            <param name="icon">Icon.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.MultiFloatField(UnityEngine.GUIContent,UnityEngine.GUIContent[],System.Single[],UnityEngine.GUILayoutOption[])">
+            <summary>
+            Make a multi-control with text fields for entering multiple floats in the same line.
+            </summary>
+            <remarks>
+            Wrap <c>EditorGUI.MultiFloatField()</c> as the GUI layout automatically.
+            </remarks>
+            <param name="label">Main label.</param>
+            <param name="subLabels">Sub labels.</param>
+            <param name="values">Values.</param>
+            <param name="options">Layout options.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.Vector4Field(UnityEngine.GUIContent,UnityEngine.Vector4,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Make an X, Y, Z and W field for entering a <c>UnityEngine.Vector4</c>.
+            </summary>
+            <remarks>
+            Copycat of <c>EditorGUILayout.Vector4Field()</c> but use <c>MultiFloatField()</c>.
+            Contrast to original, this correct line wrap and indent level.
+            </remarks>
+            <returns>The new value.</returns>
+            <param name="label">Label.</param>
+            <param name="value">Value.</param>
+            <param name="options">Layout options.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.QuaternionField(UnityEngine.GUIContent,UnityEngine.Quaternion,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Make an X, Y, Z and W field for entering a <c>UnityEngine.Quaternion</c>.
+            </summary>
+            <remarks>
+            Just looks like <c>Vector4Field()</c>.
+            </remarks>
+            <returns>The new value.</returns>
+            <param name="label">Label.</param>
+            <param name="value">Value.</param>
+            <param name="options">Layout options.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.SearchField(System.String,System.Action,UnityEngine.GUILayoutOption[])">
+            <summary>
+            Make a toolbar style search field, optional to set a callback invoked when click the magnifier popup icon.
+            </summary>
+            <returns>The new text.</returns>
+            <param name="text">The text to edit.</param>
+            <param name="onPopup">The popup callback.</param>
+            <param name="options">Layout options.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.ErrorField(UnityEngine.Rect,UnityEngine.GUIContent,UnityEngine.GUIContent)">
+            <summary>
+            Display an error message after the prefix label.
+            </summary>
+            <param name="position">Position.</param>
+            <param name="label">Label.</param>
+            <param name="error">Error message.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.CheckDragObjects(System.Func{UnityEngine.Object,System.Boolean})">
+            <summary>
+            Check if Drag'n'Drop performed with the filtered dragged <c>UnityEngine.Object</c> references.
+            </summary>
+            <returns>The filtered objects, only valid when drag performed, otherwise <c>null</c>.</returns>
+            <param name="filter">The callback invoked to filter each object only when drag updated.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.CheckDragObjects(System.Func{System.Collections.Generic.IEnumerable{UnityEngine.Object},System.Collections.Generic.IEnumerable{UnityEngine.Object}})">
+            <summary>
+            Check if Drag'n'Drop performed with the filtered dragged <c>UnityEngine.Object</c> references.
+            </summary>
+            <returns>The filtered objects, only valid when drag performed, otherwise <c>null</c>.</returns>
+            <param name="filter">The callback invoked to filter all objects only when drag updated.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.CheckDragPaths(System.Func{System.String,System.Boolean})">
+            <summary>
+            Check if Drag'n'Drop performed with the filtered dragged <c>string</c> paths.
+            </summary>
+            <returns>The filtered paths, only valid when drag performed, otherwise <c>null</c>.</returns>
+            <param name="filter">The callback invoked to filter each path only when drag updated.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.CheckDragPaths(System.Func{System.Collections.Generic.IEnumerable{System.String},System.Collections.Generic.IEnumerable{System.String}})">
+            <summary>
+            Check if Drag'n'Drop performed with the filtered dragged <c>string</c> paths.
+            </summary>
+            <returns>The filtered paths, only valid when drag performed, otherwise <c>null</c>.</returns>
+            <param name="filter">The callback invoked to filter all paths only when drag updated.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixGUI.CheckDrag``1(T[],System.Func{System.Collections.Generic.IEnumerable{``0},System.Collections.Generic.IEnumerable{``0}})">
+            <summary>
+            Check if Drag'n'Drop performed with the filtered dragged sources.
+            </summary>
+            <returns>The filtered sources, only valid when drag performed, otherwise <c>null</c>.</returns>
+            <param name="sources">The original dragged sources.</param>
+            <param name="filter">The callback invoked to filter only when drag updated.</param>
+            <typeparam name="T">The value type.</typeparam>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.EditrixStyle">
+            <summary>
+            Extend editor GUI style, and include some premade icons or styles.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.splitterPixel">
+            <summary>
+            The splitter pixel texture, middle gray, 1 x 1.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.backgroundPixel">
+            <summary>
+            The background pixel texture, dark gray, 1 x 1.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.statusBar">
+            <summary>
+            The status bar style.
+            </summary>
+            <remarks>
+            Light color text for pro skin, otherwise dark, with darken background.
+            </remarks>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.editIcon">
+            <summary>
+            The icon represents to edit, a pencil, 12 x 12.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.copyIcon">
+            <summary>
+            The icon represents to copy, overlapping notes, 12 x 12.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.removeIcon">
+            <summary>
+            The icon represents to remove, a moving out arrow, 12 x 12.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.deleteIcon">
+            <summary>
+            The icon represents to delete, a trash can, 12 x 12.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.aimIcon">
+            <summary>
+            The icon represents to aim, a front sight, 12 x 12.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.hierarchyIcon">
+            <summary>
+            The icon represents a hierarchy, indent level lines, 12 x 12.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.clipboardIcon">
+            <summary>
+            The icon represents a clipboard, 12 x 12.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.bookmarkIcon">
+            <summary>
+            The icon represents a bookmark, 12 x 12.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.questionIcon">
+            <summary>
+            The icon represents the Super Mario question mark, 12 x 12.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.linkIcon">
+            <summary>
+            The icon represents to link, a connected chain, 9 x 9.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.unlinkIcon">
+            <summary>
+            The icon represents to unlink, a broken chain, 9 x 9.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.stopCursor">
+            <summary>
+            The aux cursor represents a stop mark, 20 x 20.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.copyCursor">
+            <summary>
+            The aux cursor with a plus symbol, 19 x 15.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.linkCursor">
+            <summary>
+            The aux cursor with an arrow, 19 x 15.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.EditrixStyle.moveCursor">
+            <summary>
+            The aux cursor represents a dotted frame, 13 x 9.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixStyle.LoadTexture(System.Int32,UnityEngine.Color32[])">
+            <summary>
+            Load a <c>UnityEngine.Texture2D</c> with color <c>pixels</c> for editor usage.
+            </summary>
+            <remarks>
+            Return the texture with the same pixels created by this if exists, otherwise create new one.
+            </remarks>
+            <returns>The texture.</returns>
+            <param name="width">Width.</param>
+            <param name="pixels">Pixels.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixStyle.LoadTexture(System.String[],System.Collections.Generic.Dictionary{System.Char,UnityEngine.Color32},UnityEngine.Color32)">
+            <summary>
+            Trick to load a <c>UnityEngine.Texture2D</c> by parsing pixel <c>string</c> array.
+            </summary>
+            <remarks>
+            Array length as texture height, element <c>string</c> length as width.
+            Set each <c>char</c> pixel by <c>colors</c> map if existing, otherwise the <c>other</c> color.
+            Return the texture with the same pixels created by this if exists, otherwise create new one.
+            </remarks>
+            <returns>The texture.</returns>
+            <param name="pixels">Pixel bits.</param>
+            <param name="colors">Colors map.</param>
+            <param name="other">Other.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixStyle.LoadIcon(System.String[],System.Byte,System.Byte)">
+            <summary>
+            Trick to load icon <c>UnityEngine.Texture2D</c> by parsing pixel <c>string</c> array.
+            </summary>
+            <remarks>
+            Array length as icon height, element <c>string</c> length as width.
+            Any space char as transparent, others color light if pro skin, otherwise dark.
+            Return the texture with the same pixels created by this if exists, otherwise create new one.
+            </remarks>
+            <returns>The icon <c>UnityEngine.Texture2D</c>.</returns>
+            <param name="pixels">Pixel bits.</param>
+            <param name="pro">Grayscale for pro skin.</param>
+            <param name="free">Grayscale for free skin.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixStyle.LoadCursor(System.String[])">
+            <summary>
+            Trick to load cursor <c>UnityEngine.Texture2D</c> by parsing pixel <c>string</c> array.
+            </summary>
+            <remarks>
+            Array length as cursor height, element <c>string</c> length as width.
+            Any '1' char as white, '0' as black, otherwise transparent.
+            Return the texture with the same pixels created by this if exists, otherwise create new one.
+            </remarks>
+            <returns>The cursor <c>UnityEngine.Texture2D</c>.</returns>
+            <param name="pixels">Pixel bits.</param>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.EditrixUtility">
+            <summary>
+            Include some convenient methods for editor or asset operation.
+            </summary>
+        </member>
+        <member name="E:WanzyeeStudio.Editrix.EditrixUtility.playmodeChanged">
+            <summary>
+            Callback of play mode state changed event, for compatibility before Unity 2017.2.
+            </summary>
+        </member>
+        <member name="E:WanzyeeStudio.Editrix.EditrixUtility.projectChanged">
+            <summary>
+            Callback of project changed event, for compatibility before Unity 2018.1.
+            </summary>
+        </member>
+        <member name="E:WanzyeeStudio.Editrix.EditrixUtility.hierarchyChanged">
+            <summary>
+            Callback of hierarchy changed event, for compatibility before Unity 2018.1.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixUtility.GetAllAssets(System.Boolean)">
+            <summary>
+            Get all main assets in the project folder.
+            </summary>
+            <returns>The all assets.</returns>
+            <param name="progressBar">If set to <c>true</c> show progress bar while scanning.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixUtility.GetAllAssetLabels(UnityEngine.Object[])">
+            <summary>
+            Get all asset labels used in project, or only find the ones used by assigned assets.
+            </summary>
+            <returns>The asset labels.</returns>
+            <param name="assets">Assets.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixUtility.LoadAssets``1(System.String,System.String[])">
+            <summary>
+            Load all specified type assets with the search filter in the folders.
+            </summary>
+            <returns>The assets.</returns>
+            <param name="filter">The filter string can contain search data.</param>
+            <param name="searchInFolders">The folders where the search will start.</param>
+            <typeparam name="T">The asset type.</typeparam>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixUtility.OpenAsset``1(System.Int32,System.Action{``0})">
+            <summary>
+            Common template method to open an asset.
+            </summary>
+            <remarks>
+            Basically for usage of <c>UnityEditor.Callbacks.OnOpenAssetAttribute</c>.
+            </remarks>
+            <returns>
+                <c>true</c>, if handled the opening of the asset.</returns>
+            <param name="instanceID">Instance ID.</param>
+            <param name="handler">Callback to open the asset.</param>
+            <typeparam name="T">Asset type.</typeparam>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixUtility.GetObjectOrder(UnityEngine.Object,System.Boolean)">
+            <summary>
+            Get an order <c>string</c> of given object for sorting.
+            </summary>
+            <remarks>
+            It's asset path, append with sibling if relative to <c>UnityEngine.GameObject</c>.
+            Optional to sort asset or hierarchy object first.
+            </remarks>
+            <returns>The order.</returns>
+            <param name="source">Source object.</param>
+            <param name="assetFirst">If set to <c>true</c> asset first.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixUtility.CheckIoCreatable(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Determine if the path can be used to create a file or directory.
+            </summary>
+            <remarks>
+            Optional to throw an exception message or just return <c>false</c> if invalid.
+            Check <c>IoUtility.CheckCreatable()</c> at the first.
+            Then return <c>true</c> if the file doesn't exist yet or force to <c>overwrite</c>.
+            Otherwise popup a dialog for the user to make the decision.
+            </remarks>
+            <returns>
+                <c>true</c> if is creatable; otherwise, <c>false</c>.</returns>
+            <param name="path">Path.</param>
+            <param name="overwrite">Overwrite.</param>
+            <param name="exception">Flag to throw an exception or return <c>false</c>.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixUtility.GetExposingTypes(System.Boolean)">
+            <summary>
+            Get types appropriate to expose in the Inspector to select members, optional to include editor types.
+            </summary>
+            <remarks>
+            Include types from Unity and assemblies in the project folder.
+            And what excluded is non-public, <c>interface</c>, <c>enum</c>, array or generic types.
+            </remarks>
+            <returns>The types.</returns>
+            <param name="editor">If set to <c>true</c> include editor types.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixUtility.GetCustomTypes(System.Boolean)">
+            <summary>
+            Get all custom types, optional to include editor types.
+            </summary>
+            <returns>The types.</returns>
+            <param name="editor">If set to <c>true</c> include editor types.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixUtility.GetUnityTypes(System.Boolean)">
+            <summary>
+            Get all Unity types, optional to include editor types.
+            </summary>
+            <returns>The types.</returns>
+            <param name="editor">If set to <c>true</c> include editor types.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.EditrixUtility.RegisterCompatibleCallbacks">
+            <summary>
+            Register compatible callbacks.
+            </summary>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.Toolkit.Clipboard">
+            <summary>
+            Utility to copy <c>UnityEngine.Component</c> or <c>UnityEngine.Material</c> and paste it back.
+            </summary>
+            <remarks>
+            Useful for tweaking lots of objects in the editor, even in play mode.
+            Click the menu "Window/Clipboard" to open the window.
+            Just play and tweak, drag and drop, copy and paste whenever.
+            It acts as sort of preset system, edit lots of copies as presets, and paste to apply values quickly.
+            Easy to find and manage copies with a search filter, custom item label, and foldable inspector.
+            </remarks>
+            <remarks>
+            Copy:
+            	1. Drag'n'Drop from "Inspector" to copy the inspected sources.
+            	2. Drag'n'Drop a <c>UnityEngine.GameObject</c> to copy the components on it.
+            	3. Show menu to specify the component type if "Ctrl" pressed when dropping gameObjects.
+            	4. Or click the context menu "Copy to Clipboard".
+            </remarks>
+            <remarks>
+            Paste:
+            	1. Drag'n'Drop to "Inspector" to paste back to the inspected targets.
+            	2. When dragging a component, it pastes values to the first one on the gameObject, or pastes as new if none.
+            	3. Show menu to specify a target of multiple components if "Ctrl" pressed when dropping.
+            	4. Or click the "Copy" button above any item, and paste by the target's context menu.
+            </remarks>
+            <remarks>
+            Filter items with the search bar:
+            	1. Click the "Magnifier" icon to show a context menu made from the current items to select filters easily.
+            	2. Or input any text to filter the item's name, just like the Project window's search bar.
+            	3. Prefix "t:" filters by the type, the search will include all specified types.
+            	4. Prefix "l:" filters by the tooltip as labels, an item has to match all specified labels.
+            	5. Toggle the "Link" icon at the top-right of window to filter automatically by tracking selection.
+            </remarks>
+            <remarks>
+            Edit the item label:
+            	1. Click the "Pen" button beside the label to show or hide the edit field.
+            	2. To save the change, just press "Ctrl-Enter" keys or unfocus the field after editing.
+            	3. The first line shows as the label title, and the full text is the tooltip.
+            	4. Leave the field empty to show the default text, i.e., the copy source path.
+            </remarks>
+            <remarks>
+            Find the copy source object:
+            	1. Click the "Aim" button to ping it or double-click to select it.
+            	2. The saved trace path is also shown as the default label tooltip.
+            	3. It'll beep if not found, e.g., the trace may be lost if the source is moved or renamed.
+            </remarks>
+            <remarks>
+            The reasons not to save the trace by references below:
+            	1. A scene object reference will change when load a scene.
+            	2. We can't save the scene reference in the project assets.
+            	3. We shouldn't save the edit data in user's game scene.
+            </remarks>
+            <remarks>
+            For component references to scene object.
+            This creates copies and store in editor scene temporarily to ensure content correct.
+            It means the copy will be destroyed when quitting the editor.
+            And also, the scene references will become missing when opening another scene.
+            The situation above is applicable to a material with scene texture, too.
+            </remarks>
+            <remarks>
+            For material or component without reference to any scene object.
+            The copies will be saved with a label "Ignore" in an asset folder to make them still until manually "Clear".
+            This tracks all copies by specific name or folder to ensure valid after script reloaded.
+            </remarks>
+            <remarks>
+            SVN users may clear all manually to avoid committing, or ignore the storing folder below:
+            	1. The default is "Temp/Clipboard" under the root folder "Assets/WanzyeeStudio".
+            	2. If the root is moved, it becomes "Temp/Clipboard" under the first found "WanzyeeStudio".
+            	3. If there's no "WanzyeeStudio" folder, it'll be "Assets/Temp/Clipboard".
+            </remarks>
+            <remarks>
+            Instructions, to copy and paste generic component is dangerous, even if reflect all the fields.
+            Since we'll never know what the developer do when the component awake.
+            As the <a href="http://answers.unity3d.com/answers/1013926/view.html" target="_blank">thread</a>
+            I commented, we'd be very careful with which aren't made by ourselves.
+            Finally, this was created, works in the editor with Unity built-in classes and API.
+            </remarks>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger">
+            <summary>
+            Handle all Drag'n'Drop operations for <c>Clipboard</c>.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger._inspectorType">
+            <summary>
+            Type of Inspector window.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger._trackerMethod">
+            <summary>
+            Method to get the Inspector window tracker to find the inspected targets to paste.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger._pasteTargets">
+            <summary>
+            The targets of existing Inspector windows to paste.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger._pasteSource">
+            <summary>
+            The paste source from a copied item.
+            Also as the flag to check if drop to paste.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger._dragPosition">
+            <summary>
+            The position where the mouse pressed, used to ensure to start drag from the same area.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger.CheckDragCopy">
+            <summary>
+            Check if Drag'n'Drop performed in a <c>Clipboard</c> window to copy dragged objects.
+            </summary>
+            <remarks>
+            Copy all attached <c>UnityEngine.Component</c> if drop any <c>UnityEngine.GameObject</c>.
+            Show the type menu to filter if "Ctrl" key pressed when dropping.
+            </remarks>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger.FilterAllCopyable(System.Collections.Generic.IEnumerable{UnityEngine.Object})">
+            <summary>
+            Filter all copyable sources, include components of any source <c>UnityEngine.GameObject</c>.
+            </summary>
+            <returns>The filtered sources.</returns>
+            <param name="sources">Sources.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger.ShowTypeCopyMenu(System.Collections.Generic.IEnumerable{UnityEngine.Object})">
+            <summary>
+            Show the types menu to copy the filtered sources.
+            </summary>
+            <param name="sources">Sources.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger.CheckDragPaste(UnityEngine.Rect,UnityEngine.Object)">
+            <summary>
+            Check if to start drag the paste source from specified area.
+            </summary>
+            <remarks>
+            Only starts if all the situations below are valid:
+            	1. The positions to press and drag are both in the area when dragging.
+            	2. The reflection works and valid targets found.
+            	3. It's not dragging currently.
+            </remarks>
+            <param name="area">Area.</param>
+            <param name="source">Source.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger.GetPasteTargets(UnityEngine.Object)">
+            <summary>
+            Get the paste targets from the existing Inspector windows by the specified source type.
+            </summary>
+            <returns>The paste targets.</returns>
+            <param name="source">Source.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger.CheckDropPaste">
+            <summary>
+            Check if dropped in an Inspector window with valid paste targets while dragging.
+            </summary>
+            <remarks>
+            Change the cursor as a hint while the mouse over the window.
+            Paste the source to the targets when dropped in the window.
+            </remarks>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger.PasteTargets(System.Collections.Generic.IEnumerable{UnityEngine.Object})">
+            <summary>
+            Determine the paste source type to paste it to the specified targets.
+            Show a sub menu to operate if "Ctrl" key pressed when dropping.
+            </summary>
+            <param name="targets">Targets.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger.GetPastableComponents(UnityEngine.GameObject)">
+            <summary>
+            Get the pastable components from specified <c>UnityEngine.GameObject</c>.
+            </summary>
+            <returns>The pastable components.</returns>
+            <param name="target">Target.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger.PasteComponents(System.Int32,System.Collections.Generic.Dictionary{UnityEngine.GameObject,UnityEngine.Component[]})">
+            <summary>
+            Paste the source <c>UnityEngine.Component</c> to specified <c>UnityEngine.GameObject</c> targets.
+            Not allow to paste <c>UnityEngine.Transform</c> if the types are different.
+            The default paste operations below:
+            	1. Paste as new if there's no component of the same type.
+            	2. Paste values to the indexed existing component if the index valid.
+            	3. Paste values to all the existing components if the index negative.
+            	4. Paste as new if the index is out of range.
+            </summary>
+            <param name="index">Index.</param>
+            <param name="targets">Targets.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Dragger.ShowComponentPasteMenu(System.Collections.Generic.Dictionary{UnityEngine.GameObject,UnityEngine.Component[]})">
+            <summary>
+            Show the menu to paste a <c>UnityEngine.Component</c> as new or paste the values to a specified one.
+            </summary>
+            <param name="targets">Targets.</param>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer">
+            <summary>
+            Handle data and search operations for <c>Clipboard</c>.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer._DATA_ROOT">
+            <summary>
+            The temp directory to store scene copies' data, e.g., display name, note, source, etc.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.SetSource(UnityEngine.Object,UnityEngine.Object)">
+            <summary>
+            Set the source info data of specified copy, include asset guid and hierarchy or name.
+            </summary>
+            <param name="copy">Copied object.</param>
+            <param name="source">Source object.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.GetSource(UnityEngine.Object)">
+            <summary>
+            Get the source of specified copy.
+            Return <c>UnityEngine.GameObject</c> if the copy is an <c>UnityEngine.Component</c>.
+            </summary>
+            <returns>The source object.</returns>
+            <param name="copy">Copied object.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.GetNote(UnityEngine.Object,System.Boolean)">
+            <summary>
+            Get the note of specified copy, optional to get source info as default if not existing.
+            </summary>
+            <returns>The note.</returns>
+            <param name="copy">Copied object.</param>
+            <param name="must">If set to <c>true</c> must.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.SetData(UnityEngine.Object,UnityEngine.Object)">
+            <summary>
+            Set the data of specified copy from another.
+            </summary>
+            <param name="copy">Copied object.</param>
+            <param name="source">Source object.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.WriteData(UnityEngine.Object,System.String)">
+            <summary>
+            Write the data of specified copy, 1st line as the source info, and note from the 2nd line.
+            Use <c>AssetImporter.userData</c> for an asset, or temp file for a scene object.
+            </summary>
+            <param name="copy">Copied object.</param>
+            <param name="data">Data.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.ReadData(UnityEngine.Object)">
+            <summary>
+            Read the data of specified copy.
+            </summary>
+            <returns>The data.</returns>
+            <param name="copy">Copied object.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.FilterItems(WanzyeeStudio.Editrix.Toolkit.Clipboard.Group[],System.String)">
+            <summary>
+            Get the <c>groups</c> items filtered by specified pattern.
+            </summary>
+            <returns>The items.</returns>
+            <param name="groups">Groups.</param>
+            <param name="filter">Filter.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.FilterItems(WanzyeeStudio.Editrix.Toolkit.Clipboard.Item[],System.String)">
+            <summary>
+            Filter the items label and name by specified pattern.
+            </summary>
+            <returns>The items.</returns>
+            <param name="items">Items.</param>
+            <param name="filter">Filter.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.CombineFilter(System.String,System.String,System.Boolean)">
+            <summary>
+            Get a combo filter to match each word found in the input <c>string</c>.
+            Optional to return a filter for matching all the words, otherwise for matching any of them.
+            </summary>
+            <returns>The combo filter.</returns>
+            <param name="input">Input string.</param>
+            <param name="pattern">Pattern to match words.</param>
+            <param name="all">If set to <c>true</c> match all.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.ShowFilterMenu(WanzyeeStudio.Editrix.Toolkit.Clipboard.Group[],System.String,System.Action{System.String})">
+            <summary>
+            Show the menu to switch search filter by selecting type, name, or label, and send the new back.
+            </summary>
+            <param name="groups">Groups.</param>
+            <param name="filter">Original filter.</param>
+            <param name="callback">Callback to receive new search filter.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.AddFilterMenus(UnityEditor.GenericMenu,System.String,System.String,System.Collections.Generic.IEnumerable{System.String[]},System.String,System.Action{System.String})">
+            <summary>
+            Add the menu items to switch specified <c>string</c> value in the <c>filter</c> and send the new back.
+            </summary>
+            <param name="menu">Menu.</param>
+            <param name="root">Root name.</param>
+            <param name="cleaner">Cleaner pattern.</param>
+            <param name="items">Menu name and value pairs.</param>
+            <param name="filter">Original filter.</param>
+            <param name="callback">Callback to receive new search filter.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Filer.SplitWords(System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Split all words from the given texts.
+            </summary>
+            <returns>The words.</returns>
+            <param name="texts">Texts.</param>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.Toolkit.Clipboard.Group">
+            <summary>
+            Group includes copied items of specified type.
+            To draw GUI with expandable label and all items within.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Group.#ctor(System.Type,WanzyeeStudio.Editrix.Toolkit.Clipboard.Item[])">
+            <summary>
+            Initialize each value specified.
+            </summary>
+            <returns>The instance.</returns>
+            <param name="type">Type.</param>
+            <param name="items">Items.</param>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Group._editBtn">
+            <summary>
+            The toolbar button to clear whole group.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Group.expand">
+            <summary>
+            The expand state.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Group.items">
+            <summary>
+            The copied items to draw.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Group.label">
+            <summary>
+            The label to show on expandable toolbar.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Group.type">
+            <summary>
+            The type of copied items.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Group.Draw">
+            <summary>
+            Draw GUI includes label bar with buttons, and items if expand.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Group.DrawLabel">
+            <summary>
+            Draw the label, clicked to switch expand.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Group.DrawButtons">
+            <summary>
+            Draws the expand items and remove group buttons.
+            </summary>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item">
+            <summary>
+            Item of editor targets to specified copied asset.
+            To draw GUI with expandable label and inspector view.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.#ctor(UnityEngine.Object,System.String)">
+            <summary>
+            Initialize with specified copy target, source, and note as label.
+            </summary>
+            <returns>The instance.</returns>
+            <param name="copy">Target copied object.</param>
+            <param name="note">Note.</param>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._matVisibleField">
+            <summary>
+            The field to enable to draw material inspector.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._matShaderMethod">
+            <summary>
+            The method to draw material shader popup, since its header is useless.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._editorName">
+            <summary>
+            The name of <c>UnityEditor.Editor</c> created by this.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._editors">
+            <summary>
+            The dictionary of stored copies paired with the <c>UnityEditor.Editor</c> to reuse.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.expand">
+            <summary>
+            The expand mask flag, 1 for inspector, 2 for preview, 4 for note, 0 to hide and -1 to show all.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.note">
+            <summary>
+            The note text to edit.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.copy">
+            <summary>
+            The copied item to show and edit.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.label">
+            <summary>
+            The label to show on the toolbar.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._editor">
+            <summary>
+            The editor to draw GUI of specified copied asset.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._labelStyle">
+            <summary>
+            The label style, bold font for scene object, otherwise normal.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._editBtn">
+            <summary>
+            The toolbar button to remove this, or deposit if target references scene object.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._copyBtn">
+            <summary>
+            The toolbar button to copy the item to buffer.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._findBtn">
+            <summary>
+            The toolbar button to find the copy source.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._noteBtn">
+            <summary>
+            The toolbar button to edit the note, i.e., the label tooltip.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item._hover">
+            <summary>
+            Determine if the mouse position is inside <c>_area</c>.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.RegisterCallbacks">
+            <summary>
+            Register callbacks to check editors valid.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.CheckEditors">
+            <summary>
+            Check if all created editors valid, otherwise clean up and rebuild.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.GetEditor(UnityEngine.Object)">
+            <summary>
+            Get the editor for specified target, create new for reusing if not existed.
+            </summary>
+            <returns>The editor.</returns>
+            <param name="target">Target.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.Draw">
+            <summary>
+            Draw GUI includes toolbar and content, also check Drag'n'Drop to paste and hover state.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawContent">
+            <summary>
+            Draw the content includes inspector, preview, and note field if expand.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawInspector">
+            <summary>
+            Draw default inspector, additional shader menu for <c>UnityEngine.Material</c>.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawPreview">
+            <summary>
+            Draw the preview of editor with settings.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawToolbar">
+            <summary>
+            Draw the toolbar with label and buttons.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawLabel">
+            <summary>
+            Draw the label with icon, and component enabled toggle if valid.
+            Click name to switch expand.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawEnableToggle">
+            <summary>
+            Draw the enable toggle if valid.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawButtons">
+            <summary>
+            Draw the toolbar buttons, visible only while the mouse hovering.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawNoteButton">
+            <summary>
+            Draw the note button.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawCopyButton">
+            <summary>
+            Draw the copy button.
+            Check if click to copy to buffer, and double click to duplicate a copy.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawFindButton">
+            <summary>
+            Draw the find source button.
+            Check if click to find the source and ping it if found, and double click to select.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawEditButton">
+            <summary>
+            Draw the remove or deposit button.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Item.DrawButton(UnityEngine.GUIContent)">
+            <summary>
+            Draw a button and return the click count.
+            </summary>
+            <returns>The button.</returns>
+            <param name="content">Content.</param>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.Toolkit.Clipboard.Limiter">
+            <summary>
+            Limit <c>Clipboard</c> operations for lite version.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Limiter.#ctor">
+            <summary>
+            Static constructor to register callback.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Limiter._storeBtn">
+            <summary>
+            The setting button to open the store page of the full version.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Limiter._id">
+            <summary>
+            The identifier.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Limiter.IsWildcard(UnityEngine.Object)">
+            <summary>
+            Check if the <c>source</c> has the wildcard.
+            </summary>
+            <returns>
+                <c>true</c>, if wildcard was checked, <c>false</c> otherwise.</returns>
+            <param name="source">Source.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Limiter.PrepareSources(System.Collections.Generic.IEnumerable{UnityEngine.Object})">
+            <summary>
+            Prepare the sources, return original if check valid, otherwise return new instead.
+            </summary>
+            <returns>The sources.</returns>
+            <param name="sources">Sources.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Limiter.CheckOperable">
+            <summary>
+            Check if able to create.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Limiter.PrepareCopies(UnityEngine.Object[])">
+            <summary>
+            Prepare the copies, return original if check valid, otherwise return new instead.
+            </summary>
+            <returns>The copies.</returns>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Limiter.CheckInitialize(WanzyeeStudio.Editrix.Toolkit.Clipboard)">
+            <summary>
+            Check if valid to initialize.
+            </summary>
+            <param name="instance">Instance.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Limiter.DrawSetting(UnityEngine.GUIContent)">
+            <summary>
+            Draw a full only setting field, optional to set a prefix label.
+            </summary>
+            <param name="label">Prefix label.</param>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager">
+            <summary>
+            Manager to create and maintain all the copies.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager._SCENE_ROOT">
+            <summary>
+            The scene root container to store copies, or as scene copy's name prefix.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.refresh">
+            <summary>
+            Occur to refresh when copied items changed.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager._groups">
+            <summary>
+            The stored groups for each <c>Clipboard</c> window to copy.
+            Set <c>null</c> as the flag to update when the next loading.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager._requires">
+            <summary>
+            The required <c>UnityEngine.Component</c> type pairs.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.CheckCreatable(UnityEngine.Object,System.Boolean)">
+            <summary>
+            Check if the specified source object is able to copy.
+            </summary>
+            <remarks>
+            I.e., the type's supported and the source is from out of clipboard.
+            Otherwise throw exception.
+            </remarks>
+            <param name="source">Source object.</param>
+            <param name="upskirt">If set to <c>true</c> allow to copy upskirt.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.GetSceneHost(System.String,System.Boolean)">
+            <summary>
+            Find or create the host <c>UnityEngine.GameObject</c> at specified hierarchy path.
+            Like <c>GameObject.Find()</c>, but optional to create if none.
+            Any created host is editable but hide in hierarchy and inactive.
+            </summary>
+            <returns>The scene host.</returns>
+            <param name="path">Path.</param>
+            <param name="create">If set to <c>true</c> create.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.GetObjectPath(UnityEngine.Object)">
+            <summary>
+            Get the object path, i.e., asset path of asset object, or hierarchy path of scene object.
+            </summary>
+            <returns>The object path.</returns>
+            <param name="obj">Object.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.GetTypeName(System.Type)">
+            <summary>
+            Get the type name combined with assembly name for identifying.
+            </summary>
+            <returns>The type name.</returns>
+            <param name="type">Type.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.Create(UnityEngine.Object)">
+            <summary>
+            Create a copy from specified source object.
+            </summary>
+            <param name="source">Source object.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.Duplicate(UnityEngine.Object)">
+            <summary>
+            Duplicate the specified copy.
+            </summary>
+            <param name="copy">Copied object.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.CreateSceneMaterial(UnityEngine.Material)">
+            <summary>
+            Create a copied <c>UnityEngine.Material</c> stored in scene.
+            </summary>
+            <returns>The scene material.</returns>
+            <param name="source">Source material.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.CreateSceneComponent(UnityEngine.Component)">
+            <summary>
+            Create a copied <c>UnityEngine.Component</c> stored in scene.
+            Create the hierarchy host with unique path at the meantime.
+            </summary>
+            <returns>The scene component.</returns>
+            <param name="source">Source component.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.CreateComponent(UnityEngine.Component)">
+            <summary>
+            Create a component copied from the source, and attached on a hidden empty <c>UnityEngine.GameObject</c>.
+            </summary>
+            <returns>The component.</returns>
+            <param name="source">Source component.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.RedirectReferences(UnityEngine.Object,UnityEngine.Object)">
+            <summary>
+            Redirect the references to specified object instead of itself, a copied instance.
+            </summary>
+            <param name="obj">Object.</param>
+            <param name="replace">Replace.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.Load(System.Boolean)">
+            <summary>
+            Get a deep copy from the stored groups with all loaded copied items sorted by labels.
+            </summary>
+            <remarks>
+            This invokes the <c>refresh</c> event if the stored groups are updated or force reloaded.
+            </remarks>
+            <returns>The groups.</returns>
+            <param name="force">If set to <c>true</c> force reload.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.LoadGroups">
+            <summary>
+            Load the groups with all copies sorted by labels.
+            </summary>
+            <returns>The groups.</returns>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.LoadSceneCopies">
+            <summary>
+            Load all the copies in scene root container.
+            </summary>
+            <returns>The scene copies.</returns>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.LoadSceneComponent(UnityEngine.Transform,System.String)">
+            <summary>
+            Load the copy of specified type at the scene host.
+            </summary>
+            <returns>The scene component copy.</returns>
+            <param name="host">Host.</param>
+            <param name="type">Type.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.GetTypeOrder(System.Type)">
+            <summary>
+            Get an order <c>string</c> of given type for sorting.
+            </summary>
+            <remarks>
+            The types is order by categories below, then order by name:
+            	1. Transform, then sub classes of Transform.
+            	2. UnityEngine types.
+            	3. UnityEditor types.
+            	4. Other types.
+            	5. Material, then sub classes of Material.
+            </remarks>
+            <returns>The order.</returns>
+            <param name="type">Type.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.RemoveAll(System.Type,System.Boolean)">
+            <summary>
+            Remove all copies of specified type, or all types if assign <c>null</c>.
+            </summary>
+            <remarks>
+            Optional to delay invoke, e.g., while using the copies to draw GUI.
+            </remarks>
+            <param name="type">Copy type.</param>
+            <param name="delay">If set to <c>true</c> delay.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.Remove(UnityEngine.Object,System.Boolean)">
+            <summary>
+            Remove the specified copied object.
+            </summary>
+            <remarks>
+            Optional to delay invoke, e.g., while using the copy to draw GUI.
+            </remarks>
+            <param name="copy">Copied object.</param>
+            <param name="delay">If set to <c>true</c> delay.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.Delete(System.String,System.Boolean)">
+            <summary>
+            Delete the asset, folder, or scene host at specified path.
+            Optional to delay invoke, e.g., while using the object in caller method.
+            </summary>
+            <param name="path">Asset or hierarchy path.</param>
+            <param name="delay">If set to <c>true</c> delay.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Manager.DeleteSceneCopies(System.String)">
+            <summary>
+            Delete the scene copies with the specified path or name.
+            </summary>
+            <param name="path">Path.</param>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard._expandBtn">
+            <summary>
+            The expand button on toolbars.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard._clearBtn">
+            <summary>
+            The clear button on main toolbar.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard._settingLabel">
+            <summary>
+            The label of setting title field.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard._persistLabel">
+            <summary>
+            The label of persist setting field.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.track">
+            <summary>
+            Flag to track selection to change search filter automatically.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.search">
+            <summary>
+            The search filter pattern in the search bar.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard.setting">
+            <summary>
+            Flag to show settings.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard._search">
+            <summary>
+            The stored search pattern to check changed to update <c>_items</c>.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard._items">
+            <summary>
+            The items filtered from <c>_group</c> to draw GUI.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard._groups">
+            <summary>
+            The groups of all loaded copy items.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard._refresh">
+            <summary>
+            Flag to refresh, set when initialize or copies possible changed.
+            Checked to trigger refresh when <c>OnGUI()</c>.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard._repaint">
+            <summary>
+            The repaint time, used to reduce invoking by <c>Update</c>.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.Clipboard._scroll">
+            <summary>
+            The GUI scroll position.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.CopyToClipboard(UnityEditor.MenuCommand)">
+            <summary>
+            Copy the <c>UnityEngine.Component</c> or <c>UnityEngine.Material</c> into clipboard.
+            </summary>
+            <param name="command">Command.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.CopyToClipboardValid(UnityEditor.MenuCommand)">
+            <summary>
+            Check if <c>ComponentCopyToClipboard()</c> or <c>MaterialCopyToClipboard()</c> valid.
+            The context is copyable.
+            </summary>
+            <returns>
+                <c>true</c>, if valid.</returns>
+            <param name="command">Command.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.OpenWindow">
+            <summary>
+            Show the clipboard window.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.IsCopyable(UnityEngine.Object)">
+            <summary>
+            Determine if the specified source is able to copy to clipboard.
+            </summary>
+            <returns>
+                <c>true</c> if is copyable; otherwise, <c>false</c>.</returns>
+            <param name="source">Source object.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Copy(UnityEngine.Object[])">
+            <summary>
+            Copy the specified sources to clipboard.
+            </summary>
+            <param name="sources">Source objects.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Clear(System.Type)">
+            <summary>
+            Clear clipboard by specified type, or pass <c>null</c> to clear all.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.OpenAbout">
+            <summary>
+            Show a dialog with tooltip and the button to open online manual.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.OnEnable">
+            <summary>
+            OnEnable, initialize styles, set window title and the min size, then register callbacks.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.OnDisable">
+            <summary>
+            OnDisable, deregister callbacks.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.Update">
+            <summary>
+            Update, repaint displayed values and check if all the copies are still in a lower frequency.
+            Also trigger to reload ASAP when the refresh event occurs.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.ShowButton(UnityEngine.Rect)">
+            <summary>
+            ShowButton, show a button at the top-right corner to switch track state.
+            </summary>
+            <param name="r">Rect.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.OnGUI">
+            <summary>
+            OnGUI, mainly control process like update.
+            Check refresh, draw contents, check Drag'n'Drop operations in ordered.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.AddItemsToMenu(UnityEditor.GenericMenu)">
+            <summary>
+            Add the window context menu items.
+            </summary>
+            <remarks>
+            Menu "About" to open the online manual, and "Settings" for common preferences.
+            Menu "New window" to open another <c>Clipboard</c> window.
+            </remarks>
+            <param name="menu">Menu.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.MarkRefresh">
+            <summary>
+            Callback method for <c>Manager.refresh</c> to mark the <c>_refresh</c> flag to reload later.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.CheckRefresh">
+            <summary>
+            Check if refresh the groups and keep the expand state.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.GetFoldTypes">
+            <summary>
+            Get the types of the folded groups.
+            </summary>
+            <returns>The types.</returns>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.GetExpandCopies">
+            <summary>
+            Get the copies paired with the item expand state.
+            </summary>
+            <returns>The copies.</returns>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.DrawToolbar">
+            <summary>
+            Draw the main toolbar, include the field to edit or select the search pattern, and all functional buttons.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.DrawButtons">
+            <summary>
+            Draw the fold and clear buttons on the toolbar.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.DrawSettings">
+            <summary>
+            Draw the settings.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.DrawContent">
+            <summary>
+            Draw the content of copies if existing, otherwise show a help box.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.Clipboard.DrawItems">
+            <summary>
+            Draw the items belong paired group, and an end line if need.
+            </summary>
+        </member>
+        <member name="T:WanzyeeStudio.Editrix.Toolkit.MaterialPropertyCopier">
+            <summary>
+            Copy or paste properties from one <c>UnityEngine.Material</c> to another.
+            </summary>
+            <remarks>
+            Operate by <c>UnityEngine.Material</c> context menu "Copy Properties" and "Paste Properties".
+            This works like the similar menu of <c>UnityEngine.Component</c>, and will change the shader.
+            To keep valid after script reloaded by a temporary material as medium storage.
+            Copy properties by built-in <c>Material.CopyPropertiesFromMaterial()</c> method.
+            </remarks>
+        </member>
+        <member name="F:WanzyeeStudio.Editrix.Toolkit.MaterialPropertyCopier._name">
+            <summary>
+            The name of temporary material.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.MaterialPropertyCopier.CopyProperties(UnityEditor.MenuCommand)">
+            <summary>
+            Copy the material properties to created new temp.
+            </summary>
+            <param name="command">Command.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.MaterialPropertyCopier.PasteProperties(UnityEditor.MenuCommand)">
+            <summary>
+            Paste the material properties to current context from temp.
+            </summary>
+            <param name="command">Command.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.MaterialPropertyCopier.PastePropertiesValid(UnityEditor.MenuCommand)">
+            <summary>
+            Check if <c>PasteProperties()</c> valid, temporary material exists.
+            </summary>
+            <returns>
+                <c>true</c>, if valid.</returns>
+            <param name="command">Command.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.MaterialPropertyCopier.Copy(UnityEngine.Material)">
+            <summary>
+            Copy properties of specified material as source to paste later.
+            </summary>
+            <param name="source">Source.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Editrix.Toolkit.MaterialPropertyCopier.Paste(UnityEngine.Material)">
+            <summary>
+            Paste properties of the source copied before to the specified target.
+            </summary>
+            <returns>
+                <c>false</c>, if the source doesn't exist yet, otherwise <c>true</c>.</returns>
+            <param name="target">Target.</param>
+        </member>
+        <member name="T:WanzyeeStudio.Extension.ComponentExtension">
+            <summary>
+            Extension methods for <c>UnityEngine.Component</c>.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.ComponentExtension.GetPath(UnityEngine.Transform,System.String)">
+            <summary>
+            Get the hierarchy path, used for log or <c>GameObject.Find()</c> with the default separator.
+            </summary>
+            <returns>The hierarchy path.</returns>
+            <param name="transform">Transform.</param>
+            <param name="separator">Separator.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.ComponentExtension.TransformQuat(UnityEngine.Transform,UnityEngine.Quaternion)">
+            <summary>
+            Transforms rotation from local space to world space.
+            </summary>
+            <returns>The world rotation.</returns>
+            <param name="transform">Transform.</param>
+            <param name="rotation">Local rotation.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.ComponentExtension.InverseTransformQuat(UnityEngine.Transform,UnityEngine.Quaternion)">
+            <summary>
+            Transforms position from world space to local space, opposite of <c>TransformQuat()</c>.
+            </summary>
+            <returns>The local rotation.</returns>
+            <param name="transform">Transform.</param>
+            <param name="rotation">World rotation.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.ComponentExtension.CenterToScreenPoint(UnityEngine.RectTransform)">
+            <summary>
+            Convert the center of a specified <c>UnityEngine.RectTransform</c> to screen space point.
+            </summary>
+            <returns>The screen point.</returns>
+            <param name="transform">Transform.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.ComponentExtension.SetSorting(UnityEngine.Component,System.Int32)">
+            <summary>
+            Set the sorting order of the UI element inside a <c>UnityEngine.Canvas</c>.
+            </summary>
+            <remarks>
+            This only apply the sub canvas in a root canvas.
+            Check to add it with <c>UnityEngine.UI.GraphicRaycaster</c> if not existing.
+            </remarks>
+            <param name="component">Component.</param>
+            <param name="order">Sorting order.</param>
+        </member>
+        <member name="T:WanzyeeStudio.Extension.TypeExtension">
+            <summary>
+            Extension methods for <c>System.Type</c>.
+            </summary>
+        </member>
+        <member name="F:WanzyeeStudio.Extension.TypeExtension._builtinNames">
+            <summary>
+            The dictionary of built-in types with pretty name.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetPrettyName(System.Type,System.Boolean)">
+            <summary>
+            Get a pretty readable name of the type, even generic, optional to use the full name.
+            </summary>
+            <remarks>
+            This doesn't handle anonymous types.
+            </remarks>
+            <returns>The pretty name.</returns>
+            <param name="type">Type.</param>
+            <param name="full">If set to <c>true</c> use the full name.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetPrettyNameInternalGeneric(System.Type,System.Boolean)">
+            <summary>
+            Get a pretty name of generic type, sub method for <c>GetPrettyName()</c>.
+            Change to type name format and wrap argument types with angle brackets.
+            </summary>
+            <returns>The pretty name.</returns>
+            <param name="type">Type.</param>
+            <param name="full">If set to <c>true</c> full name.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetNestedType(System.Type,System.String,System.Boolean)">
+            <summary>
+            Get the named public or nonpublic nested type of the specified type.
+            </summary>
+            <returns>The nested type.</returns>
+            <param name="type">Type.</param>
+            <param name="name">Type name.</param>
+            <param name="isStatic">If to get a static type.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetField(System.Type,System.String,System.Boolean,System.Type)">
+            <summary>
+            Get the named public or nonpublic <c>FieldInfo</c> of the specified type.
+            </summary>
+            <returns>The field.</returns>
+            <param name="type">Type.</param>
+            <param name="name">Field name.</param>
+            <param name="isStatic">If to get a static field.</param>
+            <param name="fieldType">Field type.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetProperty(System.Type,System.String,System.Boolean,System.Type,System.Type[])">
+            <summary>
+            Get the named public or nonpublic <c>PropertyInfo</c> of the specified type.
+            </summary>
+            <returns>The property.</returns>
+            <param name="type">Type.</param>
+            <param name="name">Property name.</param>
+            <param name="isStatic">If to get a static property.</param>
+            <param name="propertyType">Property type.</param>
+            <param name="indexTypes">Index types.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetMethod(System.Type,System.String,System.Boolean,System.Type,System.Type[])">
+            <summary>
+            Get the named public or nonpublic <c>MethodInfo</c> of the specified type.
+            </summary>
+            <returns>The method.</returns>
+            <param name="type">Type.</param>
+            <param name="name">Method name.</param>
+            <param name="isStatic">If to get a static method.</param>
+            <param name="returnType">Return type.</param>
+            <param name="paramTypes">Parameter types.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetBinding(System.Boolean)">
+            <summary>
+            Get the <c>BindingFlags</c> to get a public or nonpublic member.
+            </summary>
+            <returns>The binding flags.</returns>
+            <param name="isStatic">If to get a static member.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetParents(System.Type)">
+            <summary>
+            Get the parent hierarchy array, sorted from self to root type.
+            </summary>
+            <returns>The parent hierarchy array.</returns>
+            <param name="type">Type.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetChildren(System.Type,System.Boolean)">
+            <summary>
+            Get all child types, excluding self, optional to find deep or directly inheritance only.
+            </summary>
+            <returns>The child types.</returns>
+            <param name="type">Type.</param>
+            <param name="deep">If set to <c>true</c> deep.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetItemType(System.Type)">
+            <summary>
+            Return the element type of an array or list type, otherwise <c>null</c>.
+            </summary>
+            <returns>The element type.</returns>
+            <param name="type">Type.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetDefault(System.Type)">
+            <summary>
+            Get the default value of the type, just like <c>default(T)</c>.
+            </summary>
+            <returns>The default value.</returns>
+            <param name="type">Type.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.IsCreatable(System.Type,System.Boolean)">
+            <summary>
+            Determine if able to create an instance of the type.
+            </summary>
+            <remarks>
+            Optional to throw an exception message or just return <c>false</c> if invalid.
+            This only checks some basic conditions and might be not precise.
+            </remarks>
+            <remarks>
+            The current conditions below:
+            	1. Return <c>false</c> only if it's interface, abstract, generic definition, delegate.
+            	2. Recurse to check the element type of an array type.
+            	3. Recurse to check the generic arguments of a list or dictionary type.
+            </remarks>
+            <returns>
+                <c>true</c>, if creatable, <c>false</c> otherwise.</returns>
+            <param name="type">Type.</param>
+            <param name="exception">Flag to throw an exception or return <c>false</c>.</param>
+        </member>
+        <member name="M:WanzyeeStudio.Extension.TypeExtension.GetCreatableError(System.Type)">
+            <summary>
+            Get the error for <c>IsCreatable()</c>, <c>null</c> if passed.
+            </summary>
+            <returns>The error.</returns>
+            <param name="type">Type.</param>
+        </member>
+        <member name="T:WanzyeeStudio.IoUtility">
+            <summary>
+            Include some convenient methods to extend IO operation.
+            </summary>
+        </member>
+        <member name="M:WanzyeeStudio.IoUtility.GetDeepFiles(System.String[])">
+            <summary>
+            Filter to get the paths of all files and files in directories except "*.meta".
+            </summary>
+            <returns>The file paths.</returns>
+            <param name="paths">Paths.</param>
+        </member>
+        <member name="M:WanzyeeStudio.IoUtility.Delete(System.String,System.Boolean)">
+            <summary>
+            Try to delete a file or directory at the specified path.
+            </summary>
+            <remarks>
+            This doesn't work in Web Player.
+            Note, the operation is permanently and irreversibly.
+            Optional to trace and delete ancestor directories if became empty.
+            </remarks>
+            <param name="path">Path.</param>
+            <param name="ancestor">If set to <c>true</c> delete ancestor directories if empty.</param>
+        </member>
+        <member name="M:WanzyeeStudio.IoUtility.CheckCreatable(System.String,System.Boolean)">
+            <summary>
+            Determine if the path can be used to create a file or directory.
+            </summary>
+            <remarks>
+            Optional to throw an exception message or just return <c>false</c> if invalid.
+            A legal path might not be in good format, e.g., "C:dir\ //file" or "/\pc\share\\new.txt".
+            But it's safe to pass to <c>Directory</c> or <c>FileInfo</c> to create.
+            Path in situations below is invalid, even dangerous:
+            	1. Nothing but empty or white-spaces, nowhere to go.
+            	2. Starts with 3 slashes, this causes crash while system looking for parent directories.
+            	3. Includes invalid chars, can't name a file.
+            	4. A name in path starts or ends with space, we can't get the created file, even delete.
+            </remarks>
+            <returns>
+                <c>true</c> if is creatable; otherwise, <c>false</c>.</returns>
+            <param name="path">Path.</param>
+            <param name="exception">Flag to throw an exception or return <c>false</c>.</param>
+        </member>
+        <member name="M:WanzyeeStudio.IoUtility.GetCreatableError(System.String)">
+            <summary>
+            Get the error for <c>CheckCreatable()</c>, <c>null</c> if passed.
+            </summary>
+            <returns>The error.</returns>
+            <param name="path">Path.</param>
+        </member>
+    </members>
+</doc>
