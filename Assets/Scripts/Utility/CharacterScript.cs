@@ -40,7 +40,7 @@ public class CharacterScript : MonoBehaviour
         originalScale = rectTransform.localScale;
         voice = gameObject.GetComponent<AudioSource>();
         renderers = gameObject.GetComponentsInChildren<CubismRenderer>();
-        initLighting();
+        // initLighting();
     }
     public void lightingIntoFocus()
     {
