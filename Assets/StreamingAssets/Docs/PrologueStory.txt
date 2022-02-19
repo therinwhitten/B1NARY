@@ -13,19 +13,19 @@ No.
 The world is about to witness a pivotal moment in humanity's history.
 Today marks man's first attempt at digitizing one of their own.
 {additive: off}
-{spawnChar: malesilo, -1, Male Bystander}
-{anim: Male Bystander, kime2}
-{moveChar: Male Bystander, 0.20}
+{spawnChar: malesilo1, -1, Male Bystander}
+{anim: Male Bystander, Thinking}
+{moveChar: Male Bystander, 0.27}
 Male Bystander::
 "I can't believe they are going through with this!"
 "Who gave this project a green light?"
 "The test subject is either a frickin idiot, or they want to die... I can't decide which." 
-{spawnChar: femalesilo, -1,Female Bystander}
+{spawnChar: femalesilo1, -1,Female Bystander}
 {moveChar: Female Bystander, .50}
-{anim: Female Bystander, pose1}
 Female Bystander::
 {additive: on} 
 "You couldn't pay me enough!
+{anim: Female Bystander, hmmph}
 Isn't VR good enough for people?"
 {additive: off}
 "Imagine being that kid's parents? I wonder what they think about this?"
@@ -48,6 +48,7 @@ Gives me shivers just thinking about it."
 Narrator::
 Male Bystander scoffs audibly and looks up at the broadcast.
 Male Bystander::
+{anim: Male Bystander, Thisway}
 "What if the power goes out on whatever server you are on? Doesn't your brain get scrambled?" 
 "Can you imagine? Dead. Just... like... that."
 {additive:on}
@@ -58,6 +59,7 @@ According to Goggles, it hasn't worked successfully even once."
 Narrator::
 Female Bystander looks at Male Bystander with exasperation.
 Female Bystander::
+{anim: Female Bystander, Thinking}
 "That can't be the truth."
 "They wouldn't let a human near that thing unless it works."
 "I don't agree with this experiment, but even I know a failed experiment on a world broadcast would be PR suicide." 
@@ -77,8 +79,8 @@ Just <i>imagine</i> the pressure of sitting in that chair, in front of millions.
 {loopBG: false}
 {playBG: Prologue/Times Square Pan Up}
 {spawnChar: femalesilo, 2, Cindy}
-{anim: Cindy, m20}
 {moveChar: Cindy, .75}
+{anim: Cindy, Excited}
 Narrator::
 The Holo-viewer, which before was on a short commercial break, abruptly changes to the image of a sharply dressed anchorwoman.
 She smiles sweetly off screen. 
@@ -107,7 +109,7 @@ Let's find out together. LIVE!"
 {fadeinsound: LabAmbience, .4}
 {spawnChar: malesilo, -1, John}
 {spawnChar: femalesilo, 1.75, Cindy}
-{spawnChar: malesilo, -1, Male Bystander}
+{spawnChar: malesilo1, -1, Male Bystander}
 {spawnChar: malesilo, -1.5, Male Bystander 2}
 {spawnChar: femalesilo, 2, Female Bystander}
 {spawnChar: malesilo, 1.5, Narrator}
