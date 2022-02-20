@@ -19,7 +19,7 @@ Today marks man's first attempt at digitizing one of their own.
 Male Bystander::
 "I can't believe they are going through with this!"
 "Who gave this project a green light?"
-"The test subject is either a frickin idiot, or they want to die... I can't decide which." 
+"The test subject is either a frickin idiot, or they just want to die... I can't decide which." 
 {spawnChar: femalesilo1, -1,Female Bystander}
 {moveChar: Female Bystander, .50}
 Female Bystander::
@@ -31,6 +31,7 @@ Isn't VR good enough for people?"
 "Imagine being that kid's parents? I wonder what they think about this?"
 Narrator::
 She shakes her head and sighs.
+{anim: Female Bystander, Noarmscrossed}
 {spawnChar: malesilo, 2,Male Bystander 2}
 {moveChar: Male Bystander 2, 0.80}
 {anim: Male Bystander 2, kime1}
@@ -111,7 +112,7 @@ Let's find out together. LIVE!"
 {spawnChar: femalesilo, 1.75, Cindy}
 {spawnChar: malesilo1, -1, Male Bystander}
 {spawnChar: malesilo, -1.5, Male Bystander 2}
-{spawnChar: femalesilo, 2, Female Bystander}
+{spawnChar: femalesilo1, 2, Female Bystander}
 {spawnChar: malesilo, 1.5, Narrator}
 {anim: John, kime2}
 {moveChar: John, .20}
@@ -167,11 +168,17 @@ John::
 "And they will come through <i>that</i> door..."
 Narrator::
 John sidesteps awkwardly as a few lab techs push past him in front of the camera.
+{spawnChar: malesilo, 1.4, LabTech0}
+{spawnChar: malesilo1, 1.4, LabTech1}
+{moveChar: LabTech0, .45}
+{moveChar: LabTech1, .65}
 John::
-"Oh, excuse me gentlemen." 
+"Oh, excuse me gentlemen."
+{moveChar: LabTech0, -.35}
 {fadeinsound: Door, 0.1}
 {additive: on}
 "Sorry about that!
+{moveChar: LabTech1, -.3}
 Where was I?"
 {additive: off}
 {additive: on}
@@ -226,7 +233,7 @@ Male Bystander 2::
 "Fuck yeah!"
 "Innovative, and groundbreaking... and other stuff."
 "Man I would love to be digitized."
-"I could help out with the, uh ground breaking and stuff. Not to mention experience the more...entertaining side of the internet."
+"I could help out with the, uh ground breaking and stuff. Not to mention experience the more... entertaining side of the internet."
 Narrator::
 A tired sigh escapes the Female Bystander's lips.
 Female Bystander::
@@ -242,7 +249,7 @@ Am I right?"
 {additive: off}
 "Jokes aside though..."
 {additive: on}
-"There is other stuff just as cool!
+"There is other stuff that's just as cool!
 Want to jump off Mount Everest? You can!
 Swim at the bottom of the ocean.
 Maybe even visit Mars...
@@ -252,15 +259,16 @@ Female Bystander::
 "You two are drowning out the broadcast."
 Narrator::
 The quip is sharp...
-{spawnChar: malesilo, 2, Lab Tech }
-{anim: Lab Tech, kime2}
-{moveChar: Lab Tech, .85}
+{spawnChar: malesilo1, 1.3, Lab Tech }
+{moveChar: Lab Tech, .65}
+{anim: Lab Tech, Checktime}
 Narrator::
 John is now standing next to a lab tech.
 The technician build is tall and lanky, his glasses too large for the bridge of his nose.
 His dark hair is tousled, as if he has been in lab for days without proper bed. 
 On screen, his shoulders are slumped a bit, as if he is being crushed by all the camera's gazes. His voice, however, defies that impression.
 The Lab Tech fingers his large glasses back up his nose.
+{anim: Lab Tech, Glasses}
 Lab Tech::
 "Once transferred, the testee will remain in our closed servers for a period of around four days, give or take." 
 "While they're in there, the subject's body will remain in a form of warm air stasis. This is to prevent abrupt changes in the chemical makeup." 
@@ -282,17 +290,20 @@ Let's move on. I have things to attend to soon."
 {additive: off}
 Narrator::
 The lab tech dismisses the reporter's confusion.
+{anim: Lab Tech, Thinking}
 Lab Tech::
 "Now, this process is currently untested on a human subject." 
 "However, the experimental data from the synthgens has shown little to no adverse side effects."
 "We will conduct the same tests we performed in the 'Synthgens Simulation'."
 "They will stay awake and conscious in the server, conduct motor skill tests, recite poems, sing songs, and so on." 
 "The purpose is to activate all the parts of the brain to ensure full congnition and awareness." 
+{anim: Lab Tech, Glasses}
 "We want to see how much of the brain is active in cyberspace, and to be sure we can measure deterioration, if any..."
 "After about four days, we will reanimate their body, reinsert the brain patterns back into their fleshy vessel, and put them in quarantine for a couple of months to ascertain no permanent damage was done." 
 Cindy::
 "Ask him if the synthgens from the first test are still ok John. John?"
 Narrator::
+{anim: John, kime1}
 John taps the ear piece and looks toward the Lab Tech.
 John::
 "Question er...."
@@ -322,6 +333,7 @@ John::
 Narrator::
 The lab tech smiles for the first time at the sound of the door.
 He starts guiding all the press out of the lab with an air of excitement.
+{anim: Shirobi, Thisway}
 Shirobi::
 "Why, the courageous, pioneering spirit..."
 Narrator:: 
