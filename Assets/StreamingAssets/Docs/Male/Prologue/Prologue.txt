@@ -5,7 +5,7 @@
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
-{spawnChar: malesilo, 2, Shirobi}
+{spawnChar: malesilo1, 2, Shirobi}
 {spawnChar: malesilo, 2, MC}
 {fadeinsound: Heartbeat, 1}
 Shirobi::
@@ -82,8 +82,8 @@ I swallow some acid down. I lick my chapping lips a bit.
 Gesturing at the behemoth sitting in the center of the room, I clarify.
 "I would be lying if I didn't say the DIHI makes me nervous."
 {spawnChar: malesilo, -1, Cliff}
-{anim: Cliff, kime2}
 {moveChar: Cliff, .20}
+{anim: Cliff, handwave}
 Eyes start to adjust, and I notice Cliff, the lead project manager, behind the press, his arms crossing in combination to a stern face.
 His posture is clearly saying, "If you mess this up, there goes your pay for a year."
 Why is no one saying anything?
@@ -111,7 +111,7 @@ Damn lights!
 {moveChar: Smug Reporter, 2}
 {moveChar: Shirobi, .75}
 Shirobi::
-{anim: Shirobi, idle} 
+{anim: Shirobi, Glasses} 
 "Well, at least he seems to have calmed down a bit. I was starting to worry, to be frank." 
 MC::
 My eyes shoot daggers at him.
@@ -126,7 +126,7 @@ I take in breath.
 "Hey Shirobi... I hope you're ready for me..."
 Shirobi walks up and puts a hand on my shoulder.
 Shirobi::
-{anim: Shirobi, kime1} 
+{anim: Shirobi, Bow} 
 "Don't worry MC. I will be watching your vitals, to ensure nothing happens."
 "You know... I wouldn't let you get near this chair unless it's safe. Right?" 
 "Four days. Then we will pull you out. Ok?"
@@ -137,7 +137,7 @@ The press are being guided outside of the room. The only people inside were me, 
 {fadeinsound: Door, .1}
 {fadeoutsound: LabAmbience, .1}
 The sound of the DIHI suddenly changes, the feel of ionizing in the air increases.
-{fadeinsound: DIHI Up Close, 1}
+{fadeinsound: DIHI Upclose, 1}
 I look into the observation lounge window, where reporters, and lab technicians are chatting.
 It looks like they are grabbing coffee and seating themselves.
 Right now. I want a cup of coffee. I really, really want a cup of coffee.  
@@ -161,6 +161,7 @@ Shirobi::
 "The answer is no. You won't sit in stasis with a stiffy."
 MC::
 He leans in closer to avoid the microphones. 
+{anim: Shirobi, Bow} 
 Shirobi::
 "And there will be no nurses taking advantage of you, I promise."
 MC:: 
@@ -191,7 +192,7 @@ MC::
 I walk to the center of the room, looking straight at the chair.
 {changeScene: The Lab}
 {fadeinsound: FastHeartbeat, .5}
-{fadeinsound: DIHI Up Close, .1}
+{fadeinsound: DIHI Upclose, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {fadeoutsound: Lab Ambience Music Light, 2} 
@@ -263,7 +264,7 @@ No press, no coworkers: just my heartbeat, the thrum of the chair, and my sudden
 {fadeoutsound: Fast Keyboard Typing, .1}
 {fadeoutsound: Lab Computer Room Beeps 2, .1}
 {fadeoutsound: DIHI Low Power, .1}
-{fadeoutsound: DIHI Up Close, .1}
+{fadeoutsound: DIHI Upclose, .1}
 {fadeoutsound: DIHI High Power, .1}
 {fadeoutsound: Laptop-Lab,.1}
 <i>Then, with an almost gut-wrenching lurch, everything suddenly feels like it is being pulled to the top of my head...</i>
