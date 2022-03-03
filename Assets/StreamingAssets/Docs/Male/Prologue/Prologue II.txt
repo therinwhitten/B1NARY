@@ -12,28 +12,28 @@ Narrator::
 {additive: on}
 Finally,
 after what seems like an eternity, 
-**if: n-b,false}
+{if: n-b,false}
 {
  his face goes completely flaccid.
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  their face relaxes.   
 }
-**if: n-b,false}
+{if: n-b,false}
 { 
  For the onlookers, it was hell watching the boy's face.
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  For the onlookers, it was hell watching the person's face.
 }
 {additive: off}
-**if: n-b,false}
+{if: n-b,false}
 {
  His eyes slowly close, peaceful now, devoid of any expression. 
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  Their eyes slowly close, peaceful now, devoid of any expression.
 } 
@@ -54,11 +54,11 @@ It felt like several hours to some, time gelling.
 The transfer took only a few minutes. 
 Fluorescent lights in the lab crackle and come to life...
 {fadeinsound: lightflicker, .2}
-**if: n-b,false}
+{if: n-b,false}
 {
   Medics grab MC, carefully placing him into the cyrotube and applying sensors to the different sections of his body.
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  Medics grab MC, carefully placing them into the cyrotube and applying sensors to the different sections of their body.
 }
@@ -70,11 +70,11 @@ The stasis chamber looks like nothing John has ever seen before, touchscreens co
 John can hear the heart rate monitor, even in the "press room." Even through the thick panel of glass. 
 John looks around.
 "Press room." It is basically the lab techs' break room. 
-**if: n-b,false}
+{if: n-b,false}
 {
  At least for the boy, Digital Horizons has spared no expense.
 } 
-**if: n-b,true}
+{if: n-b,true}
 {
  At least for this employee, Digital Horizons has spared no expense.
 }
@@ -128,7 +128,7 @@ Narrator::
 He pauses for effect, making eye contact with the press through the observation window, one by one.
 When he observes them talking amongst themselves, he continues, voice strong and steady.
 Cliff::
-**if: n-b,false}
+{if: n-b,false}
 {
  {additive: on}
  "We have confirmed his thought patterns in server 10.
@@ -136,7 +136,7 @@ Cliff::
  {additive: off}
  "Tests are still being conducted to ensure he is aware of his location and fully cognizant." 
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  {additive: on}
  "We have confirmed their thought patterns in server 10.
@@ -177,11 +177,11 @@ Cliff::
 {additive: on}
 "You see, we have to contend with a lot of unknowns.
 The pressure of dealing with a whole new frontier will keep MC most likely distracted.
-**if: n-b,false}
+{if: n-b,false}
 {
  It is <i>crucial</i> we keep him calm and safe. 
 } 
-**if: n-b,true}
+{if: n-b,true}
 {
  It is <i>crucial</i> we keep them calm and safe.
 }
@@ -200,7 +200,7 @@ We've already warned you prior to the conference that this is a very high risk e
 {additive: off}
 "We understand the world wants to know more as it develops." 
 "And we will endevor to keep you informed."
-**if: n-b,false}
+{if: n-b,false}
 {
    {additive: on}
  "However,
@@ -210,9 +210,9 @@ We've already warned you prior to the conference that this is a very high risk e
  and after Mr. MC has been cleared of quarantine, we will allow him to speak to the press."
  {additive: off}
 }
-**if: n-b,true}
+{if: n-b,true}
 {
-   {additive: on}
+ {additive: on}
  "However,
  there is a young person's life at stake here, 
  and we want to be as careful as humanly possible. 

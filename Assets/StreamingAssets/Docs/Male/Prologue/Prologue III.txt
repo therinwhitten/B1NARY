@@ -22,11 +22,11 @@ Shirobi, pale as a ghost, just stares at the screen without really looking at it
 {moveChar: Shirobi, .80}
 {moveChar: Cliff, .15}
 Shirobi::
-**if: n-b,false}
+{if: n-b,false}
 {
  "I promised him, Sir. That he would be ok.... I told him it would just be four days. And..."
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  "I promised them, Sir. That they would be ok... I told them it would only be four days. And..."
 }
@@ -35,20 +35,20 @@ Shirobi sighs in defeat.
 {anim: Shirobi, Bow}
 Shirobi::
 {additive: on}
-**if: n-b,false}
+{if: n-b,false}
 {
  "I can't find him in any of the servers...
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  "I can't find them on any of the servers...
 }
 Is it possible just for the DIHI to just...
-**if: n-b,false}
+{if: n-b,false}
 {
  scramble him?"
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  scramble them?"
 }
@@ -65,11 +65,11 @@ Narrator::
 Cliff trails off, his body starting to shake. 
 Cliff::
 {additive: off}
-**if: n-b,false}
+{if: n-b,false}
 {
  "He's just a kid dammit!!"
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  They're just a kid dammit!!"
 }
@@ -89,11 +89,11 @@ Cliff looks down at his fist, forcibly relaxing it.
 Cliff::
 {additive: on}
 "It's ok.
-**if: n-b,false}
+{if: n-b,false}
 {
  We've got four days to find him."
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  We've got four days to find them."
 }
@@ -184,18 +184,18 @@ Silence. Several seconds pass in dead silence.
 Massaging his forehead, Shirobi's voice picks up.
 Shirobi::
 {anim: Shirobi, Glasses}
-**if: n-b,false}
+{if: n-b,false}
 {
  "Sir, do we even have a chance to find him? I mean, he is the <i>only</i> human in the internet, but..."
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  "Sir, do we even have a chance to find them? I mean, they are the <i>only</i> human in the internet, but..."
 }
 Narrator::
 The old man, looking at his laptop's display, sighs and replies.
 Cliff::
-**if: n-b,false}
+{if: n-b,false}
 {
  {additive: on}
  "It's possible, 
@@ -205,7 +205,7 @@ Cliff::
  "I pray he lands somewhere semi-safe."
  "Will ransomware or malware hurt him? There are so many unknown dangers that we are clueless on..."
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  "It's possible, 
  but we would have to send AI into the code to search for their brain patterns, and <i>hope</i> they don't alter too much.
@@ -230,14 +230,14 @@ Cliff nods, never taking his eyes off the screen, grim determination replacing p
 Cliff::
 "MC needs us, team." 
 {additive: on}
-**if: n-b,false}
+{if: n-b,false}
 {
  "He will be clueless. 
  More alone than any man has ever been. 
  The only human in the digital world. 
  I <i>hope</i> that is enough to find him."
 }
-**if: n-b, true}
+{if: n-b, true}
 {
  "They will be clueless. 
  More alone than any person has ever been. 
@@ -248,11 +248,11 @@ Cliff::
 Narrator::
 His eyes focus on Shirobi. The command in his voice strong.
 Cliff::
-**if: n-b,false}
+{if: n-b,false}
 {
  "Get his thought-pattern impressions inputted into the mainframe and start training the AI."
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  "Get their thought-pattern impressions inputted into the mainframe and start training the AI."
 }
@@ -270,11 +270,11 @@ He ends the sentence with a bit of irony.
 Cliff::
 "We can use that stereotype to buy us some time."
 "In the meantime, you try to figure out a good way to explain to the world what is happening." 
-**if: n-b,false}
+{if: n-b,false}
 {
  "If we can't find him by then, there will be some serious backlash on this."
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  "If we can't find them by then, there will be some serious backlash on this."
 }
@@ -285,7 +285,7 @@ Cliff::
 Narrator::
 As Cliff continues to push out instructions to his team, he can't help but feel a pang of incredible sadness. 
 The kid is fresh out of college.
-**if: n-b,false}
+{if: n-b,false}
 {
  Cliff knows about the kid's parents, and they really wouldn't care if he vanishes.
  From Cliff's meeting with them, the parents seemed annoyed he was involved in the project.
@@ -297,7 +297,7 @@ The kid is fresh out of college.
  From his profile, he is a resourceful lad.
  He hopes that wherever he is, he will be smart enough to pace himself and make careful considerations...
 }
-**if: n-b,true}
+{if: n-b,true}
 {
  Cliff knows about the kid's parents, and they really wouldn't care if MC vanishes.
  From Cliff's meeting with them, the parents seemed annoyed they were involved in the project.
