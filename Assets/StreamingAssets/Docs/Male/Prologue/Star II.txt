@@ -1,23 +1,23 @@
 {changeScene: Scenes/Star/Bedroom}
 {fadeinsound: starandszy, 1}
 {fadeinsound: fireplace, 1}
-{spawnChar: malesilo, -1, Szycrotic}
-{spawnChar: star nightgown, 2, Asterella}
+{spawnChar: malesilo, -1, MC}
+{spawnChar: star nightgown, 1.3, Asterella}
 {fadeoutsound: Wind Heavy, 1}
-{anim: Szycrotic, idle}
-{moveChar: Szycrotic, .25}
+{spawnChar: szycrotic default, -.5, Szycrotic}
+{moveChar: Szycrotic, .3}
 MC::
 It took at least 5 mins of walking to get to the center of the manor. 
 Yep. Still tied up.
 The mansion is almost a small village by itself, with many different rooms.
 I lost count at 50 people in the short time I was counting. 
 A lot of them were not human.  
-Some cat girls too.
+Some cat girls too!
 MC::
-Mah Heart! 
-And...
+Mah Heart... 
+And.
 Szycrotic has been humming songs under his breath the entire way. 
-{moveChar: Asterella, .75}
+{moveChar: Asterella, .65}
 {additive: on}
 As we enter, 
 a stunning young lady, 
@@ -42,17 +42,36 @@ Asterella::
 MC::
 That dulcet voice is full of exasperation.
 Asterella::
-{additive:on}
-"I told you to <i>bring</i> him in,
-not beat him up and drag him!"
-{additive:off}
+{if: n-b,false}
+{
+ {additive:on}
+ "I told you to <i>bring</i> him in,
+ not beat him up and drag him!" 
+ {additive:off}
+}
+{if: n-b,true}
+{
+ {additive:on}
+ "I told you to <i>bring</i> them in,
+ not beat them up and drag them!"
+ {additive:off}
+}
 MC::
 Szycrotic shrugs, a hint of defensiveness squaring up his shoulders. 
 Szycrotic::
-[indifference]
-"Star, he literally tried to book it."
-"So, naturally. I tied him up."
-"Don't blame me! I think it's his kink."
+[Default]
+{if: n-b,false}
+{
+ "Star, he literally tried to book it."
+ "So, naturally. I tied him up."
+ "Don't blame me! I think it's his kink."
+}
+{if: n-b,true}
+{
+ "Star, they literally tried to book it."
+ "So, naturally. I tied MC up."
+ "Don't blame me! I think it's their kink."
+}
 MC::
 I open my mouth to protest that I do <i>not</i> have a rope fetish. 
 Asterella::
@@ -61,18 +80,24 @@ Asterella::
 "What if they are a visiting Demon Lord?"
 Szycrotic::
 "But-"
-[Confusion]
+[OWO]
 Asterella::
-{anim: Asterella, Impatient}
-"Even if they seem to be intruders! What if he was a Demon Lord in disguise?"
+{anim: Asterella, Pouting}
+{if: n-b,false}
+{
+ "Even if they seem to be intruders! What if he was a Demon Lord in disguise?"
+} 
+{if: n-b,true}
+{
+ "Even if they seem to be intruders! What if the were a Demon Lord in disguise?"
+} 
 MC::
 Szycrotic looks at me thoughtfully.
-{anim: Szycrotic, thinking} 
 Star shakes her head in visible frustration. 
 She raises her hand slowly.
 And points to the door with finality: decision made.
 Asterella::
-{anim: Asterella, impatient}
+[Indifference]
 "Leave me." 
 {additive:on}
 "See the Dungeon Master for your nightly punishment.
@@ -89,25 +114,32 @@ They seem to <i>live</i> here.
 {additive: off}
 {moveChar: Szycrotic, .1}
 Szycrotic::
-{anim: Szycrotic, pouting}
+[Angry]
 "Fine, woman."
-"If he becomes hostile don't blame me, alright?"
+**if n-b,false}
+{
+ "If he becomes hostile don't blame me, alright?"
+}
+**if n-b,true}
+{
+ "If they become hostile don't blame me, alright?"
+}
 {moveChar: Szycrotic, -1}
 {moveChar: Asterella, .5}
 MC::
-{anim: Asterella, smug}
 {fadeinsound: Door, 1}
 Star watches Szy close the door with a look of satisfaction on her face. 
 When the door closes she sighs, closing her eyes for a brief moment. 
 Asterella::
-{anim: Asterella, idle}
-[happy]
+[Happy]
+{anim: Asterella, Thinking}
 "I swear he'll start a war someday."
 MC::
 The light giggle that escapes her throat is oddly not surprising. 
 They seem to be very close to each other.
 As if deciding something, she focuses on me, her eyes apologetic.
 Asterella::
+[Default]
 "Ok, let's get those ropes off of you."
 I am <i>so</i> sorry... um..."
 MC::
@@ -120,11 +152,11 @@ Better to play it safe.
 I laugh a bit dryly. 
 Asterella::
 "With jokes like that, maybe I should keep you tied up."
-{anim: Asterella, thinking}
+[Happy]
 MC::
 She looks at me with a wry twist of her lips.
 Extends one fingernail and slices the ropes off my wrists and throat. 
-The nail cut like a knife. 
+The nail cuts like a knife. 
 No wonder Szycrotic wasn't worried. 
 Wait, was that a warning? 
 I intend to take it as one.
@@ -148,7 +180,7 @@ Those gorgeous eyes.
 The scent of her billows into small space of air between us: brimstone with a mix of lavender.
 It's intoxicating...
 Asterella::
-{anim: Asterella, idle}
+[Default] 
 "And Star is fine, MC. My official title is saved for formal ceremonies."
 {additive:on}
 "Where are my manners? 
@@ -161,18 +193,21 @@ With an elegant hand, she pats the sofa cushion next to her suggestively.
 It's an invitation.
 Asterella::
 "Come, I won't bite."
-[horny]
+[Happy]
 MC::
 A mischievous look appears on her delicate features.
 Asterella::
 "Unless you <i>want</i> me too, of course."
-[happy]
+{anim: Asterella, Smug}
 MC::
 I swallow.
 It's <i>not</i> what you think. 
 It <i>can't</i> be what you are thinking.
 Get a hold of yourself!
 "So, Star. Why did you bring me to your room?"
+Asterella::
+[Default]
+MC::
 {fadeinsound: woodwine1, .1}
 {fadeinsound: woodwine2, .1}
 {fadeinsound: glasspouring, .1}
@@ -196,12 +231,11 @@ It's a statement.
 I am probably putting my foot in my mouth, but I need to know. 
 "You <i>should</i> be sending me to the dungeon to torture at your pleasure to get answers."
 Asterella looks up while calmly grabbing her wine. 
-{anim: Asterella, smug}
+{anim: Asterella, Thinking}
 Asterella::
 "No, that just won't do. The dungeon is for good boys and girls." 
 "You see, things work differently in hell."
 MC::
-{anim: Asterella, idle}
 Her tone is a matter of fact, but gentle: as if it is perfectly normal to be punished for fun.
 It unnerves me even more. 
 Some serious BDSM vibes going on here. 
@@ -222,6 +256,7 @@ Asterella::
 MC::
 "To future relationships."
 {fadeinsound: winetoast, .1}
+{anim: Asterella, Impatient}
 I take a nice chug of it. 
 It burns a bit, but the taste is smooth. 
 My voice lowers a bit. 
@@ -229,7 +264,7 @@ My voice lowers a bit.
 Here goes nothing.
 "What if I told you that I had no idea why I am here, and it was a random occurrence?"
 Star frowns, studying me again carefully.
-{anim: Asterella, thinking}
+{anim: Asterella, Thinking}
 For a very uncomfortable period, the room, the air, is cold.  
 Finally, she speaks.
 Asterella::
@@ -238,11 +273,11 @@ Asterella::
 MC::
 I pipe in.
 "What would you say if I said I came from the Twatch servers?"
-{anim: Asterella, angry}
 She smiles sweetly, one that doesn't reach her eyes.
 A glint starts to ignite in her eyes dangerously.
 Sudden as a firecracker.
 Asterella::
+[Disgust]
 "And that would be a complete lie." 
 "Don't test the waters with me, MC." 
 {additive:on}
@@ -251,8 +286,9 @@ but I despise lying."
 {additive:off}
 MC::
 She pauses.
-{anim: Asterella, idle}
+{anim: Asterella, Thinking}
 Asterella::
+[Default]
 "At least to me, anyway."
 "Do you pose a threat to my kingdom?"
 "Or, perhaps, the other Circles of Hell?"
@@ -265,12 +301,13 @@ I laugh it off, dismissing the notion.
 "If I did, why would I just <i>waltz</i> in here as a prisoner?"
 It was her turn to laugh.
 Asterella::
-[happy]
+[Happy]
 "Touche, MC. I suppose we are at an information impasse..."
 "For now, anyway."
+[Default]
 MC::
 {additive:on}
-She is mulling something over,  
+She's mulling something over,  
 studying me over her glass, 
 those penetrating eyes softening.
 {additive:off}
@@ -288,8 +325,8 @@ heady and thick.
 {additive:off}
 Close enough for thighs to touch, she looks up at me through her lashes suggestively.
 Asterella::
-{anim: Asterella, woozy}
-[horny]
+{anim: Asterella, Smug}
+[Happy]
 "There are <i>other</i> ways to get information from you."
 MC::
 What exactly does <i>that</i> mean?
@@ -301,7 +338,14 @@ She confirms my suspicions by placing a gentle hand on my leg.
 Play it cool, MC. Play it cool.
 You're cool as a cucumber.
 Asterella::
-"Don't play dumb with me, MC. You seem to be a very kind, attractive elf boy, and I am a bit 'thirsty'..."
+{if: n-b,false}
+{
+ "Don't play dumb with me, MC. You seem to be a very kind, attractive elf boy, and I am a bit 'thirsty'..."
+}
+{if: n-b,false}
+{
+ "Don't play dumb with me, MC. You seem to be a very kind, attractive elf, and I am a bit 'thirsty'..."
+}
 "And it's not for more wine."
 MC::
 The look on her face speaks volumes on what her true intentions were.
@@ -350,7 +394,7 @@ Asterella::
 "Your body cannot lie to me, MC. I know you want me as well."
 MC:: 
 She looks almost pouty, her cheeks puffing just slightly.
-{anim: Asterella, pouting}
+{anim: Asterella, Pouting}
 Asterella::
 "You wouldn't deny a Demon Lord in her own domain would you?"
 "As an intruder to boot."
@@ -372,13 +416,24 @@ Will Szycrotic be enraged if I go with Star's suggestion?
     [
         {setbool: starbed,true}
         Asterella::
-        {anim: idle}
-        [horny]
-        "Good boy..."
-        MC::
-        She murmurs quietly.
-        Asterella::
-        "Such a very good boy..."
+        {anim: Asterella, Smug}
+        [Horny]
+        {if: n-b,false}
+        {
+         "Good boy..."
+         MC::
+         She murmurs quietly.
+         Asterella::
+         "Such a very good boy..."
+        }
+        {if: n-b,false}
+        {
+         "Such a good toy you are..."
+         MC::
+         She murmurs quietly.
+         Asterella::
+         "Yes, a very good toy..."
+        }
         MC:: 
         Truth escapes my lips.
         "How can I say no?"
@@ -390,7 +445,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
         She sits frozen, almost shocked. 
         Realization hits. She puts her hand to her mouth...
         Asterella::
-        [confusion]
+        [Confusion]
         "Oh no... Did I misread this?"
         "Are you gay?"
         "Do I need to call Szy back here?"
@@ -398,7 +453,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
         "Um,no?"
         She chuckles, her attention back to my thigh, tracing circles playfully.
         Asterella::
-        [horny]
+        [Horny]
         "If not, then maybe..."
         MC::
         {choice: I am not gay...but...}
