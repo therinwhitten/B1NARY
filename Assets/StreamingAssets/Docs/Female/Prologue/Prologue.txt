@@ -7,10 +7,16 @@
 {fadeinsound: LabAmbience, .4}
 {fadeinsound: Heartbeat, 1}
 {spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo, 2, Shirobi}
-Shirobi:: 
-{anim: Shirobi, kime2}
-"MC! She has been an intern with the company for over a year now..."
+{spawnChar: malesilo1, 2, Shirobi}
+Shirobi::
+{if: n-b,false}
+{ 
+ "MC! She has been an intern with the company for over a year now..."
+}
+{if: n-b,true}
+{
+ "They have been an intern with the company for over a year now..."
+}
 MC::
 The brain sucking chair...
 All the lab techs cringe when I call it that, but I don't care.
@@ -32,11 +38,11 @@ I squeak, the sound coming out of it's own volition.
 {
      I am scared! I should probably stay put.
      [
-         I feel the hand grip me tight. And twirl me around.
+       I feel the hand grip me tight. And twirl me around.
      ]
      Face the music.
      [
-         I whirl around.
+       I whirl around.
      ]    
 }
 {fadeoutsound: Heartbeat, 1}
@@ -48,7 +54,14 @@ I attempt to blink away the glaring brightness, raising my hand to shade my eyes
 Old Reporter::
 {anim: Old Reporter, kime1}
 {moveChar: Old Reporter, .85}
-"There she is! MC?"
+{if: n-b,false}
+{
+ "There she is! MC?"
+}
+{if: n-b,true}
+{
+ "There they are! MC?"
+}
 "Are you ok? You don't look very chipper."
 The old coot laughs, the sound straining to combat the tension in the air.
 "Must be nerve wracking for billions of people to watch you make history, am I right?"
@@ -70,8 +83,8 @@ I look at the camera closest to me.
 {additive: off}
 {spawnChar: malesilo, -1, Cliff}
 Cliff::
-{anim: Cliff, kime2}
 {moveChar: Cliff, .25}  
+{anim: Cliff, kime2}
 MC::
 My eyes start to adjust. I notice Cliff, the lead project manager, behind the press, arms crossed and a look of concern on his face.
 Why is no one saying anything?
@@ -86,7 +99,7 @@ In my pockets, sits the letter from my mom I received this morning, full of prai
 {additive: on}
 To be a part of this project,
 and to spearhead such a huge change of direction in humanity's future,
-fills my parents with such pride... and worry. 
+fills my parents with such pride... And worry. 
 {additive: off}
 My poor parents, but they'll have to accept my decision here. 
 {additive: on}
@@ -110,8 +123,9 @@ Don't think too much of it, MC. You're already insanely nervous.
 I look down, my hands shaking of their own volition.
 {moveChar: Cliff, -1}
 {moveChar: Old Reporter, 2}
-{moveChar: Shirobi, .75}
+{moveChar: Shirobi, .70}
 {additive: on}
+{anim: Shirobi, Checktime}
 Scratching the back of my neck,
 I scan the small crowd through the blinding lights to find Shirobi,
 the lab intern.
@@ -119,14 +133,14 @@ the lab intern.
 I met him at college. Just a few classes. 
 After a couple of months, we became fast friends. 
 He's too tall for his own good, and a little dorky. He's a good guy though.
-And... he is hilariously cute when he pushes his glasses up the bridge of his nose.
+And... He is hilariously cute when he pushes his glasses up the bridge of his nose.
 He may be, to most, an annoying person. To me? He is a trustworthy friend. 
 Look at him, PDA in hand, watching my expression, his face betraying his worry.
 {additive: on}
 I smile my best smile,
 which always makes him blush a bit.
 Shirobi::
-{anim: Shirobi, kime1}
+{anim: Shirobi, Glasses}
 MC:: 
 His posture abruptly relaxes.
 {additive: off}
@@ -137,9 +151,11 @@ My tone is mockingly serious. I even throw in a salute.
 He also hates when I call him Shibi. He takes himself way too seriously sometimes. 
 He nods sagely, a slight smile curving his lips.
 He motions towards the DIHI. 
+{anim: Shirobi, Thisway}
 Shirobi::
 {additive: on}
 "I'm in charge of watching all your vitals.
+{anim: Shirobi, Bow}
 So please... take this seriously?
 {additive:off}
 "It's four days in. That's it."
@@ -153,7 +169,6 @@ I obliquely notice the press being escorted out of the DIHI room.
 {fadeoutsound: LabAmbience, .1}
 {fadeoutsound: Lab Ambience Music Light, 5}
 The sound of the DIHI suddenly changes, and the feel of ionizing in the air increases.
-{fadeinsound: DIHI Up Close, 1}
 The whole room <i>vibrates</i>.
 There is no other word for it.
 It feels like the chair is creating it's own realm inside this room.
@@ -177,11 +192,10 @@ Shirobi::
 "I promise."
 {changeScene: The Lab}
 {fadeinsound: FastHeartbeat, .5}
-{fadeinsound: DIHI Up Close, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo, 2, Shirobi}
+{spawnChar: malesilo1, 2, Shirobi}
 MC::
 I center myself in front of the portal to the Digital Realm.
 It feels so surreal.
@@ -220,7 +234,7 @@ The calming touch allows me to breathe.
 {additive: off}
 I pivot my head slightly, my eyes meet Shirobi's. He smiles briefly one more time. 
 Shirobi::
-"Just close your eyes... baka."
+"Just close your eyes... BAAAAKA."
 MC::
 "Baka?"
 I laugh forcibly.
@@ -249,7 +263,6 @@ Oh my god, I think I'm...
 {fadeoutsound: Fast Keyboard Typing, .1}
 {fadeoutsound: Lab Computer Room Beeps 2, .1}
 {fadeoutsound: DIHI Low Power, .1}
-{fadeoutsound: DIHI Up Close, .1}
 {fadeoutsound: DIHI High Power, .1}
 {fadeoutsound: Laptop-Lab,.1}
 Then, with an almost gut-wrenching lurch, everything escapes from the top of my head...
