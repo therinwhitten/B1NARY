@@ -7,6 +7,7 @@
 {spawnChar: malesilo, -1.5, John}
 {spawnChar: femalesilo, 2, Cindy}
 {spawnChar: femalesilo, 2, Female Reporter}
+
 Narrator::
 {if: n-b,false}
 {
@@ -18,7 +19,7 @@ Narrator::
  {additive: off}
  Her eyes slowly close, peaceful now, devoid of any expression. 
 }
-{if:true}
+{if:n-b,true}
 {
  {additive: on}
  Finally,
@@ -43,6 +44,7 @@ Inside the press room, the silence is palpable.
 The press share glances, sip coffee, scribble down notes, as they wait impatiently for the announcement.
 It feels like several hours to some, but time plays tricks on you when you are focusing.
 It only takes a few minutes. Then, the lights in the lab comes back on.
+{fadeinsound: lightflicker, .2}
 {if: n-b,false}
 {
   Medics grab MC, carefully placing her into the cyrotube and applying sensors to the different sections of her body.
@@ -51,13 +53,13 @@ It only takes a few minutes. Then, the lights in the lab comes back on.
 {
  Medics grab MC, carefully placing them into the cyrotube and applying sensors to the different sections of their body.
 }
-MC looks so lifeless, it even unnerves the veteran journalist, John.
+The body looks so dead, it unnerves the veteran journalist.
 John wipes a bit of sweat off his head. 
 {if: n-b,false}
 { 
  With a pneumatic swoosh, the stasis chamber closes with her inside.
 }
-{if: n-b,false}
+{if: n-b,true}
 { 
  With a pneumatic swoosh, the stasis chamber closes with them inside.
 }
@@ -173,8 +175,16 @@ Cliff::
 {additive: on}
 "There are a lot of unknowns,
 and the pressure of dealing with a whole new frontier,
-will keep her most likely disorientated.
-It is crucial we keep her calm and safe. 
+{if: n-b,false}
+{
+ will keep her most likely disorientated.
+ It is crucial we keep her calm and safe. 
+}
+{if: n-b,true}
+{
+ will keep them most likely disorientated.
+ It is crucial we keep them calm and safe. 
+}
 Because of this, we plan to keep the first four-day test private."
 {additive: off}
 Narrator::
@@ -184,13 +194,26 @@ Cliff sighs visibly, a touch of irritability cracking his normally calm facade.
 Cliff::
 "Please understand that we already have warned you prior to the conference that this is a very <i>high risk</i> experiment."
 "We understand the world wants to know more as it develops. And we will endeavor to keep you informed."
-{additive: on}
-"However,
-there is a young lady's life at stake here, 
-and we want to be as careful as humanly possible. 
-After the conclusion of the first test, 
-and after Ms MC has been cleared of quarantine, we will allow her to speak to the press."
-{additive: off}
+{if: n-b,false}
+{
+ {additive: on}
+ "However,
+ there is a young lady's life at stake here, 
+ and we want to be as careful as humanly possible. 
+ After the conclusion of the first test, 
+ and after Ms MC has been cleared from quarantine, we will allow her to speak to the press."
+ {additive: off}
+}
+{if: n-b,true}
+{
+ {additive: on}
+ "However,
+ there is a young person's life at stake here, 
+ and we want to be as careful as humanly possible. 
+ After the conclusion of the first test, 
+ and after MC has been cleared of quarantine, we will allow them to speak to the press."
+ {additive: off}
+}
 Narrator::
 With an air of finality, he waves goodbye to the press. 
 Cliff::
@@ -206,7 +229,7 @@ John taps his headset to turn on the mic.
 John::
 "You saw it yourself, Cindy. We wait."
 Narrator::
-No one seems to notice the sweat on Cliff's forehead as the window turns into a solid wall, blocking the truth out......
+No one seems to notice the sweat on Cliff's forehead as the window turns into a solid wall, blocking the truth out...
 {moveChar: Cliff, -1}
 {fadeoutsound: Small-Group-Whisper, 1}
 {fadeoutsound: labtension, .2}
