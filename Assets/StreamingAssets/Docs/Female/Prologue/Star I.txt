@@ -5,7 +5,7 @@
 {fadeinsound: Wind Heavy, 1}
 {fadeoutsound: Ears Ringing, 5}
 {fadeoutsound: Heartbeat, 5}
-{spawnChar: malesilo, 2, Masked Punk}
+{spawnChar: szycrotic default, 2, Masked Punk}
 {spawnChar: femalesilo, 2, MC}
 MC::
 With desperation, I shove all that is me back into my head. 
@@ -64,10 +64,10 @@ I blink twice. Just in case my "eyes" decide to play tricks on me.
 There, in the distance, sits a very large complex. 
 In ancient Romanian architectural style: a large, squared off building, with jutting towers surrounding it. 
 The Count's Mansion. 
-"I vant to suck your bloood. mwhah."
+"I vant to suck your bloood. Mwhah."
 I laugh despite myself. 
 Masked Punk::
-{anim: Masked Punk, smug}
+[OWO]
 "Kinky."
 {fadeinsound: Szy Dark, 2}
 {fadeoutsound: Star Piano, 2}
@@ -82,7 +82,7 @@ Despite myself, I take one step back.
 The mask on his face, green light glowing behind it, <i>shimmers</i> as fog seeps out from beneath the black hoodie.
 The mask <i>is</i> his face!
 Masked Punk::
-{anim: Masked Punk, thinking}
+[Default]
 "I probably taste like Flepsi..."
 MC::
 I am speechless. Who is this?!
@@ -105,7 +105,7 @@ MC::
        {fadeinsound: body punch hard, .2}
        He barely catches my foot. His grip is as solid as steel.
        He whistles in appreciation.
-       [happy]
+       [OWO]
        Masked Punk::
        {additive:on}
        "Holy <i>shit</i> woman! 
@@ -120,17 +120,19 @@ MC::
        "That kick is making me think twice."
        MC::
        "What's that supposed to mean?!"
-       {changeScript: Female/Prologue/Star I, 132}
+       {changeScript: Female/Prologue/Star I, 131}
     ]
     Fuck that! Scream!!
     [
-      "AHHHHHHHHHHHHHHHHHHHH! GET AWAY!!!!!" 
+      "AHHHHHHHHHHHHHHHHHHHH! GET AWAY FROM ME!" 
     ]
  }
 He screams back at me. Mockingly.
 Masked Punk::
+{anim: Masked Punk, Impatient Start}
+{anim: Masked Punk, Impatient Loop}
 "AHHHHHHHHHHHH!!!! Get away you scary demon!"
-"You are so <i>scary</i>!"
+"You're so <i>scary</i>!"
 MC::
 {additive:on}
 "Why are you screaming??!! 
@@ -139,13 +141,16 @@ I'm screaming!"
 {additive:off}
 "It's not fair!"
 Masked Punk::
-[annoyed]
+{anim: Masked Punk, Impatient End}
+{anim: Masked Punk, Wind Idle}
+[Angry]
 "I thought that was a greeting from your domain!!!"
 "What in the hell do you want me to do?!"
+[Default]
 "Actually. What the fuck is your <i>name</i>?"
 MC::
 He points to his chest, like explaining to a child, slow and deliberate.
-Szycrotic::
+Masked Punk::
 "My name is Szycrotic."
 MC::
 {changeName: Masked Punk, Szycrotic}
@@ -153,8 +158,9 @@ MC::
 Szycrotic::
 "No! You started this, you stop first!"
 MC::
+{fadeinsound: szyheavybreathing, .2}
 We both stop, huffing and puffing.  
-I just got here and I'm already having to deal with something I am not ready for.
+I just got here and I'm already having to deal with something I'm not ready for.
 I can't hurt this man. He's too strong. Too fast. 
 It's impossible! I can't beat him. I can't even hurt him.
 Squaring off, legs spread wide, we face each other.
@@ -169,14 +175,14 @@ The whole situation has me confused.
 I expected many things.
 Things that <i>might</i> happen. 
 Server glitches, feelings of disorientation,
-even the symptoms of brain pattern degradation.
+even symptoms of brain pattern degradation.
 {additive: off}
 I did not plan on facing down a demon with a mask for a face. 
 Szycrotic::
 {anim: Szycrotic, wind idle} 
-[happy]
 MC:: 
 He relaxes his stance, a huge grin smearing his "face."
+{fadeinsound: szylaugh5, .2}
 {fadeoutsound: Szy Dark, 4}
 {fadeinsound: Star Piano, 4}
 He suddenly starts laughing heartily.
@@ -190,15 +196,23 @@ Yo, that's awesome!"
 MC::
 His bellowing laugh pushes a bit more green steam out from behind his mask.
 It's pretty unnerving.
-Syzcrotic::
+Szycrotic::
 "Thank you for that, MC. If I had tear ducts, I would be crying."
 MC::
 I feel my cheeks puff out in a pout.
 "Szycrotic?"
 Szycrotic::
 "Yes?"
-MC::
-"You don't go about scaring women walking around at night!"
+{if: n-b,true}
+{
+ MC::
+ "You don't go around scaring people like that! Ok?"
+}
+{if: n-b,false}
+{
+ MC::
+ "You don't go about scaring women walking around at night!"
+}
 The name Szycrotic, I <i>do</i> know.
 Like an avalanche, the recognition of the name comes crashing into my conscious thoughts.
 I <i>know</i> who he is. I can't believe it though. 
@@ -206,32 +220,31 @@ I'm not on the server as planned at all.
 Now I have no clue where I am actually at.
 "Domain."
 I try the word carefully.
-{anim: Szycrotic, thinking}
 Szycrotic appears to be watching me mull over things. He tilts his head to the left a bit.
 Szycrotic::
 "Wait. Wait. Wait. You know who I am, don't you?"
 MC::
 He puffs his chest up a bit.
-Syzcrotic::
-{anim: Szycrotic, wind idle}
-[happy]
+Szycrotic::
+[Lewd]
 "Finally! Someone who recognizes me!"
 "Hell yeah, les gooooo!"
 MC::
 He pauses and locks eyes with me.
-Syzcrotic::
+Szycrotic::
 "To the manor! I mean. Uh, let's go to the manor."
+[Default]
 "Well... You're technically an intruder, but you don't seem dangerous."
 MC::
 "I'm certainly not dangerous. Far from it."
 He motions to the manor, down the path not far off. 
 Szycrotic::
 "Come. I will take you to Star, and we will figure this all out."
-{moveChar: Szycrotic, .25}
+{moveChar: Szycrotic, .3}
 {fadeinsound: walkingongravel, 1}
 MC::
 He starts off at a leisurely pace, enough for a short woman to follow.
-<i>Sigh</i>
+(<i>Sigh</i>)
 I step in behind him. 
 "Asterella Star?"
 Szycrotic::
@@ -244,9 +257,8 @@ MC::
 He looks back to ensure I'm following, with a glint of green-lit smoke leaking out.
 He turns his head back around.
 Szycrotic::
-[indifference]
 "You don't seem to have any real power."
-"Then again, you could just be hiding it."
+"Then again, you could be hiding it."
 MC::
 He shrugs, dismissing the train of thought. 
 Szycrotic::
@@ -278,7 +290,7 @@ It gives me a shock. This feels real. All too real.
 And Szy, is he really roleplaying? Or is he...
 Has he always been a demon? Or are they just into their roles in this virtual world?
 We get to an entrance, the old gate opening without any external forces acting on it. 
-Syzcrotic::
+Szycrotic::
 "Hey MC, you can look as we go. Plenty of time for that later."
 "We need to see Star first, alright?"
 MC::
@@ -296,6 +308,7 @@ The bright moonlight bathes and reflects off the black marble benches, their pla
 {additive:off}
 In front of the manor, sits a large fountain, the water sparkling from the moonlight. 
 Szycrotic::
+[OWO]
 "Yo! You coming?"
 MC::
 I realize I'm not walking. 
@@ -305,8 +318,8 @@ I finally speak up.
 "Sorry. It's just so breathtaking..."
 Failing to keep the entrancing awe out of my voice, I rush to match his pace. 
 The demon nods approvingly.
-Syzcrotic::
-[happy]
+Szycrotic::
+[Default]
 "You have good tastes. I think you and Star will get along pretty well."
 {fadeinsound: walkingongravel, 1}
 MC::
