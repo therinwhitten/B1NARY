@@ -68,7 +68,7 @@ Who the <i>fuck</i> are you?"
 {moveChar: Masked Punk, .50}
 "Are you serious? I come here only to find a loser sneaking around?"
 MC::
-With inhuman speed, this demon, comes flying out of the tree line.
+With inhuman speed, this demon comes flying out of the tree line.
 {additive:on}
 Like a rocket, 
 he appears, 
@@ -234,13 +234,13 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        MC::
        He places a rope around my neck, securing it with just enough room to breathe.
        Szycrotic::
-       "Oh, this is fun! I am <i>glad</i> you ran."
+       "Oh, this is fun! I'm <i>glad</i> you ran."
        MC::
        {additive: on}
        I say nothing. I am tethered like a stray dog.
        I do the only thing I am capable of doing: I scowl.
-       Five fucking minutes in the digital realm, I am already a prisoner.
        {additive:off}
+       Five fucking minutes in the digital realm, and I'm already a prisoner.
        Szycrotic turns around, satisfied with his handiwork.
        Szycrotic::
        [Default]
@@ -303,7 +303,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        [Lewd]
        "You know, it's possible you are <i>pretending</i> to be weak and just into this shit."
        MC::
-       The smile is bigger, like he <i>wants</i> that to be the truth. 
+       The smile is bigger, like he <i>wants</i> that to be true. 
        "Seriously, who likes to be tied up and manhandled like a sack of potatoes?"
        I mumble this in defiance a bit. 
        Szycrotic::
@@ -335,7 +335,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        I almost...<i>almost</i> chuckle at my situation.
        As we near the huge mansion, I realize that this isn't just a manor in the woods. 
        This is a whole complex with multiple buildings surrounding it.
-       We pass the threshold of the outer wall, and my eyes take in the elegant beauty. 
+       We pass the threshold of the outer wall, and my eyes take in an elegant beauty. 
        The lawn is too large to be called a lawn. 
        Spread out across it are very carefully placed oaks, and ash, with small sitting spots and flowerbeds. 
        {fadeinsound: waterfountain, 2}
@@ -357,7 +357,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        "Better yet, wait until you meet Her."
        MC::
        We go into the largest mansion I have ever seen...
-       {changeScript: Male/Prologue/Star II}
+       {changeScript: Male/Prologue/Star II, 1}
     ]
     Did you forget how he <i>appeared</i> in front of you? 
     [
@@ -380,7 +380,7 @@ Szycrotic::
 "I don't generally tolerate 'uninvited guests' as well as she does."
 "Where did you even come from?"
 MC::
-Play it safe, for now. 
+<i>Play it safe for now.</i>
 "I just ended up here by accident. I can't really go into detail."
 The name is tickling my memory, but I can't quite place it...
 I shake my head.
@@ -399,7 +399,7 @@ The disbelief dominates his expression.
 It hurts a bit, not going to lie. 
 I can't say I watched her streams. That skirts way too close to the actual truth. 
 I have a feeling he might catch me in a lie as well. 
-"I know <i>of</i> her through friends. I hear she is very beautiful."
+"I know <i>of</i>  her through friends. I hear she is very beautiful."
 "And do I look like a demon lord to you?"
 {fadeinsound: szychuckle, .1}
 Szycrotic chuckles.
@@ -448,7 +448,7 @@ I mull over this.
 "So where is this place that I accidentally fell into?"
 In front of us, an outer wall looms, hewn of ancient stone.
 Vegetation grows in the cracks and crevices. 
-Szycrotic waves a hand, and the main gates open.
+Szycrotic waves a hand, and the main gate opens.
 Szycrotic::
 "Welcome to the 69th Circle of Hell, MC."
 MC::
@@ -548,6 +548,7 @@ MC::
 I get a very satisfying scowl.
 Asterella::
 [Happy]
+{anim: Asterella, Thinking}
 "Szy. That wasn't too bad, actually."
 Szycrotic::
 [Default]
@@ -556,6 +557,7 @@ Asterella::
 MC::
 The surprise in her voice reflects mine.
 She closes the book with an air of finality, placing it on the table.
+{fadeinsound: bookclose1, .1}
 For the first time since entering the room, she looks at both of us.
 In one smooth motion she is standing.
 I stay in the half bow position with Szy.
@@ -569,6 +571,7 @@ The blank look from Asterella was priceless.
 Asterella::
 [Indifference]
 "Ok stop bowing. From you, that looks pretty silly."
+[Happy]
 MC::
 A slight turn of her lips suggests a smile.
 Asterella::
@@ -576,7 +579,7 @@ Asterella::
 MC::
 She motions to me, looking at me for the first time.
 Asterella::
-[Default]
+{anim: Asterella, Pouting}
 "He's a pretty cute elven boy."
 {additive:on}
 "You can call me Star. 
@@ -598,6 +601,7 @@ Asterella::
 MC::
 After trying out my name, she turns to Szycrotic.
 Asterella::
+[Default]
 "Yes, you may be rewarded."
 "Go. See the Dungeon Master for your nightly punishment."
 "I will attend to this...intruder."
@@ -617,11 +621,13 @@ Szycrotic::
 {moveChar: Szycrotic, -1}
 {moveChar: Asterella, .5}
 {anim: Asterella, Smug}
+Asterella::
+[Happy]
 MC::
 {fadeinsound: Door, 1}
 Star watches Szy close the door, with a look of satisfaction on her face. 
 When the door closes, she sighs, closing her eyes for a brief moment.
-{changeScript: Male/Prologue/Star II, 133}
+{changeScript: Male/Prologue/Star II, 135}
 
 
 

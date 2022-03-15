@@ -6,6 +6,8 @@
 {fadeoutsound: Wind Heavy, 1}
 {spawnChar: szycrotic default, -.5, Szycrotic}
 {moveChar: Szycrotic, .3}
+
+
 MC::
 It took at least 5 mins of walking to get to the center of the manor. 
 Yep. Still tied up.
@@ -24,7 +26,7 @@ a stunning young lady,
 reading a book on the couch,
 looks up at us.
 {additive:off}
-The floating crown made of diamonds. The long slender horns. 
+The floating crown made of diamond. The long slender horns. 
 {additive: on}
 Those black and lavender eyes.
 This was surely Asterella Star. 
@@ -116,11 +118,11 @@ They seem to <i>live</i> here.
 Szycrotic::
 [Angry]
 "Fine, woman."
-{if n-b,false}
+{if: n-b,false}
 {
  "If he becomes hostile don't blame me, alright?"
 }
-**if n-b,true}
+{if: n-b,true}
 {
  "If they become hostile don't blame me, alright?"
 }
@@ -183,6 +185,7 @@ Asterella::
 [Default] 
 "And Star is fine, MC. My official title is saved for formal ceremonies."
 {additive:on}
+{anim: Asterella, Pouting}
 "Where are my manners? 
 Please excuse me.
 Have a seat on the sofa, let me get you some wine."
@@ -450,11 +453,12 @@ Will Szycrotic be enraged if I go with Star's suggestion?
         "Are you gay?"
         "Do I need to call Szy back here?"
         MC::
-        "Um,no?"
+        "Um, no?"
         She chuckles, her attention back to my thigh, tracing circles playfully.
         Asterella::
         [Horny]
         "If not, then maybe..."
+        [Happy]
         MC::
         {choice: I am not gay...but...}
         {
