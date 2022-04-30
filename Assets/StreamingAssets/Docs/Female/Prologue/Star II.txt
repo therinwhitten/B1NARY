@@ -45,36 +45,36 @@ She closes the book with a finality.
 {fadeinsound: bookclose1, .1}
 Szycrotic casually retorts.
 {if: n-b, true}
-{
- Szycrotic::
-"Woman, they wanted to see the garden! Don't blame me!"
-MC::
-Szycrotic shoots a sidelong glance at me. 
-Oh oh. A spark of an idea. I can see it brewing behind that mask.
-With a dramatic pose, he gestures at my face. 
-Szycrotic::
-[Lewd]
-{additive:on}
-"How can you deny that face? 
-Look at them! 
-They were almost floating on clouds when they were in the garden!"
-{additive:off} 
-[Default]
 }
-{if: n-b, false}
-{
  Szycrotic::
- "Woman, she wanted to see the garden! Don't blame me!"
+ "Woman, they wanted to see the garden, don't blame me."
  MC::
  Szycrotic shoots a sidelong glance at me. 
- Oh oh. A spark of an idea. I can see it brewing behind that mask.
+ Oh no. A spark of an idea. I can see it brewing behind that mask.
  With a dramatic pose, he gestures at my face. 
  Szycrotic::
  [Lewd]
  {additive:on}
  "How can you deny that face? 
- Look at her! 
- She was almost floating on clouds when she was in the garden!"
+ Look at them! 
+ They were almost floating on clouds when they were in the garden!"
+ {additive:off} 
+ [Default]
+}
+{if: n-b, false}
+{
+ Szycrotic::
+ "Look woman, she wanted to see the garden. Don't blame me."
+ MC::
+ Szycrotic shoots a sidelong glance at me. 
+ Oh no. A spark of an idea. I can see it brewing behind that mask.
+ With a dramatic pose, he gestures at my face. 
+ Szycrotic::
+ [Lewd]
+ {additive:on}
+ "How can you deny this face? 
+ Look at her. 
+ She was almost floating on clouds when she was in the garden."
  {additive:off}
  [Default]
 }
@@ -186,7 +186,7 @@ What am I doing?
            I <i>will</i> stand my ground!
            I can hear shuffling of bare feet on the floor, coming towards me.
            Szycrotic::
-           "Star not that! Even I'm not that fucked up!"
+           "Star not that! Even I'm not fucked up enough to do that!"
            MC::
            ...
            Asterella::
