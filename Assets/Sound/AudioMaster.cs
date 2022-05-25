@@ -65,12 +65,20 @@ public class AudioMaster : MonoBehaviour
 		= new Dictionary<AudioClip, SoundCoroutine>();
 	/// <summary>
 	///     <para>Play a sound that is meant to be repeated multiple times</para>
-	///     
+	///		<param name = "clip">The audioClip to play.</param>
+	///     <returns>
+	///         Optionally returns a <see ="member">Coroutine</see>, may not 
+	///         be needed to function
+	///     </returns>
 	/// </summary>
 	public SoundCoroutine PlayOneShot(AudioClip clip)
 	{
 		if (!oneShotData.ContainsKey(clip))
+		{
 			oneShotData.Add(clip, new SoundCoroutine(audioListener, clip, this));
+			oneShotData[clip].GarbageCollection += (sender, args) => () 
+				{ oneShotData.Remove(clip); };
+		}
 		oneShotData[clip].PlayShot();
 		return oneShotData[clip];
 	}
