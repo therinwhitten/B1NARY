@@ -2,12 +2,13 @@ using UnityEngine;
 
 // This provides a reference point so the AudioMaster, for example can easily
 // customize custom audio
+[CreateAssetMenu(menuName = "Audio Manager/Custom Audio Clip", order = 0)]
 public class CustomAudioClip : ScriptableObject
 {
     // Having an actual comparable interface that is used by dictionaries and
     // - hashsets may work better than comparing strings. Be sure to implement
     // - that if learned.
-    // TODO: Add the IEqualityComparer<T> Interface!
+    // TODO: #12 Add the IEqualityComparer<T> Interface!
     public static bool operator ==(CustomAudioClip left, AudioClip right)
         => left.ToString() == right.ToString();
     public static bool operator !=(CustomAudioClip left, AudioClip right)
