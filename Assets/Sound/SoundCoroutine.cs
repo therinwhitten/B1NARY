@@ -67,8 +67,11 @@ public class SoundCoroutine
 			OnDestroy();
 	}
 
+	private bool isDestroyed = false;
 	private void OnDestroy()
 	{
+		if (isDestroyed)
+			return;
 		UnityEngine.Object.Destroy(audioSource);
 		GarbageCollection?.Invoke(this, EventArgs.Empty);
 	}

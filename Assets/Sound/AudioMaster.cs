@@ -16,7 +16,21 @@ public class AudioMaster : MonoBehaviour
 		+ "Can be nullable")] 
 	private CustomAudioClipArray customAudioData;
 
-
+	private Dictionary<AudioClip, SoundCoroutine> soundCoroutineCache
+		= new Dictionary<AudioClip, SoundCoroutine>();
+	
+	// Returning a soundcoroutine may cause reference issues, so may do 
+	// - Func<SoundCoroutine> instead.
+	private SoundCoroutine GetCoroutine(AudioClip Key)
+	{
+		if (!soundCoroutineCache.ContainsKey(Key))
+		{
+			soundCoroutineCache.Add(Key, new SoundCoroutine(this, (CustomAudioClip)clip));
+			soundCoroutineCache[clip].GarbageCollection += (sender, empty) =>
+				{ soundCoroutineCache.Remove(clip); };
+		}
+		return soundCoroutineCache[Key]; 
+	}
 
 	private void Start()
 	{
@@ -41,8 +55,7 @@ public class AudioMaster : MonoBehaviour
 			for (int i = 0; i < customAudioData.data.Length; i++)
 				if (clip == customAudioData.data[i])
 					return PlaySound(i);
-		var sound = new SoundCoroutine(this,
-			(CustomAudioClip)clip);
+		var sound = GetCoroutine(clip);
 		sound.PlaySingle();
 		return sound;
 	}
@@ -59,17 +72,11 @@ public class AudioMaster : MonoBehaviour
 	///	</summary>
 	public SoundCoroutine PlaySound(int index) 
 	{
-		var sound = new SoundCoroutine(this, 
-			(CustomAudioClip)customAudioData.data[index]);
+		var sound = GetCoroutine(customAudioData[index]);
 		sound.PlaySingle();
 		return sound;
 	}
 
-
-
-
-	private Dictionary<AudioClip, SoundCoroutine> oneShotData 
-		= new Dictionary<AudioClip, SoundCoroutine>();
 	///	<summary>
 	///		<para>Play a sound that is meant to be repeated multiple times</para>
 	///		<param name = "clip">The audioClip to play.</param>
@@ -80,13 +87,10 @@ public class AudioMaster : MonoBehaviour
 	///	</summary>
 	public SoundCoroutine PlayOneShot(AudioClip clip)
 	{
-		if (!oneShotData.ContainsKey(clip))
-		{
-			oneShotData.Add(clip, new SoundCoroutine(this, (CustomAudioClip)clip));
-			oneShotData[clip].GarbageCollection += (sender, args) => 
-				{ oneShotData.Remove(clip); };
-		}
-		oneShotData[clip].PlayOneShot();
-		return oneShotData[clip];
+		var sound = GetCoroutine(clip);
+		sound.PlayOneShot();
+		return sound;
 	}
+
+	
 }
