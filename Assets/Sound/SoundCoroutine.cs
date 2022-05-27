@@ -1,5 +1,6 @@
 using System;
 using Random = System.Random;
+using Object = UnityEngine.Object;
 using System.Collections;
 using UnityEngine;
 
@@ -80,7 +81,7 @@ public class SoundCoroutine
 	}
 	private void OnDestroy()
 	{
-		UnityEngine.Object.Destroy(audioSource);
+		Object.Destroy(audioSource);
 	}
 	~SoundCoroutine() => OnDestroy();
 }
