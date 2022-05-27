@@ -17,6 +17,7 @@ public class AudioMaster : MonoBehaviour
 	private CustomAudioClipArray customAudioData;
 
 
+
 	private void Start()
 	{
 		audioListener = GetComponent<AudioListener>();
@@ -34,14 +35,16 @@ public class AudioMaster : MonoBehaviour
 	///			be needed to function
 	///		</returns>
 	///	</summary>
-	public Coroutine PlaySound(AudioClip clip, bool useCustomAudioData = true)
+	public SoundCoroutine PlaySound(AudioClip clip, bool useCustomAudioData = true)
 	{
 		if (useCustomAudioData && customAudioData != null)
 			for (int i = 0; i < customAudioData.data.Length; i++)
 				if (clip == customAudioData.data[i])
 					return PlaySound(i);
-		var activeSound = StartCoroutine(CoroutineYesYes((CustomAudioClip)clip));
-		return activeSound;
+		var sound = new SoundCoroutine(this,
+			(CustomAudioClip)clip);
+		sound.PlaySingle();
+		return sound;
 	}
 
 	///	<summary>
@@ -54,29 +57,12 @@ public class AudioMaster : MonoBehaviour
 	///			be needed to function
 	///		</returns>
 	///	</summary>
-	public Coroutine PlaySound(int index) 
+	public SoundCoroutine PlaySound(int index) 
 	{
-		var activeSound = StartCoroutine(CoroutineYesYes((CustomAudioClip)customAudioData.data[index]));
-		return activeSound;
-	}
-
-	private IEnumerator CoroutineYesYes(CustomAudioClip clip)
-	{
-		AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-		audioSource.clip = clip;
-
-		// This needs testing!
-		var random = new System.Random();
-		audioSource.pitch = (float)(clip.pitch - (clip.pitchVariance * 3)
-			+ (random.NextDouble() * clip.pitchVariance * 3));
-		audioSource.volume = (float)(clip.volume - clip.volumeVariance
-			+ (random.NextDouble() * clip.volumeVariance));
-
-		audioSource.Play();
-		while (audioSource.isPlaying)
-			yield return new WaitForFixedUpdate();
-		Destroy(audioSource);
-		yield break;
+		var sound = new SoundCoroutine(this, 
+			(CustomAudioClip)customAudioData.data[index]);
+		sound.PlaySingle();
+		return sound;
 	}
 
 
@@ -96,11 +82,11 @@ public class AudioMaster : MonoBehaviour
 	{
 		if (!oneShotData.ContainsKey(clip))
 		{
-			oneShotData.Add(clip, new SoundCoroutine(audioListener, clip, this));
+			oneShotData.Add(clip, new SoundCoroutine(this, (CustomAudioClip)clip));
 			oneShotData[clip].GarbageCollection += (sender, args) => 
 				{ oneShotData.Remove(clip); };
 		}
-		oneShotData[clip].PlayShot();
+		oneShotData[clip].PlayOneShot();
 		return oneShotData[clip];
 	}
 }
