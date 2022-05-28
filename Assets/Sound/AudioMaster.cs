@@ -25,9 +25,12 @@ public class AudioMaster : MonoBehaviour
 	{
 		if (!soundCoroutineCache.ContainsKey(Key))
 		{
-			soundCoroutineCache.Add(Key, new SoundCoroutine(this, (CustomAudioClip)clip));
-			soundCoroutineCache[clip].GarbageCollection += (sender, empty) =>
-				{ soundCoroutineCache.Remove(clip); };
+			soundCoroutineCache.Add(Key, new SoundCoroutine(this, (CustomAudioClip)Key));
+			soundCoroutineCache[Key].GarbageCollection += (sender, clip) =>
+				{
+					Destroy(soundCoroutineCache[Key].audioSource);
+					soundCoroutineCache.Remove(Key); 
+				};
 		}
 		return soundCoroutineCache[Key]; 
 	}
@@ -72,7 +75,7 @@ public class AudioMaster : MonoBehaviour
 	///	</summary>
 	public SoundCoroutine PlaySound(int index) 
 	{
-		var sound = GetCoroutine(customAudioData[index]);
+		var sound = GetCoroutine(customAudioData.data[index].audioClip);
 		sound.PlaySingle();
 		return sound;
 	}
@@ -91,6 +94,4 @@ public class AudioMaster : MonoBehaviour
 		sound.PlayOneShot();
 		return sound;
 	}
-
-	
 }

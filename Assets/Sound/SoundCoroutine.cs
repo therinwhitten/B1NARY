@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class SoundCoroutine
 {
-	private readonly AudioMaster audioMaster;
-	private readonly AudioSource audioSource;
+	public readonly AudioMaster audioMaster;
+	public readonly AudioSource audioSource;
 	private Coroutine garbageCollection = null;
 	public bool destroyOnFinish = true;
 
@@ -35,13 +35,13 @@ public class SoundCoroutine
 	public void PlaySingle()
 	{
 		audioSource.Play();
-		if (garbageCollection != null)
+		if (garbageCollection == null)
 			garbageCollection = audioMaster.StartCoroutine(GarbageCollectionCoroutine());
 	}
 	public void PlayOneShot()
 	{
 		audioSource.PlayOneShot(audioSource.clip, audioSource.volume);
-		if (garbageCollection != null)
+		if (garbageCollection == null)
 			garbageCollection = audioMaster.StartCoroutine(GarbageCollectionCoroutine());
 	}
 
@@ -70,12 +70,12 @@ public class SoundCoroutine
 	private bool isDestroyed = false;
 	private void OnDestroy()
 	{
+		audioSource.Stop();
 		if (isDestroyed)
 			return;
-		UnityEngine.Object.Destroy(audioSource);
-		GarbageCollection?.Invoke(this, EventArgs.Empty);
+		GarbageCollection?.Invoke(this, audioSource.clip);
 	}
-	public event EventHandler GarbageCollection;
+	public event EventHandler<AudioClip> GarbageCollection;
 
 	~SoundCoroutine() => OnDestroy();
 }
