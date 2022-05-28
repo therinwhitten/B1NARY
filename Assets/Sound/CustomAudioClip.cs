@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 // This provides a reference point so the AudioMaster, for example can easily
 // customize custom audio
-[CreateAssetMenu(menuName = "Audio Manager/Custom Audio Clip", order = 0)]
+[CreateAssetMenu(menuName = "B1NARY/Custom Audio Clip", order = 0)]
 public class UnityCustomAudioClip : ScriptableObject
 {
 	public static explicit operator CustomAudioClip(UnityCustomAudioClip clip)
@@ -10,7 +11,8 @@ public class UnityCustomAudioClip : ScriptableObject
 			pitch = clip.pitch, 
 			pitchVariance = clip.pitchVariance, 
 			volume = clip.volume, 
-			volumeVariance = clip.volumeVariance
+			volumeVariance = clip.volumeVariance,
+			loop = clip.loop,
 		};
 
 	public AudioClip audioClip;
@@ -18,7 +20,10 @@ public class UnityCustomAudioClip : ScriptableObject
 	[Range(0, 1)] public float volumeVariance = 0;
 	[Range(0, 3)] public float pitch = 1; 
 	[Range(0, 1)] public float pitchVariance = 0;
+	public bool loop;
 }
+
+[Serializable]
 public struct CustomAudioClip
 {
 	// Having an actual comparable interface that is used by dictionaries and
@@ -42,10 +47,15 @@ public struct CustomAudioClip
 		volumeVariance = 0;
 		pitch = 1;
 		pitchVariance = 0;
+		loop = false;
 	}
 
 	public AudioClip audioClip;
-	public float volume, volumeVariance, pitch, pitchVariance;
+	[Range(0, 1)] public float volume;
+	[Range(0, 1)] public float volumeVariance;
+	[Range(0, 3)] public float pitch;
+	[Range(0, 1)] public float pitchVariance;
+	public bool loop;
 
 	// Having the tostring fowarded to audioClip is due how its simply an audioClip
 	// - with special features.
