@@ -5,44 +5,49 @@ using UnityEngine.EventSystems;
 
 public class MenuButton : MonoBehaviour
 {
-	[SerializeField] private AudioClip selectSound;
-	[SerializeField] Animator animator;
-	// public int x = 0, y = 0;
-	// [SerializeField] AudioSource audio;
-	// [SerializeField] AudioClip selectSound, pressSound;
+	[Header("Audio Sounds"), SerializeField] private AudioClip hover; 
+	[SerializeField] private AudioClip press;
+	private AudioHandler audioMaster;
+
+	[Header("Other"), SerializeField] Animator animator;
 
 	[SerializeField]
 	GameObject controller;
 	CanvasGroup canvasGroup;
-	bool interactable { get { return canvasGroup.interactable; } }
+	bool Interactible => canvasGroup.interactable;
 	bool resized = false;
 	BoxCollider2D col;
 	RectTransform rect;
 
 	[SerializeField]
 	string action;
-	// Start is called before the first frame update
-	void Start()
+
+	private void Start()
 	{
 		col = gameObject.GetComponent<BoxCollider2D>();
 		rect = gameObject.GetComponent<RectTransform>();
 		canvasGroup = controller.GetComponent<CanvasGroup>();
+
+		// It's a better idea to have these menu buttons get the audioMaster by
+		// - its parent instead of every button getting it individually.
+		audioMaster = FindObjectOfType<AudioHandler>();
 	}
 
-	// Update is called once per frame
-	void Update()
+	private void Update()
 	{
 		if (col.size != rect.sizeDelta)
 		{
 			col.size = rect.sizeDelta;
 		}
-		col.enabled = interactable;
+		col.enabled = Interactible;
 	}
 
 	private void OnMouseEnter()
 	{
-		if (interactable)
-			select();
+		if (!Interactible)
+			return;
+		audioMaster.PlayOneShot(hover);
+		animator.SetBool("selected", true);
 	}
 	private void OnMouseExit()
 	{
@@ -50,25 +55,14 @@ public class MenuButton : MonoBehaviour
 	}
 	private void OnMouseDown()
 	{
-		if (interactable)
-		{
-			// audio.Stop();
-			// audio.PlayOneShot(pressSound);
-			AudioManager.Instance.Play("Button-Press", true);
-			animator.SetBool("pressed", true);
-			controller.SendMessage(action);
-		}
+		if (!Interactible)
+			return;
+		audioMaster.PlaySound(press);
+		animator.SetBool("pressed", true);
+		controller.SendMessage(action);
 	}
 	private void OnMouseUp()
 	{
 		animator.SetBool("pressed", false);
-	}
-	public void select()
-	{
-		// audio.Stop();
-		// audio.PlayOneShot(selectSound);
-		// AudioManager.Instance.Play("Button-Select", true);
-		FindObjectOfType<AudioMaster>().PlaySound(selectSound);
-		animator.SetBool("selected", true);
 	}
 }

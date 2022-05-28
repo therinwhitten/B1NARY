@@ -1,16 +1,26 @@
 using System;
-using Random = System.Random;
+using Random = UnityEngine.Random;
 using System.Collections;
 using UnityEngine;
 
 public class SoundCoroutine
 {
-	public readonly AudioMaster audioMaster;
+	public static float ApplyRandomValue(float input, float varianceMult)
+	{
+		if (varianceMult == 0)
+			return input;
+		float baseValue = input * varianceMult,
+					subValue = input - baseValue;
+		return baseValue + (Random.value * subValue);
+	}
+
+
+	public readonly AudioHandler audioMaster;
 	public readonly AudioSource audioSource;
 	private Coroutine garbageCollection = null;
 	public bool destroyOnFinish = true;
 
-	public SoundCoroutine(AudioMaster audioMaster, CustomAudioClip clip)
+	public SoundCoroutine(AudioHandler audioMaster, CustomAudioClip clip)
 	{
 		this.audioMaster = audioMaster;
 		audioSource = audioMaster.gameObject.AddComponent<AudioSource>();
@@ -19,15 +29,19 @@ public class SoundCoroutine
 
 	public CustomAudioClip AudioClip
 	{
-		get => new CustomAudioClip(audioSource.clip);
+		get => new CustomAudioClip(audioSource.clip) 
+		{
+			volume = audioSource.volume,
+			pitch = audioSource.pitch,
+			loop = audioSource.loop 
+		};
 		set
 		{
+			// customizability with this seems weird
 			audioSource.clip = value;
-			var random = new Random();
-			audioSource.pitch = (float)(value.pitch - (value.pitchVariance * 3)
-			+ (random.NextDouble() * value.pitchVariance * 3));
-			audioSource.volume = (float)(value.volume - value.volumeVariance
-				+ (random.NextDouble() * value.volumeVariance));
+			audioSource.pitch = ApplyRandomValue(value.pitch, value.pitchVariance);
+			audioSource.volume = ApplyRandomValue(value.volume, value.volumeVariance);
+			audioSource.loop = value.loop;
 		}
 	}
 
@@ -47,8 +61,12 @@ public class SoundCoroutine
 
 	private IEnumerator GarbageCollectionCoroutine()
 	{
+		Func<YieldInstruction> yield = audioSource.clip.length > 5 ? 
+			(Func<YieldInstruction>)
+				(() => new WaitForSeconds(0.1f * audioSource.clip.length))
+			: (Func<YieldInstruction>)(() => new WaitForEndOfFrame());
 		while (audioSource.isPlaying)
-			yield return new WaitForFixedUpdate();
+			yield return yield();
 		FinishCoroutine();
 	}
 	private void FinishCoroutine()
@@ -60,10 +78,10 @@ public class SoundCoroutine
 	public event EventHandler Finished;
 
 
-	public void Stop()
+	public void Stop(bool destroy = true)
 	{
 		audioSource.Stop();
-		if (destroyOnFinish)
+		if (destroyOnFinish && destroy)
 			OnDestroy();
 	}
 
