@@ -166,9 +166,16 @@ Asterella Star, not a foot from my face.
 In the flesh. 
 
 **TODO: henable**
-if: henabled, true
+if: henable, true
 
-Be a gentleman. 
+{if: n-b, true}
+{
+ Be a gentleperson.
+}
+{if: n-b, false}
+{
+ Be a gentleman. 
+}
 She is short, her head only coming up to my mid chest. 
 My eyes can't help but lock on her bouncing "assets."
 Task Failed Successfully.
@@ -176,7 +183,14 @@ Task Failed Successfully.
 if: henable, false
 
 She is short, her head only coming up to my mid chest.
-Being a gentleman, I lock eyes with her. 
+{if: n-b, true}
+{
+ Being a gentleperson, I lock eyes with her.
+}
+{if: n-b, false}
+{
+ Being a gentleman, I lock eyes with her. 
+}
 Those gorgeous eyes.
 
 The scent of her billows into small space of air between us: brimstone with a mix of lavender.
