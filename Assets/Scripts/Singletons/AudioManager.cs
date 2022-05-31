@@ -49,10 +49,12 @@ public class AudioManager : Singleton<AudioManager>
 			throw new ArgumentNullException($"character name is null!");
 		speakerCoroutine.Stop(0.3f, false);
 		if (lastSpeaker != name)
+		{
+			lastSpeaker = name;
 			speakerCoroutine.AudioSource = source;
+		}
 		speakerCoroutine.AudioClip = new CustomAudioClip(clip) { volume = this.volume };
 		speakerCoroutine.PlaySingle();
-		lastSpeaker = name;
 	}
 	/*
 	IEnumerator InterruptVoice(AudioSource source, float volume, AudioClip newClip)

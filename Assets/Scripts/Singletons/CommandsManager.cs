@@ -99,7 +99,7 @@ public class CommandsManager : Singleton<CommandsManager>
 				CharacterManager.Instance.changeName(args[0], args[1]);
 				break;
 			case "fadeinsound":
-				//audioHandler.PlaySound(args[0], float.Parse(args[1]), true);
+				AudioManager.Instance.FadeIn(args[0], float.Parse(args[1]));
 				break;
 			case "fadeoutsound":
 				AudioManager.Instance.FadeOut(args[0], float.Parse(args[1]));
