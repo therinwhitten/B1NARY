@@ -15,16 +15,26 @@ public class SoundCoroutine
 	}
 
 
-	public readonly AudioHandler audioMaster;
-	public readonly AudioSource audioSource;
+	public readonly MonoBehaviour monoBehaviour;
+	private AudioSource audioSource;
+	public AudioSource AudioSource
+	{
+		get => audioSource;
+		set
+		{
+			UnityEngine.Object.Destroy(audioSource);
+			audioSource = value;
+		}
+	}
 	private Coroutine garbageCollection = null;
 	public bool destroyOnFinish = true;
 
-	public SoundCoroutine(AudioHandler audioMaster, CustomAudioClip clip)
+	public SoundCoroutine(MonoBehaviour monoBehaviour, CustomAudioClip? clip = null)
 	{
-		this.audioMaster = audioMaster;
-		audioSource = audioMaster.gameObject.AddComponent<AudioSource>();
-		AudioClip = clip;
+		this.monoBehaviour = monoBehaviour;
+		audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
+		if (clip != null)
+			AudioClip = clip;
 	}
 
 	public CustomAudioClip AudioClip
@@ -50,7 +60,7 @@ public class SoundCoroutine
 	{
 		audioSource.Play();
 		if (garbageCollection == null)
-			garbageCollection = audioMaster.StartCoroutine(GarbageCollectionCoroutine());
+			garbageCollection = monoBehaviour.StartCoroutine(GarbageCollectionCoroutine());
 	}
 
 	public void PlaySingle(float fadeInSeconds)
@@ -64,14 +74,14 @@ public class SoundCoroutine
 			fadeInSeconds);
 		audioSource.Play();
 		if (garbageCollection == null)
-			garbageCollection = audioMaster.StartCoroutine(GarbageCollectionCoroutine());
+			garbageCollection = monoBehaviour.StartCoroutine(GarbageCollectionCoroutine());
 	}
 
 	public void PlayOneShot()
 	{
 		audioSource.PlayOneShot(audioSource.clip, audioSource.volume);
 		if (garbageCollection == null)
-			garbageCollection = audioMaster.StartCoroutine(GarbageCollectionCoroutine());
+			garbageCollection = monoBehaviour.StartCoroutine(GarbageCollectionCoroutine());
 	}
 
 	private IEnumerator GarbageCollectionCoroutine()

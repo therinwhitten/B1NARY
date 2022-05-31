@@ -20,7 +20,7 @@ public class AudioHandler : MonoBehaviour
 		new Dictionary<AudioClip, CustomAudioClip>();
 
 
-	private Dictionary<AudioClip, SoundCoroutine> soundCoroutineCache
+	private Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache { get; private set; }
 		= new Dictionary<AudioClip, SoundCoroutine>();
 
 	private void Start()
@@ -38,7 +38,7 @@ public class AudioHandler : MonoBehaviour
 	///		<see cref="SoundCoroutine"/> that is meant to be kept track of and 
 	///		used for accessibility of handling sound.
 	///	</returns>
-	private SoundCoroutine GetCoroutine(CustomAudioClip key)
+	public Func<SoundCoroutine> GetCoroutine(CustomAudioClip key)
 	{
 		if (!soundCoroutineCache.ContainsKey(key))
 		{
@@ -62,12 +62,12 @@ public class AudioHandler : MonoBehaviour
 	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
 	///		needed to function.
 	///	</returns>
-	public SoundCoroutine PlaySound(AudioClip clip, bool useCustomAudioData = true)
+	public Func<SoundCoroutine> PlaySound(AudioClip clip, bool useCustomAudioData = true)
 	{
 		var sound = audioClipDictionary.ContainsKey(clip) && useCustomAudioData
 			? GetCoroutine(audioClipDictionary[clip])
 			: GetCoroutine((CustomAudioClip)clip);
-		sound.PlaySingle();
+		sound().PlaySingle();
 		return sound;
 	}
 
@@ -77,21 +77,21 @@ public class AudioHandler : MonoBehaviour
 	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
 	///		needed to function.
 	///	</returns>
-	public SoundCoroutine PlaySound(CustomAudioClip clip)
+	public Func<SoundCoroutine> PlaySound(CustomAudioClip clip)
 	{
 		var sound = GetCoroutine(clip);
 		sound.AudioClip = clip;
-		sound.PlaySingle();
+		sound().PlaySingle();
 		return sound;
 	}
 
-	public SoundCoroutine PlaySound(AudioClip clip, float fadeInSeconds, 
+	public Func<SoundCoroutine> PlaySound(AudioClip clip, float fadeInSeconds, 
 		bool useCustomAudioData = true)
 	{
 		var sound = audioClipDictionary.ContainsKey(clip) && useCustomAudioData
 			? GetCoroutine(audioClipDictionary[clip])
 			: GetCoroutine((CustomAudioClip)clip);
-		sound.PlaySingle(fadeInSeconds);
+		sound().PlaySingle(fadeInSeconds);
 		return sound;
 	}
 
@@ -101,12 +101,12 @@ public class AudioHandler : MonoBehaviour
 	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
 	///		needed to function.
 	///	</returns>
-	public SoundCoroutine PlayOneShot(AudioClip clip, bool useCustomAudioData = true)
+	public Func<SoundCoroutine> PlayOneShot(AudioClip clip, bool useCustomAudioData = true)
 	{
 		var sound = audioClipDictionary.ContainsKey(clip) && useCustomAudioData
 			? GetCoroutine(audioClipDictionary[clip])
 			: GetCoroutine((CustomAudioClip)clip);
-		sound.PlayOneShot();
+		sound().PlayOneShot();
 		return sound;
 	}
 }

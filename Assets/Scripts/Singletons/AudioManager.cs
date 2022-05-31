@@ -6,124 +6,55 @@ using System.Collections;
 
 public class AudioManager : Singleton<AudioManager>
 {
+	[SerializeField] private AudioHandler audioHandler;
+	
 	public AudioMixer Audio;
 
 	public Sound[] sounds;
+	private Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache
+		=> audioHandler.SoundCoroutineCache;
+	private SoundCoroutine speakerCoroutine;
+	private string lastSpeaker;
 
-	private Dictionary<string, AudioSource> sources;
-	private Dictionary<string, Sound> lib;
-	string lastSpeaker;
-	AudioSource lastSource;
-	private Dictionary<string, IEnumerator> threads;
-	private void Awake()
+	public void FadeIn(string soundPath, float duration)
 	{
-		sources = new Dictionary<string, AudioSource>();
-		lib = new Dictionary<string, Sound>();
-		threads = new Dictionary<string, IEnumerator>();
-		foreach (Sound s in sounds)
-		{
-			lib.Add(s.name, s);
-			AudioSource source = gameObject.AddComponent<AudioSource>();
-			source.clip = s.clip;
-			source.loop = s.loop;
-			source.playOnAwake = s.playOnAwake;
-			source.outputAudioMixerGroup = s.mixerGroup;
-			source.volume = s.volume;
-			sources.Add(s.name, source);
-			if (source.playOnAwake)
-				source.Play();
-		}
+		audioHandler.PlaySound(GetSound(soundPath), duration, true);
 	}
-	public void FadeIn(string sound, float duration)
+	public void FadeOut(string soundPath, float duration)
 	{
-		AudioSource source = sources[sound];
-		if (source == null)
-		{
-			Debug.LogWarning("Sound: " + sound + " not found!");
-			return;
-		}
-		float targetVolume = lib[sound].volume;
-		source.volume = 0f;
-		source.Play();
-		IEnumerator thread = StartFade(source, duration, targetVolume);
-		SafeStartCoroutine(source.clip.name, thread);
+		SoundCoroutineCache[GetSound(soundPath)].Stop(duration);
 	}
-	public void FadeOut(string sound, float duration)
+	private AudioClip GetSound(string soundPath)
 	{
-		AudioSource source = sources[sound];
-		if (source == null)
-		{
-			Debug.LogWarning("Sound: " + sound + " not found!");
-			return;
-		}
-		float targetVolume = 0f;
-		IEnumerator thread = StartFade(source, duration, targetVolume);
-		SafeStartCoroutine(source.clip.name, thread);
+		AudioClip audioClip = Resources.Load<AudioClip>(soundPath);
+		if (audioClip == null)
+			throw new NullReferenceException($"{soundPath} does not lead to a sound" +
+			"file!");
+		return audioClip;
 	}
 
-	public void Play(string sound, bool unique = true)
+	public void Play(string soundPath)
 	{
-		AudioSource source = sources[sound];
-		if (source == null)
-		{
-			Debug.LogWarning("Sound: " + sound + " not found!");
-			return;
-		}
-		if (unique)
-		{
-			source.Stop();
-		}
-		source.Play();
+		audioHandler.PlaySound(GetSound(soundPath));
 	}
 	public override void initialize()
 	{
-
+		speakerCoroutine = new SoundCoroutine(this) { destroyOnFinish = false };
 	}
 
 
-	IEnumerator StartFade(AudioSource audioSource, float duration, float targetVolume)
+	public void PlayVoice(string name, float volume, AudioSource source, AudioClip clip)
 	{
-		Debug.Log("Fading sound: " + audioSource.clip.name);
-		float currentTime = 0;
-		float start = audioSource.volume;
-
-		while (currentTime < duration)
-		{
-			currentTime += Time.deltaTime;
-			audioSource.volume = Mathf.Lerp(start, targetVolume, currentTime / duration);
-			yield return null;
-		}
-		if (audioSource.volume == 0)
-		{
-			audioSource.Stop();
-		}
-		if (audioSource.volume == targetVolume)
-		{
-			threads[audioSource.clip.name] = null;
-		}
-		yield break;
+		if (name == null)
+			throw new ArgumentNullException($"character name is null!");
+		speakerCoroutine.Stop(0.3f, false);
+		if (lastSpeaker != name)
+			speakerCoroutine.AudioSource = source;
+		speakerCoroutine.AudioClip = new CustomAudioClip(clip) { volume = this.volume };
+		speakerCoroutine.PlaySingle();
+		lastSpeaker = name;
 	}
-
-	public void PlayVoice(String name, float volume, AudioSource source, AudioClip clip)
-	{
-		if (lastSpeaker == name || lastSpeaker == null)
-		{
-			IEnumerator thread = InterruptVoice(source, volume, clip);
-			SafeStartCoroutine(name, thread);
-			lastSpeaker = name;
-			lastSource = source;
-		}
-		else
-		{
-			IEnumerator thread = InterruptVoice(lastSource, volume, null);
-			SafeStartCoroutine(lastSpeaker, thread);
-
-			thread = InterruptVoice(source, volume, clip);
-			SafeStartCoroutine(name, thread);
-			lastSpeaker = name;
-			lastSource = source;
-		}
-	}
+	/*
 	IEnumerator InterruptVoice(AudioSource source, float volume, AudioClip newClip)
 	{
 		float currentTime = 0;
@@ -167,6 +98,7 @@ public class AudioManager : Singleton<AudioManager>
 		}
 
 	}
+	*/
 
 
 

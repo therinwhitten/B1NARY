@@ -60,7 +60,7 @@ public class FadeController : SingletonNew<FadeController>
 		StartCoroutine(Coroutine(final));
 		IEnumerator Coroutine(float finalValue)
 		{
-			while (true)
+			while (value.Value != finalValue)
 			{
 				float change = (Time.deltaTime / secondsTaken) * difference;
 				if (condition.Invoke(value.Value, finalValue))
