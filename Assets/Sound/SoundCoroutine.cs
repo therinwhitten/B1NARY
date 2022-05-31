@@ -52,6 +52,21 @@ public class SoundCoroutine
 		if (garbageCollection == null)
 			garbageCollection = audioMaster.StartCoroutine(GarbageCollectionCoroutine());
 	}
+
+	public void PlaySingle(float fadeInSeconds)
+	{
+		float targetValue = audioSource.volume;
+		audioSource.volume = 0;
+		FadeController.Instance.ChangeFloat
+			(
+			new Ref<float>(() => audioSource.volume, (var) => audioSource.volume = var), 
+			targetValue, 
+			fadeInSeconds);
+		audioSource.Play();
+		if (garbageCollection == null)
+			garbageCollection = audioMaster.StartCoroutine(GarbageCollectionCoroutine());
+	}
+
 	public void PlayOneShot()
 	{
 		audioSource.PlayOneShot(audioSource.clip, audioSource.volume);
@@ -77,6 +92,23 @@ public class SoundCoroutine
 	}
 	public event EventHandler Finished;
 
+	public void Stop(float fadeOutSeconds, bool destroy = true)
+	{
+		SingletonNew<FadeController>.Instance.ChangeFloat
+			(
+			new Ref<float>(() => audioSource.volume, 
+				(var) => 
+				{ 
+					audioSource.volume = var;
+					// Because of how dynamically changing the value works,
+					// - im going to have to write the action in the setter
+					if (audioSource.volume <= 0)
+						Stop(destroy);
+				}
+			),
+			0,
+			fadeOutSeconds);
+	}
 
 	public void Stop(bool destroy = true)
 	{

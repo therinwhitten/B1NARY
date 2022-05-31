@@ -9,6 +9,8 @@ using UnityEngine;
 /// themselves.</summary>
 public class AudioHandler : MonoBehaviour
 {
+	private string lastSpeaker = "";
+
 	// Might be slightly tedious to re-implement the array every scene, but
 	// - there are easy work-arounds and its not too big of a deal anyway
 	[SerializeField, Tooltip("This calculates the data when needed.\n"
@@ -16,6 +18,7 @@ public class AudioHandler : MonoBehaviour
 	private UnityCustomAudioClip[] customAudioData;
 	private Dictionary<AudioClip, CustomAudioClip> audioClipDictionary = 
 		new Dictionary<AudioClip, CustomAudioClip>();
+
 
 	private Dictionary<AudioClip, SoundCoroutine> soundCoroutineCache
 		= new Dictionary<AudioClip, SoundCoroutine>();
@@ -79,6 +82,16 @@ public class AudioHandler : MonoBehaviour
 		var sound = GetCoroutine(clip);
 		sound.AudioClip = clip;
 		sound.PlaySingle();
+		return sound;
+	}
+
+	public SoundCoroutine PlaySound(AudioClip clip, float fadeInSeconds, 
+		bool useCustomAudioData = true)
+	{
+		var sound = audioClipDictionary.ContainsKey(clip) && useCustomAudioData
+			? GetCoroutine(audioClipDictionary[clip])
+			: GetCoroutine((CustomAudioClip)clip);
+		sound.PlaySingle(fadeInSeconds);
 		return sound;
 	}
 

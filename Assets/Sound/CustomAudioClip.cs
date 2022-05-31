@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 // This provides a reference point so the AudioMaster, for example can easily
 // customize custom audio
@@ -12,6 +13,7 @@ public class UnityCustomAudioClip : ScriptableObject
 			pitchVariance = clip.pitchVariance, 
 			volume = clip.volume, 
 			volumeVariance = clip.volumeVariance,
+			audioMixerGroup = clip.audioMixerGroup,
 			loop = clip.loop,
 		};
 
@@ -20,6 +22,7 @@ public class UnityCustomAudioClip : ScriptableObject
 	[Range(0, 1)] public float volumeVariance = 0;
 	[Range(0, 3)] public float pitch = 1; 
 	[Range(0, 1)] public float pitchVariance = 0;
+	public AudioMixerGroup audioMixerGroup;
 	public bool loop;
 }
 
@@ -31,10 +34,6 @@ public struct CustomAudioClip
 	// - that if learned.
 	// TODO: #12 Add the IEqualityComparer<T> Interface!
 
-	public static bool operator ==(CustomAudioClip left, AudioClip right)
-		=> left.ToString() == right.ToString();
-	public static bool operator !=(CustomAudioClip left, AudioClip right)
-		=> !(left == right);
 	public static implicit operator AudioClip(CustomAudioClip input)
 		=> input.audioClip;
 	public static explicit operator CustomAudioClip(AudioClip input)
@@ -47,6 +46,7 @@ public struct CustomAudioClip
 		volumeVariance = 0;
 		pitch = 1;
 		pitchVariance = 0;
+		audioMixerGroup = null;
 		loop = false;
 	}
 
@@ -55,17 +55,10 @@ public struct CustomAudioClip
 	[Range(0, 1)] public float volumeVariance;
 	[Range(0, 3)] public float pitch;
 	[Range(0, 1)] public float pitchVariance;
+	public AudioMixerGroup audioMixerGroup;
 	public bool loop;
 
 	// Having the tostring fowarded to audioClip is due how its simply an audioClip
 	// - with special features.
 	public override string ToString() => audioClip.ToString();
-
-	public override bool Equals(object other)
-	{
-		if (other is CustomAudioClip clip)
-			return this == clip;
-		return false;
-	}
-	public override int GetHashCode() => audioClip.GetHashCode();
 }

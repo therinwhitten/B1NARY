@@ -7,6 +7,9 @@ using System.Globalization;
 
 public class CommandsManager : Singleton<CommandsManager>
 {
+	[SerializeField] private AudioHandler audioHandler;
+
+
 	DialogueSystem dialogue { get { return DialogueSystem.Instance; } }
 
 	CharacterManager characterManager { get { return CharacterManager.Instance; } }
@@ -19,17 +22,16 @@ public class CommandsManager : Singleton<CommandsManager>
 	{
 		// Debug.Log("Commands manager initialized");
 	}
-	public void handle(string command)
-	{
-		// Debug.Log("Non-argument command found!");
-	}
 
-	public void handleWithArgs(string command, ArrayList args)
+	public void HandleWithArgs(string command, ArrayList argsUnfiltered)
 	{
+		string[] args = new string[argsUnfiltered.Count];
+		for (int i = 0; i < args.Length; i++)
+			args[i] = argsUnfiltered[i].ToString().Trim().ToLower();
 		switch (command)
 		{
 			case "additive":
-				if (args[0].ToString().ToLower().Trim().Equals("on"))
+				if (args[0].Equals("on"))
 				{
 					dialogue.Say("");
 					dialogue.additiveTextEnabled = true;
@@ -38,7 +40,7 @@ public class CommandsManager : Singleton<CommandsManager>
 					// ScriptParser.Instance.currentNode.nextLine();
 					// ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.getCurrentLine());
 				}
-				else if (args[0].ToString().ToLower().Trim().Equals("off"))
+				else if (args[0].Equals("off"))
 				{
 					dialogue.additiveTextEnabled = false;
 					Debug.Log("Set additive text to off!");
@@ -47,74 +49,74 @@ public class CommandsManager : Singleton<CommandsManager>
 				}
 				break;
 			case "spawnchar":
-				if (args.Count == 2)
+				if (argsUnfiltered.Count == 2)
 				{
-					characterManager.spawnCharacter(args[0].ToString().Trim(), args[1].ToString().Trim(), "");
+					characterManager.spawnCharacter(args[0], args[1], "");
 				}
 				else
 				{
-					characterManager.spawnCharacter(args[0].ToString().Trim(), args[1].ToString().Trim(), args[2].ToString().Trim());
+					characterManager.spawnCharacter(args[0], args[1], args[2]);
 				}
 				break;
 			case "anim":
-				characterManager.changeAnimation(args[0].ToString().Trim(), args[1].ToString().Trim());
+				characterManager.changeAnimation(args[0], args[1]);
 				break;
 			case "movechar":
-				characterManager.moveCharacter(args[0].ToString().Trim(), args[1].ToString().Trim());
+				characterManager.moveCharacter(args[0], args[1]);
 				break;
 			case "changebg":
-				TransitionManager.TransitionBG(args[0].ToString().Trim());
+				TransitionManager.TransitionBG(args[0]);
 				break;
 			case "changescene":
-				TransitionManager.transitionScene(args[0].ToString().Trim());
+				TransitionManager.transitionScene(args[0]);
 				break;
 			case "changescript":
 				ScriptParser.Instance.scriptChanged = true;
-				if (args.Count == 2)
+				if (argsUnfiltered.Count == 2)
 				{
-					ScriptParser.Instance.changeScriptFile(args[0].ToString().Trim(), int.Parse(args[1].ToString().Trim()));
+					ScriptParser.Instance.ChangeScriptFile(args[0], int.Parse(args[1]));
 				}
 				else
 				{
-					ScriptParser.Instance.changeScriptFile(args[0].ToString().Trim());
+					ScriptParser.Instance.ChangeScriptFile(args[0]);
 				}
 				break;
 			case "emptyscene":
 				CharacterManager.Instance.emptyScene();
 				break;
 			case "loopbg":
-				TransitionManager.Instance.animatedBG.isLooping = args[0].ToString().ToLower().Trim().Equals("true");
+				TransitionManager.Instance.animatedBG.isLooping = args[0].Equals("true");
 				break;
 			case "playbg":
 				string bgName;
-				if (args != null)
-				{ bgName = args[0].ToString().ToLower().Trim(); }
-				else { bgName = ""; }
+				if (argsUnfiltered != null)
+					bgName = args[0];
+				else
+					bgName = "";
 				TransitionManager.Instance.playBG(bgName);
 				break;
 			case "changename":
-				CharacterManager.Instance.changeName(args[0].ToString().Trim(), args[1].ToString().Trim());
+				CharacterManager.Instance.changeName(args[0], args[1]);
 				break;
 			case "fadeinsound":
-				AudioManager.Instance.FadeIn(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim()));
+				//audioHandler.PlaySound(args[0], float.Parse(args[1]), true);
 				break;
 			case "fadeoutsound":
-				AudioManager.Instance.FadeOut(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim()));
+				AudioManager.Instance.FadeOut(args[0], float.Parse(args[1]));
 				break;
 			case "choice":
 				ScriptParser.Instance.paused = true;
-				ScriptParser.Instance.currentNode.parseChoice(args[0].ToString().Trim());
+				ScriptParser.Instance.currentNode.parseChoice(args[0]);
 				break;
 			case "setbool":
-				PersistentData.Instance.state.bools[args[0].ToString().Trim()] = bool.Parse(args[1].ToString().Trim());
+				PersistentData.Instance.state.bools[args[0]] = bool.Parse(args[1]);
 				break;
 			case "if":
-				// Debug.Log("If block recognized");
 				ScriptParser.Instance.paused = true;
 
 				DialogueNode conditional = ScriptParser.Instance.currentNode.makeConditionalNode();
-				bool var = PersistentData.Instance.state.bools[args[0].ToString().Trim()];
-				bool val = bool.Parse(args[1].ToString().Trim());
+				bool var = PersistentData.Instance.state.bools[args[0]];
+				bool val = bool.Parse(args[1]);
 				if (var == val)
 				{
 					// Debug.Log("Condition met. Playing optional block...");

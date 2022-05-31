@@ -10,16 +10,16 @@ public class AudioManager : Singleton<AudioManager>
 
 	public Sound[] sounds;
 
-	private Dictionary<String, AudioSource> sources;
-	private Dictionary<String, Sound> lib;
-	String lastSpeaker;
+	private Dictionary<string, AudioSource> sources;
+	private Dictionary<string, Sound> lib;
+	string lastSpeaker;
 	AudioSource lastSource;
-	private Dictionary<String, IEnumerator> threads;
+	private Dictionary<string, IEnumerator> threads;
 	private void Awake()
 	{
 		sources = new Dictionary<string, AudioSource>();
 		lib = new Dictionary<string, Sound>();
-		threads = new Dictionary<String, IEnumerator>();
+		threads = new Dictionary<string, IEnumerator>();
 		foreach (Sound s in sounds)
 		{
 			lib.Add(s.name, s);
