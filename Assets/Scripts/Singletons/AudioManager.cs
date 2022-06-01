@@ -18,7 +18,7 @@ public class AudioManager : Singleton<AudioManager>
 
 	public void FadeIn(string soundPath, float duration)
 	{
-		audioHandler.PlaySound(GetSound(soundPath), duration, true);
+		audioHandler.PlaySound(GetSound(soundPath), duration, useCustomAudioData: true);
 	}
 	public void FadeOut(string soundPath, float duration)
 	{
@@ -53,7 +53,7 @@ public class AudioManager : Singleton<AudioManager>
 			lastSpeaker = name;
 			speakerCoroutine.AudioSource = source;
 		}
-		speakerCoroutine.AudioClip = new CustomAudioClip(clip) { volume = this.volume };
+		speakerCoroutine.AudioClip = new CustomAudioClip(clip) { volume = volume };
 		speakerCoroutine.PlaySingle();
 	}
 	/*

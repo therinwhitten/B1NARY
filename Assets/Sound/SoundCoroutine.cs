@@ -2,9 +2,22 @@ using System;
 using Random = UnityEngine.Random;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Audio;
 
+/// <summary>
+///		An extended <see cref="UnityEngine.AudioSource"/> for easily manipulating
+///		sounds and contains Garbage Collection and Events when finished playing.
+/// </summary>
 public class SoundCoroutine
 {
+	/// <summary>
+	///		Sets the input float value to a random variator ranging from 0 to 1,
+	///		the current input float value is the max while the variance decreases
+	///		that value.
+	/// </summary>
+	/// <param name="input">The input value.</param>
+	/// <param name="varianceMult">Where the input value is multiplied from randomly.</param>
+	/// <returns>The modified input value.</returns>
 	public static float ApplyRandomValue(float input, float varianceMult)
 	{
 		if (varianceMult == 0)
@@ -16,6 +29,7 @@ public class SoundCoroutine
 
 
 	public readonly MonoBehaviour monoBehaviour;
+	private readonly AudioMixerGroup audioMixerGroup;
 	private AudioSource audioSource;
 	public AudioSource AudioSource
 	{
@@ -24,17 +38,20 @@ public class SoundCoroutine
 		{
 			UnityEngine.Object.Destroy(audioSource);
 			audioSource = value;
+			audioSource.outputAudioMixerGroup = audioMixerGroup;
 		}
 	}
 	private Coroutine garbageCollection = null;
 	public bool destroyOnFinish = true;
 
-	public SoundCoroutine(MonoBehaviour monoBehaviour, CustomAudioClip? clip = null)
+	public SoundCoroutine(MonoBehaviour monoBehaviour, AudioMixerGroup mixerGroup = null, CustomAudioClip? clip = null)
 	{
 		this.monoBehaviour = monoBehaviour;
 		audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
+		audioSource.outputAudioMixerGroup = audioMixerGroup;
+		audioMixerGroup = mixerGroup;
 		if (clip != null)
-			AudioClip = clip;
+			AudioClip = clip.Value;
 	}
 
 	public CustomAudioClip AudioClip
@@ -54,7 +71,6 @@ public class SoundCoroutine
 			audioSource.loop = value.loop;
 		}
 	}
-
 
 	public void PlaySingle()
 	{
