@@ -14,11 +14,11 @@ public class AudioManager : Singleton<AudioManager>
 	private Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache
 		=> audioHandler.SoundCoroutineCache;
 	private SoundCoroutine speakerCoroutine;
-	private string lastSpeaker;
+	private string lastSpeaker = null;
 
 	public void FadeIn(string soundPath, float duration)
 	{
-		audioHandler.PlaySound(GetSound(soundPath), duration, useCustomAudioData: true);
+		audioHandler.PlayFadedSound(GetSound(soundPath), duration, useCustomAudioData: true);
 	}
 	public void FadeOut(string soundPath, float duration)
 	{
@@ -46,13 +46,14 @@ public class AudioManager : Singleton<AudioManager>
 	public void PlayVoice(string name, float volume, AudioSource source, AudioClip clip)
 	{
 		if (name == null)
-			throw new ArgumentNullException($"character name is null!");
+		{
+			Debug.LogWarning($"character name is null! Is this intentional?");
+			return;
+		}
 		speakerCoroutine.Stop(0.3f, false);
 		if (lastSpeaker != name)
-		{
 			lastSpeaker = name;
-			speakerCoroutine.AudioSource = source;
-		}
+		speakerCoroutine.AudioSource = source;
 		speakerCoroutine.AudioClip = new CustomAudioClip(clip) { volume = volume };
 		speakerCoroutine.PlaySingle();
 	}

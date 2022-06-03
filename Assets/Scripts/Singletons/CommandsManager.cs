@@ -27,11 +27,11 @@ public class CommandsManager : Singleton<CommandsManager>
 	{
 		string[] args = new string[argsUnfiltered.Count];
 		for (int i = 0; i < args.Length; i++)
-			args[i] = argsUnfiltered[i].ToString().Trim().ToLower();
+			args[i] = argsUnfiltered[i].ToString().Trim();
 		switch (command)
 		{
 			case "additive":
-				if (args[0].Equals("on"))
+				if (args[0].ToLower().Equals("on"))
 				{
 					dialogue.Say("");
 					dialogue.additiveTextEnabled = true;
@@ -40,13 +40,16 @@ public class CommandsManager : Singleton<CommandsManager>
 					// ScriptParser.Instance.currentNode.nextLine();
 					// ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.getCurrentLine());
 				}
-				else if (args[0].Equals("off"))
+				else if (args[0].ToLower().Equals("off"))
 				{
 					dialogue.additiveTextEnabled = false;
 					Debug.Log("Set additive text to off!");
 					// ScriptParser.Instance.currentNode.nextLine();
 					// ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.getCurrentLine());
 				}
+				else
+					throw new ArgumentException($"{args[0]} is not a valid " +
+						"argument for additive!");
 				break;
 			case "spawnchar":
 				if (argsUnfiltered.Count == 2)
@@ -85,12 +88,12 @@ public class CommandsManager : Singleton<CommandsManager>
 				CharacterManager.Instance.emptyScene();
 				break;
 			case "loopbg":
-				TransitionManager.Instance.animatedBG.isLooping = args[0].Equals("true");
+				TransitionManager.Instance.animatedBG.isLooping = args[0].ToLower().Equals("true");
 				break;
 			case "playbg":
 				string bgName;
 				if (argsUnfiltered != null)
-					bgName = args[0];
+					bgName = args[0].ToLower();
 				else
 					bgName = "";
 				TransitionManager.Instance.playBG(bgName);
@@ -99,10 +102,14 @@ public class CommandsManager : Singleton<CommandsManager>
 				CharacterManager.Instance.changeName(args[0], args[1]);
 				break;
 			case "fadeinsound":
-				AudioManager.Instance.FadeIn(args[0], float.Parse(args[1]));
+				if (Extensions.TryInvoke(() => 
+					AudioManager.Instance.FadeIn(args[0], float.Parse(args[1]))))
+					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;
 			case "fadeoutsound":
-				AudioManager.Instance.FadeOut(args[0], float.Parse(args[1]));
+				if (Extensions.TryInvoke(() =>
+					AudioManager.Instance.FadeOut(args[0], float.Parse(args[1]))))
+					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;
 			case "choice":
 				ScriptParser.Instance.paused = true;

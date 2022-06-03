@@ -8,8 +8,9 @@ using UnityEngine.Audio;
 /// <see cref="CustomAudioClip"/> and/or <see cref="UnityCustomAudioClip"/> for 
 /// custom files and uses <see cref="SoundCoroutine"/>s for code to change it 
 /// themselves.</summary>
-public class AudioHandler : MonoBehaviour
+public class AudioHandler : SingletonNew<AudioHandler>
 {
+	public static bool HasPreviousInstance { get; private set; } = false;
 
 	// Might be slightly tedious to re-implement the array every scene, but
 	// - there are easy work-arounds and its not too big of a deal anyway
@@ -23,13 +24,16 @@ public class AudioHandler : MonoBehaviour
 	public Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache { get; private set; }
 		= new Dictionary<AudioClip, SoundCoroutine>();
 
-	private void Start()
+	protected override void SingletonStart()
 	{
 		audioClipDictionary = customAudioData.Cast<CustomAudioClip>().ToDictionary(x => x.audioClip);
+		Debug.Log($"{nameof(AudioHandler)} started!");
+		if (HasPreviousInstance)
+			Debug.LogWarning($"Another {nameof(AudioHandler)} already exists!");
+		else
+			HasPreviousInstance = true;
 	}
 
-	// Returning a soundcoroutine may cause reference issues, so may do 
-	// - Func<SoundCoroutine> instead.
 
 	/// <summary>Easily create a coroutine and log it in to the cache.</summary>
 	/// <param name="key">AudioClip to put into the soundCoroutine</param>
@@ -49,6 +53,15 @@ public class AudioHandler : MonoBehaviour
 			};
 		}
 		return () => SoundCoroutineCache[key]; 
+	}
+
+	private AudioClip GetSound(string soundPath)
+	{
+		AudioClip audioClip = Resources.Load<AudioClip>(soundPath);
+		if (audioClip == null)
+			throw new NullReferenceException($"{soundPath} does not lead to a sound" +
+			"file!");
+		return audioClip;
 	}
 
 	///	<summary>Plays a sound.</summary>
@@ -85,7 +98,32 @@ public class AudioHandler : MonoBehaviour
 		return sound;
 	}
 
-	public Func<SoundCoroutine> PlaySound(AudioClip clip, float fadeInSeconds,
+	///	<summary>Searches a sound in the resources folder via filePath, then plays it.</summary>
+	///	<param name ="soundPath">the audioclip path in the resource folder to play.</param>
+	///	<param name ="useCustomAudioData">
+	///		if the <see cref="AudioClip"/> is found in 
+	///		customAudioData, then it will play that instead.
+	///	</param>
+	///	<returns>
+	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
+	///		needed to function.
+	///	</returns>
+	public Func<SoundCoroutine> PlaySound(string soundPath, 
+		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
+		=> PlaySound(GetSound(soundPath), mixerGroup, useCustomAudioData);
+
+	///	<summary>Fades in a sound.</summary>
+	///	<param name ="clip">the audioclip to play.</param>
+	///	<param name="fadeInSeconds">Seconds which it goes from 0 to 1.</param>
+	///	<param name ="useCustomAudioData">
+	///		if the <see cref="AudioClip"/> is found in 
+	///		customAudioData, then it will play that instead.
+	///	</param>
+	///	<returns>
+	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
+	///		needed to function.
+	///	</returns>
+	public Func<SoundCoroutine> PlayFadedSound(AudioClip clip, float fadeInSeconds,
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
 	{
 		var sound = audioClipDictionary.ContainsKey(clip) && useCustomAudioData
@@ -93,6 +131,31 @@ public class AudioHandler : MonoBehaviour
 			: GetCoroutine((CustomAudioClip)clip, mixerGroup);
 		sound().PlaySingle(fadeInSeconds);
 		return sound;
+	}
+
+	///	<summary>Searches a sound in the resources folder via filePath, then fades it in.</summary>
+	///	<param name ="soundPath">the audioclip path in the resource folder to play.</param>
+	///	<param name="fadeInSeconds">Seconds which it goes from 0 to 1.</param>
+	///	<param name ="useCustomAudioData">
+	///		if the <see cref="AudioClip"/> is found in 
+	///		customAudioData, then it will play that instead.
+	///	</param>
+	///	<returns>
+	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
+	///		needed to function.
+	///	</returns>
+	public Func<SoundCoroutine> PlayFadedSound(string soundPath, float fadeInSeconds,
+		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
+		=> PlayFadedSound(GetSound(soundPath), fadeInSeconds, mixerGroup, useCustomAudioData);
+
+	public void StopSoundViaFade(AudioClip sound, float fadeOutSeconds)
+		=> SoundCoroutineCache[sound].Stop(fadeOutSeconds);
+	public void StopSoundViaFade(string soundName, float fadeOutSeconds)
+	{
+		foreach (AudioClip sound in SoundCoroutineCache.Keys)
+			if (sound.name == soundName)
+				SoundCoroutineCache[sound].Stop(fadeOutSeconds);
+		throw new KeyNotFoundException(soundName);
 	}
 
 	///	<summary>Plays a sound that is meant to be repeatedly played.</summary>
@@ -109,5 +172,13 @@ public class AudioHandler : MonoBehaviour
 			: GetCoroutine((CustomAudioClip)clip, mixerGroup);
 		sound().PlayOneShot();
 		return sound;
+	}
+
+	~AudioHandler()
+	{
+		Debug.Log($"{nameof(AudioHandler)} being disposed of");
+		// This may cause issues if multiple audioHandlers are ran, but shouldn't
+		// - be intended to do that anyway.
+		HasPreviousInstance = false;
 	}
 }
