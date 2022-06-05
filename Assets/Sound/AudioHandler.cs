@@ -17,23 +17,34 @@ public class AudioHandler : SingletonNew<AudioHandler>
 	[SerializeField, Tooltip("A readonly array which keeps track of data for" +
 		" audioClips, solves at runtime.")] 
 	private UnityCustomAudioClip[] customAudioData;
+	// private Lookup<AudioClip, CustomAudioClip> audioClipLookup;
 	private Dictionary<AudioClip, CustomAudioClip> audioClipDictionary = 
 		new Dictionary<AudioClip, CustomAudioClip>();
 
 	/// <summary>Cache for storing automated sound data</summary>
-	public Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache { get; private set; }
+	public static Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache { get; private set; }
 		= new Dictionary<AudioClip, SoundCoroutine>();
 
 	protected override void SingletonStart()
 	{
-		audioClipDictionary = customAudioData.Cast<CustomAudioClip>().ToDictionary(x => x.audioClip);
+		// Simple cast and dictionary linq methods seems to not work well here.
+		for (int i = 0; i < customAudioData.Length; i++)
+			audioClipDictionary.Add(customAudioData[i].audioClip, (CustomAudioClip)customAudioData[i]);
 		Debug.Log($"{nameof(AudioHandler)} started!");
 		if (HasPreviousInstance)
-			Debug.LogWarning($"Another {nameof(AudioHandler)} already exists!");
+			Debug.LogError($"Another {nameof(AudioHandler)} already exists!");
 		else
 			HasPreviousInstance = true;
+
+		GameCommands.SwitchingScenes += (sender, args) => TransferSounds();
 	}
 
+
+	private Func<SoundCoroutine> GetCoroutine(AudioClip clip, AudioMixerGroup group, 
+		bool useCustomAudioData)
+		=> audioClipDictionary.ContainsKey(clip) && useCustomAudioData
+			? GetCoroutine(audioClipDictionary[clip])
+			: GetCoroutine(new CustomAudioClip(clip) { audioMixerGroup = group });
 
 	/// <summary>Easily create a coroutine and log it in to the cache.</summary>
 	/// <param name="key">AudioClip to put into the soundCoroutine</param>
@@ -41,18 +52,20 @@ public class AudioHandler : SingletonNew<AudioHandler>
 	///		<see cref="SoundCoroutine"/> that is meant to be kept track of and 
 	///		used for accessibility of handling sound.
 	///	</returns>
-	public Func<SoundCoroutine> GetCoroutine(CustomAudioClip key, AudioMixerGroup mixerGroup)
+	public Func<SoundCoroutine> GetCoroutine(CustomAudioClip key)
 	{
 		if (!SoundCoroutineCache.ContainsKey(key))
 		{
-			SoundCoroutineCache.Add(key, new SoundCoroutine(this, mixerGroup, clip: key));
+			SoundCoroutineCache.Add(key, new SoundCoroutine(this, key.audioMixerGroup, clip: key));
 			SoundCoroutineCache[key].GarbageCollection += (sender, clip) =>
-			{
-				Destroy(SoundCoroutineCache[key].AudioSource);
-				SoundCoroutineCache.Remove(key); 
-			};
+				GarbageCollectionDefault(key);
 		}
 		return () => SoundCoroutineCache[key]; 
+	}
+	private void GarbageCollectionDefault(AudioClip clip)
+	{
+		Destroy(SoundCoroutineCache[clip].AudioSource);
+		SoundCoroutineCache.Remove(clip);
 	}
 
 	private AudioClip GetSound(string soundPath)
@@ -77,9 +90,7 @@ public class AudioHandler : SingletonNew<AudioHandler>
 	public Func<SoundCoroutine> PlaySound(AudioClip clip, 
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
 	{
-		var sound = audioClipDictionary.ContainsKey(clip) && useCustomAudioData
-			? GetCoroutine(audioClipDictionary[clip], audioClipDictionary[clip].audioMixerGroup)
-			: GetCoroutine((CustomAudioClip)clip, mixerGroup);
+		Func<SoundCoroutine> sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
 		sound().PlaySingle();
 		return sound;
 	}
@@ -90,9 +101,9 @@ public class AudioHandler : SingletonNew<AudioHandler>
 	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
 	///		needed to function.
 	///	</returns>
-	public Func<SoundCoroutine> PlaySound(CustomAudioClip clip, AudioMixerGroup mixerGroup = null)
+	public Func<SoundCoroutine> PlaySound(CustomAudioClip clip)
 	{
-		var sound = GetCoroutine(clip, mixerGroup);
+		var sound = GetCoroutine(clip);
 		sound().AudioClip = clip;
 		sound().PlaySingle();
 		return sound;
@@ -126,9 +137,7 @@ public class AudioHandler : SingletonNew<AudioHandler>
 	public Func<SoundCoroutine> PlayFadedSound(AudioClip clip, float fadeInSeconds,
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
 	{
-		var sound = audioClipDictionary.ContainsKey(clip) && useCustomAudioData
-			? GetCoroutine(audioClipDictionary[clip], audioClipDictionary[clip].audioMixerGroup)
-			: GetCoroutine((CustomAudioClip)clip, mixerGroup);
+		Func<SoundCoroutine> sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
 		sound().PlaySingle(fadeInSeconds);
 		return sound;
 	}
@@ -167,14 +176,23 @@ public class AudioHandler : SingletonNew<AudioHandler>
 	public Func<SoundCoroutine> PlayOneShot(AudioClip clip, 
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
 	{
-		var sound = audioClipDictionary.ContainsKey(clip) && useCustomAudioData
-			? GetCoroutine(audioClipDictionary[clip], audioClipDictionary[clip].audioMixerGroup)
-			: GetCoroutine((CustomAudioClip)clip, mixerGroup);
+		Func<SoundCoroutine> sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
 		sound().PlayOneShot();
 		return sound;
 	}
 
-	~AudioHandler()
+
+
+
+	private void TransferSounds()
+	{
+		var gameObject = new GameObject("AudioHandler Transfer Sounds");
+		var transferer = gameObject.AddComponent<AudioCrossSceneTransferer>();
+		transferer.AudioCoroutines = SoundCoroutineCache.Values.ToArray();
+		transferer.StartSceneTransferer();
+	}
+
+	protected override void OnSingletonDestroy()
 	{
 		Debug.Log($"{nameof(AudioHandler)} being disposed of");
 		// This may cause issues if multiple audioHandlers are ran, but shouldn't

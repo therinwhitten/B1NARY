@@ -102,13 +102,13 @@ public class CommandsManager : Singleton<CommandsManager>
 				CharacterManager.Instance.changeName(args[0], args[1]);
 				break;
 			case "fadeinsound":
-				if (Extensions.TryInvoke(() => 
-					AudioManager.Instance.FadeIn(args[0], float.Parse(args[1]))))
+				if (Extensions.TryInvoke<SoundNotFoundException>(() => 
+					AudioManager.Instance.FadeIn(args[0], float.Parse(args[1])), out _))
 					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;
 			case "fadeoutsound":
-				if (Extensions.TryInvoke(() =>
-					AudioManager.Instance.FadeOut(args[0], float.Parse(args[1]))))
+				if (Extensions.TryInvoke<SoundNotFoundException>(() =>
+					AudioManager.Instance.FadeOut(args[0], float.Parse(args[1])), out _))
 					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;
 			case "choice":

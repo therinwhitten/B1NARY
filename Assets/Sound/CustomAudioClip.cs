@@ -22,6 +22,8 @@ public struct CustomAudioClip
 		pitchVariance = 0;
 		audioMixerGroup = null;
 		loop = false;
+		fadeWhenTransitioning = 0.5f;
+		willFadeWhenTransitioning = true;
 	}
 
 	public AudioClip audioClip;
@@ -31,6 +33,8 @@ public struct CustomAudioClip
 	[Range(0, 1)] public float pitchVariance;
 	public AudioMixerGroup audioMixerGroup;
 	public bool loop;
+	[Header("Scene Transitions")] public bool willFadeWhenTransitioning;
+	[Range(0, 3)] public float fadeWhenTransitioning;
 
 	public override string ToString() => audioClip.ToString();
 }

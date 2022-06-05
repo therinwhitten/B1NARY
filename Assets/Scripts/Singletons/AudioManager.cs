@@ -7,39 +7,49 @@ using System.Collections;
 public class AudioManager : Singleton<AudioManager>
 {
 	[SerializeField] private AudioHandler audioHandler;
+	private AudioHandler AudioHandler { get
+		{
+			if (audioHandler == null)
+				audioHandler = AudioHandler.Instance;
+			return audioHandler;
+		} 
+	}
 	
 	public AudioMixer Audio;
 
 	public Sound[] sounds;
 	private Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache
-		=> audioHandler.SoundCoroutineCache;
+		=> AudioHandler.SoundCoroutineCache;
 	private SoundCoroutine speakerCoroutine;
 	private string lastSpeaker = null;
 
 	public void FadeIn(string soundPath, float duration)
 	{
-		audioHandler.PlayFadedSound(GetSound(soundPath), duration, useCustomAudioData: true);
+		AudioHandler.PlayFadedSound(GetSound(soundPath), duration, useCustomAudioData: true);
 	}
 	public void FadeOut(string soundPath, float duration)
 	{
-		SoundCoroutineCache[GetSound(soundPath)].Stop(duration);
+		string[] soundCategories = soundPath.Split('/');
+		SoundCoroutineCache[GetSound(soundCategories[soundCategories.Length - 1])].Stop(duration);
 	}
 	private AudioClip GetSound(string soundPath)
 	{
 		AudioClip audioClip = Resources.Load<AudioClip>(soundPath);
 		if (audioClip == null)
-			throw new NullReferenceException($"{soundPath} does not lead to a sound" +
+			throw new SoundNotFoundException($"{soundPath} does not lead to a sound" +
 			"file!");
 		return audioClip;
 	}
 
 	public void Play(string soundPath)
 	{
-		audioHandler.PlaySound(GetSound(soundPath));
+		AudioHandler.PlaySound(GetSound(soundPath));
 	}
 	public override void initialize()
 	{
 		speakerCoroutine = new SoundCoroutine(this) { destroyOnFinish = false };
+		//GameCommands.SwitchingScenes += (sender, args) => 
+		//	{ speakerCoroutine.destroyOnFinish = true; speakerCoroutine.Stop(0.3f); };
 	}
 
 
@@ -91,7 +101,7 @@ public class AudioManager : Singleton<AudioManager>
 			{
 				StopCoroutine(threads[name]);
 				threads[name] = thread;
-				StartCoroutine(thread);
+				StartCoroutine(thread);https://soundcloud.com/you/likes
 			}
 		}
 		catch (KeyNotFoundException)

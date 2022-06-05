@@ -10,26 +10,12 @@ using UnityEngine.Audio;
 /// </summary>
 public class SoundCoroutine
 {
-	/// <summary>
-	///		Sets the input float value to a random variator ranging from 0 to 1,
-	///		the current input float value is the max while the variance decreases
-	///		that value.
-	/// </summary>
-	/// <param name="input">The input value.</param>
-	/// <param name="varianceMult">Where the input value is multiplied from randomly.</param>
-	/// <returns>The modified input value.</returns>
-	public static float ApplyRandomValue(float input, float varianceMult)
-	{
-		if (varianceMult == 0)
-			return input;
-		float baseValue = input * varianceMult,
-					subValue = input - baseValue;
-		return baseValue + (Random.value * subValue);
-	}
+	
+	
 
 
-	public readonly MonoBehaviour monoBehaviour;
-	private readonly AudioMixerGroup audioMixerGroup;
+	public MonoBehaviour monoBehaviour;
+	public AudioMixerGroup AudioMixerGroup { get; private set; }
 	private AudioSource audioSource;
 	public AudioSource AudioSource
 	{
@@ -38,7 +24,7 @@ public class SoundCoroutine
 		{
 			UnityEngine.Object.Destroy(audioSource);
 			audioSource = value;
-			audioSource.outputAudioMixerGroup = audioMixerGroup;
+			audioSource.outputAudioMixerGroup = AudioMixerGroup;
 		}
 	}
 	private Coroutine garbageCollection = null;
@@ -48,12 +34,14 @@ public class SoundCoroutine
 	{
 		this.monoBehaviour = monoBehaviour;
 		audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
-		audioSource.outputAudioMixerGroup = audioMixerGroup;
-		audioMixerGroup = mixerGroup;
+		audioSource.outputAudioMixerGroup = AudioMixerGroup;
+		AudioMixerGroup = mixerGroup;
+		audioSource.outputAudioMixerGroup = mixerGroup;
 		if (clip != null)
 			AudioClip = clip.Value;
 	}
 
+	public CustomAudioClip ExtraDataAudioClip { get; private set; }
 	public CustomAudioClip AudioClip
 	{
 		get => new CustomAudioClip(audioSource.clip) 
@@ -65,9 +53,11 @@ public class SoundCoroutine
 		set
 		{
 			// customizability with this seems weird
+			ExtraDataAudioClip = value;
 			audioSource.clip = value;
-			audioSource.pitch = ApplyRandomValue(value.pitch, value.pitchVariance);
-			audioSource.volume = ApplyRandomValue(value.volume, value.volumeVariance);
+			audioSource.pitch = value.pitch.ApplyRandomPercent(value.pitchVariance);
+			audioSource.volume = value.volume.ApplyRandomPercent(value.volumeVariance);
+			audioSource.outputAudioMixerGroup = value.audioMixerGroup;
 			audioSource.loop = value.loop;
 		}
 	}
@@ -113,15 +103,16 @@ public class SoundCoroutine
 	private void FinishCoroutine()
 	{
 		Finished?.Invoke(this, EventArgs.Empty);
-		if (destroyOnFinish)
-			Stop();
+		Stop();
 	}
 	public event EventHandler Finished;
 
 	public void Stop(float fadeOutSeconds, bool destroy = true)
 	{
-		SingletonNew<FadeController>.Instance.ChangeFloat
-			(
+		if (monoBehaviour == null)
+			throw new NullReferenceException($"{nameof(SoundCoroutine)} does" +
+				$"not have an availible {nameof(MonoBehaviour)}!");
+		monoBehaviour.ChangeFloat(
 			new Ref<float>(() => audioSource.volume, 
 				(var) => 
 				{ 
@@ -139,6 +130,7 @@ public class SoundCoroutine
 	public void Stop(bool destroy = true)
 	{
 		audioSource.Stop();
+		monoBehaviour.StopCoroutine(garbageCollection);
 		if (destroyOnFinish && destroy)
 			OnDestroy();
 	}

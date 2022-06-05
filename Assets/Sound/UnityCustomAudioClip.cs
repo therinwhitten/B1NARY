@@ -21,6 +21,8 @@ public class UnityCustomAudioClip : ScriptableObject
 			volumeVariance = clip.volumeVariance,
 			audioMixerGroup = clip.audioMixerGroup,
 			loop = clip.loop,
+			fadeWhenTransitioning = clip.fadeWhenTransitioning,
+			willFadeWhenTransitioning = clip.willFadeWhenTransitioning
 		};
 
 	public AudioClip audioClip;
@@ -29,5 +31,7 @@ public class UnityCustomAudioClip : ScriptableObject
 	[Range(0, 3)] public float pitch = 1;
 	[Range(0, 1)] public float pitchVariance = 0;
 	public AudioMixerGroup audioMixerGroup;
-	public bool loop;
+	public bool loop = false;
+	[Header("Scene Transitions")] public bool willFadeWhenTransitioning = true;
+	[Range(0, 3)] public float fadeWhenTransitioning = 0.5f;
 }
