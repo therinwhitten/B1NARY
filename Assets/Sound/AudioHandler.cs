@@ -12,31 +12,50 @@ public class AudioHandler : SingletonNew<AudioHandler>
 {
 	public static bool HasPreviousInstance { get; private set; } = false;
 
-	// Might be slightly tedious to re-implement the array every scene, but
-	// - there are easy work-arounds and its not too big of a deal anyway
 	[SerializeField, Tooltip("A readonly array which keeps track of data for" +
 		" audioClips, solves at runtime.")] 
 	private UnityCustomAudioClip[] customAudioData;
-	// private Lookup<AudioClip, CustomAudioClip> audioClipLookup;
+
+	/// <summary> Easily Links a normal audioclip to a custom one. </summary>
 	private Dictionary<AudioClip, CustomAudioClip> audioClipDictionary = 
 		new Dictionary<AudioClip, CustomAudioClip>();
+
+	/// <summary> names of audioclips tied to them. </summary>
+	private Dictionary<string, AudioClip> nameDictionary = 
+		new Dictionary<string, AudioClip>();
 
 	/// <summary>Cache for storing automated sound data</summary>
 	public static Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache { get; private set; }
 		= new Dictionary<AudioClip, SoundCoroutine>();
 
+	public VoiceActorHandler VoiceActorHandler { get; private set; }
+
 	protected override void SingletonStart()
 	{
-		// Simple cast and dictionary linq methods seems to not work well here.
 		for (int i = 0; i < customAudioData.Length; i++)
+		{
 			audioClipDictionary.Add(customAudioData[i].audioClip, (CustomAudioClip)customAudioData[i]);
+			nameDictionary.Add(customAudioData[i].audioClip.name, customAudioData[i].audioClip);
+		}
 		Debug.Log($"{nameof(AudioHandler)} started!");
 		if (HasPreviousInstance)
 			Debug.LogError($"Another {nameof(AudioHandler)} already exists!");
 		else
+		{
 			HasPreviousInstance = true;
-
+			VoiceActorHandler = gameObject.AddComponent<VoiceActorHandler>();
+		}
+		PlayOnAwakeCommands();
 		GameCommands.SwitchingScenes += (sender, args) => TransferSounds();
+	}
+	private void PlayOnAwakeCommands()
+	{
+		IEnumerable<CustomAudioClip> playOnAwake =
+			from clip in audioClipDictionary
+			where clip.Value.playOnAwake
+			select clip.Value;
+		foreach (var clip in playOnAwake)
+			PlaySound(clip);
 	}
 
 
@@ -68,8 +87,18 @@ public class AudioHandler : SingletonNew<AudioHandler>
 		SoundCoroutineCache.Remove(clip);
 	}
 
-	private AudioClip GetSound(string soundPath)
+	/// <summary> Retrives a sound via string </summary>
+	/// <param name="soundPath"></param>
+	/// <returns></returns>
+	/// <exception cref="NullReferenceException">When neither the fileName finding in <see cref="CustomAudioClip[]"/></exception>
+	private AudioClip GetRawAudioClip(string soundPath)
 	{
+		// names in customAudioClip
+		if (nameDictionary.ContainsKey(soundPath))
+			return nameDictionary[soundPath];
+		Debug.Log($"'{soundPath}' is not found in {nameof(customAudioData)},"
+			+ " searching via filePath");
+		// filePath
 		AudioClip audioClip = Resources.Load<AudioClip>(soundPath);
 		if (audioClip == null)
 			throw new NullReferenceException($"{soundPath} does not lead to a sound" +
@@ -121,7 +150,7 @@ public class AudioHandler : SingletonNew<AudioHandler>
 	///	</returns>
 	public Func<SoundCoroutine> PlaySound(string soundPath, 
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
-		=> PlaySound(GetSound(soundPath), mixerGroup, useCustomAudioData);
+		=> PlaySound(GetRawAudioClip(soundPath), mixerGroup, useCustomAudioData);
 
 	///	<summary>Fades in a sound.</summary>
 	///	<param name ="clip">the audioclip to play.</param>
@@ -155,15 +184,21 @@ public class AudioHandler : SingletonNew<AudioHandler>
 	///	</returns>
 	public Func<SoundCoroutine> PlayFadedSound(string soundPath, float fadeInSeconds,
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
-		=> PlayFadedSound(GetSound(soundPath), fadeInSeconds, mixerGroup, useCustomAudioData);
+		=> PlayFadedSound(GetRawAudioClip(soundPath), fadeInSeconds, mixerGroup, useCustomAudioData);
 
 	public void StopSoundViaFade(AudioClip sound, float fadeOutSeconds)
 		=> SoundCoroutineCache[sound].Stop(fadeOutSeconds);
 	public void StopSoundViaFade(string soundName, float fadeOutSeconds)
 	{
-		foreach (AudioClip sound in SoundCoroutineCache.Keys)
-			if (sound.name == soundName)
-				SoundCoroutineCache[sound].Stop(fadeOutSeconds);
+		if (nameDictionary.ContainsKey(soundName))
+			SoundCoroutineCache[nameDictionary[soundName]].Stop(fadeOutSeconds);
+		throw new KeyNotFoundException(soundName);
+	}
+
+	public void StopSound(string soundName)
+	{
+		if (nameDictionary.ContainsKey(soundName))
+			SoundCoroutineCache[nameDictionary[soundName]].Stop();
 		throw new KeyNotFoundException(soundName);
 	}
 

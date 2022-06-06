@@ -2,15 +2,20 @@
 using UnityEngine;
 
 ///<summary> 
-/// A class that stores a single instance of T,
+/// A class that stores a single instance of <see cref="T"/>,
 /// created when called for the first time
 /// </summary>
 public class SingletonNew<T> : MonoBehaviour where T : MonoBehaviour
 {
+	/// <summary> 
+	///		If there is no instances created in unity, throw an error instead
+	///		of creating a custom GameObject for it.
+	/// </summary>
 	public static bool ThrowErrorIfEmpty { get; set; } = true;
 	private static object _lock = new object();
 
 	private static T _instance;
+	/// <summary> First Registered Instance in the scene </summary>
 	public static T Instance
 	{
 		get
@@ -50,6 +55,12 @@ public class SingletonNew<T> : MonoBehaviour where T : MonoBehaviour
 		OnSingletonDestroy();
 	}
 
+	/// <summary>
+	/// Alternate Start since the original start is taken.
+	/// </summary>
 	protected virtual void SingletonStart() { /* do nothing unless overrided */ }
+	/// <summary>
+	/// Alternate OnDestroy since the original start is taken.
+	/// </summary>
 	protected virtual void OnSingletonDestroy() { /* do nothing unless overrided */ }
 }

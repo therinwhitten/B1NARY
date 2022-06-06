@@ -118,7 +118,7 @@ public class CharacterScript : MonoBehaviour
         try
         {
             // Debug.Log("Speaking line " + Line.index.ToString() + ": " + Line.line);
-            AudioManager.Instance.PlayVoice(name, voicevolume, voice, voiceLines[Line.index.ToString()]);
+            AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, voicevolume, voice, voiceLines[Line.index.ToString()]);
             // float volume = voice.volume;
             // voice.volume = 0f;
             // voice.Stop();
@@ -126,10 +126,11 @@ public class CharacterScript : MonoBehaviour
             // voice.volume = volume;
             // voice.Play();
         }
-        catch (KeyNotFoundException)
+        catch (KeyNotFoundException ex)
         {
             {
-                Debug.LogWarning("Voice line not found: Line " + Line.index);
+                Debug.LogError($"Voice line not found: Line {Line.index}\n"
+                    + ex);
             }
         }
     }

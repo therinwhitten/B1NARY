@@ -587,7 +587,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 641fb772e7c3af84da2d59f76a118f80, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customAudioData: []
+  customAudioData:
+  - {fileID: 11400000, guid: e8ab03d38723fd845a4e38f1e8b6b55a, type: 2}
 --- !u!114 &1427849294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1050,7 +1051,7 @@ PrefabInstance:
     - target: {fileID: 2877729767052908641, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 184.5
+      value: 190.44272
       objectReference: {fileID: 0}
     - target: {fileID: 2877729767052908641, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1660,7 +1661,7 @@ PrefabInstance:
     - target: {fileID: 7769649392228481857, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 184.5
+      value: 190.44272
       objectReference: {fileID: 0}
     - target: {fileID: 7769649392228481857, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1820,7 +1821,7 @@ PrefabInstance:
     - target: {fileID: 7980261082621856400, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 184.5
+      value: 190.44272
       objectReference: {fileID: 0}
     - target: {fileID: 7980261082621856400, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1870,7 +1871,7 @@ PrefabInstance:
     - target: {fileID: 8107573936520600281, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 184.5
+      value: 190.44272
       objectReference: {fileID: 0}
     - target: {fileID: 8107573936520600281, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -2206,7 +2207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286f4295fb34c964fb7471ea97920924, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioHandler: {fileID: 0}
+  audioHandler: {fileID: 1427849293}
 --- !u!114 &1779649565647326867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2291,8 +2292,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 367b588384325cc4dac7cf24ad665a85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioHandler: {fileID: 0}
-  Audio: {fileID: 24100000, guid: e149b04e0d2c2174a925c5eaaf359315, type: 2}
   sounds:
   - name: Button-Select
     clip: {fileID: 8300000, guid: 48daf9eeb8c8b7940bd8ca8a3dd76245, type: 3}
