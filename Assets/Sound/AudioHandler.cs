@@ -12,19 +12,19 @@ public class AudioHandler : SingletonNew<AudioHandler>
 {
 	public static bool HasPreviousInstance { get; private set; } = false;
 
+	// TODO: Add array support!
 	[SerializeField, Tooltip("A readonly array which keeps track of data for" +
 		" audioClips, solves at runtime.")] 
-	private UnityCustomAudioClip[] customAudioData;
+	private SoundConfiguration customAudioData;
 
-	/// <summary> Easily Links a normal audioclip to a custom one. </summary>
-	private Dictionary<AudioClip, CustomAudioClip> audioClipDictionary = 
-		new Dictionary<AudioClip, CustomAudioClip>();
+	// <summary> Easily Links a normal audioclip to a custom one. </summary>
+	//private Dictionary<AudioClip, CustomAudioClip> audioClipDictionary = 
+	//	new Dictionary<AudioClip, CustomAudioClip>();
 
-	/// <summary> names of audioclips tied to them. </summary>
-	private Dictionary<string, AudioClip> nameDictionary = 
-		new Dictionary<string, AudioClip>();
+	// <summary> names of audioclips tied to them. </summary>
+	//private Dictionary<string, AudioClip> nameDictionary;
 
-	/// <summary>Cache for storing automated sound data</summary>
+	/// <summary> Cache for storing automated sound data </summary>
 	public static Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache { get; private set; }
 		= new Dictionary<AudioClip, SoundCoroutine>();
 
@@ -32,11 +32,6 @@ public class AudioHandler : SingletonNew<AudioHandler>
 
 	protected override void SingletonStart()
 	{
-		for (int i = 0; i < customAudioData.Length; i++)
-		{
-			audioClipDictionary.Add(customAudioData[i].audioClip, (CustomAudioClip)customAudioData[i]);
-			nameDictionary.Add(customAudioData[i].audioClip.name, customAudioData[i].audioClip);
-		}
 		Debug.Log($"{nameof(AudioHandler)} started!");
 		if (HasPreviousInstance)
 			Debug.LogError($"Another {nameof(AudioHandler)} already exists!");
@@ -50,12 +45,9 @@ public class AudioHandler : SingletonNew<AudioHandler>
 	}
 	private void PlayOnAwakeCommands()
 	{
-		IEnumerable<CustomAudioClip> playOnAwake =
-			from clip in audioClipDictionary
-			where clip.Value.playOnAwake
-			select clip.Value;
-		foreach (var clip in playOnAwake)
-			PlaySound(clip);
+		for (int i = 0; i < customAudioData.Length; i++)
+			if (customAudioData[i]().playOnAwake)
+				PlaySound(customAudioData[i]());
 	}
 
 
@@ -188,6 +180,10 @@ public class AudioHandler : SingletonNew<AudioHandler>
 
 	public void StopSoundViaFade(AudioClip sound, float fadeOutSeconds)
 		=> SoundCoroutineCache[sound].Stop(fadeOutSeconds);
+
+	/// <summary> Stops a sound from playing over a span of time </summary>
+	/// <param name ="soundName"> the soundFile name to stop </param>
+	/// <param name ="fadeOutSeconds"> the timespan so volume would hit from 1 to 0 </param> 
 	public void StopSoundViaFade(string soundName, float fadeOutSeconds)
 	{
 		if (nameDictionary.ContainsKey(soundName))
@@ -195,6 +191,8 @@ public class AudioHandler : SingletonNew<AudioHandler>
 		throw new KeyNotFoundException(soundName);
 	}
 
+	/// <summary> Stops a sound via the filename of the sound. </summary>
+	/// <param name ="soundName"> the soundFile name to stop. </param>
 	public void StopSound(string soundName)
 	{
 		if (nameDictionary.ContainsKey(soundName))
