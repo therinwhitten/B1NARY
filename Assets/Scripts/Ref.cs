@@ -10,4 +10,7 @@ public class Ref<T>
 		this.getter = getter;
 	}
 	public T Value { get => getter(); set => setter(value); }
+
+	public static implicit operator T(Ref<T> item)
+		=> item.Value;
 }

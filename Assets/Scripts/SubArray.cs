@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Collections;
 
 // TODO: Add list interfaces!
-public class SubArray<T> 
+public class SubArray<T> : IEnumerable<T>
 {
 	private Ref<T[]> referencedArray;
 	private int startIndex = 0, endIndex = int.MaxValue;
@@ -33,6 +34,8 @@ public class SubArray<T>
 	}
 	public int Length => 
 		new int[] { referencedArray.Value.Length, endIndex }.Min() - startIndex;
+
+	
 
 	public SubArray(Ref<T[]> referencedArray, int startIndex)
 	{
@@ -75,4 +78,15 @@ public class SubArray<T>
 	public Dictionary<TKey, T> ToDictionary<TKey>(Func<T, TKey> keySelector)
 		=> ToArray().ToDictionary(keySelector);
 
+	IEnumerator<T> IEnumerable<T>.GetEnumerator()
+	{
+		for (int i = startIndex; i < Length; i++)
+			yield return referencedArray.Value[i];
+	}
+
+	IEnumerator IEnumerable.GetEnumerator()
+	{
+		for (int i = startIndex; i < Length; i++)
+			yield return referencedArray.Value[i];
+	}
 }

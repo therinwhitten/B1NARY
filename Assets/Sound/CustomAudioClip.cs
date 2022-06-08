@@ -1,11 +1,12 @@
 using System;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Serialization;
 
 ///<summary>Internal struct handled by code to manage sound files, see 
 ///<see cref="UnityCustomAudioClip"/> as it mainly borrows from there</summary>
 [Serializable] 
-public struct CustomAudioClip
+public class CustomAudioClip
 {
 
 	public static implicit operator AudioClip(CustomAudioClip input)
@@ -16,26 +17,20 @@ public struct CustomAudioClip
 	public CustomAudioClip(AudioClip audioClip)
 	{
 		this.audioClip = audioClip;
-		volume = 1;
-		volumeVariance = 0;
-		pitch = 1;
-		pitchVariance = 0;
-		audioMixerGroup = null;
-		loop = false;
-		fadeWhenTransitioning = 0.5f;
-		willFadeWhenTransitioning = true;
-		playOnAwake = false;
 	}
 
 	public AudioClip audioClip;
-	[Range(0, 1)] public float volume;
-	[Range(0, 1)] public float volumeVariance;
-	[Range(0, 3)] public float pitch;
-	[Range(0, 1)] public float pitchVariance;
-	public AudioMixerGroup audioMixerGroup;
-	public bool loop, playOnAwake;
-	[Header("Scene Transitions")] public bool willFadeWhenTransitioning;
-	[Range(0, 3)] public float fadeWhenTransitioning;
+	[FormerlySerializedAs("Mixer Group")] public AudioMixerGroup audioMixerGroup = null;
+	[Space, Range(0, 1)] public float volume = 1;
+	[Range(0, 1)] public float volumeVariance = 0;
+	[Space, Range(0, 3)] public float pitch = 1;
+	[Range(0, 1)] public float pitchVariance = 0;
+	[Space] public bool loop = false;
+	public bool playOnAwake = false;
+	[Header("Scene Transitions"), Tooltip("if the sound fade or stop during scene transition or not.")]
+	public bool willFadeWhenTransitioning = true;
+	[Range(0, 60), Tooltip("How long it will take before completely fading into 0")] 
+	public float fadeWhenTransitioning = 0.3f;
 
 	public override string ToString() => audioClip.ToString();
 }

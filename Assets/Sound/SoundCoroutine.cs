@@ -1,5 +1,4 @@
 using System;
-using Random = UnityEngine.Random;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -10,10 +9,8 @@ using UnityEngine.Audio;
 /// </summary>
 public class SoundCoroutine
 {
-	
-	
-
-
+	public bool IsFadingAway { get; private set; } = false;
+	public bool IsPlaying => AudioSource.isPlaying;
 	public MonoBehaviour monoBehaviour;
 	public AudioMixerGroup AudioMixerGroup { get; private set; }
 	private AudioSource audioSource;
@@ -30,7 +27,7 @@ public class SoundCoroutine
 	private Coroutine garbageCollection = null;
 	public bool destroyOnFinish = true;
 
-	public SoundCoroutine(MonoBehaviour monoBehaviour, AudioMixerGroup mixerGroup = null, CustomAudioClip? clip = null)
+	public SoundCoroutine(MonoBehaviour monoBehaviour, AudioMixerGroup mixerGroup = null, CustomAudioClip clip = null)
 	{
 		this.monoBehaviour = monoBehaviour;
 		audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
@@ -38,7 +35,7 @@ public class SoundCoroutine
 		AudioMixerGroup = mixerGroup;
 		audioSource.outputAudioMixerGroup = mixerGroup;
 		if (clip != null)
-			AudioClip = clip.Value;
+			AudioClip = clip;
 	}
 
 	public CustomAudioClip ExtraDataAudioClip { get; private set; }
@@ -102,16 +99,17 @@ public class SoundCoroutine
 	}
 	private void FinishCoroutine()
 	{
-		Finished?.Invoke(this, EventArgs.Empty);
 		Stop();
 	}
 	public event EventHandler Finished;
 
 	public void Stop(float fadeOutSeconds, bool destroy = true)
 	{
+		CalledToStop?.Invoke(this, EventArgs.Empty);
 		if (monoBehaviour == null)
 			throw new NullReferenceException($"{nameof(SoundCoroutine)} does" +
 				$"not have an availible {nameof(MonoBehaviour)}!");
+		IsFadingAway = true;
 		monoBehaviour.ChangeFloat(
 			new Ref<float>(() => audioSource.volume, 
 				(var) => 
@@ -120,7 +118,10 @@ public class SoundCoroutine
 					// Because of how dynamically changing the value works,
 					// - im going to have to write the action in the setter
 					if (audioSource.volume <= 0)
+					{
+						IsFadingAway = false;
 						Stop(destroy);
+					}
 				}
 			),
 			0,
@@ -129,11 +130,14 @@ public class SoundCoroutine
 
 	public void Stop(bool destroy = true)
 	{
+		CalledToStop?.Invoke(this, EventArgs.Empty);
+		Finished?.Invoke(this, EventArgs.Empty);
 		audioSource.Stop();
 		monoBehaviour.StopCoroutine(garbageCollection);
 		if (destroyOnFinish && destroy)
 			OnDestroy();
 	}
+	public event EventHandler CalledToStop;
 
 	private bool isDestroyed = false;
 	private void OnDestroy()
