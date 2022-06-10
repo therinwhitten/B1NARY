@@ -9,7 +9,7 @@ public class AudioCrossSceneTransferer : MonoBehaviour
 {
 	// This was a nightmare to fix ffs.
 	private SoundCoroutine[] audioCoroutines = null;
-	private Dictionary<AudioClip, SoundCoroutine> lookupCoroutine;
+	private Dictionary<string, SoundCoroutine> lookupCoroutine;
 	public SoundCoroutine[] AudioCoroutines
 	{
 		get => audioCoroutines;
@@ -47,14 +47,20 @@ public class AudioCrossSceneTransferer : MonoBehaviour
 					audioCoroutines[i].Stop();
 			}
 		}
-		lookupCoroutine = audioCoroutines.ToDictionary(coroutine => coroutine.AudioClip.audioClip);
+		lookupCoroutine = audioCoroutines.ToDictionary(sound => sound.AudioClip.audioClip.name);
+
+
+		//lookupCoroutine = audioCoroutines.ToDictionary(coroutine => coroutine.AudioClip.audioClip);
+
 		if (!gameObject.TryGetComponent<AudioSource>(out _))
 			Destroy(gameObject); // In case if all files are deleted instantly
-		else Debug.Log($"{nameof(AudioCrossSceneTransferer)} started with {GetComponents<AudioSource>().Length} audioSource(s)!");
+		else Debug.Log($"{nameof(AudioCrossSceneTransferer)} started with {audioCoroutines.Length} audioSource(s)!");
 	}
 	private void UpdatedValue(AudioClip clip)
 	{
-		Destroy(lookupCoroutine[clip].AudioSource);
+		if (!lookupCoroutine.ContainsKey(clip.name))
+			Debug.LogWarning($"bruh {clip}");
+		Destroy(lookupCoroutine[clip.name].AudioSource);
 		StartCoroutine(DuctTapeFix());
 	}
 	IEnumerator DuctTapeFix()

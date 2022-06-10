@@ -10,8 +10,8 @@ using System.Collections;
 ///		A group of sounds customized by the user, can be used separately 
 ///		or multiple.
 ///	</summary>
-[CreateAssetMenu(fileName = "New Sound Library", menuName = "B1NARY/Sound Library", order = 0)]
-public class SoundConfiguration : ScriptableObject, IEnumerable<CustomAudioClip>
+[CreateAssetMenu(fileName = "New Sound Library", menuName = "B1NARY/Sound Library (SL)", order = 0)]
+public class SoundLibrary : ScriptableObject, IEnumerable<CustomAudioClip>
 {
 	public CustomAudioClip[] customAudioClips;
 	public CustomAudioClip this[int index] => customAudioClips[index];

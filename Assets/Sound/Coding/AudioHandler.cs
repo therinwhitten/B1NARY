@@ -18,7 +18,7 @@ public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCorouti
 
 	[SerializeField, Tooltip("A readonly array which keeps track of data for" +
 		" audioClips, solves at runtime.")] 
-	private SoundConfiguration[] customAudioData;
+	private SoundLibrary[] customAudioData;
 
 	// <summary> Easily Links a normal audioclip to a custom one. </summary>
 	//private Dictionary<AudioClip, CustomAudioClip> audioClipDictionary = 
@@ -104,7 +104,7 @@ public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCorouti
 		// filePath
 		AudioClip audioClip = Resources.Load<AudioClip>(soundPath);
 		if (audioClip == null)
-			throw new NullReferenceException($"{soundPath} does not lead to a sound" +
+			throw new SoundNotFoundException($"{soundPath} does not lead to a sound" +
 			"file!");
 		return audioClip;
 	}
