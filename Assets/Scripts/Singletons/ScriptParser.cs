@@ -60,10 +60,29 @@ public class ScriptParser : Singleton<ScriptParser>
 		ParseLine(currentNode.getCurrentLine());
 	}
 
+	string[] audioFileNames = null;
 	public AudioClip GetVoiceLine(int index)
 	{
 		string stringIndex = index.ToString();
-		return Resources.Load<AudioClip>($"Voice/{scriptName}/{stringIndex}");
+		AudioClip output = Resources.Load<AudioClip>($"Voice/{scriptName}/{stringIndex}");
+		
+		if (output == null)
+			Debug.LogError($"Line {stringIndex} does not have" +
+				" an exact filename! Did you leave a space within the filename?");
+		/*
+		{
+
+			if (audioFileNames == null)
+				audioFileNames = Directory.GetFiles($"{Application.dataPath}/Voice/{scriptName}")
+					.Select(str => str.Split('/').Last().Trim()).ToArray();
+			IEnumerable<string> lines = audioFileNames.Where(str => str.Trim() == stringIndex);
+			if (lines.Any())
+				output = Resources.Load<AudioClip>($"Voice/{scriptName}/{lines.First()}");
+			else
+				Debug.LogError($"Line {stringIndex} is not found!");
+		}
+		*/
+		return output;
 	}
 
 	public void ChangeScriptFile(string newScript, int position = 0)
@@ -162,7 +181,7 @@ public class ScriptParser : Singleton<ScriptParser>
 			try
 			{
 				CharacterScript charScript = charObject.GetComponent<CharacterScript>();
-				charScript.speak(currentSpeaker, Line);
+				charScript.Speak(currentSpeaker, Line);
 			}
 			catch (System.IndexOutOfRangeException)
 			{

@@ -10,6 +10,7 @@ using UnityEngine.Audio;
 public class SoundCoroutine
 {
 	public bool IsFadingAway { get; private set; } = false;
+	public bool DeleteCoroutineOnSwap { get; set; } = true;
 	public bool IsPlaying => AudioSource.isPlaying;
 	public MonoBehaviour monoBehaviour;
 	public AudioMixerGroup AudioMixerGroup { get; private set; }
@@ -19,8 +20,17 @@ public class SoundCoroutine
 		get => audioSource;
 		set
 		{
-			UnityEngine.Object.Destroy(audioSource);
+			if (audioSource == value)
+				return;
+			if (DeleteCoroutineOnSwap)
+				UnityEngine.Object.Destroy(audioSource);
 			audioSource = value;
+			if (audioSource == null)
+			{
+				Debug.LogWarning($"{nameof(SoundCoroutine)} assigned to an empty" +
+					" audioSource");
+				return;
+			}
 			audioSource.outputAudioMixerGroup = AudioMixerGroup;
 		}
 	}
@@ -95,10 +105,6 @@ public class SoundCoroutine
 			: (Func<YieldInstruction>)(() => new WaitForEndOfFrame());
 		while (audioSource.isPlaying)
 			yield return yield();
-		FinishCoroutine();
-	}
-	private void FinishCoroutine()
-	{
 		Stop();
 	}
 	public event EventHandler Finished;
