@@ -18,7 +18,7 @@ public class ScriptParser : Singleton<ScriptParser>
 	// public int lineIndex = 0;
 	// public int continueIndex = 0;
 
-	public Dictionary<string, AudioClip> voiceLines;
+	public Dictionary<string, AudioClip> voiceLines { get; set; }
 
 	string Path => $"{Application.streamingAssetsPath}/Docs/{scriptName}.txt";
 
@@ -56,22 +56,21 @@ public class ScriptParser : Singleton<ScriptParser>
 		reader = new StreamReader(Path);
 		currentNode = new DialogueNode(GetLines());
 		// readNextLine();
-		LoadVoiceLines();
 
 		ParseLine(currentNode.getCurrentLine());
 	}
 
-	// This may have to load an individual voice line as stated by 'dynamic loading'.
-	public void LoadVoiceLines() =>
-		voiceLines = Resources.LoadAll<AudioClip>("Voice/" + scriptName)
-		.ToDictionary(x => x.ToString().Trim());
+	public AudioClip GetVoiceLine(int index)
+	{
+		string stringIndex = index.ToString();
+		return Resources.Load<AudioClip>($"Voice/{scriptName}/{stringIndex}");
+	}
 
 	public void ChangeScriptFile(string newScript, int position = 0)
 	{
 		scriptName = newScript;
 		reader = new StreamReader(Path);
 		currentNode = new DialogueNode(GetLines());
-		LoadVoiceLines();
 		// This is fucking retarded. I don't remember why I did this and now
 		// I'm too afraid to change it
 		position -= 2;

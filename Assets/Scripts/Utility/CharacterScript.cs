@@ -22,7 +22,7 @@ public class CharacterScript : MonoBehaviour
     public string[] expressions;
     [HideInInspector]
     public RectTransform rectTransform;
-    Dictionary<string, AudioClip> voiceLines { get { return ScriptParser.Instance.voiceLines; } }
+    public AudioClip GetVoiceLine(int index) => ScriptParser.Instance.GetVoiceLine(index);
     public AudioSource voice;
     public CubismRenderer[] renderers;
     private Material lighting;
@@ -118,7 +118,7 @@ public class CharacterScript : MonoBehaviour
         try
         {
             // Debug.Log("Speaking line " + Line.index.ToString() + ": " + Line.line);
-            AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, voicevolume, voice, voiceLines[Line.index.ToString()]);
+            AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, voicevolume, voice, GetVoiceLine(Line.index));
             // float volume = voice.volume;
             // voice.volume = 0f;
             // voice.Stop();
@@ -130,7 +130,7 @@ public class CharacterScript : MonoBehaviour
         {
             {
                 Debug.LogError($"Voice line not found: Line {Line.index}\n"
-                    + ex);
+                    + $"{ex}\n\n {ex.TargetSite}\n\n{ex.Source}\n\n{ex.HResult}");
             }
         }
     }

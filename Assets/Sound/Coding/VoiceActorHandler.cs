@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using System;
+using System.Collections;
 
 public class VoiceActorHandler : SingletonNew<VoiceActorHandler>
 {
@@ -8,7 +10,6 @@ public class VoiceActorHandler : SingletonNew<VoiceActorHandler>
 	protected override void SingletonStart()
 	{
 		speakerCoroutine = new SoundCoroutine(this) { destroyOnFinish = false };
-		speakerCoroutine.Finished += (sender, args) => PlayNew();
 	}
 
 	public void PlayVoice(string name, float volume, AudioSource source, AudioClip clip)
@@ -19,25 +20,36 @@ public class VoiceActorHandler : SingletonNew<VoiceActorHandler>
 			return;
 		}
 		canPlay = true;
-		speakerPackage = (source, name, volume, clip);
-		if (speakerCoroutine.IsPlaying)
-			speakerCoroutine.Stop(0.2f, false);
-		else if (speakerCoroutine.IsFadingAway)
-			speakerCoroutine.Stop();
-		else PlayNew();
+		// if (speakerCoroutine.IsPlaying)
+		// {
+		// 	speakerCoroutine.Stop(0.2f, false);
+		// 	StartCoroutine(Delay());
+		// }
+		// else
+			PlayNew(name, volume, source, clip);
+
+		// IEnumerator Delay()
+		// {
+		// 	yield return new WaitForSeconds(0.2f);
+		// 	PlayNew(name, volume, source, clip);
+		// }
 	}
 
 	// I hope i find a better way than having global variables here.
 	private bool canPlay = false;
-	private (AudioSource, string, float, AudioClip) speakerPackage;
-	private void PlayNew()
+	private void PlayNew(string name, float volume, AudioSource source, AudioClip clip)
 	{
 		if (!canPlay)
 			return;
-		if (lastSpeaker != speakerPackage.Item2)
-			lastSpeaker = speakerPackage.Item2;
-		speakerCoroutine.AudioSource = speakerPackage.Item1;
-		speakerCoroutine.AudioClip = new CustomAudioClip(speakerPackage.Item4) { volume = speakerPackage.Item3 };
+		if (speakerCoroutine.IsPlaying)
+			speakerCoroutine.Stop(false);
+
+		if (lastSpeaker != name)
+			lastSpeaker = name;
+		if (speakerCoroutine.AudioSource != source)
+			speakerCoroutine.AudioSource = source;
+		speakerCoroutine.AudioClip = new CustomAudioClip(clip) 
+			{ volume = volume };
 		speakerCoroutine.PlaySingle();
 	}
 }
