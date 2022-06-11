@@ -125,7 +125,7 @@ public class CharacterScript : MonoBehaviour
 			// return;
 		}
 		// Debug.Log("Speaking line " + Line.index.ToString() + ": " + Line.line);
-		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, voicevolume, voice, GetVoiceLine(Line.index));
+		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, voicevolume, voice, clip);
 		// float volume = voice.volume;
 		// voice.volume = 0f;
 		// voice.Stop();
