@@ -118,14 +118,14 @@ public class CharacterScript : MonoBehaviour
 		AudioClip clip = GetVoiceLine(Line.index);
 		if (clip == null)
 		{
-			AudioHandler.Instance.VoiceActorHandler.StopVoice();
+			AudioHandler.Last().VoiceActorHandler.StopVoice();
 			return;
 			// Would pause it, but it breaks the code for some reason and I 
 			// - don't know why.
 			// return;
 		}
 		// Debug.Log("Speaking line " + Line.index.ToString() + ": " + Line.line);
-		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, voicevolume, voice, clip);
+		AudioHandler.Last().VoiceActorHandler.PlayVoice(name, voicevolume, voice, clip);
 		// float volume = voice.volume;
 		// voice.volume = 0f;
 		// voice.Stop();

@@ -10,6 +10,7 @@ public static class GameCommands
 			return;
 		preppedSwitchScenes = true;
 		SwitchingScenes?.Invoke(null, EventArgs.Empty);
+		SwitchingScenes = null;
 	}
 	public static event EventHandler SwitchingScenes;
 	private static bool preppedSwitchScenes = false;
@@ -18,6 +19,7 @@ public static class GameCommands
 	{
 		var operation = SceneManager.LoadSceneAsync(sceneName);
 		SwitchedScenes?.Invoke(null, EventArgs.Empty);
+		SwitchedScenes = null;
 		return operation;
 	}
 	public static event EventHandler SwitchedScenes;

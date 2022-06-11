@@ -104,13 +104,13 @@ public class CommandsManager : Singleton<CommandsManager>
 			// Sounds
 			case "fadeinsound":
 				if (Extensions.TryInvoke<SoundNotFoundException>(() => 
-					AudioHandler.Instance.PlayFadedSound(args[0], float.Parse(args[1])), out _))
+					AudioHandler.Last().PlayFadedSound(args[0], float.Parse(args[1])), out _))
 					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;
 			case "fadeoutsound":
 				try
 				{
-					AudioHandler.Instance.StopSoundViaFade(args[0], float.Parse(args[1]));
+					AudioHandler.Last().StopSoundViaFade(args[0], float.Parse(args[1]));
 				}
 				catch (SoundNotFoundException ex)
 					{ Debug.LogWarning($"{args[0]} is not a valid soundfile Path!"
@@ -121,18 +121,18 @@ public class CommandsManager : Singleton<CommandsManager>
 				break;
 			case "playsound":
 				if (Extensions.TryInvoke<SoundNotFoundException>(() =>
-					AudioHandler.Instance.PlaySound(args[0]), out _))
+					AudioHandler.Last().PlaySound(args[0]), out _))
 					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;
 			case "stopsound":
 				if (Extensions.TryInvoke<SoundNotFoundException>(() =>
-					AudioHandler.Instance.StopSound(args[0]), out _))
+					AudioHandler.Last().StopSound(args[0]), out _))
 					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;
 			case "startdelayedsound":
 				{
 					if (Extensions.TryInvoke<Coroutine, SoundNotFoundException>(() =>
-					StartCoroutine(Delay(float.Parse(args[0]), () => AudioHandler.Instance.PlaySound(args[0]))), out _, out _))
+					StartCoroutine(Delay(float.Parse(args[0]), () => AudioHandler.Last().PlaySound(args[0]))), out _, out _))
 						Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 					IEnumerator Delay(float seconds, Action playAfterDelay)
 					{

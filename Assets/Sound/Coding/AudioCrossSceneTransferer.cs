@@ -54,7 +54,7 @@ public class AudioCrossSceneTransferer : MonoBehaviour
 
 		if (!gameObject.TryGetComponent<AudioSource>(out _))
 			Destroy(gameObject); // In case if all files are deleted instantly
-		else Debug.Log($"{nameof(AudioCrossSceneTransferer)} started with {audioCoroutines.Length} audioSource(s)!");
+		// else Debug.Log($"{nameof(AudioCrossSceneTransferer)} started with {audioCoroutines.Length} audioSource(s)!");
 	}
 	private void UpdatedValue(AudioClip clip)
 	{
@@ -66,8 +66,31 @@ public class AudioCrossSceneTransferer : MonoBehaviour
 	IEnumerator DuctTapeFix()
 	{
 		yield return new WaitForEndOfFrame();
-		if (!gameObject.TryGetComponent<AudioSource>(out _))
+		if (!gameObject.TryGetComponent<AudioSource>(out _)
+			&& outsideCoroutines.Count == emptySpots.Count)
 			Destroy(gameObject);
 	}
 
+
+
+
+	private Dictionary<int, Coroutine> outsideCoroutines =
+		new Dictionary<int, Coroutine>();
+	private Queue<int> emptySpots = new Queue<int>();
+
+	public void AddCoroutine(IEnumerator coroutine)
+	{
+		if (emptySpots.Count == 0)
+			outsideCoroutines.Add(outsideCoroutines.Count, StartCoroutine(coroutine));
+		else
+			outsideCoroutines[emptySpots.Dequeue()] = StartCoroutine(coroutine);
+	}
+
+	private void FinishCoroutine(int index)
+	{
+		outsideCoroutines[index] = null;
+		emptySpots.Enqueue(index);
+
+		StartCoroutine(DuctTapeFix());
+	}
 }

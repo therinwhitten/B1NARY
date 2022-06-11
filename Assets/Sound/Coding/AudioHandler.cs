@@ -34,7 +34,6 @@ public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCorouti
 
 	protected override void SingletonStart()
 	{
-		Debug.Log($"{nameof(AudioHandler)} started!");
 		if (HasPreviousInstance)
 			Debug.LogError($"Another {nameof(AudioHandler)} already exists!");
 		else
@@ -240,7 +239,6 @@ public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCorouti
 
 	protected override void OnSingletonDestroy()
 	{
-		Debug.Log($"{nameof(AudioHandler)} being disposed of");
 		// This may cause issues if multiple audioHandlers are ran, but shouldn't
 		// - be intended to do that anyway.
 		HasPreviousInstance = false;

@@ -80,7 +80,7 @@ public class SoundCoroutine
 	{
 		float targetValue = audioSource.volume;
 		audioSource.volume = 0;
-		FadeController.Instance.ChangeFloat
+		FadeController.Last().ChangeFloat
 			(
 			new Ref<float>(() => audioSource.volume, (var) => audioSource.volume = var), 
 			targetValue, 
@@ -113,14 +113,17 @@ public class SoundCoroutine
 	{
 		CalledToStop?.Invoke(this, EventArgs.Empty);
 		if (monoBehaviour == null)
-			throw new NullReferenceException($"{nameof(SoundCoroutine)} does" +
-				$"not have an availible {nameof(MonoBehaviour)}!");
+		{
+			monoBehaviour = UnityEngine.Object.FindObjectOfType<MonoBehaviour>();
+			Debug.LogError($"{nameof(SoundCoroutine)} does" +
+				$" not have an availible {nameof(MonoBehaviour)}!");
+		}
 		IsFadingAway = true;
 		monoBehaviour.ChangeFloat(
 			new Ref<float>(() => audioSource.volume, 
-				(var) => 
+				(@float) => 
 				{ 
-					audioSource.volume = var;
+					audioSource.volume = @float;
 					// Because of how dynamically changing the value works,
 					// - im going to have to write the action in the setter
 					if (audioSource.volume <= 0)
@@ -139,7 +142,8 @@ public class SoundCoroutine
 		CalledToStop?.Invoke(this, EventArgs.Empty);
 		Finished?.Invoke(this, EventArgs.Empty);
 		audioSource.Stop();
-		monoBehaviour.StopCoroutine(garbageCollection);
+		if (garbageCollection != null)
+			monoBehaviour.StopCoroutine(garbageCollection);
 		if (destroyOnFinish && destroy)
 			OnDestroy();
 	}
@@ -148,7 +152,7 @@ public class SoundCoroutine
 	private bool isDestroyed = false;
 	private void OnDestroy()
 	{
-		audioSource.Stop();
+		Stop(false);
 		if (isDestroyed)
 			return;
 		GarbageCollection?.Invoke(this, audioSource.clip);

@@ -44,7 +44,7 @@ public static class Extensions
 			(Func<float, float, bool>)((current, final2) => current > final2) :
 			(Func<float, float, bool>)((current, final2) => current < final2);
 		monoBehaviour.StartCoroutine(Coroutine(final));
-		IEnumerator Coroutine(float finalValue)
+		IEnumerator Coroutine(float finalValue, Action action = null)
 		{
 			while (value.Value != finalValue)
 			{
@@ -58,6 +58,7 @@ public static class Extensions
 					value.Value += change;
 				yield return new WaitForEndOfFrame();
 			}
+			action?.Invoke();
 		}
 	}
 

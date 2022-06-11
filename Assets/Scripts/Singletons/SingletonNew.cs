@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
+using System.Collections.Generic;
 
 ///<summary> 
 /// A class that stores a single instance of <see cref="T"/>,
@@ -14,44 +16,55 @@ public class SingletonNew<T> : MonoBehaviour where T : MonoBehaviour
 	public static bool ThrowErrorIfEmpty { get; set; } = true;
 	private static object _lock = new object();
 
-	private static T _instance;
-	/// <summary> First Registered Instance in the scene </summary>
-	public static T Instance
+	private static Dictionary<int, T> instances = new Dictionary<int, T>();
+	private static Queue<int> queue = new Queue<int>();
+	private static List<int> instancesList = new List<int>();
+	public static T First()
 	{
-		get
-		{
-			if (_instance != null)
-				return _instance;
+		CheckInstances();
+		return instances[instancesList.Min()];
+	}
+	public static T Last()
+	{
+		CheckInstances();
+		return instances[instancesList.Max()];
+	}
+	public static T GetItem(int index)
+	{
+		CheckInstances();
+		return instances[index];
+	}
+
+	private static void CheckInstances()
+	{
+		if (instances.Count == 0)
 			lock (_lock)
 			{
-				if (_instance != null)
-					return _instance;
+				if (instances.Count > 0)
+					return;
 				if (ThrowErrorIfEmpty)
 					throw new ArgumentNullException($"{typeof(T)} does not " +
 						"have an instance created!");
 				var @object = new GameObject($"{typeof(T)} (Singleton)");
-				_instance = @object.AddComponent<T>();
-				return _instance;
+				instances.Add(instances.Count, @object.AddComponent<T>());
 			}
-		}
-		set => _instance = value;
 	}
 
-	private bool isLinkedInstance = false;
+
+	private int index;
 	private void Start()
 	{
-		if (_instance == null)
-		{
-			isLinkedInstance = true;
-			Instance = GetComponent<T>();
-		}
+		index = queue.Count == 0 ? instances.Count : queue.Dequeue();
+		instancesList.Add(index);
+		instances.Add(index, GetComponent<T>());
 		SingletonStart();
 	}
 
 	private void OnDestroy()
 	{
-		if (isLinkedInstance)
-			_instance = null;
+		queue.Enqueue(index);
+		instances.Remove(index);
+		instancesList.Remove(index);
 		OnSingletonDestroy();
 	}
 
