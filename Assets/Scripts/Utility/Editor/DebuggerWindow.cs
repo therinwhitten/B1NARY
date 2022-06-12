@@ -58,6 +58,7 @@ public class DebuggerWindow : EditorWindow
 		(Color.green, "Green"),
 		(Color.blue, "Blue"),
 	};
+
 	private enum ColorType
 	{
 		Normal = 0,
@@ -75,17 +76,24 @@ public class DebuggerWindow : EditorWindow
 		// Get existing open window or if none, make a new one:
 		DebuggerWindow window = (DebuggerWindow)GetWindow(typeof(DebuggerWindow));
 		window.titleContent = new GUIContent("B1NARY Debugger");
-		foreach (ColorType colorType in Enum.GetValues(typeof(ColorType)))
-			window.currentColors.Add(colorType, EditorPrefs.GetInt($"{colorType} B1NARY ColorLine", (int)colorType));
 		window.Show();
 	}
-
+	private static Dictionary<ColorType, int> GetNewDictionary()
+	{
+		Dictionary<ColorType, int> output = new Dictionary<ColorType, int>();
+		foreach (ColorType colorType in Enum.GetValues(typeof(ColorType)))
+			output.Add(colorType, 
+				EditorPrefs.GetInt($"{colorType} B1NARY ColorLine", (int)colorType));
+		return output;
+	}
 
 
 
 	private Dictionary<ColorType, int> currentColors = new Dictionary<ColorType, int>();
 	private void OnGUI()
 	{
+		if (currentColors.Count != 5) // ColorType Enum Size
+			currentColors = GetNewDictionary();
 		TopBar();
 		EditorGUILayout.Space(10);
 		ShowTabs();
@@ -103,6 +111,7 @@ public class DebuggerWindow : EditorWindow
 	}
 
 	
+
 	int selected = 0;
 	private void ShowTabs()
 	{
@@ -138,34 +147,40 @@ public class DebuggerWindow : EditorWindow
 		ScriptParser parser;
 		if (!TryGetScriptParser(out parser))
 			return;
+		DisplayScrollView();
+		
 
-		scrollPos = GUILayout.BeginScrollView(scrollPos);
-		if (currentScript != parser.scriptName)
+		void DisplayScrollView()
 		{
-			currentScript = parser.scriptName;
-			currentScriptContents = File.ReadAllLines($"{Application.streamingAssetsPath}/Docs/{parser.scriptName}.txt");
-		}
-		int space = currentScriptContents.Length.ToString().Length;
-		int onLine = parser.currentNode != null ? parser.currentNode.index : -1;
+			scrollPos = GUILayout.BeginScrollView(scrollPos);
+			if (currentScript != parser.scriptName)
+			{
+				currentScript = parser.scriptName;
+				currentScriptContents = File.ReadAllLines($"{Application.streamingAssetsPath}/Docs/{parser.scriptName}.txt");
+			}
+			int space = currentScriptContents.Length.ToString().Length;
+			int onLine = parser.currentNode != null ? parser.currentNode.index : -1;
 
 
-		for (int i = 0; i < currentScriptContents.Length; i++)
-		{
-			Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth - 26, 16);
-			rect.x += 6;
-			if (onLine == i)
-				GUI.color = colors[currentColors[ColorType.Selected]].color;
-			else if (commandRegex.IsMatch(currentScriptContents[i]))
-				GUI.color = colors[currentColors[ColorType.Command]].color;
-			else if (emoteRegex.IsMatch(currentScriptContents[i]))
-				GUI.color = colors[currentColors[ColorType.Emote]].color;
-			else if (currentScriptContents[i].EndsWith("::"))
-				GUI.color = colors[currentColors[ColorType.Speaker]].color;
-			else
-				GUI.color = colors[currentColors[ColorType.Normal]].color;
-			GUI.Label(rect, $"{i + 1} {new string(' ', (space - (i + 1).ToString().Length) * 2)}    {currentScriptContents[i]}");
+			for (int i = 0; i < currentScriptContents.Length; i++)
+			{
+				Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth - 26, 16);
+				rect.x += 6;
+				if (onLine == i)
+					GUI.color = colors[currentColors[ColorType.Selected]].color;
+				else if (commandRegex.IsMatch(currentScriptContents[i]))
+					GUI.color = colors[currentColors[ColorType.Command]].color;
+				else if (emoteRegex.IsMatch(currentScriptContents[i]))
+					GUI.color = colors[currentColors[ColorType.Emote]].color;
+				else if (currentScriptContents[i].EndsWith("::"))
+					GUI.color = colors[currentColors[ColorType.Speaker]].color;
+				else
+					GUI.color = colors[currentColors[ColorType.Normal]].color;
+				GUI.Label(rect, $"{i + 1} {new string(' ', (space - (i + 1).ToString().Length) * 2)}    {currentScriptContents[i]}");
+			}
+			GUILayout.EndScrollView();
 		}
-		GUILayout.EndScrollView();
+		
 	}
 	private void AudioTab()
 	{
@@ -173,7 +188,7 @@ public class DebuggerWindow : EditorWindow
 	}
 	private void OptionsTab()
 	{
-		try // Causes issues if you change values like this
+		try // Causes issues if you change values with a foreach
 		{
 			foreach (ColorType type in currentColors.Keys)
 			{
