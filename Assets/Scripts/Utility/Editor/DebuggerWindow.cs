@@ -48,7 +48,24 @@ public class DebuggerWindow : EditorWindow
 		return true;
 	}
 
-
+	private static readonly (Color color, string name)[] colors =
+	{
+		(Color.white, "White"),
+		(Color.red, "Red"),
+		(Color.cyan, "Cyan"),
+		(Color.yellow, "Yellow"),
+		(Color.magenta, "Magenta"),
+		(Color.green, "Green"),
+		(Color.blue, "Blue"),
+	};
+	private enum ColorType
+	{
+		Normal = 0,
+		Selected = 1,
+		Speaker = 2,
+		Command = 3,
+		Emote = 4,
+	}
 
 
 	[MenuItem("B1NARY/Debugger")]
@@ -58,12 +75,15 @@ public class DebuggerWindow : EditorWindow
 		// Get existing open window or if none, make a new one:
 		DebuggerWindow window = (DebuggerWindow)GetWindow(typeof(DebuggerWindow));
 		window.titleContent = new GUIContent("B1NARY Debugger");
-
+		foreach (ColorType colorType in Enum.GetValues(typeof(ColorType)))
+			window.currentColors.Add(colorType, EditorPrefs.GetInt($"{colorType} B1NARY ColorLine", (int)colorType));
 		window.Show();
 	}
 
 
 
+
+	private Dictionary<ColorType, int> currentColors = new Dictionary<ColorType, int>();
 	private void OnGUI()
 	{
 		TopBar();
@@ -134,15 +154,15 @@ public class DebuggerWindow : EditorWindow
 			Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth - 26, 16);
 			rect.x += 6;
 			if (onLine == i)
-				GUI.color = Color.red;
+				GUI.color = colors[currentColors[ColorType.Selected]].color;
 			else if (commandRegex.IsMatch(currentScriptContents[i]))
-				GUI.color = Color.yellow;
+				GUI.color = colors[currentColors[ColorType.Command]].color;
 			else if (emoteRegex.IsMatch(currentScriptContents[i]))
-				GUI.color = Color.magenta;
+				GUI.color = colors[currentColors[ColorType.Emote]].color;
 			else if (currentScriptContents[i].EndsWith("::"))
-				GUI.color = Color.cyan;
+				GUI.color = colors[currentColors[ColorType.Speaker]].color;
 			else
-				GUI.color = Color.white;
+				GUI.color = colors[currentColors[ColorType.Normal]].color;
 			GUI.Label(rect, $"{i + 1} {new string(' ', (space - (i + 1).ToString().Length) * 2)}    {currentScriptContents[i]}");
 		}
 		GUILayout.EndScrollView();
@@ -153,8 +173,26 @@ public class DebuggerWindow : EditorWindow
 	}
 	private void OptionsTab()
 	{
-
-		//EditorGUILayout.DropdownButton(new GUIContent("Selected Button Color"), FocusType.Keyboard, )
+		try // Causes issues if you change values like this
+		{
+			foreach (ColorType type in currentColors.Keys)
+			{
+				int @out = EditorGUILayout.Popup($"{type} Line Color", currentColors[type], colors.Select(tuple => tuple.name).ToArray());
+				if (@out != currentColors[type])
+				{
+					currentColors[type] = @out;
+					EditorPrefs.SetInt($"{type} B1NARY ColorLine", currentColors[type]);
+				}
+			}
+		}
+		catch (InvalidOperationException) { }
+		bool pressedDeleteAllButton = GUILayout.Button("Reset Settings");
+		if (pressedDeleteAllButton)
+		{
+			EditorPrefs.DeleteAll();
+			foreach (ColorType colorType in Enum.GetValues(typeof(ColorType)))
+				currentColors[colorType] = EditorPrefs.GetInt($"{colorType} B1NARY ColorLine", (int)colorType);
+		}
 	}
 
 	private void SceneNameShow()
