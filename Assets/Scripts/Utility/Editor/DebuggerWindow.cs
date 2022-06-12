@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using System.Text.RegularExpressions;
@@ -17,7 +18,10 @@ public class DebuggerWindow : EditorWindow
 	{
 		Scripts,
 		Audio,
-		Options
+		Options,
+		PersistentData,
+		References,
+		About
 	}
 
 	private static ScriptParser _parser;
@@ -76,6 +80,8 @@ public class DebuggerWindow : EditorWindow
 		// Get existing open window or if none, make a new one:
 		DebuggerWindow window = (DebuggerWindow)GetWindow(typeof(DebuggerWindow));
 		window.titleContent = new GUIContent("B1NARY Debugger");
+		window.minSize *= 3;
+		window.minSize = new Vector2(window.minSize.x, window.minSize.y + 50);
 		window.Show();
 	}
 	private static Dictionary<ColorType, int> GetNewDictionary()
@@ -115,19 +121,22 @@ public class DebuggerWindow : EditorWindow
 	int selected = 0;
 	private void ShowTabs()
 	{
-		Rect guiRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth - 10, 20);
+		Rect guiRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth - 10, 40);
 		guiRect.width -= 10;
 		guiRect.x += 5;
 		string[] array = Enum.GetNames(typeof(Tabs));
-		selected = GUI.SelectionGrid(guiRect, selected, array, array.Length);
+		selected = GUI.SelectionGrid(guiRect, selected, array, 3);
 		switch ((Tabs)selected)
 		{
 			case Tabs.Scripts:
 				ScriptsTab();
 					//parser != null && parser.currentNode != null ? parser.currentNode.index : -1); 
 				break;
+			case Tabs.PersistentData: PersistentDataTab(); break;
 			case Tabs.Audio: AudioTab(); break;
 			case Tabs.Options: OptionsTab(); break;
+			case Tabs.References: ReferencesTab(); break;
+			case Tabs.About: AboutTab(); break;
 		}
 	}
 
@@ -176,15 +185,24 @@ public class DebuggerWindow : EditorWindow
 					GUI.color = colors[currentColors[ColorType.Speaker]].color;
 				else
 					GUI.color = colors[currentColors[ColorType.Normal]].color;
-				GUI.Label(rect, $"{i + 1} {new string(' ', (space - (i + 1).ToString().Length) * 2)}    {currentScriptContents[i]}");
+				GUI.Label(rect, $"{(onLine == i ? ">" : (i + 1).ToString())} {new string(' ', (space - (i + 1).ToString().Length) * 2)}    {currentScriptContents[i]}");
 			}
 			GUILayout.EndScrollView();
 		}
 		
 	}
+	private void PersistentDataTab()
+	{
+
+	}
 	private void AudioTab()
 	{
 
+	}
+	private Texture2D iconImageForAbout;
+	private void ReferencesTab()
+	{
+		
 	}
 	private void OptionsTab()
 	{
@@ -208,6 +226,19 @@ public class DebuggerWindow : EditorWindow
 			foreach (ColorType colorType in Enum.GetValues(typeof(ColorType)))
 				currentColors[colorType] = EditorPrefs.GetInt($"{colorType} B1NARY ColorLine", (int)colorType);
 		}
+	}
+	private void AboutTab()
+	{
+		EditorGUILayout.LabelField("Debugger Created and Maintained by @AnOddDoorKnight", EditorStyles.boldLabel);
+		EditorGUILayout.Space(20);
+		if (iconImageForAbout == null)
+			iconImageForAbout = Resources.Load<Texture2D>("img/UI/B1NARY");
+		Vector2Int imageRatio = Ratio(iconImageForAbout.width,
+			iconImageForAbout.height);
+		float width = EditorGUIUtility.currentViewWidth - 8,
+			height = width / imageRatio.x * imageRatio.y;
+		GUI.DrawTexture(/*GUILayoutUtility.GetRect(width, height)*/
+			new Rect(4, Screen.height - (height * 1.2f), width, height), iconImageForAbout);
 	}
 
 	private void SceneNameShow()
@@ -239,4 +270,12 @@ public class DebuggerWindow : EditorWindow
 		else
 			EditorGUILayout.LabelField(startingLine + "NaN");
 	}
+
+	// https://www.techtalk7.com/calculate-a-ratio-in-c/
+	private static Vector2Int Ratio(int a, int b)
+	{
+		int gcd = GCD(a, b);
+		return new Vector2Int(a / gcd, b / gcd);
+	}
+	private static int GCD(int a, int b) => b == 0 ? Math.Abs(a) : GCD(b, a % b);
 }
