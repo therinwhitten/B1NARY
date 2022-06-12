@@ -83,6 +83,7 @@ public class DebuggerWindow : EditorWindow
 		window.minSize *= 3;
 		window.minSize = new Vector2(window.minSize.x, window.minSize.y + 50);
 		window.Show();
+		window.pointer = EditorPrefs.GetBool("Toggle Pointer", true);
 	}
 	private static Dictionary<ColorType, int> GetNewDictionary()
 	{
@@ -141,7 +142,7 @@ public class DebuggerWindow : EditorWindow
 	}
 
 
-	
+	private bool pointer = true;
 	string currentScript = "";
 	string[] currentScriptContents = Array.Empty<string>();
 	Vector2 scrollPos = Vector2.zero;
@@ -185,7 +186,7 @@ public class DebuggerWindow : EditorWindow
 					GUI.color = colors[currentColors[ColorType.Speaker]].color;
 				else
 					GUI.color = colors[currentColors[ColorType.Normal]].color;
-				GUI.Label(rect, $"{(onLine == i ? ">" : (i + 1).ToString())} {new string(' ', (space - (i + 1).ToString().Length) * 2)}    {currentScriptContents[i]}");
+				GUI.Label(rect, $"{(onLine == i && pointer ? ">" : (i + 1).ToString())} {new string(' ', (space - (i + 1).ToString().Length) * 2)}    {currentScriptContents[i]}");
 			}
 			GUILayout.EndScrollView();
 		}
@@ -206,6 +207,8 @@ public class DebuggerWindow : EditorWindow
 	}
 	private void OptionsTab()
 	{
+		EditorGUILayout.Space(8);
+		EditorGUILayout.LabelField("Scripts", EditorStyles.boldLabel);
 		try // Causes issues if you change values with a foreach
 		{
 			foreach (ColorType type in currentColors.Keys)
@@ -219,26 +222,46 @@ public class DebuggerWindow : EditorWindow
 			}
 		}
 		catch (InvalidOperationException) { }
+		bool toggleOutput = EditorGUILayout.ToggleLeft(new GUIContent("Toggle Pointer in Scripts"), pointer);
+		if (toggleOutput != pointer)
+		{
+			EditorPrefs.SetBool("Toggle Pointer", toggleOutput);
+			pointer = toggleOutput;
+		}
+
+		EditorGUILayout.Space(20);
 		bool pressedDeleteAllButton = GUILayout.Button("Reset Settings");
 		if (pressedDeleteAllButton)
 		{
-			EditorPrefs.DeleteAll();
+			EditorPrefs.DeleteKey("Toggle Pointer");
+			pointer = true;
 			foreach (ColorType colorType in Enum.GetValues(typeof(ColorType)))
-				currentColors[colorType] = EditorPrefs.GetInt($"{colorType} B1NARY ColorLine", (int)colorType);
+			{
+				EditorPrefs.DeleteKey($"{colorType} B1NARY ColorLine");
+				currentColors[colorType] = (int)colorType;
+			}
 		}
 	}
 	private void AboutTab()
 	{
 		EditorGUILayout.LabelField("Debugger Created and Maintained by @AnOddDoorKnight", EditorStyles.boldLabel);
-		EditorGUILayout.Space(20);
+		EditorGUILayout.LabelField("B1NARY Debugger", EditorStyles.whiteLargeLabel);
+		EditorGUILayout.LabelField("Version 0.1.0b");
+		EditorGUILayout.LabelField("Changes: ", EditorStyles.boldLabel);
+		string[] points =
+		{
+
+		};
+		foreach (string point in points)
+			EditorGUILayout.LabelField($"    {point}");
 		if (iconImageForAbout == null)
 			iconImageForAbout = Resources.Load<Texture2D>("img/UI/B1NARY");
 		Vector2Int imageRatio = Ratio(iconImageForAbout.width,
 			iconImageForAbout.height);
-		float width = EditorGUIUtility.currentViewWidth - 8,
+		float width = EditorGUIUtility.currentViewWidth - 16,
 			height = width / imageRatio.x * imageRatio.y;
 		GUI.DrawTexture(/*GUILayoutUtility.GetRect(width, height)*/
-			new Rect(4, Screen.height - (height * 1.2f), width, height), iconImageForAbout);
+			new Rect(8, Screen.height - (height * 1.3f), width, height), iconImageForAbout);
 	}
 
 	private void SceneNameShow()
