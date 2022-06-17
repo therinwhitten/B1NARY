@@ -76,6 +76,6 @@ public static class Extensions
 			return input;
 		float baseValue = input * varianceMult,
 			subValue = input - baseValue;
-		return baseValue + (UnityEngine.Random.value * subValue);
+		return baseValue + (RandomFowarder.NextFloat() * subValue);
 	}
 }

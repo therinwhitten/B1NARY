@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-public class AudioCrossSceneTransferer : MonoBehaviour
+[Obsolete] public class AudioCrossSceneTransferer : MonoBehaviour
 {
 	// This was a nightmare to fix ffs.
 	private SoundCoroutine[] audioCoroutines = null;
@@ -34,7 +34,7 @@ public class AudioCrossSceneTransferer : MonoBehaviour
 		for (int i = 0; i < audioCoroutines.Length; i++)
 		{
 			float time = audioCoroutines[i].AudioSource.time;
-			CustomAudioClip clip = audioCoroutines[i].ExtraDataAudioClip;
+			CustomAudioClip clip = audioCoroutines[i].AudioClip;
 			audioCoroutines[i] = new SoundCoroutine(this, clip.audioMixerGroup, clip);
 			audioCoroutines[i].AudioSource.time = time;
 			audioCoroutines[i].GarbageCollection += (sender, args) => UpdatedValue(args);

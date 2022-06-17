@@ -3,54 +3,77 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 /// <summary>Handles audio for efficiency and garbage collection, uses 
 /// <see cref="CustomAudioClip"/> and/or <see cref="UnityCustomAudioClip"/> for 
 /// custom files and uses <see cref="SoundCoroutine"/>s for code to change it 
 /// themselves.</summary>
-public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCoroutine>
+public class AudioHandler : SingletonAlt<AudioHandler>, IEnumerable<SoundCoroutine>
 {
-	public static bool HasPreviousInstance { get; private set; } = false;
-
-	[SerializeField] private bool loadAudioSourceForVoiceActors = true;
 	public VoiceActorHandler VoiceActorHandler { get; private set; }
 
-	[SerializeField, Tooltip("A readonly array which keeps track of data for" +
-		" audioClips, solves at runtime.")] 
-	private SoundLibrary[] customAudioData;
-
-	// <summary> Easily Links a normal audioclip to a custom one. </summary>
-	//private Dictionary<AudioClip, CustomAudioClip> audioClipDictionary = 
-	//	new Dictionary<AudioClip, CustomAudioClip>();
-
-	// <summary> names of audioclips tied to them. </summary>
-	//private Dictionary<string, AudioClip> nameDictionary;
+	/// <summary> Custom sounds for each scene, may not be used if 
+	/// audiofiles are called directly or via file in resources folder </summary>
+	public SoundLibrary CustomAudioData { get; private set; }
 
 	/// <summary> Cache for storing automated sound data </summary>
-	public static Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache { get; private set; }
+	public Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache { get; private set; }
 		= new Dictionary<AudioClip, SoundCoroutine>();
 
 
 	protected override void SingletonStart()
 	{
-		if (HasPreviousInstance)
-			Debug.LogError($"Another {nameof(AudioHandler)} already exists!");
-		else
-		{
-			HasPreviousInstance = true;
-			if (loadAudioSourceForVoiceActors)
-				VoiceActorHandler = gameObject.AddComponent<VoiceActorHandler>();
-		}
+		VoiceActorHandler = new VoiceActorHandler(this);
+		LoadNewLibrary(null, SceneManager.GetActiveScene().name);
+		GameCommands.SwitchedScenes += LoadNewLibrary;
+		GameCommands.SwitchingScenes += MakeNewAudioHandler;
 		PlayOnAwakeCommands();
-		GameCommands.SwitchingScenes += (sender, args) => TransferSounds();
 	}
 	private void PlayOnAwakeCommands()
 	{
-		for (int i = 0; i < customAudioData.Length; i++)
-			for (int j = 0; j < customAudioData[i].Length; j++)
-				if (customAudioData[i][j].playOnAwake)
-					PlaySound(customAudioData[i][j]);
+		for (int i = 0; i < CustomAudioData.Length; i++)
+			if (CustomAudioData[i].playOnAwake)
+				PlaySound(CustomAudioData[i]);
+	}
+
+	private void MakeNewAudioHandler(object sender, EventArgs args)
+	{
+		VoiceActorHandler = new VoiceActorHandler(this);
+	}
+
+	public void LoadNewLibrary(object sender, string sceneName)
+	{
+		const string fileDirectory = "Sounds/Sound Libraries";
+		CustomAudioData = Resources.Load<SoundLibrary>($"{fileDirectory}/{sceneName}");
+		if (CustomAudioData == null)
+			Debug.LogError("There are no detected sound libraries in" +
+				$" resource folder : {fileDirectory}/{sceneName}!");
+	}
+
+	public void ChangeFloat(Ref<float> value, float final, float secondsTaken)
+	{
+		float difference = value.Value - final;
+		Func<float, float, bool> condition = difference > 0 ?
+			(Func<float, float, bool>)((current, final2) => current > final2) :
+			(Func<float, float, bool>)((current, final2) => current < final2);
+		StartCoroutine(Coroutine(final));
+		IEnumerator Coroutine(float finalValue)
+		{
+			while (value.Value != finalValue)
+			{
+				float change = (Time.deltaTime / secondsTaken) * difference;
+				if (condition.Invoke(value.Value, finalValue))
+				{
+					value.Value = finalValue;
+					yield break;
+				}
+				else
+					value.Value += change;
+				yield return new WaitForEndOfFrame();
+			}
+		}
 	}
 
 
@@ -58,11 +81,10 @@ public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCorouti
 		bool useCustomAudioData)
 	{
 		if (!useCustomAudioData)
-			goto exausted;
-		for (int i = 0; i < customAudioData.Length; i++)
-			if (customAudioData[i].AudioClipLink.ContainsKey(clip))
-				return GetCoroutine(customAudioData[i].AudioClipLink[clip]);
-		exausted:
+			goto DoomVisualNovelWhen;
+		if (CustomAudioData.AudioClipLink.ContainsKey(clip))
+			return GetCoroutine(CustomAudioData.AudioClipLink[clip]);
+		DoomVisualNovelWhen:
 		return GetCoroutine(new CustomAudioClip(clip) { audioMixerGroup = group });
 	}
 
@@ -95,10 +117,9 @@ public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCorouti
 	private AudioClip GetRawAudioClip(string soundPath)
 	{
 		// names in customAudioClip
-		for (int i = 0; i < customAudioData.Length; i++)
-			if (customAudioData[i].StringLink.ContainsKey(soundPath))
-				return customAudioData[i].StringLink[soundPath];
-		Debug.Log($"'{soundPath}' is not found in {nameof(customAudioData)},"
+		if (CustomAudioData.StringLink.ContainsKey(soundPath))
+			return CustomAudioData.StringLink[soundPath];
+		Debug.Log($"'{soundPath}' is not found in {nameof(CustomAudioData)},"
 			+ " searching via filePath");
 		// filePath
 		AudioClip audioClip = Resources.Load<AudioClip>(soundPath);
@@ -196,9 +217,8 @@ public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCorouti
 	/// <param name ="fadeOutSeconds"> the timespan so volume would hit from 1 to 0 </param> 
 	public void StopSoundViaFade(string soundName, float fadeOutSeconds)
 	{
-		for (int i = 0; i < customAudioData.Length; i++)
-			if (customAudioData[i].StringLink.ContainsKey(soundName))
-				SoundCoroutineCache[customAudioData[i].StringLink[soundName]].Stop(fadeOutSeconds);
+		if (CustomAudioData.StringLink.ContainsKey(soundName))
+			SoundCoroutineCache[CustomAudioData.StringLink[soundName]].Stop(fadeOutSeconds);
 		throw new KeyNotFoundException(soundName);
 	}
 
@@ -206,9 +226,8 @@ public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCorouti
 	/// <param name ="soundName"> the soundFile name to stop. </param>
 	public void StopSound(string soundName)
 	{
-		for (int i = 0; i < customAudioData.Length; i++)
-			if (customAudioData[i].StringLink.ContainsKey(soundName))
-				SoundCoroutineCache[customAudioData[i].StringLink[soundName]].Stop();
+		if (CustomAudioData.StringLink.ContainsKey(soundName))
+			SoundCoroutineCache[CustomAudioData.StringLink[soundName]].Stop();
 		throw new KeyNotFoundException(soundName);
 	}
 
@@ -229,7 +248,7 @@ public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCorouti
 
 
 
-	private void TransferSounds()
+	[Obsolete] private void TransferSounds()
 	{
 		var gameObject = new GameObject("AudioHandler Transfer Sounds");
 		var transferer = gameObject.AddComponent<AudioCrossSceneTransferer>();
@@ -237,17 +256,7 @@ public class AudioHandler : SingletonNew<AudioHandler>, IEnumerable<SoundCorouti
 		transferer.StartSceneTransferer();
 	}
 
-	protected override void OnSingletonDestroy()
-	{
-		// This may cause issues if multiple audioHandlers are ran, but shouldn't
-		// - be intended to do that anyway.
-		HasPreviousInstance = false;
-	}
-
-
 	// IEnumerable Implementation
-
-
 	public IEnumerator<SoundCoroutine> GetEnumerator()
 	{
 		foreach (SoundCoroutine sound in SoundCoroutineCache.Values)

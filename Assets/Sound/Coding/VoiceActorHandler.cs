@@ -2,43 +2,52 @@
 using System;
 using System.Collections;
 
-public class VoiceActorHandler : SingletonNew<VoiceActorHandler>
+public class VoiceActorHandler
 {
+	public MonoBehaviour CoroutineStarter { get; set; }
 	private SoundCoroutine speakerCoroutine = null;
-	private string lastSpeaker = null;
+	public string LastSpeaker { get; private set; }
 
-	protected override void SingletonStart()
+	public VoiceActorHandler(MonoBehaviour coroutineStarter)
 	{
-		speakerCoroutine = new SoundCoroutine(this) { destroyOnFinish = false, DeleteCoroutineOnSwap = false };
+		CoroutineStarter = coroutineStarter;
+		SwitchSceneCheck(null, EventArgs.Empty);
 	}
 
 	public void StopVoice()
 	{
-		StopAllCoroutines();
-		speakerCoroutine.Stop(false);
+		if (speakerCoroutine.AudioSource != null)
+			speakerCoroutine.Stop(false);
 	}
 
 	public void PlayVoice(string name, float volume, AudioSource source, AudioClip clip)
 	{
 		if (name == null)
 		{
-			Debug.LogWarning($"character name is unreadable! Is this intentional?");
+			Debug.LogError($"character name is unreadable! Stopping.");
 			return;
 		}
 		if (source != null)
 		{
-			if (speakerCoroutine.IsPlaying)
-			{
-				StopAllCoroutines(); // Just in case
-				speakerCoroutine.Stop();
-			}
+			if (speakerCoroutine.AudioSource != null)
+				if (speakerCoroutine.IsPlaying)
+				{
+					speakerCoroutine.Stop();
+				}
 			speakerCoroutine.AudioSource = source;
 		}
-		lastSpeaker = name;
+		LastSpeaker = name;
 		if (speakerCoroutine.AudioSource == null)
 			return;
 		speakerCoroutine.AudioClip = new CustomAudioClip(clip)
 		{ volume = volume };
 		speakerCoroutine.PlaySingle();
+	}
+
+	private void SwitchSceneCheck(object sender, EventArgs args)
+	{
+		speakerCoroutine = new SoundCoroutine(CoroutineStarter)
+		{ destroyOnFinish = false, DeleteCoroutineOnSwap = false };
+		GameCommands.SwitchingScenes += SwitchSceneCheck;
 	}
 }

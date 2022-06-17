@@ -22,7 +22,7 @@ public class SoundCoroutine
 		{
 			if (audioSource == value)
 				return;
-			if (DeleteCoroutineOnSwap)
+			if (DeleteCoroutineOnSwap && audioSource != null)
 				UnityEngine.Object.Destroy(audioSource);
 			audioSource = value;
 			if (audioSource == null)
@@ -46,28 +46,45 @@ public class SoundCoroutine
 		audioSource.outputAudioMixerGroup = mixerGroup;
 		if (clip != null)
 			AudioClip = clip;
+		GameCommands.SwitchedScenes += SwitchSceneCheck;
 	}
 
-	public CustomAudioClip ExtraDataAudioClip { get; private set; }
+	private float volumeVariance, pitchVariance, fadeWhenTransitioning,
+		oldVolume, oldPitch;
+	private bool playOnAwake, willFadeWhenTransitioning;
 	public CustomAudioClip AudioClip
 	{
 		get => new CustomAudioClip(audioSource.clip) 
 		{
-			volume = audioSource.volume,
-			pitch = audioSource.pitch,
-			loop = audioSource.loop 
+			volumeVariance = volumeVariance,
+			pitchVariance = pitchVariance,
+			audioClip = audioSource.clip,
+			volume = oldVolume,
+			pitch = oldPitch,
+			audioMixerGroup = audioSource.outputAudioMixerGroup,
+			loop = audioSource.loop,
+			playOnAwake = playOnAwake,
+			willFadeWhenTransitioning = willFadeWhenTransitioning,
+			fadeWhenTransitioning = fadeWhenTransitioning,
 		};
 		set
 		{
-			// customizability with this seems weird
-			ExtraDataAudioClip = value;
 			audioSource.clip = value;
+			volumeVariance = value.volumeVariance;
+			pitchVariance = value.pitchVariance;
 			audioSource.pitch = value.pitch.ApplyRandomPercent(value.pitchVariance);
+			oldVolume = value.volume;
 			audioSource.volume = value.volume.ApplyRandomPercent(value.volumeVariance);
+			oldPitch = value.pitch;
 			audioSource.outputAudioMixerGroup = value.audioMixerGroup;
 			audioSource.loop = value.loop;
+			playOnAwake = value.playOnAwake;
+			willFadeWhenTransitioning = value.willFadeWhenTransitioning;
+			fadeWhenTransitioning = value.fadeWhenTransitioning;
 		}
 	}
+
+	
 
 	public void PlaySingle()
 	{
@@ -80,7 +97,7 @@ public class SoundCoroutine
 	{
 		float targetValue = audioSource.volume;
 		audioSource.volume = 0;
-		FadeController.Last().ChangeFloat
+		AudioHandler.Instance.ChangeFloat
 			(
 			new Ref<float>(() => audioSource.volume, (var) => audioSource.volume = var), 
 			targetValue, 
@@ -149,6 +166,15 @@ public class SoundCoroutine
 	}
 	public event EventHandler CalledToStop;
 
+	private void SwitchSceneCheck(object sender, string sceneName)
+	{
+		if (DeleteCoroutineOnSwap)
+			return;
+		if (AudioSource == null)
+			audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
+		GameCommands.SwitchedScenes += SwitchSceneCheck;
+	}
+
 	private bool isDestroyed = false;
 	private void OnDestroy()
 	{
@@ -159,5 +185,9 @@ public class SoundCoroutine
 	}
 	public event EventHandler<AudioClip> GarbageCollection;
 
-	~SoundCoroutine() => OnDestroy();
+	~SoundCoroutine()
+	{
+		OnDestroy();
+		GameCommands.SwitchedScenes -= SwitchSceneCheck;
+	}
 }

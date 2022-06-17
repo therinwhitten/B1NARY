@@ -18,9 +18,9 @@ public static class GameCommands
 	public static AsyncOperation SwitchScenes(string sceneName)
 	{
 		var operation = SceneManager.LoadSceneAsync(sceneName);
-		SwitchedScenes?.Invoke(null, EventArgs.Empty);
+		SwitchedScenes?.Invoke(null, sceneName);
 		SwitchedScenes = null;
 		return operation;
 	}
-	public static event EventHandler SwitchedScenes;
+	public static event EventHandler<string> SwitchedScenes;
 }

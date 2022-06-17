@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Globalization;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,7 +21,6 @@ public class DebuggerWindow : EditorWindow
 		Audio,
 		Options,
 		PersistentData,
-		References,
 		About
 	}
 
@@ -52,6 +52,20 @@ public class DebuggerWindow : EditorWindow
 		return true;
 	}
 
+	private static AudioHandler _audioHandler;
+	private static bool TryGetAudioHandler(out AudioHandler dialogueSys)
+	{
+		if (_audioHandler == null)
+			_audioHandler = FindObjectOfType<AudioHandler>();
+		if (_audioHandler == null)
+		{
+			dialogueSys = null;
+			return false;
+		}
+		dialogueSys = _audioHandler;
+		return true;
+	}
+
 	private static readonly (Color color, string name)[] colors =
 	{
 		(Color.white, "White"),
@@ -72,6 +86,7 @@ public class DebuggerWindow : EditorWindow
 		Emote = 4,
 	}
 
+	private static readonly Vector2Int defaultMinSize = new Vector2Int(300, 350);
 
 	[MenuItem("B1NARY/Debugger")]
 	public static void ShowWindow()
@@ -80,10 +95,8 @@ public class DebuggerWindow : EditorWindow
 		// Get existing open window or if none, make a new one:
 		DebuggerWindow window = (DebuggerWindow)GetWindow(typeof(DebuggerWindow));
 		window.titleContent = new GUIContent("B1NARY Debugger");
-		window.minSize *= 3;
-		window.minSize = new Vector2(window.minSize.x, window.minSize.y + 50);
+		window.minSize = defaultMinSize;
 		window.Show();
-		window.pointer = EditorPrefs.GetBool("Toggle Pointer", true);
 	}
 	private static Dictionary<ColorType, int> GetNewDictionary()
 	{
@@ -95,12 +108,16 @@ public class DebuggerWindow : EditorWindow
 	}
 
 
-
 	private Dictionary<ColorType, int> currentColors = new Dictionary<ColorType, int>();
+
+	private void OnEnable()
+	{
+		pointer = EditorPrefs.GetBool("Toggle Pointer", true);
+		currentColors = GetNewDictionary();
+	}
+
 	private void OnGUI()
 	{
-		if (currentColors.Count != 5) // ColorType Enum Size
-			currentColors = GetNewDictionary();
 		TopBar();
 		EditorGUILayout.Space(10);
 		ShowTabs();
@@ -129,14 +146,10 @@ public class DebuggerWindow : EditorWindow
 		selected = GUI.SelectionGrid(guiRect, selected, array, 3);
 		switch ((Tabs)selected)
 		{
-			case Tabs.Scripts:
-				ScriptsTab();
-					//parser != null && parser.currentNode != null ? parser.currentNode.index : -1); 
-				break;
+			case Tabs.Scripts: ScriptsTab(); break;
 			case Tabs.PersistentData: PersistentDataTab(); break;
 			case Tabs.Audio: AudioTab(); break;
 			case Tabs.Options: OptionsTab(); break;
-			case Tabs.References: ReferencesTab(); break;
 			case Tabs.About: AboutTab(); break;
 		}
 	}
@@ -196,14 +209,35 @@ public class DebuggerWindow : EditorWindow
 	{
 
 	}
+
+	private bool toggleGroupAudioTab = false;
+	private Vector2 scrollPosAudioTab = Vector2.zero;
 	private void AudioTab()
 	{
+		scrollPosAudioTab = EditorGUILayout.BeginScrollView(scrollPosAudioTab);
 
-	}
-	private Texture2D iconImageForAbout;
-	private void ReferencesTab()
-	{
-		
+		bool hasValue = TryGetAudioHandler(out AudioHandler audioHandler);
+		EditorGUILayout.LabelField($"Current Library: {(audioHandler.CustomAudioData == null ? "NaN" : audioHandler.CustomAudioData.name)}");
+		toggleGroupAudioTab = 
+			EditorGUILayout.BeginFoldoutHeaderGroup(toggleGroupAudioTab, new GUIContent($"Sounds : {(hasValue ? audioHandler.SoundCoroutineCache.Count.ToString(CultureInfo.CurrentCulture) : "NaN")}"));
+		EditorGUI.indentLevel += 2;
+		if (hasValue && toggleGroupAudioTab)
+			foreach (SoundCoroutine coroutine in audioHandler.SoundCoroutineCache.Values)
+			{
+				EditorGUILayout.LabelField(coroutine.AudioSource.clip.name, EditorStyles.boldLabel);
+				EditorGUI.indentLevel++;
+				float timePercent = coroutine.AudioSource.time / coroutine.AudioSource.clip.length;
+				byte shortIndex = (byte)(timePercent * 15);
+				EditorGUILayout.LabelField($"({new string('#', shortIndex)}{new string('-', 15 - shortIndex)})");
+				EditorGUILayout.LabelField($"Time: {coroutine.AudioSource.time:N2} / {coroutine.AudioSource.clip.length:N2}");
+				EditorGUILayout.Space();
+				EditorGUI.indentLevel--;
+			}
+		EditorGUI.indentLevel -= 2;
+		EditorGUILayout.EndFoldoutHeaderGroup();
+
+
+		EditorGUILayout.EndScrollView();
 	}
 	private void OptionsTab()
 	{
@@ -242,6 +276,9 @@ public class DebuggerWindow : EditorWindow
 			}
 		}
 	}
+
+
+	private Texture2D iconImageForAbout;
 	private void AboutTab()
 	{
 		EditorGUILayout.LabelField("Debugger Created and Maintained by @AnOddDoorKnight", EditorStyles.boldLabel);

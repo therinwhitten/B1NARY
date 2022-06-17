@@ -7,15 +7,8 @@ using System.Collections.Generic;
 /// A class that stores a single instance of <see cref="T"/>,
 /// created when called for the first time
 /// </summary>
-public class SingletonNew<T> : MonoBehaviour where T : MonoBehaviour
+public abstract class Multiton<T> : InstanceHolder<T> where T : MonoBehaviour
 {
-	/// <summary> 
-	///		If there is no instances created in unity, throw an error instead
-	///		of creating a custom GameObject for it.
-	/// </summary>
-	public static bool ThrowErrorIfEmpty { get; set; } = true;
-	private static object _lock = new object();
-
 	private static Dictionary<int, T> instances = new Dictionary<int, T>();
 	private static Queue<int> queue = new Queue<int>();
 	private static List<int> instancesList = new List<int>();

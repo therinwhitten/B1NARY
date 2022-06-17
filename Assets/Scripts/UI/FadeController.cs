@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FadeController : SingletonNew<FadeController>
+public class FadeController : Multiton<FadeController>
 {
 
 	private CanvasGroup canvas;

@@ -26,7 +26,8 @@ public class SoundLibrary : ScriptableObject, IEnumerable<CustomAudioClip>
 			{
 				audioClipLink = new Dictionary<AudioClip, CustomAudioClip>();
 				for (int i = 0; i < customAudioClips.Length; i++)
-					audioClipLink.Add(customAudioClips[i].audioClip, 
+					if (!audioClipLink.ContainsKey(customAudioClips[i]))
+					audioClipLink.Add(customAudioClips[i].audioClip,
 						customAudioClips[i]);
 			}
 			return audioClipLink;
@@ -40,7 +41,8 @@ public class SoundLibrary : ScriptableObject, IEnumerable<CustomAudioClip>
 			{
 				stringLink = new Dictionary<string, AudioClip>();
 				for (int i = 0; i < customAudioClips.Length; i++)
-					stringLink.Add(customAudioClips[i].audioClip.name, 
+					if (!stringLink.ContainsKey(customAudioClips[i].audioClip.name))
+						stringLink.Add(customAudioClips[i].audioClip.name,
 						customAudioClips[i].audioClip);
 			}
 			return stringLink;
