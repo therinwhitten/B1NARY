@@ -113,6 +113,7 @@ public class DebuggerWindow : EditorWindow
 	private void OnEnable()
 	{
 		pointer = EditorPrefs.GetBool("Toggle Pointer", true);
+		audioBarLength = EditorPrefs.GetInt("Audio Bar Length", 15);
 		currentColors = GetNewDictionary();
 	}
 
@@ -210,6 +211,7 @@ public class DebuggerWindow : EditorWindow
 
 	}
 
+	private int audioBarLength = 15;
 	private bool toggleGroupAudioTab = false;
 	private Vector2 scrollPosAudioTab = Vector2.zero;
 	private void AudioTab()
@@ -227,9 +229,12 @@ public class DebuggerWindow : EditorWindow
 				EditorGUILayout.LabelField(coroutine.AudioSource.clip.name, EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;
 				float timePercent = coroutine.AudioSource.time / coroutine.AudioSource.clip.length;
-				byte shortIndex = (byte)(timePercent * 15);
-				EditorGUILayout.LabelField($"({new string('#', shortIndex)}{new string('-', 15 - shortIndex)})");
+				byte shortIndex = (byte)(timePercent * audioBarLength);
+				EditorGUILayout.LabelField($"({new string('#', shortIndex)}{new string('-', audioBarLength - shortIndex)})");
 				EditorGUILayout.LabelField($"Time: {coroutine.AudioSource.time:N2} / {coroutine.AudioSource.clip.length:N2}");
+				EditorGUILayout.Space();
+				EditorGUILayout.LabelField($"Volume: {coroutine.AudioClip.volume:N2}");
+				EditorGUILayout.LabelField($"Pitch: {coroutine.AudioClip.pitch:N2}");
 				EditorGUILayout.Space();
 				EditorGUI.indentLevel--;
 			}
@@ -263,12 +268,23 @@ public class DebuggerWindow : EditorWindow
 			pointer = toggleOutput;
 		}
 
+		EditorGUILayout.Space(8);
+		EditorGUILayout.LabelField("Audio", EditorStyles.boldLabel);
+		int audioBarLength = Mathf.Clamp(EditorGUILayout.DelayedIntField("Audio Bar Length", this.audioBarLength), 1, 90);
+		if (audioBarLength != this.audioBarLength)
+		{
+			EditorPrefs.SetInt("Audio Bar Length", audioBarLength);
+			this.audioBarLength = audioBarLength;
+		}
+
 		EditorGUILayout.Space(20);
 		bool pressedDeleteAllButton = GUILayout.Button("Reset Settings");
 		if (pressedDeleteAllButton)
 		{
 			EditorPrefs.DeleteKey("Toggle Pointer");
 			pointer = true;
+			EditorPrefs.DeleteKey("Audio Bar Length");
+			this.audioBarLength = 15;
 			foreach (ColorType colorType in Enum.GetValues(typeof(ColorType)))
 			{
 				EditorPrefs.DeleteKey($"{colorType} B1NARY ColorLine");
