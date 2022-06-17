@@ -70,12 +70,12 @@ public static class Extensions
 	/// <param name="input">The input value.</param>
 	/// <param name="varianceMult">Where the input value is multiplied from randomly.</param>
 	/// <returns>The modified input value.</returns>
-	public static float ApplyRandomPercent(this float input, float varianceMult)
+	public static float ApplyRandomPercent(this float input, float varianceMult, RandomFowarder.RandomType randomType)
 	{
 		if (varianceMult == 0)
 			return input;
 		float baseValue = input * varianceMult,
 			subValue = input - baseValue;
-		return baseValue + (RandomFowarder.NextFloat() * subValue);
+		return baseValue + (RandomFowarder.NextFloat(randomType) * subValue);
 	}
 }

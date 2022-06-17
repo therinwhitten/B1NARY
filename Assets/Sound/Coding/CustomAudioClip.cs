@@ -20,17 +20,16 @@ public class CustomAudioClip
 	}
 
 	public AudioClip clip;
-	[FormerlySerializedAs("Mixer Group")] public AudioMixerGroup audioMixerGroup = null;
-	[Space, Range(0, 1)] public float volume = 1;
-	[Range(0, 1)] public float volumeVariance = 0;
-	[Space, Range(0, 3)] public float pitch = 1;
-	[Range(0, 1)] public float pitchVariance = 0;
-	[Space] public bool loop = false;
+	public AudioMixerGroup audioMixerGroup = null;
+	public float volume = 1;
+	public float volumeVariance = 0;
+	public float pitch = 1;
+	public float pitchVariance = 0;
+	public bool loop = false;
 	public bool playOnAwake = false;
-	[Header("Scene Transitions"), Tooltip("if the sound fade or stop during scene transition or not.")]
 	public bool willFadeWhenTransitioning = true;
-	[Range(0, 60), Tooltip("How long it will take before completely fading into 0")] 
 	public float fadeWhenTransitioning = 0.3f;
+	public RandomFowarder.RandomType randomType;
 
 	public override string ToString() => clip.ToString();
 }

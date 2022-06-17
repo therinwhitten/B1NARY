@@ -72,9 +72,9 @@ public class SoundCoroutine
 			audioSource.clip = value;
 			volumeVariance = value.volumeVariance;
 			pitchVariance = value.pitchVariance;
-			audioSource.pitch = value.pitch.ApplyRandomPercent(value.pitchVariance);
+			audioSource.pitch = value.pitch.ApplyRandomPercent(value.pitchVariance, value.randomType);
 			oldVolume = value.volume;
-			audioSource.volume = value.volume.ApplyRandomPercent(value.volumeVariance);
+			audioSource.volume = value.volume.ApplyRandomPercent(value.volumeVariance, value.randomType);
 			oldPitch = value.pitch;
 			audioSource.outputAudioMixerGroup = value.audioMixerGroup;
 			audioSource.loop = value.loop;

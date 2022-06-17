@@ -13,9 +13,9 @@ using System.Collections;
 [CreateAssetMenu(fileName = "New Sound Library", menuName = "B1NARY/Sound Library (SL)", order = 0)]
 public class SoundLibrary : ScriptableObject, IEnumerable<CustomAudioClip>
 {
-	public CustomAudioClip[] customAudioClips;
+	public List<CustomAudioClip> customAudioClips;
 	public CustomAudioClip this[int index] => customAudioClips[index];
-	public int Length => customAudioClips.Length;
+	public int Length => customAudioClips.Count;
 
 	private Dictionary<AudioClip, CustomAudioClip> audioClipLink
 		= new Dictionary<AudioClip, CustomAudioClip>();
@@ -23,7 +23,7 @@ public class SoundLibrary : ScriptableObject, IEnumerable<CustomAudioClip>
 	{
 		if (audioClipLink.TryGetValue(audioClip, out var output))
 			return output;
-		for (int i = 0; i < customAudioClips.Length; i++)
+		for (int i = 0; i < customAudioClips.Count; i++)
 		{
 			// Since methods can call on this multiple times when the method
 			// - isn't finished, ill have to do additional checks here.
@@ -54,7 +54,7 @@ public class SoundLibrary : ScriptableObject, IEnumerable<CustomAudioClip>
 	{
 		if (stringLink.TryGetValue(audioClip, out var output))
 			return output;
-		for (int i = 0; i < customAudioClips.Length; i++)
+		for (int i = 0; i < customAudioClips.Count; i++)
 		{
 			// Since methods can call on this multiple times when the method
 			// - isn't finished, ill have to do additional checks here.
