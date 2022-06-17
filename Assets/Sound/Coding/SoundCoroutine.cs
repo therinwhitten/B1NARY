@@ -58,7 +58,7 @@ public class SoundCoroutine
 		{
 			volumeVariance = volumeVariance,
 			pitchVariance = pitchVariance,
-			audioClip = audioSource.clip,
+			clip = audioSource.clip,
 			volume = oldVolume,
 			pitch = oldPitch,
 			audioMixerGroup = audioSource.outputAudioMixerGroup,

@@ -10,16 +10,16 @@ public class CustomAudioClip
 {
 
 	public static implicit operator AudioClip(CustomAudioClip input)
-		=> input.audioClip;
+		=> input.clip;
 	public static explicit operator CustomAudioClip(AudioClip input)
 		=> new CustomAudioClip(input);
 
 	public CustomAudioClip(AudioClip audioClip)
 	{
-		this.audioClip = audioClip;
+		this.clip = audioClip;
 	}
 
-	public AudioClip audioClip;
+	public AudioClip clip;
 	[FormerlySerializedAs("Mixer Group")] public AudioMixerGroup audioMixerGroup = null;
 	[Space, Range(0, 1)] public float volume = 1;
 	[Range(0, 1)] public float volumeVariance = 0;
@@ -32,5 +32,5 @@ public class CustomAudioClip
 	[Range(0, 60), Tooltip("How long it will take before completely fading into 0")] 
 	public float fadeWhenTransitioning = 0.3f;
 
-	public override string ToString() => audioClip.ToString();
+	public override string ToString() => clip.ToString();
 }

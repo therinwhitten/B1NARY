@@ -103,7 +103,7 @@ public class CommandsManager : Singleton<CommandsManager>
 				break;
 			// Sounds
 			case "fadeinsound":
-				if (Extensions.TryInvoke<SoundNotFoundException>(() => 
+				if (!Extensions.TryInvoke<SoundNotFoundException>(() => 
 					AudioHandler.Instance.PlayFadedSound(args[0], float.Parse(args[1])), out _))
 					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;

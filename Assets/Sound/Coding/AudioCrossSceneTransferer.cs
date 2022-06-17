@@ -47,7 +47,7 @@ using UnityEngine.Audio;
 					audioCoroutines[i].Stop();
 			}
 		}
-		lookupCoroutine = audioCoroutines.ToDictionary(sound => sound.AudioClip.audioClip.name);
+		lookupCoroutine = audioCoroutines.ToDictionary(sound => sound.AudioClip.clip.name);
 
 
 		//lookupCoroutine = audioCoroutines.ToDictionary(coroutine => coroutine.AudioClip.audioClip);

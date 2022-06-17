@@ -17,36 +17,65 @@ public class SoundLibrary : ScriptableObject, IEnumerable<CustomAudioClip>
 	public CustomAudioClip this[int index] => customAudioClips[index];
 	public int Length => customAudioClips.Length;
 
-
-
-	private Dictionary<AudioClip, CustomAudioClip> audioClipLink = null;
-	public Dictionary<AudioClip, CustomAudioClip> AudioClipLink { get 
+	private Dictionary<AudioClip, CustomAudioClip> audioClipLink
+		= new Dictionary<AudioClip, CustomAudioClip>();
+	public CustomAudioClip GetCustomAudioClip(AudioClip audioClip)
+	{
+		if (audioClipLink.TryGetValue(audioClip, out var output))
+			return output;
+		for (int i = 0; i < customAudioClips.Length; i++)
 		{
-			if (audioClipLink == null)
-			{
-				audioClipLink = new Dictionary<AudioClip, CustomAudioClip>();
-				for (int i = 0; i < customAudioClips.Length; i++)
-					if (!audioClipLink.ContainsKey(customAudioClips[i]))
-					audioClipLink.Add(customAudioClips[i].audioClip,
-						customAudioClips[i]);
-			}
-			return audioClipLink;
+			// Since methods can call on this multiple times when the method
+			// - isn't finished, ill have to do additional checks here.
+			if (customAudioClips[i].clip == null)
+				continue;
+			if (audioClipLink.ContainsValue(customAudioClips[i]))
+				continue;
+			audioClipLink.Add(customAudioClips[i].clip, customAudioClips[i]);
+			if (audioClipLink.TryGetValue(audioClip, out var value))
+				return value;
 		}
+		throw new ArgumentOutOfRangeException($"Cannot find {audioClip.name}!");
+	}
+	public bool ContainsCustomAudioClip(AudioClip audioClip)
+	{
+		try
+		{
+			GetCustomAudioClip(audioClip);
+			return true;
+		}
+		catch (ArgumentOutOfRangeException) { return false; }
 	}
 
-	private Dictionary<string, AudioClip> stringLink = null;
-	public Dictionary<string, AudioClip> StringLink { get 
+
+	private Dictionary<string, AudioClip> stringLink 
+		= new Dictionary<string, AudioClip>();
+	public AudioClip GetAudioClip(string audioClip)
+	{
+		if (stringLink.TryGetValue(audioClip, out var output))
+			return output;
+		for (int i = 0; i < customAudioClips.Length; i++)
 		{
-			if (stringLink == null)
-			{
-				stringLink = new Dictionary<string, AudioClip>();
-				for (int i = 0; i < customAudioClips.Length; i++)
-					if (!stringLink.ContainsKey(customAudioClips[i].audioClip.name))
-						stringLink.Add(customAudioClips[i].audioClip.name,
-						customAudioClips[i].audioClip);
-			}
-			return stringLink;
+			// Since methods can call on this multiple times when the method
+			// - isn't finished, ill have to do additional checks here.
+			if (customAudioClips[i].clip == null)
+				continue;
+			if (stringLink.ContainsValue(customAudioClips[i].clip))
+				continue;
+			stringLink.Add(customAudioClips[i].clip.name, customAudioClips[i].clip);
+			if (stringLink.TryGetValue(audioClip, out var value))
+				return value;
 		}
+		throw new ArgumentOutOfRangeException($"Cannot find {audioClip}!");
+	}
+	public bool ContainsAudioClip(string audioClip)
+	{
+		try
+		{
+			GetAudioClip(audioClip);
+			return true;
+		}
+		catch (ArgumentOutOfRangeException) { return false; }
 	}
 
 	public IEnumerator<CustomAudioClip> GetEnumerator()
