@@ -53,16 +53,16 @@ Resources like shaders and other assets are located in `./Assets/Live2D/Cubism/R
 
 | Unity | Version |
 | --- | --- |
-| LTS | 2020.3.5f1 |
-| LTS | 2019.4.25f1 |
-| LTS | 2018.4.34f1 |
+| LTS | 2021.3.4f1 |
+| LTS | 2020.3.35f1 |
+| LTS | 2019.4.39f1 |
 
 | Library / Tool | Version |
 | --- | --- |
 | Android SDK / NDK | *1 |
-| Visual Studio 2019 | 16.9.5 |
+| Visual Studio 2019 | 16.11.15 |
 | Windows SDK | 10.0.19041.0 |
-| Xcode | 12.5 |
+| Xcode | 13.4.1 |
 
 *1 Use libraries embedded with Unity or recommended.
 
@@ -81,13 +81,15 @@ https://docs.unity3d.com/ja/2018.4/Manual/CSharpCompiler.html
 
 | Platform | Version |
 | --- | --- |
-| Android | 11 |
-| iOS | 14.5.1 |
-| iPadOS | 14.5.1 |
-| Ubuntu | 20.04.2 |
-| macOS | 11.3.1 |
-| Windows 10 | 20H2 |
-| Google Chrome | 90.0.4430.212 |
+| Android | 12 |
+| iOS | 15.5 |
+| iPadOS | 15.5 |
+| Ubuntu | 20.04.3 |
+| macOS | 12.4 |
+| Windows 10 | 21H2 |
+| Google Chrome | 102.0.5005.115 |
+| Chrome OS 64bit | 101.0.4951.59 |
+| Chrome OS 32bit | 100.0.4896.133 |
 
 
 ## Branches
@@ -149,3 +151,10 @@ We name private fields in lower-camelcase starting with an underscore.
 - In Unity Editor extension, try to write expressive code with LINQ and all the other fancy stuff.
 - Stay away from LINQ and prefer `for` over `foreach` anywhere else.
 - Try to be explicit. Prefer `private void Update()` over `void Update()`.
+
+
+## Community
+
+If you have any questions, please join the official Live2D community and discuss with other users.
+- [Live2D 公式コミュニティ(Japanese)](https://creatorsforum.live2d.com/)
+- [Live2D community](https://community.live2d.com/)
