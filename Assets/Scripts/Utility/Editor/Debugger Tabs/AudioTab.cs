@@ -11,7 +11,7 @@ public sealed class AudioTab : DebuggerTab
 	public override void DisplayTab()
 	{
 		scrollPosAudioTab = EditorGUILayout.BeginScrollView(scrollPosAudioTab);
-		bool hasValue = TryGetAudioHandler(out AudioHandler audioHandler);
+		bool hasValue = DebuggerWindow.TryGetter<AudioHandler>.TryGetObject(out var audioHandler);
 		EditorGUILayout.LabelField($"Current Library: {(audioHandler.CustomAudioData == null ? "NaN" : audioHandler.CustomAudioData.name)}");
 		toggleGroupAudioTab =
 			EditorGUILayout.BeginFoldoutHeaderGroup(toggleGroupAudioTab, new GUIContent($"Sounds : {(hasValue ? audioHandler.SoundCoroutineCache.Count.ToString(CultureInfo.CurrentCulture) : "NaN")}"));
@@ -35,22 +35,6 @@ public sealed class AudioTab : DebuggerTab
 			}
 		EditorGUI.indentLevel -= 2;
 		EditorGUILayout.EndFoldoutHeaderGroup();
-
-
 		EditorGUILayout.EndScrollView();
-	}
-
-	private static AudioHandler _audioHandler;
-	private static bool TryGetAudioHandler(out AudioHandler dialogueSys)
-	{
-		if (_audioHandler == null)
-			_audioHandler = Object.FindObjectOfType<AudioHandler>();
-		if (_audioHandler == null)
-		{
-			dialogueSys = null;
-			return false;
-		}
-		dialogueSys = _audioHandler;
-		return true;
 	}
 }

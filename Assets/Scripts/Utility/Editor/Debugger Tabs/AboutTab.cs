@@ -21,7 +21,7 @@ public sealed class AboutTab : DebuggerTab
 		GUI.DrawTexture(new Rect(8, Screen.height - (height * 1.3f), width, height), iconImageForAbout);
 	}
 
-	public override int Order => int.MinValue;
+	public override int Order => int.MinValue + 1;
 
 
 	// https://www.techtalk7.com/calculate-a-ratio-in-c/

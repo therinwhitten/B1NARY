@@ -15,6 +15,18 @@ public sealed class OptionsTab : DebuggerTab
 		int newBarCountValue = EditorGUILayout.IntSlider("B1NARY Slots", oldBarCountValue, 1, 20);
 		if (oldBarCountValue != newBarCountValue)
 			EditorPrefs.SetInt("B1NARY Slots Debugger", newBarCountValue);
+		// Show Tabs
+		foreach (DebuggerTab tab in Tabs)
+		{
+			if (tab.GetType() == typeof(OptionsTab))
+				continue;
+			string name = $"B1NARY Tab: {tab.Name}";
+			deleteAllKeysNames.Add(name);
+			bool setValue = EditorPrefs.GetBool(name, tab.ShowInDebugger);
+			bool result = EditorGUILayout.Toggle(tab.Name, setValue);
+			if (result != setValue)
+				EditorPrefs.SetBool(name, result);
+		}
 
 		foreach (var (scriptName, dataObjects) in Data)
 		{
@@ -97,5 +109,6 @@ public sealed class OptionsTab : DebuggerTab
 				EditorPrefs.SetInt(name, result);
 		}
 	}
-	public override int Order => int.MinValue + 1;
+	// Order is at min value due to how ordering shown layers when changing it
+	public override int Order => int.MinValue;
 }

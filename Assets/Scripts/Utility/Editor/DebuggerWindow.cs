@@ -4,32 +4,21 @@ using UnityEditor;
 
 public class DebuggerWindow : EditorWindow
 {
-	private static ScriptParser _parser;
-	public static bool TryGetScriptParser(out ScriptParser scriptParser)
+	public static class TryGetter<T> where T : MonoBehaviour
 	{
-		if (_parser == null)
-			_parser = FindObjectOfType<ScriptParser>();
-		if (_parser == null)
+		private static T valueCache;
+		public static bool TryGetObject(out T value)
 		{
-			scriptParser = null;
-			return false;
+			if (valueCache == null)
+				valueCache = FindObjectOfType<T>();
+			if (valueCache == null)
+			{
+				value = null;
+				return false;
+			}
+			value = valueCache;
+			return true;
 		}
-		scriptParser = _parser;
-		return true;
-	}
-
-	private static DialogueSystem _charScript;
-	public static bool TryGetDialogueSystem(out DialogueSystem dialogueSys)
-	{
-		if (_charScript == null)
-			_charScript = FindObjectOfType<DialogueSystem>();
-		if (_charScript == null)
-		{
-			dialogueSys = null;
-			return false;
-		}
-		dialogueSys = _charScript;
-		return true;
 	}
 
 
@@ -65,14 +54,22 @@ public class DebuggerWindow : EditorWindow
 		SpeakerShow();
 	}
 
-	
 
-	int selected = 0;
+	Vector2 scrollPos = Vector2.zero;
+	int selected = 0, oldTabLength = -1;
 	private void ShowTabs()
 	{
 		const int slotHeight = 20;
 		int slotsEach = EditorPrefs.GetInt("B1NARY Slots Debugger", 3);
-		string[] tabNames = DebuggerTab.Tabs.Select(tab => tab.Name).ToArray();
+		string[] tabNames = DebuggerTab.ShownTabs.Select(tab => tab.Name).ToArray();
+		if (oldTabLength != tabNames.Length)
+			if (oldTabLength == -1)
+				oldTabLength = tabNames.Length;
+			else
+			{
+				selected += tabNames.Length - oldTabLength;
+				oldTabLength += tabNames.Length - oldTabLength;
+			}
 		int RectHeight = 0;
 		for (int i = 0; i < tabNames.Length; i += slotsEach)
 			RectHeight += slotHeight;
@@ -80,14 +77,16 @@ public class DebuggerWindow : EditorWindow
 		guiRect.width -= 10;
 		guiRect.x += 5;
 		selected = GUI.SelectionGrid(guiRect, selected, tabNames, slotsEach);
-		DebuggerTab.Tabs[selected].DisplayTab();
+		scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+		DebuggerTab.ShownTabs[selected].DisplayTab();
+		EditorGUILayout.EndScrollView();
 	}
 
 	
 	private void CurrentLineShow()
 	{
 		const string startingLine = "On line: ";
-		if (TryGetScriptParser(out var scriptParser) && scriptParser.currentNode != null)
+		if (TryGetter<ScriptParser>.TryGetObject(out var scriptParser) && scriptParser.currentNode != null)
 			EditorGUILayout.LabelField(startingLine + (scriptParser.currentNode.index + 1), EditorStyles.boldLabel);
 		else
 			EditorGUILayout.LabelField(startingLine + "NaN", EditorStyles.boldLabel);
@@ -95,12 +94,9 @@ public class DebuggerWindow : EditorWindow
 	private void SpeakerShow()
 	{
 		const string startingLine = "On Character: ";
-		if (TryGetDialogueSystem(out var charScript) && charScript.currentSpeaker.Length != 0)
+		if (TryGetter<DialogueSystem>.TryGetObject(out var charScript) && charScript.currentSpeaker.Length != 0)
 			EditorGUILayout.LabelField(startingLine + charScript.currentSpeaker);
 		else
 			EditorGUILayout.LabelField(startingLine + "NaN");
 	}
-
-	
-	
 }

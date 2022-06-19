@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿/*
+using System.IO;
 using System.Linq;
 using System.Diagnostics;
 using UnityEditor;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 public class DoomWindow : EditorWindow
 {
-	[MenuItem("B1NARY/Doom Porter"/*,priority = 0*/)]
+	[MenuItem("B1NARY/Doom Porter")]
 	public static void ShowWindow()
 	{
 		// Get existing open window or if none, make a new one:
@@ -67,3 +68,4 @@ public class DoomWindow : EditorWindow
 	}
 	#endregion
 }
+*/

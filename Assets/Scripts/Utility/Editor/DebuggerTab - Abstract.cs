@@ -9,9 +9,12 @@ public abstract class DebuggerTab : IComparable<DebuggerTab>
 	
 	static DebuggerTab()
 	{
-		Tabs = typeof(DebuggerTab).Assembly.GetTypes()
-			.Where(obj => obj.IsSubclassOf(typeof(DebuggerTab)) && !obj.IsAbstract && obj.IsClass)
-			.Select(type => (DebuggerTab)Activator.CreateInstance(type)).ToArray();
+		Tabs = (
+			from type in typeof(DebuggerTab).Assembly.GetTypes()
+			where type.IsSubclassOf(typeof(DebuggerTab)) && !type.IsAbstract && type.IsClass
+			let tab = (DebuggerTab)Activator.CreateInstance(type)
+			select tab
+			).ToArray();
 		Array.Sort(Tabs);
 		DefineData();
 	}
@@ -42,12 +45,18 @@ public abstract class DebuggerTab : IComparable<DebuggerTab>
 		*/
 	}
 	public static DebuggerTab[] Tabs { get; private set; }
+	public static DebuggerTab[] ShownTabs =>
+		(from tab in Tabs
+		let type = tab.GetType()
+		where EditorPrefs.GetBool($"B1NARY Tab: {tab.Name}", tab.ShowInDebugger) 
+		select tab).ToArray();
 	public static (string name, DebuggerPreferences data)[] Data { get; private set; } 
 
 	
 	public abstract string Name { get; }
 	public abstract void DisplayTab();
 	public virtual int Order => 0;
+	public virtual bool ShowInDebugger => true;
 
 	// Memory for normal files
 	public virtual DebuggerPreferences DebuggerPreferences { get; } = null;

@@ -44,7 +44,7 @@ public sealed class ScriptsTab : DebuggerTab
 		lastRect.y += 4 + lastRect.height;
 		lastRect.height = Screen.height - lastRect.y - 4;
 
-		if (DebuggerWindow.TryGetScriptParser(out ScriptParser parser))
+		if (DebuggerWindow.TryGetter<ScriptParser>.TryGetObject(out ScriptParser parser))
 			ShowScriptScroll(parser);
 	}
 
@@ -61,20 +61,28 @@ public sealed class ScriptsTab : DebuggerTab
 		}
 		int space = currentScriptContents.Length.ToString().Length;
 		int onLine = parser.currentNode != null ? parser.currentNode.index : -1;
+		Color[] assignedColors =
+		{
+			colors[EditorPrefs.GetInt("Normal B1NARY Color", 0)],
+			colors[EditorPrefs.GetInt("Selected B1NARY Color", 1)],
+			colors[EditorPrefs.GetInt("Speaker B1NARY Color", 2)],
+			colors[EditorPrefs.GetInt("Command B1NARY Color", 3)],
+			colors[EditorPrefs.GetInt("Emote B1NARY Color", 4)],
+		};
 		for (int i = 0; i < currentScriptContents.Length; i++)
 		{
 			Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth - 26, 16);
 			rect.x += 6;
 			if (onLine == i)
-				GUI.color = colors[EditorPrefs.GetInt("Selected B1NARY Color", 1)];
+				GUI.color = assignedColors[1];
 			else if (commandRegex.IsMatch(currentScriptContents[i]))
-				GUI.color = colors[EditorPrefs.GetInt("Command B1NARY Color", 3)];
+				GUI.color = assignedColors[3];
 			else if (emoteRegex.IsMatch(currentScriptContents[i]))
-				GUI.color = colors[EditorPrefs.GetInt("Emote B1NARY Color", 4)];
+				GUI.color = assignedColors[4];
 			else if (currentScriptContents[i].EndsWith("::"))
-				GUI.color = colors[EditorPrefs.GetInt("Speaker B1NARY Color", 2)];
+				GUI.color = assignedColors[2];
 			else
-				GUI.color = colors[EditorPrefs.GetInt("Normal B1NARY Color", 0)];
+				GUI.color = assignedColors[0];
 			GUI.Label(rect, $"{(onLine == i && EditorPrefs.GetBool("Script B1NARY Pointer", true) ? ">" : (i + 1).ToString())} {new string(' ', (space - (i + 1).ToString().Length) * 2)}    {currentScriptContents[i]}");
 		}
 		GUILayout.EndScrollView();
@@ -87,7 +95,7 @@ public sealed class ScriptsTab : DebuggerTab
 	private void ScriptNameShow()
 	{
 		const string startingLine = "On Script: ";
-		if (DebuggerWindow.TryGetScriptParser(out var scriptParser) && !string.IsNullOrEmpty(scriptParser.scriptName))
+		if (DebuggerWindow.TryGetter<ScriptParser>.TryGetObject(out var scriptParser) && !string.IsNullOrEmpty(scriptParser.scriptName))
 			EditorGUILayout.LabelField(startingLine + scriptParser.scriptName, EditorStyles.boldLabel);
 		else
 			EditorGUILayout.LabelField(startingLine + "NaN", EditorStyles.boldLabel);
