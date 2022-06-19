@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEditor;
 
 
@@ -19,7 +21,14 @@ public class SoundLibraryEditor : Editor
 	{
 		SoundLibrary soundLibrary = (SoundLibrary)target;
 		AddTopButtons(soundLibrary);
+		NullReferenceCheck(soundLibrary.customAudioClips);
 		DisplayButtons(soundLibrary);
+	}
+
+	private void NullReferenceCheck(List<CustomAudioClip> customAudioClips)
+	{
+		if (customAudioClips.Select(x => x.clip).Where(x => x == null).Any())
+			EditorGUILayout.HelpBox("The Sound Library contains empty parameters, which may cause issues!", MessageType.Error);
 	}
 
 	private void AddTopButtons(SoundLibrary soundLibrary)

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ReferencerWindow : EditorWindow
 {
-	[MenuItem("B1NARY/Referencer")]
+	[MenuItem("B1NARY/Referencer" /*,priority = 0*/)]
 	public static void ShowWindow()
 	{
 		// Get existing open window or if none, make a new one:

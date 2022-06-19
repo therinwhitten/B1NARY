@@ -73,8 +73,8 @@ public static class RandomFowarder
 
 	// This handles the optional doom random number gen for enthusiasts
 	public static uint DoomRandomIterations { get; private set; } = 0;
-	private static byte doomIndex = 0;
-	private static readonly byte[] doomRandom =
+	public static byte DoomIndex { get; private set; } = 0;
+	public static readonly byte[] doomRandomTable =
 	{
 		0,   8, 109, 220, 222, 241, 149, 107,  75, 248, 254, 140,  16,  66 ,
 		74,  21, 211,  47,  80, 242, 154,  27, 205, 128, 161,  89,  77,  36 ,
@@ -96,12 +96,12 @@ public static class RandomFowarder
 		197, 242,  98,  43,  39, 175, 254, 145, 190,  84, 118, 222, 187, 136 ,
 		120, 163, 236, 249
 	};
-	public static void ResetDoomRandomIndex() => doomIndex = 0;
+	public static void ResetDoomRandomIndex() => DoomIndex = 0;
 	public static byte GetRawDoomRandom()
 	{
-		doomIndex++;
+		DoomIndex++;
 		DoomRandomIterations++;
-		return doomRandom[doomIndex];
+		return doomRandomTable[DoomIndex];
 	}
 	public static int DoomNext(int startValue, int multiples, int iterations)
 	{

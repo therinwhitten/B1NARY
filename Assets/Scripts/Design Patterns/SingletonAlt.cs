@@ -1,9 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
+
+/// <summary>
+///		Limits a single object in the world, and allows use of <see cref="Instance"/>
+///		instead of using fields for monoBehaviours.
+/// </summary>
+/// <typeparam name="T">A MonoBehaviour Script to tie it to.</typeparam>
 public abstract class SingletonAlt<T> : InstanceHolder<T> where T : MonoBehaviour
 {
 	private static T instance;
+	/// <summary> A Single instance </summary>
 	public static T Instance
 	{
 		get
@@ -29,6 +36,16 @@ public abstract class SingletonAlt<T> : InstanceHolder<T> where T : MonoBehaviou
 			}
 		}
 		set => instance = value;
+	}
+
+	/// <summary>
+	///		Override <see cref="Instance"/> with a new Instance.
+	/// </summary>
+	/// <param name="object"> The object you want to have the component in. </param>
+	public static void OverrideWithNew(GameObject @object)
+	{
+		instance = null;
+		Instance = @object.AddComponent<T>();
 	}
 
 	private void Start()

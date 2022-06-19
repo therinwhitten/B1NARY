@@ -4,8 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 ///<summary> 
-/// A class that stores a single instance of <see cref="T"/>,
-/// created when called for the first time
+/// A list of multiple <see cref="MonoBehaviour"/>, usage as such.
 /// </summary>
 public abstract class Multiton<T> : InstanceHolder<T> where T : MonoBehaviour
 {
@@ -43,21 +42,21 @@ public abstract class Multiton<T> : InstanceHolder<T> where T : MonoBehaviour
 			}
 	}
 
-
-	private int index;
+	/// <summary> Index for usage of <see cref="Multiton{T}"/></summary>
+	public int MultitonIndex { get; private set; }
 	private void Start()
 	{
-		index = queue.Count == 0 ? instances.Count : queue.Dequeue();
-		instancesList.Add(index);
-		instances.Add(index, GetComponent<T>());
+		MultitonIndex = queue.Count == 0 ? instances.Count : queue.Dequeue();
+		instancesList.Add(MultitonIndex);
+		instances.Add(MultitonIndex, GetComponent<T>());
 		SingletonStart();
 	}
 
 	private void OnDestroy()
 	{
-		queue.Enqueue(index);
-		instances.Remove(index);
-		instancesList.Remove(index);
+		queue.Enqueue(MultitonIndex);
+		instances.Remove(MultitonIndex);
+		instancesList.Remove(MultitonIndex);
 		OnSingletonDestroy();
 	}
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -23,4 +24,5 @@ public static class GameCommands
 		return operation;
 	}
 	public static event EventHandler<string> SwitchedScenes;
+
 }
