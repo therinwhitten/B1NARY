@@ -11,7 +11,7 @@ public sealed class AudioTab : DebuggerTab
 	public override void DisplayTab()
 	{
 		bool hasValue = DebuggerWindow.TryGetter<AudioHandler>.TryGetObject(out var audioHandler);
-		EditorGUILayout.LabelField($"Current Library: {(audioHandler.CustomAudioData == null ? "NaN" : audioHandler.CustomAudioData.name)}");
+		EditorGUILayout.LabelField($"Current Library: {(audioHandler == null || audioHandler.CustomAudioData == null ? "NaN" : audioHandler.CustomAudioData.name)}");
 		ShowSoundData(hasValue, audioHandler);
 		AudioEditor();
 		EditorGUILayout.EndFoldoutHeaderGroup();

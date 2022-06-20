@@ -27,6 +27,8 @@ public class SoundLibraryEditor : Editor
 
 	private void NullReferenceCheck(List<CustomAudioClip> customAudioClips)
 	{
+		if (customAudioClips == null)
+			return;
 		if (customAudioClips.Select(x => x.clip).Where(x => x == null).Any())
 			EditorGUILayout.HelpBox("The Sound Library contains empty parameters, which may cause issues!", MessageType.Error);
 	}
