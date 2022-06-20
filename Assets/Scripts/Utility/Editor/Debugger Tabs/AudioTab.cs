@@ -1,27 +1,24 @@
-﻿using System.Globalization;
+﻿using System.IO;
+using System.Linq;
+using System.Globalization;
 using UnityEngine;
 using UnityEditor;
-using System;
 
 public sealed class AudioTab : DebuggerTab
 {
 	public override string Name => "Audio";
 
-	private bool toggleGroupAudioTab = false;
 	public override void DisplayTab()
 	{
 		bool hasValue = DebuggerWindow.TryGetter<AudioHandler>.TryGetObject(out var audioHandler);
 		EditorGUILayout.LabelField($"Current Library: {(audioHandler == null || audioHandler.CustomAudioData == null ? "NaN" : audioHandler.CustomAudioData.name)}");
 		ShowSoundData(hasValue, audioHandler);
-		AudioEditor();
-		EditorGUILayout.EndFoldoutHeaderGroup();
 	}
 	private void ShowSoundData(bool hasAudioHandlerValue, AudioHandler audioHandler)
 	{
-		toggleGroupAudioTab =
-			EditorGUILayout.BeginFoldoutHeaderGroup(toggleGroupAudioTab, new GUIContent($"Sounds : {(hasAudioHandlerValue ? audioHandler.SoundCoroutineCache.Count.ToString(CultureInfo.CurrentCulture) : "NaN")}"));
-		EditorGUI.indentLevel += 2;
-		if (hasAudioHandlerValue && toggleGroupAudioTab)
+		EditorGUILayout.LabelField(new GUIContent($"Sound Count : {(hasAudioHandlerValue ? audioHandler.SoundCoroutineCache.Count.ToString(CultureInfo.CurrentCulture) : "NaN")}"), EditorStyles.boldLabel);
+		EditorGUI.indentLevel++;
+		if (hasAudioHandlerValue)
 			foreach (SoundCoroutine coroutine in audioHandler.SoundCoroutineCache.Values)
 			{
 				EditorGUILayout.LabelField(coroutine.AudioSource.clip.name, EditorStyles.boldLabel);
@@ -39,10 +36,6 @@ public sealed class AudioTab : DebuggerTab
 				EditorGUILayout.Space();
 				EditorGUI.indentLevel--;
 			}
-		EditorGUI.indentLevel -= 2;
-	}
-	private void AudioEditor()
-	{
-
+		EditorGUI.indentLevel--;
 	}
 }

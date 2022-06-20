@@ -6,6 +6,8 @@ using UnityEngine;
 public sealed class OptionsTab : DebuggerTab
 {
 	public override string Name => "Options";
+	private bool showHideScripts = true;
+	private Dictionary<string, bool> showScriptSettings = new Dictionary<string, bool>();
 	public override void DisplayTab()
 	{
 		List<string> deleteAllKeysNames = new List<string>() { "B1NARY Slots Debugger" };
@@ -16,23 +18,35 @@ public sealed class OptionsTab : DebuggerTab
 		if (oldBarCountValue != newBarCountValue)
 			EditorPrefs.SetInt("B1NARY Slots Debugger", newBarCountValue);
 		// Show Tabs
-		foreach (DebuggerTab tab in Tabs)
+		showHideScripts = EditorGUILayout.Foldout(showHideScripts, "Hide Tabs");
+		if (showHideScripts)
 		{
-			if (tab.GetType() == typeof(OptionsTab))
-				continue;
-			string name = $"B1NARY Tab: {tab.Name}";
-			deleteAllKeysNames.Add(name);
-			bool setValue = EditorPrefs.GetBool(name, tab.ShowInDebugger);
-			bool result = EditorGUILayout.Toggle(tab.Name, setValue);
-			if (result != setValue)
-				EditorPrefs.SetBool(name, result);
-		}
+			EditorGUI.indentLevel++;
+			foreach (DebuggerTab tab in Tabs)
+			{
+				if (tab.GetType() == typeof(OptionsTab))
+					continue;
+				string name = $"B1NARY Tab: {tab.Name}";
+				deleteAllKeysNames.Add(name);
+				bool setValue = EditorPrefs.GetBool(name, tab.ShowInDebugger);
+				bool result = EditorGUILayout.Toggle(tab.Name, setValue);
+				if (result != setValue)
+					EditorPrefs.SetBool(name, result);
+			}
+			EditorGUI.indentLevel--;
+		};
 
 		foreach (var (scriptName, dataObjects) in Data)
 		{
-			EditorGUILayout.Space(8);
-			EditorGUILayout.LabelField(scriptName, EditorStyles.boldLabel);
+			EditorGUILayout.Space(4);
+			if (!showScriptSettings.ContainsKey(scriptName))
+				showScriptSettings.Add(scriptName, false);
+			showScriptSettings[scriptName] = EditorGUILayout.Foldout(showScriptSettings[scriptName], scriptName);
+			if (!showScriptSettings[scriptName])
+				continue;
+			EditorGUI.indentLevel++;
 			foreach (var data in dataObjects)
+			{
 				switch (data.Key)
 				{
 					case DebuggerPreferences.DataType.Bool:
@@ -60,6 +74,8 @@ public sealed class OptionsTab : DebuggerTab
 					default: throw new NotImplementedException
 							($"{data.Key} is not in the switch statement!");
 				}
+			}
+			EditorGUI.indentLevel--;
 		}
 
 		EditorGUILayout.Space(20);

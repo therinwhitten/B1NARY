@@ -40,7 +40,7 @@ public class DebuggerWindow : EditorWindow
 	private void OnGUI()
 	{
 		TopBar();
-		EditorGUILayout.Space(10);
+		//EditorGUILayout.Space(10);
 		ShowTabs();
 	}
 
@@ -74,11 +74,9 @@ public class DebuggerWindow : EditorWindow
 		int RectHeight = 0;
 		for (int i = 0; i < tabNames.Length; i += slotsEach)
 			RectHeight += slotHeight;
-		Rect guiRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, RectHeight - 10);
+		Rect guiRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, RectHeight);
 		guiRect.width -= 10;
 		guiRect.x += 5;
-		guiRect.y -= 10;
-		guiRect.height += 10;
 		selected = GUI.SelectionGrid(guiRect, selected, tabNames, slotsEach);
 		scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 		DebuggerTab.ShownTabs[selected].DisplayTab();
