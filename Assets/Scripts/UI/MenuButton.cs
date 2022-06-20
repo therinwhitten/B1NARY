@@ -46,7 +46,10 @@ public class MenuButton : MonoBehaviour
 	{
 		if (!Interactible)
 			return;
-		audioMaster.PlayOneShot(hover);
+		if (hover != null)
+			audioMaster.PlayOneShot(hover);
+		else
+			Debug.LogError($"Button {nameof(hover)} is not tied to an audioClip!");
 		animator.SetBool("selected", true);
 	}
 	private void OnMouseExit()
@@ -57,7 +60,10 @@ public class MenuButton : MonoBehaviour
 	{
 		if (!Interactible)
 			return;
-		audioMaster.PlaySound(press);
+		if (press != null)
+			audioMaster.PlayOneShot(press);
+		else
+			Debug.LogError($"Button {nameof(press)} is not tied to an audioClip!");
 		animator.SetBool("pressed", true);
 		controller.SendMessage(action);
 	}
