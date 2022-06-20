@@ -106,7 +106,7 @@ public class DialogueNode
     {
         ScriptParser.Instance.currentNode = choice;
         ScriptParser.Instance.paused = false;
-        ScriptParser.Instance.parseLine(choice.getCurrentLine());
+        ScriptParser.Instance.ParseLine(choice.getCurrentLine());
     }
     public DialogueNode makeConditionalNode()
     {

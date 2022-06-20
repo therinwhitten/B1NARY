@@ -78,7 +78,7 @@ public class PersistentData : Singleton<PersistentData>
         DialogueSystem.Instance.Say("");
         // DialogueSystem.Instance.Say(state.textBoxContent);
         DialogueSystem.Instance.additiveTextEnabled = state.additiveTextEnabled;
-        ScriptParser.Instance.changeScriptFile(state.script, state.index + 2);
+        ScriptParser.Instance.ChangeScriptFile(state.script, state.index + 2);
     }
     // Update is called once per frame
     void Update()
