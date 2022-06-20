@@ -63,11 +63,11 @@ public class AudioExplorerWindow : EditorWindow
 			{
 				fileNames = Directory.GetFiles(ResourcesDirectory + resourcesDirSounds)
 					.Where(fileName => fileName.EndsWith(".wav") || fileName.EndsWith(".mp4")).ToArray();
-				visualNames = fileNames.Select(fileName => fileName.Remove(0,
-					new int[] { fileName.LastIndexOf('/'), fileName.LastIndexOf('\\') }.Max() + 1)).ToArray();
+				visualNames = fileNames.Select(fileName => 
+				fileName.Remove(0, fileName.LastIndexOfAny(new char[] { '/', '\\' }) + 1)).ToArray();
 				directoryNames = Directory.GetDirectories(ResourcesDirectory + resourcesDirSounds);
-				directoryVisualNames = directoryNames.Select(fileName => fileName.Remove(0,
-					new int[] { fileName.LastIndexOf('/'), fileName.LastIndexOf('\\') }.Max() + 1)).ToArray();
+				directoryVisualNames = directoryNames.Select(fileName => 
+				fileName.Remove(0,fileName.LastIndexOfAny(new char[] { '/', '\\' }) + 1)).ToArray();
 			}
 			else
 				fileNames = null;
