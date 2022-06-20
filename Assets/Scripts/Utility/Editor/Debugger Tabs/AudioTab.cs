@@ -1,22 +1,27 @@
 ﻿using System.Globalization;
 using UnityEngine;
 using UnityEditor;
+using System;
 
 public sealed class AudioTab : DebuggerTab
 {
 	public override string Name => "Audio";
 
 	private bool toggleGroupAudioTab = false;
-	private Vector2 scrollPosAudioTab = Vector2.zero;
 	public override void DisplayTab()
 	{
-		scrollPosAudioTab = EditorGUILayout.BeginScrollView(scrollPosAudioTab);
 		bool hasValue = DebuggerWindow.TryGetter<AudioHandler>.TryGetObject(out var audioHandler);
 		EditorGUILayout.LabelField($"Current Library: {(audioHandler.CustomAudioData == null ? "NaN" : audioHandler.CustomAudioData.name)}");
+		ShowSoundData(hasValue, audioHandler);
+		AudioEditor();
+		EditorGUILayout.EndFoldoutHeaderGroup();
+	}
+	private void ShowSoundData(bool hasAudioHandlerValue, AudioHandler audioHandler)
+	{
 		toggleGroupAudioTab =
-			EditorGUILayout.BeginFoldoutHeaderGroup(toggleGroupAudioTab, new GUIContent($"Sounds : {(hasValue ? audioHandler.SoundCoroutineCache.Count.ToString(CultureInfo.CurrentCulture) : "NaN")}"));
+			EditorGUILayout.BeginFoldoutHeaderGroup(toggleGroupAudioTab, new GUIContent($"Sounds : {(hasAudioHandlerValue ? audioHandler.SoundCoroutineCache.Count.ToString(CultureInfo.CurrentCulture) : "NaN")}"));
 		EditorGUI.indentLevel += 2;
-		if (hasValue && toggleGroupAudioTab)
+		if (hasAudioHandlerValue && toggleGroupAudioTab)
 			foreach (SoundCoroutine coroutine in audioHandler.SoundCoroutineCache.Values)
 			{
 				EditorGUILayout.LabelField(coroutine.AudioSource.clip.name, EditorStyles.boldLabel);
@@ -30,11 +35,14 @@ public sealed class AudioTab : DebuggerTab
 				//EditorGUILayout.Space();
 				EditorGUILayout.LabelField($"Volume: {coroutine.AudioClip.volume:N2}");
 				EditorGUILayout.LabelField($"Pitch: {coroutine.AudioClip.pitch:N2}");
+				EditorGUILayout.LabelField($"Looping: {coroutine.AudioClip.loop}");
 				EditorGUILayout.Space();
 				EditorGUI.indentLevel--;
 			}
 		EditorGUI.indentLevel -= 2;
-		EditorGUILayout.EndFoldoutHeaderGroup();
-		EditorGUILayout.EndScrollView();
+	}
+	private void AudioEditor()
+	{
+
 	}
 }

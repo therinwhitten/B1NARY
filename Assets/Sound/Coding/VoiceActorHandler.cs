@@ -5,7 +5,7 @@ using System.Collections;
 public class VoiceActorHandler
 {
 	public MonoBehaviour CoroutineStarter { get; set; }
-	private SoundCoroutine speakerCoroutine = null;
+	public SoundCoroutine SpeakerCoroutine { get; private set; } = null;
 	public string LastSpeaker { get; private set; }
 
 	public VoiceActorHandler(MonoBehaviour coroutineStarter)
@@ -16,8 +16,8 @@ public class VoiceActorHandler
 
 	public void StopVoice()
 	{
-		if (speakerCoroutine.AudioSource != null)
-			speakerCoroutine.Stop(false);
+		if (SpeakerCoroutine.AudioSource != null)
+			SpeakerCoroutine.Stop(false);
 	}
 
 	public void PlayVoice(string name, float volume, AudioSource source, AudioClip clip)
@@ -29,24 +29,24 @@ public class VoiceActorHandler
 		}
 		if (source != null)
 		{
-			if (speakerCoroutine.AudioSource != null)
-				if (speakerCoroutine.IsPlaying)
+			if (SpeakerCoroutine.AudioSource != null)
+				if (SpeakerCoroutine.IsPlaying)
 				{
-					speakerCoroutine.Stop();
+					SpeakerCoroutine.Stop();
 				}
-			speakerCoroutine.AudioSource = source;
+			SpeakerCoroutine.AudioSource = source;
 		}
 		LastSpeaker = name;
-		if (speakerCoroutine.AudioSource == null)
+		if (SpeakerCoroutine.AudioSource == null)
 			return;
-		speakerCoroutine.AudioClip = new CustomAudioClip(clip)
+		SpeakerCoroutine.AudioClip = new CustomAudioClip(clip)
 		{ volume = volume };
-		speakerCoroutine.PlaySingle();
+		SpeakerCoroutine.PlaySingle();
 	}
 
 	private void SwitchSceneCheck(object sender, EventArgs args)
 	{
-		speakerCoroutine = new SoundCoroutine(CoroutineStarter)
+		SpeakerCoroutine = new SoundCoroutine(CoroutineStarter)
 		{ destroyOnFinish = false, DeleteCoroutineOnSwap = false };
 		GameCommands.SwitchingScenes += SwitchSceneCheck;
 	}

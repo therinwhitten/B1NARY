@@ -7,12 +7,9 @@ using System.Globalization;
 
 public class CommandsManager : Singleton<CommandsManager>
 {
-	[SerializeField] private AudioHandler audioHandler;
+	DialogueSystem dialogue => DialogueSystem.Instance;
 
-
-	DialogueSystem dialogue { get { return DialogueSystem.Instance; } }
-
-	CharacterManager characterManager { get { return CharacterManager.Instance; } }
+	CharacterManager characterManager => CharacterManager.Instance;
 
 	void Start()
 	{
@@ -23,15 +20,12 @@ public class CommandsManager : Singleton<CommandsManager>
 		// Debug.Log("Commands manager initialized");
 	}
 
-	public void HandleWithArgs(string command, ArrayList argsUnfiltered)
+	public void HandleWithArgs(string command, ArrayList args)
 	{
-		string[] args = new string[argsUnfiltered.Count];
-		for (int i = 0; i < args.Length; i++)
-			args[i] = argsUnfiltered[i].ToString().Trim();
 		switch (command)
 		{
 			case "additive":
-				if (args[0].ToLower().Equals("on"))
+				if (args[0].ToString().ToLower().Trim().Equals("on"))
 				{
 					dialogue.Say("");
 					dialogue.additiveTextEnabled = true;
@@ -40,7 +34,7 @@ public class CommandsManager : Singleton<CommandsManager>
 					// ScriptParser.Instance.currentNode.nextLine();
 					// ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.getCurrentLine());
 				}
-				else if (args[0].ToLower().Equals("off"))
+				else if (args[0].ToString().ToLower().Trim().Equals("off"))
 				{
 					dialogue.additiveTextEnabled = false;
 					Debug.Log("Set additive text to off!");
@@ -52,87 +46,87 @@ public class CommandsManager : Singleton<CommandsManager>
 						"argument for additive!");
 				break;
 			case "spawnchar":
-				if (argsUnfiltered.Count == 2)
+				if (args.Count == 2)
 				{
-					characterManager.spawnCharacter(args[0], args[1], "");
+					characterManager.spawnCharacter(args[0].ToString().Trim(), args[1].ToString().Trim(), "");
 				}
 				else
 				{
-					characterManager.spawnCharacter(args[0], args[1], args[2]);
+					characterManager.spawnCharacter(args[0].ToString().Trim(), args[1].ToString().Trim(), args[2].ToString().Trim());
 				}
 				break;
 			case "anim":
-				characterManager.changeAnimation(args[0], args[1]);
+				characterManager.changeAnimation(args[0].ToString().Trim(), args[1].ToString().Trim());
 				break;
 			case "movechar":
-				characterManager.moveCharacter(args[0], args[1]);
+				characterManager.moveCharacter(args[0].ToString().Trim(), args[1].ToString().Trim());
 				break;
 			case "changebg":
-				TransitionManager.TransitionBG(args[0]);
+				TransitionManager.TransitionBG(args[0].ToString().Trim());
 				break;
 			case "changescene":
-				TransitionManager.transitionScene(args[0]);
+				TransitionManager.transitionScene(args[0].ToString().Trim());
 				break;
 			case "changescript":
 				ScriptParser.Instance.scriptChanged = true;
-				if (argsUnfiltered.Count == 2)
+				if (args.Count == 2)
 				{
-					ScriptParser.Instance.ChangeScriptFile(args[0], int.Parse(args[1]));
+					ScriptParser.Instance.ChangeScriptFile(args[0].ToString().Trim(), int.Parse(args[1].ToString().Trim()));
 				}
 				else
 				{
-					ScriptParser.Instance.ChangeScriptFile(args[0]);
+					ScriptParser.Instance.ChangeScriptFile(args[0].ToString().Trim());
 				}
 				break;
 			case "emptyscene":
 				CharacterManager.Instance.emptyScene();
 				break;
 			case "loopbg":
-				TransitionManager.Instance.animatedBG.isLooping = args[0].ToLower().Equals("true");
+				TransitionManager.Instance.animatedBG.isLooping = args[0].ToString().Trim().ToLower().Equals("true");
 				break;
 			case "playbg":
 				string bgName;
-				if (argsUnfiltered != null)
-					bgName = args[0].ToLower();
+				if (args != null)
+					bgName = args[0].ToString().Trim().ToLower();
 				else
 					bgName = "";
 				TransitionManager.Instance.playBG(bgName);
 				break;
 			case "changename":
-				CharacterManager.Instance.changeName(args[0], args[1]);
+				CharacterManager.Instance.changeName(args[0].ToString().Trim(), args[1].ToString().Trim());
 				break;
 			// Sounds
 			case "fadeinsound":
 				if (!Extensions.TryInvoke<SoundNotFoundException>(() => 
-					AudioHandler.Instance.PlayFadedSound(args[0], float.Parse(args[1])), out _))
+					AudioHandler.Instance.PlayFadedSound(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim())), out _))
 					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;
 			case "fadeoutsound":
 				try
 				{
-					AudioHandler.Instance.StopSoundViaFade(args[0], float.Parse(args[1]));
+					AudioHandler.Instance.StopSoundViaFade(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim()));
 				}
 				catch (SoundNotFoundException ex)
-					{ Debug.LogWarning($"{args[0]} is not a valid soundfile Path!"
+					{ Debug.LogWarning($"{args[0].ToString().Trim()} is not a valid soundfile Path!"
 						+ ex); }
 				catch (KeyNotFoundException ex)
-					{ Debug.LogWarning($"Cannot find sound: {args[0]}\n"
+					{ Debug.LogWarning($"Cannot find sound: {args[0].ToString().Trim()}\n"
 						+ ex); }
 				break;
 			case "playsound":
 				if (Extensions.TryInvoke<SoundNotFoundException>(() =>
-					AudioHandler.Instance.PlaySound(args[0]), out _))
+					AudioHandler.Instance.PlaySound(args[0].ToString().Trim()), out _))
 					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;
 			case "stopsound":
 				if (Extensions.TryInvoke<SoundNotFoundException>(() =>
-					AudioHandler.Instance.StopSound(args[0]), out _))
+					AudioHandler.Instance.StopSound(args[0].ToString().Trim()), out _))
 					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 				break;
 			case "startdelayedsound":
 				{
 					if (Extensions.TryInvoke<Coroutine, SoundNotFoundException>(() =>
-					StartCoroutine(Delay(float.Parse(args[0]), () => AudioHandler.Instance.PlaySound(args[0]))), out _, out _))
+					StartCoroutine(Delay(float.Parse(args[0].ToString().Trim()), () => AudioHandler.Instance.PlaySound(args[0].ToString().Trim()))), out _, out _))
 						Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
 					IEnumerator Delay(float seconds, Action playAfterDelay)
 					{
@@ -143,17 +137,17 @@ public class CommandsManager : Singleton<CommandsManager>
 				break;
 			case "choice":
 				ScriptParser.Instance.paused = true;
-				ScriptParser.Instance.currentNode.parseChoice(args[0]);
+				ScriptParser.Instance.currentNode.parseChoice(args[0].ToString().Trim());
 				break;
 			case "setbool":
-				PersistentData.Instance.state.bools[args[0]] = bool.Parse(args[1]);
+				PersistentData.Instance.state.bools[args[0].ToString().Trim()] = bool.Parse(args[1].ToString().Trim());
 				break;
 			case "if":
 				ScriptParser.Instance.paused = true;
 
 				DialogueNode conditional = ScriptParser.Instance.currentNode.makeConditionalNode();
-				bool var = PersistentData.Instance.state.bools[args[0]];
-				bool val = bool.Parse(args[1]);
+				bool var = PersistentData.Instance.state.bools[args[0].ToString().Trim()];
+				bool val = bool.Parse(args[1].ToString().Trim());
 				if (var == val)
 				{
 					// Debug.Log("Condition met. Playing optional block...");

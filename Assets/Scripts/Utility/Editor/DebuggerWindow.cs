@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEditor;
 
@@ -73,9 +74,11 @@ public class DebuggerWindow : EditorWindow
 		int RectHeight = 0;
 		for (int i = 0; i < tabNames.Length; i += slotsEach)
 			RectHeight += slotHeight;
-		Rect guiRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, RectHeight);
+		Rect guiRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, RectHeight - 10);
 		guiRect.width -= 10;
 		guiRect.x += 5;
+		guiRect.y -= 10;
+		guiRect.height += 10;
 		selected = GUI.SelectionGrid(guiRect, selected, tabNames, slotsEach);
 		scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
 		DebuggerTab.ShownTabs[selected].DisplayTab();
@@ -93,10 +96,22 @@ public class DebuggerWindow : EditorWindow
 	}
 	private void SpeakerShow()
 	{
-		const string startingLine = "On Character: ";
+		string startingLine = "On Character: Empty";
+		string[] bottomLengthLabel = { "NaN", "/", "NaN" };
+		float percentage = 0;
 		if (TryGetter<DialogueSystem>.TryGetObject(out var charScript) && charScript.currentSpeaker.Length != 0)
-			EditorGUILayout.LabelField(startingLine + charScript.currentSpeaker);
-		else
-			EditorGUILayout.LabelField(startingLine + "NaN");
+			startingLine = startingLine.Replace("Empty", charScript.currentSpeaker);
+		if (TryGetter<AudioHandler>.TryGetObject(out var audioHandler))
+		{
+			try // Try/Catching is easier than trying to fit all the bool requirements.
+			{
+				percentage = audioHandler.VoiceActorHandler.SpeakerCoroutine.AudioSource.time / audioHandler.VoiceActorHandler.SpeakerCoroutine.AudioClip.clip.length;
+				bottomLengthLabel[0] = audioHandler.VoiceActorHandler.SpeakerCoroutine.AudioSource.time.ToString("N2");
+				bottomLengthLabel[2] = audioHandler.VoiceActorHandler.SpeakerCoroutine.AudioClip.clip.length.ToString("N2");
+			}
+			catch (NullReferenceException) { }
+		}
+		EditorGUI.ProgressBar(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), percentage, string.Join(" ", bottomLengthLabel));
+		EditorGUI.LabelField(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), startingLine, EditorStyles.whiteMiniLabel);
 	}
 }
