@@ -30,32 +30,32 @@ public class CharacterScript : MonoBehaviour
 	private Material lightingNoFocus;
 	public bool focused = false;
 
-	public Vector2 anchorPadding { get { return rectTransform.anchorMax - rectTransform.anchorMin; } }
-	private Vector3 originalScale;
-	float voicevolume = 1f;
-	private void Awake()
-	{
-		instance = this;
-		rectTransform = gameObject.GetComponent<RectTransform>();
-		originalScale = rectTransform.localScale;
-		voice = gameObject.GetComponent<AudioSource>();
-		renderers = gameObject.GetComponentsInChildren<CubismRenderer>();
-		initLighting();
-	}
-	public void lightingIntoFocus()
-	{
-		focused = true;
-		targetMaterial = lighting;
-		targetScale = new Vector3(originalScale.x * 1.05f, originalScale.y * 1.05f, originalScale.z);
-		transitionFocus();
-	}
-	public void lightingOutOfFocus()
-	{
-		focused = false;
-		targetMaterial = lightingNoFocus;
-		targetScale = new Vector3(originalScale.x * 0.95f, originalScale.y * 0.95f, originalScale.z);
-		transitionFocus();
-	}
+    public Vector2 anchorPadding { get { return rectTransform.anchorMax - rectTransform.anchorMin; } }
+    private Vector3 originalScale;
+    float voicevolume = 1f;
+    private void Awake()
+    {
+        instance = this;
+        rectTransform = gameObject.GetComponent<RectTransform>();
+        originalScale = rectTransform.localScale;
+        voice = gameObject.GetComponent<AudioSource>();
+        renderers = gameObject.GetComponentsInChildren<CubismRenderer>();
+        // initLighting();
+    }
+    public void lightingIntoFocus()
+    {
+        focused = true;
+        targetMaterial = lighting;
+        targetScale = new Vector3(originalScale.x * 1.05f, originalScale.y * 1.05f, originalScale.z);
+        transitionFocus();
+    }
+    public void lightingOutOfFocus()
+    {
+        focused = false;
+        targetMaterial = lightingNoFocus;
+        targetScale = new Vector3(originalScale.x * 0.95f, originalScale.y * 0.95f, originalScale.z);
+        transitionFocus();
+    }
 
 	private void stopLighting()
 	{
