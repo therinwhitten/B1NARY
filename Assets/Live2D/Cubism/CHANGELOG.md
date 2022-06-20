@@ -5,6 +5,80 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
+## [4-r.5-beta.3] - 2022-06-16
+
+### Changed
+
+* Change the version of the development project to `2019.4.39f1`.
+
+### Fixed
+
+* Fix physics system behaviour when exists Physics Fps Setting in .physics3.json.
+
+
+## [4-r.5-beta.2] - 2022-06-02
+
+### Fixed
+
+* Fixed a bug that caused Multiply Color / Screen Color of different objects to be applied.
+  * See `CHANGELOG.md` in Core.
+  * No modifications to Samples and Framework.
+
+
+## [4-r.5-beta.1] - 2022-05-19
+
+## Added
+
+* Add support to prevent exceptions depending on the presence or absence of parameters. by [@ppcuni](https://github.com/ppcuni)
+* Add Weight argument to BlendToValue function. by [@ppcuni](https://github.com/ppcuni)
+* Add processing related to Multiply Color / Screen Color added in Cubism 4.2.
+
+### Fixed
+
+* Fix for changes `EditorUserBuildSettings` in 2021.2 and later.
+
+
+## [4-r.4.2] - 2022-03-09
+
+### Fixed
+
+* Fix an issue where inversion masks did not work properly and the mask limit was different from normal.
+
+
+## [4-r.4.1] - 2022-02-10
+
+### Added
+
+* Added an editor extension that switches the library depending on Unity version when exporting to WebGL.
+
+
+## [4-r.4] - 2021-12-09
+
+### Added
+
+* Add the function to set assets to a component when importing a model.
+* Add Chrome OS from the tested environment.
+
+### Changed
+
+* Change the version of the development project to `2019.4.29f1`.
+* Change `Enable Async` in `AsyncBenchmark` scene to be disabled by default.
+* Change the sample scene in `Samples/OW/Expression` so that the expressions are displayed in the order of the elements in `expressionList.asset`.
+* Change `UserData` that it can be edited from Inspector.
+* Change multiple `UserData` can be edited in bulk from the inspector.
+
+### Fixed
+
+* Fix an issue with duplicate elements in the Expression List.
+* Fix the elements of `expressionList.asset` to be empty when importing in Unity 2021 and 2020.
+* Fix to keep `Layer` at reimport.
+* Fix `CubismMotionController` do not be removed at reimport.
+
+### Removed
+
+* Remove Unity 2018 from the development environment.
+
+
 ## [4-r.3] - 2021-06-10
 
 ### Added
@@ -120,6 +194,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fix issue that mesh remain when deleting model.
 * Fix issue where Priority value was not reset after playing motion with CubismMotionController.
 
+
+[4-r.5-beta.3]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.5-beta.2...4-r.5-beta.3
+[4-r.5-beta.2]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.5-beta.1...4-r.5-beta.2
+[4-r.5-beta.1]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.4.2...4-r.5-beta.1
+[4-r.4.2]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.4.1...4-r.4.2
+[4-r.4.1]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.4...4-r.4.1
+[4-r.4]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.3...4-r.4
 [4-r.3]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.2...4-r.3
 [4-r.2]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.1...4-r.2
 [4-r.1]: https://github.com/Live2D/CubismUnityComponents/compare/4-beta.2...4-r.1

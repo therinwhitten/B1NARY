@@ -44,8 +44,8 @@ MC::
 She closes the book with a finality.
 {fadeinsound: bookclose1, .1}
 Szycrotic casually retorts.
-{if: n-b, true}
-}
+{if: n-b,true}
+{
  Szycrotic::
  "Woman, they wanted to see the garden, don't blame me."
  MC::
@@ -61,7 +61,7 @@ Szycrotic casually retorts.
  {additive:off} 
  [Default]
 }
-{if: n-b, false}
+{if: n-b,false}
 {
  Szycrotic::
  "Look woman, she wanted to see the garden. Don't blame me."
@@ -264,6 +264,8 @@ What am I doing?
            Asterella::
            [Happy]
            MC::
+           {fadeinsound: starlaugh2, .1}
+           {fadeinsound: szylaugh5, .5}
            He almost made it. They both start laughing.
            {fadeinsound: Door, 1}
            {moveChar: Szycrotic, -1}
@@ -307,6 +309,7 @@ Asterella raises her eyebrows, standing up.
 }
 {if: n-b,true}
 {
+ Asterella::
  "They seem pretty protective of you, Szy. Should I increase the punishment?"
 }
 MC::
@@ -315,6 +318,7 @@ Szycrotic::
 [Lewd]
 "Oh yeah dommy mommy, give me the punishment I deserve."
 MC::
+{fadeinsound: szylaugh5, .5}
 He laughs heartily, walks up, and kisses Star on the forehead. 
 With a wave, he opens the door.
 Szycrotic::
@@ -387,7 +391,7 @@ I can't read the title.
 I lean forward more to try and see if I recognize the language, 
 but it looks like gibberish to me.
 Some old, archaic language, I think.
-But I am no expert.
+But I'm no expert.
 {additive:off}
 Does she know something?
 "If you do not consider me an intruder, then who am I to you?"
@@ -403,7 +407,7 @@ Asterella::
 {fadeinsound: woodwine2, .1}
 {fadeinsound: glasspouring, 1}
 "You still haven't told me where you come from."
-"And you don't seem to be a Synthgen. You don't <i>feel</i> like one to me."
+"And you don't seem to be a Synthgen. At least you don't <i>feel</i> like one to me."
 {fadeinsound: glasspouring, 1}
 MC::
 She grabs the glasses and glides gracefully to the couch, proffering one to me.
@@ -540,7 +544,7 @@ Asterella::
 MC::
 She watches her hand lazily make circles on my thigh. 
 MC::
-I can't believe what I am hearing.
+I can't believe what I'm hearing.
 Is she asking for...
 "Me?"
 It was all I can say.
