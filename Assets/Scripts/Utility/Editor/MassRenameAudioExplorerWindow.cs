@@ -48,10 +48,10 @@ public class MassRenameAudioExplorerWindow : EditorWindow
 	private int lowerBy = 0, raiseBy = 0, selection = 0;
 	private void OnGUI()
 	{
-		startIndex = EditorGUILayout.IntSlider("Start Index", startIndex, 0, FullFilePaths.Length);
-		endIndex = EditorGUILayout.IntSlider("End Index", endIndex, 0 + startIndex, FullFilePaths.Length);
+		startIndex = EditorGUILayout.IntSlider("Start Index", startIndex, 0, FullFilePaths.Length - 1);
+		endIndex = EditorGUILayout.IntSlider("End Index", endIndex, 0 + startIndex, FullFilePaths.Length - 1);
 		float startFloat = startIndex, endFloat = endIndex;
-		EditorGUILayout.MinMaxSlider(ref startFloat, ref endFloat, 0, FullFilePaths.Length);
+		EditorGUILayout.MinMaxSlider(ref startFloat, ref endFloat, 0, FullFilePaths.Length - 1);
 		startIndex = (int)startFloat;
 		endIndex = (int)endFloat;
 
