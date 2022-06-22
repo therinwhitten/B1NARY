@@ -55,7 +55,7 @@ public class AudioExplorerWindow : EditorWindow
 	{
 		EditorGUILayout.Space();
 		SelectionGrid();
-		bool outputExperiemental = EditorGUILayout.ToggleLeft("Enable Experimental Feature: Filter Folders with sounds (!Highly Inefficient!)", showInefficientSoundFiltering);
+		bool outputExperiemental = EditorGUILayout.ToggleLeft("Filter Folders with sounds", showInefficientSoundFiltering);
 		if (outputExperiemental != showInefficientSoundFiltering)
 		{
 			needsRefresh = true;
@@ -105,11 +105,12 @@ public class AudioExplorerWindow : EditorWindow
 			{
 				fileNames = Directory.GetFiles(ResourcesDirectory + resourcesDirSounds)
 					.Where(fileName => VerifyFileExtension(fileName)).ToArray();
-				visualNames = fileNames.Select(fileName => 
-				fileName.Remove(0, fileName.LastIndexOfAny(new char[] { '/', '\\' }) + 1)).ToArray();
+				visualNames = fileNames.Select(fileName =>
+					fileName.Remove(0, fileName.LastIndexOfAny(new char[] { '/', '\\' }) + 1)).ToArray();
 				Array.Sort(visualNames, (x, y) => string.Compare(x, y));
-				NumericalSort(visualNames);
-
+				try { NumericalSort(visualNames); } // Having numbers in strings while others are not causes issues
+				catch { }
+				
 				directoryNames = Directory.GetDirectories(ResourcesDirectory + resourcesDirSounds);
 				if (showInefficientSoundFiltering)
 					directoryNames = DoInefficientSoundFiltering(directoryNames).Result;
