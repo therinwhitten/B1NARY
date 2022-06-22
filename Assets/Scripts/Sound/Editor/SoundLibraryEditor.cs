@@ -80,10 +80,10 @@ public class SoundLibraryEditor : Editor
 				EditorGUILayout.PropertyField(amogus.FindPropertyRelative(nameof(CustomAudioClip.audioMixerGroup)), new GUIContent("Mixer Group"));
 				EditorGUILayout.Space();
 				soundLibrary.customAudioClips[i].volume = EditorGUILayout.Slider(new GUIContent("Volume"), soundLibrary.customAudioClips[i].volume, 0, 1);
-				soundLibrary.customAudioClips[i].volumeVariance = EditorGUILayout.Slider(new GUIContent("Volume Variance"), soundLibrary.customAudioClips[i].volumeVariance, 0, 1);
+				EditorGUILayout.MinMaxSlider(new GUIContent("Volume Variance"), ref soundLibrary.customAudioClips[i].minVolumeVariance, ref soundLibrary.customAudioClips[i].maxVolumeVariance, 0, 1);
 				EditorGUILayout.Space();
 				soundLibrary.customAudioClips[i].pitch = EditorGUILayout.Slider(new GUIContent("Pitch"), soundLibrary.customAudioClips[i].pitch, 0, 3);
-				soundLibrary.customAudioClips[i].pitchVariance = EditorGUILayout.Slider(new GUIContent("Pitch Variance"), soundLibrary.customAudioClips[i].pitchVariance, 0, 1);
+				EditorGUILayout.MinMaxSlider(new GUIContent("Pitch Variance"), ref soundLibrary.customAudioClips[i].minPitchVariance, ref soundLibrary.customAudioClips[i].maxPitchVariance, 0, 1);
 				EditorGUILayout.Space();
 				soundLibrary.customAudioClips[i].loop = EditorGUILayout.Toggle(new GUIContent("Loopable"), soundLibrary.customAudioClips[i].loop);
 				soundLibrary.customAudioClips[i].playOnAwake = EditorGUILayout.Toggle(new GUIContent("Play On Awake"), soundLibrary.customAudioClips[i].playOnAwake);
