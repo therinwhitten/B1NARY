@@ -83,7 +83,7 @@ public sealed class ScriptsTab : DebuggerTab
 				GUI.color = assignedColors[2];
 			else
 				GUI.color = assignedColors[0];
-			GUI.Label(rect, $"{(onLine == i && EditorPrefs.GetBool("Script B1NARY Pointer", true) ? ">" : (i + 1).ToString())} {new string(' ', (space - (i + 1).ToString().Length) * 2)}    {currentScriptContents[i]}");
+			GUI.Label(rect, $"{(onLine == i && EditorPrefs.GetBool("Script B1NARY Pointer", true) ? ">" : (i + 1).ToString())}\t{currentScriptContents[i]}");
 		}
 		GUILayout.EndScrollView();
 	}

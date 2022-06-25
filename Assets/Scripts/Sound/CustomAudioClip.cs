@@ -16,8 +16,10 @@ public class CustomAudioClip
 
 	public CustomAudioClip(AudioClip audioClip)
 	{
-		this.clip = audioClip;
+		clip = audioClip;
 	}
+
+	public string Name => clip != null ? clip.name.Trim() : string.Empty;
 
 	public AudioClip clip;
 	public AudioMixerGroup audioMixerGroup = null;

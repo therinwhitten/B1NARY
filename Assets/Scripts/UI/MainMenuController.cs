@@ -23,20 +23,20 @@ public class MainMenuController : MonoBehaviour
 	}
 
 	// BUTTON BEHAVIOURS
-	void NewGame()
+	public void NewGame()
 	{
 		gameObject.SendMessage("fadeOut");
 		DialogueSystem.Instance.initialize();
 		ScriptParser.Instance.initialize();
 		dialogueBox.SendMessage("fadeIn");
 	}
-	void Options()
+	public void Options()
 	{
 		gameObject.SendMessage("fadeOut");
 		optionsMenu.SendMessage("fadeIn");
 		optionsMenu.SendMessage("openSettings");
 	}
-	void Exit()
+	public void Exit()
 	{
 		Debug.Log("Quitting");
 		// EditorApplication.isPlaying = false;

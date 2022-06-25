@@ -13,9 +13,18 @@ using System.Collections;
 [CreateAssetMenu(fileName = "New Sound Library", menuName = "B1NARY/Sound Library (SL)", order = 0)]
 public class SoundLibrary : ScriptableObject
 {
+	public bool ContainsPlayOnAwakeCommands { get; private set; }
+	public IEnumerable<CustomAudioClip> PlayOnAwakeCommands { get; private set; } = null;
 	public List<CustomAudioClip> customAudioClips;
 	public CustomAudioClip this[int index] => customAudioClips[index];
 	public int Length => customAudioClips.Count;
+
+	private void Awake()
+	{
+		IEnumerable<CustomAudioClip> playAwakeClips = customAudioClips.Where(CClip => CClip.playOnAwake);
+		if (ContainsPlayOnAwakeCommands = playAwakeClips.Any())
+			PlayOnAwakeCommands = playAwakeClips;
+	}
 
 
 	private bool completedAudioClipLink = false;
@@ -44,7 +53,7 @@ public class SoundLibrary : ScriptableObject
 				return customAudioClips[value];
 			}
 		}
-		end: throw new ArgumentOutOfRangeException($"Cannot find {audioClip.name}!");
+		end: throw new ArgumentOutOfRangeException($"Cannot find {audioClip.name.Trim()}!");
 	}
 	public bool ContainsCustomAudioClip(AudioClip audioClip)
 	{
@@ -89,7 +98,7 @@ public class SoundLibrary : ScriptableObject
 				throw new ArgumentNullException($"Sound Library contains an empty audio clip in index {i}!");
 			if (stringLink.ContainsValue(i))
 				continue;
-			stringLink.Add(customAudioClips[i].clip.name, i);
+			stringLink.Add(customAudioClips[i].Name, i);
 			// Multi-threading, sometimes needed
 			if (stringLink.TryGetValue(audioClip, out var value))
 			{
@@ -114,7 +123,7 @@ public class SoundLibrary : ScriptableObject
 				throw new ArgumentNullException($"Sound Library contains an empty audio clip in index {i}!");
 			if (stringLink.ContainsValue(i))
 				continue;
-			stringLink.Add(customAudioClips[i].clip.name, i);
+			stringLink.Add(customAudioClips[i].Name, i);
 			// Multi-threading, sometimes needed
 			if (stringLink.ContainsKey(audioClip))
 			{
