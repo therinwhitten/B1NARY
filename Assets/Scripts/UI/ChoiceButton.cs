@@ -57,7 +57,10 @@ public class ChoiceButton : MonoBehaviour
 	{
 		if (!Interactible)
 			return;
-		audioMaster.PlaySound(hover);
+		if (hover != null)
+			audioMaster.PlaySound(hover);
+		else
+			Debug.LogError($"Button {nameof(hover)} is not tied to an audioClip!");
 		animator.SetBool("selected", true);
 	}
 	private void OnMouseExit()
@@ -69,7 +72,10 @@ public class ChoiceButton : MonoBehaviour
 		if (!Interactible)
 			return;
 		ScriptParser.Instance.currentNode.selectChoice(node);
-		audioMaster.PlaySound(press);
+		if (press != null)
+			audioMaster.PlaySound(press);
+		else
+			Debug.LogError($"Button {nameof(press)} is not tied to an audioClip!");
 		animator.SetBool("pressed", true);
 		controller.SendMessage("fadeOut");
 	}

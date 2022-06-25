@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class MenuButton : MonoBehaviour
 {
 	[Header("Audio Sounds"), SerializeField] private AudioClip hover; 
 	[SerializeField] private AudioClip press;
-	private AudioHandler audioMaster;
+	private AudioHandler AudioHandler => AudioHandler.Instance;
 
 	[Header("Other"), SerializeField] Animator animator;
 
@@ -20,17 +22,13 @@ public class MenuButton : MonoBehaviour
 	RectTransform rect;
 
 	[SerializeField]
-	string action;
+	private UnityEvent actions;
 
 	private void Start()
 	{
 		col = gameObject.GetComponent<BoxCollider2D>();
 		rect = gameObject.GetComponent<RectTransform>();
 		canvasGroup = controller.GetComponent<CanvasGroup>();
-
-		// It's a better idea to have these menu buttons get the audioMaster by
-		// - its parent instead of every button getting it individually.
-		audioMaster = FindObjectOfType<AudioHandler>();
 	}
 
 	private void Update()
@@ -47,7 +45,7 @@ public class MenuButton : MonoBehaviour
 		if (!Interactible)
 			return;
 		if (hover != null)
-			audioMaster.PlayOneShot(hover);
+			AudioHandler.PlayOneShot(hover);
 		else
 			Debug.LogError($"Button {nameof(hover)} is not tied to an audioClip!");
 		animator.SetBool("selected", true);
@@ -61,11 +59,11 @@ public class MenuButton : MonoBehaviour
 		if (!Interactible)
 			return;
 		if (press != null)
-			audioMaster.PlayOneShot(press);
+			AudioHandler.PlayOneShot(press);
 		else
 			Debug.LogError($"Button {nameof(press)} is not tied to an audioClip!");
 		animator.SetBool("pressed", true);
-		controller.SendMessage(action);
+		actions.Invoke();
 	}
 	private void OnMouseUp()
 	{

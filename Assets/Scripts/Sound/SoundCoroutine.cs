@@ -11,7 +11,13 @@ public class SoundCoroutine
 {
 	public bool IsFadingAway { get; private set; } = false;
 	public bool DeleteCoroutineOnSwap { get; set; } = true;
-	public bool IsPlaying => AudioSource.isPlaying;
+	public bool IsPlaying { get
+		{
+			if (AudioSource != null)
+				return AudioSource.isPlaying;
+			return false;
+		}
+	}
 	public MonoBehaviour monoBehaviour;
 	public AudioMixerGroup AudioMixerGroup { get; private set; }
 	private AudioSource audioSource;
