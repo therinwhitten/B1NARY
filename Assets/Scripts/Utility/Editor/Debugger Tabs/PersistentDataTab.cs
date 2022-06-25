@@ -17,11 +17,39 @@ public sealed class PersistentDataTab : DebuggerTab
 	};
 	*/
 
-	private Vector2 scroll = Vector2.zero;
 	public override void DisplayTab()
 	{
+		if (PersistentData.Instance.state != null)
+			ShowGameStateBlock();
+	}
+
+	/* It doesn't exist here
+	private Vector2 gamePreferencesScroll = Vector2.zero;
+	private void ShowGamePreferences()
+	{
+		EditorGUILayout.LabelField("Game State", EditorStyles.boldLabel);
+		Lookup<string, string> gamePrefs = GamePreferencesData();
+		gamePreferencesScroll = EditorGUILayout.BeginScrollView(gamePreferencesScroll);
+		foreach (var group in gamePrefs)
+		{
+			DisplayLine(group.Key);
+			foreach (var item in group)
+				DisplayLine('\t' + item);
+		}
+		EditorGUILayout.EndScrollView();
+	}
+	private Lookup<string, string> GamePreferencesData()
+	{
+		var output = new List<(string type, string data)>();
+	}
+	*/
+
+	private Vector2 gameStateScroll = Vector2.zero;
+	private void ShowGameStateBlock()
+	{
+		EditorGUILayout.LabelField("Game State", EditorStyles.boldLabel);
 		Lookup<string, string> persistentData = GameStateData();
-		scroll = EditorGUILayout.BeginScrollView(scroll);
+		gameStateScroll = EditorGUILayout.BeginScrollView(gameStateScroll);
 		foreach (var group in persistentData)
 		{
 			DisplayLine(group.Key);
