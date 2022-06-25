@@ -44,7 +44,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		StartCoroutine(Delay());
 		IEnumerator Delay()
 		{ 
-			yield return new WaitForFixedUpdate(); 
+			yield return new WaitForEndOfFrame(); 
 			GameCommands.SwitchingScenes += MakeNewAudioHandler; 
 		}
 	}
@@ -57,10 +57,10 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			Debug.LogError("There are no detected sound libraries in" +
 				$" resource folder : {fileDirectory}/{sceneName}!");
 
-		StartCoroutine(Delay());
-		IEnumerator Delay()
+		StartCoroutine(Buffer());
+		IEnumerator Buffer()
 		{ 
-			yield return new WaitForFixedUpdate(); 
+			yield return new WaitForEndOfFrame(); 
 			GameCommands.SwitchedScenes += LoadNewLibrary; 
 		}
 	}

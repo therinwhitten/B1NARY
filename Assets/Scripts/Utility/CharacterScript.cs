@@ -68,7 +68,7 @@ public class CharacterScript : MonoBehaviour
 	private void transitionFocus()
 	{
 		stopLighting();
-		transitioningFocus = this.StartCoroutine(TransitioningFocus());
+		transitioningFocus = StartCoroutine(TransitioningFocus());
 	}
 	Coroutine transitioningFocus = null;
 	Material targetMaterial;

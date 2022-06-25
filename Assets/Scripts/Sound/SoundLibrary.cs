@@ -11,80 +11,118 @@ using System.Collections;
 ///		or multiple.
 ///	</summary>
 [CreateAssetMenu(fileName = "New Sound Library", menuName = "B1NARY/Sound Library (SL)", order = 0)]
-public class SoundLibrary : ScriptableObject, IEnumerable<CustomAudioClip>
+public class SoundLibrary : ScriptableObject
 {
 	public List<CustomAudioClip> customAudioClips;
 	public CustomAudioClip this[int index] => customAudioClips[index];
 	public int Length => customAudioClips.Count;
 
-	private Dictionary<AudioClip, CustomAudioClip> audioClipLink
-		= new Dictionary<AudioClip, CustomAudioClip>();
+
+	private bool completedAudioClipLink = false;
+	private Dictionary<AudioClip, int> audioClipLink
+		= new Dictionary<AudioClip, int>();
 	public CustomAudioClip GetCustomAudioClip(AudioClip audioClip)
 	{
 		if (audioClipLink.TryGetValue(audioClip, out var output))
-			return output;
+			return customAudioClips[output];
+		if (completedAudioClipLink)
+			goto end;
 		for (int i = 0; i < customAudioClips.Count; i++)
 		{
 			// Since methods can call on this multiple times when the method
 			// - isn't finished, ill have to do additional checks here.
 			if (customAudioClips[i].clip == null)
+				throw new ArgumentNullException($"Sound Library contains an empty audio clip in index {i}!");
+			if (audioClipLink.ContainsValue(i))
 				continue;
-			if (audioClipLink.ContainsValue(customAudioClips[i]))
-				continue;
-			audioClipLink.Add(customAudioClips[i].clip, customAudioClips[i]);
+			audioClipLink.Add(customAudioClips[i].clip, i);
+			// Multi-threading, sometimes needed
 			if (audioClipLink.TryGetValue(audioClip, out var value))
-				return value;
+			{
+				if (customAudioClips.Count == audioClipLink.Count)
+					completedAudioClipLink = true;
+				return customAudioClips[value];
+			}
 		}
-		throw new ArgumentOutOfRangeException($"Cannot find {audioClip.name}!");
+		end: throw new ArgumentOutOfRangeException($"Cannot find {audioClip.name}!");
 	}
 	public bool ContainsCustomAudioClip(AudioClip audioClip)
 	{
-		try
-		{
-			GetCustomAudioClip(audioClip);
+		if (audioClipLink.ContainsKey(audioClip))
 			return true;
-		}
-		catch (ArgumentOutOfRangeException) { return false; }
-	}
-
-
-	private Dictionary<string, AudioClip> stringLink 
-		= new Dictionary<string, AudioClip>();
-	public AudioClip GetAudioClip(string audioClip)
-	{
-		if (stringLink.TryGetValue(audioClip, out var output))
-			return output;
+		if (completedAudioClipLink)
+			return false;
 		for (int i = 0; i < customAudioClips.Count; i++)
 		{
 			// Since methods can call on this multiple times when the method
 			// - isn't finished, ill have to do additional checks here.
 			if (customAudioClips[i].clip == null)
+				throw new ArgumentNullException($"Sound Library contains an empty audio clip in index {i}!");
+			if (audioClipLink.ContainsValue(i))
 				continue;
-			if (stringLink.ContainsValue(customAudioClips[i].clip))
-				continue;
-			stringLink.Add(customAudioClips[i].clip.name, customAudioClips[i].clip);
-			if (stringLink.TryGetValue(audioClip, out var value))
-				return value;
+			audioClipLink.Add(customAudioClips[i].clip, i);
+			// Multi-threading, sometimes needed
+			if (audioClipLink.ContainsKey(audioClip))
+			{
+				if (customAudioClips.Count == audioClipLink.Count)
+					completedAudioClipLink = true;
+				return true;
+			}
 		}
-		throw new ArgumentOutOfRangeException($"Cannot find {audioClip}!");
+		return false;
+	}
+
+	private bool completedStringLink = false;
+	private Dictionary<string, int> stringLink 
+		= new Dictionary<string, int>();
+	public AudioClip GetAudioClip(string audioClip)
+	{
+		if (stringLink.TryGetValue(audioClip, out var output))
+			return customAudioClips[output];
+		if (completedAudioClipLink)
+			goto end;
+		for (int i = 0; i < customAudioClips.Count; i++)
+		{
+			// Since methods can call on this multiple times when the method
+			// - isn't finished, ill have to do additional checks here.
+			if (customAudioClips[i].clip == null)
+				throw new ArgumentNullException($"Sound Library contains an empty audio clip in index {i}!");
+			if (stringLink.ContainsValue(i))
+				continue;
+			stringLink.Add(customAudioClips[i].clip.name, i);
+			// Multi-threading, sometimes needed
+			if (stringLink.TryGetValue(audioClip, out var value))
+			{
+				if (customAudioClips.Count == stringLink.Count)
+					completedStringLink = true;
+				return customAudioClips[value].clip;
+			}
+		}
+		end: throw new ArgumentOutOfRangeException($"Cannot find {audioClip}!");
 	}
 	public bool ContainsAudioClip(string audioClip)
 	{
-		try
-		{
-			GetAudioClip(audioClip);
+		if (stringLink.ContainsKey(audioClip))
 			return true;
+		if (completedStringLink)
+			return false;
+		for (int i = 0; i < customAudioClips.Count; i++)
+		{
+			// Since methods can call on this multiple times when the method
+			// - isn't finished, ill have to do additional checks here.
+			if (customAudioClips[i].clip == null)
+				throw new ArgumentNullException($"Sound Library contains an empty audio clip in index {i}!");
+			if (stringLink.ContainsValue(i))
+				continue;
+			stringLink.Add(customAudioClips[i].clip.name, i);
+			// Multi-threading, sometimes needed
+			if (stringLink.ContainsKey(audioClip))
+			{
+				if (customAudioClips.Count == stringLink.Count)
+					completedStringLink = true;
+				return true;
+			}
 		}
-		catch (ArgumentOutOfRangeException) { return false; }
-	}
-
-	public IEnumerator<CustomAudioClip> GetEnumerator()
-	{
-		return ((IEnumerable<CustomAudioClip>)customAudioClips).GetEnumerator();
-	}
-
-	IEnumerator IEnumerable.GetEnumerator()
-	{
-		return customAudioClips.GetEnumerator();
+		return false;
 	}
 }

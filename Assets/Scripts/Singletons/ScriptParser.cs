@@ -25,9 +25,6 @@ public class ScriptParser : Singleton<ScriptParser>
 	public Dictionary<string, List<string>> currentChoiceOptions;
 	DialogueSystem dialogue { get { return DialogueSystem.Instance; } }
 
-
-	CommandsManager commands { get { return CommandsManager.Instance; } }
-
 	StreamReader reader = null;
 
 	// public string currentNode.getCurrentLine() { get { return currentNode.getCurrentLine(); } }
@@ -249,16 +246,13 @@ public class ScriptParser : Singleton<ScriptParser>
 
 				if (command.Contains(":"))
 				{
-					ArrayList commandWords = new ArrayList(command.Split(':'));
-					command = commandWords.Cast<string>().ElementAt(0);
-					commandWords.RemoveAt(0);
-					ArrayList args = new ArrayList(commandWords[0].ToString().Split(','));
-
-					commands.HandleWithArgs(command.ToLower(), args);
+					string[] commandComponents = command.Split(':');
+					command = commandComponents[0];
+					CommandsManager.HandleWithArgs(command, commandComponents[1].Split(','));
 				}
 				else
 				{
-					commands.HandleWithArgs(command.ToLower(), null);
+					CommandsManager.HandleWithArgs(command, null);
 				}
 				if (scriptChanged)
 				{
