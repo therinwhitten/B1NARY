@@ -8,11 +8,13 @@ using System.IO;
 [CustomEditor(typeof(SoundLibrary))]
 public class SoundLibraryEditor : Editor
 {
+	static Dictionary<string, List<bool>> headerGroupsToggledForMultiple 
+		= new Dictionary<string, List<bool>>();
 	string Name
 	{
 		get
 		{
-			string assetPath = AssetDatabase.GetAssetPath(GetInstanceID());
+			string assetPath = AssetDatabase.GetAssetPath(target.GetInstanceID());
 			return Path.GetFileNameWithoutExtension(assetPath);
 		}
 	}
@@ -23,8 +25,9 @@ public class SoundLibraryEditor : Editor
 	{
 		SoundLibrary soundLibrary = (SoundLibrary)target;
 		EditorUtility.SetDirty(soundLibrary);
-		headerGroupsToggled = Enumerable.Repeat(true, soundLibrary.Length).ToList();
-		//Debug.Log(Name);
+		if (!headerGroupsToggledForMultiple.ContainsKey(Name))
+			headerGroupsToggledForMultiple.Add(Name, 
+				Enumerable.Repeat(false, soundLibrary.Length).ToList());
 	}
 
 	public override void OnInspectorGUI()
@@ -52,24 +55,23 @@ public class SoundLibraryEditor : Editor
 		if (addSound)
 		{
 			soundLibrary.customAudioClips.Add(new CustomAudioClip(null));
-			headerGroupsToggled.Add(false);
+			headerGroupsToggledForMultiple[Name].Add(false);
 		}
 	}
 
-	private List<bool> headerGroupsToggled;
 	private void DisplayButtons(SoundLibrary soundLibrary)
 	{
 		var librarySerialized = new SerializedObject(soundLibrary);
 		librarySerialized.Update();
 		for (int i = 0; i < soundLibrary.customAudioClips.Count; i++)
 		{
-			string name = soundLibrary.customAudioClips[i].clip != null ? 
-				soundLibrary.customAudioClips[i].clip.name : 
+			string name = soundLibrary.customAudioClips[i].clip != null ?
+				soundLibrary.customAudioClips[i].clip.name :
 				"! Empty Sound File !";
 			Rect headerTitle = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20);
 			var headerRect = headerTitle;
 			headerRect.width = headerRect.width / 4 * 3;
-			headerGroupsToggled[i] = EditorGUI.BeginFoldoutHeaderGroup(headerRect, headerGroupsToggled[i], name);
+			headerGroupsToggledForMultiple[Name][i] = EditorGUI.BeginFoldoutHeaderGroup(headerRect, headerGroupsToggledForMultiple[Name][i], name);
 			var removeButtonRect = headerTitle;
 			removeButtonRect.width /= 4;
 			removeButtonRect.x += (removeButtonRect.width * 3) + 4;
@@ -77,11 +79,11 @@ public class SoundLibraryEditor : Editor
 			if (GUI.Button(removeButtonRect, new GUIContent("Remove", "Remove the sound from the library.")))
 			{
 				soundLibrary.customAudioClips.RemoveAt(i);
-				headerGroupsToggled.RemoveAt(i);
+				headerGroupsToggledForMultiple[Name].RemoveAt(i);
 				i--;
 				continue;
 			}
-			if (headerGroupsToggled[i] == true)
+			if (headerGroupsToggledForMultiple[Name][i] == true)
 			{
 				EditorGUI.indentLevel++;
 				SerializedProperty customAudioClip = librarySerialized.FindProperty(nameof(SoundLibrary.customAudioClips)).GetArrayElementAtIndex(i);
