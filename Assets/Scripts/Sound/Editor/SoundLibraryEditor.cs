@@ -3,19 +3,28 @@ using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-
+using System.IO;
 
 [CustomEditor(typeof(SoundLibrary))]
 public class SoundLibraryEditor : Editor
 {
-	
+	string Name
+	{
+		get
+		{
+			string assetPath = AssetDatabase.GetAssetPath(GetInstanceID());
+			return Path.GetFileNameWithoutExtension(assetPath);
+		}
+	}
 
 
 
 	public void OnEnable()
 	{
 		SoundLibrary soundLibrary = (SoundLibrary)target;
+		EditorUtility.SetDirty(soundLibrary);
 		headerGroupsToggled = Enumerable.Repeat(true, soundLibrary.Length).ToList();
+		//Debug.Log(Name);
 	}
 
 	public override void OnInspectorGUI()
@@ -52,7 +61,6 @@ public class SoundLibraryEditor : Editor
 	{
 		var librarySerialized = new SerializedObject(soundLibrary);
 		librarySerialized.Update();
-
 		for (int i = 0; i < soundLibrary.customAudioClips.Count; i++)
 		{
 			string name = soundLibrary.customAudioClips[i].clip != null ? 
@@ -101,5 +109,6 @@ public class SoundLibraryEditor : Editor
 			}
 			EditorGUILayout.EndFoldoutHeaderGroup();
 		}
+		
 	}
 }

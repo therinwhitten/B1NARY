@@ -11,7 +11,7 @@ public sealed class AboutTab : DebuggerTab
 	public override string Name => "About";
 	public override void DisplayTab()
 	{
-		EditorGUILayout.LabelField("Version 0.1.0b");
+		EditorGUILayout.LabelField("Version 0.1.1b");
 		if (changes.Length <= 0)
 			return;
 		EditorGUILayout.LabelField("Changes:", EditorStyles.boldLabel);
@@ -19,6 +19,8 @@ public sealed class AboutTab : DebuggerTab
 		foreach (string i in changes)
 			EditorGUILayout.LabelField(i);
 		EditorGUI.indentLevel--;
+
+
 	}
 
 	public override int Order => int.MinValue + 1;
