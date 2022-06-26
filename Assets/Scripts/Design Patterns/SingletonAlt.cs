@@ -52,7 +52,7 @@ public abstract class SingletonAlt<T> : InstanceHolder<T> where T : MonoBehaviou
 	{
 		if (instance != null)
 		{
-			Debug.LogError($"{typeof(T)} already have a singleton in the scene! Deleting..");
+			Debug.LogError($"{typeof(T)} already has a singleton in the scene! Deleting..");
 			Destroy(this);
 			return; // Just in case.
 		}

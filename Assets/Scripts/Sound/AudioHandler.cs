@@ -28,14 +28,14 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		VoiceActorHandler = new VoiceActorHandler(this);
 		LoadNewLibrary(null, SceneManager.GetActiveScene().name);
 		MakeNewAudioHandler(null, EventArgs.Empty);
-		PlayOnAwakeCommands();
+		if (CustomAudioData.ContainsPlayOnAwakeCommands)
+			PlayOnAwakeCommands();
 		//GameCommands.SwitchedScenes += OnSceneChange;
 	}
 	private void PlayOnAwakeCommands()
 	{
-		for (int i = 0; i < CustomAudioData.Length; i++)
-			if (CustomAudioData[i].playOnAwake)
-				PlaySound(CustomAudioData[i]);
+		foreach (CustomAudioClip clip in CustomAudioData.PlayOnAwakeCommands)
+			PlaySound(clip);
 	}
 
 	private void MakeNewAudioHandler(object sender, EventArgs args)
@@ -44,7 +44,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		StartCoroutine(Delay());
 		IEnumerator Delay()
 		{ 
-			yield return new WaitForFixedUpdate(); 
+			yield return new WaitForEndOfFrame(); 
 			GameCommands.SwitchingScenes += MakeNewAudioHandler; 
 		}
 	}
@@ -57,10 +57,10 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			Debug.LogError("There are no detected sound libraries in" +
 				$" resource folder : {fileDirectory}/{sceneName}!");
 
-		StartCoroutine(Delay());
-		IEnumerator Delay()
+		StartCoroutine(Buffer());
+		IEnumerator Buffer()
 		{ 
-			yield return new WaitForFixedUpdate(); 
+			yield return new WaitForEndOfFrame(); 
 			GameCommands.SwitchedScenes += LoadNewLibrary; 
 		}
 	}
@@ -240,7 +240,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		// - searching for info in linq 
 		IEnumerable<AudioClip> clipAudio = 
 			SoundCoroutineCache.Values.Select(coroutine => coroutine.AudioClip.clip);
-		IEnumerable<string> stringAudio = clipAudio.Select(clip => clip.name);
+		IEnumerable<string> stringAudio = clipAudio.Select(clip => clip.name.Trim());
 		if (stringAudio.Contains(soundName))
 		{
 			int index = Array.IndexOf(stringAudio.ToArray(), soundName);

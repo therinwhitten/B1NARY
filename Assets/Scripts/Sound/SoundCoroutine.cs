@@ -11,7 +11,13 @@ public class SoundCoroutine
 {
 	public bool IsFadingAway { get; private set; } = false;
 	public bool DeleteCoroutineOnSwap { get; set; } = true;
-	public bool IsPlaying => AudioSource.isPlaying;
+	public bool IsPlaying { get
+		{
+			if (AudioSource != null)
+				return AudioSource.isPlaying;
+			return false;
+		}
+	}
 	public MonoBehaviour monoBehaviour;
 	public AudioMixerGroup AudioMixerGroup { get; private set; }
 	private AudioSource audioSource;
@@ -49,15 +55,17 @@ public class SoundCoroutine
 		GameCommands.SwitchedScenes += SwitchSceneCheck;
 	}
 
-	private float volumeVariance, pitchVariance, fadeWhenTransitioning,
-		oldVolume, oldPitch;
+	private float fadeWhenTransitioning, oldVolume, oldPitch;
+	private (float min, float max) pitchVariance, volumeVariance;
 	private bool playOnAwake, willFadeWhenTransitioning;
 	public CustomAudioClip AudioClip
 	{
 		get => new CustomAudioClip(audioSource.clip) 
 		{
-			volumeVariance = volumeVariance,
-			pitchVariance = pitchVariance,
+			minPitchVariance = pitchVariance.min,
+			maxPitchVariance = pitchVariance.max,
+			maxVolumeVariance = volumeVariance.max,
+			minVolumeVariance = volumeVariance.min,
 			clip = audioSource.clip,
 			volume = oldVolume,
 			pitch = oldPitch,
@@ -70,11 +78,19 @@ public class SoundCoroutine
 		set
 		{
 			audioSource.clip = value;
-			volumeVariance = value.volumeVariance;
-			pitchVariance = value.pitchVariance;
-			audioSource.pitch = value.pitch.ApplyRandomPercent(value.pitchVariance, value.randomType);
+			volumeVariance = (value.minVolumeVariance, value.maxVolumeVariance);
+			pitchVariance = (value.minPitchVariance, value.maxPitchVariance);
+			if (value.minPitchVariance != value.maxPitchVariance)
+				audioSource.pitch = RandomFowarder.NextRange(value.pitch,
+					value.minPitchVariance, value.maxPitchVariance, RandomFowarder.RandomType.CSharp);
+			else
+				audioSource.pitch = value.pitch;
 			oldVolume = value.volume;
-			audioSource.volume = value.volume.ApplyRandomPercent(value.volumeVariance, value.randomType);
+			if (value.minVolumeVariance != value.maxVolumeVariance)
+				audioSource.volume = RandomFowarder.NextRange(value.volume, 
+					value.minVolumeVariance, value.maxVolumeVariance, RandomFowarder.RandomType.CSharp);
+			else
+				audioSource.volume = value.volume;
 			oldPitch = value.pitch;
 			audioSource.outputAudioMixerGroup = value.audioMixerGroup;
 			audioSource.loop = value.loop;

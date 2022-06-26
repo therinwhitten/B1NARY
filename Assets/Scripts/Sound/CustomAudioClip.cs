@@ -16,15 +16,17 @@ public class CustomAudioClip
 
 	public CustomAudioClip(AudioClip audioClip)
 	{
-		this.clip = audioClip;
+		clip = audioClip;
 	}
+
+	public string Name => clip != null ? clip.name.Trim() : string.Empty;
 
 	public AudioClip clip;
 	public AudioMixerGroup audioMixerGroup = null;
 	public float volume = 1;
-	public float volumeVariance = 0;
+	public float minVolumeVariance = 1, maxVolumeVariance = 1;
 	public float pitch = 1;
-	public float pitchVariance = 0;
+	public float minPitchVariance = 1, maxPitchVariance = 1;
 	public bool loop = false;
 	public bool playOnAwake = false;
 	public bool willFadeWhenTransitioning = true;

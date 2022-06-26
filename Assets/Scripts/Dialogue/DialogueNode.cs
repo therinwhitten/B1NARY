@@ -30,7 +30,10 @@ public class DialogueNode
     {
         try
         {
-            return lines[index];
+            DialogueLine output = lines[index];
+            if (output.line.Contains("//"))
+                output.line = output.line.Remove(output.line.IndexOf("//")); // Comments haha
+            return output;
         }
         catch (System.ArgumentOutOfRangeException)
         {

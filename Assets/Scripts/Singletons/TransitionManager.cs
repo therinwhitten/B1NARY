@@ -164,7 +164,6 @@ public class TransitionManager : Singleton<TransitionManager>
 		DialogueSystem.Instance.initialize();
 		// ScriptParser.Instance.initialize();
 		CharacterManager.Instance.initialize();
-		CommandsManager.Instance.initialize();
 		Instance.initialize();
 		Instance.commandsAllowed = true;
 		// pull off overlay

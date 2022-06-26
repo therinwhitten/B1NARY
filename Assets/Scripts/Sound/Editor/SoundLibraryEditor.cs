@@ -2,19 +2,32 @@
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEditor;
+using System.IO;
 
-
-[CustomEditor(typeof(SoundLibrary))] //[CanEditMultipleObjects]
+[CustomEditor(typeof(SoundLibrary))]
 public class SoundLibraryEditor : Editor
 {
+	static Dictionary<string, List<bool>> headerGroupsToggledForMultiple 
+		= new Dictionary<string, List<bool>>();
+	string Name
+	{
+		get
+		{
+			string assetPath = AssetDatabase.GetAssetPath(target.GetInstanceID());
+			return Path.GetFileNameWithoutExtension(assetPath);
+		}
+	}
+
+
+
 	public void OnEnable()
 	{
-		var soundLibrary = (SoundLibrary)target;
-		headerGroupsToggled = new List<bool>();
-		for (int i = 0; i < soundLibrary.Length; i++)
-			headerGroupsToggled.Add(false);
+		SoundLibrary soundLibrary = (SoundLibrary)target;
+		EditorUtility.SetDirty(soundLibrary);
+		if (!headerGroupsToggledForMultiple.ContainsKey(Name))
+			headerGroupsToggledForMultiple.Add(Name, 
+				Enumerable.Repeat(false, soundLibrary.Length).ToList());
 	}
 
 	public override void OnInspectorGUI()
@@ -25,11 +38,11 @@ public class SoundLibraryEditor : Editor
 		DisplayButtons(soundLibrary);
 	}
 
-	private void NullReferenceCheck(List<CustomAudioClip> customAudioClips)
+	private void NullReferenceCheck(IEnumerable<CustomAudioClip> customAudioClips)
 	{
 		if (customAudioClips == null)
 			return;
-		if (customAudioClips.Select(x => x.clip).Where(x => x == null).Any())
+		if (customAudioClips.Any(CustomClip => CustomClip.clip == null))
 			EditorGUILayout.HelpBox("The Sound Library contains empty parameters, which may cause issues!", MessageType.Error);
 	}
 
@@ -38,67 +51,66 @@ public class SoundLibraryEditor : Editor
 		var rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 24);
 		rect.x += 2;
 		rect.width -= 4;
-		bool addSound = GUI.Button(rect, new GUIContent("Add New Sound"));
+		bool addSound = GUI.Button(rect, new GUIContent("Add New Sound", "Adds a new empty sound slot to the bottom of the list."));
 		if (addSound)
 		{
 			soundLibrary.customAudioClips.Add(new CustomAudioClip(null));
-			headerGroupsToggled.Add(false);
+			headerGroupsToggledForMultiple[Name].Add(false);
 		}
 	}
 
-	private List<bool> headerGroupsToggled;
 	private void DisplayButtons(SoundLibrary soundLibrary)
 	{
 		var librarySerialized = new SerializedObject(soundLibrary);
 		librarySerialized.Update();
-
 		for (int i = 0; i < soundLibrary.customAudioClips.Count; i++)
 		{
-			string name = soundLibrary.customAudioClips[i].clip != null ? 
-				soundLibrary.customAudioClips[i].clip.name : 
+			string name = soundLibrary.customAudioClips[i].clip != null ?
+				soundLibrary.customAudioClips[i].clip.name :
 				"! Empty Sound File !";
 			Rect headerTitle = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20);
 			var headerRect = headerTitle;
 			headerRect.width = headerRect.width / 4 * 3;
-			headerGroupsToggled[i] = EditorGUI.BeginFoldoutHeaderGroup(headerRect, headerGroupsToggled[i], name);
+			headerGroupsToggledForMultiple[Name][i] = EditorGUI.BeginFoldoutHeaderGroup(headerRect, headerGroupsToggledForMultiple[Name][i], name);
 			var removeButtonRect = headerTitle;
 			removeButtonRect.width /= 4;
-			removeButtonRect.x += (removeButtonRect.width * 3) - 2;
-			bool remove = GUI.Button(removeButtonRect, new GUIContent("Remove"));
-			if (remove)
+			removeButtonRect.x += (removeButtonRect.width * 3) + 4;
+			removeButtonRect.width -= 6;
+			if (GUI.Button(removeButtonRect, new GUIContent("Remove", "Remove the sound from the library.")))
 			{
 				soundLibrary.customAudioClips.RemoveAt(i);
-				headerGroupsToggled.RemoveAt(i);
+				headerGroupsToggledForMultiple[Name].RemoveAt(i);
 				i--;
 				continue;
 			}
-			if (headerGroupsToggled[i] == true)
+			if (headerGroupsToggledForMultiple[Name][i] == true)
 			{
 				EditorGUI.indentLevel++;
-				var amogus = librarySerialized.FindProperty(nameof(SoundLibrary.customAudioClips)).GetArrayElementAtIndex(i);
-				EditorGUILayout.PropertyField(amogus.FindPropertyRelative(nameof(CustomAudioClip.clip)), new GUIContent("Selected Audioclip"));
-				EditorGUILayout.PropertyField(amogus.FindPropertyRelative(nameof(CustomAudioClip.audioMixerGroup)), new GUIContent("Mixer Group"));
+				SerializedProperty customAudioClip = librarySerialized.FindProperty(nameof(SoundLibrary.customAudioClips)).GetArrayElementAtIndex(i);
+				EditorGUILayout.PropertyField(customAudioClip.FindPropertyRelative(nameof(CustomAudioClip.clip)), new GUIContent("Selected Audioclip", "An audioclip. The name of the audio clip gets called from the AudioHandler instead of having a custom name."));
+				EditorGUILayout.PropertyField(customAudioClip.FindPropertyRelative(nameof(CustomAudioClip.audioMixerGroup)), new GUIContent("Mixer Group", "An Audio Mixer Group, meant to assign certain sounds to be played differently based on a general mixer group."));
 				EditorGUILayout.Space();
-				soundLibrary.customAudioClips[i].volume = EditorGUILayout.Slider(new GUIContent("Volume"), soundLibrary.customAudioClips[i].volume, 0, 1);
-				soundLibrary.customAudioClips[i].volumeVariance = EditorGUILayout.Slider(new GUIContent("Volume Variance"), soundLibrary.customAudioClips[i].volumeVariance, 0, 1);
+				soundLibrary.customAudioClips[i].volume = EditorGUILayout.Slider(new GUIContent("Volume", "Percentage of volume from 0 to 1 the audioClip plays in when called"), soundLibrary.customAudioClips[i].volume, 0, 1);
+				EditorGUILayout.MinMaxSlider(new GUIContent("Volume Variance", "Uses a random value to calculate the volume every time its played and when there isn't the sound playing already."), ref soundLibrary.customAudioClips[i].minVolumeVariance, ref soundLibrary.customAudioClips[i].maxVolumeVariance, 0, 1);
 				EditorGUILayout.Space();
-				soundLibrary.customAudioClips[i].pitch = EditorGUILayout.Slider(new GUIContent("Pitch"), soundLibrary.customAudioClips[i].pitch, 0, 3);
-				soundLibrary.customAudioClips[i].pitchVariance = EditorGUILayout.Slider(new GUIContent("Pitch Variance"), soundLibrary.customAudioClips[i].pitchVariance, 0, 1);
+				soundLibrary.customAudioClips[i].pitch = EditorGUILayout.Slider(new GUIContent("Pitch", "Percentage of pitch from 0 to 3, starting from 1, the audioClip plays in when called"), soundLibrary.customAudioClips[i].pitch, 0, 3);
+				EditorGUILayout.MinMaxSlider(new GUIContent("Pitch Variance", "Uses a random value to calculate the pitch every time its played and when there isn't the sound playing already."), ref soundLibrary.customAudioClips[i].minPitchVariance, ref soundLibrary.customAudioClips[i].maxPitchVariance, 0, 1);
 				EditorGUILayout.Space();
-				soundLibrary.customAudioClips[i].loop = EditorGUILayout.Toggle(new GUIContent("Loopable"), soundLibrary.customAudioClips[i].loop);
-				soundLibrary.customAudioClips[i].playOnAwake = EditorGUILayout.Toggle(new GUIContent("Play On Awake"), soundLibrary.customAudioClips[i].playOnAwake);
-				soundLibrary.customAudioClips[i].randomType = (RandomFowarder.RandomType)EditorGUILayout.EnumPopup(new GUIContent("Random Variance Method"), soundLibrary.customAudioClips[i].randomType);
+				soundLibrary.customAudioClips[i].loop = EditorGUILayout.Toggle(new GUIContent("Loopable", "If the audioclip finishes, it will play again instead of stopping."), soundLibrary.customAudioClips[i].loop);
+				soundLibrary.customAudioClips[i].playOnAwake = EditorGUILayout.Toggle(new GUIContent("Play On Scene Start", "Plays the audioClip on the start of the scene."), soundLibrary.customAudioClips[i].playOnAwake);
+				soundLibrary.customAudioClips[i].randomType = (RandomFowarder.RandomType)EditorGUILayout.EnumPopup(new GUIContent("Random Variance Method", "Use which type of random number generator, keep in mind Doom's random num gen doesn't work well with volume and pitch."), soundLibrary.customAudioClips[i].randomType);
 				EditorGUILayout.Space();
 				EditorGUILayout.LabelField(new GUIContent("Scene Transitioning"), EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;
 				soundLibrary.customAudioClips[i].willFadeWhenTransitioning = EditorGUILayout.ToggleLeft(new GUIContent("Will Fade When Transitioning", "if the sound fade or stop during scene transition or not."), soundLibrary.customAudioClips[i].willFadeWhenTransitioning);
 				if (soundLibrary.customAudioClips[i].willFadeWhenTransitioning)
-					soundLibrary.customAudioClips[i].fadeWhenTransitioning = EditorGUILayout.Slider(new GUIContent("Fade When Transitioning", "How long it will take before completely fading into 0"), soundLibrary.customAudioClips[i].fadeWhenTransitioning, 0, 60);
+					soundLibrary.customAudioClips[i].fadeWhenTransitioning = EditorGUILayout.Slider(new GUIContent("Fade When Transitioning", "How long it will take before it deletes itself."), soundLibrary.customAudioClips[i].fadeWhenTransitioning, 0, 60);
 				librarySerialized.ApplyModifiedProperties();
 				EditorGUI.indentLevel -= 2;
 				EditorGUILayout.Space();
 			}
 			EditorGUILayout.EndFoldoutHeaderGroup();
 		}
+		
 	}
 }

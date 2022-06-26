@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 public sealed class ScriptsTab : DebuggerTab
 {
@@ -83,9 +84,11 @@ public sealed class ScriptsTab : DebuggerTab
 				GUI.color = assignedColors[2];
 			else
 				GUI.color = assignedColors[0];
-			GUI.Label(rect, $"{(onLine == i && EditorPrefs.GetBool("Script B1NARY Pointer", true) ? ">" : (i + 1).ToString())} {new string(' ', (space - (i + 1).ToString().Length) * 2)}    {currentScriptContents[i]}");
+			GUI.Label(rect, $"{(onLine == i && EditorPrefs.GetBool("Script B1NARY Pointer", true) ? ">" : (i + 1).ToString())}\t{currentScriptContents[i]}");
 		}
 		GUILayout.EndScrollView();
+		if (GUILayout.Button("Open script"))
+			Process.Start($"{Application.streamingAssetsPath}/Docs/{parser.scriptName}.txt", EditorPrefs.GetString("ExternalScriptEditor")); // TODO: somehow make it launch the external scripts editor as well
 	}
 	private void SceneNameShow()
 	{

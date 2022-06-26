@@ -1,20 +1,23 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Linq;
+using System.Xml;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
 
 public static class GameCommands
 {
 	public static void PrepareSwitchScenes()
 	{
-		if (preppedSwitchScenes)
+		if (PreppedSwitchScenes)
 			return;
-		preppedSwitchScenes = true;
+		PreppedSwitchScenes = true;
 		SwitchingScenes?.Invoke(null, EventArgs.Empty);
 		SwitchingScenes = null;
 	}
 	public static event EventHandler SwitchingScenes;
-	private static bool preppedSwitchScenes = false;
+	public static bool PreppedSwitchScenes { get; private set; } = false;
 
 	public static AsyncOperation SwitchScenes(string sceneName)
 	{
@@ -25,4 +28,5 @@ public static class GameCommands
 	}
 	public static event EventHandler<string> SwitchedScenes;
 
+	
 }
