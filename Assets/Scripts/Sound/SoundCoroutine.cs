@@ -42,14 +42,16 @@ public class SoundCoroutine
 	}
 	private Coroutine garbageCollection = null;
 	public bool destroyOnFinish = true;
+	public readonly string currentSoundLibrary;
 
-	public SoundCoroutine(MonoBehaviour monoBehaviour, AudioMixerGroup mixerGroup = null, CustomAudioClip clip = null)
+	public SoundCoroutine(MonoBehaviour monoBehaviour, string soundLibrary, AudioMixerGroup mixerGroup = null, CustomAudioClip clip = null)
 	{
 		this.monoBehaviour = monoBehaviour;
 		audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
 		audioSource.outputAudioMixerGroup = AudioMixerGroup;
 		AudioMixerGroup = mixerGroup;
 		audioSource.outputAudioMixerGroup = mixerGroup;
+		currentSoundLibrary = soundLibrary;
 		if (clip != null)
 			AudioClip = clip;
 		GameCommands.SwitchedScenes += SwitchSceneCheck;
