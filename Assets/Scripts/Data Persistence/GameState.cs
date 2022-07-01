@@ -75,7 +75,7 @@ public class GameState
 		characters.Clear();
 		scene = SceneManager.GetActiveScene().name;
 		script = ScriptParser.Instance.scriptName;
-		index = ScriptParser.Instance.currentNode.CurrentIndex;
+		index = ScriptParser.Instance.currentNode.index;
 		Dictionary<string, GameObject> charactersInScene = CharacterManager.Instance.charactersInScene;
 		foreach (GameObject characterObject in charactersInScene.Values)
 		{

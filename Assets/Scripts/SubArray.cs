@@ -3,90 +3,167 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections;
 
-// TODO: Add list interfaces!
-public class SubArray<T> : IEnumerable<T>
+/// <summary>
+/// <para>
+/// Creates and holds a pointer to an array with a start index and a length to
+/// limit itself in.
+/// </para>
+/// </summary>
+/// <typeparam name="TValue"> The value the array is stored in. </typeparam>
+public class SubArray<TValue> : IEnumerable<TValue>
 {
-	private Ref<T[]> referencedArray;
-	private int startIndex = 0, endIndex = int.MaxValue;
-	public int StartIndex 
-	{ 
+	public readonly Ref<TValue[]> referencedArray;
+	private int startIndex = 0, length;
+
+	/// <summary>
+	/// Where the <see cref="SubArray{TValue}"/> inclusively starts on.
+	/// </summary>
+	/// <value>
+	/// A zero-based index for where the <see cref="SubArray{TValue}"/> starts.
+	/// </value>
+	/// <exception cref="IndexOutOfRangeException"></exception>
+	public int StartIndex
+	{
 		get => startIndex;
-		set 
+		set
 		{
 			if (value > referencedArray.Value.Length)
 				throw new IndexOutOfRangeException($"{nameof(value)} {startIndex}"
 					+ $" is larger than the referenced array of {referencedArray.Value.Length}");
 			else if (value < 0)
-				throw new ArgumentException($"value cannot be below 0!", nameof(value));
+				throw new IndexOutOfRangeException($"value cannot be below 0!");
+			Length = length; // Property handling check
 			startIndex = value;
-		} 
-	}
-	public int EndIndex
-	{
-		get => endIndex;
-		set
-		{
-			if (EndIndex < StartIndex)
-				throw new ArgumentException("value cannot be below " +
-					$"{nameof(StartIndex)} with {StartIndex}!", nameof(value));
-			endIndex = value;
 		}
 	}
-	public int Length => 
-		new int[] { referencedArray.Value.Length, endIndex }.Min() - startIndex;
 
-	
+	/// <summary>
+	/// Where the <see cref="SubArray{TValue}"/> inclusively ends on.
+	/// </summary>
+	/// <value>
+	/// A zero-based index for where the <see cref="SubArray{TValue}"/> ends.
+	/// </value>
+	/// <exception cref="ArgumentException">value cannot be below " +
+	/// 	$"{nameof(StartIndex)} with {StartIndex}! - value</exception>
+	public int EndIndex
+	{
+		get => startIndex + Length - 1;
+		set => Length = value - startIndex + 1;
+	}
 
-	public SubArray(Ref<T[]> referencedArray, int startIndex)
+	/// <summary>
+	/// Converts <paramref name="relativeIndex"/> from how <see cref="SubArray{TValue}"/>
+	/// handles the value to where the <see cref="Array"/> handles the value.
+	/// Ignores any endIndex checks.
+	/// </summary>
+	/// <param name="relativeIndex">index for the <see cref="SubArray{TValue}"/></param>
+	/// <returns>
+	/// An absolute index from index of <see cref="SubArray{TValue}"/> to the 
+	/// referenced Array.
+	/// </returns>
+	public int ToAbsoluteIndex(int relativeIndex)
+		=> relativeIndex + startIndex;
+
+	/// <summary>
+	/// Gets or Sets total number of elements the subarray can access.
+	/// </summary>
+	/// <value>
+	/// The amount of elements the <see cref="SubArray{TValue}"/> can access.
+	/// </value>
+	/// <exception cref="IndexOutOfRangeException">value cannot be below 0!</exception>
+	public int Length
+	{
+		get => length;
+		set
+		{
+			if (value - startIndex > referencedArray.Value.Length)
+				throw new IndexOutOfRangeException($"{nameof(value)} {value + startIndex}"
+					+ $" is larger than the referenced array of {referencedArray.Value.Length}");
+			else if (value < 0)
+				throw new IndexOutOfRangeException($"value cannot be below 0!");
+			length = value;
+		}
+	}
+
+
+
+	public SubArray(Ref<TValue[]> referencedArray, int startIndex) :
+		this(referencedArray, startIndex, referencedArray.Value.Length - startIndex)
+	{ }
+	public SubArray(Ref<TValue[]> referencedArray, int startIndex, int length)
 	{
 		this.referencedArray = referencedArray;
 		StartIndex = startIndex;
-	}
-	public SubArray(Ref<T[]> referencedArray, int startIndex, int endIndex)
-	{
-		this.referencedArray = referencedArray;
-		StartIndex = startIndex;
-		EndIndex = endIndex;
+		Length = length;
 	}
 
-	public T this[int index]
+	public SubArray(SubArray<TValue> subArray, int startIndex) :
+		this(subArray, startIndex, subArray.Length - startIndex)
+	{ }
+	public SubArray(SubArray<TValue> subArray, int startIndex, int length)
+	{
+		referencedArray = new Ref<TValue[]>(() => subArray.referencedArray.Value,
+			setter => subArray.referencedArray.Value = setter);
+		StartIndex = subArray.StartIndex + startIndex;
+		Length = length;
+	}
+
+
+	/// <summary>
+	/// Gets or sets the <typeparamref name="TValue"/> at the specified index, which is 
+	/// recieved by original array.
+	/// </summary>
+	/// <value> The <typeparamref name="TValue"/> in the original array. </value>
+	/// <param name="index">
+	/// The index where the <see cref="SubArray{TValue}"/>
+	/// accesses in.</param>
+	/// <param name="asAbsolute">
+	/// if set to <c>true</c>, then it won't adjust for <see cref="startIndex"/>
+	/// </param>
+	public TValue this[int index, bool asAbsolute = false]
 	{
 		get
 		{
-			index += startIndex;
+			if (!asAbsolute)
+				index += startIndex;
 			CheckRange(index);
 			return referencedArray.Value[index];
 		}
 		set
 		{
-			index += startIndex;
+			if (!asAbsolute)
+				index += startIndex;
 			CheckRange(index);
 			referencedArray.Value[index] = value;
 		}
 	}
+
+	/// <summary>
+	/// Checks the range of <paramref name="index"/>. If it is not in the specified
+	/// space of <see cref="startIndex"/> and <see cref="EndIndex"/>, then it will
+	/// throw an error. Otherwise does nothing.
+	/// </summary>
+	/// <param name="index">The input index.</param>
+	/// <exception cref="IndexOutOfRangeException"></exception>
 	private void CheckRange(int index)
 	{
-
-		if (index > endIndex)
-			throw new IndexOutOfRangeException($"{nameof(index)} {index}"
-				+ $"with starting Index of {startIndex} is higher than {endIndex}!");
+		if (index > EndIndex)
+			throw new IndexOutOfRangeException($"{nameof(index)} {index} "
+				+ $"is higher than {EndIndex}, as a subarray length of {Length}!");
+		if (index < StartIndex)
+			throw new IndexOutOfRangeException($"{nameof(index)} {index} "
+				+ $"is lower than {startIndex}, as a subarray length of {Length}!");
 	}
 
-	public T[] ToArray() 
-		=> referencedArray.Value.Skip(startIndex).Take(EndIndex).ToArray();
-	public List<T> ToList() => ToArray().ToList();
-	public Dictionary<TKey, T> ToDictionary<TKey>(Func<T, TKey> keySelector)
-		=> ToArray().ToDictionary(keySelector);
-
-	IEnumerator<T> IEnumerable<T>.GetEnumerator()
+	IEnumerator<TValue> IEnumerable<TValue>.GetEnumerator()
 	{
-		for (int i = startIndex; i < Length; i++)
-			yield return referencedArray.Value[i];
+		for (int i = StartIndex; i <= EndIndex; i++)
+			yield return this[i, true];
 	}
 
 	IEnumerator IEnumerable.GetEnumerator()
 	{
-		for (int i = startIndex; i < Length; i++)
-			yield return referencedArray.Value[i];
+		for (int i = StartIndex; i <= EndIndex; i++)
+			yield return this[i, true];
 	}
 }
