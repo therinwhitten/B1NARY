@@ -46,7 +46,7 @@ public class VoiceActorHandler
 
 	private void SwitchSceneCheck(object sender, EventArgs args)
 	{
-		SpeakerCoroutine = new SoundCoroutine(CoroutineStarter)
+		SpeakerCoroutine = new SoundCoroutine(CoroutineStarter, string.Empty)
 		{ destroyOnFinish = false, DeleteCoroutineOnSwap = false };
 		GameCommands.SwitchingScenes += SwitchSceneCheck;
 	}
