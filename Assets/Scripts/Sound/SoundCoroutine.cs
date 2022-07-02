@@ -11,7 +11,9 @@ public class SoundCoroutine
 {
 	public bool IsFadingAway { get; private set; } = false;
 	public bool DeleteCoroutineOnSwap { get; set; } = true;
-	public bool IsPlaying { get
+	public bool IsPlaying
+	{
+		get
 		{
 			if (AudioSource != null)
 				return AudioSource.isPlaying;
@@ -42,14 +44,16 @@ public class SoundCoroutine
 	}
 	private Coroutine garbageCollection = null;
 	public bool destroyOnFinish = true;
+	public readonly string currentSoundLibrary;
 
-	public SoundCoroutine(MonoBehaviour monoBehaviour, AudioMixerGroup mixerGroup = null, CustomAudioClip clip = null)
+	public SoundCoroutine(MonoBehaviour monoBehaviour, string soundLibrary, AudioMixerGroup mixerGroup = null, CustomAudioClip clip = null)
 	{
 		this.monoBehaviour = monoBehaviour;
 		audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
 		audioSource.outputAudioMixerGroup = AudioMixerGroup;
 		AudioMixerGroup = mixerGroup;
 		audioSource.outputAudioMixerGroup = mixerGroup;
+		currentSoundLibrary = soundLibrary;
 		if (clip != null)
 			AudioClip = clip;
 		GameCommands.SwitchedScenes += SwitchSceneCheck;
@@ -60,7 +64,7 @@ public class SoundCoroutine
 	private bool playOnAwake, willFadeWhenTransitioning;
 	public CustomAudioClip AudioClip
 	{
-		get => new CustomAudioClip(audioSource.clip) 
+		get => new CustomAudioClip(audioSource.clip)
 		{
 			minPitchVariance = pitchVariance.min,
 			maxPitchVariance = pitchVariance.max,
@@ -87,7 +91,7 @@ public class SoundCoroutine
 				audioSource.pitch = value.pitch;
 			oldVolume = value.volume;
 			if (value.minVolumeVariance != value.maxVolumeVariance)
-				audioSource.volume = RandomFowarder.NextRange(value.volume, 
+				audioSource.volume = RandomFowarder.NextRange(value.volume,
 					value.minVolumeVariance, value.maxVolumeVariance, RandomFowarder.RandomType.CSharp);
 			else
 				audioSource.volume = value.volume;
@@ -100,7 +104,7 @@ public class SoundCoroutine
 		}
 	}
 
-	
+
 
 	public void PlaySingle()
 	{
@@ -115,8 +119,8 @@ public class SoundCoroutine
 		audioSource.volume = 0;
 		AudioHandler.Instance.ChangeFloat
 			(
-			new Ref<float>(() => audioSource.volume, (var) => audioSource.volume = var), 
-			targetValue, 
+			new Ref<float>(() => audioSource.volume, (var) => audioSource.volume = var),
+			targetValue,
 			fadeInSeconds);
 		audioSource.Play();
 		if (garbageCollection == null)
@@ -132,7 +136,7 @@ public class SoundCoroutine
 
 	private IEnumerator GarbageCollectionCoroutine()
 	{
-		Func<YieldInstruction> yield = audioSource.clip.length > 5 ? 
+		Func<YieldInstruction> yield = audioSource.clip.length > 5 ?
 			(Func<YieldInstruction>)
 				(() => new WaitForSeconds(0.1f * audioSource.clip.length))
 			: (Func<YieldInstruction>)(() => new WaitForEndOfFrame());
@@ -153,9 +157,9 @@ public class SoundCoroutine
 		}
 		IsFadingAway = true;
 		monoBehaviour.ChangeFloat(
-			new Ref<float>(() => audioSource.volume, 
-				(@float) => 
-				{ 
+			new Ref<float>(() => audioSource.volume,
+				(@float) =>
+				{
 					audioSource.volume = @float;
 					// Because of how dynamically changing the value works,
 					// - im going to have to write the action in the setter
