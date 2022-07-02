@@ -1,5 +1,5 @@
-{changeScene: Scenes/Star/Bedroom}
-{fadeinsound: starandszy, 1}
+{changeScene: Scenes/Star/Star Bedroom Night}
+{fadeinsound: Szy and Star Dinner, 1}
 {fadeinsound: fireplace, 1}
 {spawnChar: malesilo, -1, MC}
 {spawnChar: star nightgown, 1.3, Asterella}
@@ -129,7 +129,7 @@ Szycrotic::
 {moveChar: Szycrotic, -1}
 {moveChar: Asterella, .5}
 MC::
-{fadeinsound: Door, 1}
+{fadeinsound: openclosedoor, 1}
 Star watches Szy close the door with a look of satisfaction on her face. 
 When the door closes she sighs, closing her eyes for a brief moment. 
 Asterella::
@@ -166,9 +166,16 @@ Asterella Star, not a foot from my face.
 In the flesh. 
 
 **TODO: henable**
-if: henabled, true
+if: henable, true
 
-Be a gentleman. 
+{if: n-b, true}
+{
+ Be a gentleperson.
+}
+{if: n-b, false}
+{
+ Be a gentleman. 
+}
 She is short, her head only coming up to my mid chest. 
 My eyes can't help but lock on her bouncing "assets."
 Task Failed Successfully.
@@ -176,7 +183,14 @@ Task Failed Successfully.
 if: henable, false
 
 She is short, her head only coming up to my mid chest.
-Being a gentleman, I lock eyes with her. 
+{if: n-b, true}
+{
+ Being a gentleperson, I lock eyes with her.
+}
+{if: n-b, false}
+{
+ Being a gentleman, I lock eyes with her. 
+}
 Those gorgeous eyes.
 
 The scent of her billows into small space of air between us: brimstone with a mix of lavender.
@@ -213,7 +227,7 @@ Asterella::
 MC::
 {fadeinsound: woodwine1, .1}
 {fadeinsound: woodwine2, .1}
-{fadeinsound: glasspouring, .1}
+{fadeinsound: Pouring, .1}
 Asterella grabs the second champagne glass, pouring crimson wine from a crystal chalice.
 Lightly, she places the goblet on the table next to her. 
 {fadeinsound: wineglassdown, .1}
@@ -258,7 +272,7 @@ Asterella::
 "To future relationships."
 MC::
 "To future relationships."
-{fadeinsound: winetoast, .1}
+{fadeinsound: Wine Toast, .1}
 {anim: Asterella, Impatient}
 I take a nice chug of it. 
 It burns a bit, but the taste is smooth. 

@@ -1,72 +1,72 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 public class MenuButton : MonoBehaviour
 {
-    [SerializeField] Animator animator;
-    // public int x = 0, y = 0;
-    // [SerializeField] AudioSource audio;
-    // [SerializeField] AudioClip selectSound, pressSound;
+	[Header("Audio Sounds"), SerializeField] private AudioClip hover; 
+	[SerializeField] private AudioClip press;
+	private AudioHandler AudioHandler => AudioHandler.Instance;
 
-    [SerializeField]
-    GameObject controller;
-    CanvasGroup canvasGroup;
-    bool interactable { get { return canvasGroup.interactable; } }
-    bool resized = false;
-    BoxCollider2D col;
-    RectTransform rect;
+	[Header("Other"), SerializeField] Animator animator;
 
-    [SerializeField]
-    string action;
-    // Start is called before the first frame update
-    void Start()
-    {
-        col = gameObject.GetComponent<BoxCollider2D>();
-        rect = gameObject.GetComponent<RectTransform>();
-        canvasGroup = controller.GetComponent<CanvasGroup>();
-    }
+	[SerializeField]
+	GameObject controller;
+	CanvasGroup canvasGroup;
+	bool Interactible => canvasGroup.interactable;
+	bool resized = false;
+	BoxCollider2D col;
+	RectTransform rect;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (col.size != rect.sizeDelta)
-        {
-            col.size = rect.sizeDelta;
-        }
-        col.enabled = interactable;
-    }
+	[SerializeField]
+	private UnityEvent actions;
 
-    private void OnMouseEnter()
-    {
-        if (interactable)
-            select();
-    }
-    private void OnMouseExit()
-    {
-        animator.SetBool("selected", false);
-    }
-    private void OnMouseDown()
-    {
-        if (interactable)
-        {
-            // audio.Stop();
-            // audio.PlayOneShot(pressSound);
-            AudioManager.Instance.Play("Button-Press", true);
-            animator.SetBool("pressed", true);
-            controller.SendMessage(action);
-        }
-    }
-    private void OnMouseUp()
-    {
-        animator.SetBool("pressed", false);
-    }
-    public void select()
-    {
-        // audio.Stop();
-        // audio.PlayOneShot(selectSound);
-        AudioManager.Instance.Play("Button-Select", true);
-        animator.SetBool("selected", true);
-    }
+	private void Start()
+	{
+		col = gameObject.GetComponent<BoxCollider2D>();
+		rect = gameObject.GetComponent<RectTransform>();
+		canvasGroup = controller.GetComponent<CanvasGroup>();
+	}
+
+	private void Update()
+	{
+		if (col.size != rect.sizeDelta)
+		{
+			col.size = rect.sizeDelta;
+		}
+		col.enabled = Interactible;
+	}
+
+	private void OnMouseEnter()
+	{
+		if (!Interactible)
+			return;
+		if (hover != null)
+			AudioHandler.PlayOneShot(hover);
+		else
+			Debug.LogError($"Button {nameof(hover)} is not tied to an audioClip!");
+		animator.SetBool("selected", true);
+	}
+	private void OnMouseExit()
+	{
+		animator.SetBool("selected", false);
+	}
+	private void OnMouseDown()
+	{
+		if (!Interactible)
+			return;
+		if (press != null)
+			AudioHandler.PlayOneShot(press);
+		else
+			Debug.LogError($"Button {nameof(press)} is not tied to an audioClip!");
+		animator.SetBool("pressed", true);
+		actions.Invoke();
+	}
+	private void OnMouseUp()
+	{
+		animator.SetBool("pressed", false);
+	}
 }

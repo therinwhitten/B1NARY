@@ -1,5 +1,5 @@
 {changeScene: Times Square}
-{fadeinsound:Times-Square-Crowd,5}
+{fadeinsound: Times Square Crowd, 1}
 {spawnChar: malesilo, -3, Narrator}
 Narrator::
 New York City in Times Square: the year is 2040. Midday on a blistering Summer Day.
@@ -71,7 +71,7 @@ Female Bystander::
 "Imagine how nervous that kid is right now.
 Just <i>imagine</i> the pressure of sitting in that chair, in front of millions..."
 {additive: off}
-{fadeinsound: News Music Intro, .2}
+{fadeinsound: Modern News, .1}
 "I think they are starting now!"
 "Quiet please. I want to hear this!"
 {moveChar: Male Bystander, -1}
@@ -101,10 +101,10 @@ Let's find out together. LIVE!"
 "On scene at the Digital Horizons Lab, we have our correspondent and lead news reporter, John Casnik."
 "John? Are you there?"
 {changeScene: Brain Sucking Chair Side}
-{fadeoutsound: Times-Square-Crowd,2}
-{fadeinsound: Laptop-Lab,2}
-{fadeinsound: Fast Keyboard Typing, 2}
-{fadeinsound: DIHI Low Power, 5}
+{fadeoutsound: Times Square Crowd, 1}
+{fadeinsound: Laptop Lab Scene, 1.5}
+{fadeinsound: Fast Keyboard Typing, 1.5}
+{fadeinsound: DIHI Low Power, 2}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
@@ -175,7 +175,7 @@ John sidesteps awkwardly as a few lab techs push past him in front of the camera
 John::
 "Oh, excuse me gentlemen."
 {moveChar: LabTech0, -.4}
-{fadeinsound: Door, 0.1}
+{fadeinsound: openclosedoor, 0.1}
 {additive: on}
 "Sorry about that!
 {moveChar: LabTech1, -.4}
@@ -329,7 +329,7 @@ Shirobi::
 "That is <i>my</i> personal opinion, of course." 
 John::
 "And who is this pioneer of the future? The person that has decided to brave the unknown of the internet?"
-{fadeinsound: Door,0.1}
+{fadeinsound: openclosedoor,0.1}
 Narrator::
 The lab tech smiles for the first time at the sound of the door.
 He starts guiding all the press out of the lab with an air of excitement.

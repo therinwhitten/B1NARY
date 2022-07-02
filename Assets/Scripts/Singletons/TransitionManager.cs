@@ -8,183 +8,183 @@ using UnityEngine.SceneManagement;
 
 public class TransitionManager : Singleton<TransitionManager>
 {
-    // Start is called before the first frame update
-    public RawImage overlayImage;
-    public Material transitionMatPrefab;
-    public Texture2D texIn;
-    public Texture2D texOut;
+	// Start is called before the first frame update
+	public RawImage overlayImage;
+	public Material transitionMatPrefab;
+	public Texture2D texIn;
+	public Texture2D texOut;
 
-    public string transitionColor = "pitchBlack";
+	public string transitionColor = "pitchBlack";
 
-    public VideoPlayer animatedBG;
-    public Image staticBG;
-    public bool commandsAllowed = true;
+	public VideoPlayer animatedBG;
+	public Image staticBG;
+	public bool commandsAllowed = true;
 
-    private void Awake()
-    {
-        initialize();
-    }
-    void Start()
-    {
-    }
+	private void Awake()
+	{
+		initialize();
+	}
+	void Start()
+	{
+	}
 
-    public override void initialize()
-    {
-        transitionMatPrefab = Resources.Load<Material>("Transitions/TransitionEffects/TransSoft");
-        Texture transitionColorTex = Resources.Load<Texture>("Transitions/Colors/" + transitionColor);
-        GameObject UILayer = GameObject.Find("UI");
-        GameObject panel = UILayer.transform.Find("OverlayPanel").gameObject;
-        panel.SetActive(true);
-        overlayImage = GameObject.Find("OverlayPanel").GetComponent<RawImage>();
-        overlayImage.material = new Material(transitionMatPrefab);
-        overlayImage.texture = transitionColorTex;
+	public override void initialize()
+	{
+		transitionMatPrefab = Resources.Load<Material>("Transitions/TransitionEffects/TransSoft");
+		Texture transitionColorTex = Resources.Load<Texture>("Transitions/Colors/" + transitionColor);
+		GameObject UILayer = GameObject.Find("UI");
+		GameObject panel = UILayer.transform.Find("OverlayPanel").gameObject;
+		panel.SetActive(true);
+		overlayImage = GameObject.Find("OverlayPanel").GetComponent<RawImage>();
+		overlayImage.material = new Material(transitionMatPrefab);
+		overlayImage.texture = transitionColorTex;
 
-        GameObject bgCanvas = GameObject.Find("BG-Canvas");
-        animatedBG = bgCanvas.GetComponentInChildren<VideoPlayer>();
-        staticBG = bgCanvas.GetComponentInChildren<Image>();
-    }
+		GameObject bgCanvas = GameObject.Find("BG-Canvas");
+		animatedBG = bgCanvas.GetComponentInChildren<VideoPlayer>();
+		staticBG = bgCanvas.GetComponentInChildren<Image>();
+	}
 
-    // Update is called once per frame
-    void Update()
-    {
+	// Update is called once per frame
+	void Update()
+	{
 
-    }
+	}
 
-    static bool sceneVisible = true;
-    public static void ShowScene(bool show, float speed = 1, bool smooth = false, Texture2D transitionEffect = null)
-    {
-        if (transitioningOverlay != null)
-            Instance.StopCoroutine(transitioningOverlay);
+	static bool sceneVisible = true;
+	public static void ShowScene(bool show, float speed = 1, bool smooth = false, Texture2D transitionEffect = null)
+	{
+		if (transitioningOverlay != null)
+			Instance.StopCoroutine(transitioningOverlay);
 
-        sceneVisible = show;
+		sceneVisible = show;
 
-        if (transitionEffect != null)
-            Instance.overlayImage.material.SetTexture("_AlphaTex", transitionEffect);
-        transitioningOverlay = Instance.StartCoroutine(TransitioningOverlay(show, speed, smooth));
+		if (transitionEffect != null)
+			Instance.overlayImage.material.SetTexture("_AlphaTex", transitionEffect);
+		transitioningOverlay = Instance.StartCoroutine(TransitioningOverlay(show, speed, smooth));
 
-    }
-
-
-
-    static Coroutine transitioningOverlay = null;
-    static IEnumerator TransitioningOverlay(bool show, float speed, bool smooth)
-    {
-        float targetVal = show ? 1 : 0;
-        float currentVal = Instance.overlayImage.material.GetFloat("_Cutoff");
-        while (currentVal != targetVal)
-        {
-            currentVal = smooth ? Mathf.Lerp(currentVal, targetVal, speed * Time.deltaTime) : Mathf.MoveTowards(currentVal, targetVal, speed * Time.deltaTime);
-            Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
-            yield return new WaitForEndOfFrame();
-        }
-        transitioningOverlay = null;
-    }
+	}
 
 
-    // ************************BACKGROUND TRANSITIONS**************************
+
+	static Coroutine transitioningOverlay = null;
+	static IEnumerator TransitioningOverlay(bool show, float speed, bool smooth)
+	{
+		float targetVal = show ? 1 : 0;
+		float currentVal = Instance.overlayImage.material.GetFloat("_Cutoff");
+		while (currentVal != targetVal)
+		{
+			currentVal = smooth ? Mathf.Lerp(currentVal, targetVal, speed * Time.deltaTime) : Mathf.MoveTowards(currentVal, targetVal, speed * Time.deltaTime);
+			Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
+			yield return new WaitForEndOfFrame();
+		}
+		transitioningOverlay = null;
+	}
 
 
-    // the function we actually call
-    public static void TransitionBG(string newBG, float speed = 10)
-    {
-        Instance.commandsAllowed = false;
+	// ************************BACKGROUND TRANSITIONS**************************
 
-        Instance.overlayImage.material.SetFloat("_Cutoff", 1);
-        Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texIn);
 
-        transitioningBG = Instance.StartCoroutine(TransitioningBG(newBG));
-    }
-    public static Coroutine transitioningBG = null;
-    static IEnumerator TransitioningBG(string newBG, float speed = 1)
-    {
-        float targetVal = 0;
-        float currentVal = Instance.overlayImage.material.GetFloat("_Cutoff"); //should be 1
-        // pull in overlay
-        while (targetVal != currentVal)
-        {
-            currentVal = Mathf.MoveTowards(currentVal, targetVal, speed * Time.deltaTime);
-            Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
-            yield return new WaitForEndOfFrame();
-        }
-        Instance.commandsAllowed = true;
+	// the function we actually call
+	public static void TransitionBG(string newBG, float speed = 10)
+	{
+		Instance.commandsAllowed = false;
 
-        // change background clip
-        VideoClip newClip = Resources.Load<VideoClip>("Backgrounds/" + newBG);
-        if (newClip != null)
-        {
-            Instance.animatedBG.clip = newClip;
-            Instance.animatedBG.Play();
-        }
+		Instance.overlayImage.material.SetFloat("_Cutoff", 1);
+		Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texIn);
 
-        // change overlay and pull it out
-        Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texOut);
-        targetVal = 1;
-        while (targetVal != currentVal)
-        {
-            currentVal = Mathf.MoveTowards(currentVal, targetVal, speed * Time.deltaTime);
-            Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
-            yield return new WaitForEndOfFrame();
-        }
-        transitioningBG = null;
-    }
+		transitioningBG = Instance.StartCoroutine(TransitioningBG(newBG));
+	}
+	public static Coroutine transitioningBG = null;
+	static IEnumerator TransitioningBG(string newBG, float speed = 1)
+	{
+		float targetVal = 0;
+		float currentVal = Instance.overlayImage.material.GetFloat("_Cutoff"); //should be 1
+		// pull in overlay
+		while (targetVal != currentVal)
+		{
+			currentVal = Mathf.MoveTowards(currentVal, targetVal, speed * Time.deltaTime);
+			Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
+			yield return new WaitForEndOfFrame();
+		}
+		Instance.commandsAllowed = true;
 
-    // ************************SCENE TRANSITIONS**************************
-    public static Coroutine transitioningScene = null;
+		// change background clip
+		VideoClip newClip = Resources.Load<VideoClip>("Backgrounds/" + newBG);
+		if (newClip != null)
+		{
+			Instance.animatedBG.clip = newClip;
+			Instance.animatedBG.Play();
+		}
 
-    public static void transitionScene(string newScene)
-    {
-        Instance.commandsAllowed = false;
+		// change overlay and pull it out
+		Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texOut);
+		targetVal = 1;
+		while (targetVal != currentVal)
+		{
+			currentVal = Mathf.MoveTowards(currentVal, targetVal, speed * Time.deltaTime);
+			Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
+			yield return new WaitForEndOfFrame();
+		}
+		transitioningBG = null;
+	}
 
-        Instance.overlayImage.material.SetFloat("_Cutoff", 1);
-        Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texIn);
+	// ************************SCENE TRANSITIONS**************************
+	public static Coroutine transitioningScene = null;
 
-        transitioningScene = Instance.StartCoroutine(TransitioningScene(newScene));
-    }
+	public static void transitionScene(string newScene)
+	{
+		GameCommands.PrepareSwitchScenes();
+		Instance.commandsAllowed = false;
 
-    static IEnumerator TransitioningScene(string newScene, float speed = 1)
-    {
-        float targetVal = 0;
-        float currentVal = Instance.overlayImage.material.GetFloat("_Cutoff"); //should be 1
-        // pull in overlay
-        while (targetVal != currentVal)
-        {
-            currentVal = Mathf.MoveTowards(currentVal, targetVal, speed * Time.deltaTime);
-            Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
-            yield return new WaitForEndOfFrame();
-        }
-        // change scene while curtains are closed
-        AsyncOperation sceneLoad = SceneManager.LoadSceneAsync(newScene);
-        // wait for scene to get loaded
-        while (!sceneLoad.isDone)
-        {
-            yield return null;
-        }
-        // re-initialize singletons
-        DialogueSystem.Instance.initialize();
-        // ScriptParser.Instance.initialize();
-        CharacterManager.Instance.initialize();
-        CommandsManager.Instance.initialize();
-        Instance.initialize();
-        Instance.commandsAllowed = true;
-        // pull off overlay
-        Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texOut);
-        targetVal = 1;
-        while (targetVal != currentVal)
-        {
-            currentVal = Mathf.MoveTowards(currentVal, targetVal, speed * Time.deltaTime);
-            Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
-            yield return new WaitForEndOfFrame();
-        }
-        transitioningScene = null;
-    }
+		Instance.overlayImage.material.SetFloat("_Cutoff", 1);
+		Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texIn);
 
-    public void playBG(string bgName)
-    {
-        if (bgName != "")
-        {
-            VideoClip clip = Resources.Load<VideoClip>("Backgrounds/" + bgName);
-            animatedBG.clip = clip;
-        }
-        animatedBG.Play();
-    }
+		transitioningScene = Instance.StartCoroutine(TransitioningScene(newScene));
+	}
+
+	static IEnumerator TransitioningScene(string newScene, float speed = 1)
+	{
+		float targetVal = 0;
+		float currentVal = Instance.overlayImage.material.GetFloat("_Cutoff"); //should be 1
+		// pull in overlay
+		while (targetVal != currentVal)
+		{
+			currentVal = Mathf.MoveTowards(currentVal, targetVal, speed * Time.deltaTime);
+			Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
+			yield return new WaitForEndOfFrame();
+		}
+		// change scene while curtains are closed
+		AsyncOperation sceneLoad = GameCommands.SwitchScenes(newScene);
+		// wait for scene to get loaded
+		while (!sceneLoad.isDone)
+		{
+			yield return null;
+		}
+		// re-initialize singletons
+		DialogueSystem.Instance.initialize();
+		// ScriptParser.Instance.initialize();
+		CharacterManager.Instance.initialize();
+		Instance.initialize();
+		Instance.commandsAllowed = true;
+		// pull off overlay
+		Instance.overlayImage.material.SetTexture("_AlphaTex", Instance.texOut);
+		targetVal = 1;
+		while (targetVal != currentVal)
+		{
+			currentVal = Mathf.MoveTowards(currentVal, targetVal, speed * Time.deltaTime);
+			Instance.overlayImage.material.SetFloat("_Cutoff", currentVal);
+			yield return new WaitForEndOfFrame();
+		}
+		transitioningScene = null;
+	}
+
+	public void playBG(string bgName)
+	{
+		if (bgName != "")
+		{
+			VideoClip clip = Resources.Load<VideoClip>("Backgrounds/" + bgName);
+			animatedBG.clip = clip;
+		}
+		animatedBG.Play();
+	}
 }

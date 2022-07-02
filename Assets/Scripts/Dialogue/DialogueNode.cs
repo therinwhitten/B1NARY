@@ -30,7 +30,10 @@ public class DialogueNode
     {
         try
         {
-            return lines[index];
+            DialogueLine output = lines[index];
+            if (output.line.Contains("//"))
+                output.line = output.line.Remove(output.line.IndexOf("//")); // Comments haha
+            return output;
         }
         catch (System.ArgumentOutOfRangeException)
         {
@@ -106,7 +109,7 @@ public class DialogueNode
     {
         ScriptParser.Instance.currentNode = choice;
         ScriptParser.Instance.paused = false;
-        ScriptParser.Instance.parseLine(choice.getCurrentLine());
+        ScriptParser.Instance.ParseLine(choice.getCurrentLine());
     }
     public DialogueNode makeConditionalNode()
     {

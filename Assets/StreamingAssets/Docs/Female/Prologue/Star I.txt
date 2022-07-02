@@ -1,10 +1,10 @@
 **TODO:Fade From White**
 
-{changeScene: Scenes/Star/Outside Default}
+{changeScene: Scenes/Star/Star Outside Night}
 {fadeinsound: Star Piano, 1}
 {fadeinsound: Wind Heavy, 1}
-{fadeoutsound: Ears Ringing, 5}
-{fadeoutsound: Heartbeat, 5}
+{fadeoutsound: Ears Ringing, 15}
+{fadeoutsound: Normal Heartbeat Prologue, 5}
 {spawnChar: szycrotic default, 2, Masked Punk}
 {spawnChar: femalesilo, 2, MC}
 MC::
@@ -60,7 +60,7 @@ With the tall grass no longer impeding my view, I notice a forest of pine trees,
 Behind that forest, sits an impending and dark mansion.
 I check again.
 A Manor?
-I blink twice. Just in case my "eyes" decide to play tricks on me. 
+I blink twice. Just in case my "eyes" decided to play tricks on me. 
 There, in the distance, sits a very large complex. 
 In ancient Romanian architectural style: a large, squared off building, with jutting towers surrounding it. 
 The Count's Mansion. 
@@ -71,7 +71,7 @@ Masked Punk::
 "Kinky."
 {fadeinsound: Szy Dark, 2}
 {fadeoutsound: Star Piano, 2}
-{fadeinsound: Flashstep, .3}
+{fadeinsound: Flash Step, .3}
 {moveChar: Masked Punk, .50}
 MC::
 Suddenly, two feet in front of me, stands a masked man. 
@@ -132,7 +132,7 @@ Masked Punk::
 {anim: Masked Punk, Impatient Start}
 {anim: Masked Punk, Impatient Loop}
 "AHHHHHHHHHHHH!!!! Get away you scary demon!"
-"You're so <i>scary</i>!"
+"OMG! You're so <i>scary</i>!"
 MC::
 {additive:on}
 "Why are you screaming??!! 
@@ -147,7 +147,7 @@ Masked Punk::
 "I thought that was a greeting from your domain!!!"
 "What in the hell do you want me to do?!"
 [Default]
-"Actually. What the fuck is your <i>name</i>?"
+"Actually. What is your <i>name</i>?"
 MC::
 He points to his chest, like explaining to a child, slow and deliberate.
 Masked Punk::
@@ -158,7 +158,8 @@ MC::
 Szycrotic::
 "No! You started this, you stop first!"
 MC::
-{fadeinsound: szyheavybreathing, .2}
+{fadeinsound: Szy Breath Hard, .2}
+{fadeinsound: Min Sigh Extreme, .2}
 We both stop, huffing and puffing.  
 I just got here and I'm already having to deal with something I'm not ready for.
 I can't hurt this man. He's too strong. Too fast. 
@@ -182,7 +183,7 @@ Szycrotic::
 {anim: Szycrotic, wind idle} 
 MC:: 
 He relaxes his stance, a huge grin smearing his "face."
-{fadeinsound: szylaugh5, .2}
+{fadeinsound: Szy Laugh 5, .2}
 {fadeoutsound: Szy Dark, 4}
 {fadeinsound: Star Piano, 4}
 He suddenly starts laughing heartily.
@@ -241,7 +242,7 @@ He motions to the manor, down the path not far off.
 Szycrotic::
 "Come. I will take you to Star, and we will figure this all out."
 {moveChar: Szycrotic, .3}
-{fadeinsound: walkingongravel, 1}
+{fadeinsound: Walking On Gravel, 1}
 MC::
 He starts off at a leisurely pace, enough for a short woman to follow.
 (<i>Sigh</i>)
@@ -299,8 +300,8 @@ Who am I to disagree? He could tie me up in an instant.
 Not that I wouldn't want him to...
 No. No. I don't want to be tied up! No! Stop it! Stop it player!
 As we pass the ingress, my eyes are bathed in beauty.
-{fadeoutsound: walkingongravel, 1}
-{fadeinsound: waterfountain, 2}
+{fadeoutsound: Walking on Gravel, 1}
+{fadeinsound: waterfountainstar, 2}
 {additive: on}
 Lush oak and ash trees dot the landscape in a chaotic symmetry.
 The wind caressing their leaves. 
@@ -333,12 +334,12 @@ I walk up the steps...
 {moveChar: Szycrotic, .50}
 The main doors are tall, very tall, solid oak with bars reinforcing them.  
 Szy pulls on the handle.
-{fadeinsound: castle door, 1}
+{fadeinsound: Castle Door, 1}
 {fadeoutsound: Wind Heavy, 2}
 {fadeoutsound: Star Piano, 2} 
 Szycrotic::
 "Wait until you see the rest of the mansion, MC."
-"It will blow your fucking mind."
+"It will blow your mind."
 {changeScript: Female/Prologue/Star II}
 
 
