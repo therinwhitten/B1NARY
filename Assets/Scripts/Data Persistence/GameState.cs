@@ -23,7 +23,7 @@ public class GameState
 	public string scene;
 	public bool additiveTextEnabled;
 	public string textBoxContent;
-	public (string soundName, string soundLibrary, float currentPoint)[] audioSounds;
+	public SoundCoroutine[] audioSounds;
 
 	[System.Serializable]
 	public class CharacterSnapshot
@@ -75,7 +75,7 @@ public class GameState
 		characters.Clear();
 		scene = SceneManager.GetActiveScene().name;
 		script = ScriptParser.Instance.scriptName;
-		index = ScriptParser.Instance.currentNode.CurrentIndex;
+		index = ScriptParser.Instance.currentNode.index;
 		Dictionary<string, GameObject> charactersInScene = CharacterManager.Instance.charactersInScene;
 		foreach (GameObject characterObject in charactersInScene.Values)
 		{
@@ -97,8 +97,7 @@ public class GameState
 		}
 
 		audioSounds = AudioHandler.Instance.SoundCoroutineCache.Values
-			.Select(coroutine => (coroutine.AudioClip.Name, 
-			coroutine.currentSoundLibrary, coroutine.AudioSource.time)).ToArray();
+			.Where(sound => { sound.Stop(false); return true; }).ToArray();
 	}
 
 }

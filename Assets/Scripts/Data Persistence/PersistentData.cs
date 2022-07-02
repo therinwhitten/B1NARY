@@ -4,8 +4,6 @@ using UnityEngine;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine.SceneManagement;
-using System;
-
 public class PersistentData : Singleton<PersistentData>
 {
 	// path of the save directory
@@ -82,20 +80,11 @@ public class PersistentData : Singleton<PersistentData>
 		// DialogueSystem.Instance.Say(state.textBoxContent);
 		DialogueSystem.Instance.additiveTextEnabled = state.additiveTextEnabled;
 		ScriptParser.Instance.ChangeScriptFile(state.script, state.index + 2);
-
-		const string fileDirectory = "Sounds/Sound Libraries";
-		foreach (var (clip, libraryName, length) in state.audioSounds)
+		foreach (SoundCoroutine soundName in state.audioSounds)
 		{
-			Func<SoundCoroutine> soundCoroutinePointer;
-			if (AudioHandler.Instance.CustomAudioData.Name != libraryName)
-			{
-				var library = Resources.Load<SoundLibrary>($"{fileDirectory}/{libraryName}");
-				soundCoroutinePointer = AudioHandler.Instance.PlaySound(
-					library.GetCustomAudioClip(library.GetAudioClip(clip)));
-			}
-			else
-				soundCoroutinePointer = AudioHandler.Instance.PlaySound(clip);
-			soundCoroutinePointer().AudioSource.time = length;
+			soundName.AudioSource = AudioHandler.Instance.gameObject.AddComponent<AudioSource>();
+			soundName.monoBehaviour = AudioHandler.Instance;
+			AudioHandler.Instance.SoundCoroutineCache.Add(soundName.AudioClip, soundName);//.PlaySound(soundName);
 		}
 	}
 	// Update is called once per frame

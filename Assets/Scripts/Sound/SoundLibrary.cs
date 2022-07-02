@@ -1,9 +1,10 @@
 using System;
-using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using UnityEngine;
-using UnityEditor;
+using System.Collections;
 
 ///	<summary>
 ///		A group of sounds customized by the user, can be used separately 
@@ -12,15 +13,6 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "New Sound Library", menuName = "B1NARY/Sound Library (SL)", order = 0)]
 public class SoundLibrary : ScriptableObject
 {
-	public string Name
-	{
-		get
-		{
-			string assetPath = AssetDatabase.GetAssetPath(GetInstanceID());
-			return Path.GetFileNameWithoutExtension(assetPath);
-		}
-	}
-
 	public bool ContainsPlayOnAwakeCommands { get; private set; }
 	public IEnumerable<CustomAudioClip> PlayOnAwakeCommands { get; private set; } = null;
 	public List<CustomAudioClip> customAudioClips;

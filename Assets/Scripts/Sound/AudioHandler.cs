@@ -111,7 +111,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	{
 		if (!SoundCoroutineCache.ContainsKey(key))
 		{
-			SoundCoroutineCache.Add(key, new SoundCoroutine(this, CustomAudioData.Name, key.audioMixerGroup, clip: key));
+			SoundCoroutineCache.Add(key, new SoundCoroutine(this, key.audioMixerGroup, clip: key));
 			SoundCoroutineCache[key].GarbageCollection += (sender, clip) =>
 				GarbageCollectionDefault(key);
 		}
