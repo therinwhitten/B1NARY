@@ -78,4 +78,8 @@ public static class Extensions
 			subValue = input - baseValue;
 		return baseValue + (RandomFowarder.NextFloat(randomType) * subValue);
 	}
+
+	public static void Log(this object obj) => Debug.Log(obj);
+	public static void LogWarn(this object obj) => Debug.LogWarning(obj);
+	public static void LogErr(this object obj) => Debug.LogError(obj);
 }

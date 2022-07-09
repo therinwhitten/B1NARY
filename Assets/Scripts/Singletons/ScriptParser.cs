@@ -273,10 +273,12 @@ public class ScriptParser : Singleton<ScriptParser>
 
 	private void OnApplicationQuit()
 	{
-		reader.Close();
+		if (reader != null)
+			reader.Close();
 	}
 	void ReadNextLine()
 	{
-		currentNode.nextLine();
+		if (currentNode != null)
+			currentNode.nextLine();
 	}
 }

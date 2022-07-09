@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.IO;
+using System.Linq;
 using TMPro;
 
-public class MenuCommands : Singleton<MenuCommands>
+public class MenuCommands : SingletonAlt<MenuCommands>
 {
 	// TEMP VARIABLES UNTIL I IMPLEMENT A SAVE/LOAD SYSTEM
 	public string startingScript;
@@ -18,18 +20,19 @@ public class MenuCommands : Singleton<MenuCommands>
 	public GameObject scriptTesting;
 	private string UIPrefabsPath = "UIPrefabs";
 	// Start is called before the first frame update
-	void Start()
+	protected override void SingletonStart()
 	{
-		int sceneCount = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;
+		int sceneCount = SceneManager.sceneCountInBuildSettings;
 		scenes = new string[sceneCount];
 		for (int i = 0; i < sceneCount; i++)
 		{
-			scenes[i] = System.IO.Path.GetFileNameWithoutExtension(UnityEngine.SceneManagement.SceneUtility.GetScenePathByBuildIndex(i));
+			scenes[i] = Path.GetFileNameWithoutExtension(SceneUtility.GetScenePathByBuildIndex(i));
 		}
 		// This is so fucking retarded but I'm too lazy to figure out
 		// why it won't let me just modify the value at the current index so I need
 		// to just build a new array. Sue me
 		string path = Application.streamingAssetsPath + "/Docs/";
+
 		List<string> scriptsRaw = new List<string>(Directory.GetFiles(path));
 		scripts = new List<string>();
 
@@ -51,11 +54,6 @@ public class MenuCommands : Singleton<MenuCommands>
 			ScriptParser.Instance.scriptName = startingScript;
 			ScriptParser.Instance.initialize();
 		});
-	}
-
-	public void ChangePanel(string panelName)
-	{
-
 	}
 
 	public void changeToScriptTesting()
@@ -84,11 +82,6 @@ public class MenuCommands : Singleton<MenuCommands>
 
 	}
 
-	// Update is called once per frame
-	void Update()
-	{
-
-	}
 	private void waitThenDO(System.Action action)
 	{
 		StartCoroutine(waitForTransitionsThenDo(action));
@@ -100,9 +93,5 @@ public class MenuCommands : Singleton<MenuCommands>
 			yield return new WaitForEndOfFrame();
 		}
 		action();
-	}
-	public override void initialize()
-	{
-		// throw new System.NotImplementedException();
 	}
 }
