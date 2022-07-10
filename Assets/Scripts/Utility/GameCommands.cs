@@ -21,12 +21,17 @@ public static class GameCommands
 
 	public static AsyncOperation SwitchScenes(string sceneName)
 	{
-		var operation = SceneManager.LoadSceneAsync(sceneName);
 		SwitchedScenes?.Invoke(null, sceneName);
 		SwitchedScenes = null;
+		var operation = SceneManager.LoadSceneAsync(sceneName);
 		return operation;
 	}
 	public static event EventHandler<string> SwitchedScenes;
 
-	
+	public const string exceptionLoadName = "tfhdthrdygujvukhgy";
+
+	public static void QuitGame()
+	{
+		Application.Quit();
+	}
 }

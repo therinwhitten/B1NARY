@@ -4,7 +4,6 @@ using System.Xml;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 public static class GamePreferences
 {
@@ -54,7 +53,6 @@ public static class GamePreferences
 				}
 				writer.Flush();
 			}
-			AssetDatabase.Refresh();
 		}
 		gameDataDocument.Load(FileXMLName);
 		XmlNode dataNode = gameDataDocument.LastChild;

@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Text;
@@ -146,7 +145,8 @@ public class ScriptParser : Singleton<ScriptParser>
 				// }
 				// else grab next line
 				ReadNextLine();
-				ParseLine(currentNode.getCurrentLine());
+				if (currentNode != null)
+					ParseLine(currentNode.getCurrentLine());
 			}
 			else
 			// if the dialogue is still being written out just skip to the end of the line

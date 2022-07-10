@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
+
 public class OptionsMenuController : MonoBehaviour
 {
     // public int x, y;
@@ -26,8 +26,8 @@ public class OptionsMenuController : MonoBehaviour
 
     void Back()
     {
-        gameObject.SendMessage("fadeOut");
-        mainMenu.SendMessage("fadeIn");
+        gameObject.SendMessage("FadeOut");
+        mainMenu.SendMessage("FadeIn");
         openSettings();
     }
 

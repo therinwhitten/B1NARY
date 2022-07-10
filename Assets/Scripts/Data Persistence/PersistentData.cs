@@ -34,7 +34,6 @@ public class PersistentData : Singleton<PersistentData>
 		state.captureState();
 
 		// serialize state object
-		// Odd's comment, this is fucking genius
 		BinaryFormatter formatter = new BinaryFormatter();
 		FileStream stream = new FileStream(path + "/Quicksave.sav", FileMode.Create);
 
@@ -87,7 +86,7 @@ public class PersistentData : Singleton<PersistentData>
 		foreach (var (clip, libraryName, length) in state.audioSounds)
 		{
 			Func<SoundCoroutine> soundCoroutinePointer;
-			if (AudioHandler.Instance.CustomAudioData.Name != libraryName)
+			if (AudioHandler.Instance.CustomAudioData.name != libraryName)
 			{
 				var library = Resources.Load<SoundLibrary>($"{fileDirectory}/{libraryName}");
 				soundCoroutinePointer = AudioHandler.Instance.PlaySound(
