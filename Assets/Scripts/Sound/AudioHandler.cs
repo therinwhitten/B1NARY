@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Text;
 
 /// <summary>Handles audio for efficiency and garbage collection, uses 
 /// <see cref="CustomAudioClip"/> and/or <see cref="UnityCustomAudioClip"/> for 
@@ -28,12 +29,13 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		VoiceActorHandler = new VoiceActorHandler(this);
 		LoadNewLibrary(null, SceneManager.GetActiveScene().name);
 		MakeNewAudioHandler(null, EventArgs.Empty);
-		if (CustomAudioData.ContainsPlayOnAwakeCommands)
-			PlayOnAwakeCommands();
+		PlayOnAwakeCommands();
 		//GameCommands.SwitchedScenes += OnSceneChange;
 	}
 	private void PlayOnAwakeCommands()
 	{
+		if (!CustomAudioData.ContainsPlayOnAwakeCommands)
+			return;
 		foreach (CustomAudioClip clip in CustomAudioData.PlayOnAwakeCommands)
 			PlaySound(clip);
 	}
@@ -57,11 +59,30 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			Debug.LogError("There are no detected sound libraries in" +
 				$" resource folder : {fileDirectory}/{sceneName}!");
 
+		PlayOnAwakeCommands();
 		StartCoroutine(Buffer());
 		IEnumerator Buffer()
 		{ 
-			yield return new WaitForEndOfFrame(); 
+			yield return new WaitForEndOfFrame();
 			GameCommands.SwitchedScenes += LoadNewLibrary; 
+			var enumerable = SoundCoroutineCache
+				.Where(pair => !pair.Value.AudioClip.fadeWhenTransitioning && 
+				!CustomAudioData.ContainsCustomAudioClip(pair.Key));
+			if (enumerable.Any())
+			{
+				var argumentBuilder = new StringBuilder($"Total Exceptions: {enumerable.Count()}");
+				foreach (var pair in enumerable)
+					argumentBuilder.AppendLine($"Although '{pair.Key.name}' is allowed"
+						+ $" to transition scenes, library '{CustomAudioData.name}'" +
+						" doesn't contain it! ");
+				if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
+					throw new InvalidOperationException(argumentBuilder.ToString());
+				else
+					Debug.LogWarning(argumentBuilder);
+			}
+			foreach (KeyValuePair<AudioClip, SoundCoroutine> item in enumerable)
+				if (item.Value.AudioClip.fadeWhenTransitioning)
+					item.Value.Stop();
 		}
 	}
 
@@ -111,7 +132,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	{
 		if (!SoundCoroutineCache.ContainsKey(key))
 		{
-			SoundCoroutineCache.Add(key, new SoundCoroutine(this, CustomAudioData.Name, key.audioMixerGroup, clip: key));
+			SoundCoroutineCache.Add(key, new SoundCoroutine(this, CustomAudioData.name, key.audioMixerGroup, clip: key));
 			SoundCoroutineCache[key].GarbageCollection += (sender, clip) =>
 				GarbageCollectionDefault(key);
 		}
@@ -238,6 +259,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		}
 		// All the memory cross-scenes gets dumped when loading, so manually
 		// - searching for info in linq 
+		Debug.Log($"DEBUG: {soundName} not found in original sound library. Searching via clipAudios.");
 		IEnumerable<AudioClip> clipAudio = 
 			SoundCoroutineCache.Values.Select(coroutine => coroutine.AudioClip.clip);
 		IEnumerable<string> stringAudio = clipAudio.Select(clip => clip.name.Trim());

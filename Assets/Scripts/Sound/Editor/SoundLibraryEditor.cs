@@ -102,9 +102,7 @@ public class SoundLibraryEditor : Editor
 				EditorGUILayout.Space();
 				EditorGUILayout.LabelField(new GUIContent("Scene Transitioning"), EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;
-				soundLibrary.customAudioClips[i].willFadeWhenTransitioning = EditorGUILayout.ToggleLeft(new GUIContent("Will Fade When Transitioning", "if the sound fade or stop during scene transition or not."), soundLibrary.customAudioClips[i].willFadeWhenTransitioning);
-				if (soundLibrary.customAudioClips[i].willFadeWhenTransitioning)
-					soundLibrary.customAudioClips[i].fadeWhenTransitioning = EditorGUILayout.Slider(new GUIContent("Fade When Transitioning", "How long it will take before it deletes itself."), soundLibrary.customAudioClips[i].fadeWhenTransitioning, 0, 60);
+				soundLibrary.customAudioClips[i].fadeWhenTransitioning = EditorGUILayout.ToggleLeft(new GUIContent("Destroy Sound When Transitioning", "When the scene transitions, the currently selected Sound Library will be looked at. When this is enabled, the Sound will be removed automatically. Otherwise, not."), soundLibrary.customAudioClips[i].fadeWhenTransitioning);
 				librarySerialized.ApplyModifiedProperties();
 				EditorGUI.indentLevel -= 2;
 				EditorGUILayout.Space();

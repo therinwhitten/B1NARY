@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
 
 ///	<summary>
 ///		A group of sounds customized by the user, can be used separately 
@@ -12,19 +11,44 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "New Sound Library", menuName = "B1NARY/Sound Library (SL)", order = 0)]
 public class SoundLibrary : ScriptableObject
 {
+	/*
+	/// <summary> Gets the name of the soundLibrary. </summary>
 	public string Name
 	{
 		get
 		{
-			string assetPath = AssetDatabase.GetAssetPath(GetInstanceID());
+			string assetPath = UnityEditor.AssetDatabase.GetAssetPath(GetInstanceID());
 			return Path.GetFileNameWithoutExtension(assetPath);
 		}
 	}
+	*/
 
+	/// <summary>
+	/// Gets a value indicating whether it has sounds that has an option that can
+	/// play it on awake.
+	/// </summary>
 	public bool ContainsPlayOnAwakeCommands { get; private set; }
+	/// <summary>
+	/// The total list/copy that are wanted to play on awake. set as <see langword="null"/> 
+	/// if <see cref="ContainsPlayOnAwakeCommands"/> is <see langword="false"/>
+	/// </summary>
 	public IEnumerable<CustomAudioClip> PlayOnAwakeCommands { get; private set; } = null;
+
+	/// <summary>
+	/// The list of <see cref="CustomAudioClip"/>s that the <see cref="SoundLibrary"/>
+	/// stores. This is inputted by the user.
+	/// </summary>
 	public List<CustomAudioClip> customAudioClips;
+
+	/// <summary>
+	/// Gets the <see cref="CustomAudioClip"/> at the specified index. Basically
+	/// forwards to the list.
+	/// </summary>
 	public CustomAudioClip this[int index] => customAudioClips[index];
+
+	/// <summary>
+	/// Gets the length of <see cref="customAudioClips"/>.
+	/// </summary>
 	public int Length => customAudioClips.Count;
 
 	private void Awake()
@@ -63,6 +87,13 @@ public class SoundLibrary : ScriptableObject
 		}
 		end: throw new ArgumentOutOfRangeException($"Cannot find {audioClip.name.Trim()}!");
 	}
+
+	/// <summary>
+	/// Determines whether the audio library contains the <see cref="CustomAudioClip"/>
+	/// within <see cref="customAudioClips"/>. Uses an algorithm if it cannot find one
+	/// as it is parsed when needed.
+	/// </summary>
+	/// <param name="audioClip">The audio clip to check if it contains it.</param>
 	public bool ContainsCustomAudioClip(AudioClip audioClip)
 	{
 		if (audioClipLink.ContainsKey(audioClip))

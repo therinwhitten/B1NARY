@@ -44,7 +44,8 @@ public class SoundCoroutine
 	public bool destroyOnFinish = true;
 	public readonly string currentSoundLibrary;
 
-	public SoundCoroutine(MonoBehaviour monoBehaviour, string soundLibrary, AudioMixerGroup mixerGroup = null, CustomAudioClip clip = null)
+	public SoundCoroutine(MonoBehaviour monoBehaviour, string soundLibrary, 
+		AudioMixerGroup mixerGroup = null, CustomAudioClip clip = null)
 	{
 		this.monoBehaviour = monoBehaviour;
 		audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
@@ -57,9 +58,9 @@ public class SoundCoroutine
 		GameCommands.SwitchedScenes += SwitchSceneCheck;
 	}
 
-	private float fadeWhenTransitioning, oldVolume, oldPitch;
+	private float oldVolume, oldPitch;
 	private (float min, float max) pitchVariance, volumeVariance;
-	private bool playOnAwake, willFadeWhenTransitioning;
+	private bool playOnAwake, fadeWhenTransitioning;
 	public CustomAudioClip AudioClip
 	{
 		get => new CustomAudioClip(audioSource.clip) 
@@ -74,7 +75,6 @@ public class SoundCoroutine
 			audioMixerGroup = audioSource.outputAudioMixerGroup,
 			loop = audioSource.loop,
 			playOnAwake = playOnAwake,
-			willFadeWhenTransitioning = willFadeWhenTransitioning,
 			fadeWhenTransitioning = fadeWhenTransitioning,
 		};
 		set
@@ -97,7 +97,6 @@ public class SoundCoroutine
 			audioSource.outputAudioMixerGroup = value.audioMixerGroup;
 			audioSource.loop = value.loop;
 			playOnAwake = value.playOnAwake;
-			willFadeWhenTransitioning = value.willFadeWhenTransitioning;
 			fadeWhenTransitioning = value.fadeWhenTransitioning;
 		}
 	}
@@ -190,6 +189,8 @@ public class SoundCoroutine
 			return;
 		if (AudioSource == null)
 			audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
+		if (AudioClip.fadeWhenTransitioning)
+			Stop();
 		GameCommands.SwitchedScenes += SwitchSceneCheck;
 	}
 

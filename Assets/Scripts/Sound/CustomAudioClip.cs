@@ -29,8 +29,7 @@ public class CustomAudioClip
 	public float minPitchVariance = 1, maxPitchVariance = 1;
 	public bool loop = false;
 	public bool playOnAwake = false;
-	public bool willFadeWhenTransitioning = true;
-	public float fadeWhenTransitioning = 0.3f;
+	public bool fadeWhenTransitioning = true;
 	public RandomFowarder.RandomType randomType;
 
 	public override string ToString() => clip.ToString();

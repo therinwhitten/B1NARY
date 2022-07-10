@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor;
+
+[RequireComponent(typeof(FadeController))]
 public class MainMenuController : MonoBehaviour
 {
 	// public int x, y;
@@ -12,35 +13,33 @@ public class MainMenuController : MonoBehaviour
 	GameObject optionsMenu;
 	[SerializeField]
 	GameObject dialogueBox;
+	FadeController fadeController;
 
-	// Start is called before the first frame update
-	void Start()
+	private void Start()
 	{
-		// x = 0;
-		// y = 0;
-
-
+		fadeController = GetComponent<FadeController>();
 	}
+
 
 	// BUTTON BEHAVIOURS
 	public void NewGame()
 	{
-		gameObject.SendMessage("fadeOut");
+		fadeController.FadeOut();
 		DialogueSystem.Instance.initialize();
 		ScriptParser.Instance.initialize();
-		dialogueBox.SendMessage("fadeIn");
+		dialogueBox.SendMessage("FadeIn");
 	}
 	public void Options()
 	{
-		gameObject.SendMessage("fadeOut");
-		optionsMenu.SendMessage("fadeIn");
+		fadeController.FadeOut();
+		optionsMenu.SendMessage("FadeIn");
 		optionsMenu.SendMessage("openSettings");
 	}
 	public void Exit()
 	{
 		Debug.Log("Quitting");
 		// EditorApplication.isPlaying = false;
-		Application.Quit();
+		GameCommands.QuitGame();
 	}
 
 	// keeping this commented since I don't need it for now. May revisit in the future if we need a keyboard UI

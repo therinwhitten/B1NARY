@@ -27,7 +27,7 @@ public class ChoiceController : MonoBehaviour
             choiceScript.node = ScriptParser.Instance.currentNode.choices[choice];
         }
         // show choice panel
-        gameObject.SendMessage("fadeIn");
+        gameObject.SendMessage("FadeIn");
 
         // Debug.Log("If u read this u are the gae");
     }

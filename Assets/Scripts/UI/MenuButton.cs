@@ -29,6 +29,8 @@ public class MenuButton : MonoBehaviour
 		col = gameObject.GetComponent<BoxCollider2D>();
 		rect = gameObject.GetComponent<RectTransform>();
 		canvasGroup = controller.GetComponent<CanvasGroup>();
+		if (actions == null)
+			actions = new UnityEvent();
 	}
 
 	private void Update()
@@ -63,10 +65,19 @@ public class MenuButton : MonoBehaviour
 		else
 			Debug.LogError($"Button {nameof(press)} is not tied to an audioClip!");
 		animator.SetBool("pressed", true);
-		actions.Invoke();
+		Perform();
 	}
 	private void OnMouseUp()
 	{
 		animator.SetBool("pressed", false);
+	}
+
+	public virtual void Perform()
+	{
+		actions.Invoke();
+		// For later when we actually get to input the input system.
+		//Debug.Log($"Button '{gameObject.name}' doesn't have any assigned actions, " +
+		//	$"try using inheriting {nameof(MenuButton)} and customizing the method" +
+		//	$": {nameof(Perform)}");
 	}
 }
