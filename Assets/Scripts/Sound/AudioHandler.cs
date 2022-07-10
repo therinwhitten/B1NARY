@@ -64,7 +64,10 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		IEnumerator Buffer()
 		{ 
 			yield return new WaitForEndOfFrame();
-			GameCommands.SwitchedScenes += LoadNewLibrary; 
+			GameCommands.SwitchedScenes += LoadNewLibrary;
+			foreach (var coroutine in SoundCoroutineCache.Values)
+				if (coroutine.AudioClip.fadeWhenTransitioning)
+					coroutine.Stop();
 			var enumerable = SoundCoroutineCache
 				.Where(pair => !pair.Value.AudioClip.fadeWhenTransitioning && 
 				!CustomAudioData.ContainsCustomAudioClip(pair.Key));
@@ -80,9 +83,6 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 				else
 					Debug.LogWarning(argumentBuilder);
 			}
-			foreach (KeyValuePair<AudioClip, SoundCoroutine> item in enumerable)
-				if (item.Value.AudioClip.fadeWhenTransitioning)
-					item.Value.Stop();
 		}
 	}
 
