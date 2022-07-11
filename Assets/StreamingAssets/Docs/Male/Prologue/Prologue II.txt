@@ -1,8 +1,9 @@
-{changeScene: Press Room Animated 1}
+{changeScene: Press Room}
 **TODO:Fade From Black**
 {fadeinsound: DIHI Power Down, .2}
-{fadeinsound: labtension, .2}
-{fadeinsound: Laptop-Lab,2}
+{fadeinsound: Lab Tension, .2}
+{fadeinsound: Fast Keyboard Typing, .2}
+{fadeinsound: Laptop Lab Scene, 2}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {spawnChar: malesilo, -1, Narrator}
 {spawnChar: malesilo, -1.5, John}
@@ -43,8 +44,8 @@ It seems almost anti-climatic as the hum of the digitizer just...
 ceases,
 the inert body limp on the seat.
 {additive: off}
-{fadeinsound: Door, .2}
-{fadeinsound: LeavingFootsteps, .2}
+{fadeinsound: openclosedoor, .2}
+{fadeinsound: LabCrewLeavingFootsteps, .2}
 {fadeinsound: LabAmbience, .2}
 {fadeinsound: Fast Keyboard Typing, .5}
 As the press look on, cameras rolling, a team of medics with a cryotube slowly enter through the doorway along with medical equipment, efficiently prepping the cryochamber.
@@ -54,7 +55,7 @@ The press share glances, sip coffee, scribble down notes, waiting impatiently fo
 It felt like several hours to some, time gelling. 
 The transfer took only a few minutes. 
 Fluorescent lights in the lab crackle and come to life...
-{fadeinsound: lightflicker, .2}
+{fadeinsound: fluorescent light flicker, .2}
 {if: n-b,false}
 {
   Medics grab MC, carefully placing him into the cyrotube and applying sensors to the different sections of his body.
@@ -65,7 +66,7 @@ Fluorescent lights in the lab crackle and come to life...
 }
 MC looks so lifeless, it even unnerves the veteran journalist, John.
 With a pneumatic swoosh, the stasis chamber closes with MC inside. 
-{fadeinsound: Cyrotube Close, .1}
+{fadeinsound: CryoStasis Close, .1}
 {fadeinsound: Slow Heartbeat Machine, .1}
 The stasis chamber looks like nothing John has ever seen before, touchscreens covering the top of the lid.
 John can hear the heart rate monitor, even in the "press room." Even through the thick panel of glass. 
@@ -81,14 +82,14 @@ John looks around.
 }
 That knowledge does little to settle the onlookers though. 
 Through the panel of glass, lab-techs manning the laptops call over their Team Leader.
-{fadeinsound: LeavingFootsteps, .1}
+{fadeinsound: LabCrewLeavingFootsteps, .1}
 {additive: on}
 John cannot follow the discussion, their lips are not in direct sight,
 but he can surmise careful discourse is happening.
 {additive: off}
 Like any good reporter, John smells a scoop.
 As the team continues the discussion, the medics remove the body, and the doors are shut tight. 
-{fadeinsound: Door, 2}
+{fadeinsound: openclosedoor, 2}
 {fadeoutsound: Lab Computer Room Beeps 2, 4}
 {fadeoutsound: Slow Heartbeat Machine, 4}
 {fadeoutsound: LabAmbience, 4}
@@ -147,8 +148,8 @@ Cliff::
 }
 "I officially pronounce this experiment a resounding success!"
 Narrator::
-{fadeinsound: Press Conference, 1}
-{fadeinsound: Small-Group-Whisper, 1}
+{fadeinsound: Press Conference Long, 1}
+{fadeinsound: smallgroupwhisper, 1}
 The symphony of camera shutters, and the flashing of lights, erupts as he makes his announcement to the world.
 {additive: on}
 That simple statement brings considerable excitement.
@@ -171,7 +172,7 @@ Female Reporter::
 "When can we talk to them? Perhaps something more... Like an interview while they are in the servers!"
 Narrator::
 The other news reporters stop whispering. All eyes lock on Cliff.
-{fadeoutsound: Small-Group-Whisper, 1} 
+{fadeoutsound: smallgroupwhisper, 1} 
 Cliff pauses for a few seconds, his face betraying no emotion.
 Cliff::
 "Well that is still up in the air. We must remain on high alert through this first test."
@@ -191,7 +192,7 @@ Regarding the information pertaining to this first experiment. For now, Digital 
 John::
 <i>There it is. Something is up. If everything was peachy, they would be happy to share their results.</i>
 Narrator::
-{fadeinsound: Small-Group-Whisper, 1}
+{fadeinsound: smallgroupwhisper, 1}
 The reporters raise their hands even higher, more urgent, as if they were grade school kids again. 
 Cliff sighs visibly, a touch of irritability cracking his normally calm facade.
 Cliff::
@@ -238,8 +239,8 @@ John::
 Narrator::
 No one seems to notice the sweat on Cliff's forehead as the window turns into a solid wall, blocking the truth out...
 {moveChar: Cliff, -1}
-{fadeoutsound: Small-Group-Whisper, 1}
-{fadeoutsound: labtension, .2}
+{fadeoutsound: smallgroupwhisper, 1}
+{fadeoutsound: Lab Tension, .2}
 **TODO:Fade To Black**
 
 {changeScript: Male/Prologue/Prologue III}

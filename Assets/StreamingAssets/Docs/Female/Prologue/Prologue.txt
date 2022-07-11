@@ -1,11 +1,11 @@
 {changeScene: Brain Sucking Chair side}
-{fadeinsound: Laptop-Lab,2}
+{fadeinsound: Laptop Lab Scene, 2}
 {fadeinsound: Fast Keyboard Typing, 2}
-{fadeinsound: DIHI Low Power,5}
+{fadeinsound: DIHI Low Power, 1}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
-{fadeinsound: Heartbeat, 1}
+{fadeinsound: Fast Heartbeat, 1}
 {spawnChar: malesilo, 2, MC}
 {spawnChar: malesilo1, 2, Shirobi}
 
@@ -46,7 +46,7 @@ I squeak, the sound coming out of it's own volition.
        I whirl around.
      ]    
 }
-{fadeoutsound: Heartbeat, 1}
+{fadeoutsound: Fast Heartbeat, 1}
 {changeBG: DIHI Room Animated} 
 {fadeinsound: Press Cameras, .2}
 The lights of the cameras blind me.
@@ -165,10 +165,9 @@ MC::
 My eyebrows raise on their own accord. 
 "I'll be good, I promise. Wouldn't want you to get worried."  
 I obliquely notice the press being escorted out of the DIHI room.
-{fadeinsound: LeavingFootsteps, .3}
-{fadeinsound: Door, 2}
-{fadeoutsound: LabAmbience, .1}
-{fadeoutsound: Lab Ambience Music Light, 5}
+{fadeinsound: LabCrewLeavingFootsteps, .3}
+{fadeinsound: openclosedoor, .5}
+{fadeoutsound: LabAmbience, 1.5}
 The sound of the DIHI suddenly changes, and the feel of ionizing in the air increases.
 The whole room <i>vibrates</i>.
 There is no other word for it.
@@ -192,7 +191,9 @@ Shirobi::
 "So, no worries MC, you will be taken care of." 
 "I promise."
 {changeScene: The Lab}
-{fadeinsound: FastHeartbeat, .5}
+{fadeoutsound: Lab Ambience Music Light, 4}
+{fadeinsound: Fast Heartbeat, .5}
+{fadeinsound: DIHI Low Power, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {spawnChar: malesilo, 2, MC}
@@ -245,7 +246,7 @@ I comply, closing my eyes.
 I manage wryly.
 The fear keeps me talking more than I normally would have. Anything to release some tension at this point.
 Shirobi lightly flicks my forehead.
-{fadeinsound: fingerflick, .01}
+{fadeinsound: Finger Flick, .01}
 "Hey!"
 Shirobi::
 "Hush you. Try to contain yourself ok? And will you stop trying to match me already?"
@@ -260,13 +261,12 @@ Putting on a brave face no longer suits me. I clench the chair's arm rests. I ho
 I don't want to die. 
 The top of my head begins to tingle. 
 Oh my god, I think I'm...
-{fadeoutsound: FastHeartbeat, .1}
-{fadeoutsound: Fast Keyboard Typing, .1}
-{fadeoutsound: Lab Computer Room Beeps 2, .1}
+{fadeoutsound: Lab Computer Room Beeps 2, 1}
+{fadeoutsound: Fast Heartbeat, .1}
 {fadeoutsound: DIHI Low Power, .1}
 {fadeoutsound: DIHI High Power, .1}
-{fadeoutsound: Laptop-Lab,.1}
 Then, with an almost gut-wrenching lurch, everything escapes from the top of my head...
+{fadeoutsound: DIHI Power Up, 1}
 {fadeinsound: Brain Sucking Chair Activate, .5}
 
 

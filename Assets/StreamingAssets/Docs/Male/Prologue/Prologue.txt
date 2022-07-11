@@ -1,12 +1,12 @@
 {changeScene: Brain Sucking Chair side}
-{fadeinsound: Laptop-Lab,2}
+{fadeinsound: Laptop Lab Scene,2}
 {fadeinsound: Fast Keyboard Typing, 2}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {spawnChar: malesilo1, 2, Shirobi}
 {spawnChar: malesilo, 2, MC}
-{fadeinsound: Heartbeat, 1}
+{fadeinsound: Fast Heartbeat, 1}
 
 Shirobi::
 {if: n-b,false}
@@ -59,7 +59,7 @@ someone grabs my shoulder, instantly causing me to jump.
      ]    
 }
 {changeBG: DIHI Room Animated}
-{fadeoutsound: Heartbeat, 1}
+{fadeoutsound: Fast Heartbeat, 1}
 {fadeinsound: Press Cameras, .2}
 My eyes get a full blast of white light from those high tech cameras.
 The light erases my distractions, and I attempt to blink away the brightness.
@@ -146,8 +146,8 @@ Shirobi::
 MC::
 I nod, taking in the room.
 The press are being guided outside of the room. The only people inside were me, the lab techs, and Cliff. 
-{fadeinsound: LeavingFootsteps, .3}
-{fadeinsound: Door, .1}
+{fadeinsound: slowfootsteps, .3}
+{fadeinsound: openclosedoor, .1}
 {fadeoutsound: LabAmbience, .1}
 The sound of the DIHI suddenly changes, the feel of ionizing in the air increases.
 I look into the observation lounge window, where reporters, and lab technicians are chatting.
@@ -203,7 +203,8 @@ Shirobi::
 MC::
 I walk to the center of the room, looking straight at the chair.
 {changeScene: The Lab}
-{fadeinsound: FastHeartbeat, .5}
+{fadeinsound: Fast Heartbeat, .5}
+{fadeinsound: DIHI Low Power, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {fadeoutsound: Lab Ambience Music Light, 2} 
@@ -271,13 +272,12 @@ Is this my last moment of being aware of myself?
 I feel my head start to tingle.
 The sounds of the chair is all I hear other than my own heartbeat.
 No press, no coworkers: just my heartbeat, the thrum of the chair, and my sudden fear of being alone. 
-{fadeoutsound: FastHeartbeat, .1}
-{fadeoutsound: Fast Keyboard Typing, .1}
-{fadeoutsound: Lab Computer Room Beeps 2, .1}
+{fadeoutsound: Lab Computer Room Beeps 2, 1}
+{fadeoutsound: Fast Heartbeat, .1}
 {fadeoutsound: DIHI Low Power, .1}
 {fadeoutsound: DIHI High Power, .1}
-{fadeoutsound: Laptop-Lab,.1}
 <i>Then, with an almost gut-wrenching lurch, everything suddenly feels like it is being pulled to the top of my head...</i>
+{fadeoutsound: DIHI Power Up, 1}
 {fadeinsound: Brain Sucking Chair Activate, .5}
 
 

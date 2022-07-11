@@ -1,5 +1,5 @@
-{changeScene: Scenes/Star/Bedroom}
-{fadeinsound: starandszy, 1}
+{changeScene: Scenes/Star/Star Bedroom Night}
+{fadeinsound: Star and Szy Dinner, 1}
 {fadeinsound: fireplace, 1}
 {spawnChar: szycrotic default, -.5, Szycrotic}
 {spawnChar: star nightgown, 1.3, Asterella}
@@ -264,10 +264,10 @@ What am I doing?
            Asterella::
            [Happy]
            MC::
-           {fadeinsound: starlaugh2, .1}
-           {fadeinsound: szylaugh5, .5}
+           {fadeinsound: Star Laugh 2, .1}
+           {fadeinsound: Szy Laugh 5, .5}
            He almost made it. They both start laughing.
-           {fadeinsound: Door, 1}
+           {fadeinsound: openclosedoor, 1}
            {moveChar: Szycrotic, -1}
            {moveChar: Asterella, .50}
            With Szy gone, we are alone. Star and I.
@@ -318,13 +318,13 @@ Szycrotic::
 [Lewd]
 "Oh yeah dommy mommy, give me the punishment I deserve."
 MC::
-{fadeinsound: szylaugh5, .5}
+{fadeinsound: Szy Laugh 5, .5}
 He laughs heartily, walks up, and kisses Star on the forehead. 
 With a wave, he opens the door.
 Szycrotic::
 [Default]
 "You two have fun."
-{fadeinsound: Door, 1}
+{fadeinsound: openclosedoor, 1}
 {moveChar: Szycrotic, -1}
 {moveChar: Asterella, .50}
 MC::
@@ -405,10 +405,10 @@ Asterella::
 "But that doesn't clear you. Not yet."
 {anim: Asterella, Thinking}
 {fadeinsound: woodwine2, .1}
-{fadeinsound: glasspouring, 1}
+{fadeinsound: Pouring, 1}
 "You still haven't told me where you come from."
 "And you don't seem to be a Synthgen. At least you don't <i>feel</i> like one to me."
-{fadeinsound: glasspouring, 1}
+{fadeinsound: Pouring, 1}
 MC::
 She grabs the glasses and glides gracefully to the couch, proffering one to me.
 I take it gratefully.
@@ -469,7 +469,7 @@ Asterella::
 "To future relationships."
 MC::
 She brings her glass towards mine, and we toast.
-{fadeinsound: winetoast, .1} 
+{fadeinsound: Wine Toast, .1} 
 MC::
 "Future relationships."
 {anim: Asterella, Impatient}
