@@ -18,6 +18,8 @@ public class SoundCoroutine
 			return false;
 		}
 	}
+	public bool IsStopping { get; private set; } = false;
+
 	public MonoBehaviour monoBehaviour;
 	public AudioMixerGroup AudioMixerGroup { get; private set; }
 	private AudioSource audioSource;
@@ -58,46 +60,19 @@ public class SoundCoroutine
 		GameCommands.SwitchedScenes += SwitchSceneCheck;
 	}
 
-	private float oldVolume, oldPitch;
-	private (float min, float max) pitchVariance, volumeVariance;
-	private bool playOnAwake, fadeWhenTransitioning;
+	private CustomAudioClip _audioClipCache;
 	public CustomAudioClip AudioClip
 	{
-		get => new CustomAudioClip(audioSource.clip) 
-		{
-			minPitchVariance = pitchVariance.min,
-			maxPitchVariance = pitchVariance.max,
-			maxVolumeVariance = volumeVariance.max,
-			minVolumeVariance = volumeVariance.min,
-			clip = audioSource.clip,
-			volume = oldVolume,
-			pitch = oldPitch,
-			audioMixerGroup = audioSource.outputAudioMixerGroup,
-			loop = audioSource.loop,
-			playOnAwake = playOnAwake,
-			fadeWhenTransitioning = fadeWhenTransitioning,
-		};
+		get => _audioClipCache;
 		set
 		{
+			_audioClipCache = value;
+
 			audioSource.clip = value;
-			volumeVariance = (value.minVolumeVariance, value.maxVolumeVariance);
-			pitchVariance = (value.minPitchVariance, value.maxPitchVariance);
-			if (value.minPitchVariance != value.maxPitchVariance)
-				audioSource.pitch = RandomFowarder.NextRange(value.pitch,
-					value.minPitchVariance, value.maxPitchVariance, RandomFowarder.RandomType.CSharp);
-			else
-				audioSource.pitch = value.pitch;
-			oldVolume = value.volume;
-			if (value.minVolumeVariance != value.maxVolumeVariance)
-				audioSource.volume = RandomFowarder.NextRange(value.volume, 
-					value.minVolumeVariance, value.maxVolumeVariance, RandomFowarder.RandomType.CSharp);
-			else
-				audioSource.volume = value.volume;
-			oldPitch = value.pitch;
+			audioSource.volume = value.ApplyVolumeRandomization();
+			audioSource.pitch = value.ApplyPitchRandomization();
 			audioSource.outputAudioMixerGroup = value.audioMixerGroup;
 			audioSource.loop = value.loop;
-			playOnAwake = value.playOnAwake;
-			fadeWhenTransitioning = value.fadeWhenTransitioning;
 		}
 	}
 
@@ -139,6 +114,7 @@ public class SoundCoroutine
 			: (Func<YieldInstruction>)(() => new WaitForEndOfFrame());
 		while (audioSource.isPlaying)
 			yield return yield();
+		IsStopping = false;
 		Stop();
 	}
 	public event Action Finished;
@@ -152,6 +128,7 @@ public class SoundCoroutine
 			Debug.LogError($"{nameof(SoundCoroutine)} does" +
 				$" not have an availible {nameof(MonoBehaviour)}!");
 		}
+		IsStopping = true;
 		IsFadingAway = true;
 		monoBehaviour.ChangeFloat(
 			new Ref<float>(() => audioSource.volume, 
@@ -176,6 +153,7 @@ public class SoundCoroutine
 		CalledToStop?.Invoke();
 		Finished?.Invoke();
 		audioSource.Stop();
+		IsStopping = false;
 		if (garbageCollection != null)
 			monoBehaviour.StopCoroutine(garbageCollection);
 		if (destroyOnFinish && destroy)
@@ -189,7 +167,7 @@ public class SoundCoroutine
 			return;
 		if (AudioSource == null)
 			audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
-		if (AudioClip.fadeWhenTransitioning)
+		if (AudioClip.destroyWhenTransitioningScenes)
 			Stop();
 		GameCommands.SwitchedScenes += SwitchSceneCheck;
 	}

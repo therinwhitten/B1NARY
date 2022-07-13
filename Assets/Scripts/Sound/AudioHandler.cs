@@ -66,16 +66,22 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			yield return new WaitForEndOfFrame();
 			GameCommands.SwitchedScenes += LoadNewLibrary;
 			foreach (var coroutine in SoundCoroutineCache.Values)
-				if (coroutine.AudioClip.fadeWhenTransitioning)
-					coroutine.Stop();
-			var enumerable = SoundCoroutineCache
-				.Where(pair => !pair.Value.AudioClip.fadeWhenTransitioning && 
-				!CustomAudioData.ContainsCustomAudioClip(pair.Key));
+				if (coroutine.AudioClip.destroyWhenTransitioningScenes)
+					if (coroutine.AudioClip.fadeTime != 0)
+						coroutine.Stop(coroutine.AudioClip.fadeTime);
+					else
+						coroutine.Stop();
+			var enumerable =
+				from soundCoroutine in SoundCoroutineCache.Values
+				where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
+				where !soundCoroutine.IsStopping
+				where !CustomAudioData.customAudioClips.Contains(soundCoroutine.AudioClip)
+				select soundCoroutine;
 			if (enumerable.Any())
 			{
 				var argumentBuilder = new StringBuilder($"Total Exceptions: {enumerable.Count()}");
-				foreach (var pair in enumerable)
-					argumentBuilder.Append($"\nAlthough '{pair.Key.name}' is allowed"
+				foreach (var soundCoroutine in enumerable)
+					argumentBuilder.Append($"\nAlthough '{soundCoroutine.AudioClip.Name}' is allowed"
 						+ $" to transition scenes, library '{CustomAudioData.name}'" +
 						" doesn't contain it! ");
 				if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
@@ -111,7 +117,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	}
 
 
-	private Func<SoundCoroutine> GetCoroutine(AudioClip clip, AudioMixerGroup group,
+	private CoroutinePointer GetCoroutine(AudioClip clip, AudioMixerGroup group,
 		bool useCustomAudioData)
 	{
 		if (useCustomAudioData && CustomAudioData.ContainsCustomAudioClip(clip))
@@ -125,7 +131,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		<see cref="SoundCoroutine"/> that is meant to be kept track of and 
 	///		used for accessibility of handling sound.
 	///	</returns>
-	public Func<SoundCoroutine> GetCoroutine(CustomAudioClip key)
+	public CoroutinePointer GetCoroutine(CustomAudioClip key)
 	{
 		if (!SoundCoroutineCache.ContainsKey(key))
 		{
@@ -171,11 +177,11 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
 	///		needed to function.
 	///	</returns>
-	public Func<SoundCoroutine> PlaySound(AudioClip clip, 
+	public CoroutinePointer PlaySound(AudioClip clip, 
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
 	{
-		Func<SoundCoroutine> sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
-		sound().PlaySingle();
+		CoroutinePointer sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
+		sound.Invoke().PlaySingle();
 		return sound;
 	}
 
@@ -185,9 +191,9 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
 	///		needed to function.
 	///	</returns>
-	public Func<SoundCoroutine> PlaySound(CustomAudioClip clip)
+	public CoroutinePointer PlaySound(CustomAudioClip clip)
 	{
-		var sound = GetCoroutine(clip);
+		CoroutinePointer sound = GetCoroutine(clip);
 		sound().AudioClip = clip;
 		sound().PlaySingle();
 		return sound;
@@ -203,7 +209,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
 	///		needed to function.
 	///	</returns>
-	public Func<SoundCoroutine> PlaySound(string soundPath, 
+	public CoroutinePointer PlaySound(string soundPath, 
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
 		=> PlaySound(GetRawAudioClip(soundPath), mixerGroup, useCustomAudioData);
 
@@ -218,10 +224,10 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
 	///		needed to function.
 	///	</returns>
-	public Func<SoundCoroutine> PlayFadedSound(AudioClip clip, float fadeInSeconds,
+	public CoroutinePointer PlayFadedSound(AudioClip clip, float fadeInSeconds,
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
 	{
-		Func<SoundCoroutine> sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
+		CoroutinePointer sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
 		sound().PlaySingle(fadeInSeconds);
 		return sound;
 	}
@@ -237,7 +243,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
 	///		needed to function.
 	///	</returns>
-	public Func<SoundCoroutine> PlayFadedSound(string soundPath, float fadeInSeconds,
+	public CoroutinePointer PlayFadedSound(string soundPath, float fadeInSeconds,
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
 		=> PlayFadedSound(GetRawAudioClip(soundPath), fadeInSeconds, mixerGroup, useCustomAudioData);
 
@@ -256,7 +262,9 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		}
 		// All the memory cross-scenes gets dumped when loading, so manually
 		// - searching for info in linq 
-		Debug.Log($"DEBUG: {soundName} not found in original sound library. Searching via clipAudios.");
+		Debug.LogWarning($"DEBUG: {soundName} not found in original sound library." +
+			"\nKeep in mind if you want to mess with sounds cross-scenes, " +
+			"list them in the sound library! This is performance heavy!");
 		IEnumerable<AudioClip> clipAudio = 
 			SoundCoroutineCache.Values.Select(coroutine => coroutine.AudioClip.clip);
 		IEnumerable<string> stringAudio = clipAudio.Select(clip => clip.name.Trim());
@@ -285,11 +293,12 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
 	///		needed to function.
 	///	</returns>
-	public Func<SoundCoroutine> PlayOneShot(AudioClip clip, 
+	public CoroutinePointer PlayOneShot(AudioClip clip, 
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
 	{
-		Func<SoundCoroutine> sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
+		CoroutinePointer sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
 		sound().PlayOneShot();
 		return sound;
 	}
 }
+public delegate SoundCoroutine CoroutinePointer();
