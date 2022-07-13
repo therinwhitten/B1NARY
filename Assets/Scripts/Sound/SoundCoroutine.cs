@@ -163,20 +163,17 @@ public class SoundCoroutine
 	}
 	public event Action CalledToStop;
 
-	private void SwitchSceneCheck(object sender, string sceneName)
+	private void SwitchSceneCheck(string sceneName)
 	{
 		if (DeleteCoroutineOnSwap)
-			return;
+			goto end;
 		if (AudioSource == null)
 			audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
 		if (AudioClip == null)
-		{
-			Stop(true);
-			return;
-		}
+			goto end;
 		if (AudioClip.destroyWhenTransitioningScenes)
 			Stop();
-		GameCommands.SwitchedScenes += SwitchSceneCheck;
+		end: GameCommands.SwitchedScenes += SwitchSceneCheck;
 	}
 
 	private bool isDestroyed = false;

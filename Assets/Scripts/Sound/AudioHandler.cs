@@ -21,14 +21,14 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 
 	/// <summary> Cache for storing automated sound data </summary>
 	public Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache { get; private set; }
-		= new Dictionary<AudioClip, SoundCoroutine>();
 
 
 	protected override void SingletonStart()
 	{
 		VoiceActorHandler = new VoiceActorHandler(this);
-		LoadNewLibrary(null, SceneManager.GetActiveScene().name);
-		MakeNewAudioHandler(null, EventArgs.Empty);
+		SoundCoroutineCache = new Dictionary<AudioClip, SoundCoroutine>();
+		LoadNewLibrary(SceneManager.GetActiveScene().name);
+		MakeNewAudioHandler();
 		PlayOnAwakeCommands();
 	}
 	private void PlayOnAwakeCommands()
@@ -39,7 +39,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			PlaySound(clip);
 	}
 
-	private void MakeNewAudioHandler(object sender, EventArgs args)
+	private void MakeNewAudioHandler()
 	{
 		VoiceActorHandler = new VoiceActorHandler(this);
 		StartCoroutine(Delay());
@@ -50,7 +50,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		}
 	}
 
-	public void LoadNewLibrary(object sender, string sceneName)
+	public void LoadNewLibrary(string sceneName)
 	{
 		const string fileDirectory = "Sounds/Sound Libraries";
 		CustomAudioData = Resources.Load<SoundLibrary>($"{fileDirectory}/{sceneName}");
@@ -59,13 +59,14 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 				$" resource folder : {fileDirectory}/{sceneName}!");
 
 		PlayOnAwakeCommands();
-
-		foreach (var coroutine in SoundCoroutineCache.Values)
-			if (coroutine.AudioClip.destroyWhenTransitioningScenes)
-				if (coroutine.AudioClip.fadeTime != 0)
-					coroutine.Stop(coroutine.AudioClip.fadeTime);
+		CoroutinePointer[] pointerCollection = SoundCoroutineCache.Values
+			.Select<SoundCoroutine, CoroutinePointer>(coroutine => () => coroutine).ToArray();
+		for (int i = 0; i < pointerCollection.Length; i++)
+			if (pointerCollection[i]().AudioClip.destroyWhenTransitioningScenes)
+				if (pointerCollection[i]().AudioClip.fadeTime != 0)
+					pointerCollection[i]().Stop(pointerCollection[i]().AudioClip.fadeTime);
 				else
-					coroutine.Stop();
+					pointerCollection[i]().Stop();
 		var enumerable =
 			from soundCoroutine in SoundCoroutineCache.Values
 			where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
@@ -128,6 +129,8 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	}
 	private void GarbageCollectionDefault(AudioClip clip)
 	{
+		if (!SoundCoroutineCache.ContainsKey(clip))
+			return;
 		Destroy(SoundCoroutineCache[clip].AudioSource);
 		SoundCoroutineCache.Remove(clip);
 	}

@@ -11,7 +11,7 @@ public class VoiceActorHandler
 	public VoiceActorHandler(MonoBehaviour coroutineStarter)
 	{
 		CoroutineStarter = coroutineStarter;
-		SwitchSceneCheck(null, EventArgs.Empty);
+		SwitchSceneCheck();
 	}
 
 	public void StopVoice()
@@ -44,7 +44,7 @@ public class VoiceActorHandler
 		SpeakerCoroutine.PlaySingle();
 	}
 
-	private void SwitchSceneCheck(object sender, EventArgs args)
+	private void SwitchSceneCheck()
 	{
 		SpeakerCoroutine = new SoundCoroutine(CoroutineStarter, string.Empty)
 		{ destroyOnFinish = false, DeleteCoroutineOnSwap = false };

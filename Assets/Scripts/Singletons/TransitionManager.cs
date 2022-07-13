@@ -157,9 +157,7 @@ public class TransitionManager : Singleton<TransitionManager>
 		AsyncOperation sceneLoad = GameCommands.SwitchScenes(newScene);
 		// wait for scene to get loaded
 		while (!sceneLoad.isDone)
-		{
-			yield return null;
-		}
+			yield return new WaitForEndOfFrame();
 		// re-initialize singletons
 		DialogueSystem.Instance.initialize();
 		// ScriptParser.Instance.initialize();

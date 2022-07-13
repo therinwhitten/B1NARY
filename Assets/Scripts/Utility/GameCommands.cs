@@ -13,20 +13,20 @@ public static class GameCommands
 		if (PreppedSwitchScenes)
 			return;
 		PreppedSwitchScenes = true;
-		SwitchingScenes?.Invoke(null, EventArgs.Empty);
+		SwitchingScenes?.Invoke();
 		SwitchingScenes = null;
 	}
-	public static event EventHandler SwitchingScenes;
+	public static event Action SwitchingScenes;
 	public static bool PreppedSwitchScenes { get; private set; } = false;
 
 	public static AsyncOperation SwitchScenes(string sceneName)
 	{
-		SwitchedScenes?.Invoke(null, sceneName);
+		SwitchedScenes?.Invoke(sceneName);
 		SwitchedScenes = null;
-		var operation = SceneManager.LoadSceneAsync(sceneName);
+		AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
 		return operation;
 	}
-	public static event EventHandler<string> SwitchedScenes;
+	public static event Action<string> SwitchedScenes;
 
 	public const string exceptionLoadName = "OptionalWarningOnException";
 
