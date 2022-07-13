@@ -30,7 +30,6 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		LoadNewLibrary(null, SceneManager.GetActiveScene().name);
 		MakeNewAudioHandler(null, EventArgs.Empty);
 		PlayOnAwakeCommands();
-		//GameCommands.SwitchedScenes += OnSceneChange;
 	}
 	private void PlayOnAwakeCommands()
 	{
@@ -91,31 +90,6 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			}
 		}
 	}
-
-	public void ChangeFloat(Ref<float> value, float final, float secondsTaken)
-	{
-		float difference = value.Value - final;
-		Func<float, float, bool> condition = difference > 0 ?
-			(Func<float, float, bool>)((current, final2) => current > final2) :
-			(Func<float, float, bool>)((current, final2) => current < final2);
-		StartCoroutine(Coroutine(final));
-		IEnumerator Coroutine(float finalValue)
-		{
-			while (value.Value != finalValue)
-			{
-				float change = (Time.deltaTime / secondsTaken) * difference;
-				if (condition.Invoke(value.Value, finalValue))
-				{
-					value.Value = finalValue;
-					yield break;
-				}
-				else
-					value.Value += change;
-				yield return new WaitForEndOfFrame();
-			}
-		}
-	}
-
 
 	private CoroutinePointer GetCoroutine(AudioClip clip, AudioMixerGroup group,
 		bool useCustomAudioData)
