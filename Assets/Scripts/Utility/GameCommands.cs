@@ -28,7 +28,7 @@ public static class GameCommands
 	}
 	public static event EventHandler<string> SwitchedScenes;
 
-	public const string exceptionLoadName = "tfhdthrdygujvukhgy";
+	public const string exceptionLoadName = "OptionalWarningOnException";
 
 	public static void QuitGame()
 	{

@@ -59,35 +59,36 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 				$" resource folder : {fileDirectory}/{sceneName}!");
 
 		PlayOnAwakeCommands();
+
+		foreach (var coroutine in SoundCoroutineCache.Values)
+			if (coroutine.AudioClip.destroyWhenTransitioningScenes)
+				if (coroutine.AudioClip.fadeTime != 0)
+					coroutine.Stop(coroutine.AudioClip.fadeTime);
+				else
+					coroutine.Stop();
+		var enumerable =
+			from soundCoroutine in SoundCoroutineCache.Values
+			where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
+			where !soundCoroutine.IsStopping
+			where !CustomAudioData.customAudioClips.Contains(soundCoroutine.AudioClip)
+			select soundCoroutine;
+		if (enumerable.Any())
+		{
+			var argumentBuilder = new StringBuilder($"Total Exceptions: {enumerable.Count()}");
+			foreach (var soundCoroutine in enumerable)
+				argumentBuilder.Append($"\nAlthough '{soundCoroutine.AudioClip.Name}' is allowed"
+					+ $" to transition scenes, library '{CustomAudioData.name}'" +
+					" doesn't contain it! ");
+			if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
+				throw new InvalidOperationException(argumentBuilder.ToString());
+			else
+				Debug.LogWarning(argumentBuilder);
+		}
 		StartCoroutine(Buffer());
 		IEnumerator Buffer()
 		{ 
 			yield return new WaitForEndOfFrame();
 			GameCommands.SwitchedScenes += LoadNewLibrary;
-			foreach (var coroutine in SoundCoroutineCache.Values)
-				if (coroutine.AudioClip.destroyWhenTransitioningScenes)
-					if (coroutine.AudioClip.fadeTime != 0)
-						coroutine.Stop(coroutine.AudioClip.fadeTime);
-					else
-						coroutine.Stop();
-			var enumerable =
-				from soundCoroutine in SoundCoroutineCache.Values
-				where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
-				where !soundCoroutine.IsStopping
-				where !CustomAudioData.customAudioClips.Contains(soundCoroutine.AudioClip)
-				select soundCoroutine;
-			if (enumerable.Any())
-			{
-				var argumentBuilder = new StringBuilder($"Total Exceptions: {enumerable.Count()}");
-				foreach (var soundCoroutine in enumerable)
-					argumentBuilder.Append($"\nAlthough '{soundCoroutine.AudioClip.Name}' is allowed"
-						+ $" to transition scenes, library '{CustomAudioData.name}'" +
-						" doesn't contain it! ");
-				if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
-					throw new InvalidOperationException(argumentBuilder.ToString());
-				else
-					Debug.LogWarning(argumentBuilder);
-			}
 		}
 	}
 
@@ -109,11 +110,21 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	{
 		if (!SoundCoroutineCache.ContainsKey(key))
 		{
-			SoundCoroutineCache.Add(key, new SoundCoroutine(this, CustomAudioData.name, key.audioMixerGroup, clip: key));
+			SoundCoroutineCache.Add(key, GetSoundCoroutineData());
+			SetGarbageCollection();
+		}
+		if (SoundCoroutineCache[key] == null)
+		{
+			SoundCoroutineCache[key] = GetSoundCoroutineData();
+			SetGarbageCollection();
+		}
+		return () => SoundCoroutineCache[key];
+
+		SoundCoroutine GetSoundCoroutineData() => new SoundCoroutine(
+			this, CustomAudioData.name, key.audioMixerGroup, clip: key);
+		void SetGarbageCollection() => 
 			SoundCoroutineCache[key].GarbageCollection += (sender, clip) =>
 				GarbageCollectionDefault(key);
-		}
-		return () => SoundCoroutineCache[key]; 
 	}
 	private void GarbageCollectionDefault(AudioClip clip)
 	{

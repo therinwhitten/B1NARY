@@ -46,6 +46,8 @@ public class SoundCoroutine
 	public bool destroyOnFinish = true;
 	public readonly string currentSoundLibrary;
 
+
+
 	public SoundCoroutine(MonoBehaviour monoBehaviour, string soundLibrary, 
 		AudioMixerGroup mixerGroup = null, CustomAudioClip clip = null)
 	{
@@ -91,7 +93,7 @@ public class SoundCoroutine
 		audioSource.volume = 0;
 		AudioHandler.Instance.ChangeFloat
 			(
-			new Ref<float>(() => audioSource.volume, (var) => audioSource.volume = var), 
+			new Ref<float>(() => audioSource.volume, set => audioSource.volume = set), 
 			targetValue, 
 			fadeInSeconds);
 		audioSource.Play();
@@ -167,6 +169,11 @@ public class SoundCoroutine
 			return;
 		if (AudioSource == null)
 			audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
+		if (AudioClip == null)
+		{
+			Stop(true);
+			return;
+		}
 		if (AudioClip.destroyWhenTransitioningScenes)
 			Stop();
 		GameCommands.SwitchedScenes += SwitchSceneCheck;
