@@ -23,7 +23,7 @@ public class PersistentData : Singleton<PersistentData>
 			Directory.CreateDirectory(path);
 
 		//string[] filenames = Directory.GetFiles(path);
-		// if (filenames.Length == 0)
+		// if (filenames.Count == 0)
 		state = new GameState();
 	}
 
@@ -85,7 +85,7 @@ public class PersistentData : Singleton<PersistentData>
 		const string fileDirectory = "Sounds/Sound Libraries";
 		foreach (var (clip, libraryName, length) in state.audioSounds)
 		{
-			Func<SoundCoroutine> soundCoroutinePointer;
+			CoroutinePointer soundCoroutinePointer;
 			if (AudioHandler.Instance.CustomAudioData.name != libraryName)
 			{
 				var library = Resources.Load<SoundLibrary>($"{fileDirectory}/{libraryName}");

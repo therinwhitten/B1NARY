@@ -19,31 +19,20 @@ public class SoundLibraryEditor : Editor
 		}
 	}
 
-
-
 	public void OnEnable()
 	{
 		SoundLibrary soundLibrary = (SoundLibrary)target;
 		EditorUtility.SetDirty(soundLibrary);
 		if (!headerGroupsToggledForMultiple.ContainsKey(Name))
 			headerGroupsToggledForMultiple.Add(Name, 
-				Enumerable.Repeat(false, soundLibrary.Length).ToList());
+				Enumerable.Repeat(false, soundLibrary.Count).ToList());
 	}
 
 	public override void OnInspectorGUI()
 	{
 		SoundLibrary soundLibrary = (SoundLibrary)target;
 		AddTopButtons(soundLibrary);
-		NullReferenceCheck(soundLibrary.customAudioClips);
 		DisplayButtons(soundLibrary);
-	}
-
-	private void NullReferenceCheck(IEnumerable<CustomAudioClip> customAudioClips)
-	{
-		if (customAudioClips == null)
-			return;
-		if (customAudioClips.Any(CustomClip => CustomClip.clip == null))
-			EditorGUILayout.HelpBox("The Sound Library contains empty parameters, which may cause issues!", MessageType.Error);
 	}
 
 	private void AddTopButtons(SoundLibrary soundLibrary)
@@ -91,23 +80,27 @@ public class SoundLibraryEditor : Editor
 				EditorGUILayout.PropertyField(customAudioClip.FindPropertyRelative(nameof(CustomAudioClip.audioMixerGroup)), new GUIContent("Mixer Group", "An Audio Mixer Group, meant to assign certain sounds to be played differently based on a general mixer group."));
 				EditorGUILayout.Space();
 				soundLibrary.customAudioClips[i].volume = EditorGUILayout.Slider(new GUIContent("Volume", "Percentage of volume from 0 to 1 the audioClip plays in when called"), soundLibrary.customAudioClips[i].volume, 0, 1);
-				EditorGUILayout.MinMaxSlider(new GUIContent("Volume Variance", "Uses a random value to calculate the volume every time its played and when there isn't the sound playing already."), ref soundLibrary.customAudioClips[i].minVolumeVariance, ref soundLibrary.customAudioClips[i].maxVolumeVariance, 0, 1);
+				soundLibrary.customAudioClips[i].volumeVariance = EditorGUILayout.Slider(new GUIContent("Volume Variance", "Starting from the highest point of the volume can get, it decreases the sound from the percentage of this slider and rolls a random value from there."), soundLibrary.customAudioClips[i].volumeVariance, 0, 1);
 				EditorGUILayout.Space();
 				soundLibrary.customAudioClips[i].pitch = EditorGUILayout.Slider(new GUIContent("Pitch", "Percentage of pitch from 0 to 3, starting from 1, the audioClip plays in when called"), soundLibrary.customAudioClips[i].pitch, 0, 3);
-				EditorGUILayout.MinMaxSlider(new GUIContent("Pitch Variance", "Uses a random value to calculate the pitch every time its played and when there isn't the sound playing already."), ref soundLibrary.customAudioClips[i].minPitchVariance, ref soundLibrary.customAudioClips[i].maxPitchVariance, 0, 1);
+				soundLibrary.customAudioClips[i].pitchVariance = EditorGUILayout.Slider(new GUIContent("Pitch Variance", "Starting from the highest point of the pitch can get, it decreases the sound from the percentage of this slider and rolls a random value from there."), soundLibrary.customAudioClips[i].pitchVariance, 0, 1);
 				EditorGUILayout.Space();
 				soundLibrary.customAudioClips[i].loop = EditorGUILayout.Toggle(new GUIContent("Loopable", "If the audioclip finishes, it will play again instead of stopping."), soundLibrary.customAudioClips[i].loop);
 				soundLibrary.customAudioClips[i].playOnAwake = EditorGUILayout.Toggle(new GUIContent("Play On Scene Start", "Plays the audioClip on the start of the scene."), soundLibrary.customAudioClips[i].playOnAwake);
-				soundLibrary.customAudioClips[i].randomType = (RandomFowarder.RandomType)EditorGUILayout.EnumPopup(new GUIContent("Random Variance Method", "Use which type of random number generator, keep in mind Doom's random num gen doesn't work well with volume and pitch."), soundLibrary.customAudioClips[i].randomType);
+				soundLibrary.customAudioClips[i].randomType = (RandomFowarder.RandomType)EditorGUILayout.EnumPopup(new GUIContent("Random Variance Method", "Use which type of random number generator."), soundLibrary.customAudioClips[i].randomType);
 				EditorGUILayout.Space();
 				EditorGUILayout.LabelField(new GUIContent("Scene Transitioning"), EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;
-				soundLibrary.customAudioClips[i].fadeWhenTransitioning = EditorGUILayout.ToggleLeft(new GUIContent("Destroy Sound When Transitioning", "When the scene transitions, the currently selected Sound Library will be looked at. When this is enabled, the Sound will be removed automatically. Otherwise, not."), soundLibrary.customAudioClips[i].fadeWhenTransitioning);
+				soundLibrary.customAudioClips[i].destroyWhenTransitioningScenes = EditorGUILayout.ToggleLeft(new GUIContent("Destroy Sound When Transitioning", "When the scene transitions, the currently selected Sound Library will be looked at. When this is enabled, the Sound will be removed automatically. Otherwise, not."), soundLibrary.customAudioClips[i].destroyWhenTransitioningScenes);
+				if (soundLibrary.customAudioClips[i].destroyWhenTransitioningScenes)
+					soundLibrary.customAudioClips[i].fadeTime = EditorGUILayout.Slider(new GUIContent("Fade Time For Scene Transition", "The fade time when the scene transitions. Happens when its fully finished transitioning scenes."), soundLibrary.customAudioClips[i].fadeTime, 0, 60);
 				librarySerialized.ApplyModifiedProperties();
 				EditorGUI.indentLevel -= 2;
 				EditorGUILayout.Space();
 			}
 			EditorGUILayout.EndFoldoutHeaderGroup();
+			if (soundLibrary.customAudioClips[i].clip == null)
+				EditorGUILayout.HelpBox("This entry contains empty parameters, which will cause issues! Delete or Define them.", MessageType.Error);
 		}
 		
 	}

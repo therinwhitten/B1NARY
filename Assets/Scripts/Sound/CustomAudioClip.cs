@@ -24,13 +24,33 @@ public class CustomAudioClip
 	public AudioClip clip;
 	public AudioMixerGroup audioMixerGroup = null;
 	public float volume = 1;
-	public float minVolumeVariance = 1, maxVolumeVariance = 1;
+	public float volumeVariance = 0;
 	public float pitch = 1;
-	public float minPitchVariance = 1, maxPitchVariance = 1;
+	public float pitchVariance = 0;
 	public bool loop = false;
 	public bool playOnAwake = false;
-	public bool fadeWhenTransitioning = true;
+	public bool destroyWhenTransitioningScenes = true;
+	public float fadeTime = 0;
 	public RandomFowarder.RandomType randomType;
+
+	public float ApplyVolumeRandomization()
+	{
+		if (volumeVariance == 0)
+			return volume;
+		float adjustedVolumeRandom = volumeVariance * volume,
+			randomVolume = volume - adjustedVolumeRandom;
+		randomVolume += RandomFowarder.NextFloat(randomType) * adjustedVolumeRandom;
+		return randomVolume;
+	}
+	public float ApplyPitchRandomization()
+	{
+		if (pitchVariance == 0)
+			return pitch;
+		float adjustedPitchRandom = pitchVariance * pitch,
+			randomPitch = pitch - adjustedPitchRandom;
+		randomPitch += RandomFowarder.NextFloat(randomType) * adjustedPitchRandom;
+		return randomPitch;
+	}
 
 	public override string ToString() => clip.ToString();
 }

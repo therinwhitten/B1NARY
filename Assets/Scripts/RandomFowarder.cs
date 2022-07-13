@@ -48,8 +48,8 @@ public static class RandomFowarder
 				UnityRandomIterations++;
 				return URandom.value;
 			case RandomType.Doom:
-				throw new ArgumentException($"Doom as random type option" +
-					$" does not have a good solution for floating point values.");
+				DoomRandomIterations++;
+				return (float)GetRawDoomRandom() / byte.MaxValue;
 		}
 		throw new IndexOutOfRangeException();
 	}
@@ -65,8 +65,7 @@ public static class RandomFowarder
 				UnityRandomIterations++;
 				return URandom.value;
 			case RandomType.Doom:
-				throw new ArgumentException($"Doom as random type option" +
-					$" does not have a good solution for floating point values.");
+				return (double)GetRawDoomRandom() / byte.MaxValue;
 		}
 		throw new IndexOutOfRangeException();
 	}
@@ -79,12 +78,11 @@ public static class RandomFowarder
 		switch (randomType) // Damn you primitive version of C# and switch expressions!
 		{
 			case RandomType.CSharp:
-				return ((float)randomCSharp.NextDouble() * difference) + maxValue;
+				return (NextFloat(RandomType.CSharp) * difference) + maxValue;
 			case RandomType.Unity:
-				return (URandom.value * difference) + maxValue;
+				return (NextFloat(RandomType.Unity) * difference) + maxValue;
 			case RandomType.Doom:
-				throw new ArgumentException($"Doom as random type option" +
-				$" does not have a good solution for floating point values.");
+				return (NextFloat(RandomType.Doom) * difference) + maxValue;
 			default:
 				throw new NotImplementedException(randomType.ToString());
 		}
