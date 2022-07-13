@@ -40,26 +40,28 @@ public static class Extensions
 		Ref<float> value, float final, float secondsTaken)
 	{
 		float difference = value.Value - final;
-		Func<float, float, bool> condition = difference > 0 ?
-			(Func<float, float, bool>)((current, final2) => current > final2) :
-			(Func<float, float, bool>)((current, final2) => current < final2);
+		Func<float, bool> condition = difference < 0 ?
+			(Func<float, bool>)IsGreaterThan :
+			(Func<float, bool>)IsLessThan;
+		difference *= -1;   // for whatever reason, this makes the code run well,
+							// - I can't understand why though.
 		monoBehaviour.StartCoroutine(Coroutine(final));
-		IEnumerator Coroutine(float finalValue, Action action = null)
+		IEnumerator Coroutine(float finalValue)
 		{
 			while (value.Value != finalValue)
 			{
 				float change = (Time.deltaTime / secondsTaken) * difference;
-				if (condition.Invoke(value.Value, finalValue))
+				value.Value += change;
+				if (condition.Invoke(value.Value))
 				{
 					value.Value = finalValue;
 					yield break;
 				}
-				else
-					value.Value += change;
 				yield return new WaitForEndOfFrame();
 			}
-			action?.Invoke();
 		}
+		bool IsGreaterThan(float input) => input >= final;
+		bool IsLessThan(float input) => input <= final;
 	}
 
 	/// <summary>

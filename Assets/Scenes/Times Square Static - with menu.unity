@@ -405,6 +405,30 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &834865014 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4842690194321854101, guid: e32bf41133320c140879187e8eb01f7b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1702548059}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 370c97fb00d04114baa6aeb65a382bc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &834865016 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7779206487499211653, guid: e32bf41133320c140879187e8eb01f7b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1702548059}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1775f4a8d411a9c43a9f0a170302683c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &837512020
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,7 +978,7 @@ PrefabInstance:
     - target: {fileID: 2232191915350108592, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 98.36452
+      value: 98.03986
       objectReference: {fileID: 0}
     - target: {fileID: 2232191915350108592, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -994,7 +1018,7 @@ PrefabInstance:
     - target: {fileID: 2715689521074543153, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 128.49124
+      value: 128.87042
       objectReference: {fileID: 0}
     - target: {fileID: 2715689521074543153, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1024,7 +1048,7 @@ PrefabInstance:
     - target: {fileID: 2877729766794032769, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 176.57816
+      value: 176.71097
       objectReference: {fileID: 0}
     - target: {fileID: 2877729766794032769, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1064,7 +1088,7 @@ PrefabInstance:
     - target: {fileID: 2877729767052908641, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 191.06216
+      value: 190.53156
       objectReference: {fileID: 0}
     - target: {fileID: 2877729767052908641, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1229,7 +1253,7 @@ PrefabInstance:
     - target: {fileID: 5577436991005093364, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: actions.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5577436991005093364, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1250,8 +1274,7 @@ PrefabInstance:
         type: 3}
       propertyPath: actions.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1534191565697839874, guid: 6657f150e5ca9074e94004d9a852e6f0,
-        type: 3}
+      objectReference: {fileID: 834865016}
     - target: {fileID: 5577436991005093364, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: actions.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
@@ -1265,7 +1288,7 @@ PrefabInstance:
     - target: {fileID: 5577436991005093364, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: actions.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5577436991005093364, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1276,7 +1299,22 @@ PrefabInstance:
         type: 3}
       propertyPath: actions.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 1266231918}
+      objectReference: {fileID: 834865014}
+    - target: {fileID: 5577436991005093364, guid: e32bf41133320c140879187e8eb01f7b,
+        type: 3}
+      propertyPath: actions.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: FadeOut
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577436991005093364, guid: e32bf41133320c140879187e8eb01f7b,
+        type: 3}
+      propertyPath: actions.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5577436991005093364, guid: e32bf41133320c140879187e8eb01f7b,
+        type: 3}
+      propertyPath: actions.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_FloatArgument
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5679508938008958618, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -1615,7 +1653,7 @@ PrefabInstance:
     - target: {fileID: 7131274958799261413, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 99.52323
+      value: 99.63455
       objectReference: {fileID: 0}
     - target: {fileID: 7131274958799261413, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1680,7 +1718,7 @@ PrefabInstance:
     - target: {fileID: 7769649391413581217, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 87.35667
+      value: 87.40864
       objectReference: {fileID: 0}
     - target: {fileID: 7769649391413581217, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1720,7 +1758,7 @@ PrefabInstance:
     - target: {fileID: 7769649392228481857, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 191.06216
+      value: 190.53156
       objectReference: {fileID: 0}
     - target: {fileID: 7769649392228481857, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1850,7 +1888,7 @@ PrefabInstance:
     - target: {fileID: 7980261082362946672, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 191.06216
+      value: 190.53156
       objectReference: {fileID: 0}
     - target: {fileID: 7980261082362946672, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1880,7 +1918,7 @@ PrefabInstance:
     - target: {fileID: 7980261082621856400, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 191.06216
+      value: 190.53156
       objectReference: {fileID: 0}
     - target: {fileID: 7980261082621856400, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1930,7 +1968,7 @@ PrefabInstance:
     - target: {fileID: 8107573936520600281, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 191.06216
+      value: 190.53156
       objectReference: {fileID: 0}
     - target: {fileID: 8107573936520600281, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -1950,7 +1988,7 @@ PrefabInstance:
     - target: {fileID: 8107573936798331961, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 150.50694
+      value: 150.13289
       objectReference: {fileID: 0}
     - target: {fileID: 8107573936798331961, guid: e32bf41133320c140879187e8eb01f7b,
         type: 3}
@@ -2324,876 +2362,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 367b588384325cc4dac7cf24ad665a85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sounds:
-  - name: Button-Select
-    clip: {fileID: 8300000, guid: 48daf9eeb8c8b7940bd8ca8a3dd76245, type: 3}
-    volume: 1
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: 704485296697243133, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Button-Press
-    clip: {fileID: 8300000, guid: b2723acdc188f84489a7b68001b1278f, type: 3}
-    volume: 1
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: 704485296697243133, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Game-Start
-    clip: {fileID: 8300000, guid: 20b7346f3154b1141903eac170dca0ca, type: 3}
-    volume: 1
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: 704485296697243133, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Brain-Sucking-Chair
-    clip: {fileID: 8300000, guid: cb0c879694035f34da4b5dbe66d93312, type: 3}
-    volume: 0.171
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: 2797201484915594286, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Times-Square-Crowd
-    clip: {fileID: 8300000, guid: 8d7bec15940d85245be37bc39a6a5fc8, type: 3}
-    volume: 0.801
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Laptop-Lab
-    clip: {fileID: 8300000, guid: dae4471d657bac14cafd3db413df7f40, type: 3}
-    volume: 1
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Small-Group-Whisper
-    clip: {fileID: 8300000, guid: df11bb066d7cc5840bc88d9f7c1ba655, type: 3}
-    volume: 0.241
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Door
-    clip: {fileID: 8300000, guid: 7ca1f8b3f4cc287409f62fbfd6350c01, type: 3}
-    volume: 1
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Heartbeat
-    clip: {fileID: 8300000, guid: 9af1621913fdf0444a20c46bdf5d2aef, type: 3}
-    volume: 0.189
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: slowfootsteps
-    clip: {fileID: 8300000, guid: ee54779a084dad645916242d8249917b, type: 3}
-    volume: 1
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: LeavingFootsteps
-    clip: {fileID: 8300000, guid: 44bfd2e3b7caef2478f5acf9f53dba00, type: 3}
-    volume: 1
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: LabAmbience
-    clip: {fileID: 8300000, guid: 0857bb01a91f9ed409ff4727b3af4c62, type: 3}
-    volume: 0.77
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: FastHeartbeat
-    clip: {fileID: 8300000, guid: 39d54f8a2f8a5724d85ca34bac7f28e3, type: 3}
-    volume: 0.233
-    volumeVariance: 0
-    pitch: 0
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: DIHI High Power
-    clip: {fileID: 8300000, guid: f28eab35e631a9a4da2af458319343fd, type: 3}
-    volume: 0.124
-    volumeVariance: 0.417
-    pitch: 0.53
-    pitchVariance: 0.066
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Brain Sucking Chair Activate
-    clip: {fileID: 8300000, guid: 2d05ed67122d0de44bf797f6fc44278e, type: 3}
-    volume: 0.23
-    volumeVariance: 0.046
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Fiberoptic Cable
-    clip: {fileID: 8300000, guid: e389a2c13ee97bd43b7714381c6ce5ca, type: 3}
-    volume: 0.124
-    volumeVariance: 0
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: News Music Intro
-    clip: {fileID: 8300000, guid: 34c1bae2e91c853418a963522900955e, type: 3}
-    volume: 0.4
-    volumeVariance: 0
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Lab Ambience Music Light
-    clip: {fileID: 8300000, guid: b36ef6e70f7a291419a43647b6210f2d, type: 3}
-    volume: 0.11
-    volumeVariance: 0.107
-    pitch: 0.1
-    pitchVariance: 0.72
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Lab Ambience Music Main
-    clip: {fileID: 8300000, guid: c17aa1c80b93ef947a0e7e2186e3138b, type: 3}
-    volume: 0.466
-    volumeVariance: 0.604
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Fast Keyboard Typing
-    clip: {fileID: 8300000, guid: 01140841d33fc7d40a7414066dbd1b9d, type: 3}
-    volume: 0.13
-    volumeVariance: 0.604
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Lab Computer Room Beeps 2
-    clip: {fileID: 8300000, guid: 541b3440a80e26c4782dc62624da187e, type: 3}
-    volume: 0.206
-    volumeVariance: 0.604
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: DIHI Low Power
-    clip: {fileID: 8300000, guid: c1cc885c3486e094e89dea9d4a16e9bd, type: 3}
-    volume: 0.065
-    volumeVariance: 0.082
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: DIHI Power Down
-    clip: {fileID: 8300000, guid: 0961e86b4d8517e4983797f43544c94c, type: 3}
-    volume: 1
-    volumeVariance: 0.604
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: DIHI Power Up
-    clip: {fileID: 8300000, guid: 178fa14523567ab4fa33fcdf698fccf9, type: 3}
-    volume: 0.165
-    volumeVariance: 0.71
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: DIHI Upclose
-    clip: {fileID: 8300000, guid: c1cc885c3486e094e89dea9d4a16e9bd, type: 3}
-    volume: 0.014
-    volumeVariance: 0.604
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Annoying Keyboard
-    clip: {fileID: 8300000, guid: bc8dd6b1ea6cc3b4491ed79c492492eb, type: 3}
-    volume: 0.908
-    volumeVariance: 0.604
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Press Cameras
-    clip: {fileID: 8300000, guid: ff758e6c89f4a75488614d901b3dc461, type: 3}
-    volume: 0.301
-    volumeVariance: 0.604
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Medic Stretcher
-    clip: {fileID: 8300000, guid: 3607e4f487d9a4340a3904abc50f6b13, type: 3}
-    volume: 0.416
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Stretcher Leaving
-    clip: {fileID: 8300000, guid: 8fa11b064e7392045ae29ff627bcb8a4, type: 3}
-    volume: 0.426
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Cyrotube Close
-    clip: {fileID: 8300000, guid: 0020fbbe9212fab47a37e75a78131ae2, type: 3}
-    volume: 0.39
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Slow Heartbeat Machine
-    clip: {fileID: 8300000, guid: bb48da811ec7a1e46b65969f3cc782f4, type: 3}
-    volume: 0.061
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Cliff Wood Tapping
-    clip: {fileID: 8300000, guid: cee7e0a227da4494baddf75d89d2143a, type: 3}
-    volume: 0.184
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Cliff Fist Wood
-    clip: {fileID: 8300000, guid: 6f157fa432fd9294eac262b6d2ed2bd5, type: 3}
-    volume: 1
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Cliff Discovery Music
-    clip: {fileID: 8300000, guid: 3be00e22127a8d948ab5ae70e6943720, type: 3}
-    volume: 0.075
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Denizen Cable Music
-    clip: {fileID: 8300000, guid: 2ff9155832302bc44adabe00e4863209, type: 3}
-    volume: 0.526
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Pulsing Light
-    clip: {fileID: 8300000, guid: 40c012586919a874f8137b6114dd50a2, type: 3}
-    volume: 0.081
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Light Travels
-    clip: {fileID: 8300000, guid: 2e834d900a4c548428c69b675a20c62c, type: 3}
-    volume: 0.076
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Deep Wind Ambience
-    clip: {fileID: 8300000, guid: 1053d30945c3ff1449310c19116760a5, type: 3}
-    volume: 0.175
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Ears Ringing
-    clip: {fileID: 8300000, guid: 155d070f492688b4c967bc06a4b1c7a3, type: 3}
-    volume: 0.054
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Star Piano
-    clip: {fileID: 8300000, guid: 41f30a6f5aeae584fa59800b36558329, type: 3}
-    volume: 0.5
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Star edm 1
-    clip: {fileID: 8300000, guid: 4c09cbfdd6a0fd44a8dd6f7177a0e2bf, type: 3}
-    volume: 0.148
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Wind Heavy
-    clip: {fileID: 8300000, guid: fe48aa6fa4198314f83fb1c57fafcc65, type: 3}
-    volume: 0.459
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Szy Dark
-    clip: {fileID: 8300000, guid: 3c9a55ff7bf4fe54590e21e1dce124b0, type: 3}
-    volume: 0.109
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Flashstep
-    clip: {fileID: 8300000, guid: fe87330e0249a764497b4e81eec960b7, type: 3}
-    volume: 0.43
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: footsteps run forest
-    clip: {fileID: 8300000, guid: 524f5a891288c654b8e17e7541fda225, type: 3}
-    volume: 0.404
-    volumeVariance: 0.454
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: footsteps run dirt
-    clip: {fileID: 8300000, guid: cd003a54d45e07d4892cf2453ddc9ad6, type: 3}
-    volume: 0.301
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: footsteps run pavement
-    clip: {fileID: 8300000, guid: 695a4e766505a00448f9be1cd72f5e03, type: 3}
-    volume: 0.142
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: body fall forest
-    clip: {fileID: 8300000, guid: 0bbe22bda2da36f4c8a23a5a65005dfb, type: 3}
-    volume: 0.424
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: body punch hard
-    clip: {fileID: 8300000, guid: 8464c2580dbb15641be658f09d4f55db, type: 3}
-    volume: 0.646
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: walkingongravel
-    clip: {fileID: 8300000, guid: e462b02d32f0da14eb6a54473d525558, type: 3}
-    volume: 0.575
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: castle door
-    clip: {fileID: 8300000, guid: fd6ffbde34f3b0a4abda80b00b763fbf, type: 3}
-    volume: 0.312
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Heart Thump
-    clip: {fileID: 8300000, guid: 78e25a15a5419664bbd7c99d6ae97414, type: 3}
-    volume: 0.912
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: fireplace
-    clip: {fileID: 8300000, guid: 6cd8c59debd9ff244be36340f61b2123, type: 3}
-    volume: 0.35
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: starandszy
-    clip: {fileID: 8300000, guid: d14a5b62d4684ea4a8eabea5e75cec6c, type: 3}
-    volume: 0.144
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: waterfountain
-    clip: {fileID: 8300000, guid: 45902c7d042c27e4a89e2ba34b184b12, type: 3}
-    volume: 0.185
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: winetoast
-    clip: {fileID: 8300000, guid: b30668c021b637c4b89111df92d703a5, type: 3}
-    volume: 0.404
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: glasspouring
-    clip: {fileID: 8300000, guid: 84c6647e719a12c45993f5f63c111efa, type: 3}
-    volume: 0.249
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: woodwine1
-    clip: {fileID: 8300000, guid: 6d3e9a4a3c8667946b59c6e4f4f24df8, type: 3}
-    volume: 0.409
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: woodwine2
-    clip: {fileID: 8300000, guid: 0c2ee900f1c2c0f458b0defbf966b8d5, type: 3}
-    volume: 0.448
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: wineglassdown
-    clip: {fileID: 8300000, guid: 5b750ccbb2a768e48931b372e32a496b, type: 3}
-    volume: 0.825
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: papershuffle
-    clip: {fileID: 8300000, guid: afd44b2f4955cff4f816a86d25b6859a, type: 3}
-    volume: 0.82
-    volumeVariance: 0.074
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: Press Conference
-    clip: {fileID: 8300000, guid: dc45a2b25ea66e04f9a22148aad1972c, type: 3}
-    volume: 0.205
-    volumeVariance: 0.48
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: fingerflick
-    clip: {fileID: 8300000, guid: 4eae44f15e62a0649997f7f7fd10eb3e, type: 3}
-    volume: 1
-    volumeVariance: 0.48
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: touchscreentaps
-    clip: {fileID: 8300000, guid: e295f1478927b5449a1e25e6cdbbc6a3, type: 3}
-    volume: 1
-    volumeVariance: 0.48
-    pitch: 0.1
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: labtension
-    clip: {fileID: 8300000, guid: 836ae3201d3a65b44a794a4a3b3956ee, type: 3}
-    volume: 0.071
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: lightflicker
-    clip: {fileID: 8300000, guid: f398df3ad1549f247bd432cbc3a11c52, type: 3}
-    volume: 0.196
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: szylaugh1
-    clip: {fileID: 8300000, guid: a1d9f145def109047978b6c9a1a77b74, type: 3}
-    volume: 0.796
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: szylaugh2
-    clip: {fileID: 8300000, guid: f740775fed5594242be3d163685313e2, type: 3}
-    volume: 0.812
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: szychuckle
-    clip: {fileID: 8300000, guid: 1fca436d2eac4174ea6215347e2c0373, type: 3}
-    volume: 0.582
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: szylaugh4
-    clip: {fileID: 8300000, guid: 5e4ed45476356d54fbc3bef3a2f46479, type: 3}
-    volume: 0.812
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: szylaugh5
-    clip: {fileID: 8300000, guid: 9098d62d8935ae04fa39bcd0f9c4e894, type: 3}
-    volume: 1
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: szyheavybreathing
-    clip: {fileID: 8300000, guid: f8ce45bd11953f145b42654eeae6b842, type: 3}
-    volume: 0.161
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: bookclose1
-    clip: {fileID: 8300000, guid: 9577704977fa32142b1e5ed07722e57f, type: 3}
-    volume: 1
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: starlaughbowing
-    clip: {fileID: 8300000, guid: d8552570c0512e14c9e6f374c4845765, type: 3}
-    volume: 1
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: starlaugh2
-    clip: {fileID: 8300000, guid: 7567607004672b44488372472fa44666, type: 3}
-    volume: 1
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: enterthecable1
-    clip: {fileID: 8300000, guid: 7cbda61b324a2dc448c54a6dd08ec7ad, type: 3}
-    volume: 0.078
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: enterthecable2
-    clip: {fileID: 8300000, guid: 0198142ecdada224faa3967dac12b3a2, type: 3}
-    volume: 0.094
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: cableambience
-    clip: {fileID: 8300000, guid: 47fd21eedaee8d44084030caaa0cb5cc, type: 3}
-    volume: 0.226
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 1
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
-  - name: minsighextreme
-    clip: {fileID: 8300000, guid: bd1e317825bbc2c4882f8627870a36e8, type: 3}
-    volume: 0.305
-    volumeVariance: 0.09
-    pitch: 0.53
-    pitchVariance: 0
-    loop: 0
-    playOnAwake: 0
-    mixerGroup: {fileID: -3670569580757273051, guid: e149b04e0d2c2174a925c5eaaf359315,
-      type: 2}
-    source: {fileID: 0}
 --- !u!114 &1779649565647326873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3457,7 +2625,7 @@ PrefabInstance:
     - target: {fileID: 1549244668333663408, guid: a5370035bfca0e44b9d5eae1a617e31f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -123.700226
+      value: -123.700195
       objectReference: {fileID: 0}
     - target: {fileID: 1549244668333663410, guid: a5370035bfca0e44b9d5eae1a617e31f,
         type: 3}

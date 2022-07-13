@@ -75,7 +75,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			{
 				var argumentBuilder = new StringBuilder($"Total Exceptions: {enumerable.Count()}");
 				foreach (var pair in enumerable)
-					argumentBuilder.AppendLine($"Although '{pair.Key.name}' is allowed"
+					argumentBuilder.Append($"\nAlthough '{pair.Key.name}' is allowed"
 						+ $" to transition scenes, library '{CustomAudioData.name}'" +
 						" doesn't contain it! ");
 				if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
@@ -114,11 +114,8 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	private Func<SoundCoroutine> GetCoroutine(AudioClip clip, AudioMixerGroup group,
 		bool useCustomAudioData)
 	{
-		if (!useCustomAudioData)
-			goto DoomVisualNovelWhen;
-		if (CustomAudioData.ContainsCustomAudioClip(clip))
+		if (useCustomAudioData && CustomAudioData.ContainsCustomAudioClip(clip))
 			return GetCoroutine(CustomAudioData.GetCustomAudioClip(clip));
-		DoomVisualNovelWhen:
 		return GetCoroutine(new CustomAudioClip(clip) { audioMixerGroup = group });
 	}
 

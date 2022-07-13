@@ -24,14 +24,12 @@ public class MainMenuController : MonoBehaviour
 	// BUTTON BEHAVIOURS
 	public void NewGame()
 	{
-		fadeController.FadeOut();
 		DialogueSystem.Instance.initialize();
 		ScriptParser.Instance.initialize();
-		dialogueBox.SendMessage("FadeIn");
+		dialogueBox.GetComponent<FadeController>().FadeIn(0.5f);
 	}
 	public void Options()
 	{
-		fadeController.FadeOut();
 		optionsMenu.SendMessage("FadeIn");
 		optionsMenu.SendMessage("openSettings");
 	}

@@ -11,17 +11,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Sound Library", menuName = "B1NARY/Sound Library (SL)", order = 0)]
 public class SoundLibrary : ScriptableObject
 {
-	/*
-	/// <summary> Gets the name of the soundLibrary. </summary>
-	public string Name
-	{
-		get
-		{
-			string assetPath = UnityEditor.AssetDatabase.GetAssetPath(GetInstanceID());
-			return Path.GetFileNameWithoutExtension(assetPath);
-		}
-	}
-	*/
 
 	/// <summary>
 	/// Gets a value indicating whether it has sounds that has an option that can

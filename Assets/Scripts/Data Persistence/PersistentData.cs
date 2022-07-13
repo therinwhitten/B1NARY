@@ -22,7 +22,7 @@ public class PersistentData : Singleton<PersistentData>
 		if (!Directory.Exists(path))
 			Directory.CreateDirectory(path);
 
-		string[] filenames = Directory.GetFiles(path);
+		//string[] filenames = Directory.GetFiles(path);
 		// if (filenames.Length == 0)
 		state = new GameState();
 	}

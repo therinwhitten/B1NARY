@@ -141,11 +141,11 @@ public class SoundCoroutine
 			yield return yield();
 		Stop();
 	}
-	public event EventHandler Finished;
+	public event Action Finished;
 
 	public void Stop(float fadeOutSeconds, bool destroy = true)
 	{
-		CalledToStop?.Invoke(this, EventArgs.Empty);
+		CalledToStop?.Invoke();
 		if (monoBehaviour == null)
 		{
 			monoBehaviour = UnityEngine.Object.FindObjectOfType<MonoBehaviour>();
@@ -173,15 +173,15 @@ public class SoundCoroutine
 
 	public void Stop(bool destroy = true)
 	{
-		CalledToStop?.Invoke(this, EventArgs.Empty);
-		Finished?.Invoke(this, EventArgs.Empty);
+		CalledToStop?.Invoke();
+		Finished?.Invoke();
 		audioSource.Stop();
 		if (garbageCollection != null)
 			monoBehaviour.StopCoroutine(garbageCollection);
 		if (destroyOnFinish && destroy)
 			OnDestroy();
 	}
-	public event EventHandler CalledToStop;
+	public event Action CalledToStop;
 
 	private void SwitchSceneCheck(object sender, string sceneName)
 	{

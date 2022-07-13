@@ -77,7 +77,7 @@ public class ChoiceButton : MonoBehaviour
 		else
 			Debug.LogError($"Button {nameof(press)} is not tied to an audioClip!");
 		animator.SetBool("pressed", true);
-		controller.SendMessage("FadeOut");
+		controller.GetComponent<FadeController>().FadeOut(0.1f);
 	}
 	private void OnMouseUp()
 	{

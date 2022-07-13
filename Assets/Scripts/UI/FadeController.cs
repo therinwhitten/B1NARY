@@ -7,8 +7,6 @@ using UnityEngine;
 public class FadeController : Multiton<FadeController>
 {
 	private CanvasGroup canvas;
-	public float fadeSpeed = 0.1f;
-	private Ref<float> FadeRef => new Ref<float>(() => fadeSpeed, set => fadeSpeed = set);
 
 	// Start is called before the first frame update
 	protected override void SingletonStart()
@@ -16,32 +14,47 @@ public class FadeController : Multiton<FadeController>
 		canvas = gameObject.GetComponent<CanvasGroup>();
 	}
 
-	public void FadeIn() => ChangeFloat(FadeRef, 1, fadeSpeed);
-	public void FadeOut() => ChangeFloat(FadeRef, 0, fadeSpeed);
+
+	public void FadeIn(float fadeTime)
+	{
+		ModifyFadeFloat(1, fadeTime, () => canvas.interactable = true);
+	}
+
+	public void FadeOut(float fadeTime)
+	{
+		canvas.interactable = false;
+		ModifyFadeFloat(0, fadeTime);
+	}
+
 
 	// We need a custom reference for the float due to anonymous methods issue
 	// - not allowing ref for value.
-	public void ChangeFloat(Ref<float> value, float final, float secondsTaken)
+	public void ModifyFadeFloat(float final, float secondsTaken, Action performAfter = null)
 	{
-		float difference = value.Value - final;
-		Func<float, float, bool> condition = difference > 0 ?
-			(Func<float, float, bool>)((current, final2) => current > final2) :
-			(Func<float, float, bool>)((current, final2) => current < final2);
+		float difference = canvas.alpha - final; 
+		Func<float, bool> condition = difference < 0 ? 
+			(Func<float, bool>)IsGreaterThan : 
+			(Func<float, bool>)IsLessThan;
+		difference *= -1;	// for whatever reason, this makes the code run well,
+							// - I can't understand why though.
 		StartCoroutine(Coroutine(final));
 		IEnumerator Coroutine(float finalValue)
 		{
-			while (value.Value != finalValue)
+			while (canvas.alpha != finalValue)
 			{
 				float change = (Time.deltaTime / secondsTaken) * difference;
-				if (condition.Invoke(value.Value, finalValue))
+				canvas.alpha += change;
+				if (condition.Invoke(canvas.alpha))
 				{
-					value.Value = finalValue;
+					canvas.alpha = finalValue;
+					if (performAfter != null)
+						performAfter.Invoke();
 					yield break;
 				}
-				else
-					value.Value += change;
 				yield return new WaitForEndOfFrame();
 			}
 		}
+		bool IsGreaterThan(float input) => input >= final;
+		bool IsLessThan(float input) => input <= final;
 	}
 }
