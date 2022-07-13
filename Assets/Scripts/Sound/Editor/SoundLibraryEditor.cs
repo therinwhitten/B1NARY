@@ -87,11 +87,13 @@ public class SoundLibraryEditor : Editor
 				EditorGUILayout.Space();
 				soundLibrary.customAudioClips[i].loop = EditorGUILayout.Toggle(new GUIContent("Loopable", "If the audioclip finishes, it will play again instead of stopping."), soundLibrary.customAudioClips[i].loop);
 				soundLibrary.customAudioClips[i].playOnAwake = EditorGUILayout.Toggle(new GUIContent("Play On Scene Start", "Plays the audioClip on the start of the scene."), soundLibrary.customAudioClips[i].playOnAwake);
-				soundLibrary.customAudioClips[i].randomType = (RandomFowarder.RandomType)EditorGUILayout.EnumPopup(new GUIContent("Random Variance Method", "Use which type of random number generator, keep in mind Doom's random num gen doesn't work well with volume and pitch."), soundLibrary.customAudioClips[i].randomType);
+				soundLibrary.customAudioClips[i].randomType = (RandomFowarder.RandomType)EditorGUILayout.EnumPopup(new GUIContent("Random Variance Method", "Use which type of random number generator."), soundLibrary.customAudioClips[i].randomType);
 				EditorGUILayout.Space();
 				EditorGUILayout.LabelField(new GUIContent("Scene Transitioning"), EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;
 				soundLibrary.customAudioClips[i].destroyWhenTransitioningScenes = EditorGUILayout.ToggleLeft(new GUIContent("Destroy Sound When Transitioning", "When the scene transitions, the currently selected Sound Library will be looked at. When this is enabled, the Sound will be removed automatically. Otherwise, not."), soundLibrary.customAudioClips[i].destroyWhenTransitioningScenes);
+				if (soundLibrary.customAudioClips[i].destroyWhenTransitioningScenes)
+					soundLibrary.customAudioClips[i].fadeTime = EditorGUILayout.Slider(new GUIContent("Fade Time For Scene Transition", "The fade time when the scene transitions. Happens when its fully finished transitioning scenes."), soundLibrary.customAudioClips[i].fadeTime, 0, 60);
 				librarySerialized.ApplyModifiedProperties();
 				EditorGUI.indentLevel -= 2;
 				EditorGUILayout.Space();
