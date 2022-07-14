@@ -2,22 +2,20 @@
 using System;
 using System.Collections;
 
-public class VoiceActorHandler
+public class VoiceActorHandler : MonoBehaviour
 {
-	public MonoBehaviour CoroutineStarter { get; set; }
 	public SoundCoroutine SpeakerCoroutine { get; private set; } = null;
 	public string LastSpeaker { get; private set; }
 
-	public VoiceActorHandler(MonoBehaviour coroutineStarter)
+	private void Start()
 	{
-		CoroutineStarter = coroutineStarter;
 		SwitchSceneCheck();
 	}
 
 	public void StopVoice()
 	{
 		if (SpeakerCoroutine.AudioSource != null)
-			SpeakerCoroutine.Stop(false);
+			SpeakerCoroutine.Stop();
 	}
 
 	public void PlayVoice(string name, float volume, AudioSource source, AudioClip clip)
@@ -26,7 +24,7 @@ public class VoiceActorHandler
 		{
 			Debug.LogError($"character name is unreadable! Stopping.");
 			return;
-		}
+		} 
 		if (source != null)
 		{
 			if (SpeakerCoroutine.AudioSource != null)
@@ -46,7 +44,14 @@ public class VoiceActorHandler
 
 	private void SwitchSceneCheck()
 	{
-		SpeakerCoroutine = new SoundCoroutine(CoroutineStarter, string.Empty)
+		if (SpeakerCoroutine != null)
+		{
+			SpeakerCoroutine.DeleteCoroutineOnSwap = true;
+			SpeakerCoroutine.destroyOnFinish = true;
+			SpeakerCoroutine.Stop();
+			SpeakerCoroutine = null;
+		}
+		SpeakerCoroutine = new SoundCoroutine(this, string.Empty)
 		{ destroyOnFinish = false, DeleteCoroutineOnSwap = false };
 		GameCommands.SwitchingScenes += SwitchSceneCheck;
 	}

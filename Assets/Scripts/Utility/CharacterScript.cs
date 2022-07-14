@@ -7,9 +7,6 @@ using Live2D.Cubism.Rendering;
 public class CharacterScript : MonoBehaviour
 {
 	[HideInInspector]
-	public CharacterScript instance;
-
-	[HideInInspector]
 	public string currentExpression;
 	[HideInInspector]
 	public string prefabName;
@@ -35,7 +32,6 @@ public class CharacterScript : MonoBehaviour
     float voicevolume = 1f;
     private void Awake()
     {
-        instance = this;
         rectTransform = gameObject.GetComponent<RectTransform>();
         originalScale = rectTransform.localScale;
         voice = gameObject.GetComponent<AudioSource>();
@@ -104,13 +100,10 @@ public class CharacterScript : MonoBehaviour
 	}
 	private void changeLighting(Material material)
 	{
+		if (material == null)
+			return;
 		foreach (CubismRenderer renderer in renderers)
-		{
-			if (material != null)
-			{
-				renderer.Material = material;
-			}
-		}
+			renderer.Material = material;
 	}
 
 	public void Speak(string name, DialogueLine Line)
@@ -121,12 +114,11 @@ public class CharacterScript : MonoBehaviour
 			AudioHandler.Instance.VoiceActorHandler.StopVoice();
 			return;
 		}
-		// Debug.Log("Speaking line " + Line.index.ToString() + ": " + Line.line);
 		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, voicevolume, voice, clip);
 	}
 
 
-	public void animate(string animName)
+	public void UseAnimation(string animName)
 	{
 		currentAnimation = animName;
 		try

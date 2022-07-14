@@ -165,15 +165,15 @@ public class SoundCoroutine
 
 	private void SwitchSceneCheck(string sceneName)
 	{
-		if (DeleteCoroutineOnSwap)
-			goto end;
 		if (AudioSource == null)
 			audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
-		if (AudioClip == null)
-			goto end;
-		if (AudioClip.destroyWhenTransitioningScenes)
-			Stop();
-		end: GameCommands.SwitchedScenes += SwitchSceneCheck;
+		if (AudioClip != null)
+			if (AudioClip.destroyWhenTransitioningScenes)
+				if (AudioClip.fadeTime != 0)
+					Stop(AudioClip.fadeTime);
+				else
+					Stop();
+		GameCommands.SwitchedScenes += SwitchSceneCheck;
 	}
 
 	private bool isDestroyed = false;
@@ -189,6 +189,8 @@ public class SoundCoroutine
 	~SoundCoroutine()
 	{
 		OnDestroy();
+		if (AudioSource != null)
+			UnityEngine.Object.Destroy(AudioSource);
 		GameCommands.SwitchedScenes -= SwitchSceneCheck;
 	}
 }

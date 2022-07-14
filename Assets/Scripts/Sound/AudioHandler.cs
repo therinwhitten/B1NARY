@@ -25,7 +25,6 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 
 	protected override void SingletonStart()
 	{
-		VoiceActorHandler = new VoiceActorHandler(this);
 		SoundCoroutineCache = new Dictionary<AudioClip, SoundCoroutine>();
 		LoadNewLibrary(SceneManager.GetActiveScene().name);
 		MakeNewAudioHandler();
@@ -41,7 +40,9 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 
 	private void MakeNewAudioHandler()
 	{
-		VoiceActorHandler = new VoiceActorHandler(this);
+		if (VoiceActorHandler != null)
+			Destroy(VoiceActorHandler);
+		VoiceActorHandler = gameObject.AddComponent<VoiceActorHandler>();
 		StartCoroutine(Delay());
 		IEnumerator Delay()
 		{ 
@@ -59,14 +60,6 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 				$" resource folder : {fileDirectory}/{sceneName}!");
 
 		PlayOnAwakeCommands();
-		CoroutinePointer[] pointerCollection = SoundCoroutineCache.Values
-			.Select<SoundCoroutine, CoroutinePointer>(coroutine => () => coroutine).ToArray();
-		for (int i = 0; i < pointerCollection.Length; i++)
-			if (pointerCollection[i]().AudioClip.destroyWhenTransitioningScenes)
-				if (pointerCollection[i]().AudioClip.fadeTime != 0)
-					pointerCollection[i]().Stop(pointerCollection[i]().AudioClip.fadeTime);
-				else
-					pointerCollection[i]().Stop();
 		var enumerable =
 			from soundCoroutine in SoundCoroutineCache.Values
 			where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
@@ -83,7 +76,12 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
 				throw new InvalidOperationException(argumentBuilder.ToString());
 			else
+			{
+				var removeArray = enumerable.Select<SoundCoroutine, CoroutinePointer>(coroutine => () => coroutine).ToArray();
+				for (int i = 0; i < removeArray.Length; i++)
+					removeArray[i]().Stop(true);
 				Debug.LogWarning(argumentBuilder);
+			}
 		}
 		StartCoroutine(Buffer());
 		IEnumerator Buffer()

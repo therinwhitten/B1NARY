@@ -85,7 +85,7 @@ public class CharacterManager : Singleton<CharacterManager>
     {
         GameObject character;
         charactersInScene.TryGetValue(charName, out character);
-        character.GetComponent<CharacterScript>().animate(animName);
+        character.GetComponent<CharacterScript>().UseAnimation(animName);
     }
 
     public void changeExpression(string charName, string exrpName)
