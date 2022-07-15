@@ -103,9 +103,9 @@ public class DebuggerWindow : EditorWindow
 		{
 			try // Try/Catching is easier than trying to fit all the bool requirements.
 			{
-				percentage = audioHandler.VoiceActorHandler.SpeakerCoroutine.AudioSource.time / audioHandler.VoiceActorHandler.SpeakerCoroutine.AudioClip.clip.length;
-				bottomLengthLabel[0] = audioHandler.VoiceActorHandler.SpeakerCoroutine.AudioSource.time.ToString("N2");
-				bottomLengthLabel[2] = audioHandler.VoiceActorHandler.SpeakerCoroutine.AudioClip.clip.length.ToString("N2");
+				percentage = audioHandler.VoiceActorHandler.audioSource.time / audioHandler.VoiceActorHandler.audioSource.clip.length;
+				bottomLengthLabel[0] = audioHandler.VoiceActorHandler.audioSource.time.ToString("N2");
+				bottomLengthLabel[2] = audioHandler.VoiceActorHandler.audioSource.clip.length.ToString("N2");
 			}
 			catch (NullReferenceException) { }
 		}

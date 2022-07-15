@@ -40,9 +40,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 
 	private void MakeNewAudioHandler()
 	{
-		if (VoiceActorHandler != null)
-			Destroy(VoiceActorHandler);
-		VoiceActorHandler = gameObject.AddComponent<VoiceActorHandler>();
+		VoiceActorHandler = new VoiceActorHandler();
 		StartCoroutine(Delay());
 		IEnumerator Delay()
 		{ 
@@ -58,13 +56,12 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		if (CustomAudioData == null)
 			Debug.LogError("There are no detected sound libraries in" +
 				$" resource folder : {fileDirectory}/{sceneName}!");
-
 		PlayOnAwakeCommands();
 		var enumerable =
 			from soundCoroutine in SoundCoroutineCache.Values
 			where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
 			where !soundCoroutine.IsStopping
-			where !CustomAudioData.customAudioClips.Contains(soundCoroutine.AudioClip)
+			where CustomAudioData.ContainsCustomAudioClip(soundCoroutine.AudioClip) == false
 			select soundCoroutine;
 		if (enumerable.Any())
 		{
@@ -80,14 +77,19 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 				var removeArray = enumerable.Select<SoundCoroutine, CoroutinePointer>(coroutine => () => coroutine).ToArray();
 				for (int i = 0; i < removeArray.Length; i++)
 					removeArray[i]().Stop(true);
-				Debug.LogWarning(argumentBuilder);
+				Debug.LogWarning("Forcefully stopping sounds:\n" + argumentBuilder);
 			}
 		}
+
+
+
+
 		StartCoroutine(Buffer());
 		IEnumerator Buffer()
 		{ 
 			yield return new WaitForEndOfFrame();
 			GameCommands.SwitchedScenes += LoadNewLibrary;
+			
 		}
 	}
 
@@ -122,7 +124,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		SoundCoroutine GetSoundCoroutineData() => new SoundCoroutine(
 			this, CustomAudioData.name, key.audioMixerGroup, clip: key);
 		void SetGarbageCollection() => 
-			SoundCoroutineCache[key].GarbageCollection += (sender, clip) =>
+			SoundCoroutineCache[key].GarbageCollection = () =>
 				GarbageCollectionDefault(key);
 	}
 	private void GarbageCollectionDefault(AudioClip clip)

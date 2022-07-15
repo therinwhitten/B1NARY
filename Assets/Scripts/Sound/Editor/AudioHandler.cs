@@ -15,7 +15,7 @@ public class AudioHandlerEditor : Editor
 		if (showVA = EditorGUILayout.BeginFoldoutHeaderGroup(showVA, $"Contains Voice Actor: {hasVoiceActor}") && hasVoiceActor)
 		{
 			EditorGUI.indentLevel++;
-			EditorGUILayout.LabelField(audioHandler.VoiceActorHandler.SpeakerCoroutine.AudioSource.ToString());
+			EditorGUILayout.LabelField(audioHandler.VoiceActorHandler.audioSource.ToString());
 			EditorGUI.indentLevel--;
 		}
 		if (audioHandler.SoundCoroutineCache != null)

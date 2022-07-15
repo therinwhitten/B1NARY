@@ -10,7 +10,7 @@ using UnityEngine.Audio;
 public class SoundCoroutine
 {
 	public bool IsFadingAway { get; private set; } = false;
-	public bool DeleteCoroutineOnSwap { get; set; } = true;
+	public bool DeleteAudioSourceOnSwap { get; set; } = true;
 	public bool IsPlaying { get
 		{
 			if (AudioSource != null)
@@ -30,7 +30,7 @@ public class SoundCoroutine
 		{
 			if (audioSource == value)
 				return;
-			if (DeleteCoroutineOnSwap && audioSource != null)
+			if (DeleteAudioSourceOnSwap && audioSource != null)
 				UnityEngine.Object.Destroy(audioSource);
 			audioSource = value;
 			if (audioSource == null)
@@ -182,9 +182,9 @@ public class SoundCoroutine
 		Stop(false);
 		if (isDestroyed)
 			return;
-		GarbageCollection?.Invoke(this, audioSource.clip);
+		GarbageCollection?.Invoke();
 	}
-	public event EventHandler<AudioClip> GarbageCollection;
+	public Action GarbageCollection;
 
 	~SoundCoroutine()
 	{
