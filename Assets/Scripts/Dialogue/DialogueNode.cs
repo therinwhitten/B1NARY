@@ -114,7 +114,7 @@ public class DialogueNode
 		removeEnclosers(block, '{', '}');
 
 		// 5HEAD MOVE
-		block.Insert(0, new DialogueLine("", -1));
+		block.Insert(0, new DialogueLine("", -1, lines.First().scriptName));
 
 		DialogueNode conditional = new DialogueNode(block);
 		conditional.previous = this;

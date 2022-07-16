@@ -123,6 +123,7 @@ public class SoundCoroutine
 
 	public void Stop(float fadeOutSeconds, bool destroy = true)
 	{
+
 		CalledToStop?.Invoke();
 		if (monoBehaviour == null)
 		{

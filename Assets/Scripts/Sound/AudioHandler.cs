@@ -169,7 +169,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
 	{
 		CoroutinePointer sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
-		sound.Invoke().PlaySingle();
+		sound().PlaySingle();
 		return sound;
 	}
 
@@ -233,7 +233,10 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///	</returns>
 	public CoroutinePointer PlayFadedSound(string soundPath, float fadeInSeconds,
 		AudioMixerGroup mixerGroup = null, bool useCustomAudioData = true)
-		=> PlayFadedSound(GetRawAudioClip(soundPath), fadeInSeconds, mixerGroup, useCustomAudioData);
+	{
+		AudioClip audioClip = GetRawAudioClip(soundPath);
+		return PlayFadedSound(audioClip, fadeInSeconds, mixerGroup, useCustomAudioData);
+	}
 
 	public void StopSoundViaFade(AudioClip sound, float fadeOutSeconds)
 		=> SoundCoroutineCache[sound].Stop(fadeOutSeconds);
@@ -245,24 +248,35 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	{
 		if (CustomAudioData.ContainsAudioClip(soundName))
 		{
-			SoundCoroutineCache[CustomAudioData.GetAudioClip(soundName)].Stop(fadeOutSeconds);
+			AudioClip stopClip = CustomAudioData.GetAudioClip(soundName);
+			if (SoundCoroutineCache.TryGetValue(stopClip, out var soundCoroutine))
+				if (soundCoroutine.IsStopping)
+				{
+					Debug.LogError($"Sound Coroutine: '{soundCoroutine.AudioClip.Name}' "
+						+ "already is fading! Terminating.\nTry using one of them"
+						+ " So they won't conflict");
+					return;
+				}
+			SoundCoroutineCache[stopClip].Stop(fadeOutSeconds);
 			return;
 		}
 		// All the memory cross-scenes gets dumped when loading, so manually
 		// - searching for info in linq 
-		Debug.LogWarning($"DEBUG: {soundName} not found in original sound library." +
+		Debug.LogWarning($"{soundName} not found in original sound library." +
 			"\nKeep in mind if you want to mess with sounds cross-scenes, " +
 			"list them in the sound library! This is performance heavy!");
-		IEnumerable<AudioClip> clipAudio = 
-			SoundCoroutineCache.Values.Select(coroutine => coroutine.AudioClip.clip);
-		IEnumerable<string> stringAudio = clipAudio.Select(clip => clip.name.Trim());
-		if (stringAudio.Contains(soundName))
+		soundName = soundName.Trim();
+		CustomAudioClip comparator = null;
+		foreach (var pair in SoundCoroutineCache)
 		{
-			int index = Array.IndexOf(stringAudio.ToArray(), soundName);
-			SoundCoroutineCache[clipAudio.ElementAt(index)].Stop(true);
-			return;
+			if (pair.Value.AudioClip.Name != soundName)
+				continue;
+			comparator = pair.Value.AudioClip;
+			break;
 		}
-		throw new KeyNotFoundException(soundName);
+		if (comparator == null)
+			throw new KeyNotFoundException(soundName);
+		SoundCoroutineCache[(AudioClip)comparator].Stop(true);
 	}
 
 	/// <summary> Stops a sound via the filename of the sound. </summary>

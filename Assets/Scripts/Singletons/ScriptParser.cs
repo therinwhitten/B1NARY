@@ -56,28 +56,13 @@ public class ScriptParser : Singleton<ScriptParser>
 		ParseLine(currentNode.getCurrentLine());
 	}
 
-	string[] audioFileNames = null;
-	public AudioClip GetVoiceLine(int index)
+	public AudioClip GetVoiceLine(DialogueLine index)
 	{
-		string stringIndex = index.ToString();
+		string stringIndex = index.index.ToString();
 		AudioClip output = Resources.Load<AudioClip>($"Voice/{scriptName}/{stringIndex}");
-		
 		if (output == null)
-			Debug.LogError($"Line {stringIndex} does not have" +
+			Debug.LogError($"Line '{stringIndex}' of '{index.scriptName}' does not have" +
 				" an exact filename! Did you leave a space within the filename?");
-		/*
-		{
-
-			if (audioFileNames == null)
-				audioFileNames = Directory.GetFiles($"{Application.dataPath}/Voice/{scriptName}")
-					.Select(str => str.Split('/').Last().Trim()).ToArray();
-			IEnumerable<string> lines = audioFileNames.Where(str => str.Trim() == stringIndex);
-			if (lines.Any())
-				output = Resources.Load<AudioClip>($"Voice/{scriptName}/{lines.First()}");
-			else
-				Debug.LogError($"Line {stringIndex} is not found!");
-		}
-		*/
 		return output;
 	}
 
@@ -102,7 +87,7 @@ public class ScriptParser : Singleton<ScriptParser>
 		int i = 1;
 		while (!reader.EndOfStream)
 		{
-			DialogueLine line = new DialogueLine(reader.ReadLine(), i);
+			DialogueLine line = new DialogueLine(reader.ReadLine(), i, scriptName);
 			lines.Add(line);
 			i++;
 		}
@@ -173,6 +158,8 @@ public class ScriptParser : Singleton<ScriptParser>
 		string currentSpeaker = DialogueSystem.Instance.currentSpeaker;
 		if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
 			charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, Line);
+		else
+			Debug.LogError("Character has no voice!");
 	}
 	public void ParseLine(DialogueLine Line)
 	{
