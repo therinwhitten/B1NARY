@@ -14,6 +14,17 @@ public class VoiceActorHandler
 		if (audioSource != null)
 			audioSource.Stop();
 	}
+
+	public void PlayVoice(string name, DialogueLine line, float voiceVolume, AudioSource voice)
+	{
+		AudioClip clip = GetVoiceLine(line);
+		if (clip == null)
+		{
+			AudioHandler.Instance.VoiceActorHandler.StopVoice();
+			return;
+		}
+		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, voiceVolume, voice, clip);
+	}
 	public void PlayVoice(string name, float volume, AudioSource source, AudioClip clip)
 	{
 		if (name == null)
@@ -32,6 +43,17 @@ public class VoiceActorHandler
 		audioSource.volume = volume;
 		audioSource.Play();
 	}
+
+	public AudioClip GetVoiceLine(DialogueLine line)
+	{
+		string filePath = $"Voice/{line.scriptName}/{line.index}";
+		AudioClip output = Resources.Load<AudioClip>(filePath);
+		if (output == null)
+			Debug.LogError($"Voice Actor line '{filePath}' does not have" +
+				" an exact filename! Did you leave a space within the filename?");
+		return output;
+	}
+
 
 	~VoiceActorHandler()
 	{

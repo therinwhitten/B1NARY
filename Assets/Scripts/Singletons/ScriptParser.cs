@@ -56,16 +56,6 @@ public class ScriptParser : Singleton<ScriptParser>
 		ParseLine(currentNode.getCurrentLine());
 	}
 
-	public AudioClip GetVoiceLine(DialogueLine index)
-	{
-		string stringIndex = index.index.ToString();
-		AudioClip output = Resources.Load<AudioClip>($"Voice/{scriptName}/{stringIndex}");
-		if (output == null)
-			Debug.LogError($"Line '{stringIndex}' of '{index.scriptName}' does not have" +
-				" an exact filename! Did you leave a space within the filename?");
-		return output;
-	}
-
 	public void ChangeScriptFile(string newScript, int position = 0)
 	{
 		scriptName = newScript;
@@ -153,7 +143,7 @@ public class ScriptParser : Singleton<ScriptParser>
 		}
 		action();
 	}
-	public void playVA(DialogueLine Line)
+	public void PlayVA(DialogueLine Line)
 	{
 		string currentSpeaker = DialogueSystem.Instance.currentSpeaker;
 		if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
@@ -178,7 +168,7 @@ public class ScriptParser : Singleton<ScriptParser>
 			int index = Line.index;
 			if (richRegex.IsMatch(line))
 			{
-				playVA(Line);
+				PlayVA(Line);
 				CharacterManager.Instance.changeLightingFocus();
 				dialogue.SayRich(currentNode.getCurrentLine().line);
 				return;
@@ -239,7 +229,7 @@ public class ScriptParser : Singleton<ScriptParser>
 			}
 
 			// if it's not a command simply display the text
-			playVA(Line);
+			PlayVA(Line);
 			CharacterManager.Instance.changeLightingFocus();
 			dialogue.Say(line);
 		});

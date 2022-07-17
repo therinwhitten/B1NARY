@@ -56,7 +56,7 @@ public class DialogueNode
 	{
 		ScriptParser.Instance.paused = true;
 		choices = new Dictionary<string, DialogueNode>();
-        ScriptParser.Instance.playVA(lines[index]);
+        ScriptParser.Instance.PlayVA(lines[index]);
 		DialogueSystem.Instance.Say(choiceTitle);
 		List<DialogueLine> block = getOptionalBlock(lines, '{', '}', index);
 

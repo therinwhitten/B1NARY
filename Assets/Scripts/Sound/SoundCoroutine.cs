@@ -75,6 +75,9 @@ public class SoundCoroutine
 			audioSource.pitch = value.ApplyPitchRandomization();
 			audioSource.outputAudioMixerGroup = value.audioMixerGroup;
 			audioSource.loop = value.loop;
+
+			// This should be handled by other outside sources like AudioHandler
+			audioSource.playOnAwake = value.playOnAwake;
 		}
 	}
 
@@ -123,7 +126,6 @@ public class SoundCoroutine
 
 	public void Stop(float fadeOutSeconds, bool destroy = true)
 	{
-
 		CalledToStop?.Invoke();
 		if (monoBehaviour == null)
 		{

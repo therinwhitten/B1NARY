@@ -19,7 +19,6 @@ public class CharacterScript : MonoBehaviour
 	public string[] expressions;
 	[HideInInspector]
 	public RectTransform rectTransform;
-	public AudioClip GetVoiceLine(DialogueLine index) => ScriptParser.Instance.GetVoiceLine(index);
 	public AudioSource voice;
 	public CubismRenderer[] renderers;
 	private Material lighting;
@@ -108,13 +107,7 @@ public class CharacterScript : MonoBehaviour
 
 	public void Speak(string name, DialogueLine Line)
 	{
-		AudioClip clip = GetVoiceLine(Line);
-		if (clip == null)
-		{
-			AudioHandler.Instance.VoiceActorHandler.StopVoice();
-			return;
-		}
-		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, voicevolume, voice, clip);
+		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, Line, voicevolume, voice);
 	}
 
 

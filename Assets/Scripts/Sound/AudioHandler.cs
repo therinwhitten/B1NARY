@@ -82,8 +82,6 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		}
 
 
-
-
 		StartCoroutine(Buffer());
 		IEnumerator Buffer()
 		{ 
