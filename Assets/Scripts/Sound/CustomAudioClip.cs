@@ -33,23 +33,25 @@ public class CustomAudioClip
 	public float fadeTime = 0;
 	public RandomFowarder.RandomType randomType;
 
-	public float ApplyVolumeRandomization()
-	{
-		if (volumeVariance == 0)
-			return volume;
-		float adjustedVolumeRandom = volumeVariance * volume,
-			randomVolume = volume - adjustedVolumeRandom;
-		randomVolume += RandomFowarder.NextFloat(randomType) * adjustedVolumeRandom;
-		return randomVolume;
+	public float FinalVolume { get
+		{
+			if (volumeVariance == 0)
+				return volume;
+			float adjustedVolumeRandom = volumeVariance * volume,
+				randomVolume = volume - adjustedVolumeRandom;
+			randomVolume += RandomFowarder.NextFloat(randomType) * adjustedVolumeRandom;
+			return randomVolume;
+		} 
 	}
-	public float ApplyPitchRandomization()
-	{
-		if (pitchVariance == 0)
-			return pitch;
-		float adjustedPitchRandom = pitchVariance * pitch,
-			randomPitch = pitch - adjustedPitchRandom;
-		randomPitch += RandomFowarder.NextFloat(randomType) * adjustedPitchRandom;
-		return randomPitch;
+	public float FinalPitch { get
+		{
+			if (pitchVariance == 0)
+				return pitch;
+			float adjustedPitchRandom = pitchVariance * pitch,
+				randomPitch = pitch - adjustedPitchRandom;
+			randomPitch += RandomFowarder.NextFloat(randomType) * adjustedPitchRandom;
+			return randomPitch;
+		} 
 	}
 
 	public override string ToString() => clip.ToString();

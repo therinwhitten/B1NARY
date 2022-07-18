@@ -61,7 +61,7 @@ public sealed class ScriptsTab : DebuggerTab
 			currentScriptContents = File.ReadAllLines($"{Application.streamingAssetsPath}/Docs/{parser.scriptName}.txt");
 		}
 		int space = currentScriptContents.Length.ToString().Length;
-		int onLine = parser.currentNode != null ? parser.currentNode.index : -1;
+		int onLine = parser.currentNode != null ? parser.currentNode.GetCurrentLine().index - 1 : -1;
 		Color[] assignedColors =
 		{
 			colors[EditorPrefs.GetInt("Normal B1NARY Color", 0)],

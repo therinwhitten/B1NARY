@@ -26,7 +26,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
 	StreamReader reader = null;
 
-	// public string currentNode.getCurrentLine() { get { return currentNode.getCurrentLine(); } }
+	// public string currentNode.GetCurrentLine() { get { return currentNode.GetCurrentLine(); } }
 
 	// regex for grabbing rich text tags
 	Regex richRegex = new Regex("<(.*?)>");
@@ -53,7 +53,7 @@ public class ScriptParser : Singleton<ScriptParser>
 		currentNode = new DialogueNode(GetLines());
 		// readNextLine();
 
-		ParseLine(currentNode.getCurrentLine());
+		ParseLine(currentNode.GetCurrentLine());
 	}
 
 	public void ChangeScriptFile(string newScript, int position = 0)
@@ -68,7 +68,7 @@ public class ScriptParser : Singleton<ScriptParser>
 		currentNode.moveIndex(position);
 		scriptChanged = false;
 
-		ParseLine(currentNode.getCurrentLine());
+		ParseLine(currentNode.GetCurrentLine());
 	}
 
 	List<DialogueLine> GetLines()
@@ -111,7 +111,7 @@ public class ScriptParser : Singleton<ScriptParser>
 				//         DialogueNode previousNode = currentNode.previous;
 				//         currentNode = previousNode;
 				//         currentNode.index--;
-				//         parseLine(currentNode.getCurrentLine());
+				//         parseLine(currentNode.GetCurrentLine());
 				//     }
 				//     else
 				//     {
@@ -121,7 +121,7 @@ public class ScriptParser : Singleton<ScriptParser>
 				// else grab next line
 				ReadNextLine();
 				if (currentNode != null)
-					ParseLine(currentNode.getCurrentLine());
+					ParseLine(currentNode.GetCurrentLine());
 			}
 			else
 			// if the dialogue is still being written out just skip to the end of the line
@@ -149,7 +149,7 @@ public class ScriptParser : Singleton<ScriptParser>
 		if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
 			charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, Line);
 		else
-			Debug.LogError("Character has no voice!");
+			Debug.LogError($"Character '{currentSpeaker}' does not exist!");
 	}
 	public void ParseLine(DialogueLine Line)
 	{
@@ -170,7 +170,7 @@ public class ScriptParser : Singleton<ScriptParser>
 			{
 				PlayVA(Line);
 				CharacterManager.Instance.changeLightingFocus();
-				dialogue.SayRich(currentNode.getCurrentLine().line);
+				dialogue.SayRich(currentNode.GetCurrentLine().line);
 				return;
 			}
 			// handles speaker change. Also handles which character's expressions/animations are being controlled
@@ -181,7 +181,7 @@ public class ScriptParser : Singleton<ScriptParser>
 
 				// update character sprite to current speaker sprite
 				ReadNextLine();
-				ParseLine(currentNode.getCurrentLine());
+				ParseLine(currentNode.GetCurrentLine());
 				return;
 			}
 
@@ -196,7 +196,7 @@ public class ScriptParser : Singleton<ScriptParser>
 				string expression = line.Trim(tagChars);
 				CharacterManager.Instance.changeExpression(dialogue.currentSpeaker, expression);
 				ReadNextLine();
-				ParseLine(currentNode.getCurrentLine());
+				ParseLine(currentNode.GetCurrentLine());
 				return;
 			}
 
@@ -224,7 +224,7 @@ public class ScriptParser : Singleton<ScriptParser>
 					return;
 				}
 				ReadNextLine();
-				ParseLine(currentNode.getCurrentLine());
+				ParseLine(currentNode.GetCurrentLine());
 				return;
 			}
 

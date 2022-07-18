@@ -250,9 +250,9 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			if (SoundCoroutineCache.TryGetValue(stopClip, out var soundCoroutine))
 				if (soundCoroutine.IsStopping)
 				{
-					Debug.LogError($"Sound Coroutine: '{soundCoroutine.AudioClip.Name}' "
+					Debug.LogError($"{nameof(SoundCoroutine)}: '{soundCoroutine.AudioClip.Name}' "
 						+ "already is fading! Terminating.\nTry using one of them"
-						+ " So they won't conflict");
+						+ " so they won't conflict");
 					return;
 				}
 			SoundCoroutineCache[stopClip].Stop(fadeOutSeconds);

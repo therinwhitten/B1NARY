@@ -46,6 +46,10 @@ public class SoundCoroutine
 	public bool destroyOnFinish = true;
 	public readonly string currentSoundLibrary;
 
+	private Ref<float> GetVolumeRef(Func<float> get = null, Action<float> set = null) 
+		=> new Ref<float>(get == null ? (() => audioSource != null ? audioSource.volume : float.NaN) : get, 
+			set == null ? ((setVar) => audioSource.volume = setVar) : set);
+
 
 
 	public SoundCoroutine(MonoBehaviour monoBehaviour, string soundLibrary, 
@@ -71,8 +75,8 @@ public class SoundCoroutine
 			_audioClipCache = value;
 
 			audioSource.clip = value;
-			audioSource.volume = value.ApplyVolumeRandomization();
-			audioSource.pitch = value.ApplyPitchRandomization();
+			audioSource.volume = value.FinalVolume;
+			audioSource.pitch = value.FinalPitch;
 			audioSource.outputAudioMixerGroup = value.audioMixerGroup;
 			audioSource.loop = value.loop;
 
@@ -85,6 +89,11 @@ public class SoundCoroutine
 
 	public void PlaySingle()
 	{
+		if (audioSource == null)
+		{
+			"Cannot play sounds because there is no AudioSource to play on!".LogErr();
+			return;
+		}
 		audioSource.Play();
 		if (garbageCollection == null)
 			garbageCollection = monoBehaviour.StartCoroutine(GarbageCollectionCoroutine());
@@ -92,9 +101,14 @@ public class SoundCoroutine
 
 	public void PlaySingle(float fadeInSeconds)
 	{
+		if (audioSource == null)
+		{
+			"Cannot play sounds because there is no AudioSource to play on!".LogErr();
+			return;
+		}
 		float targetValue = audioSource.volume;
 		audioSource.volume = 0;
-		AudioHandler.Instance.ChangeFloat
+		monoBehaviour.ChangeFloat
 			(
 			new Ref<float>(() => audioSource.volume, set => audioSource.volume = set), 
 			targetValue, 
@@ -106,6 +120,11 @@ public class SoundCoroutine
 
 	public void PlayOneShot()
 	{
+		if (audioSource == null)
+		{
+			"Cannot play sounds because there is no AudioSource to play on!".LogErr();
+			return;
+		}
 		audioSource.PlayOneShot(audioSource.clip, audioSource.volume);
 		if (garbageCollection == null)
 			garbageCollection = monoBehaviour.StartCoroutine(GarbageCollectionCoroutine());
@@ -136,18 +155,18 @@ public class SoundCoroutine
 		IsStopping = true;
 		IsFadingAway = true;
 		monoBehaviour.ChangeFloat(
-			new Ref<float>(() => audioSource.volume, 
-				(@float) => 
-				{ 
-					audioSource.volume = @float;
-					// Because of how dynamically changing the value works,
-					// - im going to have to write the action in the setter
-					if (audioSource.volume <= 0)
-					{
-						IsFadingAway = false;
-						Stop(destroy);
-					}
+			GetVolumeRef(set: (@float) => 
+			{ 
+				// Because of how dynamically changing the value works,
+				// - im going to have to write the action in the setter
+				if (audioSource == null || audioSource.volume <= 0)
+				{
+					IsFadingAway = false;
+					Stop(destroy);
 				}
+				else
+					audioSource.volume = @float;
+			}
 			),
 			0,
 			fadeOutSeconds);
@@ -157,7 +176,8 @@ public class SoundCoroutine
 	{
 		CalledToStop?.Invoke();
 		Finished?.Invoke();
-		audioSource.Stop();
+		if (audioSource != null)
+			audioSource.Stop();
 		IsStopping = false;
 		if (garbageCollection != null)
 			monoBehaviour.StopCoroutine(garbageCollection);
@@ -182,7 +202,8 @@ public class SoundCoroutine
 	private bool isDestroyed = false;
 	private void OnDestroy()
 	{
-		Stop(false);
+		if (IsPlaying)
+			Stop(false);
 		if (isDestroyed)
 			return;
 		GarbageCollection?.Invoke();

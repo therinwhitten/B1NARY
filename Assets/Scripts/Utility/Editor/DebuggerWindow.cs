@@ -31,7 +31,7 @@ public class DebuggerWindow : EditorWindow
 	{
 		
 		// Get existing open window or if none, make a new one:
-		DebuggerWindow window = (DebuggerWindow)GetWindow(typeof(DebuggerWindow));
+		DebuggerWindow window = GetWindow<DebuggerWindow>();
 		window.titleContent = new GUIContent("B1NARY Debugger");
 		window.minSize = defaultMinSize;
 		window.Show();
@@ -87,8 +87,8 @@ public class DebuggerWindow : EditorWindow
 	private void CurrentLineShow()
 	{
 		const string startingLine = "On line: ";
-		if (TryGetter<ScriptParser>.TryGetObject(out var scriptParser) && scriptParser.currentNode != null)
-			EditorGUILayout.LabelField(startingLine + (scriptParser.currentNode.index + 1), EditorStyles.boldLabel);
+		if (TryGetter<ScriptParser>.TryGetObject(out var scriptParser) && scriptParser.currentNode != null && scriptParser.currentNode.GetCurrentLine() != null)
+			EditorGUILayout.LabelField(startingLine + (scriptParser.currentNode.GetCurrentLine().index + 1), EditorStyles.boldLabel);
 		else
 			EditorGUILayout.LabelField(startingLine + "NaN", EditorStyles.boldLabel);
 	}
@@ -108,6 +108,7 @@ public class DebuggerWindow : EditorWindow
 				bottomLengthLabel[2] = audioHandler.VoiceActorHandler.audioSource.clip.length.ToString("N2");
 			}
 			catch (NullReferenceException) { }
+			catch (MissingReferenceException) { }
 		}
 		EditorGUI.ProgressBar(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), percentage, string.Join(" ", bottomLengthLabel));
 		EditorGUI.LabelField(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), startingLine, EditorStyles.whiteMiniLabel);

@@ -23,14 +23,15 @@ public class DialogueNode
 		index = 0;
 	}
 
-	public DialogueLine getCurrentLine()
+	/*
+	public DialogueLine GetCurrentLine()
 	{
 
 		if (index > lines.Count - 1)
 			if (previous != null)
 			{
 				ScriptParser.Instance.currentNode = previous;
-				return previous.getCurrentLine();
+				return previous.GetCurrentLine();
 			}
 			else
 				return null;
@@ -38,6 +39,28 @@ public class DialogueNode
 		if (output.line.Contains("//"))
 			output.line = output.line.Remove(output.line.IndexOf("//")); // Comments haha
 		return output;
+	}
+	*/
+
+	public DialogueLine GetCurrentLine()
+	{
+		try
+		{
+			return lines[index];
+		}
+		catch (System.ArgumentOutOfRangeException)
+		{
+			Debug.Log("End reached. Returning to parent node...");
+			if (previous != null)
+			{
+				ScriptParser.Instance.currentNode = previous;
+				return previous.GetCurrentLine();
+			}
+			else
+			{
+				return null;
+			}
+		}
 	}
 
 	public void nextLine()
@@ -100,7 +123,7 @@ public class DialogueNode
 	{
 		ScriptParser.Instance.currentNode = choice;
 		ScriptParser.Instance.paused = false;
-		ScriptParser.Instance.ParseLine(choice.getCurrentLine());
+		ScriptParser.Instance.ParseLine(choice.GetCurrentLine());
 	}
 	public DialogueNode makeConditionalNode()
 	{

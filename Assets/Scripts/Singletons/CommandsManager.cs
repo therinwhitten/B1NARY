@@ -35,14 +35,14 @@ public static class CommandsManager
 						Dialogue.Say("");
 						Dialogue.additiveTextEnabled = true;
 						// ScriptParser.Instance.currentNode.nextLine();
-						// ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.getCurrentLine());
+						// ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.GetCurrentLine());
 					}
 					else if (disabledHashset.Contains(args[0].ToLower()))
 					{
 						Dialogue.additiveTextEnabled = false;
-						Debug.Log("Set additive text to off!");
+						// Debug.Log("Set additive text to off!");
 						// ScriptParser.Instance.currentNode.nextLine();
-						// ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.getCurrentLine());
+						// ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.GetCurrentLine());
 					}
 					else
 						throw new ArgumentException($"{args[0]} is not a valid " +
@@ -175,7 +175,7 @@ public static class CommandsManager
 					{ Debug.LogWarning($"{args[0].ToString().Trim()} is not a valid soundfile Path!"
 						+ ex); }
 				catch (KeyNotFoundException ex)
-					{ Debug.LogWarning($"Cannot find sound: {args[0].ToString().Trim()}\n"
+					{ Debug.LogWarning($"Cannot find sound to close: {args[0].ToString().Trim()}\n"
 						+ ex); }
 				break;
 			case "playsound":
@@ -212,7 +212,7 @@ public static class CommandsManager
 				}
 				catch (KeyNotFoundException ex)
 				{
-					Debug.LogWarning($"Cannot find sound: {args[0].ToString().Trim()}\n"
+					Debug.LogWarning($"Cannot find sound to close: {args[0].ToString().Trim()}\n"
 					+ ex);
 				}
 				break;

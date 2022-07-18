@@ -50,6 +50,11 @@ public static class Extensions
 		{
 			while (value.Value != finalValue)
 			{
+				if (float.IsNaN(value.Value))
+				{
+					value.Value = finalValue;
+					yield break;
+				}
 				float change = (Time.deltaTime / secondsTaken) * difference;
 				value.Value += change;
 				if (condition.Invoke(value.Value))
@@ -64,22 +69,6 @@ public static class Extensions
 		bool IsLessThan(float input) => input <= final;
 	}
 
-	/// <summary>
-	///		Sets the input float value to a random variator ranging from 0 to 1,
-	///		the current input float value is the max while the variance decreases
-	///		that value.
-	/// </summary>
-	/// <param name="input">The input value.</param>
-	/// <param name="varianceMult">Where the input value is multiplied from randomly.</param>
-	/// <returns>The modified input value.</returns>
-	public static float ApplyRandomPercent(this float input, float varianceMult, RandomFowarder.RandomType randomType)
-	{
-		if (varianceMult == 0)
-			return input;
-		float baseValue = input * varianceMult,
-			subValue = input - baseValue;
-		return baseValue + (RandomFowarder.NextFloat(randomType) * subValue);
-	}
 
 	public static void Log(this object obj) => Debug.Log(obj);
 	public static void LogWarn(this object obj) => Debug.LogWarning(obj);
