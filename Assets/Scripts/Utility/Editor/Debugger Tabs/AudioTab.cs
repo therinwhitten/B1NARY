@@ -19,7 +19,7 @@ public sealed class AudioTab : DebuggerTab
 		EditorGUILayout.LabelField(new GUIContent($"Sound Count : {(hasAudioHandlerValue ? audioHandler.SoundCoroutineCache.Count.ToString(CultureInfo.CurrentCulture) : "NaN")}"), EditorStyles.boldLabel);
 		EditorGUI.indentLevel++;
 		if (hasAudioHandlerValue)
-			foreach (SoundCoroutine coroutine in audioHandler.SoundCoroutineCache.Values)
+			foreach (AudioTracker coroutine in audioHandler.SoundCoroutineCache.Values)
 			{
 				EditorGUILayout.LabelField(coroutine.AudioSource.clip.name, EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;

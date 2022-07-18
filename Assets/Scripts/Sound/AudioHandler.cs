@@ -9,7 +9,7 @@ using System.Text;
 
 /// <summary>Handles audio for efficiency and garbage collection, uses 
 /// <see cref="CustomAudioClip"/> and/or <see cref="UnityCustomAudioClip"/> for 
-/// custom files and uses <see cref="SoundCoroutine"/> for code to change it 
+/// custom files and uses <see cref="AudioTracker"/> for code to change it 
 /// themselves.</summary>
 public class AudioHandler : SingletonAlt<AudioHandler>
 {
@@ -20,76 +20,63 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	public SoundLibrary CustomAudioData { get; private set; }
 
 	/// <summary> Cache for storing automated sound data </summary>
-	public Dictionary<AudioClip, SoundCoroutine> SoundCoroutineCache { get; private set; }
+	public Dictionary<AudioClip, AudioTracker> SoundCoroutineCache { get; private set; }
 
 
 	protected override void SingletonStart()
 	{
-		SoundCoroutineCache = new Dictionary<AudioClip, SoundCoroutine>();
-		LoadNewLibrary(SceneManager.GetActiveScene().name);
-		MakeNewAudioHandler();
-		PlayOnAwakeCommands();
-	}
-	private void PlayOnAwakeCommands()
-	{
-		if (!CustomAudioData.ContainsPlayOnAwakeCommands)
-			return;
-		foreach (CustomAudioClip clip in CustomAudioData.PlayOnAwakeCommands)
-			PlaySound(clip);
+		SoundCoroutineCache = new Dictionary<AudioClip, AudioTracker>();
+		HandleSceneSwitch(SceneManager.GetActiveScene().name);
 	}
 
-	private void MakeNewAudioHandler()
+	private void HandleSceneSwitch(string newScene = null)
 	{
+		LoadNewLibrary(newScene);
 		VoiceActorHandler = new VoiceActorHandler();
-		StartCoroutine(Delay());
-		IEnumerator Delay()
-		{ 
-			yield return new WaitForEndOfFrame(); 
-			GameCommands.SwitchingScenes += MakeNewAudioHandler; 
-		}
-	}
-
-	public void LoadNewLibrary(string sceneName)
-	{
-		const string fileDirectory = "Sounds/Sound Libraries";
-		CustomAudioData = Resources.Load<SoundLibrary>($"{fileDirectory}/{sceneName}");
-		if (CustomAudioData == null)
-			Debug.LogError("There are no detected sound libraries in" +
-				$" resource folder : {fileDirectory}/{sceneName}!");
 		PlayOnAwakeCommands();
-		var enumerable =
-			from soundCoroutine in SoundCoroutineCache.Values
-			where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
-			where !soundCoroutine.IsStopping
-			where CustomAudioData.ContainsCustomAudioClip(soundCoroutine.AudioClip) == false
-			select soundCoroutine;
-		if (enumerable.Any())
+		GameCommands.SwitchedScenes += HandleSceneSwitch;
+
+
+		void PlayOnAwakeCommands()
 		{
-			var argumentBuilder = new StringBuilder($"Total Exceptions: {enumerable.Count()}");
-			foreach (var soundCoroutine in enumerable)
-				argumentBuilder.Append($"\nAlthough '{soundCoroutine.AudioClip.Name}' is allowed"
-					+ $" to transition scenes, library '{CustomAudioData.name}'" +
-					" doesn't contain it! ");
-			if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
-				throw new InvalidOperationException(argumentBuilder.ToString());
-			else
+			if (!CustomAudioData.ContainsPlayOnAwakeCommands)
+				return;
+			foreach (CustomAudioClip clip in CustomAudioData.PlayOnAwakeCommands)
+				PlaySound(clip);
+		}
+		void LoadNewLibrary(string sceneName)
+		{
+			const string fileDirectory = "Sounds/Sound Libraries";
+			CustomAudioData = Resources.Load<SoundLibrary>($"{fileDirectory}/{sceneName}");
+			if (CustomAudioData == null)
+				Debug.LogError("There are no detected sound libraries in" +
+					$" resource folder : {fileDirectory}/{sceneName}!");
+			var enumerable =
+				from soundCoroutine in SoundCoroutineCache.Values
+				where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
+				where !soundCoroutine.IsStopping
+				where CustomAudioData.ContainsCustomAudioClip(soundCoroutine.AudioClip) == false
+				select soundCoroutine;
+			if (enumerable.Any())
 			{
-				var removeArray = enumerable.Select<SoundCoroutine, CoroutinePointer>(coroutine => () => coroutine).ToArray();
-				for (int i = 0; i < removeArray.Length; i++)
-					removeArray[i]().Stop(true);
-				Debug.LogWarning("Forcefully stopping sounds:\n" + argumentBuilder);
+				var argumentBuilder = new StringBuilder($"Total Exceptions: {enumerable.Count()}");
+				foreach (var soundCoroutine in enumerable)
+					argumentBuilder.Append($"\nAlthough '{soundCoroutine.AudioClip.Name}' is allowed"
+						+ $" to transition scenes, library '{CustomAudioData.name}'" +
+						" doesn't contain it! ");
+				if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
+					throw new InvalidOperationException(argumentBuilder.ToString());
+				else
+				{
+					var removeArray = enumerable.Select<AudioTracker, CoroutinePointer>(coroutine => () => coroutine).ToArray();
+					for (int i = 0; i < removeArray.Length; i++)
+						removeArray[i]().Stop(true);
+					Debug.LogWarning("Forcefully stopping sounds:\n" + argumentBuilder);
+				}
 			}
 		}
-
-
-		StartCoroutine(Buffer());
-		IEnumerator Buffer()
-		{ 
-			yield return new WaitForEndOfFrame();
-			GameCommands.SwitchedScenes += LoadNewLibrary;
-			
-		}
 	}
+
 
 	private CoroutinePointer GetCoroutine(AudioClip clip, AudioMixerGroup group,
 		bool useCustomAudioData)
@@ -102,7 +89,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	/// <summary>Easily create a coroutine and log it in to the cache.</summary>
 	/// <param name="key">AudioClip to put into the soundCoroutine</param>
 	/// <returns>
-	///		<see cref="SoundCoroutine"/> that is meant to be kept track of and 
+	///		<see cref="AudioTracker"/> that is meant to be kept track of and 
 	///		used for accessibility of handling sound.
 	///	</returns>
 	public CoroutinePointer GetCoroutine(CustomAudioClip key)
@@ -112,14 +99,9 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			SoundCoroutineCache.Add(key, GetSoundCoroutineData());
 			SetGarbageCollection();
 		}
-		if (SoundCoroutineCache[key] == null)
-		{
-			SoundCoroutineCache[key] = GetSoundCoroutineData();
-			SetGarbageCollection();
-		}
 		return () => SoundCoroutineCache[key];
 
-		SoundCoroutine GetSoundCoroutineData() => new SoundCoroutine(
+		AudioTracker GetSoundCoroutineData() => new AudioTracker(
 			this, CustomAudioData.name, key.audioMixerGroup, clip: key);
 		void SetGarbageCollection() => 
 			SoundCoroutineCache[key].GarbageCollection = () =>
@@ -160,7 +142,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		customAudioData, then it will play that instead.
 	///	</param>
 	///	<returns>
-	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
+	///		Optionally a <see cref="AudioTracker"/>, may not be 
 	///		needed to function.
 	///	</returns>
 	public CoroutinePointer PlaySound(AudioClip clip, 
@@ -174,7 +156,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///	<summary>Plays a sound with custom data. Ignores soundCoroutineCache</summary>
 	///	<param name ="clip">the audioclip to play.</param>
 	///	<returns>
-	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
+	///		Optionally a <see cref="AudioTracker"/>, may not be 
 	///		needed to function.
 	///	</returns>
 	public CoroutinePointer PlaySound(CustomAudioClip clip)
@@ -192,7 +174,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		customAudioData, then it will play that instead.
 	///	</param>
 	///	<returns>
-	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
+	///		Optionally a <see cref="AudioTracker"/>, may not be 
 	///		needed to function.
 	///	</returns>
 	public CoroutinePointer PlaySound(string soundPath, 
@@ -207,7 +189,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		customAudioData, then it will play that instead.
 	///	</param>
 	///	<returns>
-	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
+	///		Optionally a <see cref="AudioTracker"/>, may not be 
 	///		needed to function.
 	///	</returns>
 	public CoroutinePointer PlayFadedSound(AudioClip clip, float fadeInSeconds,
@@ -226,7 +208,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///		customAudioData, then it will play that instead.
 	///	</param>
 	///	<returns>
-	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
+	///		Optionally a <see cref="AudioTracker"/>, may not be 
 	///		needed to function.
 	///	</returns>
 	public CoroutinePointer PlayFadedSound(string soundPath, float fadeInSeconds,
@@ -250,7 +232,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			if (SoundCoroutineCache.TryGetValue(stopClip, out var soundCoroutine))
 				if (soundCoroutine.IsStopping)
 				{
-					Debug.LogError($"{nameof(SoundCoroutine)}: '{soundCoroutine.AudioClip.Name}' "
+					Debug.LogError($"{nameof(AudioTracker)}: '{soundCoroutine.AudioClip.Name}' "
 						+ "already is fading! Terminating.\nTry using one of them"
 						+ " so they won't conflict");
 					return;
@@ -290,7 +272,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	///	<summary>Plays a sound that is meant to be repeatedly played.</summary>
 	///	<param name ="clip">the audioclip to play.</param>
 	///	<returns>
-	///		Optionally a <see cref="SoundCoroutine"/>, may not be 
+	///		Optionally a <see cref="AudioTracker"/>, may not be 
 	///		needed to function.
 	///	</returns>
 	public CoroutinePointer PlayOneShot(AudioClip clip, 
@@ -301,4 +283,4 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		return sound;
 	}
 }
-public delegate SoundCoroutine CoroutinePointer();
+public delegate AudioTracker CoroutinePointer();

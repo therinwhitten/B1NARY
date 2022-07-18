@@ -23,7 +23,6 @@ public class DialogueNode
 		index = 0;
 	}
 
-	/*
 	public DialogueLine GetCurrentLine()
 	{
 
@@ -39,28 +38,6 @@ public class DialogueNode
 		if (output.line.Contains("//"))
 			output.line = output.line.Remove(output.line.IndexOf("//")); // Comments haha
 		return output;
-	}
-	*/
-
-	public DialogueLine GetCurrentLine()
-	{
-		try
-		{
-			return lines[index];
-		}
-		catch (System.ArgumentOutOfRangeException)
-		{
-			Debug.Log("End reached. Returning to parent node...");
-			if (previous != null)
-			{
-				ScriptParser.Instance.currentNode = previous;
-				return previous.GetCurrentLine();
-			}
-			else
-			{
-				return null;
-			}
-		}
 	}
 
 	public void nextLine()

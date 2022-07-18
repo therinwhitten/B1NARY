@@ -19,6 +19,6 @@ public class AudioHandlerEditor : Editor
 			EditorGUI.indentLevel--;
 		}
 		if (audioHandler.SoundCoroutineCache != null)
-			EditorGUILayout.LabelField($"Total {nameof(SoundCoroutine)}s tracked: {audioHandler.SoundCoroutineCache.Count}");
+			EditorGUILayout.LabelField($"Total {nameof(AudioTracker)}s tracked: {audioHandler.SoundCoroutineCache.Count}");
 	}
 }

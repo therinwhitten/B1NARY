@@ -7,7 +7,7 @@ using UnityEngine.Audio;
 ///		An extended <see cref="UnityEngine.AudioSource"/> for easily manipulating
 ///		sounds and contains Garbage Collection and Events when finished playing.
 /// </summary>
-public class SoundCoroutine
+public class AudioTracker
 {
 	public bool IsFadingAway { get; private set; } = false;
 	public bool DeleteAudioSourceOnSwap { get; set; } = true;
@@ -35,7 +35,7 @@ public class SoundCoroutine
 			audioSource = value;
 			if (audioSource == null)
 			{
-				Debug.LogWarning($"{nameof(SoundCoroutine)} assigned to an empty" +
+				Debug.LogWarning($"{nameof(AudioTracker)} assigned to an empty" +
 					" audioSource");
 				return;
 			}
@@ -52,7 +52,7 @@ public class SoundCoroutine
 
 
 
-	public SoundCoroutine(MonoBehaviour monoBehaviour, string soundLibrary, 
+	public AudioTracker(MonoBehaviour monoBehaviour, string soundLibrary, 
 		AudioMixerGroup mixerGroup = null, CustomAudioClip clip = null)
 	{
 		this.monoBehaviour = monoBehaviour;
@@ -94,6 +94,13 @@ public class SoundCoroutine
 			"Cannot play sounds because there is no AudioSource to play on!".LogErr();
 			return;
 		}
+		if (IsPlaying)
+		{
+			Debug.LogError($"Only one instance of {AudioClip.Name} can be " +
+				$"played one at a time, or use '{nameof(PlayOneShot)}' method");
+			return;
+		}
+			
 		audioSource.Play();
 		if (garbageCollection == null)
 			garbageCollection = monoBehaviour.StartCoroutine(GarbageCollectionCoroutine());
@@ -104,6 +111,12 @@ public class SoundCoroutine
 		if (audioSource == null)
 		{
 			"Cannot play sounds because there is no AudioSource to play on!".LogErr();
+			return;
+		}
+		if (IsPlaying)
+		{
+			Debug.LogError($"Only one instance of {AudioClip.Name} can be " +
+				$"played one at a time, or use '{nameof(PlayOneShot)}' method");
 			return;
 		}
 		float targetValue = audioSource.volume;
@@ -149,7 +162,7 @@ public class SoundCoroutine
 		if (monoBehaviour == null)
 		{
 			monoBehaviour = UnityEngine.Object.FindObjectOfType<MonoBehaviour>();
-			Debug.LogError($"{nameof(SoundCoroutine)} does" +
+			Debug.LogError($"{nameof(AudioTracker)} does" +
 				$" not have an availible {nameof(MonoBehaviour)}!");
 		}
 		IsStopping = true;
@@ -188,14 +201,19 @@ public class SoundCoroutine
 
 	private void SwitchSceneCheck(string sceneName)
 	{
-		if (AudioSource == null)
-			audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
 		if (AudioClip != null)
+		{
+			if (AudioSource == null)
+				audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
 			if (AudioClip.destroyWhenTransitioningScenes)
 				if (AudioClip.fadeTime != 0)
 					Stop(AudioClip.fadeTime);
 				else
 					Stop();
+		}
+		else
+			Debug.LogError($"{nameof(AudioTracker)} has no availible {nameof(AudioClip)}" +
+				" and won't be terminated, please tell a dev!");
 		GameCommands.SwitchedScenes += SwitchSceneCheck;
 	}
 
@@ -210,7 +228,7 @@ public class SoundCoroutine
 	}
 	public Action GarbageCollection;
 
-	~SoundCoroutine()
+	~AudioTracker()
 	{
 		OnDestroy();
 		if (AudioSource != null)
