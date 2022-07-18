@@ -10,7 +10,7 @@ public class SoundLibraryEditor : Editor
 {
 	static Dictionary<string, List<bool>> headerGroupsToggledForMultiple 
 		= new Dictionary<string, List<bool>>();
-	public string Name
+	string Name
 	{
 		get
 		{

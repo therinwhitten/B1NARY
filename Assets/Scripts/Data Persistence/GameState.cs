@@ -97,7 +97,7 @@ public class GameState
 		}
 
 		audioSounds = AudioHandler.Instance.SoundCoroutineCache.Values
-			.Select(coroutine => (coroutine.AudioClip.Name, 
+			.Select(coroutine => (coroutine.AudioClip.Name,
 			coroutine.currentSoundLibrary, coroutine.AudioSource.time)).ToArray();
 	}
 
