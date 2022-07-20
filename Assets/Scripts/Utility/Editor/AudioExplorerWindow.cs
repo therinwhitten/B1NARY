@@ -18,7 +18,7 @@ public class AudioExplorerWindow : EditorWindow
 		Delete_Files,
 		Rename_Directories,
 	}
-	private static string[] BehaviourNames => Enum.GetNames(typeof(Behaviour))
+	private readonly static string[] BehaviourNames = Enum.GetNames(typeof(Behaviour))
 		.Select(@string => @string.Replace('_', ' ')).ToArray();
 
 	private static readonly HashSet<string> availibleAudioExtensions = new HashSet<string>()
@@ -55,11 +55,11 @@ public class AudioExplorerWindow : EditorWindow
 	{
 		EditorGUILayout.Space();
 		SelectionGrid();
-		bool outputExperiemental = EditorGUILayout.ToggleLeft("Filter Folders with sounds", showInefficientSoundFiltering);
-		if (outputExperiemental != showInefficientSoundFiltering)
+		bool outputExperimental = EditorGUILayout.ToggleLeft("Filter Folders with sounds", showInefficientSoundFiltering);
+		if (outputExperimental != showInefficientSoundFiltering)
 		{
 			needsRefresh = true;
-			showInefficientSoundFiltering = outputExperiemental;
+			showInefficientSoundFiltering = outputExperimental;
 		}
 		bool canShowData = GetDataDirectory();
 		if (!canShowData)

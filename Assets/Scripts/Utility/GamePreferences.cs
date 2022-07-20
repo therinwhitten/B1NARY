@@ -20,17 +20,22 @@ public static class GamePreferences
 	private static Dictionary<string, bool> boolSettings;
 	private static Dictionary<string, int> intSettings;
 	private static Dictionary<string, float> floatSettings;
-	private static bool HasBig4Data => stringSettings != null && boolSettings != null && intSettings != null && floatSettings != null;
-	private static string FileXMLName => Application.streamingAssetsPath + "/B1NARY Game Prefs.xml";
-	private const string RootFileName = "B1NARYGamePreferences";
+	private static bool HasBig4Data => 
+		stringSettings != null && 
+		boolSettings != null && 
+		intSettings != null && 
+		floatSettings != null;
+	private static string FileXMLName => Application.streamingAssetsPath + "/Game Preferences.xml";
+	private const string RootFileName = "GamePreferences";
 
-
+	/// <summary> Resets the cache for the XML File. </summary>
 	public static void ResetXMLFile()
 	{
 		gameDataDocument = null;
 		GetGameDataDocument();
 	}
-	
+
+	/// <summary> Defines all objects in this class. </summary>
 	private static void GetGameDataDocument()
 	{
 		if (gameDataDocument != null && HasBig4Data)
@@ -80,25 +85,37 @@ public static class GamePreferences
 			}
 		}
 	}
-	// This specifically saves data long-term, use the other methods to do that.
-	private static void SaveData(int type, string name, string input)
+
+	/// <summary>
+	/// Stores the data on the harddrive. Doesn't affect memory.
+	/// </summary>
+	/// <param name="type">The type of info, aka <see cref="bool"/>, <see cref="float"/>, etc.</param>
+	/// <param name="name">The of the data. No spaces. </param>
+	/// <param name="input">The value of the data type. </param>
+	private static void SaveData(int type, string name, object input)
 	{
-		bool valueExists = gameDataDocument.SelectSingleNode($"//{RootFileName}//{dataTypes[type]}//{name}") != null;
-		if (string.IsNullOrEmpty(input))
+		bool valueExists = gameDataDocument
+			.SelectSingleNode($"//{RootFileName}//{dataTypes[type]}//{name}") != null;
+		if (string.IsNullOrEmpty(input.ToString()))
 		{
 			if (!valueExists)
 				return;
-			XmlNode deletingChild = gameDataDocument.SelectSingleNode($"//{RootFileName}//{dataTypes[type]}//{name}");
-			gameDataDocument.SelectSingleNode($"//{RootFileName}//{dataTypes[type]}").RemoveChild(deletingChild);
+			XmlNode deletingChild = gameDataDocument
+				.SelectSingleNode($"//{RootFileName}//{dataTypes[type]}//{name}");
+			gameDataDocument
+				.SelectSingleNode($"//{RootFileName}//{dataTypes[type]}")
+				.RemoveChild(deletingChild);
 		}
 		else
 		{
 			if (valueExists)
-				((XmlElement)gameDataDocument.SelectSingleNode($"//{RootFileName}//{dataTypes[type]}//{name}")).InnerText = input;
+				((XmlElement)gameDataDocument
+					.SelectSingleNode($"//{RootFileName}//{dataTypes[type]}//{name}"))
+					.InnerText = input.ToString();
 			else
 			{
 				XmlElement element = gameDataDocument.CreateElement(name);
-				element.InnerText = input;
+				element.InnerText = input.ToString();
 				gameDataDocument.LastChild.ChildNodes[type].AppendChild(element);
 			}
 
@@ -106,7 +123,9 @@ public static class GamePreferences
 		gameDataDocument.Save(FileXMLName);
 	}
 
-
+	/// <summary>
+	/// Deletes all keys and data from the XML file. Effectively deletes it.
+	/// </summary>
 	public static void DeleteAllKeys()
 	{
 		if (File.Exists(FileXMLName))

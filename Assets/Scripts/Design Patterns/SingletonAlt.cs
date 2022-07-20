@@ -48,7 +48,7 @@ public abstract class SingletonAlt<T> : InstanceHolder<T> where T : MonoBehaviou
 		Instance = @object.AddComponent<T>();
 	}
 
-	private void Start()
+	private void Awake()
 	{
 		if (instance != null)
 		{
@@ -57,7 +57,7 @@ public abstract class SingletonAlt<T> : InstanceHolder<T> where T : MonoBehaviou
 			return; // Just in case.
 		}
 		Instance = GetComponent<T>();
-		SingletonStart();
+		SingletonAwake();
 	}
 
 	private void OnDestroy()
@@ -72,7 +72,7 @@ public abstract class SingletonAlt<T> : InstanceHolder<T> where T : MonoBehaviou
 	/// <summary>
 	/// Alternate Start since the original start is taken.
 	/// </summary>
-	protected virtual void SingletonStart() { /* do nothing unless overrided */ }
+	protected virtual void SingletonAwake() { /* do nothing unless overrided */ }
 
 	/// <summary>
 	/// Alternate OnDestroy since the original start is taken.

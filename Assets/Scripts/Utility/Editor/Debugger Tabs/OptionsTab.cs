@@ -11,7 +11,7 @@ public sealed class OptionsTab : DebuggerTab
 	private Dictionary<string, bool> showScriptSettings = new Dictionary<string, bool>();
 	public override void DisplayTab()
 	{
-		List<string> deleteAllKeysNames = new List<string>() { "B1NARY Slots Debugger" };
+		var deleteAllKeysNames = new List<string>() { "B1NARY Slots Debugger" };
 
 		// Slider Thingy
 		int oldBarCountValue = EditorPrefs.GetInt("B1NARY Slots Debugger", 3);

@@ -20,7 +20,7 @@ public class MenuCommands : SingletonAlt<MenuCommands>
 	public GameObject scriptTesting;
 	private string UIPrefabsPath = "UIPrefabs";
 	// Start is called before the first frame update
-	protected override void SingletonStart()
+	protected override void SingletonAwake()
 	{
 		int sceneCount = SceneManager.sceneCountInBuildSettings;
 		scenes = new string[sceneCount];

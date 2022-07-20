@@ -23,7 +23,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	public Dictionary<AudioClip, AudioTracker> SoundCoroutineCache { get; private set; }
 
 
-	protected override void SingletonStart()
+	protected override void SingletonAwake()
 	{
 		SoundCoroutineCache = new Dictionary<AudioClip, AudioTracker>();
 		HandleSceneSwitch(SceneManager.GetActiveScene().name);
@@ -51,7 +51,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 			if (CustomAudioData == null)
 				Debug.LogError("There are no detected sound libraries in" +
 					$" resource folder : {fileDirectory}/{sceneName}!");
-			var enumerable =
+			IEnumerable<AudioTracker> enumerable =
 				from soundCoroutine in SoundCoroutineCache.Values
 				where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
 				where !soundCoroutine.IsStopping
@@ -59,20 +59,20 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 				select soundCoroutine;
 			if (enumerable.Any())
 			{
-				var argumentBuilder = new StringBuilder($"Total Exceptions: {enumerable.Count()}");
-				foreach (var soundCoroutine in enumerable)
-					argumentBuilder.Append($"\nAlthough '{soundCoroutine.AudioClip.Name}' is allowed"
-						+ $" to transition scenes, library '{CustomAudioData.name}'" +
-						" doesn't contain it! ");
+				IEnumerable<InvalidOperationException> exceptions = enumerable
+					.Select(audioTracker => new InvalidOperationException(
+						$"\nAlthough '{audioTracker.AudioClip.Name}' is allowed"
+						+ $" to transition scenes, library '{CustomAudioData.name}'"
+						+ " doesn't contain it! "));
 				if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
-					throw new InvalidOperationException(argumentBuilder.ToString());
-				else
-				{
-					var removeArray = enumerable.Select<AudioTracker, CoroutinePointer>(coroutine => () => coroutine).ToArray();
-					for (int i = 0; i < removeArray.Length; i++)
-						removeArray[i]().Stop(true);
-					Debug.LogWarning("Forcefully stopping sounds:\n" + argumentBuilder);
-				}
+					throw new AggregateException(exceptions);
+
+				CoroutinePointer[] removeArray = enumerable
+					.Select<AudioTracker, CoroutinePointer>(pointer => () => pointer).ToArray();
+				for (int i = 0; i < removeArray.Length; i++)
+					removeArray[i]().Stop(true);
+				Debug.LogWarning("Forcefully stopping sounds:\n" + 
+					string.Join("\n", removeArray.Select(pointer => pointer().AudioClip.Name)));
 			}
 		}
 	}
@@ -86,7 +86,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		return GetCoroutine(new CustomAudioClip(clip) { audioMixerGroup = group });
 	}
 
-	/// <summary>Easily create a coroutine and log it in to the cache.</summary>
+	/// <summary>Easily create a pointer and log it in to the cache.</summary>
 	/// <param name="key">AudioClip to put into the soundCoroutine</param>
 	/// <returns>
 	///		<see cref="AudioTracker"/> that is meant to be kept track of and 

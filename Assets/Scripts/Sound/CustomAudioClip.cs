@@ -11,8 +11,6 @@ public class CustomAudioClip
 
 	public static implicit operator AudioClip(CustomAudioClip input)
 		=> input.clip;
-	public static explicit operator CustomAudioClip(AudioClip input)
-		=> new CustomAudioClip(input);
 
 	public CustomAudioClip(AudioClip audioClip)
 	{

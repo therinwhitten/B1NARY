@@ -20,10 +20,10 @@ public class VoiceActorHandler
 		AudioClip clip = GetVoiceLine(line);
 		if (clip == null)
 		{
-			AudioHandler.Instance.VoiceActorHandler.StopVoice();
+			StopVoice();
 			return;
 		}
-		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, voiceVolume, voice, clip);
+		PlayVoice(name, voiceVolume, voice, clip);
 	}
 	public void PlayVoice(string name, float volume, AudioSource source, AudioClip clip)
 	{

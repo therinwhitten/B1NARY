@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 ///<summary> 
-/// A list of multiple <see cref="MonoBehaviour"/>, usage as such.
+/// A list of multiple <see cref="MonoBehaviour"/>s, usage as such.
 /// </summary>
 public abstract class Multiton<T> : InstanceHolder<T> where T : MonoBehaviour
 {

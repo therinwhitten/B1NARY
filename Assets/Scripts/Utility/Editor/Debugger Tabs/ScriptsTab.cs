@@ -6,6 +6,7 @@ using UnityEditor;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 public sealed class ScriptsTab : DebuggerTab
 {
@@ -46,21 +47,22 @@ public sealed class ScriptsTab : DebuggerTab
 		lastRect.height = Screen.height - lastRect.y - 4;
 
 		if (DebuggerWindow.TryGetter<ScriptParser>.TryGetObject(out ScriptParser parser))
-			ShowScriptScroll(parser);
+			ShowScriptScroll(parser).Wait();
 	}
 
 	string currentScript = "";
 	string[] currentScriptContents = Array.Empty<string>();
 	Vector2 scrollPos = Vector2.zero;
-	private void ShowScriptScroll(ScriptParser parser)
+	private async Task ShowScriptScroll(ScriptParser parser)
 	{
 		scrollPos = GUILayout.BeginScrollView(scrollPos);
+		Task waitForScriptContentsTask = Task.CompletedTask;
 		if (currentScript != parser.scriptName)
 		{
 			currentScript = parser.scriptName;
-			currentScriptContents = File.ReadAllLines($"{Application.streamingAssetsPath}/Docs/{parser.scriptName}.txt");
+			waitForScriptContentsTask = Task.Factory.StartNew(
+				() => currentScriptContents = File.ReadAllLines($"{Application.streamingAssetsPath}/Docs/{parser.scriptName}.txt"));
 		}
-		int space = currentScriptContents.Length.ToString().Length;
 		int onLine = parser.currentNode != null && parser.currentNode.GetCurrentLine() != null ? parser.currentNode.GetCurrentLine().index - 1 : -1;
 		Color[] assignedColors =
 		{
@@ -70,6 +72,7 @@ public sealed class ScriptsTab : DebuggerTab
 			colors[EditorPrefs.GetInt("Command B1NARY Color", 3)],
 			colors[EditorPrefs.GetInt("Emote B1NARY Color", 4)],
 		};
+		await waitForScriptContentsTask;
 		for (int i = 0; i < currentScriptContents.Length; i++)
 		{
 			Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth - 26, 16);
@@ -87,6 +90,7 @@ public sealed class ScriptsTab : DebuggerTab
 			GUI.Label(rect, $"{(onLine == i && EditorPrefs.GetBool("Script B1NARY Pointer", true) ? ">" : (i + 1).ToString())}\t{currentScriptContents[i]}");
 		}
 		GUILayout.EndScrollView();
+		GUI.color = Color.white;
 		if (GUILayout.Button("Open script"))
 			Process.Start($"{Application.streamingAssetsPath}/Docs/{parser.scriptName}.txt", EditorPrefs.GetString("ExternalScriptEditor")); // TODO: somehow make it launch the external scripts editor as well
 	}

@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Live2D.Cubism.Framework.Expression;
 using Live2D.Cubism.Rendering;
+using System;
 
+[RequireComponent(typeof(Animator))]
 public class CharacterScript : MonoBehaviour
 {
+	private Animator animator;
+
 	[HideInInspector]
 	public string currentExpression;
 	[HideInInspector]
@@ -26,31 +30,32 @@ public class CharacterScript : MonoBehaviour
 	private Material lightingNoFocus;
 	public bool focused = false;
 
-    public Vector2 anchorPadding { get { return rectTransform.anchorMax - rectTransform.anchorMin; } }
-    private Vector3 originalScale;
-    float voicevolume = 1f;
-    private void Awake()
-    {
-        rectTransform = gameObject.GetComponent<RectTransform>();
-        originalScale = rectTransform.localScale;
-        voice = gameObject.GetComponent<AudioSource>();
-        renderers = gameObject.GetComponentsInChildren<CubismRenderer>();
-        // initLighting();
-    }
-    public void lightingIntoFocus()
-    {
-        focused = true;
-        targetMaterial = lighting;
-        targetScale = new Vector3(originalScale.x * 1.05f, originalScale.y * 1.05f, originalScale.z);
-        transitionFocus();
-    }
-    public void lightingOutOfFocus()
-    {
-        focused = false;
-        targetMaterial = lightingNoFocus;
-        targetScale = new Vector3(originalScale.x * 0.95f, originalScale.y * 0.95f, originalScale.z);
-        transitionFocus();
-    }
+	public Vector2 anchorPadding { get { return rectTransform.anchorMax - rectTransform.anchorMin; } }
+	private Vector3 originalScale;
+	float voicevolume = 1f;
+	private void Awake()
+	{
+		rectTransform = gameObject.GetComponent<RectTransform>();
+		originalScale = rectTransform.localScale;
+		voice = gameObject.GetComponent<AudioSource>();
+		renderers = gameObject.GetComponentsInChildren<CubismRenderer>();
+		animator = GetComponent<Animator>();
+		// initLighting();
+	}
+	public void lightingIntoFocus()
+	{
+		focused = true;
+		targetMaterial = lighting;
+		targetScale = new Vector3(originalScale.x * 1.05f, originalScale.y * 1.05f, originalScale.z);
+		transitionFocus();
+	}
+	public void lightingOutOfFocus()
+	{
+		focused = false;
+		targetMaterial = lightingNoFocus;
+		targetScale = new Vector3(originalScale.x * 0.95f, originalScale.y * 0.95f, originalScale.z);
+		transitionFocus();
+	}
 
 	private void stopLighting()
 	{
@@ -113,20 +118,16 @@ public class CharacterScript : MonoBehaviour
 
 	public void UseAnimation(string animName)
 	{
-		currentAnimation = animName;
-		try
+		animName = animName.Trim();
+		try 
 		{
-			gameObject.GetComponent<Animator>().SetTrigger(animName.Trim());
+			animator.SetTrigger(animName);
+			currentAnimation = animName;
 		}
-		catch (System.Exception)
+		catch (NullReferenceException ex)
 		{
-			Debug.LogWarning("Error! Animation "
-			+ animName +
-			" not found in animation list of character: "
-			+ charName +
-			". Reverting to default animation");
-			gameObject.GetComponent<Animator>().SetTrigger(defaultAnimation.Trim());
-			currentAnimation = defaultAnimation;
+			Debug.LogError($"Animation '{animName}' is not found in animation list"
+				+ $"of character '{charName}' \n{ex}");
 		}
 	}
 
@@ -139,7 +140,7 @@ public class CharacterScript : MonoBehaviour
 		{
 			gameObject.GetComponent<CubismExpressionController>().CurrentExpressionIndex = expressionIndex;
 		}
-		catch (System.NullReferenceException)
+		catch (NullReferenceException)
 		{
 			Debug.LogWarning("Error! Expression " + expressionName + " not found in expression list of character: " + charName);
 		}

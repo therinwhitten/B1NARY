@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class FadeController : Multiton<FadeController>
+public class FadeController : MonoBehaviour
 {
 	private CanvasGroup canvas;
 
 	// Start is called before the first frame update
-	protected override void SingletonStart()
+	private void Awake()
 	{
 		canvas = gameObject.GetComponent<CanvasGroup>();
 	}
