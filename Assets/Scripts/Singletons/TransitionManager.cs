@@ -24,9 +24,6 @@ public class TransitionManager : Singleton<TransitionManager>
 	{
 		initialize();
 	}
-	void Start()
-	{
-	}
 
 	public override void initialize()
 	{
