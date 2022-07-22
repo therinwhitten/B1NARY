@@ -7,7 +7,7 @@ public static class ExtraEditorTools
 {
 	private static int? ButtonArray(GUIContent[] data, int xCount, Rect? rect = null)
 	{
-		// 4 xCount, four elements on one line, 6 buttons. 
+		// 4 xCount, four elements on one line, 6 Buttons. 
 		Rect masterRect = rect ?? GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20);
 		int lines = data.Length / xCount + (data.Length % xCount != 0 ? 1 : 0);
 		//internalRect.width /= lines;

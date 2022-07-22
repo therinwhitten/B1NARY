@@ -1,9 +1,24 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class VoiceActorHandler
 {
 	public string LastSpeaker { get; private set; } = string.Empty;
 	public AudioSource audioSource;
+
+	private VoiceLine? _currentVoiceLine;
+	public VoiceLine? CurrentVoiceLine
+	{
+		get => _currentVoiceLine;
+		private set
+		{
+			if (_currentVoiceLine != null)
+				_currentVoiceLine.Value.Dispose();
+			_currentVoiceLine = value;
+			audioSource.clip = _currentVoiceLine.Value.voiceLine;
+		}
+	}
+
 	public VoiceActorHandler()
 	{
 
@@ -17,15 +32,15 @@ public class VoiceActorHandler
 
 	public void PlayVoice(string name, DialogueLine line, float voiceVolume, AudioSource voice)
 	{
-		AudioClip clip = GetVoiceLine(line);
-		if (clip == null)
+		CurrentVoiceLine = GetVoiceLine(line);
+		if (!CurrentVoiceLine.HasValue)
 		{
 			StopVoice();
 			return;
 		}
-		PlayVoice(name, voiceVolume, voice, clip);
+		PlayVoice(name, voiceVolume, voice);
 	}
-	public void PlayVoice(string name, float volume, AudioSource source, AudioClip clip)
+	public void PlayVoice(string name, float volume, AudioSource source, VoiceLine? clip = null)
 	{
 		if (name == null)
 		{
@@ -36,27 +51,32 @@ public class VoiceActorHandler
 		LastSpeaker = name;
 		if (audioSource != source && source != null)
 		{
-			Object.Destroy(audioSource);
+			GameObject.Destroy(audioSource);
 			audioSource = source;
 		}
-		audioSource.clip = clip;
+		if (clip.HasValue)
+			CurrentVoiceLine = clip.Value;
 		audioSource.volume = volume;
 		audioSource.Play();
 	}
 
-	public AudioClip GetVoiceLine(DialogueLine line)
+	public VoiceLine? GetVoiceLine(DialogueLine line)
 	{
 		string filePath = $"Voice/{line.scriptName}/{line.index}";
-		AudioClip output = Resources.Load<AudioClip>(filePath);
-		if (output == null)
-			Debug.LogError($"Voice Actor line '{filePath}' does not have" +
-				" an exact filename! Did you leave a space within the filename?");
-		return output;
+		try
+		{
+			return new VoiceLine(filePath);
+		}
+		catch (InvalidOperationException ex)
+		{
+			Debug.LogError(ex.Message);
+			return null;
+		}
 	}
 
 
 	~VoiceActorHandler()
 	{
-		Object.Destroy(audioSource);
+		GameObject.Destroy(audioSource);
 	}
 }

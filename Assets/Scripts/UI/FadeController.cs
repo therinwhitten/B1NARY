@@ -3,33 +3,44 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CanvasGroup))]
 public class FadeController : MonoBehaviour
 {
 	private CanvasGroup canvas;
 
-	// Start is called before the first frame update
 	private void Awake()
 	{
 		canvas = gameObject.GetComponent<CanvasGroup>();
 	}
 
+	public static void FadeInAndActivate(FadeController fadeController, float fadeTime)
+	{
+		fadeController.gameObject.SetActive(true);
+		fadeController.FadeIn(fadeTime);
+	}
 
 	public void FadeIn(float fadeTime)
 	{
-		ModifyFadeFloat(1, fadeTime, () => canvas.interactable = true);
+		ModifyFadeFloat(1, fadeTime, () => { canvas.interactable = true; canvas.blocksRaycasts = true; });
 	}
 
 	public void FadeOut(float fadeTime)
 	{
 		canvas.interactable = false;
+		canvas.blocksRaycasts = false;
 		ModifyFadeFloat(0, fadeTime);
+	}
+
+	public void FadeOutAndDeActivate(float fadeTime)
+	{
+		canvas.interactable = false;
+		canvas.blocksRaycasts = false;
+		ModifyFadeFloat(0, fadeTime, () => gameObject.SetActive(false));
 	}
 
 
 	// We need a custom reference for the float due to anonymous methods issue
 	// - not allowing ref for value.
-	public void ModifyFadeFloat(float final, float secondsTaken, Action performAfter = null)
+	private void ModifyFadeFloat(float final, float secondsTaken, Action performAfter = null)
 	{
 		float difference = canvas.alpha - final; 
 		Func<float, bool> condition = difference < 0 ? 

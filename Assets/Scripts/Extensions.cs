@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public static class Extensions
@@ -36,7 +37,7 @@ public static class Extensions
 	}
 
 
-	public static void ChangeFloat(this MonoBehaviour monoBehaviour, 
+	public static async Task ChangeFloat(this MonoBehaviour monoBehaviour, 
 		Ref<float> value, float final, float secondsTaken)
 	{
 		float difference = value.Value - final;
@@ -46,6 +47,9 @@ public static class Extensions
 		difference *= -1;   // for whatever reason, this makes the code run well,
 							// - I can't understand why though.
 		monoBehaviour.StartCoroutine(Coroutine(final));
+		bool isFinished = false;
+		while (!isFinished)
+			await Task.Delay(50);
 		IEnumerator Coroutine(float finalValue)
 		{
 			while (value.Value != finalValue)
@@ -64,6 +68,7 @@ public static class Extensions
 				}
 				yield return new WaitForEndOfFrame();
 			}
+			isFinished = true;
 		}
 		bool IsGreaterThan(float input) => input >= final;
 		bool IsLessThan(float input) => input <= final;

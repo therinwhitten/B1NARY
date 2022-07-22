@@ -121,7 +121,7 @@ public class AudioTracker
 		}
 		float targetValue = audioSource.volume;
 		audioSource.volume = 0;
-		monoBehaviour.ChangeFloat
+		_ = monoBehaviour.ChangeFloat
 			(
 			new Ref<float>(() => audioSource.volume, set => audioSource.volume = set), 
 			targetValue, 
@@ -167,7 +167,7 @@ public class AudioTracker
 		}
 		IsStopping = true;
 		IsFadingAway = true;
-		monoBehaviour.ChangeFloat(
+		_ = monoBehaviour.ChangeFloat(
 			GetVolumeRef(set: (@float) => 
 			{ 
 				// Because of how dynamically changing the value works,

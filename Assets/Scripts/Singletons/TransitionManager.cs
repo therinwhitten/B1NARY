@@ -41,19 +41,11 @@ public class TransitionManager : Singleton<TransitionManager>
 		staticBG = bgCanvas.GetComponentInChildren<Image>();
 	}
 
-	// Update is called once per frame
-	void Update()
-	{
 
-	}
-
-	static bool sceneVisible = true;
 	public static void ShowScene(bool show, float speed = 1, bool smooth = false, Texture2D transitionEffect = null)
 	{
 		if (transitioningOverlay != null)
 			Instance.StopCoroutine(transitioningOverlay);
-
-		sceneVisible = show;
 
 		if (transitionEffect != null)
 			Instance.overlayImage.material.SetTexture("_AlphaTex", transitionEffect);

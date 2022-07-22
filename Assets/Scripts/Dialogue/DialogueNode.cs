@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Text.RegularExpressions;
-
+using System.Threading.Tasks;
 
 public class DialogueNode
 {
@@ -21,6 +21,16 @@ public class DialogueNode
 		this.choices = new Dictionary<string, DialogueNode>();
 		this.lines = lines;
 		index = 0;
+	}
+
+	[SerializeField]
+	private ChoicePanel choicePanel;
+	private ChoicePanel ChoicePanel { get
+		{
+			if (choicePanel == null)
+				choicePanel = Object.FindObjectOfType<ChoicePanel>();
+			return choicePanel;
+		} 
 	}
 
 	public DialogueLine GetCurrentLine()
@@ -56,7 +66,7 @@ public class DialogueNode
 	{
 		ScriptParser.Instance.paused = true;
 		choices = new Dictionary<string, DialogueNode>();
-        ScriptParser.Instance.PlayVA(lines[index]);
+		ScriptParser.Instance.PlayVA(lines[index]);
 		DialogueSystem.Instance.Say(choiceTitle);
 		List<DialogueLine> block = getOptionalBlock(lines, '{', '}', index);
 
@@ -92,9 +102,9 @@ public class DialogueNode
 				choiceName = "";
 			}
 		}
-		index--;
-		ChoiceController choiceController = GameObject.Find("Choice Panel").GetComponent<ChoiceController>();
-		choiceController.newChoice();
+		index--; ;
+		ChoicePanel.Initialize(choices.Keys.ToArray());
+		ChoicePanel.PickedChoice += line => ChoicePanel.Dispose();
 	}
 	public void selectChoice(DialogueNode choice)
 	{

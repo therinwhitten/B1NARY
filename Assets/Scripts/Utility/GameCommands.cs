@@ -48,6 +48,7 @@ public static class GameCommands
 
 	public static void QuitGame()
 	{
+		Debug.Log("Pressed the quit button!");
 		Application.Quit();
 	}
 }
