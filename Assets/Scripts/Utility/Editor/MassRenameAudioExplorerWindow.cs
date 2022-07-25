@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 
 public class MassRenameAudioExplorerWindow : EditorWindow
 {
-	// https://stackoverflow.com/questions/9363145/regex-for-extracting-filename-from-path#comment85522328_9363293
+	// https://stackoverflow.com/questions/9363145/regex-for-extracting-filename-from-savePath#comment85522328_9363293
 	
 	// Regex if a string is only numbers
 	public static readonly Regex numberRegex = new Regex("^[0-9]*$");

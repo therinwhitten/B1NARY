@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using System.Globalization;
 
-public static class CommandsManager
+public static partial class GameCommands
 {
 	private static DialogueSystem Dialogue => DialogueSystem.Instance;
 	private static CharacterManager CharacterManager => CharacterManager.Instance;
@@ -16,13 +13,14 @@ public static class CommandsManager
 	private static readonly HashSet<string> disabledHashset = new HashSet<string>()
 	{ "off", "false", "disable" };
 
-
-	public static void HandleWithArgs(string command, string[] args = null)
+	public static Task HandleScriptCommand(ScriptLine line)
+	{
+		var pair = ScriptLine.CastCommand(line);
+		return HandleScriptCommand(pair.command, pair.arguments);
+	}
+	public static Task HandleScriptCommand(string command, params string[] args)
 	{
 		command = command.ToLower();
-		if (args == null)
-			args = Array.Empty<string>();
-		args = args.Select(@string => @string.Trim()).ToArray();
 		switch (command)
 		{
 			case "additive":
@@ -173,11 +171,15 @@ public static class CommandsManager
 					AudioHandler.Instance.StopSoundViaFade(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim()));
 				}
 				catch (SoundNotFoundException ex)
-					{ Debug.LogWarning($"{args[0].ToString().Trim()} is not a valid soundfile Path!"
-						+ ex); }
+				{
+					Debug.LogWarning($"{args[0].ToString().Trim()} is not a valid soundfile Path!"
+					+ ex);
+				}
 				catch (KeyNotFoundException ex)
-					{ Debug.LogWarning($"Cannot find sound to close: {args[0].ToString().Trim()}\n"
-						+ ex); }
+				{
+					Debug.LogWarning($"Cannot find sound to close: {args[0].ToString().Trim()}\n"
+					+ ex);
+				}
 				break;
 			case "playsound":
 				if (args.Length != 1)
@@ -217,20 +219,20 @@ public static class CommandsManager
 					+ ex);
 				}
 				break;
-				/*
-			case "startdelayedsound":
+			/*
+		case "startdelayedsound":
+			{
+				if (Extensions.TryInvoke<Coroutine, SoundNotFoundException>(() =>
+				StartCoroutine(Delay(float.Parse(args[0].ToString().Trim()), () => AudioHandler.Instance.PlaySound(args[0].ToString().Trim()))), out _, out _))
+					Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
+				IEnumerator Delay(float seconds, Action playAfterDelay)
 				{
-					if (Extensions.TryInvoke<Coroutine, SoundNotFoundException>(() =>
-					StartCoroutine(Delay(float.Parse(args[0].ToString().Trim()), () => AudioHandler.Instance.PlaySound(args[0].ToString().Trim()))), out _, out _))
-						Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
-					IEnumerator Delay(float seconds, Action playAfterDelay)
-					{
-						yield return new WaitForSeconds(seconds);
-						playAfterDelay.Invoke();
-					}
+					yield return new WaitForSeconds(seconds);
+					playAfterDelay.Invoke();
 				}
-				break;
-				*/
+			}
+			break;
+			*/
 			case "choice":
 				if (args.Length != 1)
 					throw new ArgumentException($"Command '{command}' " +
@@ -264,5 +266,6 @@ public static class CommandsManager
 				}
 				break;
 		}
+		return Task.CompletedTask;
 	}
 }

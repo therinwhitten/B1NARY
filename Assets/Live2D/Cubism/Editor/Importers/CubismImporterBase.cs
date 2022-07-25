@@ -20,7 +20,7 @@ namespace Live2D.Cubism.Editor.Importers
     public abstract class CubismImporterBase : ICubismImporter
     {
         /// <summary>
-        /// Gets the path to the imported asset.
+        /// Gets the savePath to the imported asset.
         /// </summary>
         public string AssetPath { get; private set; }
 
@@ -48,7 +48,7 @@ namespace Live2D.Cubism.Editor.Importers
 #region ICubismImporter
 
         /// <summary>
-        /// Sets the asset path.
+        /// Sets the asset savePath.
         /// </summary>
         void ICubismImporter.SetAssetPath(string value)
         {

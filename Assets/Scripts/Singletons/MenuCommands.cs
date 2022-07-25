@@ -47,7 +47,7 @@ public class MenuCommands : SingletonAlt<MenuCommands>
 	}
 	public void StartGame()
 	{
-		TransitionManager.transitionScene(startingScene);
+		TransitionHandler.Instance.TransitionToNextScene(startingScene, 0.5f).Wait();
 		waitThenDO(() =>
 		{
 			DialogueSystem.Instance.initialize();
@@ -88,10 +88,8 @@ public class MenuCommands : SingletonAlt<MenuCommands>
 	}
 	IEnumerator waitForTransitionsThenDo(System.Action action)
 	{
-		while (!TransitionManager.Instance.commandsAllowed)
-		{
+		while (!TransitionHandler.CommandsAllowed)
 			yield return new WaitForEndOfFrame();
-		}
 		action();
 	}
 }

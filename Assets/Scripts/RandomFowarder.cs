@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using CRandom = System.Random;
 using URandom = UnityEngine.Random;
 
@@ -24,10 +25,12 @@ public static class RandomFowarder
 	public enum RandomType
 	{
 		/// <summary> The C-Sharp type of randomization. </summary>
+		[InspectorName("C#")]
 		CSharp,
 		/// <summary> Default. Unity type of randomization. </summary>
 		Unity,
 		/// <summary> Doom's unique type of randomization, from 1993. </summary>
+		[InspectorName("Doom (1993)")]
 		Doom
 	}
 

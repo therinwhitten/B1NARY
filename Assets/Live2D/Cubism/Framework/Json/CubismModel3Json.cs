@@ -39,7 +39,7 @@ namespace Live2D.Cubism.Framework.Json
         /// Handles the loading of assets.
         /// </summary>
         /// <param name="assetType">The asset type to load.</param>
-        /// <param name="assetPath">The path to the asset.</param>
+        /// <param name="assetPath">The savePath to the asset.</param>
         /// <returns></returns>
         public delegate object LoadAssetAtPathHandler(Type assetType, string assetPath);
 
@@ -67,7 +67,7 @@ namespace Live2D.Cubism.Framework.Json
         /// <summary>
         /// Loads a model.json asset.
         /// </summary>
-        /// <param name="assetPath">The path to the asset.</param>
+        /// <param name="assetPath">The savePath to the asset.</param>
         /// <returns>The <see cref="CubismModel3Json"/> on success; <see langword="null"/> otherwise.</returns>
         public static CubismModel3Json LoadAtPath(string assetPath)
         {
@@ -78,7 +78,7 @@ namespace Live2D.Cubism.Framework.Json
         /// <summary>
         /// Loads a model.json asset.
         /// </summary>
-        /// <param name="assetPath">The path to the asset.</param>
+        /// <param name="assetPath">The savePath to the asset.</param>
         /// <param name="loadAssetAtPath">Handler for loading assets.</param>
         /// <returns>The <see cref="CubismModel3Json"/> on success; <see langword="null"/> otherwise.</returns>
         public static CubismModel3Json LoadAtPath(string assetPath, LoadAssetAtPathHandler loadAssetAtPath)
@@ -747,7 +747,7 @@ namespace Live2D.Cubism.Framework.Json
         public struct SerializableFileReferences
         {
             /// <summary>
-            /// Relative path to the moc3 asset.
+            /// Relative savePath to the moc3 asset.
             /// </summary>
             [SerializeField]
             public string Moc;
@@ -759,37 +759,37 @@ namespace Live2D.Cubism.Framework.Json
             public string[] Textures;
 
             /// <summary>
-            /// Relative path to the pose3.json.
+            /// Relative savePath to the pose3.json.
             /// </summary>
             [SerializeField]
             public string Pose;
 
             /// <summary>
-            /// Relative path to the expression asset.
+            /// Relative savePath to the expression asset.
             /// </summary>
             [SerializeField]
             public SerializableExpression[] Expressions;
 
             /// <summary>
-            /// Relative path to the pose motion3.json.
+            /// Relative savePath to the pose motion3.json.
             /// </summary>
             [SerializeField]
             public SerializableMotions Motions;
 
             /// <summary>
-            /// Relative path to the physics asset.
+            /// Relative savePath to the physics asset.
             /// </summary>
             [SerializeField]
             public string Physics;
 
             /// <summary>
-            /// Relative path to the user data asset.
+            /// Relative savePath to the user data asset.
             /// </summary>
             [SerializeField]
             public string UserData;
 
             /// <summary>
-            /// Relative path to the cdi3.json.
+            /// Relative savePath to the cdi3.json.
             /// </summary>
             [SerializeField]
             public string DisplayInfo;
@@ -877,13 +877,13 @@ namespace Live2D.Cubism.Framework.Json
         public struct SerializableMotion
         {
             /// <summary>
-            /// File path.
+            /// File savePath.
             /// </summary>
             [SerializeField]
             public string File;
 
             /// <summary>
-            /// Sound path.
+            /// Sound savePath.
             /// </summary>
             [SerializeField]
             public string Sound;

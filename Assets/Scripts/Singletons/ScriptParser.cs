@@ -88,10 +88,8 @@ public class ScriptParser : Singleton<ScriptParser>
 	// Update is called once per frame
 	void Update()
 	{
-		if (!TransitionManager.Instance.commandsAllowed)
-		{
+		if (!TransitionHandler.CommandsAllowed)
 			return;
-		}
 
 		// TODO: Make sure to use the new input system!
 		if ((Input.GetKeyDown(KeyCode.Space)
@@ -137,7 +135,7 @@ public class ScriptParser : Singleton<ScriptParser>
 	}
 	IEnumerator waitForTransitionsThenDo(Action action)
 	{
-		while (!TransitionManager.Instance.commandsAllowed)
+		while (!TransitionHandler.CommandsAllowed)
 		{
 			yield return new WaitForEndOfFrame();
 		}

@@ -19,8 +19,7 @@ public sealed class PersistentDataTab : DebuggerTab
 
 	public override void DisplayTab()
 	{
-		if (PersistentData.Instance.state != null)
-			ShowGameStateBlock();
+		ShowGameStateBlock();
 	}
 
 	/* It doesn't exist here
@@ -61,10 +60,10 @@ public sealed class PersistentDataTab : DebuggerTab
 	private Lookup<string, string> GameStateData()
 	{
 		var output = new List<(string type, string data)>();
-		output.AddRange(PersistentData.Instance.state.strings.Keys.Select(key => ("strings", $"{key}: {PersistentData.Instance.state.strings[key]}")));
-		output.AddRange(PersistentData.Instance.state.bools.Keys.Select(key => ("bools", $"{key}: {PersistentData.Instance.state.bools[key]}")));
-		output.AddRange(PersistentData.Instance.state.ints.Keys.Select(key => ("ints", $"{key}: {PersistentData.Instance.state.ints[key]}")));
-		output.AddRange(PersistentData.Instance.state.floats.Keys.Select(key => ("floats", $"{key}: {PersistentData.Instance.state.floats[key]}")));
+		output.AddRange(PersistentData.strings.Keys.Select(key => ("strings", $"{key}: {PersistentData.strings[key]}")));
+		output.AddRange(PersistentData.bools.Keys.Select(key => ("bools", $"{key}: {PersistentData.bools[key]}")));
+		output.AddRange(PersistentData.ints.Keys.Select(key => ("ints", $"{key}: {PersistentData.ints[key]}")));
+		output.AddRange(PersistentData.floats.Keys.Select(key => ("floats", $"{key}: {PersistentData.floats[key]}")));
 		return (Lookup<string, string>)output.ToLookup(line => line.type, line => line.data);
 	}
 

@@ -6,16 +6,14 @@ public class VoiceActorHandler
 	public string LastSpeaker { get; private set; } = string.Empty;
 	public AudioSource audioSource;
 
-	private VoiceLine? _currentVoiceLine;
-	public VoiceLine? CurrentVoiceLine
+	private ResourcesAsset<AudioClip> _currentVoiceLine;
+	public ResourcesAsset<AudioClip> CurrentVoiceLine
 	{
 		get => _currentVoiceLine;
 		private set
 		{
-			if (_currentVoiceLine != null)
-				_currentVoiceLine.Value.Dispose();
 			_currentVoiceLine = value;
-			audioSource.clip = _currentVoiceLine.Value.voiceLine;
+			audioSource.clip = _currentVoiceLine;
 		}
 	}
 
@@ -30,17 +28,17 @@ public class VoiceActorHandler
 			audioSource.Stop();
 	}
 
-	public void PlayVoice(string name, DialogueLine line, float voiceVolume, AudioSource voice)
+	public void PlayVoice(string name, ScriptLine line, float voiceVolume, AudioSource voice)
 	{
 		CurrentVoiceLine = GetVoiceLine(line);
-		if (!CurrentVoiceLine.HasValue)
+		if (CurrentVoiceLine != null)
 		{
 			StopVoice();
 			return;
 		}
 		PlayVoice(name, voiceVolume, voice);
 	}
-	public void PlayVoice(string name, float volume, AudioSource source, VoiceLine? clip = null)
+	public void PlayVoice(string name, float volume, AudioSource source, ResourcesAsset<AudioClip> clip = null)
 	{
 		if (name == null)
 		{
@@ -54,18 +52,18 @@ public class VoiceActorHandler
 			GameObject.Destroy(audioSource);
 			audioSource = source;
 		}
-		if (clip.HasValue)
-			CurrentVoiceLine = clip.Value;
+		if (clip != null)
+			CurrentVoiceLine = clip;
 		audioSource.volume = volume;
 		audioSource.Play();
 	}
 
-	public VoiceLine? GetVoiceLine(DialogueLine line)
+	public ResourcesAsset<AudioClip> GetVoiceLine(ScriptLine line)
 	{
-		string filePath = $"Voice/{line.scriptName}/{line.index}";
+		string filePath = $"Voice/{line.ScriptDocument}/{line.Index}";
 		try
 		{
-			return new VoiceLine(filePath);
+			return new ResourcesAsset<AudioClip>(filePath);
 		}
 		catch (InvalidOperationException ex)
 		{

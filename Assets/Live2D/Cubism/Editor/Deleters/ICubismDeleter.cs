@@ -14,7 +14,7 @@ namespace Live2D.Cubism.Editor.Deleters
     public interface ICubismDeleter
     {
         /// <summary>
-        /// Sets the asset path.
+        /// Sets the asset savePath.
         /// </summary>
         void SetAssetPath(string value);
 

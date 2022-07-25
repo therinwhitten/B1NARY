@@ -34,7 +34,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 		LoadNewLibrary(newScene);
 		VoiceActorHandler = new VoiceActorHandler();
 		PlayOnAwakeCommands();
-		GameCommands.SwitchedScenes += HandleSceneSwitch;
+		TransitionHandler.SwitchedScenes += HandleSceneSwitch;
 
 
 		void PlayOnAwakeCommands()
@@ -168,7 +168,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	}
 
 	///	<summary>Searches a sound in the resources folder via filePath, then plays it.</summary>
-	///	<param name ="soundPath">the audioclip path in the resource folder to play.</param>
+	///	<param name ="soundPath">the audioclip savePath in the resource folder to play.</param>
 	///	<param name ="useCustomAudioData">
 	///		if the <see cref="AudioClip"/> is found in 
 	///		customAudioData, then it will play that instead.
@@ -201,7 +201,7 @@ public class AudioHandler : SingletonAlt<AudioHandler>
 	}
 
 	///	<summary>Searches a sound in the resources folder via filePath, then fades it in.</summary>
-	///	<param name ="soundPath">the audioclip path in the resource folder to play.</param>
+	///	<param name ="soundPath">the audioclip savePath in the resource folder to play.</param>
 	///	<param name="fadeInSeconds">Seconds which it goes from 0 to 1.</param>
 	///	<param name ="useCustomAudioData">
 	///		if the <see cref="AudioClip"/> is found in 

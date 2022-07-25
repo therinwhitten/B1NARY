@@ -110,9 +110,9 @@ public class CharacterScript : MonoBehaviour
 			renderer.Material = material;
 	}
 
-	public void Speak(string name, DialogueLine Line)
+	public void Speak(string name, ScriptLine line)
 	{
-		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, Line, voicevolume, voice);
+		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, line, voicevolume, voice);
 	}
 
 
