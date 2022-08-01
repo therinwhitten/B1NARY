@@ -13,7 +13,7 @@ public class OptionsMenuController : MonoBehaviour
 
     [SerializeField]
     GameObject[] audioOptions;
-    // Start is called before the first frame update
+    // Awake is called before the first frame update
     void Start()
     {
         // x = 0;

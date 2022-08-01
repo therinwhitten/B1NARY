@@ -14,7 +14,7 @@ namespace Live2D.Cubism.Samples.OriginalWorkflow.Demo
     public class CubismLookTarget : MonoBehaviour, ICubismLookTarget
     {
         /// <summary>
-        /// Get mouse coordinates while dragging.
+        /// Get mousePosition coordinates while dragging.
         /// </summary>
         /// <returns>Mouse coordinates.</returns>
         public Vector3 GetPosition()

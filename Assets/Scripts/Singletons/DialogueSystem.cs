@@ -1,201 +1,132 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using System.Linq;
-
-
-public class DialogueSystem : Singleton<DialogueSystem>
+namespace B1NARY.UI
 {
+	using System.Threading.Tasks;
+	using System.Threading;
+	using UnityEngine;
+	using UnityEngine.UI;
+	using DesignPatterns;
 
-	public string currentSpeaker = "";
-	public ELEMENTS elements;
-
-	public bool additiveTextEnabled = false;
-
-	public int textFontSize = 30;
-
-	public int nameTextFontSize = 30;
-	// Use this for initialization
-	void Awake()
+	[RequireComponent(typeof(FadeController))]
+	public class DialogueSystem : SingletonAlt<DialogueSystem>
 	{
-		initialize();
-	}
-	public override void initialize()
-	{
-		elements.speechPanel = GameObject.Find("Panel-Speech");
-		elements.speakerNameText = GameObject.Find("SpeakerName").GetComponent<Text>();
-		elements.speechText = GameObject.Find("SpeechText").GetComponent<Text>();
-		elements.speechText.fontSize = textFontSize;
-		elements.speakerNameText.fontSize = nameTextFontSize;
-	}
-	/// <summary>
-	/// Say something and show it on the speech box.
-	/// </summary>
-	public void Say(string speech)
-	{
-		StopSpeaking();
+		public static void Initialize() => FindObjectOfType<DialogueSystem>().enabled = true;
+		public static void DeInitialize() => FindObjectOfType<DialogueSystem>().enabled = false;
 
-		speechText.text = targetSpeech;
-
-		speaking = StartCoroutine(Speaking(speech));
-	}
-
-	public void SayRich(string speech)
-	{
-		StopSpeaking();
-
-		speechText.text = targetSpeech;
-
-		speaking = StartCoroutine(Speaking(speech, true));
-	}
-
-	public void StopSpeaking()
-	{
-		if (isSpeaking)
+		/// <summary>
+		/// A property that directly points to the text box of <see cref="Text"/>
+		/// </summary>
+		public string CurrentSpeaker
 		{
-			StopCoroutine(speaking);
+			get => speakerBox.text;
+			set => speakerBox.text = value;
 		}
-		speaking = null;
-	}
-
-
-
-	public bool isSpeaking { get { return speaking != null; } }
-	[HideInInspector] public bool isWaitingForUserInput = false;
-
-	[HideInInspector] public string targetSpeech = "";
-	Coroutine speaking = null;
-	IEnumerator Speaking(string speech, bool rich = false)
-	{
-		speechText.text = speechText.text.Trim();
-		speechPanel.SetActive(true);
-		targetSpeech = speech;
-
-		if (!additiveTextEnabled)
-			speechText.text = "";
-		else
-			targetSpeech = speechText.text + " " + targetSpeech;
-
-		targetSpeech = targetSpeech.Trim();
-
-		speakerNameText.text = currentSpeaker;
-
-		isWaitingForUserInput = false;
-
-		if (rich)
+		public Text speakerBox, textBox;
+		/// <summary>
+		/// A property that directly points to the text box of <see cref="Text"/>
+		/// </summary>
+		public string CurrentText
 		{
-			// if (additiveTextEnabled)
-			//     targetSpeech = " " + speech;
+			get => textBox.text;
+			set => textBox.text = value;
+		}
+		private FadeController fadeController;
 
-			Stack<string> tags = new Stack<string>();
-			string newTag = "";
-			bool tagFound = false;
-			string[] buffer = { "", "", "" };
-			string initialText = speechText.text;
-			for (int i = speechText.text.Length; i < targetSpeech.Length; i++)
+		[HideInInspector]
+		public bool additiveTextEnabled = false;
+
+		[HideInInspector] public bool isWaitingForUserInput = false;
+		/// <summary> A task that gradually reveals the text. </summary>
+		/// <returns> The final speech <see cref="string"/>. Not affected by abruptly stopping. </returns>
+		public Task<string> SpeakingTask = Task.FromResult(string.Empty);
+		private CancellationTokenSource tokenSource = new CancellationTokenSource();
+
+
+		private void OnEnable()
+		{
+			B1NARYConsole.Log(name, "Initializing");
+			_ = fadeController.FadeIn(0.5f);
+		}
+		private void OnDisable()
+		{
+			B1NARYConsole.Log(name, "De-Initializing");
+			_ = fadeController.FadeOut(0.5f);
+		}
+
+		/// <summary>
+		/// Say something and show it on the speech box. rich text works or otherwise.
+		/// </summary>
+		public void Say(string speech)
+		{
+			StopSpeaking(false).Wait();
+			SpeakingTask = Speaking(speech, tokenSource.Token);
+		}
+
+		/// <summary>
+		/// Stops the speaker <see cref="Task"/>. 
+		/// </summary>
+		/// <param name="setFinalResultToCurrentText">
+		/// <see langword="true"/> to set the intended speech to reach, <see langword="false"/>
+		/// if it will be set as empty. <see langword="null"/> if it just resides as
+		/// the same.
+		/// </param>
+		public async Task StopSpeaking(bool? setFinalResultToCurrentText)
+		{
+			tokenSource.Cancel();
+			await SpeakingTask;
+			if (setFinalResultToCurrentText != null)
+				if (setFinalResultToCurrentText == true)
+					CurrentText = SpeakingTask.Result;
+				else
+					CurrentText = string.Empty;
+			tokenSource = new CancellationTokenSource();
+		}
+
+		private string NewLine()
+		{
+			if (additiveTextEnabled)
+				return CurrentText + ' ';
+			return string.Empty;
+		}
+
+		protected override void OnSingletonDestroy()
+		{
+			StopSpeaking(false).Wait();
+		}
+
+		/// <summary>
+		/// A <see cref="Task"/> that reveals <paramref name="speech"/> over time.
+		/// </summary>
+		/// <param name="speech">The speech to reveal.</param>
+		/// <param name="token">The token to stop it.</param>
+		/// <param name="lengthPerChar">Milliseconds to wait per character.</param>
+		/// <returns> <paramref name="speech"/>. </returns>
+		private Task<string> Speaking(string speech, CancellationToken token, int lengthPerChar = 30)
+		{
+			int startingLength = NewLine().Length; // Starts right after NewLine();
+			speech = (NewLine() + speech).Trim();
+			isWaitingForUserInput = false;
+			bool inTag = false;
+			for (int i = startingLength; i < speech.Length && !token.IsCancellationRequested; i++)
 			{
-				char c = targetSpeech[i];
-				if (tagFound)
+				char character = speech[i];
+				if (inTag)
 				{
-					newTag += c;
-				}
-
-				if (c.Equals('<'))
-				{
-					tagFound = true;
-					newTag += c;
-				}
-
-				if (c.Equals('>'))
-				{
-					tagFound = false;
-					// if we found the closing tag
-					// if stack is empty simply push the new tag found onto it
-					if (tags.Count == 0 && !newTag.Contains('/'))
-					{
-						tags.Push(newTag);
-						initialText += buffer[0] + buffer[1] + buffer[2];
-
-						buffer[0] = newTag;
-						buffer[1] = "";
-						buffer[2] = getClosingTag(newTag);
-					}
-					else //check to see if it's a closing tag
-					{
-						// if yes then pop the tag off the stack
-						if (newTag.Contains('/'))
-						{
-							tags.Pop();
-
-							// remove tags from buffer
-							initialText += buffer[0] + buffer[1];
-							buffer[0] = "";
-							buffer[1] = "";
-
-							buffer[2].Trim();
-							ArrayList bufferWords = new ArrayList(buffer[2].Split(' '));
-							initialText += bufferWords[0];
-							bufferWords.RemoveAt(0);
-							buffer[2] = System.String.Join(null, bufferWords.Cast<string>());
-						}
-						else //push it on top of the last one
-						{
-							tags.Push(newTag);
-							buffer[0] = buffer[0] + buffer[1] + newTag;
-							buffer[2] = getClosingTag(newTag) + ' ' + buffer[2];
-							buffer[1] = "";
-						}
-					}
-					newTag = "";
+					if (character == '>')
+						inTag = false;
 					continue;
 				}
-				if (!tagFound)
+				if (character == '<')
 				{
-					buffer[1] += c;
-					speechText.text = initialText + buffer[0] + buffer[1] + buffer[2];
-					yield return new WaitForEndOfFrame();
+					inTag = true;
+					continue;
 				}
+				CurrentText += character;
+				Task.Delay(lengthPerChar);
 			}
-		}
-		else while (speechText.text != targetSpeech)
-			{
-				speechText.text += targetSpeech[speechText.text.Length];
-				yield return new WaitForEndOfFrame();
-			}
-
-		//text finished
-		isWaitingForUserInput = true;
-		while (isWaitingForUserInput)
-			yield return new WaitForEndOfFrame();
-
-		StopSpeaking();
-	}
-
-	private string getClosingTag(string tag)
-	{
-		string closingTag = "</" + tag.Trim('<', '>') + ">";
-
-		if (tag.Contains("="))
-		{
-			closingTag = closingTag.Split('=')[0] + ">";
+			//text finished
+			isWaitingForUserInput = true;
+			return Task.FromResult(speech);
 		}
 
-		return closingTag;
 	}
-
-	[System.Serializable]
-	public class ELEMENTS
-	{
-		/// <summary>
-		/// The main panel containing all dialogue related elements on the UI
-		/// </summary>
-		public GameObject speechPanel;
-		public Text speakerNameText;
-		public Text speechText;
-	}
-	public GameObject speechPanel { get { return elements.speechPanel; } }
-	public Text speakerNameText { get { return elements.speakerNameText; } }
-	public Text speechText { get { return elements.speechText; } }
 }

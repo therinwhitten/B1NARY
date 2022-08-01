@@ -1,25 +1,28 @@
-﻿using System;
-using System.Runtime.Serialization;
-
-public class SoundNotFoundException : Exception
+﻿namespace B1NARY.Sounds
 {
-	public SoundNotFoundException()
+	using System;
+	using System.Runtime.Serialization;
+
+	public class SoundNotFoundException : Exception
 	{
+		public SoundNotFoundException()
+		{
 
-	}
+		}
 
-	public SoundNotFoundException(string message) : base(message)
-	{
+		public SoundNotFoundException(string message) : base(message)
+		{
 
-	}
+		}
 
-	public SoundNotFoundException(string message, Exception innerException) : base(message, innerException)
-	{
+		public SoundNotFoundException(string message, Exception innerException) : base(message, innerException)
+		{
 
-	}
+		}
 
-	protected SoundNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
-	{
+		protected SoundNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
+		{
 
+		}
 	}
 }

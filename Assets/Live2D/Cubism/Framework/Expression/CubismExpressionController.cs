@@ -122,7 +122,7 @@ namespace Live2D.Cubism.Framework.Expression
                 return;
             }
 
-            // Start expression when current expression changed.
+            // Awake expression when current expression changed.
             if(CurrentExpressionIndex != _lastExpressionIndex)
             {
                 StartExpression();

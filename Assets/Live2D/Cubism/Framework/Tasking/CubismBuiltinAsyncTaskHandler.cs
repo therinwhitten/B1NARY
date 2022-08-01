@@ -96,7 +96,7 @@ namespace Live2D.Cubism.Framework.Tasking
             CubismTaskQueue.OnTask = EnqueueTask;
 
 
-            // Start worker.
+            // Awake worker.
             Worker.Start();
         }
 

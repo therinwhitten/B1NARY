@@ -681,7 +681,7 @@ namespace Live2D.Cubism.Rendering
         {
             get
             {
-                // Lazily initialize.
+                // Lazily Initialize.
                 if (_sharedPropertyBlock == null)
                 {
                     _sharedPropertyBlock = new MaterialPropertyBlock();

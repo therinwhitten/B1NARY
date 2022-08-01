@@ -1,16 +1,18 @@
-public class DialogueLine
+namespace B1NARY
 {
-	public static implicit operator ScriptLine(DialogueLine line)
-		=> new ScriptLine(line.line, () => line.scriptName, line.index);
-
-	public string line;
-	public string scriptName;
-	public int index;
-	public DialogueLine(string line, int index, string scriptName)
+	public class DialogueLine
 	{
-		this.line = line;
-		this.index = index;
-		this.scriptName = scriptName;
-	}
 
+
+		public string line;
+		public string scriptName;
+		public int index;
+		public DialogueLine(string line, int index, string scriptName)
+		{
+			this.line = line;
+			this.index = index;
+			this.scriptName = scriptName;
+		}
+
+	}
 }

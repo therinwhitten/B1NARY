@@ -1,82 +1,96 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
-using UnityEngine.UI;
-
-[RequireComponent(typeof(FadeController))]
-public class MainMenuCommands : MonoBehaviour
+﻿namespace B1NARY
 {
-	// public int x, y;
-	// [SerializeField] int maxX, maxY;
-	// bool keyDown;
-	[SerializeField]
-	GameObject optionsMenu;
-	[SerializeField]
-	GameObject dialogueBox;
-	FadeController fadeController;
+	using UnityEngine;
+	using System;
+	using System.Threading.Tasks;
+	using System.Diagnostics;
+	using UI;
 
-	private void Start()
+	[RequireComponent(typeof(FadeController))]
+	public class MainMenuCommands : MonoBehaviour
 	{
-		fadeController = GetComponent<FadeController>();
-	}
+		// public int x, y;
+		// [SerializeField] int maxX, maxY;
+		// bool keyDown;
+		[SerializeField]
+		GameObject optionsMenu;
+		[SerializeField]
+		GameObject dialogueBox;
+		FadeController fadeController;
+		[SerializeField]
+		private FadeController transitionHandler;
 
+		private void Start()
+		{
+			fadeController = GetComponent<FadeController>();
+		}
 
-	// BUTTON BEHAVIOURS
-	public void NewGame()
-	{
-		DialogueSystem.Instance.initialize();
-		ScriptParser.Instance.initialize();
-		FadeController.FadeInAndActivate(dialogueBox.GetComponent<FadeController>(), 0.5f);
-		fadeController.FadeOutAndDeActivate(0.5f);
-	}
-	public void LoadGame()
-	{
-		throw new NotImplementedException();
-	}
-	public void Options()
-	{
-		throw new NotImplementedException();
-	}
-	public void Exit() => GameCommands.QuitGame();
+		// BUTTON BEHAVIOURS
+		private static Task NewGameTask = Task.CompletedTask;
+		public void NewGame()
+		{
+			B1NARYConsole.Log(name, "Initialized new game sequence.");
+			NewGameTask = Taskable();
 
-	// keeping this commented since I don't need it for now. May revisit in the future if we need a keyboard UI
-	// // Update is called once per frame
-	// void Update()
-	// {
-	//     if (Input.GetAxis("Vertical") != 0 || Input.GetAxis("Vertical") != 0)
-	//     {
-	//         if (!keyDown)
-	//         {
-	//             if (Input.GetAxis("Vertical") < 0)
-	//             {
-	//                 if (y < maxY)
-	//                 {
-	//                     y++;
-	//                 }
-	//                 else
-	//                 {
-	//                     y = 0;
-	//                 }
-	//             }
-	//             else if (Input.GetAxis("Vertical") > 0)
-	//             {
-	//                 if (y > 0)
-	//                 {
-	//                     y--;
-	//                 }
-	//                 else
-	//                 {
-	//                     y = maxY;
-	//                 }
-	//             }
-	//             keyDown = true;
-	//         }
-	//     }
-	//     else
-	//     {
-	//         keyDown = false;
-	//     }
-	// }
+			async Task Taskable()
+			{
+				Stopwatch stopwatch = Stopwatch.StartNew();
+				B1NARYConsole.Log(name, "Stage 1", "Starting Pre-loading sequence.");
+				await Task.WhenAll(PreTasks());
+				B1NARYConsole.Log(name, "Stage 2", "Starting Loading sequence.");
+				await Task.WhenAll(LoadTasks());
+				B1NARYConsole.Log(name, "Stage 3", "Starting Post-Loading sequence.");
+				await Task.WhenAll(PostTasks());
+				stopwatch.Stop();
+				B1NARYConsole.Log(name, $"Loading Lasted: {stopwatch.Elapsed}");
+			}
+			/*
+			StartCoroutine(CommitTasks(PreTasks(), CommitTasks(LoadTasks(), CommitTasks(PostTasks(), After()))));
 
+			IEnumerator CommitTasks(Task[] tasks, IEnumerator nextTask = null)
+			{
+				const int maxCycles = 5000;
+				Task committingTasks = Task.WhenAll(tasks);
+				for (int cycles = 0; !committingTasks.IsCompleted && cycles < maxCycles; cycles++)
+					yield return new WaitForEndOfFrame();
+				if (nextTask != null)
+					while (nextTask.MoveNext())
+						yield return nextTask.Current;
+			}
+			IEnumerator After()
+			{
+				yield break;
+			}
+			*/
+			Task[] PreTasks() => new Task[]
+			{
+				fadeController.FadeOut(0.5f),
+				//transitionHandler.FadeIn(1f),
+			};
+			Task[] LoadTasks() => new Task[]
+			{
+				Task.Run(() => B1NARYConsole.Log(nameof(MainMenuCommands),
+					"Loading systems..")),
+				Task.WhenAny(Task.Run(DialogueSystem.Initialize), Task.Delay(100)),
+				FadeController.FadeInAndActivate(dialogueBox.GetComponent<FadeController>(), 0.1f),
+			};
+			Task[] PostTasks() => new Task[]
+			{
+				Task.Run(() => B1NARYConsole.Log(nameof(MainMenuCommands),
+					"Task Complete! Starting misc systems.")),
+				//transitionHandler.FadeOut(1f),
+				ScriptParser.Instance.Initialize(),
+				Task.Run(() => { Task.Delay(1000); Destroy(gameObject); }),
+			};
+		}
+		public void LoadGame()
+		{
+			throw new NotImplementedException();
+		}
+		public void Options()
+		{
+			throw new NotImplementedException();
+		}
+		public void Exit() => Application.Quit();
+	}
 }

@@ -1,43 +1,43 @@
-﻿using System.Linq;
-using UnityEngine;
-using UnityEditor;
-using System;
-using System.Collections.Generic;
-
-[CustomEditor(typeof(TransitionHandler))]
-public class TransitionHandlerEditor : Editor
+﻿namespace B1NARY.Editor
 {
-	private TransitionHandler m_Handler;
-	public TransitionHandler TransitionHandler 
-	{ 
-		get
-		{
-			if (m_Handler == null)
-				m_Handler = (TransitionHandler)target;
-			return m_Handler;
-		} 
-	}
+	using UnityEditor;
 
-	public override void OnInspectorGUI()
+	[CustomEditor(typeof(TransitionHandler))]
+	public class TransitionHandlerEditor : Editor
 	{
-		SerializedObject serializedObject = new SerializedObject(TransitionHandler);
-		serializedObject.Update();
+		private TransitionHandler m_Handler;
+		public TransitionHandler TransitionHandler
+		{
+			get
+			{
+				if (m_Handler == null)
+					m_Handler = (TransitionHandler)target;
+				return m_Handler;
+			}
+		}
 
-		// Transitions
-		EditorGUILayout.LabelField("Transitions", EditorStyles.boldLabel);
-		EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionHandler.transitionShader)));
-		if (TransitionHandler.transitionShader != null)
-			TransitionHandler.fadePercentageName = EditorGUILayout
-				.DelayedTextField("Fade Percentage Name", TransitionHandler.fadePercentageName);
-		EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionHandler.textureIn)));
-		EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionHandler.textureOut)));
+		public override void OnInspectorGUI()
+		{
+			SerializedObject serializedObject = new SerializedObject(TransitionHandler);
+			serializedObject.Update();
 
-		// Backgrounds
-		EditorGUILayout.Space();
-		EditorGUILayout.LabelField("Backgrounds", EditorStyles.boldLabel);
-		TransitionHandler.backgroundCanvasName = EditorGUILayout.DelayedTextField("Background Canvas Name", TransitionHandler.backgroundCanvasName);
-		TransitionHandler.AutomaticallyAssignAnimatedBG = EditorGUILayout.ToggleLeft("Automatically Assign Animated Background", TransitionHandler.AutomaticallyAssignAnimatedBG);
+			// Transitions
+			EditorGUILayout.LabelField("Transitions", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionHandler.transitionShader)));
+			TransitionHandler.useTransitionValue = EditorGUILayout.Toggle("Use Transition Value", TransitionHandler.useTransitionValue);
+			if (TransitionHandler.transitionShader != null && TransitionHandler.useTransitionValue)
+				TransitionHandler.fadePercentageName = EditorGUILayout
+					.DelayedTextField("Fade Percentage Name", TransitionHandler.fadePercentageName);
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionHandler.textureIn)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionHandler.textureOut)));
 
-		serializedObject.ApplyModifiedProperties();
+			// Backgrounds
+			EditorGUILayout.Space();
+			EditorGUILayout.LabelField("Backgrounds", EditorStyles.boldLabel);
+			TransitionHandler.backgroundCanvasName = EditorGUILayout.DelayedTextField("Background Canvas Name", TransitionHandler.backgroundCanvasName);
+			TransitionHandler.AutomaticallyAssignAnimatedBG = EditorGUILayout.ToggleLeft("Automatically Assign Animated Background", TransitionHandler.AutomaticallyAssignAnimatedBG);
+
+			serializedObject.ApplyModifiedProperties();
+		}
 	}
 }

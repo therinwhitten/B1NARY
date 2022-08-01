@@ -1,209 +1,212 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using Live2D.Cubism.Framework.Expression;
-using Live2D.Cubism.Rendering;
-using System;
-
-[RequireComponent(typeof(Animator))]
-public class CharacterScript : MonoBehaviour
+﻿namespace B1NARY
 {
-	private Animator animator;
+	using System;
+	using System.Collections;
+	using UnityEngine;
+	using Live2D.Cubism.Framework.Expression;
+	using Live2D.Cubism.Rendering;
+	using B1NARY.ScriptingBeta;
+	using B1NARY.Sounds;
 
-	[HideInInspector]
-	public string currentExpression;
-	[HideInInspector]
-	public string prefabName;
-
-	[HideInInspector]
-	public string currentAnimation = "idle";
-
-	private string defaultAnimation = "idle";
-	public string charName;
-	public string[] expressions;
-	[HideInInspector]
-	public RectTransform rectTransform;
-	public AudioSource voice;
-	public CubismRenderer[] renderers;
-	private Material lighting;
-	private Material lightingFocus;
-	private Material lightingNoFocus;
-	public bool focused = false;
-
-	public Vector2 anchorPadding { get { return rectTransform.anchorMax - rectTransform.anchorMin; } }
-	private Vector3 originalScale;
-	float voicevolume = 1f;
-	private void Awake()
+	[RequireComponent(typeof(Animator))]
+	public class CharacterScript : MonoBehaviour
 	{
-		rectTransform = gameObject.GetComponent<RectTransform>();
-		originalScale = rectTransform.localScale;
-		voice = gameObject.GetComponent<AudioSource>();
-		renderers = gameObject.GetComponentsInChildren<CubismRenderer>();
-		animator = GetComponent<Animator>();
-		// initLighting();
-	}
-	public void lightingIntoFocus()
-	{
-		focused = true;
-		targetMaterial = lighting;
-		targetScale = new Vector3(originalScale.x * 1.05f, originalScale.y * 1.05f, originalScale.z);
-		transitionFocus();
-	}
-	public void lightingOutOfFocus()
-	{
-		focused = false;
-		targetMaterial = lightingNoFocus;
-		targetScale = new Vector3(originalScale.x * 0.95f, originalScale.y * 0.95f, originalScale.z);
-		transitionFocus();
-	}
+		private Animator animator;
 
-	private void stopLighting()
-	{
-		if (transitioningFocus != null)
+		[HideInInspector]
+		public string currentExpression;
+		[HideInInspector]
+		public string prefabName;
+
+		[HideInInspector]
+		public string currentAnimation = "idle";
+
+		private string defaultAnimation = "idle";
+		public string charName;
+		public string[] expressions;
+		[HideInInspector]
+		public RectTransform rectTransform;
+		public AudioSource voice;
+		public CubismRenderer[] renderers;
+		private Material lighting;
+		private Material lightingFocus;
+		private Material lightingNoFocus;
+		public bool focused = false;
+
+		public Vector2 anchorPadding { get { return rectTransform.anchorMax - rectTransform.anchorMin; } }
+		private Vector3 originalScale;
+		float voicevolume = 1f;
+		private void Awake()
 		{
-			StopCoroutine(transitioningFocus);
+			rectTransform = gameObject.GetComponent<RectTransform>();
+			originalScale = rectTransform.localScale;
+			voice = gameObject.GetComponent<AudioSource>();
+			renderers = gameObject.GetComponentsInChildren<CubismRenderer>();
+			animator = GetComponent<Animator>();
+			// initLighting();
+		}
+		public void lightingIntoFocus()
+		{
+			focused = true;
+			targetMaterial = lighting;
+			targetScale = new Vector3(originalScale.x * 1.05f, originalScale.y * 1.05f, originalScale.z);
+			transitionFocus();
+		}
+		public void lightingOutOfFocus()
+		{
+			focused = false;
+			targetMaterial = lightingNoFocus;
+			targetScale = new Vector3(originalScale.x * 0.95f, originalScale.y * 0.95f, originalScale.z);
+			transitionFocus();
+		}
+
+		private void stopLighting()
+		{
+			if (transitioningFocus != null)
+			{
+				StopCoroutine(transitioningFocus);
+				transitioningFocus = null;
+			}
+		}
+		private void transitionFocus()
+		{
+			stopLighting();
+			transitioningFocus = StartCoroutine(TransitioningFocus());
+		}
+		Coroutine transitioningFocus = null;
+		Material targetMaterial;
+		Vector3 targetScale;
+		IEnumerator TransitioningFocus()
+		{
+			changeLighting(targetMaterial);
+
+			while (transform.localScale != targetScale)
+			{
+				transform.localScale = Vector3.MoveTowards(rectTransform.localScale, targetScale, 5f);
+				yield return new WaitForEndOfFrame();
+			}
 			transitioningFocus = null;
 		}
-	}
-	private void transitionFocus()
-	{
-		stopLighting();
-		transitioningFocus = StartCoroutine(TransitioningFocus());
-	}
-	Coroutine transitioningFocus = null;
-	Material targetMaterial;
-	Vector3 targetScale;
-	IEnumerator TransitioningFocus()
-	{
-		changeLighting(targetMaterial);
-
-		while (transform.localScale != targetScale)
+		public void initLighting()
 		{
-			transform.localScale = Vector3.MoveTowards(rectTransform.localScale, targetScale, 5f);
-			yield return new WaitForEndOfFrame();
-		}
-		transitioningFocus = null;
-	}
-	public void initLighting()
-	{
-		lighting = new Material(GameObject.Find("LightingOverlay").GetComponent<SpriteRenderer>().material);
+			lighting = new Material(GameObject.Find("LightingOverlay").GetComponent<SpriteRenderer>().material);
 
-		lightingFocus = new Material(lighting);
-		lightingFocus.color = new Color(lighting.color.r + lighting.color.r / 4, lighting.color.g + lighting.color.g / 4, lighting.color.b + lighting.color.b / 4);
+			lightingFocus = new Material(lighting);
+			lightingFocus.color = new Color(lighting.color.r + lighting.color.r / 4, lighting.color.g + lighting.color.g / 4, lighting.color.b + lighting.color.b / 4);
 
-		lightingNoFocus = new Material(lighting);
-		lightingNoFocus.color = new Color(lighting.color.r - lighting.color.r / 2, lighting.color.g - lighting.color.g / 2, lighting.color.b - lighting.color.b / 2);
+			lightingNoFocus = new Material(lighting);
+			lightingNoFocus.color = new Color(lighting.color.r - lighting.color.r / 2, lighting.color.g - lighting.color.g / 2, lighting.color.b - lighting.color.b / 2);
 
-		foreach (CubismRenderer renderer in renderers)
-		{
-			if (lighting != null)
+			foreach (CubismRenderer renderer in renderers)
 			{
-				renderer.Material = lighting;
+				if (lighting != null)
+				{
+					renderer.Material = lighting;
+				}
 			}
 		}
-	}
-	private void changeLighting(Material material)
-	{
-		if (material == null)
-			return;
-		foreach (CubismRenderer renderer in renderers)
-			renderer.Material = material;
-	}
-
-	public void Speak(string name, ScriptLine line)
-	{
-		AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, line, voicevolume, voice);
-	}
-
-
-	public void UseAnimation(string animName)
-	{
-		animName = animName.Trim();
-		try 
+		private void changeLighting(Material material)
 		{
-			animator.SetTrigger(animName);
-			currentAnimation = animName;
+			if (material == null)
+				return;
+			foreach (CubismRenderer renderer in renderers)
+				renderer.Material = material;
 		}
-		catch (NullReferenceException ex)
-		{
-			Debug.LogError($"Animation '{animName}' is not found in animation list"
-				+ $"of character '{charName}' \n{ex}");
-		}
-	}
 
-	public void changeExpression(string expressionName)
-	{
-		currentExpression = expressionName;
-		int expressionIndex = System.Array.IndexOf(expressions, expressionName);
-		// Debug.Log("Changing expression of character " + charName + ". Name: " + expressionName + ". Index: " + expressionIndex);
-		try
+		public void Speak(string name, ScriptLine line)
 		{
-			gameObject.GetComponent<CubismExpressionController>().CurrentExpressionIndex = expressionIndex;
+			AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, line, voicevolume, voice);
 		}
-		catch (NullReferenceException)
-		{
-			Debug.LogWarning("Error! Expression " + expressionName + " not found in expression list of character: " + charName);
-		}
-	}
 
-	[HideInInspector]
-	public Vector2 targetPosition;
-	public Vector2 currentPosition;
-	Coroutine moving;
-	[HideInInspector]
-	public bool isMoving { get { return moving != null; } }
 
-	public void MoveTo(Vector2 Target, float speed, bool smooth = true)
-	{
-		StopMoving();
-		moving = StartCoroutine(Moving(Target, speed, smooth));
-		currentPosition = Target;
-	}
-	public void StopMoving(bool goToTarget = true)
-	{
-		if (isMoving)
+		public void UseAnimation(string animName)
 		{
-			StopCoroutine(moving);
-			if (goToTarget)
+			animName = animName.Trim();
+			try
 			{
-				SetPosition(targetPosition);
+				animator.SetTrigger(animName);
+				currentAnimation = animName;
+			}
+			catch (NullReferenceException ex)
+			{
+				Debug.LogError($"Animation '{animName}' is not found in animation list"
+					+ $"of character '{charName}' \n{ex}");
 			}
 		}
-		// currentPosition = targetPosition;
-		moving = null;
-	}
-	public void SetPosition(Vector2 target)
-	{
-		currentPosition = target;
-		Vector2 padding = anchorPadding;
 
-		float maxX = 1f - padding.x;
-		float maxY = 1f - padding.y;
-
-		Vector2 minAnchorTarget = new Vector2(maxX * target.x, maxY * target.y);
-		rectTransform.anchorMin = minAnchorTarget;
-		rectTransform.anchorMax = rectTransform.anchorMin + padding;
-	}
-	IEnumerator Moving(Vector2 target, float speed, bool smooth)
-	{
-		targetPosition = target;
-
-		Vector2 padding = anchorPadding;
-
-		float maxX = 1f - padding.x;
-		float maxY = 1f - padding.y;
-
-		Vector2 minAnchorTarget = new Vector2(maxX * targetPosition.x, maxY * targetPosition.y);
-		speed *= Time.deltaTime;
-
-		while (rectTransform.anchorMin != minAnchorTarget)
+		public void changeExpression(string expressionName)
 		{
-			rectTransform.anchorMin = (!smooth) ? Vector2.MoveTowards(rectTransform.anchorMin, minAnchorTarget, speed) : Vector2.Lerp(rectTransform.anchorMin, minAnchorTarget, speed);
+			currentExpression = expressionName;
+			int expressionIndex = System.Array.IndexOf(expressions, expressionName);
+			// Debug.Log("Changing expression of character " + charName + ". Name: " + expressionName + ". Index: " + expressionIndex);
+			try
+			{
+				gameObject.GetComponent<CubismExpressionController>().CurrentExpressionIndex = expressionIndex;
+			}
+			catch (NullReferenceException)
+			{
+				Debug.LogWarning("Error! Expression " + expressionName + " not found in expression list of character: " + charName);
+			}
+		}
+
+		[HideInInspector]
+		public Vector2 targetPosition;
+		public Vector2 currentPosition;
+		Coroutine moving;
+		[HideInInspector]
+		public bool isMoving { get { return moving != null; } }
+
+		public void MoveTo(Vector2 Target, float speed, bool smooth = true)
+		{
+			StopMoving();
+			moving = StartCoroutine(Moving(Target, speed, smooth));
+			currentPosition = Target;
+		}
+		public void StopMoving(bool goToTarget = true)
+		{
+			if (isMoving)
+			{
+				StopCoroutine(moving);
+				if (goToTarget)
+				{
+					SetPosition(targetPosition);
+				}
+			}
+			// currentPosition = targetPosition;
+			moving = null;
+		}
+		public void SetPosition(Vector2 target)
+		{
+			currentPosition = target;
+			Vector2 padding = anchorPadding;
+
+			float maxX = 1f - padding.x;
+			float maxY = 1f - padding.y;
+
+			Vector2 minAnchorTarget = new Vector2(maxX * target.x, maxY * target.y);
+			rectTransform.anchorMin = minAnchorTarget;
 			rectTransform.anchorMax = rectTransform.anchorMin + padding;
-			yield return new WaitForEndOfFrame();
 		}
-		currentPosition = target;
-		StopMoving();
-	}
+		IEnumerator Moving(Vector2 target, float speed, bool smooth)
+		{
+			targetPosition = target;
 
+			Vector2 padding = anchorPadding;
+
+			float maxX = 1f - padding.x;
+			float maxY = 1f - padding.y;
+
+			Vector2 minAnchorTarget = new Vector2(maxX * targetPosition.x, maxY * targetPosition.y);
+			speed *= Time.deltaTime;
+
+			while (rectTransform.anchorMin != minAnchorTarget)
+			{
+				rectTransform.anchorMin = (!smooth) ? Vector2.MoveTowards(rectTransform.anchorMin, minAnchorTarget, speed) : Vector2.Lerp(rectTransform.anchorMin, minAnchorTarget, speed);
+				rectTransform.anchorMax = rectTransform.anchorMin + padding;
+				yield return new WaitForEndOfFrame();
+			}
+			currentPosition = target;
+			StopMoving();
+		}
+	}
 }

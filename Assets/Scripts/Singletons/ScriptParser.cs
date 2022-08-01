@@ -1,247 +1,187 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Text;
-using System.Linq;
-using System;
-
-public class ScriptParser : Singleton<ScriptParser>
+﻿namespace B1NARY
 {
-	[HideInInspector]
-	public bool scriptChanged = false;
-	public string scriptName;
-	public bool paused = false;
-	bool choice = false;
-	// public int lineIndex = 0;
-	// public int continueIndex = 0;
+	using System.IO;
+	using System.Threading;
+	using System.Threading.Tasks;
+	using System.Text.RegularExpressions;
+	using System.Collections.Generic;
+	using UnityEngine;
+	using UnityEngine.InputSystem;
+	using B1NARY.DesignPatterns;
+	using B1NARY.ScriptingBeta;
+	using B1NARY.UI;
 
-	public Dictionary<string, AudioClip> voiceLines { get; set; }
-
-	string Path => $"{Application.streamingAssetsPath}/Docs/{scriptName}.txt";
-
-	public Dictionary<string, List<string>> currentChoiceOptions;
-	DialogueSystem dialogue { get { return DialogueSystem.Instance; } }
-
-	StreamReader reader = null;
-
-	// public string currentNode.GetCurrentLine() { get { return currentNode.GetCurrentLine(); } }
-
-	// regex for grabbing rich text tags
-	Regex richRegex = new Regex("<(.*?)>");
-
-	// regex for grabbing expressions
-	Regex emoteRegex = new Regex("\\[(.*?)\\]");
-
-	// regex for commands
-	Regex commandRegex = new Regex("\\{(.*?)\\}");
-	public DialogueNode currentNode;
-
-
-
-	// Start is called before the first frame update
-	void Awake()
+	public class ScriptParser : SingletonAlt<ScriptParser>
 	{
-		DontDestroyOnLoad(this.gameObject);
-	}
+		public PlayerInput playerInput;
+		[HideInInspector]
+		public bool scriptChanged = false;
+		public string scriptName;
+		public bool paused = false;
+		bool choice = false;
+		// public int lineIndex = 0;
+		// public int continueIndex = 0;
 
-	public override void initialize()
-	{
-		// lineIndex = 0;
-		reader = new StreamReader(Path);
-		currentNode = new DialogueNode(GetLines());
-		// readNextLine();
+		public Dictionary<string, AudioClip> voiceLines { get; set; }
 
-		ParseLine(currentNode.GetCurrentLine());
-	}
+		string Path => $"{Application.streamingAssetsPath}/Docs/{scriptName}.txt";
 
-	public void ChangeScriptFile(string newScript, int position = 0)
-	{
-		scriptName = newScript;
-		reader = new StreamReader(Path);
-		currentNode = new DialogueNode(GetLines());
-		// This is fucking retarded. I don't remember why I did this and now
-		// I'm too afraid to change it
-		position -= 2;
-		position = Mathf.Clamp(position, 0, int.MaxValue);
-		currentNode.moveIndex(position);
-		scriptChanged = false;
+		public Dictionary<string, List<string>> currentChoiceOptions;
 
-		ParseLine(currentNode.GetCurrentLine());
-	}
+		StreamReader reader = null;
 
-	List<DialogueLine> GetLines()
-	{
-		List<DialogueLine> lines = new List<DialogueLine>();
-		int i = 1;
-		while (!reader.EndOfStream)
+		// public string currentNode.GetCurrentLine() { get { return currentNode.GetCurrentLine(); } }
+
+		// regex for grabbing rich text tags
+		Regex richRegex = new Regex("<(.*?)>");
+
+		// regex for grabbing expressions
+		Regex emoteRegex = new Regex("\\[(.*?)\\]");
+
+		// regex for commands
+		Regex commandRegex = new Regex("\\{(.*?)\\}");
+		public DialogueNode currentNode;
+
+		public Task<ScriptLine> CurrentParsedLineTask { get; private set; }
+
+		// Awake is called before the first frame update
+		protected override void SingletonAwake()
 		{
-			DialogueLine line = new DialogueLine(reader.ReadLine(), i, scriptName);
-			lines.Add(line);
-			i++;
+			DontDestroyOnLoad(gameObject);
+			playerInput.actions.FindAction("Mouse Press", true).performed += OnClick;
+			playerInput.actions.FindAction("Fast Skip", true).performed += OnClick;
 		}
-		reader.Close();
-		return lines;
-	}
 
-	// Update is called once per frame
-	void Update()
-	{
-		if (!TransitionHandler.CommandsAllowed)
-			return;
-
-		// TODO: Make sure to use the new input system!
-		if ((Input.GetKeyDown(KeyCode.Space)
-		|| Input.GetKeyDown(KeyCode.Mouse0)
-		|| Input.GetKey(KeyCode.LeftControl))
-		 && !paused)
+		public Task Initialize()
 		{
-			if (!dialogue.isSpeaking || dialogue.isWaitingForUserInput)
+			// lineIndex = 0;
+			B1NARYConsole.Log(nameof(ScriptParser), "Initializing..");
+			ChangeScriptFile(scriptName, 0);
+			return Task.CompletedTask;
+			//reader = new StreamReader(Path);
+			//currentNode = new DialogueNode(GetLines());
+			// readNextLine();
+
+			//CurrentParsedLineTask = ParseLine(currentNode.GetCurrentLine(), true);
+		}
+
+		public void ChangeScriptFile(string newScript, int position = 0)
+		{
+			B1NARYConsole.Log(nameof(ScriptParser), $"Changing script to {newScript} as pos {position}");
+			scriptName = newScript;
+			reader = new StreamReader(Path);
+			currentNode = new DialogueNode(GetLines());
+			// This is fucking retarded. I don't remember why I did this and now
+			// I'm too afraid to change it
+			position -= 2;
+			position = Mathf.Clamp(position, 0, int.MaxValue);
+			currentNode.moveIndex(position);
+			scriptChanged = false;
+
+			CurrentParsedLineTask = ParseLine(currentNode.GetCurrentLine());
+		}
+
+		List<DialogueLine> GetLines()
+		{
+			B1NARYConsole.Log(nameof(ScriptParser), $"Reading All lines of '{Path}'..");
+			List<DialogueLine> lines = new List<DialogueLine>();
+			int i = 1;
+			while (!reader.EndOfStream)
 			{
-				// // if end of file has been reached
-				// if (currentNode.endReached())
-				// {
-				//     if (currentNode.previous != null)
-				//     {
-				//         // if we reached the end of the node but there's a parent node,
-				//         // continue from where we left off
-				//         DialogueNode previousNode = currentNode.previous;
-				//         currentNode = previousNode;
-				//         currentNode.index--;
-				//         parseLine(currentNode.GetCurrentLine());
-				//     }
-				//     else
-				//     {
-				//         return;
-				//     }
-				// }
-				// else grab next line
+				DialogueLine line = new DialogueLine(reader.ReadLine(), i, scriptName);
+				lines.Add(line);
+				i++;
+			}
+			reader.Close();
+			return lines;
+		}
+
+		private void OnClick(InputAction.CallbackContext callbackContext)
+		{
+			if (!TransitionHandler.CommandsAllowed)
+				return;
+			if (DialogueSystem.Instance.SpeakingTask.IsCompleted)
+			{
 				ReadNextLine();
 				if (currentNode != null)
-					ParseLine(currentNode.GetCurrentLine());
+					_ = ParseLine(currentNode.GetCurrentLine());
 			}
 			else
 			// if the dialogue is still being written out just skip to the end of the line
 			{
-				dialogue.StopSpeaking();
-				dialogue.speechText.text = dialogue.targetSpeech;
+				_ = DialogueSystem.Instance.StopSpeaking(true);
 			}
 		}
-	}
-	private void waitThenDO(Action action)
-	{
-		Instance.StartCoroutine(waitForTransitionsThenDo(action));
-	}
-	IEnumerator waitForTransitionsThenDo(Action action)
-	{
-		while (!TransitionHandler.CommandsAllowed)
+		public void PlayVA(DialogueLine line)
 		{
-			yield return new WaitForEndOfFrame();
+			string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
+			B1NARYConsole.Log(nameof(ScriptParser), $"Playing VoiceLine '{line.index}'" +
+				$"of character '{currentSpeaker}'");
+			if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
+				charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, new ScriptLine(line));
+			else
+				B1NARYConsole.LogError(nameof(ScriptParser), $"Character '{currentSpeaker}' does not exist!");
 		}
-		action();
-	}
-	public void PlayVA(DialogueLine Line)
-	{
-		string currentSpeaker = DialogueSystem.Instance.currentSpeaker;
-		if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
-			charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, Line);
-		else
-			Debug.LogError($"Character '{currentSpeaker}' does not exist!");
-	}
-	public void ParseLine(DialogueLine Line)
-	{
-
-		// RICH TEXT
-		// Unity already supports rich text natively,
-		// we just need to make sure the typewriter
-		// works properly with it
-		waitThenDO(() =>
+		public async Task<ScriptLine> ParseLine(DialogueLine Line, bool @override = false)
 		{
 			if (Line == null || paused)
+				return default;
+			var line = new ScriptLine(Line);
+			Task task = @override ? Task.CompletedTask :
+				Task.Run(() => SpinWait.SpinUntil(() => TransitionHandler.CommandsAllowed));
+			await task;
+			switch (line.type)
 			{
-				return;
+				case ScriptLine.Type.Normal:
+					PlayVA(Line);
+					CharacterManager.Instance.changeLightingFocus();
+					DialogueSystem.Instance.Say(line.lineData);
+					return line;
+				// CHANGING EXPRESSIONS
+				// expressions in the script will be written like this: [happy]
+				// expressions must be on their own lines 
+				case ScriptLine.Type.Emotion:
+					string expression = ScriptLine.CastEmotion(line);
+					CharacterManager.Instance.changeExpression(DialogueSystem.Instance.CurrentSpeaker, expression);
+					ReadNextLine();
+					await ParseLine(currentNode.GetCurrentLine());
+					return line;
+				case ScriptLine.Type.Speaker:
+					string speaker = ScriptLine.CastSpeaker(line);
+					DialogueSystem.Instance.CurrentSpeaker = speaker;
+					ReadNextLine();
+					await ParseLine(currentNode.GetCurrentLine());
+					return line;
+				// COMMANDS
+				// These will be any other type of commands 
+				// that aren't rich text tags or emotion controls
+				case ScriptLine.Type.Command:
+					var (command, arguments) = ScriptLine.CastCommand(line);
+					CommandsManager.HandleWithArgs(command, arguments);
+					if (scriptChanged)
+						return line;
+					ReadNextLine();
+					await ParseLine(currentNode.GetCurrentLine());
+					return line;
+				case ScriptLine.Type.BeginIndent:
+				case ScriptLine.Type.EndIndent:
+				case ScriptLine.Type.Empty:
+				default:
+					ReadNextLine();
+					await ParseLine(currentNode.GetCurrentLine());
+					return line;
 			}
-			string line = Line.line;
-			int index = Line.index;
-			if (richRegex.IsMatch(line))
-			{
-				PlayVA(Line);
-				CharacterManager.Instance.changeLightingFocus();
-				dialogue.SayRich(currentNode.GetCurrentLine().line);
-				return;
-			}
-			// handles speaker change. Also handles which character's expressions/animations are being controlled
-			if (line.Contains("::"))
-			{
-				string newSpeaker = line.Split(new[] { "::" }, System.StringSplitOptions.None)[0];
-				dialogue.currentSpeaker = newSpeaker;
+		}
 
-				// update character sprite to current speaker sprite
-				ReadNextLine();
-				ParseLine(currentNode.GetCurrentLine());
-				return;
-			}
-
-
-			// CHANGING EXPRESSIONS
-			// expressions in the script will be written like this: [happy]
-			// expressions must be on their own lines 
-			if (emoteRegex.IsMatch(line))
-			{
-				// Debug.Log(line);
-				char[] tagChars = { '[', ']', ' ' };
-				string expression = line.Trim(tagChars);
-				CharacterManager.Instance.changeExpression(dialogue.currentSpeaker, expression);
-				ReadNextLine();
-				ParseLine(currentNode.GetCurrentLine());
-				return;
-			}
-
-			// COMMANDS
-			// These will be any other type of commands 
-			// that aren't rich text tags or emotion controls
-			if (commandRegex.IsMatch(line))
-			{
-				char[] tagChars = { '{', '}', ' ' };
-				string command = line.Trim(tagChars);
-
-
-				if (command.Contains(":"))
-				{
-					string[] commandComponents = command.Split(':');
-					command = commandComponents[0];
-					CommandsManager.HandleWithArgs(command, commandComponents[1].Split(','));
-				}
-				else
-				{
-					CommandsManager.HandleWithArgs(command, null);
-				}
-				if (scriptChanged)
-				{
-					return;
-				}
-				ReadNextLine();
-				ParseLine(currentNode.GetCurrentLine());
-				return;
-			}
-
-			// if it's not a command simply display the text
-			PlayVA(Line);
-			CharacterManager.Instance.changeLightingFocus();
-			dialogue.Say(line);
-		});
-
-	}
-
-	private void OnApplicationQuit()
-	{
-		if (reader != null)
-			reader.Close();
-	}
-	void ReadNextLine()
-	{
-		if (currentNode != null)
-			currentNode.nextLine();
+		private void OnApplicationQuit()
+		{
+			if (reader != null)
+				reader.Close();
+		}
+		void ReadNextLine()
+		{
+			if (currentNode != null)
+				currentNode.nextLine();
+		}
 	}
 }

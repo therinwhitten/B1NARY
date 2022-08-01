@@ -27,7 +27,7 @@ namespace Live2D.Cubism.Editor.Inspectors
         /// </summary>
         public override void OnInspectorGUI()
         {
-            // Lazily initialize.
+            // Lazily Initialize.
             if (!IsInitialized)
             {
                 Initialize();

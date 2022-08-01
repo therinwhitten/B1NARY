@@ -1,15 +1,18 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
-
-public sealed class DebuggerPreferences : 
-	Dictionary<DebuggerPreferences.DataType, List<(string name, object @default)>>
+﻿namespace B1NARY.Editor.Debugger
 {
-	public enum DataType
+	using System.Collections.Generic;
+	using UnityEditor;
+
+	public sealed class DebuggerPreferences :
+		Dictionary<DebuggerPreferences.DataType, List<(string name, object @default)>>
 	{
-		Bool,
-		Int,
-		Float,
-		String,
-		StringPopup,
+		public enum DataType
+		{
+			Bool,
+			Int,
+			Float,
+			String,
+			StringPopup,
+		}
 	}
 }

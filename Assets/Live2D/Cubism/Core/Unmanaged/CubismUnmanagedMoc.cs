@@ -78,7 +78,7 @@ namespace Live2D.Cubism.Core.Unmanaged
         /// <param name="bytes">Moc bytes.</param>
         private CubismUnmanagedMoc(byte[] bytes)
         {
-            // Allocate and initialize memory (returning on fail).
+            // Allocate and Initialize memory (returning on fail).
             var memory = CubismUnmanagedMemory.Allocate(bytes.Length, CubismCoreDll.AlignofMoc);
 
 

@@ -1,21 +1,24 @@
-﻿
-using UnityEngine;
-
-public static partial class GameCommands
+﻿namespace B1NARY
 {
-	// todo: add events so these would save automatically.
-	[ExecuteAlways]
-	private static void InputSavingConstructor()
-	{
+	using UnityEngine;
+	using DataPersistence;
 
-	}
+	public static partial class GameCommands
+	{
+		// todo: add events so these would save automatically.
+		[ExecuteAlways]
+		private static void InputSavingConstructor()
+		{
 
-	private static void OnSave()
-	{
-		PersistentData.SaveGame();
-	}
-	private static void OnLoad()
-	{
-		PersistentData.LoadGame();
+		}
+
+		private static void OnSave()
+		{
+			PersistentData.SaveGame();
+		}
+		private static void OnLoad()
+		{
+			PersistentData.LoadGame();
+		}
 	}
 }

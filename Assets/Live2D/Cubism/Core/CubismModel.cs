@@ -295,7 +295,7 @@ namespace Live2D.Cubism.Core
             TaskableModel = new CubismTaskableModel(moc);
 
 
-            // Create and initialize proxies.
+            // Create and Initialize proxies.
             var parameters = CubismParameter.CreateParameters(TaskableModel.UnmanagedModel);
             var parts = CubismPart.CreateParts(TaskableModel.UnmanagedModel);
             var drawables = CubismDrawable.CreateDrawables(TaskableModel.UnmanagedModel);
