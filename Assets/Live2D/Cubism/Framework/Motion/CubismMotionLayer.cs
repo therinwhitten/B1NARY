@@ -66,7 +66,7 @@ namespace Live2D.Cubism.Framework.Motion
         private float _layerWeight;
 
         /// <summary>
-        /// Animation is finished.
+        /// BackgroundHandler is finished.
         /// </summary>
         private bool _isFinished;
 
@@ -187,7 +187,7 @@ namespace Live2D.Cubism.Framework.Motion
         /// Create fade playing motion.
         /// </summary>
         /// <param name="clip">Animator clip.</param>
-        /// <param name="speed">Animation speed.</param>
+        /// <param name="speed">BackgroundHandler speed.</param>
         private CubismFadePlayingMotion CreateFadePlayingMotion(AnimationClip clip, bool isLooping, float speed = 1.0f)
         {
             var ret = new CubismFadePlayingMotion();
@@ -238,9 +238,9 @@ namespace Live2D.Cubism.Framework.Motion
         /// <summary>
         /// Play animation.
         /// </summary>
-        /// <param name="clip">Animation clip.</param>
-        /// <param name="isLoop">Animation is loop.</param>
-        /// <param name="speed">Animation speed.</param>
+        /// <param name="clip">BackgroundHandler clip.</param>
+        /// <param name="isLoop">BackgroundHandler is loop.</param>
+        /// <param name="speed">BackgroundHandler speed.</param>
         public void PlayAnimation(AnimationClip clip, bool isLoop = true, float speed = 1.0f)
         {
             if (_motionState != null)
@@ -321,7 +321,7 @@ namespace Live2D.Cubism.Framework.Motion
         /// Set state speed.
         /// </summary>
         /// <param name="index">index of playing motion list.</param>
-        /// <param name="speed">Animation speed.</param>
+        /// <param name="speed">BackgroundHandler speed.</param>
         public void SetStateSpeed(int index, float speed)
         {
             // Fail silently...
@@ -343,7 +343,7 @@ namespace Live2D.Cubism.Framework.Motion
         /// Set state is loop.
         /// </summary>
         /// <param name="index">index of playing motion list.</param>
-        /// <param name="isLoop">Animation is loop.</param>
+        /// <param name="isLoop">BackgroundHandler is loop.</param>
         public void SetStateIsLoop(int index, bool isLoop)
         {
             // Fail silently...

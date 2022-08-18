@@ -1,8 +1,8 @@
-﻿namespace B1NARY.Sounds
+﻿namespace B1NARY.Audio
 {
 	using System;
 	using UnityEngine;
-	using B1NARY.ScriptingBeta;
+	using B1NARY.Scripting.Experimental;
 
 	public class VoiceActorHandler
 	{

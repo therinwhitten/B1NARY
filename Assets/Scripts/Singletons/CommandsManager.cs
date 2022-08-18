@@ -6,9 +6,11 @@
 	using UnityEngine;
 	using System.Text;
 	using System.Threading.Tasks;
-	using B1NARY.Sounds;
+	using B1NARY.Audio;
 	using B1NARY.UI;
 	using B1NARY.DataPersistence;
+	using B1NARY.Scripting;
+	using B1NARY.Scripting.Experimental;
 
 	public static class CommandsManager
 	{
@@ -20,14 +22,24 @@
 		private static readonly HashSet<string> disabledHashset = new HashSet<string>()
 		{ "off", "false", "disable" };
 
-
-		public static async void HandleWithArgs(string command, string[] args = null)
+		public static void HandleWithArgs(ScriptLine line)
+		{
+			var (command, args) = ScriptLine.CastCommand(line);
+			HandleWithArgs(command, args, 
+				AudioHandler.AudioDelegateCommands, 
+				SceneManager.SceneDelegateCommands);
+		}
+		public static void HandleWithArgs(string command, string[] args, params IReadOnlyDictionary<string, Delegate>[] categorizedCommands)
 		{
 			command = command.ToLower();
-			if (args == null)
-				args = Array.Empty<string>();
-			Task commandBuilder = CommandBuilder();
-			args = args.Select(@string => @string.Trim()).ToArray();
+			for (int i = 0; i < categorizedCommands.Length; i++)
+				if (categorizedCommands[i].ContainsKey(command))
+				{
+					categorizedCommands[i][command].DynamicInvoke(args);
+					Debug.Log("Custom command");
+					return;
+				}
+			Debug.Log("Alt");
 			switch (command)
 			{
 				case "additive":
@@ -52,7 +64,7 @@
 						else
 							throw new ArgumentException($"{args[0]} is not a valid " +
 								$"argument for {command}!");
-						break;
+						return;
 					}
 				case "spawncharacter":
 				case "spawnchar":
@@ -64,7 +76,7 @@
 							CharacterManager.SummonCharacter(args[0], args[1]);
 						else
 							CharacterManager.SummonCharacter(args[0], args[1], args[2]);
-						break;
+						return;
 					}
 				case "changeanimation":
 				case "animation":
@@ -74,7 +86,7 @@
 							throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
 						CharacterManager.changeAnimation(args[0], args[1]);
-						break;
+						return;
 					}
 				case "movecharacter":
 				case "movechar":
@@ -83,24 +95,16 @@
 							throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
 						CharacterManager.moveCharacter(args[0], args[1]);
-						break;
+						return;
 					}
 				case "changebg":
 					{
 						if (args.Length != 1)
 							throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
-						TransitionHandler.Instance.SetNewStaticBackground(args[0]);
-						TransitionHandler.Instance.SetNewAnimatedBackground(args[0]);
-						break;
-					}
-				case "changescene":
-					{
-						if (args.Length != 1)
-							throw new ArgumentException($"Command '{command}' " +
-								$"doesn't take {args.Length} arguments!");
-						_ = TransitionHandler.Instance.TransitionToNextScene(args[0], 0.5f);
-						break;
+						TransitionHandler.Instance.Backgrounds.SetNewStaticBackground(args[0]);
+						TransitionHandler.Instance.Backgrounds.SetNewAnimatedBackground(args[0]);
+						return;
 					}
 				case "changescript":
 					{
@@ -114,7 +118,7 @@
 							ScriptParser.Instance.ChangeScriptFile(args[0], num);
 						else
 							throw new ArgumentException($"{args[1]} is not a valid number!");
-						break;
+						return;
 					}
 				case "emptyscene":
 					{
@@ -123,29 +127,29 @@
 								$"doesn't take {args.Length} arguments!");
 						CharacterManager.Instance.emptyScene();
 					}
-					break;
+					return;
 				case "loopbg":
 					{
 						if (args.Length != 1)
 							throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
 						if (enabledHashset.Contains(args[0].ToLower()))
-							TransitionHandler.Instance.LoopingAnimBG = true;
+							TransitionHandler.Instance.Backgrounds.LoopingAnimBG = true;
 						else if (disabledHashset.Contains(args[0].ToLower()))
-							TransitionHandler.Instance.LoopingAnimBG = false;
+							TransitionHandler.Instance.Backgrounds.LoopingAnimBG = false;
 						else
 							throw new ArgumentException($"{args[0]} is not a valid " +
 								$"argument for {command}!");
 					}
-					break;
+					return;
 				case "playbg":
 					{
 						string bgName = args.Length == 0 ? ""
 							: args.Length == 1 ? args[0].ToLower()
 							: throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
-						TransitionHandler.Instance.SetNewAnimatedBackground(bgName);
-						break;
+						TransitionHandler.Instance.Backgrounds.SetNewAnimatedBackground(bgName);
+						return;
 					}
 				case "changename":
 					{
@@ -153,106 +157,21 @@
 							throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
 						CharacterManager.Instance.changeName(args[0], args[1]);
-						break;
+						return;
 					}
-				// Sounds
-				case "fadeinsound":
-					{
-						if (args.Length != 2)
-							throw new ArgumentException($"Command '{command}' " +
-								$"doesn't take {args.Length} arguments!");
-						float args1 = float.Parse(args[1]);
-						try { AudioHandler.Instance.PlayFadedSound(args[0], args1); }
-						catch (SoundNotFoundException)
-						{
-							Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
-						}
-						break;
-					}
-				case "fadeoutsound":
-					if (args.Length != 2)
-						throw new ArgumentException($"Command '{command}' " +
-							$"doesn't take {args.Length} arguments!");
-					try
-					{
-						AudioHandler.Instance.StopSoundViaFade(args[0].ToString().Trim(), float.Parse(args[1].ToString().Trim()));
-					}
-					catch (SoundNotFoundException ex)
-					{
-						Debug.LogWarning($"{args[0].ToString().Trim()} is not a valid soundfile Path!"
-						+ ex);
-					}
-					catch (KeyNotFoundException ex)
-					{
-						Debug.LogWarning($"Cannot find sound to close: {args[0].ToString().Trim()}\n"
-						+ ex);
-					}
-					break;
-				case "playsound":
-					if (args.Length != 1)
-						throw new ArgumentException($"Command '{command}' " +
-							$"doesn't take {args.Length} arguments!");
-					try
-					{
-						AudioHandler.Instance.PlaySound(args[0].ToString().Trim());
-					}
-					catch (SoundNotFoundException ex)
-					{
-						Debug.LogWarning($"{args[0].ToString().Trim()} is not a valid soundfile Path!"
-						+ ex);
-					}
-					catch (KeyNotFoundException ex)
-					{
-						Debug.LogWarning($"Cannot find sound: {args[0].ToString().Trim()}\n"
-						+ ex);
-					}
-					break;
-				case "stopsound":
-					if (args.Length != 1)
-						throw new ArgumentException($"Command '{command}' " +
-							$"doesn't take {args.Length} arguments!");
-					try
-					{
-						AudioHandler.Instance.StopSound(args[0].ToString().Trim());
-					}
-					catch (SoundNotFoundException ex)
-					{
-						Debug.LogWarning($"{args[0].ToString().Trim()} is not a valid soundfile Path!"
-						+ ex);
-					}
-					catch (KeyNotFoundException ex)
-					{
-						Debug.LogWarning($"Cannot find sound to close: {args[0].ToString().Trim()}\n"
-						+ ex);
-					}
-					break;
-				/*
-			case "startdelayedsound":
-				{
-					if (Extensions.TryInvoke<Coroutine, SoundNotFoundException>(() =>
-					StartCoroutine(Delay(float.Parse(args[0].ToString().Trim()), () => AudioHandler.Instance.PlaySound(args[0].ToString().Trim()))), out _, out _))
-						Debug.LogWarning($"{args[0]} is not a valid soundfile Path!");
-					IEnumerator Delay(float seconds, Action playAfterDelay)
-					{
-						yield return new WaitForSeconds(seconds);
-						playAfterDelay.Invoke();
-					}
-				}
-				break;
-				*/
 				case "choice":
 					if (args.Length != 1)
 						throw new ArgumentException($"Command '{command}' " +
 							$"doesn't take {args.Length} arguments!");
 					ScriptParser.Instance.paused = true;
 					ScriptParser.Instance.currentNode.parseChoice(args[0].ToString().Trim());
-					break;
+					return;
 				case "setbool":
 					if (args.Length != 2)
 						throw new ArgumentException($"Command '{command}' " +
 							$"doesn't take {args.Length} arguments!");
 					PersistentData.bools[args[0].ToString().Trim()] = bool.Parse(args[1].ToString().Trim());
-					break;
+					return;
 				case "if":
 					ScriptParser.Instance.paused = true;
 
@@ -271,10 +190,10 @@
 						ScriptParser.Instance.currentNode.index--;
 						ScriptParser.Instance.paused = false;
 					}
-					break;
+					return;
 			}
-			await commandBuilder;
-
+			throw new Exception();
+			/*
 			Task CommandBuilder()
 			{
 				var consoleLineBuilder = new StringBuilder($"Parsing command: {command}");
@@ -282,11 +201,11 @@
 				{
 					consoleLineBuilder.Append(" with Commands: ");
 					for (int i = 0; i < args.Length; i++)
-						consoleLineBuilder.Append($"{args[i]}{(i == args.Length - 1 ? "" : ",")}");
+						consoleLineBuilder.Append($"{args[i]}{(i == args.Length - 1 ? "" : ", ")}");
 				}
 				B1NARYConsole.Log(nameof(CommandsManager), consoleLineBuilder.ToString());
 				return Task.CompletedTask;
-			}
+			}*/
 		}
 	}
 }

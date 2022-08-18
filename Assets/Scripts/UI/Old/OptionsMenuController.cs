@@ -26,7 +26,7 @@ public class OptionsMenuController : MonoBehaviour
 
     void Back()
     {
-        gameObject.SendMessage("FadeOut");
+        gameObject.SendMessage("FadeOutAsync");
         mainMenu.SendMessage("FadeIn");
         openSettings();
     }

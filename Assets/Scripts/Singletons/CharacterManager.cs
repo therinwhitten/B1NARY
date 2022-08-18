@@ -17,6 +17,7 @@
 		{
 			characterLayer = gameObject;
 			charactersInScene.Clear();
+			DontDestroyOnLoad(gameObject);
 		}
 
 

@@ -8,8 +8,11 @@
 	using UnityEngine;
 	using UnityEngine.InputSystem;
 	using B1NARY.DesignPatterns;
-	using B1NARY.ScriptingBeta;
+	using B1NARY.Scripting.Experimental;
+	using B1NARY.Scripting;
 	using B1NARY.UI;
+	using System;
+	using System.Collections;
 
 	public class ScriptParser : SingletonAlt<ScriptParser>
 	{
@@ -19,6 +22,7 @@
 		public string scriptName;
 		public bool paused = false;
 		bool choice = false;
+
 		// public int lineIndex = 0;
 		// public int continueIndex = 0;
 
@@ -28,23 +32,8 @@
 
 		public Dictionary<string, List<string>> currentChoiceOptions;
 
-		StreamReader reader = null;
-
-		// public string currentNode.GetCurrentLine() { get { return currentNode.GetCurrentLine(); } }
-
-		// regex for grabbing rich text tags
-		Regex richRegex = new Regex("<(.*?)>");
-
-		// regex for grabbing expressions
-		Regex emoteRegex = new Regex("\\[(.*?)\\]");
-
-		// regex for commands
-		Regex commandRegex = new Regex("\\{(.*?)\\}");
 		public DialogueNode currentNode;
 
-		public Task<ScriptLine> CurrentParsedLineTask { get; private set; }
-
-		// Awake is called before the first frame update
 		protected override void SingletonAwake()
 		{
 			DontDestroyOnLoad(gameObject);
@@ -52,12 +41,11 @@
 			playerInput.actions.FindAction("Fast Skip", true).performed += OnClick;
 		}
 
-		public Task Initialize()
+		public void Initialize()
 		{
-			// lineIndex = 0;
 			B1NARYConsole.Log(nameof(ScriptParser), "Initializing..");
 			ChangeScriptFile(scriptName, 0);
-			return Task.CompletedTask;
+			PerformNextLine();
 			//reader = new StreamReader(Path);
 			//currentNode = new DialogueNode(GetLines());
 			// readNextLine();
@@ -68,49 +56,38 @@
 		public void ChangeScriptFile(string newScript, int position = 0)
 		{
 			B1NARYConsole.Log(nameof(ScriptParser), $"Changing script to {newScript} as pos {position}");
-			scriptName = newScript;
-			reader = new StreamReader(Path);
-			currentNode = new DialogueNode(GetLines());
+			scriptChanged = true;
+			currentNode = new DialogueNode(GetLines(Path, scriptName));
 			// This is fucking retarded. I don't remember why I did this and now
 			// I'm too afraid to change it
 			position -= 2;
 			position = Mathf.Clamp(position, 0, int.MaxValue);
 			currentNode.moveIndex(position);
 			scriptChanged = false;
-
-			CurrentParsedLineTask = ParseLine(currentNode.GetCurrentLine());
+			PerformNextLine();
 		}
 
-		List<DialogueLine> GetLines()
+		DialogueLine[] GetLines(string path, string documentName)
 		{
 			B1NARYConsole.Log(nameof(ScriptParser), $"Reading All lines of '{Path}'..");
-			List<DialogueLine> lines = new List<DialogueLine>();
-			int i = 1;
-			while (!reader.EndOfStream)
-			{
-				DialogueLine line = new DialogueLine(reader.ReadLine(), i, scriptName);
-				lines.Add(line);
-				i++;
-			}
-			reader.Close();
-			return lines;
+			var lines = new List<DialogueLine>();
+			using (var streamReader = new StreamReader(path))
+				for (int i = 1; !streamReader.EndOfStream; i++)
+					lines.Add(new DialogueLine(streamReader.ReadLine(), i, documentName));
+			return lines.ToArray();
 		}
 
 		private void OnClick(InputAction.CallbackContext callbackContext)
 		{
-			if (!TransitionHandler.CommandsAllowed)
+			//if (SceneManager.IsSwitchingScenes)
+			//	return;
+			if (currentNode == null)
 				return;
 			if (DialogueSystem.Instance.SpeakingTask.IsCompleted)
-			{
-				ReadNextLine();
-				if (currentNode != null)
-					_ = ParseLine(currentNode.GetCurrentLine());
-			}
+				PerformNextLine();
 			else
-			// if the dialogue is still being written out just skip to the end of the line
-			{
-				_ = DialogueSystem.Instance.StopSpeaking(true);
-			}
+				// if the dialogue is still being written out just skip to the end of the line
+				DialogueSystem.Instance.StopSpeaking(true).Wait();
 		}
 		public void PlayVA(DialogueLine line)
 		{
@@ -120,68 +97,100 @@
 			if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
 				charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, new ScriptLine(line));
 			else
-				B1NARYConsole.LogError(nameof(ScriptParser), $"Character '{currentSpeaker}' does not exist!");
+				B1NARYConsole.LogError(nameof(ScriptParser), $"Character '{currentSpeaker}' does not exist, on line {line.index}!");
 		}
-		public async Task<ScriptLine> ParseLine(DialogueLine Line, bool @override = false)
+
+		/*
+		public void ParseLine(DialogueLine Line)
 		{
 			if (Line == null || paused)
-				return default;
+				return;
 			var line = new ScriptLine(Line);
-			Task task = @override ? Task.CompletedTask :
-				Task.Run(() => SpinWait.SpinUntil(() => TransitionHandler.CommandsAllowed));
-			await task;
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
 					PlayVA(Line);
 					CharacterManager.Instance.changeLightingFocus();
 					DialogueSystem.Instance.Say(line.lineData);
-					return line;
-				// CHANGING EXPRESSIONS
-				// expressions in the script will be written like this: [happy]
-				// expressions must be on their own lines 
+					break;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);
 					CharacterManager.Instance.changeExpression(DialogueSystem.Instance.CurrentSpeaker, expression);
-					ReadNextLine();
-					await ParseLine(currentNode.GetCurrentLine());
-					return line;
+					goto skipToNextLine;
 				case ScriptLine.Type.Speaker:
 					string speaker = ScriptLine.CastSpeaker(line);
 					DialogueSystem.Instance.CurrentSpeaker = speaker;
-					ReadNextLine();
-					await ParseLine(currentNode.GetCurrentLine());
-					return line;
-				// COMMANDS
-				// These will be any other type of commands 
-				// that aren't rich text tags or emotion controls
+					goto skipToNextLine;
 				case ScriptLine.Type.Command:
-					var (command, arguments) = ScriptLine.CastCommand(line);
-					CommandsManager.HandleWithArgs(command, arguments);
+					CommandsManager.HandleWithArgs(line);
 					if (scriptChanged)
-						return line;
-					ReadNextLine();
-					await ParseLine(currentNode.GetCurrentLine());
-					return line;
+						break;
+					goto skipToNextLine;
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:
+					throw new ArgumentException("Managed to hit a intentation"
+						+ $"on line '{line.Index}'.");
 				case ScriptLine.Type.Empty:
 				default:
-					ReadNextLine();
-					await ParseLine(currentNode.GetCurrentLine());
-					return line;
+					goto skipToNextLine;
+				skipToNextLine:
+					if (ReadNextLine(out DialogueLine dialogueLine))
+						ParseLine(dialogueLine);
+					break;
 			}
 		}
 
-		private void OnApplicationQuit()
-		{
-			if (reader != null)
-				reader.Close();
-		}
-		void ReadNextLine()
+		bool ReadNextLine(out DialogueLine scriptLine)
 		{
 			if (currentNode != null)
-				currentNode.nextLine();
+			{
+				scriptLine = currentNode.GetCurrentLine();
+				return true;
+			}
+			scriptLine = null;
+			return false;
+		}
+		*/
+
+		public void PerformNextLine(DialogueLine line = null)
+		{
+			if (currentNode == null || paused)
+				return;
+			line = line == null ? currentNode.GetCurrentLine() : line;
+			if (line == null)
+				return;
+			var scriptLine = new ScriptLine(line);
+			switch (scriptLine.type)
+			{
+				case ScriptLine.Type.Normal:
+					PlayVA(line);
+					CharacterManager.Instance.changeLightingFocus();
+					DialogueSystem.Instance.Say(scriptLine.lineData);
+					break;
+				case ScriptLine.Type.Emotion:
+					string expression = ScriptLine.CastEmotion(scriptLine);
+					CharacterManager.Instance.changeExpression(DialogueSystem.Instance.CurrentSpeaker, expression);
+					goto skipToNextLine;
+				case ScriptLine.Type.Speaker:
+					string speaker = ScriptLine.CastSpeaker(scriptLine);
+					DialogueSystem.Instance.CurrentSpeaker = speaker;
+					goto skipToNextLine;
+				case ScriptLine.Type.Command:
+					CommandsManager.HandleWithArgs(scriptLine);
+					if (scriptChanged)
+						break;
+					goto skipToNextLine;
+				case ScriptLine.Type.BeginIndent:
+				case ScriptLine.Type.EndIndent:
+					throw new ArgumentException("Managed to hit a intentation"
+						+ $"on line '{scriptLine.Index}'.");
+				case ScriptLine.Type.Empty:
+				default:
+					goto skipToNextLine;
+				skipToNextLine:
+					PerformNextLine();
+					break;
+			}
 		}
 	}
 }

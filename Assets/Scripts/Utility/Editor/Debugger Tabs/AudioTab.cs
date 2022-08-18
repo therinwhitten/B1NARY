@@ -3,7 +3,7 @@
 	using System.Globalization;
 	using UnityEngine;
 	using UnityEditor;
-	using B1NARY.Sounds;
+	using B1NARY.Audio;
 
 	public sealed class AudioTab : DebuggerTab
 	{

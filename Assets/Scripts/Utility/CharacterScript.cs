@@ -5,8 +5,8 @@
 	using UnityEngine;
 	using Live2D.Cubism.Framework.Expression;
 	using Live2D.Cubism.Rendering;
-	using B1NARY.ScriptingBeta;
-	using B1NARY.Sounds;
+	using B1NARY.Scripting.Experimental;
+	using B1NARY.Audio;
 
 	[RequireComponent(typeof(Animator))]
 	public class CharacterScript : MonoBehaviour
@@ -129,7 +129,7 @@
 			}
 			catch (NullReferenceException ex)
 			{
-				Debug.LogError($"Animation '{animName}' is not found in animation list"
+				Debug.LogError($"BackgroundHandler '{animName}' is not found in animation list"
 					+ $"of character '{charName}' \n{ex}");
 			}
 		}

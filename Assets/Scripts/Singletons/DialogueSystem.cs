@@ -5,12 +5,14 @@ namespace B1NARY.UI
 	using UnityEngine;
 	using UnityEngine.UI;
 	using DesignPatterns;
+	using System.Collections;
+	using System;
+	using System.Collections.Generic;
+	using System.Text;
 
 	[RequireComponent(typeof(FadeController))]
 	public class DialogueSystem : SingletonAlt<DialogueSystem>
 	{
-		public static void Initialize() => FindObjectOfType<DialogueSystem>().enabled = true;
-		public static void DeInitialize() => FindObjectOfType<DialogueSystem>().enabled = false;
 
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
@@ -40,16 +42,24 @@ namespace B1NARY.UI
 		public Task<string> SpeakingTask = Task.FromResult(string.Empty);
 		private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
-
-		private void OnEnable()
+		private void Awake()
+		{
+			fadeController = GetComponent<FadeController>();
+		}
+		private void Start()
+		{
+			CurrentSpeaker = string.Empty;
+			CurrentText = string.Empty;
+		}
+		public void FadeIn(float fadeTime = 0.5f)
 		{
 			B1NARYConsole.Log(name, "Initializing");
-			_ = fadeController.FadeIn(0.5f);
+			fadeController.FadeIn(fadeTime);
 		}
-		private void OnDisable()
+		public void FadeOut(float fadeTime = 0.5f)
 		{
 			B1NARYConsole.Log(name, "De-Initializing");
-			_ = fadeController.FadeOut(0.5f);
+			fadeController.FadeOut(fadeTime);
 		}
 
 		/// <summary>
@@ -90,7 +100,7 @@ namespace B1NARY.UI
 
 		protected override void OnSingletonDestroy()
 		{
-			StopSpeaking(false).Wait();
+			_ = StopSpeaking(false);
 		}
 
 		/// <summary>
@@ -100,32 +110,44 @@ namespace B1NARY.UI
 		/// <param name="token">The token to stop it.</param>
 		/// <param name="lengthPerChar">Milliseconds to wait per character.</param>
 		/// <returns> <paramref name="speech"/>. </returns>
-		private Task<string> Speaking(string speech, CancellationToken token, int lengthPerChar = 30)
+		private async Task<string> Speaking(string speech, CancellationToken token, int lengthPerChar = 30)
 		{
-			int startingLength = NewLine().Length; // Starts right after NewLine();
-			speech = (NewLine() + speech).Trim();
-			isWaitingForUserInput = false;
-			bool inTag = false;
-			for (int i = startingLength; i < speech.Length && !token.IsCancellationRequested; i++)
+			const int outline = 2;
+			CurrentText = NewLine();
+			ushort accumulativeTagsLength = 0;
+			await this.StartAwaitableCoroutine(SpeakOverTime());
+			IEnumerator SpeakOverTime()
 			{
-				char character = speech[i];
-				if (inTag)
+				StringBuilder newTag = null;
+				for (int i = 0; i < speech.Length && !token.IsCancellationRequested; i++)
 				{
-					if (character == '>')
-						inTag = false;
-					continue;
+					char character = speech[i];
+					if (newTag != null) // if it is in a tag
+					{
+						if (character == '>')
+						{
+							if (newTag.ToString()[0] == '/')
+								accumulativeTagsLength = checked((ushort)(accumulativeTagsLength - 
+									newTag.Length + outline - 1));
+							else
+								accumulativeTagsLength += (ushort)(newTag.Length + outline);
+							newTag = null;
+						}
+						else
+							newTag.Append(character);
+						continue;
+					}
+					if (character == '<')
+					{
+						newTag = new StringBuilder();
+						continue;
+					}
+					CurrentText = CurrentText.Insert(CurrentText.Length - accumulativeTagsLength, character.ToString());
+					yield return new WaitForSecondsRealtime(lengthPerChar / 1000f);
 				}
-				if (character == '<')
-				{
-					inTag = true;
-					continue;
-				}
-				CurrentText += character;
-				Task.Delay(lengthPerChar);
 			}
-			//text finished
 			isWaitingForUserInput = true;
-			return Task.FromResult(speech);
+			return speech;
 		}
 
 	}

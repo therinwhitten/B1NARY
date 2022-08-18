@@ -56,7 +56,7 @@ namespace Live2D.Cubism.Samples.OriginalWorkflow.Motion
         /// <summary>
         /// Play specified animation.
         /// </summary>
-        /// <param name="animation">Animation clip to play.</param>
+        /// <param name="animation">BackgroundHandler clip to play.</param>
         public void PlayAnimation(AnimationClip animation)
         {
             _motionController.PlayAnimation(animation, isLoop: false, priority: CubismMotionPriority.PriorityForce);

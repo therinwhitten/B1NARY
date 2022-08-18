@@ -2,6 +2,7 @@
 {
 	using B1NARY.DesignPatterns;
 	using System.Collections.Generic;
+	using System.Threading.Tasks;
 	using UnityEngine;
 
 	public static class PersistentData
@@ -28,25 +29,11 @@
 			Debug.Log("Game Saved!");
 		}
 
-		public static void LoadGame()
+		public static async Task LoadGame()
 		{
 			var state = GameState.LoadExistingData(FullSavePath);
-			SingletonAlt<TransitionHandler>.Instance.TransitionToNextScene(state.scene, 0.5f).Wait();
-			state.LoadDataIntoMemory().Wait();
+			await SceneManager.FadeToNextScene(state.scene, 1f);
+			await state.LoadDataIntoMemory();
 		}
-		// Update is called once per frame
-		/*
-		void Update()
-		{
-			if (Input.GetKeyDown(KeyCode.F5))
-			{
-				SaveGame();
-			}
-			if (Input.GetKeyDown(KeyCode.F8))
-			{
-				_ = LoadGame();
-			}
-		}
-		*/
 	}
 }

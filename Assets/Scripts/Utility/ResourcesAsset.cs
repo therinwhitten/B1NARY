@@ -19,13 +19,8 @@
 			target = Resources.Load<T>(resourcesVAPath);
 			B1NARYConsole.Log(nameof(ResourcesAsset<T>), $"Loading asset: {resourcesVAPath}");
 			if (target == null && throwErrorIfNull)
-			{
-				B1NARYConsole.WriteLine(new Prefix(LogType.Error, nameof(ResourcesAsset<T>)),
-					$"Voice Actor line '{resourcesVAPath}' does not have an exact filename! " +
-					$"Did you leave a space within the filename?", false);
 				throw new InvalidOperationException($"Voice Actor line '{resourcesVAPath}' " +
 					"does not have an exact filename! Did you leave a space within the filename?");
-			}
 		}
 		public ResourcesAsset(T item) => target = item;
 		~ResourcesAsset()

@@ -1,4 +1,4 @@
-namespace B1NARY
+namespace B1NARY.Scripting
 {
 	public class DialogueLine
 	{

@@ -16,70 +16,77 @@
 			canvas = gameObject.GetComponent<CanvasGroup>();
 		}
 
-		public static Task FadeInAndActivate(FadeController fadeController, float fadeTime)
+		public static Task FadeInAndActivateAsync(FadeController fadeController, float fadeTime)
+		{
+			B1NARYConsole.Log(nameof(FadeController), "Async", $"Fading in {fadeController.name}" +
+				$" with a length of {fadeTime} seconds");
+			fadeController.gameObject.SetActive(true);
+			fadeController.enabled = true;
+			return fadeController.FadeInAsync(fadeTime);
+		}
+		public static void FadeInAndActivate(FadeController fadeController, float fadeTime, Action performAfter = null)
 		{
 			B1NARYConsole.Log(nameof(FadeController), $"Fading in {fadeController.name}" +
 				$" with a length of {fadeTime} seconds");
 			fadeController.gameObject.SetActive(true);
 			fadeController.enabled = true;
-			return fadeController.FadeIn(fadeTime);
+			fadeController.FadeIn(fadeTime, performAfter);
 		}
 
-		public async Task FadeIn(float fadeTime)
+		public async Task FadeInAsync(float fadeTime)
+		{
+			B1NARYConsole.Log(name, "Async", $"Fading in with {fadeTime} seconds");
+			await ModifyFadeFloatAsync(1, fadeTime);
+			canvas.interactable = true; 
+			canvas.blocksRaycasts = true;
+		}
+		public void FadeIn(float fadeTime, Action performAfter = null)
 		{
 			B1NARYConsole.Log(name, $"Fading in with {fadeTime} seconds");
-			await ModifyFadeFloat(1, fadeTime, () => { canvas.interactable = true; canvas.blocksRaycasts = true; });
+			ModifyFadeFloat(1, fadeTime, () => { canvas.interactable = true; canvas.blocksRaycasts = true; performAfter?.Invoke(); });
 		}
 
-		public async Task FadeOut(float fadeTime)
+		public async Task FadeOutAsync(float fadeTime)
+		{
+			B1NARYConsole.Log(name, "Async", $"Fading out with {fadeTime} seconds");
+			canvas.interactable = false;
+			canvas.blocksRaycasts = false;
+			await ModifyFadeFloatAsync(0, fadeTime);
+		}
+		public void FadeOut(float fadeTime, Action performAfter = null)
 		{
 			B1NARYConsole.Log(name, $"Fading out with {fadeTime} seconds");
 			canvas.interactable = false;
 			canvas.blocksRaycasts = false;
-			await ModifyFadeFloat(0, fadeTime);
+			ModifyFadeFloat(0, fadeTime, performAfter);
 		}
 
-		public async Task FadeOutAndDeActivate(float fadeTime)
+		public async Task FadeOutAndDeActivateAsync(float fadeTime)
+		{
+			B1NARYConsole.Log(name, "Async", $"Fading out and de-activating with {fadeTime} seconds");
+			canvas.interactable = false;
+			canvas.blocksRaycasts = false;
+			await ModifyFadeFloatAsync(0, fadeTime);
+			gameObject.SetActive(false);
+		}
+		public void FadeOutAndDeActivate(float fadeTime)
 		{
 			B1NARYConsole.Log(name, $"Fading out and de-activating with {fadeTime} seconds");
 			canvas.interactable = false;
 			canvas.blocksRaycasts = false;
-			await ModifyFadeFloat(0, fadeTime, () => gameObject.SetActive(false));
+			ModifyFadeFloat(0, fadeTime, () => gameObject.SetActive(false));
 		}
 
 
-		// We need a custom reference for the float due to anonymous methods issue
-		// - not allowing ref for value.
-		private async Task ModifyFadeFloat(float final, float secondsTaken, Action performAfter = null)
-		{
-			float difference = canvas.alpha - final;
-			Func<float, bool> condition = difference < 0 ?
-				(Func<float, bool>)IsGreaterThan :
-				(Func<float, bool>)IsLessThan;
-			difference *= -1;   // for whatever reason, this makes the code run well,
-								// - I can't understand why though.
-			var completionSource = new TaskCompletionSource<object>();
-			StartCoroutine(Coroutine(final));
-			await completionSource.Task;
-			performAfter?.Invoke();
 
-			IEnumerator Coroutine(float finalValue)
-			{
-				while (canvas.alpha != finalValue)
-				{
-					float change = (Time.deltaTime / secondsTaken) * difference;
-					canvas.alpha += change;
-					if (condition.Invoke(canvas.alpha))
-					{
-						canvas.alpha = finalValue;
-						completionSource.SetResult(new object());
-						yield break;
-					}
-					yield return new WaitForEndOfFrame();
-				}
-			}
-			bool IsGreaterThan(float input) => input >= final;
-			bool IsLessThan(float input) => input <= final;
-		}
+		/// <summary>
+		/// Linearly modifies the canvas alpha asynchronously.
+		/// </summary>
+		/// <param name="final">The final expected value when finishing.</param>
+		/// <param name="secondsTaken"> The seconds to take to change it linearly over time.</param>
+		private Task ModifyFadeFloatAsync(float final, float secondsTaken) => 
+			this.ChangeFloatAsync(new Ref<float>(() => canvas.alpha, set => canvas.alpha = set), final, secondsTaken);
+		private void ModifyFadeFloat(float final, float secondsTaken, Action performAfter = null)
+			=> this.ChangeFloat(new Ref<float>(() => canvas.alpha, set => canvas.alpha = set), final, secondsTaken, performAfter);
 	}
 }

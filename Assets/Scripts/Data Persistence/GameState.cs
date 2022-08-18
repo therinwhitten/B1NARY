@@ -1,7 +1,7 @@
 namespace B1NARY.DataPersistence
 {
 	using B1NARY.UI;
-	using B1NARY.Sounds;
+	using B1NARY.Audio;
 	using System;
 	using System.Linq;
 	using System.Threading.Tasks;
@@ -112,7 +112,7 @@ namespace B1NARY.DataPersistence
 			}
 			void LoadAudio(AudioData[] audioSounds)
 			{
-				const string fileDirectory = "Sounds/Sound Libraries";
+				const string fileDirectory = "Audio/Sound Libraries";
 				foreach (var (clip, libraryName, length) in audioSounds)
 				{
 					CoroutinePointer soundCoroutinePointer;

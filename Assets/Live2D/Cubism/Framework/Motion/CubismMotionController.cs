@@ -73,7 +73,7 @@ namespace Live2D.Cubism.Framework.Motion
         private AnimationPlayableOutput _playableOutput;
 
         /// <summary>
-        /// Animation layer mixer.
+        /// BackgroundHandler layer mixer.
         /// </summary>
         private AnimationLayerMixerPlayable _layerMixer;
 
@@ -96,9 +96,9 @@ namespace Live2D.Cubism.Framework.Motion
         /// </summary>
         /// <param name="clip">Animator clip.</param>
         /// <param name="layerIndex">layer index.</param>
-        /// <param name="priority">Animation priority</param>
-        /// <param name="isLoop">Animation is loop.</param>
-        /// <param name="speed">Animation speed.</param>
+        /// <param name="priority">BackgroundHandler priority</param>
+        /// <param name="isLoop">BackgroundHandler is loop.</param>
+        /// <param name="speed">BackgroundHandler speed.</param>
         public void PlayAnimation(AnimationClip clip, int layerIndex = 0, int priority = CubismMotionPriority.PriorityNormal, bool isLoop = true, float speed = 1.0f)
         {
             // Fail silently...
@@ -200,7 +200,7 @@ namespace Live2D.Cubism.Framework.Motion
         /// </summary>
         /// <param name="layerIndex">layer index.</param>
         /// <param name="index">index of playing motion list.</param>
-        /// <param name="speed">Animation speed.</param>
+        /// <param name="speed">BackgroundHandler speed.</param>
         public void SetAnimationSpeed(int layerIndex, int index, float speed)
         {
             // Fail silently...
@@ -290,7 +290,7 @@ namespace Live2D.Cubism.Framework.Motion
             _playableGrap.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
 
             // Create Playable Output.
-            _playableOutput = AnimationPlayableOutput.Create(_playableGrap, "Animation", animator);
+            _playableOutput = AnimationPlayableOutput.Create(_playableGrap, "BackgroundHandler", animator);
             _playableOutput.SetWeight(1);
 
             // Create animation layer mixer.

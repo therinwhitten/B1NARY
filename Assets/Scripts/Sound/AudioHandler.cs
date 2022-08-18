@@ -1,18 +1,17 @@
-namespace B1NARY.Sounds
+namespace B1NARY.Audio
 {
 	using System;
 	using System.Linq;
 	using System.Collections.Generic;
 	using UnityEngine;
 	using UnityEngine.Audio;
-	using UnityEngine.SceneManagement;
 	using B1NARY.DesignPatterns;
 
 	/// <summary>Handles audio for efficiency and garbage collection, uses 
 	/// <see cref="CustomAudioClip"/> and/or <see cref="UnityCustomAudioClip"/> for 
 	/// custom files and uses <see cref="AudioTracker"/> for code to change it 
 	/// themselves.</summary>
-	public class AudioHandler : SingletonAlt<AudioHandler>
+	public partial class AudioHandler : SingletonAlt<AudioHandler>
 	{
 		public VoiceActorHandler VoiceActorHandler { get; private set; }
 
@@ -23,58 +22,76 @@ namespace B1NARY.Sounds
 		/// <summary> Cache for storing automated sound data </summary>
 		public Dictionary<AudioClip, AudioTracker> SoundCoroutineCache { get; private set; }
 
+		[SerializeField]
+		private string soundLibraryDirectory = "Sounds/Sound Libraries";
+
 
 		protected override void SingletonAwake()
 		{
 			SoundCoroutineCache = new Dictionary<AudioClip, AudioTracker>();
-			HandleSceneSwitch(SceneManager.GetActiveScene().name);
+			HandleSceneSwitch(SceneManager.CurrentScene);
 		}
 
+		/// <summary>
+		/// Automatically handles scene switch automatically after first calling it.
+		/// Mainly handles behaviour for <see cref="CustomAudioData"/>.
+		/// </summary>
+		/// <param name="newScene"></param>
 		private void HandleSceneSwitch(string newScene = null)
 		{
 			LoadNewLibrary(newScene);
 			VoiceActorHandler = new VoiceActorHandler();
-			PlayOnAwakeCommands();
-			TransitionHandler.SwitchedScenes += HandleSceneSwitch;
+			SceneManager.SwitchedScenes += HandleSceneSwitch;
+		}
 
-
-			void PlayOnAwakeCommands()
+		/// <summary>
+		/// Plays all sounds in the current <see cref="SoundLibrary"/> that has
+		/// <see cref="CustomAudioClip.playOnAwake"/> enabled.
+		/// </summary>
+		void PlayOnAwakeCommands()
+		{
+			if (!CustomAudioData.ContainsPlayOnAwakeCommands)
+				return;
+			foreach (CustomAudioClip clip in CustomAudioData.PlayOnAwakeCommands)
+				PlaySound(clip);
+		}
+		/// <summary>
+		/// Sets the value of <see cref="CustomAudioData"/> based on 
+		/// <paramref name="sceneName"/>. Complains if there is no audio library with
+		/// the name.
+		/// </summary>
+		/// <remarks> Mainly used by <see cref="HandleSceneSwitch(string)"/> by default. </remarks>
+		/// <param name="sceneName"> The current scene name. </param>
+		/// <exception cref="AggregateException"></exception>
+		private void LoadNewLibrary(string sceneName)
+		{
+			CustomAudioData = Resources.Load<SoundLibrary>($"{soundLibraryDirectory}/{sceneName}");
+			if (CustomAudioData == null)
+				Debug.LogError("There are no detected sound libraries in" +
+					$" resource folder : {soundLibraryDirectory}/{sceneName}!");
+			else
+				PlayOnAwakeCommands();
+			IEnumerable<AudioTracker> enumerable =
+				from soundCoroutine in SoundCoroutineCache.Values
+				where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
+				where !soundCoroutine.IsStopping
+				where CustomAudioData.ContainsCustomAudioClip(soundCoroutine.AudioClip) == false
+				select soundCoroutine;
+			if (enumerable.Any())
 			{
-				if (!CustomAudioData.ContainsPlayOnAwakeCommands)
-					return;
-				foreach (CustomAudioClip clip in CustomAudioData.PlayOnAwakeCommands)
-					PlaySound(clip);
-			}
-			void LoadNewLibrary(string sceneName)
-			{
-				const string fileDirectory = "Sounds/Sound Libraries";
-				CustomAudioData = Resources.Load<SoundLibrary>($"{fileDirectory}/{sceneName}");
-				if (CustomAudioData == null)
-					Debug.LogError("There are no detected sound libraries in" +
-						$" resource folder : {fileDirectory}/{sceneName}!");
-				IEnumerable<AudioTracker> enumerable =
-					from soundCoroutine in SoundCoroutineCache.Values
-					where !soundCoroutine.AudioClip.destroyWhenTransitioningScenes
-					where !soundCoroutine.IsStopping
-					where CustomAudioData.ContainsCustomAudioClip(soundCoroutine.AudioClip) == false
-					select soundCoroutine;
-				if (enumerable.Any())
-				{
-					IEnumerable<InvalidOperationException> exceptions = enumerable
-						.Select(audioTracker => new InvalidOperationException(
-							$"\nAlthough '{audioTracker.AudioClip.Name}' is allowed"
-							+ $" to transition scenes, library '{CustomAudioData.name}'"
-							+ " doesn't contain it! "));
-					if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
-						throw new AggregateException(exceptions);
-
-					CoroutinePointer[] removeArray = enumerable
-						.Select<AudioTracker, CoroutinePointer>(pointer => () => pointer).ToArray();
-					for (int i = 0; i < removeArray.Length; i++)
-						removeArray[i]().Stop(true);
-					B1NARYConsole.LogWarning(nameof(AudioHandler), "Forcefully stopping sounds:\n" +
-						string.Join("\n", removeArray.Select(pointer => pointer().AudioClip.Name)));
-				}
+				IEnumerable<InvalidOperationException> exceptions = enumerable
+					.Select(audioTracker => new InvalidOperationException(
+						$"\nAlthough '{audioTracker.AudioClip.Name}' is allowed"
+						+ $" to transition scenes, library '{CustomAudioData.name}'"
+						+ " doesn't contain it! "));
+				if (GamePreferences.GetBool(GameCommands.exceptionLoadName, true))
+					throw new AggregateException(exceptions);
+				CoroutinePointer[] removeArray = enumerable
+					.Select<AudioTracker, CoroutinePointer>(pointer => () => pointer).ToArray();
+				for (int i = 0; i < removeArray.Length; i++)
+					removeArray[i]().Stop(true);
+				B1NARYConsole.LogWarning(nameof(AudioHandler), "Forcefully stopping sounds:\n" +
+					string.Join("\n", removeArray.Select(pointer => pointer().AudioClip.Name)));
 			}
 		}
 

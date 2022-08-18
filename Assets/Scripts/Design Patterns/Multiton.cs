@@ -28,6 +28,11 @@
 			CheckInstances();
 			return instances[index];
 		}
+		public static IEnumerator<T> GetEnumerator()
+		{
+			for (int i = 0; i < instances.Count; i++)
+				yield return instances[instancesList[i]];
+		}
 
 		private static void CheckInstances()
 		{
@@ -71,10 +76,5 @@
 		/// </summary>
 		protected virtual void OnMultitonDestroy() { /* do nothing unless overrided */ }
 
-		public IEnumerator<T> GetEnumerator()
-		{
-			for (int i = 0; i < instancesList.Count; i++)
-				yield return instances[instancesList[i]];
-		}
 	}
 }

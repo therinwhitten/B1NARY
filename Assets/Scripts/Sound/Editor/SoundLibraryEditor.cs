@@ -5,7 +5,7 @@
 	using UnityEngine;
 	using UnityEditor;
 	using System.IO;
-	using B1NARY.Sounds;
+	using B1NARY.Audio;
 
 	[CustomEditor(typeof(SoundLibrary))]
 	public class SoundLibraryEditor : Editor

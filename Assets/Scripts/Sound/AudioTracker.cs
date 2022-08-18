@@ -1,4 +1,4 @@
-namespace B1NARY.Sounds
+namespace B1NARY.Audio
 {
 	using System;
 	using System.Collections;
@@ -67,7 +67,7 @@ namespace B1NARY.Sounds
 			currentSoundLibrary = soundLibrary;
 			if (clip != null)
 				AudioClip = clip;
-			TransitionHandler.SwitchedScenes += SwitchSceneCheck;
+			SceneManager.SwitchedScenes += SwitchSceneCheck;
 		}
 
 		private CustomAudioClip _audioClipCache;
@@ -127,7 +127,7 @@ namespace B1NARY.Sounds
 			}
 			float targetValue = audioSource.volume;
 			audioSource.volume = 0;
-			_ = monoBehaviour.ChangeFloat
+			_ = monoBehaviour.ChangeFloatAsync
 				(
 				new Ref<float>(() => audioSource.volume, set => audioSource.volume = set),
 				targetValue,
@@ -174,7 +174,7 @@ namespace B1NARY.Sounds
 			}
 			IsStopping = true;
 			IsFadingAway = true;
-			_ = monoBehaviour.ChangeFloat(
+			_ = monoBehaviour.ChangeFloatAsync(
 				GetVolumeRef(set: (@float) =>
 				{
 					// Because of how dynamically changing the value works,
@@ -221,7 +221,7 @@ namespace B1NARY.Sounds
 			else
 				B1NARYConsole.LogError(nameof(AudioTracker), $"No availible {nameof(AudioClip)}" +
 					" and won't be terminated, please tell a dev!");
-			TransitionHandler.SwitchedScenes += SwitchSceneCheck;
+			SceneManager.SwitchedScenes += SwitchSceneCheck;
 		}
 
 		private bool isDestroyed = false;
@@ -240,7 +240,7 @@ namespace B1NARY.Sounds
 			OnDestroy();
 			if (AudioSource != null)
 				UnityEngine.Object.Destroy(AudioSource);
-			TransitionHandler.SwitchedScenes -= SwitchSceneCheck;
+			SceneManager.SwitchedScenes -= SwitchSceneCheck;
 		}
 	}
 }

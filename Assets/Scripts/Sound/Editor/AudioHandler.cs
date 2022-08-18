@@ -1,7 +1,7 @@
 ﻿namespace B1NARY.Editor
 {
 	using UnityEditor;
-	using B1NARY.Sounds;
+	using B1NARY.Audio;
 
 	[CustomEditor(typeof(AudioHandler))]
 	public class AudioHandlerEditor : Editor

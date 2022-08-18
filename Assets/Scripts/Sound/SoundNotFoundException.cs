@@ -1,9 +1,9 @@
-﻿namespace B1NARY.Sounds
+﻿namespace B1NARY.Audio
 {
 	using System;
 	using System.Runtime.Serialization;
 
-	public class SoundNotFoundException : Exception
+	internal class SoundNotFoundException : Exception
 	{
 		public SoundNotFoundException()
 		{

@@ -11,7 +11,7 @@
 			if (animator.TryGetComponent<ButtonSoundBehaviour>(out var buttonSound))
 				buttonSound.PlaySound(soundIndex);
 			else
-				B1NARYConsole.LogError(name, "Animation State Machine", "Cannot find a valid output to play sounds!");
+				B1NARYConsole.LogError(name, "BackgroundHandler State Machine", "Cannot find a valid output to play sounds!");
 		}
 	}
 }

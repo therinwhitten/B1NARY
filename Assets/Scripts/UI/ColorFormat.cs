@@ -6,6 +6,8 @@
 	using UnityEngine;
 	using B1NARY.DataPersistence;
 
+
+	// Have it change formats per scene if it exists.
 	[Serializable]
 	[CreateAssetMenu(fileName = "New UI Color Format", menuName = "B1NARY/Color UI Format", order = 1)]
 	public class ColorFormat : ScriptableObject

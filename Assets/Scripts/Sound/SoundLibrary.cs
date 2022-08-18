@@ -1,7 +1,5 @@
-namespace B1NARY.Sounds
+namespace B1NARY.Audio
 {
-	using System;
-	using System.IO;
 	using System.Linq;
 	using System.Collections.Generic;
 	using UnityEngine;
@@ -44,6 +42,13 @@ namespace B1NARY.Sounds
 
 		private void Awake()
 		{
+			if (customAudioClips == null)
+			{
+				customAudioClips = new List<CustomAudioClip>();
+				B1NARYConsole.LogError(nameof(SoundLibrary), "Clip data has been found "
+					+ "null. Replacing default settings. Hopefully you made a backup of them?");
+				return;
+			}
 			IEnumerable<CustomAudioClip> playAwakeClips = customAudioClips.Where(CClip => CClip.playOnAwake);
 			if (ContainsPlayOnAwakeCommands = playAwakeClips.Any())
 				PlayOnAwakeCommands = playAwakeClips;

@@ -1,4 +1,4 @@
-﻿namespace B1NARY.ScriptingBeta
+﻿namespace B1NARY.Scripting.Experimental
 {
 	using System;
 	using System.Linq;
@@ -55,6 +55,8 @@
 				return Type.Emotion;
 			if (commandRegex.IsMatch(lineData))
 				return Type.Command;
+			if (lineData.EndsWith("::"))
+				return Type.Speaker;
 			return Type.Normal;
 		}
 		/// <summary>

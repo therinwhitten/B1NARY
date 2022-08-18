@@ -4,7 +4,7 @@
 	using System.Linq;
 	using UnityEngine;
 	using UnityEditor;
-	using B1NARY.Sounds;
+	using B1NARY.Audio;
 	using B1NARY.UI;
 
 	public class DebuggerWindow : EditorWindow

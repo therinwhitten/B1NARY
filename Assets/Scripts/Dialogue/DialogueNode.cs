@@ -1,4 +1,4 @@
-namespace B1NARY
+namespace B1NARY.Scripting
 {
 	using System.Linq;
 	using B1NARY.UI;
@@ -16,11 +16,11 @@ namespace B1NARY
 		Regex emoteRegex = new Regex("\\[(.*?)\\]");
 
 		public Dictionary<string, DialogueNode> choices;
-		public DialogueNode(List<DialogueLine> lines)
+		public DialogueNode(IEnumerable<DialogueLine> lines)
 		{
 			previous = null;
 			this.choices = new Dictionary<string, DialogueNode>();
-			this.lines = lines;
+			this.lines = lines.ToList();
 			index = 0;
 		}
 
@@ -53,9 +53,10 @@ namespace B1NARY
 			return output;
 		}
 
-		public void nextLine()
+		public DialogueLine nextLine()
 		{
 			index++;
+			return GetCurrentLine();
 		}
 		public void moveIndex(int newIndex)
 		{
@@ -113,7 +114,7 @@ namespace B1NARY
 		{
 			ScriptParser.Instance.currentNode = choice;
 			ScriptParser.Instance.paused = false;
-			ScriptParser.Instance.ParseLine(choice.GetCurrentLine()).Wait();
+			ScriptParser.Instance.PerformNextLine(choice.GetCurrentLine());
 		}
 		public DialogueNode makeConditionalNode()
 		{

@@ -2,7 +2,7 @@
 {
 	using UnityEngine;
 	using UnityEngine.Audio;
-	using B1NARY.Sounds;
+	using B1NARY.Audio;
 
 	public class ButtonSoundBehaviour : MonoBehaviour
 	{

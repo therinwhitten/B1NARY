@@ -18,6 +18,8 @@
 
 		public override void OnInspectorGUI()
 		{
+			base.OnInspectorGUI();
+			/*
 			SerializedObject serializedObject = new SerializedObject(TransitionHandler);
 			serializedObject.Update();
 
@@ -38,6 +40,7 @@
 			TransitionHandler.AutomaticallyAssignAnimatedBG = EditorGUILayout.ToggleLeft("Automatically Assign Animated Background", TransitionHandler.AutomaticallyAssignAnimatedBG);
 
 			serializedObject.ApplyModifiedProperties();
+			*/
 		}
 	}
 }

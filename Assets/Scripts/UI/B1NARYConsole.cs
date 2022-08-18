@@ -12,7 +12,6 @@
 	[RequireComponent(typeof(FadeController), typeof(CanvasGroup))]
 	public class B1NARYConsole : MonoBehaviour, ITogglableInterface
 	{
-
 		public string ActionName => "Open B1NARYConsole";
 		private static void WriteLine(string condition, string trackTrace, LogType logType)
 		{
@@ -118,10 +117,10 @@
 		void ITogglableInterface.TogglePlayerOpen(InputAction.CallbackContext context)
 		{
 			if (canvasGroup.blocksRaycasts)
-				_ = fadeController.FadeOut(0.2f);
+				fadeController.FadeOut(0.2f);
 			else
 			{
-				_ = fadeController.FadeIn(0.2f);
+				fadeController.FadeIn(0.2f);
 				if (cache != null)
 				{
 					while (cache.Count > 0)
@@ -144,6 +143,8 @@ namespace B1NARY.Logging
 	{
 		public LogType logType;
 		private List<string> prefixes;
+		public Prefix(params string[] prefixes) : this(LogType.Log, prefixes)
+		{ }
 		public Prefix(LogType logType = LogType.Log, params string[] prefixes) : this(prefixes, logType)
 		{ }
 		public Prefix(IEnumerable<string> prefixes, LogType logType = LogType.Log)

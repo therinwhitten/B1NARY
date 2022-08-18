@@ -1,4 +1,4 @@
-﻿namespace B1NARY.ScriptingBeta
+﻿namespace B1NARY.Scripting.Experimental
 {
 	using System;
 	using System.Collections;

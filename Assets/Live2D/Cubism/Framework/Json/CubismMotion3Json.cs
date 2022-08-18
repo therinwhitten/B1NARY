@@ -139,7 +139,7 @@ namespace Live2D.Cubism.Framework.Json
         /// Converts stepped curves to liner curves.
         /// </summary>
         /// <param name="curve">Data to convert.</param>
-        /// <returns>Animation curve.</returns>
+        /// <returns>BackgroundHandler curve.</returns>
         public static AnimationCurve ConvertSteppedCurveToLinerCurver(CubismMotion3Json.SerializableCurve curve, float poseFadeInTime)
         {
             poseFadeInTime = (poseFadeInTime < 0) ? 0.5f : poseFadeInTime;

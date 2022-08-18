@@ -1,9 +1,8 @@
-namespace B1NARY.Sounds
+namespace B1NARY.Audio
 {
 	using System;
 	using UnityEngine;
 	using UnityEngine.Audio;
-	using UnityEngine.Serialization;
 
 	///<summary>Internal struct handled by code to manage sound files, see 
 	///<see cref="UnityCustomAudioClip"/> as it mainly borrows from there</summary>
@@ -19,20 +18,42 @@ namespace B1NARY.Sounds
 			clip = audioClip;
 		}
 
+		/// <summary>
+		/// Gets a trimmed name of <see cref="clip"/>, otherwise, empty if <see langword="null"/>.
+		/// </summary>
 		public string Name => clip != null ? clip.name.Trim() : string.Empty;
 
+		/// <summary> the Audio Clip stored, meant for playing sounds. </summary>
 		public AudioClip clip;
+		/// <summary> Mixer Group, meant for automatically changing values via user input. </summary>
 		public AudioMixerGroup audioMixerGroup = null;
+		/// <summary> The volume the <see cref="clip"/> meant to be played on. </summary>
 		public float volume = 1;
 		public float volumeVariance = 0;
+		/// <summary> The pitch the <see cref="clip"/> meant to be played on. </summary>
 		public float pitch = 1;
 		public float pitchVariance = 0;
+		/// <summary> 
+		/// If the <see cref="clip"/> should loop if it reached the 
+		/// end of its cycle. 
+		/// </summary>
 		public bool loop = false;
+		/// <summary> If it should play right when it is noticed. </summary>
 		public bool playOnAwake = false;
+		/// <summary> If the sound playing will stop when switching scenes. </summary>
 		public bool destroyWhenTransitioningScenes = true;
+		/// <summary> How long it will take to fade during the switch of scenes. </summary>
 		public float fadeTime = 0;
+		/// <summary> 
+		/// Random type used for randomization of <see cref="pitchVariance"/> 
+		/// and <see cref="volumeVariance"/>. 
+		/// </summary>
 		public RandomFowarder.RandomType randomType;
 
+		/// <summary>
+		/// Final pitch by basing on <see cref="volume"/>, and adjusting it on 
+		/// <see cref="volumeVariance"/> with <see cref="randomType"/>.
+		/// </summary>
 		public float FinalVolume
 		{
 			get
@@ -45,6 +66,10 @@ namespace B1NARY.Sounds
 				return randomVolume;
 			}
 		}
+		/// <summary>
+		/// Final pitch by basing on <see cref="pitch"/>, and adjusting it on 
+		/// <see cref="pitchVariance"/> with <see cref="randomType"/>.
+		/// </summary>
 		public float FinalPitch
 		{
 			get

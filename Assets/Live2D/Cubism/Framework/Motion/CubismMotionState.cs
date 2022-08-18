@@ -24,12 +24,12 @@ namespace Live2D.Cubism.Framework.Motion
         public AnimationClip Clip { get; private set; }
 
         /// <summary>
-        /// Animation clip mixer.
+        /// BackgroundHandler clip mixer.
         /// </summary>
         public AnimationMixerPlayable ClipMixer { get; private set; }
 
         /// <summary>
-        /// Animation clip playable.
+        /// BackgroundHandler clip playable.
         /// </summary>
         public AnimationClipPlayable ClipPlayable { get; private set; }
 
@@ -39,9 +39,9 @@ namespace Live2D.Cubism.Framework.Motion
         /// Create motion state.
         /// </summary>
         /// <param name="playableGraph">Playable graph.</param>
-        /// <param name="clip">Animation clip.</param>
-        /// <param name="isLoop">Animation is loop.</param>
-        /// <param name="speed">Animation speed.</param>
+        /// <param name="clip">BackgroundHandler clip.</param>
+        /// <param name="isLoop">BackgroundHandler is loop.</param>
+        /// <param name="speed">BackgroundHandler speed.</param>
         public static CubismMotionState CreateCubismMotionState(PlayableGraph playableGraph, AnimationClip clip, bool isLoop = true, float speed = 1.0f)
         {
             var ret = new CubismMotionState();

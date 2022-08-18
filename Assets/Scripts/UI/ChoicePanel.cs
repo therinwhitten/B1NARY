@@ -6,6 +6,7 @@
 	using System;
 	using System.Text;
 	using System.Threading.Tasks;
+	using B1NARY.Scripting;
 
 	[RequireComponent(typeof(FadeController))]
 	public sealed class ChoicePanel : MonoBehaviour, IDisposable
@@ -68,7 +69,7 @@
 			if (!hasBeenInitialized)
 				return;
 			hasBeenInitialized = false;
-			fadeController.FadeOut(0.1f).Wait();
+			fadeController.FadeOutAsync(0.1f).Wait();
 			choiceButtons = null;
 			PickedChoice = null;
 			foreach (var pair in choiceButtons)
