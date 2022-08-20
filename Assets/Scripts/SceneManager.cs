@@ -87,12 +87,8 @@
 			UnitySceneManager.LoadScene(sceneName);
 			IEnumerable<Action<string>> events = SwitchedScenes.GetInvocationList()
 				.Cast<Action<string>>();//.Select(action => Task.Run(() => action.Invoke(sceneName)));
-			float iteration = 1 / events.Count();
-			SwitchedScenes = null;
-			IEnumerable<Task> taskEvents = events.Select(action => Task.Run(() => 
-				{ action.Invoke(sceneName); Progression += iteration; }));
-			return Task.WhenAll(taskEvents)
-				.ContinueWith(task => Progression = 1f, TaskContinuationOptions.OnlyOnRanToCompletion);
+			return LoadingScreenAPI.LoadObjects(events.Select<Action<string>, Action>
+				(action => () => action.Invoke(sceneName)));
 		}
 		public static event Action<string> SwitchedScenes;
 	}

@@ -11,6 +11,7 @@
 	using B1NARY.DesignPatterns;
 	using System.Collections;
 
+	[RequireComponent(typeof(CanvasGroup))]
 	public class TransitionHandler : SingletonAlt<TransitionHandler>
 	{
 		public enum TransitionStatus : byte
@@ -21,13 +22,24 @@
 		//[SerializeField] private string transitionName = "Transition";
 		[SerializeField] private string BGCanvasName = "BG-Canvas";
 		[SerializeField] private GameObject[] transitions;
+		[SerializeField] private bool showTransitionOnFirstLoad = true;
 		private BackgroundHandler m_backgroundHandler;
 		public BackgroundHandler Backgrounds => m_backgroundHandler;
+		private CanvasGroup canvasGroup;
 
 
 		protected override void SingletonAwake()
 		{
+			canvasGroup = GetComponent<CanvasGroup>();
 			PerScene();
+		}
+		private void Start()
+		{
+			if (showTransitionOnFirstLoad)
+			{
+				Show();
+				_ = FadeOut(0).ContinueWith(task => Debug.LogError(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
+			}
 		}
 		private void PerScene(string sceneName = "")
 		{
@@ -40,22 +52,26 @@
 		{
 			if (transitionObject == null)
 				throw new NullReferenceException($"{nameof(transitionObject)} doesn't exist!");
-			var animator = BackgroundHandler.GetComponentCustom<Animator>(transitionObject);
-			var transitionSlave = BackgroundHandler.GetComponentCustom<TransitionSlave>(transitionObject);
+			var gameObject = Instantiate(transitionObject, this.gameObject.transform);
+			gameObject.SetActive(true);
+			var animator = BackgroundHandler.GetComponentCustom<Animator>(gameObject);
+			var transitionSlave = BackgroundHandler.GetComponentCustom<TransitionSlave>(gameObject);
 			return (animator, transitionSlave);
 		}
 
 		public async Task FadeIn(int index, float fadeMultiplier = 1f)
 		{
 			var (animator, transitionSlave) = GetAndVerifyAnimator(transitions[index]);
+			Show();
 			animator.speed = fadeMultiplier;
 			await transitionSlave.StartAnimation();
 		}
 		public async Task FadeOut(int index, float fadeMultiplier = 1f)
 		{
 			var (animator, transitionSlave) = GetAndVerifyAnimator(transitions[index]);
-			animator.speed = fadeMultiplier * -1;
+			animator.speed = fadeMultiplier;
 			await transitionSlave.StopAnimation();
+			Hide();
 		}
 
 		private Action<TransitionStatus> finalizeValue = null;
@@ -75,6 +91,20 @@
 			};
 			return completionSource;
 		}
+		private void Hide()
+		{
+			canvasGroup.alpha = 0f;
+			canvasGroup.blocksRaycasts = false;
+			canvasGroup.interactable = false;
+		}
+		private void Show()
+		{
+			canvasGroup.alpha = 1f;
+			canvasGroup.blocksRaycasts = true;
+			canvasGroup.interactable = true;
+		}
+
+
 		private void OnDestroy()
 		{
 
@@ -114,9 +144,10 @@
 				T output = parent.GetComponent<T>();
 				if (output == null)
 				{
-					output = parent.GetComponentsInChildren<T>().Single();
-					if (output == null)
-						throw new NullReferenceException();
+					T[] components = parent.GetComponentsInChildren<T>();
+					if (components.Any())
+						return components.First();
+					throw new NullReferenceException($"{parent.name} does not have {typeof(T)}!");
 				}
 				return output;
 			}

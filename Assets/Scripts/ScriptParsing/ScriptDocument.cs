@@ -3,7 +3,7 @@
 	using System.IO;
 	using System.Collections.Generic;
 
-	public class ScriptDocument
+	public class ScriptDocument //: IEnumerable<(bool isBlock, ScriptLine line)>
 	{
 		public readonly string documentName;
 		// starts at 1, indexes at 0.

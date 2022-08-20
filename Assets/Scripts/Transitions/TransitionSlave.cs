@@ -25,7 +25,7 @@
 			animator = GetComponent<Animator>();
 		}
 
-		public Task StartAnimation()
+		public async Task StartAnimation()
 		{
 			TransitionActive = true;
 			while (true)
@@ -33,12 +33,11 @@
 				if (finishedTask.HasValue)
 					if (finishedTask.Value == TransitionStatus.FadedIn)
 						break;
-				Task.Yield();
+				await Task.Yield();
 			}
-			finishedTask = null;
-			return Task.CompletedTask;
+			finishedTask = null;;
 		}
-		public Task StopAnimation()
+		public async Task StopAnimation()
 		{
 			TransitionActive = false;
 			while (true)
@@ -46,10 +45,9 @@
 				if (finishedTask.HasValue)
 					if (finishedTask.Value == TransitionStatus.FadedOut)
 						break;
-				Task.Yield();
+				await Task.Yield();
 			}
 			finishedTask = null;
-			return Task.CompletedTask;
 		}
 
 		private TransitionStatus? finishedTask = null;
