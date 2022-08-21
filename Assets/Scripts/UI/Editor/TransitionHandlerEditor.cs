@@ -1,8 +1,9 @@
 ﻿namespace B1NARY.Editor
 {
+	using System;
 	using UnityEditor;
 
-	[CustomEditor(typeof(TransitionHandler))]
+	[CustomEditor(typeof(TransitionHandler)), Obsolete]
 	public class TransitionHandlerEditor : Editor
 	{
 		private TransitionHandler m_Handler;

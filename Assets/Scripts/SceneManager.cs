@@ -1,5 +1,6 @@
 ﻿namespace B1NARY
 {
+	using B1NARY.DesignPatterns;
 	using B1NARY.UI;
 	using System;
 	using System.Collections.Generic;
@@ -40,13 +41,13 @@
 			if (!FadeSceneTask.IsCompleted)
 				throw new Exception();
 			PrepareSwitchScenes();
-			Debug.Log("Fade In");
-			await TransitionHandler.Instance.FadeIn(0, fadeMultiplier);
-			Debug.Log("Scene Event");
+			Debug.Log("Fade In Stage");
+			await Multiton<TransitionManager>.First().SetToOpaque(fadeMultiplier);
+			Debug.Log("Loading Objects");
 			await SwitchScenes(sceneName);
-			Debug.Log("Fade Out");
-			await TransitionHandler.Instance.FadeOut(0, fadeMultiplier);
-			Debug.Log("Switched scenes succ");
+			Debug.Log("Fade Out Stages");
+			await Task.Run(() => SpinWait.SpinUntil(() => Multiton<TransitionManager>.First().TransitionStatus == TransitionStatus.Transparent));
+			Debug.Log("Finished Loading Stage");
 		}
 		/// <summary>
 		/// Invokes <see cref="SwitchingScenes"/> and clear it.
@@ -70,6 +71,10 @@
 		}
 		public static event Action SwitchingScenes;
 		public static bool PreppedSwitchScenes { get; private set; } = false;
+		/// <summary>
+		/// Shows the progression, only comes into play when switching scenes and
+		/// messing with transitions. 1 by default.
+		/// </summary>
 		public static float Progression { get; private set; } = 1f;
 
 		/// <summary>
@@ -86,7 +91,7 @@
 			PreppedSwitchScenes = false;
 			UnitySceneManager.LoadScene(sceneName);
 			IEnumerable<Action<string>> events = SwitchedScenes.GetInvocationList()
-				.Cast<Action<string>>();//.Select(action => Task.Run(() => action.Invoke(sceneName)));
+				.Cast<Action<string>>();
 			return LoadingScreenAPI.LoadObjects(events.Select<Action<string>, Action>
 				(action => () => action.Invoke(sceneName)));
 		}

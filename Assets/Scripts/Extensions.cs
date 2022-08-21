@@ -40,7 +40,29 @@
 			return true;
 		}
 
+		/// <summary>
+		/// Allows progression of code while providing it's own exception handler
+		/// inside.
+		/// </summary>
+		/// <param name="task">The task to target.</param>
+		public static void FreeBlockPath(this Task task)
+		{
+			_ = task.ContinueWith(subTask => Debug.LogError(subTask.Exception), 
+				TaskContinuationOptions.OnlyOnFaulted);
+		}
 
+		public static T GetComponentWithChildren<T>(this GameObject parent) where T : UnityEngine.Object
+		{
+			T output = parent.GetComponent<T>();
+			if (output == null)
+			{
+				T[] components = parent.GetComponentsInChildren<T>();
+				if (components.Any())
+					return components.First();
+				throw new NullReferenceException($"{parent.name} does not have {typeof(T)}!");
+			}
+			return output;
+		}
 	}
 
 	public static class CoroutineUtilities

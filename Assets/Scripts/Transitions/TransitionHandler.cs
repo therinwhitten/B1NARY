@@ -11,7 +11,7 @@
 	using B1NARY.DesignPatterns;
 	using System.Collections;
 
-	[RequireComponent(typeof(CanvasGroup))]
+	[RequireComponent(typeof(CanvasGroup)), Obsolete]
 	public class TransitionHandler : SingletonAlt<TransitionHandler>
 	{
 		public enum TransitionStatus : byte
@@ -38,7 +38,7 @@
 			if (showTransitionOnFirstLoad)
 			{
 				Show();
-				_ = FadeOut(0).ContinueWith(task => Debug.LogError(task.Exception), TaskContinuationOptions.OnlyOnFaulted);
+				FadeOut(0).FreeBlockPath();
 			}
 		}
 		private void PerScene(string sceneName = "")
@@ -54,8 +54,8 @@
 				throw new NullReferenceException($"{nameof(transitionObject)} doesn't exist!");
 			var gameObject = Instantiate(transitionObject, this.gameObject.transform);
 			gameObject.SetActive(true);
-			var animator = BackgroundHandler.GetComponentCustom<Animator>(gameObject);
-			var transitionSlave = BackgroundHandler.GetComponentCustom<TransitionSlave>(gameObject);
+			var animator = gameObject.GetComponentWithChildren<Animator>();
+			var transitionSlave = gameObject.GetComponentWithChildren<TransitionSlave>();
 			return (animator, transitionSlave);
 		}
 
@@ -69,28 +69,12 @@
 		public async Task FadeOut(int index, float fadeMultiplier = 1f)
 		{
 			var (animator, transitionSlave) = GetAndVerifyAnimator(transitions[index]);
+			Show();
 			animator.speed = fadeMultiplier;
 			await transitionSlave.StopAnimation();
 			Hide();
 		}
 
-		private Action<TransitionStatus> finalizeValue = null;
-		public void FinishedAnimation(TransitionStatus isBeginning)
-		{
-			finalizeValue?.Invoke(isBeginning);
-		}
-		private TaskCompletionSource<TransitionStatus> GetCompletionTransitionTask(TransitionStatus expectedValue)
-		{
-			var completionSource = new TaskCompletionSource<TransitionStatus>();
-			finalizeValue = value =>
-			{
-				if (value != expectedValue)
-					return;
-				completionSource.SetResult(value);
-				finalizeValue = null;
-			};
-			return completionSource;
-		}
 		private void Hide()
 		{
 			canvasGroup.alpha = 0f;
@@ -123,7 +107,7 @@
 				var obj = GameObject.Find(BGCanvasName);
 				if (obj == null)
 					throw new NullReferenceException(BGCanvasName);
-				BGCanvas = (obj, GetComponentCustom<Image>(obj), GetComponentCustom<VideoPlayer>(obj));
+				BGCanvas = (obj, obj.GetComponentWithChildren<Image>(), obj.GetComponentWithChildren<VideoPlayer>());
 			}
 
 			public void SetNewStaticBackground(string resourcesPath)
@@ -139,18 +123,7 @@
 				BGCanvas.animatedBG.Play();
 			}
 
-			public static T GetComponentCustom<T>(GameObject parent) where T : UnityEngine.Object
-			{
-				T output = parent.GetComponent<T>();
-				if (output == null)
-				{
-					T[] components = parent.GetComponentsInChildren<T>();
-					if (components.Any())
-						return components.First();
-					throw new NullReferenceException($"{parent.name} does not have {typeof(T)}!");
-				}
-				return output;
-			}
+			
 		}
 	}
 }

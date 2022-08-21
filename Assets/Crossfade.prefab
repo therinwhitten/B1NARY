@@ -95,7 +95,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1902365647084039745}
   - component: {fileID: 1902365647084039749}
-  - component: {fileID: 3091321528886251663}
+  - component: {fileID: 7094637365858665665}
+  - component: {fileID: 4619908603011250503}
   m_Layer: 0
   m_Name: Crossfade
   m_TagString: Untagged
@@ -142,7 +143,28 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3091321528886251663
+--- !u!223 &7094637365858665665
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902365647084039744}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 1
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: -1088108237
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &4619908603011250503
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,10 +173,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1902365647084039744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13f0c25284f2f2742be2fbbf76d8a51a, type: 3}
+  m_Script: {fileID: 11500000, guid: dd25f9e1ecfc2ce47bc59dec45646a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boolName: Transition
+  opaqueTriggerName: Transition
 --- !u!1 &1902365647359853909
 GameObject:
   m_ObjectHideFlags: 0

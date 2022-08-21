@@ -12,7 +12,7 @@
 			"If you want to eat something, chew it until its mushy and swallow.",
 			"You are breathing manually now.",
 			"its possible to count up to 1024 with your fingers using binary, or base 2!",
-
+			"Strike the weakpoint for massive damage!",
 		});
 		public static string PickNewRandomLoadingScreenTip(RandomFowarder.RandomType randomType)
 			=> loadingScreenTips[RandomFowarder.Next(loadingScreenTips.Count, randomType)];
