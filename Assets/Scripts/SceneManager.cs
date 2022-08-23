@@ -41,13 +41,26 @@
 			if (!FadeSceneTask.IsCompleted)
 				throw new Exception();
 			PrepareSwitchScenes();
-			Debug.Log("Fade In Stage");
-			await Multiton<TransitionManager>.First().SetToOpaque(fadeMultiplier);
-			Debug.Log("Loading Objects");
-			await SwitchScenes(sceneName);
-			Debug.Log("Fade Out Stages");
-			await Task.Run(() => SpinWait.SpinUntil(() => Multiton<TransitionManager>.First().TransitionStatus == TransitionStatus.Transparent));
-			Debug.Log("Finished Loading Stage");
+			if (TransitionManager.HasInstance)
+			{
+				Debug.Log("Fade In Stage");
+				await TransitionManager.Instance.SetToOpaque(0, fadeMultiplier);
+				Debug.Log("Loading Objects");
+				await SwitchScenes(sceneName);
+				Debug.Log("Fade Out Stages");
+				await TransitionManager.Instance.SetToTransparent(0, fadeMultiplier);
+				Debug.Log("Finished Loading Stage");
+			}
+			else
+			{
+				Debug.Log("Fade In Stage");
+				await Multiton<TransitionObject>.First().SetToOpaque(fadeMultiplier);
+				Debug.Log("Loading Objects");
+				await SwitchScenes(sceneName);
+				Debug.Log("Fade Out Stages");
+				await Task.Run(() => SpinWait.SpinUntil(() => Multiton<TransitionObject>.First().TransitionStatus == TransitionStatus.Transparent));
+				Debug.Log("Finished Loading Stage");
+			}
 		}
 		/// <summary>
 		/// Invokes <see cref="SwitchingScenes"/> and clear it.

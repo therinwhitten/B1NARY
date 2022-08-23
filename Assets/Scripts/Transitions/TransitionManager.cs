@@ -1,85 +1,99 @@
-﻿namespace B1NARY.UI
+﻿namespace B1NARY
 {
-	using B1NARY.DesignPatterns;
 	using System;
-	using System.Collections.Generic;
-	using System.Linq;
 	using System.Threading.Tasks;
 	using UnityEngine;
-	//using TransitionData = System.Tuple<UnityEngine.GameObject, UnityEngine.Animator>;
+	using UnityEngine.UI;
+	using UnityEngine.Video;
+	using UnityEngine.SceneManagement;
+	using System.Linq;
+	using System.Threading;
+	using B1NARY.DesignPatterns;
+	using System.Collections;
+	using B1NARY.UI;
 
-	public enum TransitionStatus
+	[RequireComponent(typeof(CanvasGroup))]
+	public class TransitionManager : SingletonAlt<TransitionManager>
 	{
-		Running,
-		Opaque,
-		Transparent,
-	}
+		[SerializeField] private string BGCanvasName = "BG-Canvas";
+		[SerializeField] private GameObject[] transitions;
+		//[SerializeField] private bool showTransitionOnFirstLoad = true;
+		private BackgroundHandler m_backgroundHandler;
+		public BackgroundHandler Backgrounds => m_backgroundHandler;
 
-	// Starts at end, but starts at beginning
-	[RequireComponent(typeof(Canvas), typeof(Animator))]
-	public class TransitionManager : Multiton<TransitionManager>
-	{
-		[SerializeField] private string opaqueTriggerName = "Transition";
-		public string OpaqueTriggerName => opaqueTriggerName;
-		private TransitionStatus transitionStatus = TransitionStatus.Opaque;
-		public TransitionStatus TransitionStatus => transitionStatus;
 
-		private Animator animator;
-		private void Start()
+		protected override void SingletonAwake()
 		{
-			animator = GetComponent<Animator>();
+			PerScene();
 		}
-		public async Task SetToOpaque(float speedMultiplier = 1f)
+		private void PerScene(string sceneName = "")
 		{
-			animator.SetTrigger(OpaqueTriggerName);
-			animator.speed = speedMultiplier;
-			transitionStatus = TransitionStatus.Running;
-			while (transitionStatus != TransitionStatus.Opaque)
-				await Task.Yield();
-		}
+			m_backgroundHandler = new BackgroundHandler(BGCanvasName);
 
-		public void SetAnimationStatus(TransitionStatus transitionStatus)
-		{
-			this.transitionStatus = transitionStatus;
+
+			SceneManager.SwitchedScenes += PerScene;
 		}
 
 
-
-		/*
-		[SerializeField]
-		private string opaqueTriggerName = "";
-
-		private TransitionData[] transitionOverlays;
-		private int currentTransitionIndex = 0;
-		private void Start()
+		public TransitionObject GetTransitionObject(GameObject gameSchematic)
 		{
-			transitionOverlays = GetTransitions().ToArray();
+			if (gameSchematic == null)
+				throw new NullReferenceException($"{gameSchematic.name} doesn't exist!");
+			var gameObject = Instantiate(gameSchematic, this.gameObject.transform);
+			gameObject.SetActive(true);
+			return gameObject.GetComponent<TransitionObject>();
 		}
-		private List<TransitionData> GetTransitions()
+
+		public async Task SetToOpaque(int index, float fadeMultiplier = 1f)
 		{
-			Transform currentTransform = gameObject.transform;
-			if (currentTransform.childCount == 0)
-				throw new InvalidOperationException($"'{name}' doesn't have any"
-					+ "children to work with! Put in at least 1 transition!");
-			var children = new List<TransitionData>(currentTransform.childCount);
-			var exceptions = new List<Exception>();
-			for (int i = 0; i < children.Capacity; i++)
-				try
-				{
-					Transform child = currentTransform.GetChild(i);
-					if (!child.gameObject.TryGetComponent<Canvas>(out _))
-						throw new MissingComponentException($"{child.name} although exists, doesn't have a {nameof(Canvas)}!");
-					if (child.gameObject.TryGetComponent<Animator>(out var animator))
-						// expected end result here.
-						children.Add(new TransitionData(child.gameObject, animator));
-					else
-						throw new MissingComponentException($"{child.name} does not have {nameof(Animator)}!");
-				}
-				catch (Exception ex) { exceptions.Add(ex); }
-			if (exceptions.Any())
-				Debug.LogError(new AggregateException("Some children doesn't follow the requirements: ", exceptions));
-			return children;
+			TransitionObject transitionObject = GetTransitionObject(transitions[index]);
+			await transitionObject.SetToOpaque(fadeMultiplier);
+			Destroy(transitionObject.gameObject);
 		}
-		*/
+		public async Task SetToTransparent(int index, float fadeMultiplier = 1f)
+		{
+			TransitionObject transitionObject = GetTransitionObject(transitions[index]);
+			await transitionObject.SetToTransparent(fadeMultiplier);
+			Destroy(transitionObject.gameObject);
+		}
+
+
+
+		private void OnDestroy()
+		{
+
+			SceneManager.SwitchedScenes -= PerScene;
+		}
+
+		[Serializable]
+		public class BackgroundHandler
+		{
+			public bool AutomaticallyAssignAnimatedBG = true;
+			public (GameObject gameObject, Image staticBG, VideoPlayer animatedBG) BGCanvas { get; private set; }
+			public bool LoopingAnimBG { get => BGCanvas.animatedBG.isLooping; set => BGCanvas.animatedBG.isLooping = value; }
+
+			internal BackgroundHandler(string BGCanvasName)
+			{
+				var obj = GameObject.Find(BGCanvasName);
+				if (obj == null)
+					throw new NullReferenceException(BGCanvasName);
+				BGCanvas = (obj, obj.GetComponentWithChildren<Image>(), obj.GetComponentWithChildren<VideoPlayer>());
+			}
+
+			public void SetNewStaticBackground(string resourcesPath)
+				=> SetNewStaticBackground(Resources.Load<Sprite>(resourcesPath));
+			public void SetNewStaticBackground(Sprite sprite) =>
+				BGCanvas.staticBG.sprite = sprite;
+			public void SetNewAnimatedBackground(string resourcesPath)
+				=> SetNewAnimatedBackground(Resources.Load<VideoClip>(resourcesPath));
+			public void SetNewAnimatedBackground(VideoClip videoClip)
+			{
+				BGCanvas.animatedBG.Stop();
+				BGCanvas.animatedBG.clip = videoClip;
+				BGCanvas.animatedBG.Play();
+			}
+
+			
+		}
 	}
 }

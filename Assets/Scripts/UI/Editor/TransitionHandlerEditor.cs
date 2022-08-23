@@ -3,16 +3,16 @@
 	using System;
 	using UnityEditor;
 
-	[CustomEditor(typeof(TransitionHandler)), Obsolete]
+	[CustomEditor(typeof(TransitionManager)), Obsolete]
 	public class TransitionHandlerEditor : Editor
 	{
-		private TransitionHandler m_Handler;
-		public TransitionHandler TransitionHandler
+		private TransitionManager m_Handler;
+		public TransitionManager TransitionHandler
 		{
 			get
 			{
 				if (m_Handler == null)
-					m_Handler = (TransitionHandler)target;
+					m_Handler = (TransitionManager)target;
 				return m_Handler;
 			}
 		}
@@ -21,24 +21,24 @@
 		{
 			base.OnInspectorGUI();
 			/*
-			SerializedObject serializedObject = new SerializedObject(TransitionHandler);
+			SerializedObject serializedObject = new SerializedObject(TransitionManager);
 			serializedObject.Update();
 
 			// Transitions
 			EditorGUILayout.LabelField("Transitions", EditorStyles.boldLabel);
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionHandler.transitionShader)));
-			TransitionHandler.useTransitionValue = EditorGUILayout.Toggle("Use Transition Value", TransitionHandler.useTransitionValue);
-			if (TransitionHandler.transitionShader != null && TransitionHandler.useTransitionValue)
-				TransitionHandler.fadePercentageName = EditorGUILayout
-					.DelayedTextField("Fade Percentage Name", TransitionHandler.fadePercentageName);
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionHandler.textureIn)));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionHandler.textureOut)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionManager.transitionShader)));
+			TransitionManager.useTransitionValue = EditorGUILayout.Toggle("Use Transition Value", TransitionManager.useTransitionValue);
+			if (TransitionManager.transitionShader != null && TransitionManager.useTransitionValue)
+				TransitionManager.fadePercentageName = EditorGUILayout
+					.DelayedTextField("Fade Percentage Name", TransitionManager.fadePercentageName);
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionManager.textureIn)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionManager.textureOut)));
 
 			// Backgrounds
 			EditorGUILayout.Space();
 			EditorGUILayout.LabelField("Backgrounds", EditorStyles.boldLabel);
-			TransitionHandler.backgroundCanvasName = EditorGUILayout.DelayedTextField("Background Canvas Name", TransitionHandler.backgroundCanvasName);
-			TransitionHandler.AutomaticallyAssignAnimatedBG = EditorGUILayout.ToggleLeft("Automatically Assign Animated Background", TransitionHandler.AutomaticallyAssignAnimatedBG);
+			TransitionManager.backgroundCanvasName = EditorGUILayout.DelayedTextField("Background Canvas Name", TransitionManager.backgroundCanvasName);
+			TransitionManager.AutomaticallyAssignAnimatedBG = EditorGUILayout.ToggleLeft("Automatically Assign Animated Background", TransitionManager.AutomaticallyAssignAnimatedBG);
 
 			serializedObject.ApplyModifiedProperties();
 			*/

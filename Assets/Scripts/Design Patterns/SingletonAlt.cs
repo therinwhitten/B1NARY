@@ -11,6 +11,8 @@
 	/// <typeparam name="T">A MonoBehaviour Script to tie it to.</typeparam>
 	public abstract class SingletonAlt<T> : InstanceHolder<T> where T : MonoBehaviour
 	{
+		public static bool HasInstance => instance != null;
+
 		private static T instance;
 		/// <summary> A Single instance </summary>
 		public static T Instance

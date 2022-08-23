@@ -26,7 +26,7 @@
 		public static T GetItem(int index)
 		{
 			CheckInstances();
-			return instances[index];
+			return instances[instancesList[index]];
 		}
 		public static IEnumerator<T> GetEnumerator()
 		{
