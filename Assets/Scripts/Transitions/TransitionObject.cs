@@ -6,7 +6,6 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 	using UnityEngine;
-	//using TransitionData = System.Tuple<UnityEngine.GameObject, UnityEngine.Animator>;
 
 	public enum TransitionStatus
 	{

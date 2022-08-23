@@ -9,7 +9,6 @@
 	using System.Linq;
 	using System.Collections;
 	using System.Threading;
-	using B1NARY.Logging;
 
 	[RequireComponent(typeof(FadeController))]
 	public class MainMenuCommands : MonoBehaviour
@@ -38,11 +37,8 @@
 		// BUTTON BEHAVIOURS
 		public void NewGame()
 		{
-			B1NARYConsole.Log(name, "Initialized new game sequence.");
 			mainMenuFadeController.FadeOut(0.5f);
-
 			SceneManager.Initialize(1f);
-			
 		}
 		public void LoadGame()
 		{

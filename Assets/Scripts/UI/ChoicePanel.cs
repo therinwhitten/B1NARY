@@ -49,7 +49,7 @@
 			var consoleBuilder = new StringBuilder("Starting new choice panel with options:");
 			for (int i = 0; i < choices.Length; i++)
 				consoleBuilder.Append($"\n{choices[i]}");
-			B1NARYConsole.Log(name, consoleBuilder.ToString());
+			Debug.Log(name + ": " + consoleBuilder.ToString());
 			return Task.CompletedTask;
 		}
 

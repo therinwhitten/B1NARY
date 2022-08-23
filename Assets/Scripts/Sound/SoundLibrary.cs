@@ -45,7 +45,7 @@ namespace B1NARY.Audio
 			if (customAudioClips == null)
 			{
 				customAudioClips = new List<CustomAudioClip>();
-				B1NARYConsole.LogError(nameof(SoundLibrary), "Clip data has been found "
+				IngameDebugger.LogError(nameof(SoundLibrary), "Clip data has been found "
 					+ "null. Replacing default settings. Hopefully you made a backup of them?");
 				return;
 			}

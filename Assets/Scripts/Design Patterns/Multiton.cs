@@ -28,8 +28,10 @@
 			CheckInstances();
 			return instances[instancesList[index]];
 		}
-		public static IEnumerator<T> GetEnumerator()
+		public static IEnumerator<T> GetEnumerator(bool throwIfEmpty = false)
 		{
+			if (throwIfEmpty)
+				CheckInstances();
 			for (int i = 0; i < instances.Count; i++)
 				yield return instances[instancesList[i]];
 		}

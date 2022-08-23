@@ -180,7 +180,7 @@
 					for (int i = 0; i < args.Length; i++)
 						consoleLineBuilder.Append($"{args[i]}{(i == args.Length - 1 ? "" : ", ")}");
 				}
-				B1NARYConsole.Log(nameof(CommandsManager), consoleLineBuilder.ToString());
+				IngameDebugger.Log(nameof(CommandsManager), consoleLineBuilder.ToString());
 				return Task.CompletedTask;
 			}*/
 		}

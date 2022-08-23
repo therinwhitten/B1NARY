@@ -30,7 +30,6 @@
 			ScriptParser.Instance.Initialize();
 			void LoadSpeakingObjects(string sceneName)
 			{
-				B1NARYConsole.Log(nameof(SceneManager), sceneName, "Loading objects");
 				DialogueSystem.Instance.FadeIn(fadeTime);
 			}
 		}
@@ -69,8 +68,6 @@
 		{
 			if (PreppedSwitchScenes)
 				throw new Exception();
-			B1NARYConsole.Log(nameof(SceneManager), "Prepping to switch scenes,"
-				+ " Launching methods tied to it.");
 			PreppedSwitchScenes = true;
 			// Some events wants to constantly listen to scene switches, so they usually
 			// - re-assign the same method. This allows them to have the ability to

@@ -43,9 +43,7 @@
 
 		public void Initialize()
 		{
-			B1NARYConsole.Log(nameof(ScriptParser), "Initializing..");
 			ChangeScriptFile(scriptName, 0);
-			PerformNextLine();
 			//reader = new StreamReader(Path);
 			//currentNode = new DialogueNode(GetLines());
 			// readNextLine();
@@ -55,7 +53,6 @@
 
 		public void ChangeScriptFile(string newScript, int position = 0)
 		{
-			B1NARYConsole.Log(nameof(ScriptParser), $"Changing script to {newScript} as pos {position}");
 			scriptChanged = true;
 			currentNode = new DialogueNode(GetLines(Path, scriptName));
 			// This is fucking retarded. I don't remember why I did this and now
@@ -69,7 +66,6 @@
 
 		DialogueLine[] GetLines(string path, string documentName)
 		{
-			B1NARYConsole.Log(nameof(ScriptParser), $"Reading All lines of '{Path}'..");
 			var lines = new List<DialogueLine>();
 			using (var streamReader = new StreamReader(path))
 				for (int i = 1; !streamReader.EndOfStream; i++)
@@ -92,12 +88,10 @@
 		public void PlayVA(DialogueLine line)
 		{
 			string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
-			B1NARYConsole.Log(nameof(ScriptParser), $"Playing VoiceLine '{line.index}'" +
-				$"of character '{currentSpeaker}'");
 			if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
 				charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, new ScriptLine(line));
 			else
-				B1NARYConsole.LogError(nameof(ScriptParser), $"Character '{currentSpeaker}' does not exist, on line {line.index}!");
+				Debug.LogError($"Character '{currentSpeaker}' does not exist, on line {line.index}!");
 		}
 
 		/*

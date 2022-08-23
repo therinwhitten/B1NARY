@@ -68,12 +68,10 @@ namespace B1NARY.UI
 		}
 		public void FadeIn(float fadeTime = 0.5f)
 		{
-			B1NARYConsole.Log(name, "Initializing");
 			fadeController.FadeIn(fadeTime);
 		}
 		public void FadeOut(float fadeTime = 0.5f)
 		{
-			B1NARYConsole.Log(name, "De-Initializing");
 			fadeController.FadeOut(fadeTime);
 		}
 
