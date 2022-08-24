@@ -5,6 +5,7 @@ namespace B1NARY.Scripting
 	using System.Collections.Generic;
 	using UnityEngine;
 	using System.Text.RegularExpressions;
+	using B1NARY.Scripting.Experimental;
 
 	public class DialogueNode
 	{
@@ -114,7 +115,7 @@ namespace B1NARY.Scripting
 		{
 			ScriptParser.Instance.currentNode = choice;
 			ScriptParser.Instance.paused = false;
-			ScriptParser.Instance.PerformNextLine(choice.GetCurrentLine());
+			ScriptParser.Instance.PlayLine(new ScriptLine(choice.GetCurrentLine())).FreeBlockPath();
 		}
 		public DialogueNode makeConditionalNode()
 		{

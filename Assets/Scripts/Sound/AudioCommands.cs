@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using UnityEngine;
 
 	public partial class AudioHandler
 	{
@@ -14,10 +15,10 @@
 				name = name.Trim();
 				float fadeIn = float.Parse(floatStr);
 				try { Instance.PlayFadedSound(name, fadeIn); }
-				catch (SoundNotFoundException)
+				catch (SoundNotFoundException ex)
 				{
-					B1NARYConsole.LogWarning(nameof(AudioHandler), 
-						$"{name} is not a valid soundfile Path!");
+					Debug.LogWarning(nameof(AudioHandler) +
+						$"{name} is not a valid soundfile Path!" + ex);
 				}
 			}),
 			["fadeoutsound"] = (Action<string, string>)((name, floatStr) =>
@@ -27,13 +28,13 @@
 				try { Instance.StopSoundViaFade(name, fadeOut); }
 				catch (SoundNotFoundException ex)
 				{
-					B1NARYConsole.LogWarning(nameof(AudioHandler), 
+					Debug.LogWarning(nameof(AudioHandler) +
 						$"{name} is not a valid soundfile Path!" + ex);
 				}
 				catch (KeyNotFoundException ex)
 				{
-					B1NARYConsole.LogWarning(nameof(AudioHandler), 
-						$"Cannot find sound to close: {name}\n" + ex);
+					Debug.LogWarning(nameof(AudioHandler) + 
+						$": Cannot find sound to close: {name}\n" + ex);
 				}
 			}),
 			["playsound"] = (Action<string>)((name) =>
@@ -45,13 +46,13 @@
 				}
 				catch (SoundNotFoundException ex)
 				{
-					B1NARYConsole.LogWarning(nameof(AudioHandler), 
+					Debug.LogWarning(nameof(AudioHandler) +
 						$"{name} is not a valid soundfile Path!" + ex);
 				}
 				catch (KeyNotFoundException ex)
 				{
-					B1NARYConsole.LogWarning(nameof(AudioHandler), 
-						$"Cannot find sound: {name}\n" + ex);
+					Debug.LogWarning(nameof(AudioHandler) +
+						$": Cannot find sound to play: {name}\n" + ex);
 				}
 			}),
 			["stopsound"] = (Action<string>)((name) =>
@@ -60,13 +61,13 @@
 				try { Instance.StopSound(name); }
 				catch (SoundNotFoundException ex)
 				{
-					B1NARYConsole.LogWarning(nameof(AudioHandler), 
+					Debug.LogWarning(nameof(AudioHandler) +
 						$"{name} is not a valid soundfile Path!" + ex);
 				}
 				catch (KeyNotFoundException ex)
 				{
-					B1NARYConsole.LogWarning(nameof(AudioHandler), 
-						$"Cannot find sound to close: {name}\n" + ex);
+					Debug.LogWarning(nameof(AudioHandler) +
+						$": Cannot find sound to play: {name}\n" + ex);
 				}
 			}),
 		};

@@ -9,16 +9,7 @@
 		public string LastSpeaker { get; private set; } = string.Empty;
 		public AudioSource audioSource;
 
-		private ResourcesAsset<AudioClip> _currentVoiceLine;
-		public ResourcesAsset<AudioClip> CurrentVoiceLine
-		{
-			get => _currentVoiceLine;
-			private set
-			{
-				_currentVoiceLine = value;
-				audioSource.clip = _currentVoiceLine;
-			}
-		}
+		private AudioClip currentVoiceLine;
 
 		public VoiceActorHandler()
 		{
@@ -33,8 +24,8 @@
 
 		public void PlayVoice(string name, ScriptLine line, float voiceVolume, AudioSource voice)
 		{
-			CurrentVoiceLine = GetVoiceLine(line);
-			if (CurrentVoiceLine != null)
+			currentVoiceLine = GetVoiceLine(line);
+			if (currentVoiceLine != null)
 			{
 				StopVoice();
 				return;
@@ -56,23 +47,16 @@
 				audioSource = source;
 			}
 			if (clip != null)
-				CurrentVoiceLine = clip;
+				currentVoiceLine = clip;
 			audioSource.volume = volume;
 			audioSource.Play();
 		}
 
-		public ResourcesAsset<AudioClip> GetVoiceLine(ScriptLine line)
+		public AudioClip GetVoiceLine(ScriptLine line)
 		{
 			string filePath = $"Voice/{line.ScriptDocument}/{line.Index}";
-			try
-			{
-				return new ResourcesAsset<AudioClip>(filePath);
-			}
-			catch (InvalidOperationException ex)
-			{
-				Debug.LogError(ex.Message);
-				return null;
-			}
+			AudioClip output = Resources.Load<AudioClip>(filePath);
+			return output;
 		}
 
 

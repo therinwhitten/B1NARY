@@ -39,8 +39,8 @@ namespace B1NARY.Audio
 				audioSource = value;
 				if (audioSource == null)
 				{
-					B1NARYConsole.LogWarning(nameof(AudioTracker),
-						$"{nameof(AudioTracker)} assigned to an empty audioSource");
+					Debug.LogWarning(nameof(AudioTracker) + 
+						$" assigned to an empty audioSource");
 					return;
 				}
 				audioSource.outputAudioMixerGroup = AudioMixerGroup;
@@ -95,17 +95,16 @@ namespace B1NARY.Audio
 		{
 			if (audioSource == null)
 			{
-				B1NARYConsole.LogError(nameof(AudioTracker),
-					"Cannot play sounds because there is no AudioSource to play on!");
+				Debug.LogError(nameof(AudioTracker) + 
+					": Cannot play sounds because there is no AudioSource to play on!");
 				return;
 			}
 			if (IsPlaying)
 			{
-				B1NARYConsole.LogError(nameof(AudioTracker), $"Only one instance of {AudioClip.Name} can be " +
+				Debug.LogError(nameof(AudioTracker) + $": Only one instance of {AudioClip.Name} can be " +
 					$"played one at a time, or use '{nameof(PlayOneShot)}' method");
 				return;
 			}
-
 			audioSource.Play();
 			if (garbageCollection == null)
 				garbageCollection = monoBehaviour.StartCoroutine(GarbageCollectionCoroutine());
@@ -115,13 +114,13 @@ namespace B1NARY.Audio
 		{
 			if (audioSource == null)
 			{
-				B1NARYConsole.LogError(nameof(AudioTracker),
-					"Cannot play sounds because there is no AudioSource to play on!");
+				Debug.LogError(nameof(AudioTracker) +
+					": Cannot play sounds because there is no AudioSource to play on!");
 				return;
 			}
 			if (IsPlaying)
 			{
-				B1NARYConsole.LogError(nameof(AudioTracker), $"Only one instance of {AudioClip.Name} can be " +
+				Debug.LogError(nameof(AudioTracker) + $": Only one instance of {AudioClip.Name} can be " +
 					$"played one at a time, or use '{nameof(PlayOneShot)}' method");
 				return;
 			}
@@ -141,8 +140,8 @@ namespace B1NARY.Audio
 		{
 			if (audioSource == null)
 			{
-				B1NARYConsole.LogError(nameof(AudioTracker),
-					"Cannot play sounds because there is no AudioSource to play on!");
+				Debug.LogError(nameof(AudioTracker) +
+					": Cannot play sounds because there is no AudioSource to play on!");
 				return;
 			}
 			audioSource.PlayOneShot(audioSource.clip, audioSource.volume);
@@ -169,7 +168,7 @@ namespace B1NARY.Audio
 			if (monoBehaviour == null)
 			{
 				monoBehaviour = UnityEngine.Object.FindObjectOfType<MonoBehaviour>();
-				B1NARYConsole.LogError(nameof(AudioTracker), $"{nameof(AudioTracker)} does" +
+				Debug.LogError(nameof(AudioTracker) + $" does" +
 					$" not have an availible {nameof(MonoBehaviour)}!");
 			}
 			IsStopping = true;
@@ -219,7 +218,7 @@ namespace B1NARY.Audio
 						Stop();
 			}
 			else
-				B1NARYConsole.LogError(nameof(AudioTracker), $"No availible {nameof(AudioClip)}" +
+				Debug.LogError(nameof(AudioTracker) + $": No availible {nameof(AudioClip)}" +
 					" and won't be terminated, please tell a dev!");
 			SceneManager.SwitchedScenes += SwitchSceneCheck;
 		}

@@ -6,13 +6,28 @@ namespace B1NARY.UI
 	using UnityEngine.UI;
 	using DesignPatterns;
 	using System.Collections;
-	using System;
+	using System.Linq;
 	using System.Collections.Generic;
 	using System.Text;
+	using System;
 
 	[RequireComponent(typeof(FadeController))]
 	public class DialogueSystem : SingletonAlt<DialogueSystem>
 	{
+		public static IReadOnlyDictionary<string, Delegate> DialogueDelegateCommands = new Dictionary<string, Delegate>()
+		{
+			["additive"] = (Action<string>)(str =>
+			{
+				if (CommandsManager.enabledHashset.Contains(str))
+					Instance.additiveTextEnabled = true;
+				else if (CommandsManager.disabledHashset.Contains(str))
+					Instance.additiveTextEnabled = false;
+				else 
+					throw new Exception();
+			}),
+		};
+
+		
 
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
@@ -29,7 +44,7 @@ namespace B1NARY.UI
 		public string CurrentText
 		{
 			get => textBox.text;
-			set => textBox.text = value;
+			private set => textBox.text = value;
 		}
 		private FadeController fadeController;
 
@@ -53,12 +68,10 @@ namespace B1NARY.UI
 		}
 		public void FadeIn(float fadeTime = 0.5f)
 		{
-			B1NARYConsole.Log(name, "Initializing");
 			fadeController.FadeIn(fadeTime);
 		}
 		public void FadeOut(float fadeTime = 0.5f)
 		{
-			B1NARYConsole.Log(name, "De-Initializing");
 			fadeController.FadeOut(fadeTime);
 		}
 
@@ -67,6 +80,15 @@ namespace B1NARY.UI
 		/// </summary>
 		public void Say(string speech)
 		{
+			StopSpeaking(false).Wait();
+			SpeakingTask = Speaking(speech, tokenSource.Token);
+		}
+		/// <summary>
+		/// Say something and show it on the speech box. rich text works or otherwise.
+		/// </summary>
+		public void Say(string speech, string speaker)
+		{
+			CurrentSpeaker = speaker;
 			StopSpeaking(false).Wait();
 			SpeakingTask = Speaking(speech, tokenSource.Token);
 		}
@@ -112,39 +134,35 @@ namespace B1NARY.UI
 		/// <returns> <paramref name="speech"/>. </returns>
 		private async Task<string> Speaking(string speech, CancellationToken token, int lengthPerChar = 30)
 		{
-			const int outline = 2;
 			CurrentText = NewLine();
-			ushort accumulativeTagsLength = 0;
-			await this.StartAwaitableCoroutine(SpeakOverTime());
-			IEnumerator SpeakOverTime()
+			int tagsLength = 0;
+			for (int i = 0; i < speech.Length && !token.IsCancellationRequested; i++)
 			{
-				StringBuilder newTag = null;
-				for (int i = 0; i < speech.Length && !token.IsCancellationRequested; i++)
+				if (speech[i] == '<') // Tag starts
 				{
-					char character = speech[i];
-					if (newTag != null) // if it is in a tag
+					// Building the tag
+					var tag = new StringBuilder();
+					// TODO: Add a check that will catch an out of bounds exception.
+					while (speech[i] != '>')
 					{
-						if (character == '>')
-						{
-							if (newTag.ToString()[0] == '/')
-								accumulativeTagsLength = checked((ushort)(accumulativeTagsLength - 
-									newTag.Length + outline - 1));
-							else
-								accumulativeTagsLength += (ushort)(newTag.Length + outline);
-							newTag = null;
-						}
-						else
-							newTag.Append(character);
-						continue;
+						tag.Append(speech[i]);
+						i++;
 					}
-					if (character == '<')
+					tag.Append('>');
+					string tagFull = tag.ToString();
+					// Behaviour among the tag.
+					if (tagFull[1] != '/')
 					{
-						newTag = new StringBuilder();
-						continue;
+						string endTag = tagFull.Insert(1, "/");
+						CurrentText += tagFull + endTag;
+						tagsLength += endTag.Length;
 					}
-					CurrentText = CurrentText.Insert(CurrentText.Length - accumulativeTagsLength, character.ToString());
-					yield return new WaitForSecondsRealtime(lengthPerChar / 1000f);
+					else
+						tagsLength -= tagFull.Length;
+					continue;
 				}
+				CurrentText = CurrentText.Insert(CurrentText.Length - tagsLength, speech[i].ToString());
+				await Task.Delay(lengthPerChar);
 			}
 			isWaitingForUserInput = true;
 			return speech;

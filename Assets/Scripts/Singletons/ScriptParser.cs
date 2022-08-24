@@ -43,9 +43,7 @@
 
 		public void Initialize()
 		{
-			B1NARYConsole.Log(nameof(ScriptParser), "Initializing..");
 			ChangeScriptFile(scriptName, 0);
-			PerformNextLine();
 			//reader = new StreamReader(Path);
 			//currentNode = new DialogueNode(GetLines());
 			// readNextLine();
@@ -55,7 +53,6 @@
 
 		public void ChangeScriptFile(string newScript, int position = 0)
 		{
-			B1NARYConsole.Log(nameof(ScriptParser), $"Changing script to {newScript} as pos {position}");
 			scriptChanged = true;
 			currentNode = new DialogueNode(GetLines(Path, scriptName));
 			// This is fucking retarded. I don't remember why I did this and now
@@ -64,12 +61,11 @@
 			position = Mathf.Clamp(position, 0, int.MaxValue);
 			currentNode.moveIndex(position);
 			scriptChanged = false;
-			PerformNextLine();
+			PlayLine(new ScriptLine(currentNode.GetCurrentLine())).FreeBlockPath();
 		}
 
 		DialogueLine[] GetLines(string path, string documentName)
 		{
-			B1NARYConsole.Log(nameof(ScriptParser), $"Reading All lines of '{Path}'..");
 			var lines = new List<DialogueLine>();
 			using (var streamReader = new StreamReader(path))
 				for (int i = 1; !streamReader.EndOfStream; i++)
@@ -84,7 +80,11 @@
 			if (currentNode == null)
 				return;
 			if (DialogueSystem.Instance.SpeakingTask.IsCompleted)
-				PerformNextLine();
+			{
+				var scriptLine = new ScriptLine(currentNode.nextLine());
+				PlayLine(scriptLine).FreeBlockPath();/*.ContinueWith(task => { if (task.IsFaulted) 
+						Debug.LogException(task.Exception); })*/
+			}
 			else
 				// if the dialogue is still being written out just skip to the end of the line
 				DialogueSystem.Instance.StopSpeaking(true).Wait();
@@ -92,12 +92,10 @@
 		public void PlayVA(DialogueLine line)
 		{
 			string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
-			B1NARYConsole.Log(nameof(ScriptParser), $"Playing VoiceLine '{line.index}'" +
-				$"of character '{currentSpeaker}'");
 			if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
 				charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, new ScriptLine(line));
 			else
-				B1NARYConsole.LogError(nameof(ScriptParser), $"Character '{currentSpeaker}' does not exist, on line {line.index}!");
+				Debug.LogError($"Character '{currentSpeaker}' does not exist, on line {line.index}!");
 		}
 
 		/*
@@ -151,7 +149,48 @@
 			return false;
 		}
 		*/
-
+		public async Task PlayLine(ScriptLine line)
+		{
+			if (paused)
+				return;
+			if (currentNode == null)
+				return;
+			switch (line.type)
+			{
+				case ScriptLine.Type.Normal:
+					PlayVA((DialogueLine)line);
+					CharacterManager.Instance.changeLightingFocus();
+					DialogueSystem.Instance.Say(line.lineData);
+					break;
+				case ScriptLine.Type.Emotion:
+					string expression = ScriptLine.CastEmotion(line);
+					CharacterManager.Instance.changeExpression(DialogueSystem.Instance.CurrentSpeaker, expression);
+					goto skipToNextLine;
+				case ScriptLine.Type.Speaker:
+					string speaker = ScriptLine.CastSpeaker(line);
+					DialogueSystem.Instance.CurrentSpeaker = speaker;
+					goto skipToNextLine;
+				case ScriptLine.Type.Command:
+					CommandsManager.HandleWithArgs(line);
+					if (scriptChanged)
+						break;
+					goto skipToNextLine;
+				case ScriptLine.Type.BeginIndent:
+				case ScriptLine.Type.EndIndent:
+					throw new ArgumentException("Managed to hit a intentation"
+						+ $"on line '{line.Index}'.");
+				case ScriptLine.Type.Empty:
+				default:
+					Debug.LogError($"There seems to be an enum as '{line.type}' that is not part of the switch command case. Skipping.");
+					goto skipToNextLine;
+				skipToNextLine:
+					var nextLine = new ScriptLine(currentNode.nextLine());
+					await PlayLine(nextLine);
+					break;
+			}
+		}
+		/*
+		[Obsolete]
 		public void PerformNextLine(DialogueLine line = null)
 		{
 			if (currentNode == null || paused)
@@ -192,5 +231,6 @@
 					break;
 			}
 		}
+		*/
 	}
 }

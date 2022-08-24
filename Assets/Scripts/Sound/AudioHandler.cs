@@ -90,7 +90,7 @@ namespace B1NARY.Audio
 					.Select<AudioTracker, CoroutinePointer>(pointer => () => pointer).ToArray();
 				for (int i = 0; i < removeArray.Length; i++)
 					removeArray[i]().Stop(true);
-				B1NARYConsole.LogWarning(nameof(AudioHandler), "Forcefully stopping sounds:\n" +
+				Debug.LogWarning(nameof(AudioHandler) + ": Forcefully stopping sounds:\n" +
 					string.Join("\n", removeArray.Select(pointer => pointer().AudioClip.Name)));
 			}
 		}
@@ -143,7 +143,7 @@ namespace B1NARY.Audio
 			// names in customAudioClip
 			if (CustomAudioData.ContainsAudioClip(soundPath))
 				return CustomAudioData.GetAudioClip(soundPath);
-			B1NARYConsole.Log(nameof(AudioHandler), $"'{soundPath}' is not found in" +
+			Debug.Log(nameof(AudioHandler) + $": '{soundPath}' is not found in" +
 				$" {nameof(CustomAudioData)}, searching via filePath");
 			// filePath
 			AudioClip audioClip = Resources.Load<AudioClip>(soundPath);

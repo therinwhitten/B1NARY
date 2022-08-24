@@ -17,9 +17,9 @@
 		private static DialogueSystem Dialogue => DialogueSystem.Instance;
 		private static CharacterManager CharacterManager => CharacterManager.Instance;
 
-		private static readonly HashSet<string> enabledHashset = new HashSet<string>()
+		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
 		{ "on", "true", "enable" };
-		private static readonly HashSet<string> disabledHashset = new HashSet<string>()
+		public static readonly HashSet<string> disabledHashset = new HashSet<string>()
 		{ "off", "false", "disable" };
 
 		public static void HandleWithArgs(ScriptLine line)
@@ -27,7 +27,8 @@
 			var (command, args) = ScriptLine.CastCommand(line);
 			HandleWithArgs(command, args, 
 				AudioHandler.AudioDelegateCommands, 
-				SceneManager.SceneDelegateCommands);
+				SceneManager.SceneDelegateCommands,
+				DialogueSystem.DialogueDelegateCommands);
 		}
 		public static void HandleWithArgs(string command, string[] args, params IReadOnlyDictionary<string, Delegate>[] categorizedCommands)
 		{
@@ -36,36 +37,10 @@
 				if (categorizedCommands[i].ContainsKey(command))
 				{
 					categorizedCommands[i][command].DynamicInvoke(args);
-					Debug.Log("Custom command");
 					return;
 				}
-			Debug.Log("Alt");
 			switch (command)
 			{
-				case "additive":
-					{
-						if (args.Length != 1)
-							throw new ArgumentException($"Command '{command}' " +
-								$"doesn't take {args.Length} arguments!");
-						if (enabledHashset.Contains(args[0].ToLower()))
-						{
-							Dialogue.Say("");
-							Dialogue.additiveTextEnabled = true;
-							// ScriptParser.Instance.currentNode.nextLine();
-							// ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.GetCurrentLine());
-						}
-						else if (disabledHashset.Contains(args[0].ToLower()))
-						{
-							Dialogue.additiveTextEnabled = false;
-							// Debug.Log("Set additive text to off!");
-							// ScriptParser.Instance.currentNode.nextLine();
-							// ScriptParser.Instance.parseLine(ScriptParser.Instance.currentNode.GetCurrentLine());
-						}
-						else
-							throw new ArgumentException($"{args[0]} is not a valid " +
-								$"argument for {command}!");
-						return;
-					}
 				case "spawncharacter":
 				case "spawnchar":
 					{
@@ -102,8 +77,8 @@
 						if (args.Length != 1)
 							throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
-						TransitionHandler.Instance.Backgrounds.SetNewStaticBackground(args[0]);
-						TransitionHandler.Instance.Backgrounds.SetNewAnimatedBackground(args[0]);
+						TransitionManager.Instance.Backgrounds.SetNewStaticBackground(args[0]);
+						TransitionManager.Instance.Backgrounds.SetNewAnimatedBackground(args[0]);
 						return;
 					}
 				case "changescript":
@@ -134,9 +109,9 @@
 							throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
 						if (enabledHashset.Contains(args[0].ToLower()))
-							TransitionHandler.Instance.Backgrounds.LoopingAnimBG = true;
+							TransitionManager.Instance.Backgrounds.LoopingAnimBG = true;
 						else if (disabledHashset.Contains(args[0].ToLower()))
-							TransitionHandler.Instance.Backgrounds.LoopingAnimBG = false;
+							TransitionManager.Instance.Backgrounds.LoopingAnimBG = false;
 						else
 							throw new ArgumentException($"{args[0]} is not a valid " +
 								$"argument for {command}!");
@@ -148,7 +123,7 @@
 							: args.Length == 1 ? args[0].ToLower()
 							: throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
-						TransitionHandler.Instance.Backgrounds.SetNewAnimatedBackground(bgName);
+						TransitionManager.Instance.Backgrounds.SetNewAnimatedBackground(bgName);
 						return;
 					}
 				case "changename":
@@ -203,7 +178,7 @@
 					for (int i = 0; i < args.Length; i++)
 						consoleLineBuilder.Append($"{args[i]}{(i == args.Length - 1 ? "" : ", ")}");
 				}
-				B1NARYConsole.Log(nameof(CommandsManager), consoleLineBuilder.ToString());
+				IngameDebugger.Log(nameof(CommandsManager), consoleLineBuilder.ToString());
 				return Task.CompletedTask;
 			}*/
 		}

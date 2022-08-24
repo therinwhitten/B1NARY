@@ -18,7 +18,7 @@
 
 		public static Task FadeInAndActivateAsync(FadeController fadeController, float fadeTime)
 		{
-			B1NARYConsole.Log(nameof(FadeController), "Async", $"Fading in {fadeController.name}" +
+			IngameDebugger.Log(nameof(FadeController), "Async", $"Fading in {fadeController.name}" +
 				$" with a length of {fadeTime} seconds");
 			fadeController.gameObject.SetActive(true);
 			fadeController.enabled = true;
@@ -26,7 +26,7 @@
 		}
 		public static void FadeInAndActivate(FadeController fadeController, float fadeTime, Action performAfter = null)
 		{
-			B1NARYConsole.Log(nameof(FadeController), $"Fading in {fadeController.name}" +
+			IngameDebugger.Log(nameof(FadeController), $"Fading in {fadeController.name}" +
 				$" with a length of {fadeTime} seconds");
 			fadeController.gameObject.SetActive(true);
 			fadeController.enabled = true;
@@ -35,27 +35,27 @@
 
 		public async Task FadeInAsync(float fadeTime)
 		{
-			B1NARYConsole.Log(name, "Async", $"Fading in with {fadeTime} seconds");
+			IngameDebugger.Log(name, "Async", $"Fading in with {fadeTime} seconds");
 			await ModifyFadeFloatAsync(1, fadeTime);
 			canvas.interactable = true; 
 			canvas.blocksRaycasts = true;
 		}
 		public void FadeIn(float fadeTime, Action performAfter = null)
 		{
-			B1NARYConsole.Log(name, $"Fading in with {fadeTime} seconds");
+			IngameDebugger.Log(name, $"Fading in with {fadeTime} seconds");
 			ModifyFadeFloat(1, fadeTime, () => { canvas.interactable = true; canvas.blocksRaycasts = true; performAfter?.Invoke(); });
 		}
 
 		public async Task FadeOutAsync(float fadeTime)
 		{
-			B1NARYConsole.Log(name, "Async", $"Fading out with {fadeTime} seconds");
+			IngameDebugger.Log(name, "Async", $"Fading out with {fadeTime} seconds");
 			canvas.interactable = false;
 			canvas.blocksRaycasts = false;
 			await ModifyFadeFloatAsync(0, fadeTime);
 		}
 		public void FadeOut(float fadeTime, Action performAfter = null)
 		{
-			B1NARYConsole.Log(name, $"Fading out with {fadeTime} seconds");
+			IngameDebugger.Log(name, $"Fading out with {fadeTime} seconds");
 			canvas.interactable = false;
 			canvas.blocksRaycasts = false;
 			ModifyFadeFloat(0, fadeTime, performAfter);
@@ -63,7 +63,7 @@
 
 		public async Task FadeOutAndDeActivateAsync(float fadeTime)
 		{
-			B1NARYConsole.Log(name, "Async", $"Fading out and de-activating with {fadeTime} seconds");
+			IngameDebugger.Log(name, "Async", $"Fading out and de-activating with {fadeTime} seconds");
 			canvas.interactable = false;
 			canvas.blocksRaycasts = false;
 			await ModifyFadeFloatAsync(0, fadeTime);
@@ -71,7 +71,7 @@
 		}
 		public void FadeOutAndDeActivate(float fadeTime)
 		{
-			B1NARYConsole.Log(name, $"Fading out and de-activating with {fadeTime} seconds");
+			IngameDebugger.Log(name, $"Fading out and de-activating with {fadeTime} seconds");
 			canvas.interactable = false;
 			canvas.blocksRaycasts = false;
 			ModifyFadeFloat(0, fadeTime, () => gameObject.SetActive(false));

@@ -34,7 +34,7 @@
 				return;
 			bool isStillHeld = true;
 			mousePress.canceled += StopHoldingButton;
-			B1NARYConsole.Log(nameof(DraggableWindow), $"Started dragging window '{gameObject.name}'");
+			IngameDebugger.Log(nameof(DraggableWindow), $"Started dragging window '{gameObject.name}'");
 			StartCoroutine(DraggingCoroutine());
 			IEnumerator DraggingCoroutine()
 			{
@@ -52,7 +52,7 @@
 					oldMousePos = newMousePos;
 					yield return new WaitForEndOfFrame();
 				}
-				B1NARYConsole.Log(nameof(DraggableWindow), $"Stopped dragging window '{gameObject.name}'");
+				IngameDebugger.Log(nameof(DraggableWindow), $"Stopped dragging window '{gameObject.name}'");
 				mousePress.canceled -= StopHoldingButton;
 			}
 			void StopHoldingButton(InputAction.CallbackContext callbackContext1) => isStillHeld = false;

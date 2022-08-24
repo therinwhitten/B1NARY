@@ -98,8 +98,8 @@
 						if (args.Length != 1)
 							throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
-						TransitionHandler.Instance.Backgrounds.SetNewStaticBackground(args[0]);
-						TransitionHandler.Instance.Backgrounds.SetNewAnimatedBackground(args[0]);
+						TransitionManager.Instance.Backgrounds.SetNewStaticBackground(args[0]);
+						TransitionManager.Instance.Backgrounds.SetNewAnimatedBackground(args[0]);
 						break;
 					}
 				case "changescript":
@@ -130,9 +130,9 @@
 							throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
 						if (enabledHashset.Contains(args[0].ToLower()))
-							TransitionHandler.Instance.Backgrounds.LoopingAnimBG = true;
+							TransitionManager.Instance.Backgrounds.LoopingAnimBG = true;
 						else if (disabledHashset.Contains(args[0].ToLower()))
-							TransitionHandler.Instance.Backgrounds.LoopingAnimBG = false;
+							TransitionManager.Instance.Backgrounds.LoopingAnimBG = false;
 						else
 							throw new ArgumentException($"{args[0]} is not a valid " +
 								$"argument for {command}!");
@@ -144,7 +144,7 @@
 							: args.Length == 1 ? args[0].ToLower()
 							: throw new ArgumentException($"Command '{command}' " +
 								$"doesn't take {args.Length} arguments!");
-						TransitionHandler.Instance.Backgrounds.SetNewAnimatedBackground(bgName);
+						TransitionManager.Instance.Backgrounds.SetNewAnimatedBackground(bgName);
 						break;
 					}
 				case "changename":

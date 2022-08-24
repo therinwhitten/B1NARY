@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[Obsolete]
 public class OptionsMenuController : MonoBehaviour
 {
     // public int x, y;
@@ -27,7 +29,7 @@ public class OptionsMenuController : MonoBehaviour
     void Back()
     {
         gameObject.SendMessage("FadeOutAsync");
-        mainMenu.SendMessage("FadeIn");
+        mainMenu.SendMessage("SetToOpaque");
         openSettings();
     }
 
