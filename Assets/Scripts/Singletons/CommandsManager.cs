@@ -37,10 +37,8 @@
 				if (categorizedCommands[i].ContainsKey(command))
 				{
 					categorizedCommands[i][command].DynamicInvoke(args);
-					Debug.Log("Custom command");
 					return;
 				}
-			Debug.Log("Alt");
 			switch (command)
 			{
 				case "spawncharacter":

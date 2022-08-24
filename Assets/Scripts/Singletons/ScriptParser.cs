@@ -61,7 +61,7 @@
 			position = Mathf.Clamp(position, 0, int.MaxValue);
 			currentNode.moveIndex(position);
 			scriptChanged = false;
-			PerformNextLine();
+			PlayLine(new ScriptLine(currentNode.GetCurrentLine())).FreeBlockPath();
 		}
 
 		DialogueLine[] GetLines(string path, string documentName)
@@ -80,7 +80,11 @@
 			if (currentNode == null)
 				return;
 			if (DialogueSystem.Instance.SpeakingTask.IsCompleted)
-				PerformNextLine();
+			{
+				var scriptLine = new ScriptLine(currentNode.nextLine());
+				PlayLine(scriptLine).FreeBlockPath();/*.ContinueWith(task => { if (task.IsFaulted) 
+						Debug.LogException(task.Exception); })*/
+			}
 			else
 				// if the dialogue is still being written out just skip to the end of the line
 				DialogueSystem.Instance.StopSpeaking(true).Wait();
@@ -145,7 +149,48 @@
 			return false;
 		}
 		*/
-
+		public async Task PlayLine(ScriptLine line)
+		{
+			if (paused)
+				return;
+			if (currentNode == null)
+				return;
+			switch (line.type)
+			{
+				case ScriptLine.Type.Normal:
+					PlayVA((DialogueLine)line);
+					CharacterManager.Instance.changeLightingFocus();
+					DialogueSystem.Instance.Say(line.lineData);
+					break;
+				case ScriptLine.Type.Emotion:
+					string expression = ScriptLine.CastEmotion(line);
+					CharacterManager.Instance.changeExpression(DialogueSystem.Instance.CurrentSpeaker, expression);
+					goto skipToNextLine;
+				case ScriptLine.Type.Speaker:
+					string speaker = ScriptLine.CastSpeaker(line);
+					DialogueSystem.Instance.CurrentSpeaker = speaker;
+					goto skipToNextLine;
+				case ScriptLine.Type.Command:
+					CommandsManager.HandleWithArgs(line);
+					if (scriptChanged)
+						break;
+					goto skipToNextLine;
+				case ScriptLine.Type.BeginIndent:
+				case ScriptLine.Type.EndIndent:
+					throw new ArgumentException("Managed to hit a intentation"
+						+ $"on line '{line.Index}'.");
+				case ScriptLine.Type.Empty:
+				default:
+					Debug.LogError($"There seems to be an enum as '{line.type}' that is not part of the switch command case. Skipping.");
+					goto skipToNextLine;
+				skipToNextLine:
+					var nextLine = new ScriptLine(currentNode.nextLine());
+					await PlayLine(nextLine);
+					break;
+			}
+		}
+		/*
+		[Obsolete]
 		public void PerformNextLine(DialogueLine line = null)
 		{
 			if (currentNode == null || paused)
@@ -186,5 +231,6 @@
 					break;
 			}
 		}
+		*/
 	}
 }

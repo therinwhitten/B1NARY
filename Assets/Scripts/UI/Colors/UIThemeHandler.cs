@@ -6,6 +6,12 @@
 	using UnityEngine.UI;
 	using UI;
 
+	/// <summary>
+	/// Allows you to easily change a single gameObject with the <see cref="Image"/>
+	/// component to a color. By enabling, you change it via the parameters the
+	/// component stores. Disabling reverts to it's previous known color.
+	/// </summary>
+	/// <seealso cref="MonoBehaviour"/>
 	[RequireComponent(typeof(Image))]
 	public class UIThemeHandler : MonoBehaviour
 	{
@@ -40,9 +46,7 @@
 		}
 
 
-		public static void ChangeColor(Image image)
-			=> ChangeColor(image, Option.Primary);
-		public static void ChangeColor(Image image, Option option)
+		public static void ChangeColor(Image image, Option option = Option.Primary)
 		{
 			switch (option)
 			{
@@ -59,20 +63,39 @@
 		}
 		public static void ChangeColor(Image image, string name)
 		{
-			image.color = CurrentlyEquippedFormat.target.ExtraUIValues[name];
+			if (CurrentlyEquippedFormat.target.ExtraUIValues.TryGetValue(name, out Color color))
+			{
+				image.color = color;
+				return;
+			}
+			Debug.LogError($"'{name}' is not located within the currently " +
+				$"equipped format: {CurrentlyEquippedFormat.target.name}, resorting to default.", image.gameObject);
+			ChangeColor(image);
 		}
 
 		[FormerlySerializedAs("Theme Option"), Tooltip("The amogus")]
 		public Option option = Option.Primary;
 		[Tooltip("What the name of the custom theme color uses")]
 		public string themeName = string.Empty;
+		private Image image;
 
-		private void Start()
+		private Color previousColor;
+
+		private void Awake()
 		{
+			image = GetComponent<Image>();
+		}
+		private void OnEnable()
+		{
+			previousColor = image.color;
 			if (option == Option.Custom)
-				ChangeColor(GetComponent<Image>(), themeName);
+				ChangeColor(image, themeName);
 			else
-				ChangeColor(GetComponent<Image>(), option);
+				ChangeColor(image, option);
+		}
+		private void OnDisable()
+		{
+			image.color = previousColor;
 		}
 	}
 }

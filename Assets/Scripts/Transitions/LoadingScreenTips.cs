@@ -1,9 +1,14 @@
 ﻿namespace B1NARY.UI
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
+	using System.Linq;
 	using UnityEngine;
 	using UnityEngine.UI;
+	using static B1NARY.RandomFowarder;
+
 	[RequireComponent(typeof(Text))]
 	public class LoadingScreenTips : MonoBehaviour
 	{
@@ -14,17 +19,32 @@
 			"its possible to count up to 1024 with your fingers using binary, or base 2!",
 			"Strike the weakpoint for massive damage!",
 		});
-		public static string PickNewRandomLoadingScreenTip(RandomFowarder.RandomType randomType)
-			=> loadingScreenTips[RandomFowarder.Next(loadingScreenTips.Count, randomType)];
 
+		[SerializeField] private RandomType randomType = RandomType.Unity;
 		private Text text;
+		private Coroutine changeNewTextCoroutine;
 		private void Awake()
 		{
 			text = GetComponent<Text>();
 		}
-		private void Start()
+		private void OnEnable()
 		{
-			text.text = PickNewRandomLoadingScreenTip(RandomFowarder.RandomType.Unity);
+			text.text = loadingScreenTips[Next(loadingScreenTips.Count, randomType)];
+			changeNewTextCoroutine = StartCoroutine(CoroutineDelay());
+		}
+		private IEnumerator CoroutineDelay()
+		{
+			while (true)
+			{
+				yield return new WaitForSeconds(5f);
+				// removes existing tip.
+				string[] subCollection = loadingScreenTips.Where(str => str != text.text).ToArray();
+				text.text = subCollection[Next(subCollection.Length, randomType)];
+			}
+		}
+		private void OnDisable()
+		{
+			StopCoroutine(changeNewTextCoroutine);
 		}
 	}
 }

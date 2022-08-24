@@ -119,6 +119,13 @@
 		/// <summary> The type of line it detects which. </summary>
 		public readonly Type type;
 
+		public ScriptLine(ScriptLine source)
+		{
+			lineData = source.lineData;
+			type = source.type;
+			docPointer = source.docPointer;
+			Index = source.Index;
+		}
 		/// <summary>
 		/// Stores data on a individual line based from <paramref name="scriptDocument"/>.
 		/// </summary>
