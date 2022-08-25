@@ -10,7 +10,7 @@
 	using System.Runtime.Serialization.Formatters.Binary;
 	using System.IO;
 
-	[RequireComponent(typeof(Text))]
+	[RequireComponent(typeof(Text)), AddComponentMenu("UI/Globalization/Text Font Language Changer")]
 	public class FontLanguageChanger : Multiton<FontLanguageChanger>
 	{
 		private const string fontDataKey = "FontLanguageChangerData";

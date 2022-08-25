@@ -29,6 +29,7 @@
 		public string TransparentTriggerName => transparentTriggerName;
 		#endregion
 
+
 		private TransitionStatus transitionStatus = TransitionStatus.Opaque;
 		public TransitionStatus TransitionStatus => transitionStatus;
 
@@ -36,12 +37,24 @@
 		private Animator animator;
 
 		public event Action FinishedTransition;
-		private void Start()
+
+		// Unity doesn't detect if the actual 'is enabled' values are being used,
+		// - and this disallows the usage of turning it off. Creating these methods
+		// - allows to subvert that.
+		private void OnEnable() { }
+		private void OnDisable() { }
+
+		private void Awake()
 		{
 			animator = GetComponent<Animator>();
+			Canvas canvas = GetComponent<Canvas>();
+			if (canvas.worldCamera == null)
+				canvas.worldCamera = FindObjectOfType<Camera>();
 		}
 		public async Task SetToOpaque(float speedMultiplier = 1f)
 		{
+			if (!enabled)
+				return;
 			animator.SetTrigger(OpaqueTriggerName);
 			animator.speed = speedMultiplier;
 			transitionStatus = TransitionStatus.Running;
@@ -51,6 +64,8 @@
 		}
 		public async Task SetToTransparent(float speedMultiplier = 1f)
 		{
+			if (!enabled)
+				return;
 			animator.SetTrigger(TransparentTriggerName);
 			animator.speed = speedMultiplier;
 			transitionStatus = TransitionStatus.Running;

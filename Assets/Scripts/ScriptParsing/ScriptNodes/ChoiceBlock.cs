@@ -9,12 +9,12 @@
 
 	public sealed class ChoiceBlock : ScriptNode
 	{
-		public ChoiceBlock(int rootListIndex, Func<IReadOnlyList<ScriptLine>> list,
-			Func<IReadOnlyDictionary<int, ScriptNode>> nodeList) : base(rootListIndex, list, nodeList)
+		public ChoiceBlock(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines) : base(parseLine, subLines)
 		{
 
 		}
-		public override IEnumerator Perform(HandleLine line)
+
+		public override IEnumerator<ScriptLine> Perform()
 		{
 			throw new NotImplementedException();
 		}

@@ -1,5 +1,6 @@
 namespace B1NARY.Scripting
 {
+	[System.Obsolete]
 	public class DialogueLine
 	{
 

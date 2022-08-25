@@ -6,7 +6,9 @@ namespace B1NARY.Scripting
 	using UnityEngine;
 	using System.Text.RegularExpressions;
 	using B1NARY.Scripting.Experimental;
+	using System;
 
+	[Obsolete]
 	public class DialogueNode
 	{
 		public DialogueNode previous;
@@ -32,7 +34,7 @@ namespace B1NARY.Scripting
 			get
 			{
 				if (choicePanel == null)
-					choicePanel = Object.FindObjectOfType<ChoicePanel>();
+					choicePanel = GameObject.FindObjectOfType<ChoicePanel>();
 				return choicePanel;
 			}
 		}

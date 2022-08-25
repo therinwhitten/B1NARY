@@ -13,11 +13,12 @@
 	public class IngameDebugger : Multiton<IngameDebugger>, ITogglableInterface
 	{
 		[ExecuteAlways]
-		private static void DoNothing() { } // for static initialization.
-		static IngameDebugger()
+		private static void StaticConstructor()
 		{
 			Application.logMessageReceived += Log;
-		}
+
+		} 
+
 		public static void Log(params string[] arguments) =>
 			Log(new Prefix(arguments.Take(arguments.Length - 1), LogType.Log), arguments.Last());
 		public static void LogWarning(params string[] arguments) =>

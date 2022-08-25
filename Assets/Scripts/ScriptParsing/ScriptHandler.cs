@@ -6,19 +6,27 @@
 	using System.Threading.Tasks;
 	using UnityEngine;
 	using B1NARY.UI;
-
+	using System.Linq;
 
 	public class ScriptHandler : MonoBehaviour
 	{
-		public static ScriptNode GetDefinedScriptNodes(int rootListIndex, Func<IReadOnlyList<ScriptLine>> list, Func<IReadOnlyDictionary<int, ScriptNode>> nodes)
+		public static void PlayVoiceActor(ScriptLine line)
 		{
-			var (command, arguments) = ScriptLine.CastCommand(list.Invoke()[rootListIndex]);
+			string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
+			if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
+				charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, line);
+			else
+				Debug.LogError($"Character '{currentSpeaker}' does not exist!");
+		}
+		public static ScriptNode GetDefinedScriptNodes(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines)
+		{
+			string command = ScriptLine.CastCommand(subLines.First().scriptLine).command;
 			switch (command.Trim().ToLower())
 			{
 				case "if":
-					return new IfBlock(rootListIndex, list, nodes);
+					return new IfBlock(parseLine, subLines);
 				case "choice":
-					return new ChoiceBlock(rootListIndex, list, nodes);
+					return new ChoiceBlock(parseLine, subLines);
 			}
 			return null;
 		}
@@ -30,53 +38,10 @@
 
 		public void InitializeNewScript()
 		{
-			scriptDocument = new ScriptDocument(scriptName, GetDefinedScriptNodes);
+			var scriptDocument = new ScriptDocument.Factory(scriptName);
+			scriptDocument.AddNodeParserFunctionality(GetDefinedScriptNodes);
+			this.scriptDocument = (ScriptDocument)scriptDocument;
 		}
 
-		IEnumerator scriptNodeEnumerator;
-		private ScriptNode scriptNodeData;
-		public Task NextLine()
-		{
-			if (scriptNodeEnumerator != null)
-				if (scriptNodeEnumerator.MoveNext())
-					return Task.CompletedTask;
-				else
-				{
-					scriptNodeEnumerator = null;
-
-					scriptNodeData = null;
-				}
-
-			ScriptLine currentLine = scriptDocument.NextLine();
-			if (scriptDocument.ScriptNodes.TryGetValue(scriptDocument.ListIndex, out ScriptNode scriptNode))
-			{
-				scriptNodeEnumerator = scriptNode.Perform(ParseLine);
-				scriptNodeData = scriptNode;
-				scriptNodeEnumerator.MoveNext();
-			}
-			else
-				ParseLine(currentLine);
-			return Task.CompletedTask;
-		}
-
-		private void ParseLine(ScriptLine line)
-		{
-			switch (line.type)
-			{
-				case ScriptLine.Type.Normal:
-					PlayVA(line);
-					CharacterManager.Instance.changeLightingFocus();
-					DialogueSystem.Instance.Say(line.lineData);
-					break;
-			}
-		}
-		private void PlayVA(ScriptLine line)
-		{
-			string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
-			if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
-				charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, line);
-			else
-				Debug.LogError($"Character '{currentSpeaker}' does not exist!");
-		}
 	}
 }
