@@ -13,7 +13,10 @@
 	// - oh well!
 	public sealed class ScriptDocument
 	{
-		
+		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
+		{ "on", "true", "enable" };
+		public static readonly HashSet<string> disabledHashset = new HashSet<string>()
+		{ "off", "false", "disable" };
 
 
 		public readonly string documentName;
@@ -25,14 +28,12 @@
 
 		private Dictionary<string, Delegate> commands;
 
-		public bool AdditiveEnabled { get; private set; } = false;
+		public bool AdditiveEnabled { get; set; } = false;
 
 		private ScriptDocument()
 		{
 			
 		}
-
-		
 
 		/// <summary>
 		/// Moves to the next line, automatically executes commands before stopping.
@@ -65,9 +66,11 @@
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
-					ScriptHandler.PlayVoiceActor(line);
-					CharacterManager.Instance.changeLightingFocus();
-					DialogueSystem.Instance.Say(line.lineData);
+					if (performLine != null)
+						performLine.Invoke(line);
+					else
+						Debug.Log($"{nameof(performLine)} has no assignment for" +
+							$" a speaking line to run. Printing; \n {line}");
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);
@@ -84,80 +87,107 @@
 					else
 						throw new Exception();
 					return true;
+				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:
 					throw new ArgumentException("Managed to hit a intentation"
 						+ $"on line '{line.Index}'.");
 				case ScriptLine.Type.Empty:
+					return true;
 				default:
 					Debug.LogError($"There seems to be an enum as '{line.type}' that is not part of the switch command case. Skipping.");
 					return true;
 			}
 		}
+		private Action<ScriptLine> performLine;
 
+
+		//*-------------- FACTORY ----------------*//
 		public sealed class Factory
 		{
 			public static explicit operator ScriptDocument(Factory factory)
 				=> factory.Parse();
 
 			private readonly string documentName;
-			private readonly ScriptLine[] scriptLines;
 			private readonly List<IReadOnlyDictionary<string, Delegate>> categorizedCommands
 				= new List<IReadOnlyDictionary<string, Delegate>>();
 			private readonly List<ScriptNodeParser> scriptNodeParsers =
 				new List<ScriptNodeParser>();
+			private Action<ScriptLine> normalAction;
+			private IEnumerator<ScriptLine> fileData;
 
 			public Factory(string fullFilePath)
 			{
 				documentName = Path.GetFileNameWithoutExtension(fullFilePath);
+				if (!File.Exists(fullFilePath))
+					throw new ArgumentException($"{fullFilePath} does not lead to a playable file!");
 				// TODO: add a way to parse it over time.
-				string[] rawLines = File.ReadAllLines(fullFilePath);
-				int i = 0;
-				scriptLines = rawLines.Select(str => { i++; return new ScriptLine(str, () => documentName, i); }).ToArray();
+				fileData = LineReader();
+				IEnumerator<ScriptLine> LineReader()
+				{
+					var reader = new StreamReader(fullFilePath);
+					for (int i = 1; !reader.EndOfStream; i++)
+						yield return new ScriptLine(reader.ReadLine(), () => documentName, i);
+				}
 			}
 			public void AddNodeParserFunctionality(params ScriptNodeParser[] scriptNodeParsers)
 				=> this.scriptNodeParsers.AddRange(scriptNodeParsers);
 			public void AddCommandFunctionality(params IReadOnlyDictionary<string, Delegate>[] categorizedCommands) 
 				=> this.categorizedCommands.AddRange(categorizedCommands);
+			public void AddNormalOperationsFunctionality(Action<ScriptLine> action)
+				=> normalAction = action;
 			public ScriptDocument Parse()
 			{
 				var output = new ScriptDocument();
 				// Assigning lines
 				var list = new List<ScriptPair>();
 				var nodes = new List<(int startIndex, int endIndex, int indentation)>();
-				(int startIndex, int indentation)? incompletePair = null;
-				for (int i = 0, indent = 0; i < scriptLines.Length; i++)
+				var incompletePairs = new Stack<int>();
+				while (fileData.MoveNext())
 				{
-					ScriptLine line = scriptLines[i];
-					if (i > 0) // Index underflow check
-						if (line.type == ScriptLine.Type.BeginIndent)
-						{
-							indent++;
-							incompletePair = (i - 1, indent);
-						}
-						else if (line.type == ScriptLine.Type.EndIndent)
-						{
-							indent--;
-							if (indent < 0)
-								throw new Exception();
-							nodes.Add((incompletePair.Value.startIndex, i, incompletePair.Value.indentation));
-							incompletePair = null;
-						}
-					list.Add((ScriptPair)line);
+					if (fileData.Current.type == ScriptLine.Type.BeginIndent)
+					{
+						// line number to array index + under the bracket.
+						incompletePairs.Push(fileData.Current.Index - 2);
+					}
+					else if (fileData.Current.type == ScriptLine.Type.EndIndent)
+					{
+						int indentation = incompletePairs.Count;
+						if (incompletePairs.Count == 0)
+							throw new InvalidOperationException($"{fileData.Current} is a end Indent, but there is no start indent to end with!");
+						int startIndex = incompletePairs.Pop();
+						// line number to array index.
+						nodes.Add((startIndex, fileData.Current.Index - 1, indentation));
+					}
+					list.Add((ScriptPair)fileData.Current);
 				}
+					
 				output.documentData = Array.AsReadOnly(list.Select(pair => pair.scriptLine).ToArray());
 				// Merging all dictionaries.
 				output.commands = categorizedCommands.SelectMany(dict => dict).ToDictionary(pair => pair.Key, pair => pair.Value);
 				// Assigning nodes, highest first
-				nodes = nodes.OrderByDescending(pair => pair.indentation).ToList();
-				for (int i = 0; i < nodes.Count; i++)
+				var nodeQueue = new Queue<(int startIndex, int endIndex)>
+					(nodes.OrderByDescending(pair => pair.indentation)
+					.Select(triple => (triple.startIndex, triple.endIndex)));
+				
+				while (nodeQueue.Count > 0)
 				{
-					var subArray = new ScriptPair[nodes[i].endIndex - nodes[i].startIndex + 1];
-					for (int ii = 0; i < subArray.Length; i++)
-						subArray[ii] = list[nodes[i].startIndex + ii];
-					list[nodes[i].startIndex] = new ScriptPair(list[nodes[i].startIndex].scriptLine, ParseNode(output.ParseLine, subArray));
+					var (startIndex, endIndex) = nodeQueue.Dequeue();
+					var subArray = list.Skip(startIndex + 1)
+						.Take(endIndex - startIndex + 1)
+						.ToArray();
+					list[startIndex] = new ScriptPair(list[startIndex].scriptLine,
+						ParseNode(output.ParseLine, subArray));
 				}
-				output.data = new EntryNode(output.ParseLine, list.ToArray()).Perform();
+				// Messing with the baseline entry scriptnode code.
+				list.InsertRange(0, new ScriptPair[]
+				{
+					(ScriptPair)new ScriptLine("::Start", () => documentName, -1),
+					(ScriptPair)new ScriptLine("{", () => documentName, 0)
+				});
+				list.Add((ScriptPair)new ScriptLine("::End", () => documentName, list.Count));
+				output.data = new ScriptNode(output.ParseLine, list.ToArray()).Perform();
+				output.performLine = normalAction;
 				return output;
 			}
 
@@ -165,77 +195,13 @@
 			{
 				for (int i = 0; i < scriptNodeParsers.Count; i++)
 				{
-					ScriptNode output = scriptNodeParsers[i].Invoke(parseLine, subValues);
-					if (output != null)
-						return output;
+					ScriptNode node = scriptNodeParsers[i].Invoke(parseLine, subValues);
+					if (node != null)
+						return node;
 				}
 				return new ScriptNode(parseLine, subValues);
 			}
 		}
 
 	}
-	/*
-	public class ScriptDocument //: IEnumerable<(bool isBlock, ScriptLine line)>
-	{
-		public readonly string documentName;
-		// starts at 1, indexes at 0.
-		public IReadOnlyList<ScriptLine> RawScriptContents => data;
-		public IReadOnlyDictionary<int, ScriptNode> ScriptNodes => scriptNodes;
-		private readonly List<ScriptLine> data;
-		private readonly Dictionary<int, ScriptNode> scriptNodes;
-
-		private int _index = -1;
-		public int ScriptIndex => ListIndex + 1;
-		public int ListIndex
-		{
-			get => _index;
-			private set
-			{
-				if (value <= _index)
-					return;
-				for (int i = _index; i <= value; i++)
-				{
-					_index++;
-					// Do on-site parsing here.
-				}
-			}
-		}
-
-		public ScriptLine NextLine()
-		{
-			ListIndex++;
-			return data[ListIndex];
-		}
-
-		public ScriptDocument(string fullFilePath, params ScriptNodeParser[] nodeParsers)
-		{
-			this.nodeParsers = nodeParsers;
-			documentName = Path.GetFileNameWithoutExtension(fullFilePath);
-			data = new List<ScriptLine>();
-			using (var streamReader = new StreamReader(new FileStream(fullFilePath, FileMode.Open)))
-				for (int i = 0; !streamReader.EndOfStream; i++)
-				{
-					string dataLine = streamReader.ReadLine();
-					data.Add(new ScriptLine(dataLine, () => documentName, i + 1));
-				}
-			for (int i = 0; i < RawScriptContents.Count; i++)
-				if (DetermineIfScriptNode(i))
-					scriptNodes.Add(i, ParseNode(i));
-		}
-
-		private bool DetermineIfScriptNode(int listIndex) =>
-			RawScriptContents[listIndex + 1].type == ScriptLine.Type.BeginIndent;
-		private ScriptNodeParser[] nodeParsers;
-		private ScriptNode ParseNode(int listIndex)
-		{
-			for (int i = 0; i < nodeParsers.Length; i++)
-			{
-				ScriptNode definedNode = nodeParsers[i].Invoke(listIndex, () => RawScriptContents, () => ScriptNodes);
-				if (definedNode != null)
-					return definedNode;
-			}
-			return new ScriptNode(listIndex, () => RawScriptContents, () => ScriptNodes);
-		}
-	}
-	*/
 }

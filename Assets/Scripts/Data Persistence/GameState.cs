@@ -10,6 +10,7 @@ namespace B1NARY.DataPersistence
 	using UnityEngine.SceneManagement;
 	using System.IO;
 	using System.Runtime.Serialization.Formatters.Binary;
+	using B1NARY.Scripting.Experimental;
 
 	[Serializable]
 	public class GameState
@@ -44,8 +45,9 @@ namespace B1NARY.DataPersistence
 
 			// Basics
 			scene = SceneManager.GetActiveScene().name;
-			script = ScriptParser.Instance.scriptName;
-			index = ScriptParser.Instance.currentNode.index;
+			throw new NotImplementedException();
+			script = ScriptHandler.Instance.ScriptName;
+			//index = ScriptHandler.Instance.;
 
 			// Chardata
 			characterSnapshots = CharactersInScene.Values.Select(GetCharacterData).ToArray();
@@ -84,7 +86,8 @@ namespace B1NARY.DataPersistence
 			LoadCharacters();
 			LoadDialogue();
 			ApplyDictionaries();
-			ScriptParser.Instance.ChangeScriptFile(script, index + 2);
+			throw new NotImplementedException();
+			//ScriptParser.Instance.ChangeScriptFile(script, index + 2);
 			LoadAudio(audioSounds);
 			Debug.Log("Loaded game!");
 			return Task.CompletedTask;

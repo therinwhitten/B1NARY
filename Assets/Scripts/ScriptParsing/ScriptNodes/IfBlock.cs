@@ -30,7 +30,9 @@
 		{
 			if (!CanPerform)
 				yield break;
-			base.Perform();
+			IEnumerator<ScriptLine> @base = base.Perform();
+			while (@base.MoveNext())
+				yield return @base.Current;
 		}
 	}
 }

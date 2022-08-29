@@ -1,6 +1,7 @@
 ﻿namespace B1NARY
 {
 	using B1NARY.DesignPatterns;
+	using B1NARY.Scripting.Experimental;
 	using B1NARY.UI;
 	using System;
 	using System.Collections.Generic;
@@ -27,7 +28,7 @@
 		public static void Initialize(float fadeTime = 0.5f)
 		{
 			SwitchedScenes += LoadSpeakingObjects;
-			ScriptParser.Instance.Initialize();
+			ScriptHandler.Instance.InitializeNewScript();
 			void LoadSpeakingObjects(string sceneName)
 			{
 				DialogueSystem.Instance.FadeIn(fadeTime);

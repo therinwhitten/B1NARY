@@ -1,3 +1,4 @@
+/*
 namespace B1NARY.Scripting
 {
 	using System.Linq;
@@ -216,3 +217,4 @@ namespace B1NARY.Scripting
 		}
 	}
 }
+*/

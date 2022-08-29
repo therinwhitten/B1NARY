@@ -11,10 +11,34 @@
 	using B1NARY.DesignPatterns;
 	using System.Collections;
 	using B1NARY.UI;
+	using System.Collections.Generic;
+	using B1NARY.Scripting.Experimental;
 
 	[RequireComponent(typeof(CanvasGroup))]
 	public class TransitionManager : SingletonAlt<TransitionManager>
 	{
+		public static IReadOnlyDictionary<string, Delegate> TransitionDelegateCommands = new Dictionary<string, Delegate>()
+		{
+			["changebg"] = (Action<string>)(backgroundName =>
+			{
+				Instance.Backgrounds.SetNewStaticBackground(backgroundName);
+				Instance.Backgrounds.SetNewAnimatedBackground(backgroundName);
+			}),
+			["loopbg"] = (Action<string>)(str =>
+			{
+				if (ScriptDocument.enabledHashset.Contains(str))
+					Instance.Backgrounds.LoopingAnimBG = true;
+				else if (ScriptDocument.disabledHashset.Contains(str))
+					Instance.Backgrounds.LoopingAnimBG = false;
+				else throw new ArgumentException($"{str} is not a valid " +
+					$"argument for loopbg!");
+			}),
+			["playbg"] = (Action<string>)(backgroundName =>
+			{
+				TransitionManager.Instance.Backgrounds.SetNewAnimatedBackground(backgroundName);
+			}),
+		};
+
 		[SerializeField] private string BGCanvasName = "BG-Canvas";
 		[SerializeField] private GameObject[] transitions;
 		//[SerializeField] private bool showTransitionOnFirstLoad = true;

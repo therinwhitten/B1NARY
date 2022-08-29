@@ -9,8 +9,6 @@
 	/// </summary>
 	public struct ScriptLine
 	{
-		public static explicit operator DialogueLine(ScriptLine line)
-			=> new DialogueLine(line.lineData, line.Index, line.docPointer.Invoke());
 
 		/// <summary> Regex to determine if it is an expression. </summary>
 		public static readonly Regex emoteRegex = new Regex("\\[(.*?)\\]");
@@ -35,6 +33,8 @@
 			BeginIndent,
 			/// <summary> A ending indent for blocks. </summary>
 			EndIndent,
+			/// <summary> A flag to determine if its at the end or start. </summary>
+			DocumentFlag,
 		}
 
 		/// <summary>
@@ -45,11 +45,15 @@
 		public static Type ParseLineAsType(string lineData)
 		{
 			lineData = lineData.Trim();
-			if (string.IsNullOrEmpty(lineData))
+			if (string.IsNullOrWhiteSpace(lineData))
 				return Type.Empty;
 			if (lineData.Length == 1)
 			{
-				throw new NotImplementedException("Indents not implemented");
+				if (lineData.IndexOfAny(new char[] { '}', ']' }) != -1)
+					return Type.EndIndent;
+				if (lineData.IndexOfAny(new char[] { '{', '[' }) != -1)
+					return Type.BeginIndent;
+				throw new ArgumentException($"{lineData} is not an indent!");
 			}
 			if (emoteRegex.IsMatch(lineData))
 				return Type.Emotion;
@@ -57,6 +61,14 @@
 				return Type.Command;
 			if (lineData.EndsWith("::"))
 				return Type.Speaker;
+			if (lineData.StartsWith("::"))
+			{
+				lineData = lineData.ToLower();
+				if (lineData.Contains("start") || lineData.Contains("end"))
+					return Type.DocumentFlag;
+				throw new ArgumentException($"{lineData} has the marking of a " +
+					"document flag, but does not possess any of the traits!");
+			}
 			return Type.Normal;
 		}
 		/// <summary>
@@ -141,15 +153,6 @@
 			docPointer = scriptDocument;
 			Index = index;
 			type = ParseLineAsType(lineData);
-		}
-		/// <summary>
-		/// A 'cast' to a script line. Introduces new data like <see cref="Type"/>.
-		/// </summary>
-		/// <param name="line">The line to cast.</param>
-		public ScriptLine(DialogueLine line) : this(line.line, () => line.scriptName, line.index)
-		{
-			// This mainly serves as a 'cast', really. I find this struct more useful
-			// - than what we used to have.
 		}
 
 		public void Deconstruct(out Type type, out int index, out string lineData)
