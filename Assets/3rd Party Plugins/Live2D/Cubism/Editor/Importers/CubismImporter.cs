@@ -57,7 +57,7 @@ namespace Live2D.Cubism.Editor.Importers
         /// Allows customizing import of textures used by a Cubism model.
         /// </summary>
         /// <remarks>
-        /// Set <see langword="null"/> in case you don't want Cubism model texture importing to be customized from script.
+        /// Set <see langword="null"/> in case you don't want Cubism model texture importing to be customized from scriptName.
         /// </remarks>
         public static TextureImportHandler OnDidImportTexture = BuiltinTextureImportHandler;
 

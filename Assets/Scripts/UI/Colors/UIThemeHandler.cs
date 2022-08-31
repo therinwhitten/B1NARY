@@ -23,24 +23,24 @@
 			Custom
 		}
 
-		private static ResourcesAsset<ColorFormat> _currentlyEquippedFormat;
-		public static ResourcesAsset<ColorFormat> CurrentlyEquippedFormat
+		private static ColorFormat _currentlyEquippedFormat;
+		public static ColorFormat CurrentlyEquippedFormat
 		{
 			get
 			{
 				if (_currentlyEquippedFormat == null)
 				{
 					string formatName = PlayerPrefs.GetString(nameof(CurrentlyEquippedFormat), string.Empty);
-					if (!string.IsNullOrEmpty(formatName))
-						CurrentlyEquippedFormat = new ResourcesAsset<ColorFormat>($"{resourcesColorThemePath}/{formatName}");
+					if (string.IsNullOrEmpty(formatName) == false)
+						CurrentlyEquippedFormat = Resources.Load<ColorFormat>($"{resourcesColorThemePath}/{formatName}");
 					else
-						_currentlyEquippedFormat = new ResourcesAsset<ColorFormat>($"{resourcesColorThemePath}/Default");
+						_currentlyEquippedFormat = Resources.Load<ColorFormat>($"{resourcesColorThemePath}/Default");
 				}
 				return _currentlyEquippedFormat;
 			}
 			set
 			{
-				PlayerPrefs.SetString(nameof(CurrentlyEquippedFormat), value.target.name);
+				PlayerPrefs.SetString(nameof(CurrentlyEquippedFormat), value.name);
 				_currentlyEquippedFormat = value;
 			}
 		}
@@ -51,10 +51,10 @@
 			switch (option)
 			{
 				case Option.Primary:
-					image.color = CurrentlyEquippedFormat.target.primaryUI;
+					image.color = CurrentlyEquippedFormat.primaryUI;
 					break;
 				case Option.Secondary:
-					image.color = CurrentlyEquippedFormat.target.SecondaryUI;
+					image.color = CurrentlyEquippedFormat.SecondaryUI;
 					break;
 				case Option.Custom:
 				default:
@@ -63,13 +63,13 @@
 		}
 		public static void ChangeColor(Image image, string name)
 		{
-			if (CurrentlyEquippedFormat.target.ExtraUIValues.TryGetValue(name, out Color color))
+			if (CurrentlyEquippedFormat.ExtraUIValues.TryGetValue(name, out Color color))
 			{
 				image.color = color;
 				return;
 			}
 			Debug.LogError($"'{name}' is not located within the currently " +
-				$"equipped format: {CurrentlyEquippedFormat.target.name}, resorting to default.", image.gameObject);
+				$"equipped format: {CurrentlyEquippedFormat.name}, resorting to default.", image.gameObject);
 			ChangeColor(image);
 		}
 

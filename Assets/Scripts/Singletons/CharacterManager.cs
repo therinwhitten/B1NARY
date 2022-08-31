@@ -133,7 +133,7 @@
 				{
 					if (key.Trim().Equals(DialogueSystem.Instance.CurrentSpeaker.Trim()))
 					{
-						// script.lightingIntoFocus();
+						// scriptName.lightingIntoFocus();
 						continue;
 					}
 					else
@@ -149,7 +149,7 @@
 					}
 					else
 					{
-						// script.lightingOutOfFocus();
+						// scriptName.lightingOutOfFocus();
 						continue;
 					}
 				}

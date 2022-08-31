@@ -62,7 +62,7 @@
 		[SerializeField] private Text textBox;
 		private CanvasGroup canvasGroup;
 		private FadeController fadeController;
-		private void Awake()
+		protected override void MultitonAwake()
 		{
 			canvasGroup = GetComponent<CanvasGroup>();
 			fadeController = GetComponent<FadeController>();

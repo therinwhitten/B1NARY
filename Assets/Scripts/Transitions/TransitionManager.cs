@@ -48,14 +48,12 @@
 
 		protected override void SingletonAwake()
 		{
+			SceneManager.AddPersistentListener(PerScene);
 			PerScene();
 		}
 		private void PerScene(string sceneName = "")
 		{
 			m_backgroundHandler = new BackgroundHandler(BGCanvasName);
-
-
-			SceneManager.SwitchedScenes += PerScene;
 		}
 
 
@@ -85,8 +83,7 @@
 
 		private void OnDestroy()
 		{
-
-			SceneManager.SwitchedScenes -= PerScene;
+			SceneManager.RemoveListener(PerScene);
 		}
 
 		[Serializable]

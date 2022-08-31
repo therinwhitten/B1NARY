@@ -29,6 +29,7 @@ namespace B1NARY.Audio
 		protected override void SingletonAwake()
 		{
 			SoundCoroutineCache = new Dictionary<AudioClip, AudioTracker>();
+			SceneManager.AddPersistentListener(HandleSceneSwitch);
 			HandleSceneSwitch(SceneManager.CurrentScene);
 		}
 
@@ -41,7 +42,6 @@ namespace B1NARY.Audio
 		{
 			LoadNewLibrary(newScene);
 			VoiceActorHandler = new VoiceActorHandler();
-			SceneManager.SwitchedScenes += HandleSceneSwitch;
 		}
 
 		/// <summary>
@@ -299,6 +299,11 @@ namespace B1NARY.Audio
 			CoroutinePointer sound = GetCoroutine(clip, mixerGroup, useCustomAudioData);
 			sound().PlayOneShot();
 			return sound;
+		}
+
+		private void OnDestroy()
+		{
+			SceneManager.RemoveListener(HandleSceneSwitch);
 		}
 	}
 	public delegate AudioTracker CoroutinePointer();

@@ -8,6 +8,8 @@
 	using B1NARY.UI;
 	using System.Collections.ObjectModel;
 	using UnityEngine;
+	using System.Threading;
+	using System.Text;
 
 	// working on this made me realize this is just a really fancy ScriptNode.
 	// - oh well!
@@ -18,16 +20,24 @@
 		public static readonly HashSet<string> disabledHashset = new HashSet<string>()
 		{ "off", "false", "disable" };
 
-
+		/// <summary>
+		/// The file name that the <see cref="ScriptDocument"/> is a part of.
+		/// </summary>
 		public readonly string documentName;
+		/// <summary>
+		/// The current line it stopped at, usually at dialogue. You may be 
+		/// able to get a command via multiple threads.
+		/// </summary>
 		public ScriptLine CurrentLine => data.Current;
 		private IEnumerator<ScriptLine> data;
+		/// <summary> A readonly array of <see cref="ScriptLine"/>. </summary>
 		public ReadOnlyCollection<ScriptLine> documentData;
-		public IReadOnlyDictionary<int, ScriptNode> ScriptNodes => scriptNodes;
-		private readonly Dictionary<int, ScriptNode> scriptNodes;
-
 		private Dictionary<string, Delegate> commands;
 
+		/// <summary>
+		/// If the current dialogue should be added instead of skipping to a new
+		/// line.
+		/// </summary>
 		public bool AdditiveEnabled { get; set; } = false;
 
 		private ScriptDocument()
@@ -39,22 +49,22 @@
 		/// Moves to the next line, automatically executes commands before stopping.
 		/// </summary>
 		/// <returns>A line that does not have any commands, emotions, etc.</returns>
-		/// <exception cref="IndexOutOfRangeException">it has reached to end of script.</exception>
+		/// <exception cref="IndexOutOfRangeException">it has reached to end of scriptName.</exception>
 		public ScriptLine NextLine()
 		{
 			if (data.MoveNext())
 			{
-				if (ParseLine(data.Current))
-					return NextLine();
+				//using (var reader = new StreamWriter(new FileStream($"{Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "/Gay.txt"}", FileMode.Append)))
+				//	reader.WriteLine(data.Current);
 				return data.Current;
 			}
 			// It should constantly move to other scripts to prevent this from happening.
-			throw new IndexOutOfRangeException($"{nameof(ScriptDocument)} has reached to end of script.");
+			throw new IndexOutOfRangeException($"{nameof(ScriptDocument)} has reached to end of scriptName.");
 		}
 
 		/// <summary>
 		/// Parses the line to do various things. Commands to interact with the
-		/// scene with the script, emotions to show emotes to the current speaker,
+		/// scene with the scriptName, emotions to show emotes to the current speaker,
 		/// changing speakers, etc.
 		/// </summary>
 		/// <returns>
@@ -82,10 +92,18 @@
 					return true;
 				case ScriptLine.Type.Command:
 					var (command, arguments) = ScriptLine.CastCommand(line);
-					if (commands.TryGetValue(command, out Delegate @delegate))
-						@delegate.DynamicInvoke(arguments);
-					else
-						throw new Exception();
+					if (commands.ContainsKey(command) == false)
+					{
+						var exceptionBuilder = new StringBuilder($"{line} does not have a command for it!");
+						if (arguments.Any())
+						{
+							exceptionBuilder.Append("\n Arguments: ");
+							foreach (string argument in arguments)
+								exceptionBuilder.Append($"{argument}, ");
+						}
+						throw new MissingMethodException(exceptionBuilder.ToString().TrimEnd(',', ' '));
+					}
+					commands[command].DynamicInvoke(arguments);
 					return true;
 				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
@@ -103,6 +121,10 @@
 
 
 		//*-------------- FACTORY ----------------*//
+		/// <summary>
+		/// A initializable factory that has various commands to build up 
+		/// functionality of <see cref="ScriptDocument"/>.
+		/// </summary>
 		public sealed class Factory
 		{
 			public static explicit operator ScriptDocument(Factory factory)
@@ -161,10 +183,12 @@
 					}
 					list.Add((ScriptPair)fileData.Current);
 				}
-					
-				output.documentData = Array.AsReadOnly(list.Select(pair => pair.scriptLine).ToArray());
+				output.documentData = Array.AsReadOnly(
+					list.Select(pair => pair.scriptLine).ToArray());
 				// Merging all dictionaries.
-				output.commands = categorizedCommands.SelectMany(dict => dict).ToDictionary(pair => pair.Key, pair => pair.Value);
+				output.commands = categorizedCommands
+					.SelectMany(dict => dict)
+					.ToDictionary(pair => pair.Key, pair => pair.Value);
 				// Assigning nodes, highest first
 				var nodeQueue = new Queue<(int startIndex, int endIndex)>
 					(nodes.OrderByDescending(pair => pair.indentation)
@@ -189,6 +213,7 @@
 				output.data = new ScriptNode(output.ParseLine, list.ToArray()).Perform();
 				output.performLine = normalAction;
 				return output;
+
 			}
 
 			private ScriptNode ParseNode(Func<ScriptLine, bool> parseLine, ScriptPair[] subValues)

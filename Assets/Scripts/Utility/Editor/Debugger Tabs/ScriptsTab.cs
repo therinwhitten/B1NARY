@@ -174,7 +174,7 @@
 			}
 			GUILayout.EndScrollView();
 			GUI.color = Color.white;
-			if (GUILayout.Button("Open script"))
+			if (GUILayout.Button("Open scriptName"))
 				Process.Start($"{Application.streamingAssetsPath}/Docs/{parser.scriptName}.txt", EditorPrefs.GetString("ExternalScriptEditor")); // TODO: somehow make it launch the external scripts editor as well
 		}
 		private void SceneNameShow()

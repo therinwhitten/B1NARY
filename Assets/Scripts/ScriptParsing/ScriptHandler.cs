@@ -9,6 +9,7 @@
 	using System.Linq;
 	using B1NARY.Audio;
 	using B1NARY.DesignPatterns;
+	using UnityEngine.InputSystem;
 
 	public class ScriptHandler : SingletonAlt<ScriptHandler>
 	{
@@ -51,11 +52,18 @@
 		public ScriptDocument ScriptDocument => scriptDocument;
 		private ScriptDocument scriptDocument;
 		public string StartupScriptPath;
+		public PlayerInput playerInput;
+		public string[] nextLineButtons;
 		/// <summary>
-		/// A value that determines if it is running a script.
+		/// A value that determines if it is running a scriptName.
 		/// </summary>
 		public bool IsActive { get; private set; } = false;
 		public ScriptLine CurrentLine => scriptDocument.CurrentLine;
+		private void Awake()
+		{
+			foreach (string key in nextLineButtons)
+				playerInput.actions.FindAction(key, true).performed += context => NextLine().FreeBlockPath();
+		}
 
 		public void InitializeNewScript(string scriptPath = "")
 		{
@@ -86,8 +94,10 @@
 			else
 				Debug.LogError($"Character '{currentSpeaker}' does not exist!");
 		}
-		public void NextLine()
+		public Task NextLine()
 		{
+			if (scriptDocument == null)
+				return Task.CompletedTask;
 			try
 			{
 				scriptDocument.NextLine();
@@ -97,6 +107,7 @@
 				IsActive = false;
 				throw;
 			}
+			return Task.CompletedTask;
 		}
 
 	}

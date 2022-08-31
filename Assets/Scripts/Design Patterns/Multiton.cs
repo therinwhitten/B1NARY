@@ -11,29 +11,34 @@
 	public abstract class Multiton<T> : InstanceHolder<T> where T : MonoBehaviour
 	{
 		private static Dictionary<int, T> instances = new Dictionary<int, T>();
+		private static IEnumerable<int> instancesEnumerable => instances.Keys;
 		private static Queue<int> queue = new Queue<int>();
-		private static List<int> instancesList = new List<int>();
 		public static T First()
 		{
 			CheckInstances();
-			return instances[instancesList.Min()];
+			return instances[instancesEnumerable.Min()];
 		}
+		public static bool Any() => instancesEnumerable.Any();
 		public static T Last()
 		{
 			CheckInstances();
-			return instances[instancesList.Max()];
+			return instances[instancesEnumerable.Max()];
 		}
-		public static T GetItem(int index)
+		public static T GetItemViaIndex(int index)
 		{
 			CheckInstances();
-			return instances[instancesList[index]];
+			return instances[index];
+		}
+		public static T GetItemViaID(int index)
+		{
+			CheckInstances();
+			return instances[instancesEnumerable.ElementAt(index)];
 		}
 		public static IEnumerator<T> GetEnumerator(bool throwIfEmpty = false)
 		{
 			if (throwIfEmpty)
 				CheckInstances();
-			for (int i = 0; i < instances.Count; i++)
-				yield return instances[instancesList[i]];
+			return instances.Select(pair => pair.Value).GetEnumerator();
 		}
 
 		private static void CheckInstances()
@@ -56,7 +61,6 @@
 		private void Awake()
 		{
 			MultitonIndex = queue.Count == 0 ? instances.Count : queue.Dequeue();
-			instancesList.Add(MultitonIndex);
 			instances.Add(MultitonIndex, GetComponent<T>());
 			MultitonAwake();
 		}
@@ -65,7 +69,6 @@
 		{
 			queue.Enqueue(MultitonIndex);
 			instances.Remove(MultitonIndex);
-			instancesList.Remove(MultitonIndex);
 			OnMultitonDestroy();
 		}
 

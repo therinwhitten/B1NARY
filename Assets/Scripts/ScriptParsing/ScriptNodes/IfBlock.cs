@@ -12,7 +12,9 @@
 		{
 
 		}
-
+		/// <summary>
+		/// Gets a value indicating whether this block can perform.
+		/// </summary>
 		public bool CanPerform
 		{
 			get // {if: Name, Bool}

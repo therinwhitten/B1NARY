@@ -63,7 +63,7 @@
 
 		private Text text;
 		public LanguageCollection languageCollection = new LanguageCollection();
-		private void Awake()
+		protected override void MultitonAwake()
 		{
 			text = GetComponent<Text>();
 		}

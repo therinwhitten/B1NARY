@@ -28,8 +28,8 @@ namespace B1NARY.DataPersistence
 		public Dictionary<string, int> ints;
 		public Dictionary<string, float> floats;
 
-		public readonly string script, scene, textBoxContent;
-		public readonly int index;
+		public readonly string scriptName, scene, textBoxContent;
+		public readonly ScriptLine expectedScriptLine;
 		public readonly bool additiveTextEnabled;
 		public readonly AudioData[] audioSounds;
 		public readonly CharacterSnapshot[] characterSnapshots;
@@ -45,8 +45,8 @@ namespace B1NARY.DataPersistence
 
 			// Basics
 			scene = SceneManager.GetActiveScene().name;
-			throw new NotImplementedException();
-			script = ScriptHandler.Instance.ScriptName;
+			scriptName = ScriptHandler.Instance.ScriptName;
+			expectedScriptLine = ScriptHandler.Instance.CurrentLine;
 			//index = ScriptHandler.Instance.;
 
 			// Chardata
@@ -66,9 +66,9 @@ namespace B1NARY.DataPersistence
 			}
 
 			// Audio
-			audioSounds = AudioHandler.Instance.SoundCoroutineCache.Values
-				.Select(coroutine => new AudioData(coroutine.AudioClip.Name,
-				coroutine.currentSoundLibrary, coroutine.AudioSource.time)).ToArray();
+			//audioSounds = AudioHandler.Instance.SoundCoroutineCache.Values
+			//	.Select(coroutine => new AudioData(coroutine.AudioClip.Name,
+			//	coroutine.currentSoundLibrary, coroutine.AudioSource.time)).ToArray();
 		}
 
 		public void SaveDataIntoMemory(string savePathWithFileNameAndExtension)
@@ -86,9 +86,10 @@ namespace B1NARY.DataPersistence
 			LoadCharacters();
 			LoadDialogue();
 			ApplyDictionaries();
-			throw new NotImplementedException();
-			//ScriptParser.Instance.ChangeScriptFile(script, index + 2);
-			LoadAudio(audioSounds);
+			ScriptHandler.Instance.InitializeNewScript(scriptName);
+			while (ScriptHandler.Instance.CurrentLine != expectedScriptLine)
+				ScriptHandler.Instance.NextLine().Wait();
+			//LoadAudio(audioSounds);
 			Debug.Log("Loaded game!");
 			return Task.CompletedTask;
 
@@ -113,6 +114,7 @@ namespace B1NARY.DataPersistence
 				DialogueSystem.Instance.Say(string.Empty);
 				DialogueSystem.Instance.additiveTextEnabled = additiveTextEnabled;
 			}
+			/*
 			void LoadAudio(AudioData[] audioSounds)
 			{
 				const string fileDirectory = "Audio/Sound Libraries";
@@ -130,6 +132,7 @@ namespace B1NARY.DataPersistence
 					soundCoroutinePointer().AudioSource.time = length;
 				}
 			}
+			*/
 			void ApplyDictionaries()
 			{
 				PersistentData.strings = strings;

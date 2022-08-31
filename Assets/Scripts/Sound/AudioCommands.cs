@@ -18,7 +18,7 @@
 				catch (SoundNotFoundException ex)
 				{
 					Debug.LogWarning(nameof(AudioHandler) +
-						$"{name} is not a valid soundfile Path!" + ex);
+						$": {name} is not a valid soundfile Path!\n" + ex);
 				}
 			}),
 			["fadeoutsound"] = (Action<string, string>)((name, floatStr) =>

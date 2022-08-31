@@ -5,10 +5,17 @@
 	using System.Text.RegularExpressions;
 
 	/// <summary>
-	/// A single line of a script, easily parsed and used for behaviours.
+	/// A single line of a scriptName, easily parsed and used for behaviours.
 	/// </summary>
+	[Serializable]
 	public struct ScriptLine
 	{
+		public static bool operator ==(ScriptLine left, ScriptLine right)
+			=> left.lineData == right.lineData && left.docPointer() == right.docPointer()
+			&& left.Index == right.Index;
+		public static bool operator !=(ScriptLine left, ScriptLine right)
+			=> !(left == right);
+
 
 		/// <summary> Regex to determine if it is an expression. </summary>
 		public static readonly Regex emoteRegex = new Regex("\\[(.*?)\\]");
@@ -76,13 +83,13 @@
 		/// </summary>
 		/// <param name="line">The line to parse.</param>
 		/// <returns>Command with arguments.</returns>
-		/// <exception cref="System.InvalidCastException">'{line}' is not a command!</exception>
+		/// <exception cref="InvalidCastException">'{line}' is not a command!</exception>
 		public static (string command, string[] arguments) CastCommand(ScriptLine line)
 		{
 			if (line.type != Type.Command)
 				throw new InvalidCastException($"'{line}' is not a command!");
 			string[] dataArray = line.lineData.Trim('{', '}').Split(':', ',');
-			return (dataArray.First().Trim(), dataArray.Skip(1).Select(str => str.Trim()).ToArray());
+			return (dataArray.First().Trim().ToLower(), dataArray.Skip(1).Select(str => str.Trim().ToLower()).ToArray());
 		}
 		/// <summary>
 		/// Casts the current <see cref="ScriptLine"/> as an emotion value, trimmed.
@@ -142,7 +149,7 @@
 		/// Stores data on a individual line based from <paramref name="scriptDocument"/>.
 		/// </summary>
 		/// <param name="lineData">The line data.</param>
-		/// <param name="scriptDocument">The script document.</param>
+		/// <param name="scriptDocument">The scriptName document.</param>
 		/// <param name="index">The index.</param>
 		public ScriptLine(string lineData, Func<string> scriptDocument, int index)
 		{
@@ -160,6 +167,17 @@
 			type = this.type;
 			index = Index;
 			lineData = this.lineData;
+		}
+
+		public override int GetHashCode()
+		{
+			return lineData.GetHashCode();
+		}
+		public override bool Equals(object obj)
+		{
+			if (obj is ScriptLine line)
+				return this == line;
+			return base.Equals(obj);
 		}
 		public override string ToString() => $"{type}.{Index}\t: {lineData}";
 	}

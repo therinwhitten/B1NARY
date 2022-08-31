@@ -2,8 +2,10 @@
 {
 	using B1NARY.DesignPatterns;
 	using System;
+	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Threading;
 	using System.Threading.Tasks;
 	using UnityEngine;
 
@@ -29,14 +31,20 @@
 		public string TransparentTriggerName => transparentTriggerName;
 		#endregion
 
-
+		public event Action<TransitionStatus> ChangedTransitionStatus;
 		private TransitionStatus transitionStatus = TransitionStatus.Opaque;
-		public TransitionStatus TransitionStatus => transitionStatus;
+		public TransitionStatus TransitionStatus
+		{
+			get => transitionStatus;
+			set
+			{
+				transitionStatus = value;
+				ChangedTransitionStatus?.Invoke(value);
+			}
+		}
 
 		public float AnimatorSpeed { get => animator.speed; set => animator.speed = value; }
 		private Animator animator;
-
-		public event Action FinishedTransition;
 
 		// Unity doesn't detect if the actual 'is enabled' values are being used,
 		// - and this disallows the usage of turning it off. Creating these methods
@@ -44,7 +52,7 @@
 		private void OnEnable() { }
 		private void OnDisable() { }
 
-		private void Awake()
+		protected override void MultitonAwake()
 		{
 			animator = GetComponent<Animator>();
 			Canvas canvas = GetComponent<Canvas>();
@@ -58,9 +66,18 @@
 			animator.SetTrigger(OpaqueTriggerName);
 			animator.speed = speedMultiplier;
 			transitionStatus = TransitionStatus.Running;
+			await Task.Delay(50); // Compatibility for reversed animations
+			await YieldUntil();
+		}
+		public IEnumerator SetToOpaqueEnumerator(float speedMultiplier = 1f)
+		{
+			if (!enabled)
+				yield break;
+			animator.SetTrigger(OpaqueTriggerName);
+			animator.speed = speedMultiplier;
+			transitionStatus = TransitionStatus.Running;
 			while (transitionStatus != TransitionStatus.Opaque)
-				await Task.Yield();
-			FinishedTransition?.Invoke();
+				yield return new WaitForEndOfFrame();
 		}
 		public async Task SetToTransparent(float speedMultiplier = 1f)
 		{
@@ -69,14 +86,35 @@
 			animator.SetTrigger(TransparentTriggerName);
 			animator.speed = speedMultiplier;
 			transitionStatus = TransitionStatus.Running;
-			while (transitionStatus != TransitionStatus.Opaque)
+			await Task.Delay(50); // Compatibility for reversed animations
+			await YieldUntil();
+		}
+		public IEnumerator SetToTransparentEnumerator(float speedMultiplier = 1f)
+		{
+			if (!enabled)
+				yield break;
+			animator.SetTrigger(OpaqueTriggerName);
+			animator.speed = speedMultiplier;
+			transitionStatus = TransitionStatus.Running;
+			while (transitionStatus != TransitionStatus.Transparent)
+				yield return new WaitForEndOfFrame();
+		}
+		private async Task YieldUntil()
+		{
+			while (TransitionStatus == TransitionStatus.Running)
 				await Task.Yield();
-			FinishedTransition?.Invoke();
+			//retry:
+			//var completionSource = new TaskCompletionSource<TransitionStatus>();
+			//ChangedTransitionStatus += completionSource.SetResult;
+			//await completionSource.Task;
+			//if (completionSource.Task.Result != transitionStatus)
+			//	goto retry;
+			//ChangedTransitionStatus -= completionSource.SetResult;
 		}
 
 		public void SetAnimationStatus(TransitionStatus transitionStatus)
 		{
-			this.transitionStatus = transitionStatus;
+			TransitionStatus = transitionStatus;
 		}
 
 

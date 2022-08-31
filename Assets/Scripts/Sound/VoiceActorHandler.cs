@@ -32,7 +32,7 @@
 			}
 			PlayVoice(name, voiceVolume, voice);
 		}
-		public void PlayVoice(string name, float volume, AudioSource source, ResourcesAsset<AudioClip> clip = null)
+		public void PlayVoice(string name, float volume, AudioSource source, AudioClip clip = null)
 		{
 			if (name == null)
 			{

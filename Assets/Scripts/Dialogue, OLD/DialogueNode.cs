@@ -148,7 +148,7 @@ namespace B1NARY.Scripting
 			Regex regex = new Regex("\\" + b + "(.*?)\\" + e);
 			// grabs the optional block - enclosed with {}
 			// we use Rlines to check for the {abc} pattern across multiple lines,
-			// without including the script commands
+			// without including the scriptName commands
 			for (int i = id + 1; i < lines.Count; i++)
 			{
 				if (regex.IsMatch(lines[i].line))

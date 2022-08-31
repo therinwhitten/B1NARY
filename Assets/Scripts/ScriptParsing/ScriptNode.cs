@@ -10,6 +10,10 @@
 	using UnityEngine;
 	
 	public delegate ScriptNode ScriptNodeParser(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines);
+	/// <summary>
+	/// A block of <see cref="ScriptLine"/>s that is run over time via 
+	/// <see cref="Perform"/>
+	/// </summary>
 	public class ScriptNode
 	{
 		/// <summary>
@@ -29,6 +33,9 @@
 		/// </summary>
 		public ReadOnlyCollection<ScriptPair> SubLines
 			=> Array.AsReadOnly(subLines);
+		/// <summary>
+		/// The data stored for the sub-block
+		/// </summary>
 		protected ScriptPair[] subLines;
 		protected readonly Func<ScriptLine, bool> parseLine;
 		public ScriptNode(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines)
