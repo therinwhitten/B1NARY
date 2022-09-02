@@ -67,7 +67,7 @@ namespace B1NARY.Audio
 			currentSoundLibrary = soundLibrary;
 			if (clip != null)
 				AudioClip = clip;
-			SceneManager.AddPersistentListener(SwitchSceneCheck);
+			SceneManager.SwitchedScenes.AddPersistentListener(SwitchSceneCheck);
 		}
 
 		private CustomAudioClip _audioClipCache;
@@ -238,7 +238,7 @@ namespace B1NARY.Audio
 			OnDestroy();
 			if (AudioSource != null)
 				UnityEngine.Object.Destroy(AudioSource);
-			SceneManager.RemoveListener(SwitchSceneCheck);
+			SceneManager.SwitchedScenes.RemoveListener(SwitchSceneCheck);
 		}
 	}
 }

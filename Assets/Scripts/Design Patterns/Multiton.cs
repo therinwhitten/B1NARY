@@ -1,6 +1,7 @@
 ﻿namespace B1NARY.DesignPatterns
 {
 	using System;
+	using System.Reflection;
 	using System.Linq;
 	using UnityEngine;
 	using System.Collections.Generic;
@@ -8,69 +9,61 @@
 	///<summary> 
 	/// A list of multiple <see cref="MonoBehaviour"/>s, usage as such.
 	/// </summary>
-	public abstract class Multiton<T> : InstanceHolder<T> where T : MonoBehaviour
+	public class Multiton<T> : InstanceHolder<T> where T : MonoBehaviour
 	{
+		/// <summary>
+		/// Checks if the current instances of <see cref="Multiton{T}"/> has 
+		/// their <see cref="Awake"/> or <see cref="OnDestroy"/> private methods
+		/// overridden, and screams if they do.
+		/// </summary>
+		[ExecuteInEditMode]
+		private static void MultitonInitializer()
+		{
+			Type baseAwakeType = default(Multiton<T>).GetType().GetMethod(nameof(Awake)).DeclaringType,
+				baseOnDestroyType = default(Multiton<T>).GetType().GetMethod(nameof(OnDestroy)).DeclaringType;
+			(from type in typeof(Multiton<T>).Assembly.GetTypes()
+			 where type == typeof(Multiton<T>)
+			 let awakeInfo = type.GetMethod(nameof(Awake)).DeclaringType
+			 let onDestroyInfo = type.GetMethod(nameof(OnDestroy)).DeclaringType
+			 where awakeInfo != baseAwakeType || onDestroyInfo != baseOnDestroyType
+			 select type).Select(type =>
+			 {
+				 Debug.LogError($"{type.Name} is found" +
+				 $" to have overridden {nameof(Awake)} or {nameof(OnDestroy)}, please fix!");
+				 return type;
+			 });
+		}
+		/// <summary> The data and their assigned keys. </summary>
 		private static Dictionary<int, T> instances = new Dictionary<int, T>();
-		private static IEnumerable<int> instancesEnumerable => instances.Keys;
-		private static Queue<int> queue = new Queue<int>();
-		public static T First()
+		/// <summary>
+		/// The keys of <see cref="instances"/>. Can be used as a list using
+		/// <see cref="Enumerable.ElementAt{TSource}(IEnumerable{TSource}, int)"/>
+		/// </summary>
+		private static IEnumerable<int> instancesKeys => instances.Keys;
+		private static int nextIndex = 0;
+		public static T First() => instances[instances.Keys.Min()];
+		public static T Last() => instances[instances.Keys.Max()];
+		public static T GetViaIndex(int index) => instances.ElementAt(index).Value;
+		public static T GetViaID(int ID) => instances[ID];
+		public static IEnumerator<T> GetEnumerator()
 		{
-			CheckInstances();
-			return instances[instancesEnumerable.Min()];
-		}
-		public static bool Any() => instancesEnumerable.Any();
-		public static T Last()
-		{
-			CheckInstances();
-			return instances[instancesEnumerable.Max()];
-		}
-		public static T GetItemViaIndex(int index)
-		{
-			CheckInstances();
-			return instances[index];
-		}
-		public static T GetItemViaID(int index)
-		{
-			CheckInstances();
-			return instances[instancesEnumerable.ElementAt(index)];
-		}
-		public static IEnumerator<T> GetEnumerator(bool throwIfEmpty = false)
-		{
-			if (throwIfEmpty)
-				CheckInstances();
-			return instances.Select(pair => pair.Value).GetEnumerator();
+			foreach (T item in instances.Values)
+				yield return item;
 		}
 
-		private static void CheckInstances()
-		{
-			if (instances.Count == 0)
-				lock (_lock)
-				{
-					if (instances.Count > 0)
-						return;
-					if (ThrowErrorIfEmpty)
-						throw new ArgumentNullException($"{typeof(T)} does not " +
-							"have an instance created!");
-					var @object = new GameObject($"{typeof(T)} (Singleton)");
-					instances.Add(instances.Count, @object.AddComponent<T>());
-				}
-		}
-
-		/// <summary> Index for usage of <see cref="Multiton{T}"/></summary>
-		public int MultitonIndex { get; private set; }
+		public static int Index { get; private set; }
 		private void Awake()
 		{
-			MultitonIndex = queue.Count == 0 ? instances.Count : queue.Dequeue();
-			instances.Add(MultitonIndex, GetComponent<T>());
+			Index = nextIndex;
+			nextIndex++;
+			instances.Add(Index, GetComponent<T>());
 			MultitonAwake();
 		}
-
 		private void OnDestroy()
 		{
-			queue.Enqueue(MultitonIndex);
-			instances.Remove(MultitonIndex);
-			OnMultitonDestroy();
+			instances.Remove(Index);
 		}
+
 
 		/// <summary>
 		/// Alternate Awake since the original start is taken.
@@ -80,6 +73,5 @@
 		/// Alternate OnDestroy since the original start is taken.
 		/// </summary>
 		protected virtual void OnMultitonDestroy() { /* do nothing unless overrided */ }
-
 	}
 }

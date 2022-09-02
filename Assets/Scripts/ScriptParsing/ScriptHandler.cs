@@ -48,21 +48,34 @@
 			return null;
 		}
 
+		public GameObject dialogueSystemPrefab;
+		/// <summary> Gets the name of the script loaded. </summary>
 		public string ScriptName { get; private set; } = string.Empty;
+		/// <summary> 
+		/// A read-only version of the currently stored 
+		/// <see cref="Experimental.ScriptDocument"/>. 
+		/// </summary>
 		public ScriptDocument ScriptDocument => scriptDocument;
 		private ScriptDocument scriptDocument;
+		[Tooltip("Where the script starts when it initializes a new script.")]
 		public string StartupScriptPath;
 		public PlayerInput playerInput;
 		public string[] nextLineButtons;
 		/// <summary>
-		/// A value that determines if it is running a scriptName.
+		/// A value that determines if it is running a script and ready to use.
 		/// </summary>
 		public bool IsActive { get; private set; } = false;
+		/// <summary> Gets the current line. </summary>
 		public ScriptLine CurrentLine => scriptDocument.CurrentLine;
 		private void Awake()
 		{
 			foreach (string key in nextLineButtons)
 				playerInput.actions.FindAction(key, true).performed += context => NextLine().FreeBlockPath();
+			SceneManager.SwitchedScenes.AddPersistentListener(SceneChange);
+		}
+		private void SceneChange(string sceneName)
+		{
+
 		}
 
 		public void InitializeNewScript(string scriptPath = "")
@@ -94,21 +107,28 @@
 			else
 				Debug.LogError($"Character '{currentSpeaker}' does not exist!");
 		}
-		public Task NextLine()
+		/// <summary>
+		/// Plays lines until it hits a normal dialogue or similar.
+		/// </summary>
+		/// <returns> The <see cref="ScriptLine"/> it stopped at. </returns>
+		public Task<ScriptLine> NextLine()
 		{
 			if (scriptDocument == null)
-				return Task.CompletedTask;
+				return Task.FromResult(default(ScriptLine));
 			try
 			{
-				scriptDocument.NextLine();
+				return Task.FromResult(scriptDocument.NextLine());
 			}
 			catch (IndexOutOfRangeException)
 			{
 				IsActive = false;
 				throw;
 			}
-			return Task.CompletedTask;
 		}
 
+		private void OnDestroy()
+		{
+			SceneManager.SwitchedScenes.RemoveListener(SceneChange);
+		}
 	}
 }

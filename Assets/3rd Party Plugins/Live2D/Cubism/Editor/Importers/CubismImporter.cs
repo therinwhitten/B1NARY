@@ -210,7 +210,7 @@ namespace Live2D.Cubism.Editor.Importers
         #region Builtin Texture Import Handler
 
         /// <summary>
-        /// Makes sure textures used by Cubism models have the <see cref="TextureImporter.alphaIsTransparency"/> option enabled.
+        /// Makes sure textures used by Cubism models have the <see cref="TextureImporter.alphaIsTransparency"/> imageOption enabled.
         /// </summary>
         /// <param name="importer">Importer.</param>
         /// <param name="model">Imported model.</param>

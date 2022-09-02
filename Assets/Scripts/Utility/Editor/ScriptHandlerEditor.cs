@@ -15,6 +15,10 @@
 
 		public override void OnInspectorGUI()
 		{
+			var serializedObj = new SerializedObject(target);
+			serializedObj.Update();
+			EditorGUILayout.PropertyField(serializedObj.FindProperty(nameof(ScriptHandler.dialogueSystemPrefab)));
+			serializedObj.ApplyModifiedProperties();
 			var scriptHandler = (ScriptHandler)target;
 			EditorUtility.SetDirty(scriptHandler);
 			string[] allFullPaths = GetFullDocumentsPath(basePath).ToArray(),

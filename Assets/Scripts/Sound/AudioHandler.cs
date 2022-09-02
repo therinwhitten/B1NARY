@@ -29,7 +29,7 @@ namespace B1NARY.Audio
 		protected override void SingletonAwake()
 		{
 			SoundCoroutineCache = new Dictionary<AudioClip, AudioTracker>();
-			SceneManager.AddPersistentListener(HandleSceneSwitch);
+			SceneManager.SwitchedScenes.AddPersistentListener(HandleSceneSwitch);
 			HandleSceneSwitch(SceneManager.CurrentScene);
 		}
 
@@ -303,7 +303,7 @@ namespace B1NARY.Audio
 
 		private void OnDestroy()
 		{
-			SceneManager.RemoveListener(HandleSceneSwitch);
+			SceneManager.SwitchedScenes.RemoveListener(HandleSceneSwitch);
 		}
 	}
 	public delegate AudioTracker CoroutinePointer();
