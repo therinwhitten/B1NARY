@@ -109,7 +109,7 @@
 				else if (TryGetComponent(out RawImage rawImageOut))
 				{
 					RawImageData = rawImageOut;
-					m_currentTarget = Target.RawImage;
+					m_currentTarget = Target.Raw_Image;
 				}
 				else
 				{
@@ -134,7 +134,7 @@
 				case Target.Image:
 					previousColors = new Color[] { ImageData.color };
 					break;
-				case Target.RawImage:
+				case Target.Raw_Image:
 					previousColors = new Color[] { RawImageData.color };
 					break;
 				case Target.Button:
@@ -152,7 +152,7 @@
 				case Target.Image:
 					ImageData.color = GetColor(imageThemeName);
 					return;
-				case Target.RawImage:
+				case Target.Raw_Image:
 					RawImageData.color = GetColor(imageThemeName);
 					return;
 				case Target.Button:
@@ -182,7 +182,7 @@
 				case Target.Image:
 					ImageData.color = previousColors.Single();
 					break;
-				case Target.RawImage:
+				case Target.Raw_Image:
 					RawImageData.color = previousColors.Single();
 					break;
 				default:

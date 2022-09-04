@@ -31,12 +31,15 @@
 				case UIThemeHandler.Target.Image:
 					hasChanges = PopupOrCustom("Color Option", "Custom Color Name", ref currentHandler.imageThemeName);
 					break;
+				case UIThemeHandler.Target.Raw_Image:
+					hasChanges = PopupOrCustom("Color Option", "Custom Color", ref currentHandler.imageThemeName);
+					break;
 				case UIThemeHandler.Target.Button:
-					hasChanges = PopupOrCustom("Normal Button Option", "Normal Button Name", ref currentHandler.imageThemeName)
-					 | PopupOrCustom("Highlighted Button Option", "Hilighted Button Name", ref currentHandler.buttonHighlightedName)
-					 | PopupOrCustom("Pressed Button Option", "Pressed Button Name", ref currentHandler.buttonPressedName)
-					 | PopupOrCustom("Selected Button Option", "Selected Button Name", ref currentHandler.buttonSelectedName)
-					 | PopupOrCustom("Disabled Button Option", "Disabled Button Name", ref currentHandler.buttonDisabledName);
+					hasChanges = PopupOrCustom("Normal Color", "Normal Color Name", ref currentHandler.imageThemeName)
+					 | PopupOrCustom("Highlighted Color", "Hilighted Color Name", ref currentHandler.buttonHighlightedName)
+					 | PopupOrCustom("Pressed Color", "Pressed Color Name", ref currentHandler.buttonPressedName)
+					 | PopupOrCustom("Selected Color", "Selected Color Name", ref currentHandler.buttonSelectedName)
+					 | PopupOrCustom("Disabled Color", "Disabled Color Name", ref currentHandler.buttonDisabledName);
 					break;
 				default:
 					throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());
