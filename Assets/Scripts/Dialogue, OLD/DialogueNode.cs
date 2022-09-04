@@ -1,3 +1,4 @@
+/*
 namespace B1NARY.Scripting
 {
 	using System.Linq;
@@ -6,7 +7,9 @@ namespace B1NARY.Scripting
 	using UnityEngine;
 	using System.Text.RegularExpressions;
 	using B1NARY.Scripting.Experimental;
+	using System;
 
+	[Obsolete]
 	public class DialogueNode
 	{
 		public DialogueNode previous;
@@ -32,7 +35,7 @@ namespace B1NARY.Scripting
 			get
 			{
 				if (choicePanel == null)
-					choicePanel = Object.FindObjectOfType<ChoicePanel>();
+					choicePanel = GameObject.FindObjectOfType<ChoicePanel>();
 				return choicePanel;
 			}
 		}
@@ -145,7 +148,7 @@ namespace B1NARY.Scripting
 			Regex regex = new Regex("\\" + b + "(.*?)\\" + e);
 			// grabs the optional block - enclosed with {}
 			// we use Rlines to check for the {abc} pattern across multiple lines,
-			// without including the script commands
+			// without including the scriptName commands
 			for (int i = id + 1; i < lines.Count; i++)
 			{
 				if (regex.IsMatch(lines[i].line))
@@ -214,3 +217,4 @@ namespace B1NARY.Scripting
 		}
 	}
 }
+*/

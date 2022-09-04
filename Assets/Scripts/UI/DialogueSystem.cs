@@ -10,21 +10,24 @@ namespace B1NARY.UI
 	using System.Collections.Generic;
 	using System.Text;
 	using System;
+	using B1NARY.Scripting.Experimental;
 
 	[RequireComponent(typeof(FadeController))]
 	public class DialogueSystem : SingletonAlt<DialogueSystem>
 	{
 		public static IReadOnlyDictionary<string, Delegate> DialogueDelegateCommands = new Dictionary<string, Delegate>()
 		{
+			/* There is already a system in ScriptHandler that handles more of it.
 			["additive"] = (Action<string>)(str =>
 			{
-				if (CommandsManager.enabledHashset.Contains(str))
+				if (ScriptDocument.enabledHashset.Contains(str))
 					Instance.additiveTextEnabled = true;
-				else if (CommandsManager.disabledHashset.Contains(str))
+				else if (ScriptDocument.disabledHashset.Contains(str))
 					Instance.additiveTextEnabled = false;
 				else 
 					throw new Exception();
 			}),
+			*/
 		};
 
 		
@@ -80,7 +83,7 @@ namespace B1NARY.UI
 		/// </summary>
 		public void Say(string speech)
 		{
-			StopSpeaking(false).Wait();
+			StopSpeaking(true).Wait();
 			SpeakingTask = Speaking(speech, tokenSource.Token);
 		}
 		/// <summary>
@@ -89,7 +92,7 @@ namespace B1NARY.UI
 		public void Say(string speech, string speaker)
 		{
 			CurrentSpeaker = speaker;
-			StopSpeaking(false).Wait();
+			StopSpeaking(true).Wait();
 			SpeakingTask = Speaking(speech, tokenSource.Token);
 		}
 
@@ -122,7 +125,7 @@ namespace B1NARY.UI
 
 		protected override void OnSingletonDestroy()
 		{
-			_ = StopSpeaking(false);
+			_ = StopSpeaking(null);
 		}
 
 		/// <summary>

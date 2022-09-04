@@ -4,9 +4,34 @@
 	using UnityEngine;
 	using B1NARY.DesignPatterns;
 	using B1NARY.UI;
+	using System;
 
 	public class CharacterManager : SingletonAlt<CharacterManager>
 	{
+		public static readonly IReadOnlyDictionary<string, Delegate> CharacterDelegateCommands = new Dictionary<string, Delegate>()
+		{
+			["spawnchar"] = (Action<string, string, string>)((prefabName, positionRaw, characterName) =>
+			{
+				Instance.SummonCharacter(prefabName, positionRaw, characterName);
+			}),
+			["anim"] = (Action<string, string>)((characterName, animationName) =>
+			{
+				Instance.changeAnimation(characterName, animationName);
+			}),
+			["movechar"] = (Action<string, string>)((characterName, positionRaw) =>
+			{
+				Instance.moveCharacter(characterName, positionRaw);
+			}),
+			["emptyscene"] = (Action)(() =>
+			{
+				Instance.emptyScene();
+			}),
+			["changename"] = (Action<string, string>)((oldName, newName) =>
+			{
+				Instance.changeName(oldName, newName);
+			}),
+		};
+
 		static string prefabsPath = "Characters/Prefabs/";
 		private GameObject characterLayer;
 
@@ -108,7 +133,7 @@
 				{
 					if (key.Trim().Equals(DialogueSystem.Instance.CurrentSpeaker.Trim()))
 					{
-						// script.lightingIntoFocus();
+						// scriptName.lightingIntoFocus();
 						continue;
 					}
 					else
@@ -124,7 +149,7 @@
 					}
 					else
 					{
-						// script.lightingOutOfFocus();
+						// scriptName.lightingOutOfFocus();
 						continue;
 					}
 				}

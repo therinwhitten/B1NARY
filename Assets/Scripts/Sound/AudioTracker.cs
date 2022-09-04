@@ -67,7 +67,7 @@ namespace B1NARY.Audio
 			currentSoundLibrary = soundLibrary;
 			if (clip != null)
 				AudioClip = clip;
-			SceneManager.SwitchedScenes += SwitchSceneCheck;
+			SceneManager.SwitchedScenes.AddPersistentListener(SwitchSceneCheck);
 		}
 
 		private CustomAudioClip _audioClipCache;
@@ -220,7 +220,6 @@ namespace B1NARY.Audio
 			else
 				Debug.LogError(nameof(AudioTracker) + $": No availible {nameof(AudioClip)}" +
 					" and won't be terminated, please tell a dev!");
-			SceneManager.SwitchedScenes += SwitchSceneCheck;
 		}
 
 		private bool isDestroyed = false;
@@ -239,7 +238,7 @@ namespace B1NARY.Audio
 			OnDestroy();
 			if (AudioSource != null)
 				UnityEngine.Object.Destroy(AudioSource);
-			SceneManager.SwitchedScenes -= SwitchSceneCheck;
+			SceneManager.SwitchedScenes.RemoveListener(SwitchSceneCheck);
 		}
 	}
 }

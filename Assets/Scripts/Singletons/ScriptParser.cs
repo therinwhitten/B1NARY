@@ -1,4 +1,5 @@
-﻿namespace B1NARY
+﻿/*
+namespace B1NARY
 {
 	using System.IO;
 	using System.Threading;
@@ -83,19 +84,11 @@
 			{
 				var scriptLine = new ScriptLine(currentNode.nextLine());
 				PlayLine(scriptLine).FreeBlockPath();/*.ContinueWith(task => { if (task.IsFaulted) 
-						Debug.LogException(task.Exception); })*/
+						Debug.LogException(task.Exception); })
 			}
 			else
 				// if the dialogue is still being written out just skip to the end of the line
 				DialogueSystem.Instance.StopSpeaking(true).Wait();
-		}
-		public void PlayVA(DialogueLine line)
-		{
-			string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
-			if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
-				charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, new ScriptLine(line));
-			else
-				Debug.LogError($"Character '{currentSpeaker}' does not exist, on line {line.index}!");
 		}
 
 		/*
@@ -148,7 +141,6 @@
 			scriptLine = null;
 			return false;
 		}
-		*/
 		public async Task PlayLine(ScriptLine line)
 		{
 			if (paused)
@@ -231,6 +223,7 @@
 					break;
 			}
 		}
-		*/
+		
 	}
 }
+*/

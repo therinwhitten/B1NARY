@@ -6,77 +6,129 @@
 	using System.Threading.Tasks;
 	using UnityEngine;
 	using B1NARY.UI;
+	using System.Linq;
+	using B1NARY.Audio;
+	using B1NARY.DesignPatterns;
+	using UnityEngine.InputSystem;
 
-
-	public class ScriptHandler : MonoBehaviour
+	public class ScriptHandler : SingletonAlt<ScriptHandler>
 	{
-		public static ScriptNode GetDefinedScriptNodes(int rootListIndex, Func<IReadOnlyList<ScriptLine>> list, Func<IReadOnlyDictionary<int, ScriptNode>> nodes)
+		public static IReadOnlyDictionary<string, Delegate> ScriptDelegateCommands = new Dictionary<string, Delegate>()
 		{
-			var (command, arguments) = ScriptLine.CastCommand(list.Invoke()[rootListIndex]);
+			["additive"] = (Action<string>)(boolRaw =>
+			{
+				bool setting;
+				boolRaw = boolRaw.ToLower().Trim();
+				if (ScriptDocument.enabledHashset.Contains(boolRaw))
+					setting = true;
+				else if (ScriptDocument.disabledHashset.Contains(boolRaw))
+					setting = false;
+				else
+					throw new InvalidCastException(boolRaw);
+				Instance.scriptDocument.AdditiveEnabled = setting;
+				DialogueSystem.Instance.additiveTextEnabled = setting;
+			}),
+			["changescript"] = (Action<string>)(scriptPath =>
+			{
+				Instance.InitializeNewScript(Application.streamingAssetsPath + '/' + scriptPath);
+			}),
+		};
+		public static ScriptNode GetDefinedScriptNodes(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines)
+		{
+			if (subLines.First().LineType != ScriptLine.Type.Command)
+				return null;
+			string command = ScriptLine.CastCommand(subLines.First().scriptLine).command;
 			switch (command.Trim().ToLower())
 			{
 				case "if":
-					return new IfBlock(rootListIndex, list, nodes);
+					return new IfBlock(parseLine, subLines);
 				case "choice":
-					return new ChoiceBlock(rootListIndex, list, nodes);
+					return new ChoiceBlock(parseLine, subLines);
 			}
 			return null;
 		}
 
-
+		public GameObject dialogueSystemPrefab;
+		/// <summary> Gets the name of the script loaded. </summary>
+		public string ScriptName { get; private set; } = string.Empty;
+		/// <summary> 
+		/// A read-only version of the currently stored 
+		/// <see cref="Experimental.ScriptDocument"/>. 
+		/// </summary>
+		public ScriptDocument ScriptDocument => scriptDocument;
 		private ScriptDocument scriptDocument;
-		[SerializeField]
-		private string scriptName;
-
-		public void InitializeNewScript()
+		[Tooltip("Where the script starts when it initializes a new script.")]
+		public string StartupScriptPath;
+		public PlayerInput playerInput;
+		public string[] nextLineButtons;
+		/// <summary>
+		/// A value that determines if it is running a script and ready to use.
+		/// </summary>
+		public bool IsActive { get; private set; } = false;
+		/// <summary> Gets the current line. </summary>
+		public ScriptLine CurrentLine => scriptDocument.CurrentLine;
+		private void Awake()
 		{
-			scriptDocument = new ScriptDocument(scriptName, GetDefinedScriptNodes);
+			foreach (string key in nextLineButtons)
+				playerInput.actions.FindAction(key, true).performed += context => NextLine().FreeBlockPath();
+			SceneManager.SwitchedScenes.AddPersistentListener(SceneChange);
+		}
+		private void SceneChange(string sceneName)
+		{
+
 		}
 
-		IEnumerator scriptNodeEnumerator;
-		private ScriptNode scriptNodeData;
-		public Task NextLine()
+		public void InitializeNewScript(string scriptPath = "")
 		{
-			if (scriptNodeEnumerator != null)
-				if (scriptNodeEnumerator.MoveNext())
-					return Task.CompletedTask;
-				else
-				{
-					scriptNodeEnumerator = null;
-
-					scriptNodeData = null;
-				}
-
-			ScriptLine currentLine = scriptDocument.NextLine();
-			if (scriptDocument.ScriptNodes.TryGetValue(scriptDocument.ListIndex, out ScriptNode scriptNode))
+			string finalPath = string.IsNullOrWhiteSpace(scriptPath) ? StartupScriptPath : scriptPath;
+			var scriptFactory = new ScriptDocument.Factory(finalPath);
+			scriptFactory.AddNodeParserFunctionality(GetDefinedScriptNodes);
+			scriptFactory.AddNormalOperationsFunctionality(line =>
 			{
-				scriptNodeEnumerator = scriptNode.Perform(ParseLine);
-				scriptNodeData = scriptNode;
-				scriptNodeEnumerator.MoveNext();
-			}
-			else
-				ParseLine(currentLine);
-			return Task.CompletedTask;
+				PlayVoiceActor(line);
+				CharacterManager.Instance.changeLightingFocus();
+				DialogueSystem.Instance.Say(line.lineData);
+			});
+			scriptFactory.AddCommandFunctionality(
+				AudioHandler.AudioDelegateCommands, 
+				SceneManager.SceneDelegateCommands,
+				DialogueSystem.DialogueDelegateCommands,
+				ScriptHandler.ScriptDelegateCommands,
+				CharacterManager.CharacterDelegateCommands, 
+				TransitionManager.TransitionDelegateCommands);
+			scriptDocument = (ScriptDocument)scriptFactory;
+			IsActive = true;
 		}
-
-		private void ParseLine(ScriptLine line)
-		{
-			switch (line.type)
-			{
-				case ScriptLine.Type.Normal:
-					PlayVA(line);
-					CharacterManager.Instance.changeLightingFocus();
-					DialogueSystem.Instance.Say(line.lineData);
-					break;
-			}
-		}
-		private void PlayVA(ScriptLine line)
+		public void PlayVoiceActor(ScriptLine line)
 		{
 			string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
 			if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
 				charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, line);
 			else
 				Debug.LogError($"Character '{currentSpeaker}' does not exist!");
+		}
+		/// <summary>
+		/// Plays lines until it hits a normal dialogue or similar.
+		/// </summary>
+		/// <returns> The <see cref="ScriptLine"/> it stopped at. </returns>
+		public Task<ScriptLine> NextLine()
+		{
+			if (scriptDocument == null)
+				return Task.FromResult(default(ScriptLine));
+			try
+			{
+				return Task.FromResult(scriptDocument.NextLine());
+			}
+			catch (IndexOutOfRangeException)
+			{
+				IsActive = false;
+				throw;
+			}
+		}
+
+		private void OnDestroy()
+		{
+			SceneManager.SwitchedScenes.RemoveListener(SceneChange);
 		}
 	}
 }

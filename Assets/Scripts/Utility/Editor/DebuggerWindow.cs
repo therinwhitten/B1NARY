@@ -6,6 +6,7 @@
 	using UnityEditor;
 	using B1NARY.Audio;
 	using B1NARY.UI;
+	using B1NARY.Scripting.Experimental;
 
 	public class DebuggerWindow : EditorWindow
 	{
@@ -91,8 +92,8 @@
 		private void CurrentLineShow()
 		{
 			const string startingLine = "On line: ";
-			if (TryGetter<ScriptParser>.TryGetObject(out var scriptParser) && scriptParser.currentNode != null && scriptParser.currentNode.GetCurrentLine() != null)
-				EditorGUILayout.LabelField(startingLine + (scriptParser.currentNode.GetCurrentLine().index + 1), EditorStyles.boldLabel);
+			if (TryGetter<ScriptHandler>.TryGetObject(out var scriptHandler) && scriptHandler.IsActive)
+				EditorGUILayout.LabelField(startingLine + scriptHandler.CurrentLine.Index, EditorStyles.boldLabel);
 			else
 				EditorGUILayout.LabelField(startingLine + "NaN", EditorStyles.boldLabel);
 		}

@@ -32,7 +32,7 @@
 		public static async Task LoadGame()
 		{
 			var state = GameState.LoadExistingData(FullSavePath);
-			await SceneManager.FadeToNextScene(state.scene, 1f);
+			await SceneManager.FadeToNextScene(state.scene);
 			await state.LoadDataIntoMemory();
 		}
 	}

@@ -8,44 +8,33 @@
 
 	public sealed class IfBlock : ScriptNode
 	{
-		public IfBlock(int rootListIndex, Func<IReadOnlyList<ScriptLine>> list,
-			Func<IReadOnlyDictionary<int, ScriptNode>> nodeList) : base(rootListIndex, list, nodeList)
+		public IfBlock(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines) : base(parseLine, subLines)
 		{
 
 		}
-
-		public override IEnumerator Perform(HandleLine line)
+		/// <summary>
+		/// Gets a value indicating whether this block can perform.
+		/// </summary>
+		public bool CanPerform
 		{
-			var (command, arguments) = ScriptLine.CastCommand(ScriptData[rootListIndex]);
-			bool canPerform = bool.Parse(arguments[1]);
-			if (PersistentData.bools.ContainsKey(command))
-				canPerform = PersistentData.bools[command];
-			if (!canPerform)
+			get // {if: Name, Bool}
 			{
-				int bracket = -1;
-				if (ScriptData[rootListIndex + 1].type != ScriptLine.Type.BeginIndent)
-					throw new Exception();
-				else
-					bracket++;
-				for (NewIndex = rootListIndex + 2; true; NewIndex++)
-				{
-					if (ScriptData[NewIndex].type == ScriptLine.Type.BeginIndent)
-						bracket++;
-					else if (ScriptData[NewIndex].type == ScriptLine.Type.EndIndent)
-					{
-						bracket--;
-						if (bracket < 0)
-						{
-							NewIndex++;
-							Debug.Log($"Finished ScriptNode with rootLine: {ScriptData[rootListIndex]}");
-							yield break;
-						}
-					}
-				}
+				string[] arguments = ScriptLine.CastCommand(rootLine).arguments;
+				bool canPerform = bool.Parse(arguments[1]);
+				if (PersistentData.bools.TryGetValue(arguments[0], out bool value))
+					canPerform = value;
+				return canPerform;
 			}
-			IEnumerator trueValue = base.Perform(line);
-			while (trueValue.MoveNext())
-				yield return null;
+		}
+
+
+		public override IEnumerator<ScriptLine> Perform()
+		{
+			if (!CanPerform)
+				yield break;
+			IEnumerator<ScriptLine> @base = base.Perform();
+			while (@base.MoveNext())
+				yield return @base.Current;
 		}
 	}
 }

@@ -5,6 +5,8 @@
 	using UnityEngine.Serialization;
 	using UnityEngine.UI;
 	using UI;
+	using System.Text;
+	using System.Linq;
 
 	/// <summary>
 	/// Allows you to easily change a single gameObject with the <see cref="Image"/>
@@ -12,7 +14,6 @@
 	/// component stores. Disabling reverts to it's previous known color.
 	/// </summary>
 	/// <seealso cref="MonoBehaviour"/>
-	[RequireComponent(typeof(Image))]
 	public class UIThemeHandler : MonoBehaviour
 	{
 		public const string resourcesColorThemePath = "UI/Color Themes";
@@ -22,80 +23,150 @@
 			Secondary,
 			Custom
 		}
+		public enum Target
+		{
+			Button,
+			Image
+		}
 
-		private static ResourcesAsset<ColorFormat> _currentlyEquippedFormat;
-		public static ResourcesAsset<ColorFormat> CurrentlyEquippedFormat
+		private static ColorFormat _currentlyEquippedFormat;
+		public static ColorFormat CurrentlyEquippedFormat
 		{
 			get
 			{
 				if (_currentlyEquippedFormat == null)
 				{
 					string formatName = PlayerPrefs.GetString(nameof(CurrentlyEquippedFormat), string.Empty);
-					if (!string.IsNullOrEmpty(formatName))
-						CurrentlyEquippedFormat = new ResourcesAsset<ColorFormat>($"{resourcesColorThemePath}/{formatName}");
+					if (string.IsNullOrEmpty(formatName) == false)
+						CurrentlyEquippedFormat = Resources.Load<ColorFormat>($"{resourcesColorThemePath}/{formatName}");
 					else
-						_currentlyEquippedFormat = new ResourcesAsset<ColorFormat>($"{resourcesColorThemePath}/Default");
+						_currentlyEquippedFormat = Resources.Load<ColorFormat>($"{resourcesColorThemePath}/Default");
 				}
 				return _currentlyEquippedFormat;
 			}
 			set
 			{
-				PlayerPrefs.SetString(nameof(CurrentlyEquippedFormat), value.target.name);
+				PlayerPrefs.SetString(nameof(CurrentlyEquippedFormat), value.name);
 				_currentlyEquippedFormat = value;
 			}
 		}
 
 
-		public static void ChangeColor(Image image, Option option = Option.Primary)
+		public static Color GetColor(Option option)
 		{
 			switch (option)
 			{
 				case Option.Primary:
-					image.color = CurrentlyEquippedFormat.target.primaryUI;
-					break;
+					return CurrentlyEquippedFormat.primaryUI;
 				case Option.Secondary:
-					image.color = CurrentlyEquippedFormat.target.SecondaryUI;
-					break;
+					return CurrentlyEquippedFormat.SecondaryUI;
 				case Option.Custom:
 				default:
 					throw new IndexOutOfRangeException(option.ToString());
 			}
 		}
-		public static void ChangeColor(Image image, string name)
+		public static Color GetColor(string name)
 		{
-			if (CurrentlyEquippedFormat.target.ExtraUIValues.TryGetValue(name, out Color color))
-			{
-				image.color = color;
-				return;
-			}
+			if (Enum.TryParse(name, out Option option))
+				return GetColor(option);
+			if (CurrentlyEquippedFormat.ExtraUIValues.TryGetValue(name, out Color color))
+				return color;
 			Debug.LogError($"'{name}' is not located within the currently " +
-				$"equipped format: {CurrentlyEquippedFormat.target.name}, resorting to default.", image.gameObject);
-			ChangeColor(image);
+				$"equipped format: {CurrentlyEquippedFormat.name}, returning primary default.");
+			return GetColor(Option.Primary);
 		}
 
-		[FormerlySerializedAs("Theme Option"), Tooltip("The amogus")]
-		public Option option = Option.Primary;
-		[Tooltip("What the name of the custom theme color uses")]
-		public string themeName = string.Empty;
-		private Image image;
+		#region Image Stuff
+		public Image ImageData { get; private set; }
+		public string imageThemeName = string.Empty;
+		#endregion
 
-		private Color previousColor;
+		#region Button Stuff
+		public Button ButtonData { get; private set; }
+		public string buttonNormalName = string.Empty, buttonPressedName = string.Empty;
+		#endregion
 
-		private void Awake()
-		{
-			image = GetComponent<Image>();
+		private Target? m_currentTarget;
+		public Target CurrentTarget 
+		{ 
+			get 
+			{
+				if (m_currentTarget.HasValue)
+					return m_currentTarget.Value;
+
+				if (TryGetComponent(out Button buttonOut))
+				{
+					ButtonData = buttonOut;
+					m_currentTarget = Target.Button;
+				}
+				else if (TryGetComponent(out Image imageOut))
+				{
+					ImageData = imageOut;
+					m_currentTarget = Target.Image;
+				}
+				else
+				{
+					var exceptionBuilder = new StringBuilder("There is no components to hold onto: ");
+					foreach (Target @enum in Enum.GetValues(typeof(Target)))
+						exceptionBuilder.Append($"{@enum}, ");
+					exceptionBuilder.Append("are acceptable.");
+					throw new MissingComponentException(exceptionBuilder.ToString());
+				}
+				return m_currentTarget.Value;
+			}
+			private set => m_currentTarget = value;
 		}
+
+		private Color[] previousColors;
+
 		private void OnEnable()
 		{
-			previousColor = image.color;
-			if (option == Option.Custom)
-				ChangeColor(image, themeName);
-			else
-				ChangeColor(image, option);
+			switch (CurrentTarget)
+			{
+				case Target.Image:
+					previousColors = new Color[] { ImageData.color };
+					ImageData.color = GetColor(imageThemeName);
+					break;
+				case Target.Button:
+					previousColors = new Color[] 
+					{ ButtonData.colors.normalColor, ButtonData.colors.pressedColor };
+					ButtonData.colors = new ColorBlock()
+					{
+						colorMultiplier = ButtonData.colors.colorMultiplier,
+						disabledColor = ButtonData.colors.disabledColor,
+						fadeDuration = ButtonData.colors.fadeDuration,
+						highlightedColor = ButtonData.colors.highlightedColor,
+						normalColor = GetColor(buttonNormalName),
+						pressedColor = GetColor(buttonPressedName),
+						selectedColor = ButtonData.colors.selectedColor,
+					};
+					break;
+				default:
+					throw new IndexOutOfRangeException(CurrentTarget.ToString());
+			}
 		}
 		private void OnDisable()
 		{
-			image.color = previousColor;
+			switch (CurrentTarget)
+			{
+				case Target.Button:
+					ButtonData.colors = new ColorBlock()
+					{
+						colorMultiplier = ButtonData.colors.colorMultiplier,
+						disabledColor = ButtonData.colors.disabledColor,
+						fadeDuration = ButtonData.colors.fadeDuration,
+						highlightedColor = ButtonData.colors.highlightedColor,
+						normalColor = previousColors[0],
+						pressedColor = previousColors[1],
+						selectedColor = ButtonData.colors.selectedColor,
+					};
+					break;
+				case Target.Image:
+					ImageData.color = previousColors.Single();
+					break;
+				default:
+					throw new IndexOutOfRangeException(CurrentTarget.ToString());
+			}
 		}
 	}
 }

@@ -7,16 +7,26 @@
 	using System.Text;
 	using System.Threading.Tasks;
 	using B1NARY.Scripting;
+	using System.Collections.Generic;
+	using System.Linq;
 
 	[RequireComponent(typeof(FadeController))]
 	public sealed class ChoicePanel : MonoBehaviour, IDisposable
 	{
+		public static ChoicePanel StartNew(IEnumerable<string> choices)
+		{
+			ChoicePanel panel = GameObject.FindObjectOfType<ChoicePanel>();
+			panel.Initialize(choices);
+			return panel;
+		}
+
+
 		private FadeController fadeController;
 		[SerializeField, Tooltip("The prefab will need: 'Button' and 'Text'.")]
 		private GameObject choiceButtonPrefab;
 
 		private bool hasBeenInitialized = false;
-		private (GameObject @object, DialogueNode node)[] choiceButtons;
+		private GameObject[] choiceButtons;
 		public event Action<string> PickedChoice;
 
 		private void Awake()
@@ -24,26 +34,25 @@
 			fadeController = GetComponent<FadeController>();
 		}
 
-		public ChoicePanel Initialize(string[] choices)
+		public void Initialize(IEnumerable<string> choices)
 		{
 			if (hasBeenInitialized)
 				throw new InvalidOperationException($"{nameof(ChoicePanel)} is already" +
 					" been used to make a choice panel. Did you forget to dispose?");
-			Task consoleBuilder = ConsoleBuilder(choices);
 			hasBeenInitialized = true;
-			choiceButtons = new (GameObject, DialogueNode)[choices.Length];
-			for (byte i = 0; i < choices.Length; i++)
-			{
-				choiceButtons[i] = (Instantiate(choiceButtonPrefab, transform),
-					ScriptParser.Instance.currentNode.choices[choices[i]]);
-				choiceButtons[i].@object.GetComponent<Text>().text = choices[i];
-				Action action = () => HandlePress(i); // Capturing value.
-				choiceButtons[i].@object.GetComponent<Button>().onClick
-					.AddListener(new UnityAction(action));
-			}
-			consoleBuilder.Wait();
-			return this;
+			choiceButtons = new GameObject[choices.Count()];
+			choiceButtons = choices
+				.Select(choice =>
+				{
+					GameObject button = Instantiate(choiceButtonPrefab, transform);
+					button.GetComponentInChildren<Text>().text = choice;
+					Action action = () => HandlePress(choice); // Capturing value.
+					button.GetComponentInChildren<Button>().onClick
+						.AddListener(new UnityAction(action));
+					return button;
+				}).ToArray();
 		}
+		/*
 		private Task ConsoleBuilder(string[] choices)
 		{
 			var consoleBuilder = new StringBuilder("Starting new choice panel with options:");
@@ -52,16 +61,13 @@
 			Debug.Log(name + ": " + consoleBuilder.ToString());
 			return Task.CompletedTask;
 		}
+		*/
 
-		public void HandlePress(byte index)
+		public void HandlePress(string value)
 		{
 			if (!hasBeenInitialized)
 				return;
-			// Dunno why we could just use the dialogueNodes from the dictionary
-			// - values, but im afraid it will just break instantly due to how 
-			// - volatile it may be.
-			ScriptParser.Instance.currentNode.selectChoice(choiceButtons[index].node);
-			PickedChoice?.Invoke(choiceButtons[index].node.GetCurrentLine().line);
+			PickedChoice?.Invoke(value);
 		}
 
 		public void Dispose()
@@ -69,11 +75,16 @@
 			if (!hasBeenInitialized)
 				return;
 			hasBeenInitialized = false;
-			fadeController.FadeOutAsync(0.1f).Wait();
+			fadeController.FadeOut(0.1f);
 			choiceButtons = null;
 			PickedChoice = null;
-			foreach (var pair in choiceButtons)
-				Destroy(pair.@object);
+			foreach (GameObject obj in choiceButtons)
+				Destroy(obj);
+		}
+
+		private void OnDestroy()
+		{
+			Dispose();
 		}
 	}
 }

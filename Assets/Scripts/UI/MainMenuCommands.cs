@@ -11,7 +11,7 @@
 	using System.Threading;
 
 	[RequireComponent(typeof(FadeController))]
-	public class MainMenuCommands : MonoBehaviour
+	public sealed class MainMenuCommands : MonoBehaviour
 	{
 		/// <summary>
 		/// Determines if <paramref name="conditions"/> has managed to get all their

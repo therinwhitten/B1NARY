@@ -13,7 +13,7 @@ namespace B1NARY.Audio
 	{
 
 		/// <summary>
-		/// Gets a value indicating whether it has sounds that has an option that can
+		/// Gets a value indicating whether it has sounds that has an imageOption that can
 		/// play it on awake.
 		/// </summary>
 		public bool ContainsPlayOnAwakeCommands { get; private set; }
