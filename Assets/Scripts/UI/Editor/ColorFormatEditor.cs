@@ -20,13 +20,10 @@
 				return _colorFormat;
 			}
 		}
-		private void Awake()
-		{
-			EditorUtility.SetDirty(ColorFormat);
-		}
 		private bool openedHeader = false;
 		public override void OnInspectorGUI()
 		{
+			EditorUtility.SetDirty(ColorFormat);
 			ColorFormat.primaryUI = EditorGUILayout.ColorField("Primary Color", ColorFormat.primaryUI);
 			ColorFormat.SecondaryUI = EditorGUILayout.ColorField("Secondary Color", ColorFormat.SecondaryUI);
 			if (openedHeader = EditorGUILayout.BeginFoldoutHeaderGroup(openedHeader, new GUIContent("Extra UI Color Data")))

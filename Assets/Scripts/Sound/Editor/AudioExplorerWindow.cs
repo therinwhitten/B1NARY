@@ -24,10 +24,10 @@
 			.Select(@string => @string.Replace('_', ' ')).ToArray();
 
 		private static readonly HashSet<string> availibleAudioExtensions = new HashSet<string>()
-	{
-		".wav",
-		".mp3"
-	};
+		{
+			".wav",
+			".mp3"
+		};
 		private static bool VerifyFileExtension(string input) =>
 			availibleAudioExtensions.Contains(input.Substring(input.LastIndexOf('.')));
 

@@ -24,10 +24,14 @@
 		public void OnEnable()
 		{
 			SoundLibrary soundLibrary = (SoundLibrary)target;
-			EditorUtility.SetDirty(soundLibrary);
+			EditorUtility.SetDirty(target);
 			if (!headerGroupsToggledForMultiple.ContainsKey(Name))
 				headerGroupsToggledForMultiple.Add(Name,
 					Enumerable.Repeat(false, soundLibrary.Count).ToList());
+		}
+		public void OnDisable()
+		{
+			EditorUtility.ClearDirty(target);
 		}
 
 		public override void OnInspectorGUI()

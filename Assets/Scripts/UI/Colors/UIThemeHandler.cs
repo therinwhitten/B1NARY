@@ -78,12 +78,15 @@
 
 		#region Image Stuff
 		public Image ImageData { get; private set; }
-		public string imageThemeName = string.Empty;
+		public string imageThemeName = Option.Primary.ToString();
 		#endregion
 
 		#region Button Stuff
 		public Button ButtonData { get; private set; }
-		public string buttonNormalName = string.Empty, buttonPressedName = string.Empty;
+		public string buttonHighlightedName = Option.Primary.ToString(),
+			buttonPressedName = Option.Primary.ToString(),
+			buttonSelectedName = Option.Primary.ToString(),
+			buttonDisabledName = Option.Primary.ToString();
 		#endregion
 
 		private Target? m_currentTarget;
@@ -117,6 +120,7 @@
 			private set => m_currentTarget = value;
 		}
 
+		private ColorBlock previousButtonColors;
 		private Color[] previousColors;
 
 		private void OnEnable()
@@ -128,17 +132,16 @@
 					ImageData.color = GetColor(imageThemeName);
 					break;
 				case Target.Button:
-					previousColors = new Color[] 
-					{ ButtonData.colors.normalColor, ButtonData.colors.pressedColor };
+					previousButtonColors = ButtonData.colors;
 					ButtonData.colors = new ColorBlock()
 					{
 						colorMultiplier = ButtonData.colors.colorMultiplier,
-						disabledColor = ButtonData.colors.disabledColor,
+						disabledColor = GetColor(buttonDisabledName),
 						fadeDuration = ButtonData.colors.fadeDuration,
-						highlightedColor = ButtonData.colors.highlightedColor,
-						normalColor = GetColor(buttonNormalName),
+						highlightedColor = GetColor(buttonHighlightedName),
+						normalColor = GetColor(imageThemeName),
 						pressedColor = GetColor(buttonPressedName),
-						selectedColor = ButtonData.colors.selectedColor,
+						selectedColor = GetColor(buttonSelectedName),
 					};
 					break;
 				default:
@@ -150,16 +153,7 @@
 			switch (CurrentTarget)
 			{
 				case Target.Button:
-					ButtonData.colors = new ColorBlock()
-					{
-						colorMultiplier = ButtonData.colors.colorMultiplier,
-						disabledColor = ButtonData.colors.disabledColor,
-						fadeDuration = ButtonData.colors.fadeDuration,
-						highlightedColor = ButtonData.colors.highlightedColor,
-						normalColor = previousColors[0],
-						pressedColor = previousColors[1],
-						selectedColor = ButtonData.colors.selectedColor,
-					};
+					ButtonData.colors = previousButtonColors;
 					break;
 				case Target.Image:
 					ImageData.color = previousColors.Single();

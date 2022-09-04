@@ -9,7 +9,7 @@
 	public class TabPanel : MonoBehaviour
 	{
 		public TabButton[] tabButtons;
-		public int CurrentTabIndex { get; private set; }
+		public int CurrentTabIndex { get; private set; } = 0;
 		private void Awake()
 		{
 			for (int i = 0; i < tabButtons.Length; i++)

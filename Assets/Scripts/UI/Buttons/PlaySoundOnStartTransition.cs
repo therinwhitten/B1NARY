@@ -11,7 +11,7 @@
 			if (animator.TryGetComponent<ButtonSoundBehaviour>(out var buttonSound))
 				buttonSound.PlaySound(soundIndex);
 			else
-				IngameDebugger.LogError(name, "BackgroundHandler State Machine", "Cannot find a valid output to play sounds!");
+				Debug.LogError("Cannot find a valid output to play sounds!", this);
 		}
 	}
 }

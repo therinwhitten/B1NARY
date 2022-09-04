@@ -31,8 +31,11 @@
 					currentHandler.imageThemeName = PopupOrCustom("Color Option", "Custom Color Name", currentHandler.imageThemeName);
 					break;
 				case UIThemeHandler.Target.Button:
-					currentHandler.buttonNormalName = PopupOrCustom("Normal Button Option", "Normal Button Name", currentHandler.buttonNormalName);
+					currentHandler.imageThemeName = PopupOrCustom("Normal Button Option", "Normal Button Name", currentHandler.imageThemeName);
+					currentHandler.buttonHighlightedName = PopupOrCustom("Highlighted Button Option", "Hilighted Button Name", currentHandler.buttonHighlightedName);
 					currentHandler.buttonPressedName = PopupOrCustom("Pressed Button Option", "Pressed Button Name", currentHandler.buttonPressedName);
+					currentHandler.buttonSelectedName = PopupOrCustom("Selected Button Option", "Selected Button Name", currentHandler.buttonPressedName);
+					currentHandler.buttonDisabledName = PopupOrCustom("Disabled Button Option", "Disabled Button Name", currentHandler.buttonDisabledName);
 					break;
 				default:
 					throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());

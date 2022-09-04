@@ -19,8 +19,8 @@
 		[ExecuteInEditMode]
 		private static void MultitonInitializer()
 		{
-			Type baseAwakeType = default(Multiton<T>).GetType().GetMethod(nameof(Awake)).DeclaringType,
-				baseOnDestroyType = default(Multiton<T>).GetType().GetMethod(nameof(OnDestroy)).DeclaringType;
+			Type baseAwakeType = typeof(Multiton<T>).GetMethod(nameof(Awake)).DeclaringType,
+				baseOnDestroyType = typeof(Multiton<T>).GetMethod(nameof(OnDestroy)).DeclaringType;
 			(from type in typeof(Multiton<T>).Assembly.GetTypes()
 			 where type == typeof(Multiton<T>)
 			 let awakeInfo = type.GetMethod(nameof(Awake)).DeclaringType
