@@ -6,10 +6,11 @@
 	[RequireComponent(typeof(Button))]
 	public sealed class TabButton : MonoBehaviour
 	{
-		private Button button;
+		public Button Button { get; private set; }
+		public GameObject contents;
 		private void Awake()
 		{
-			button = GetComponent<Button>();
+			Button = GetComponent<Button>();
 		}
 	}
 }
