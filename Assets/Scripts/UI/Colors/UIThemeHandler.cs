@@ -61,6 +61,8 @@
 				case Option.Secondary:
 					return CurrentlyEquippedFormat.SecondaryUI;
 				case Option.Custom:
+					throw new ArgumentException($"although {option} is a enum, you need" +
+						$"another argument or name to differentiate other settings!");
 				default:
 					throw new IndexOutOfRangeException(option.ToString());
 			}
@@ -71,23 +73,18 @@
 				return GetColor(option);
 			if (CurrentlyEquippedFormat.ExtraUIValues.TryGetValue(name, out Color color))
 				return color;
-			Debug.LogError($"'{name}' is not located within the currently " +
-				$"equipped format: {CurrentlyEquippedFormat.name}, returning primary default.");
-			return GetColor(Option.Primary);
+			throw new NullReferenceException($"'{name}' is not located within the currently " +
+				$"equipped format: {CurrentlyEquippedFormat.name}.");
 		}
 
-		#region Image Stuff
 		public Image ImageData { get; private set; }
-		public string imageThemeName = Option.Primary.ToString();
-		#endregion
+		public string imageThemeName = Option.Secondary.ToString();
 
-		#region Button Stuff
 		public Button ButtonData { get; private set; }
 		public string buttonHighlightedName = Option.Primary.ToString(),
 			buttonPressedName = Option.Primary.ToString(),
 			buttonSelectedName = Option.Primary.ToString(),
 			buttonDisabledName = Option.Primary.ToString();
-		#endregion
 
 		private Target? m_currentTarget;
 		public Target CurrentTarget 
@@ -123,16 +120,29 @@
 		private ColorBlock previousButtonColors;
 		private Color[] previousColors;
 
-		private void OnEnable()
+		public void OnEnable()
 		{
 			switch (CurrentTarget)
 			{
 				case Target.Image:
 					previousColors = new Color[] { ImageData.color };
-					ImageData.color = GetColor(imageThemeName);
 					break;
 				case Target.Button:
 					previousButtonColors = ButtonData.colors;
+					break;
+				default:
+					throw new IndexOutOfRangeException(CurrentTarget.ToString());
+			}
+			UpdateColors(CurrentTarget);
+		}
+		public void UpdateColors(Target target)
+		{
+			switch (target)
+			{
+				case Target.Image:
+					ImageData.color = GetColor(imageThemeName);
+					return;
+				case Target.Button:
 					ButtonData.colors = new ColorBlock()
 					{
 						colorMultiplier = ButtonData.colors.colorMultiplier,
@@ -143,12 +153,13 @@
 						pressedColor = GetColor(buttonPressedName),
 						selectedColor = GetColor(buttonSelectedName),
 					};
-					break;
+					return;
 				default:
 					throw new IndexOutOfRangeException(CurrentTarget.ToString());
 			}
 		}
-		private void OnDisable()
+
+		public void OnDisable()
 		{
 			switch (CurrentTarget)
 			{

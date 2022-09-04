@@ -25,24 +25,28 @@
 			EditorUtility.SetDirty(currentHandler);
 			UIThemeHandler.Option[] allOptions = (UIThemeHandler.Option[])Enum.GetValues(typeof(UIThemeHandler.Option));
 			string[] optionStrings = allOptions.Select(option => option.ToString()).ToArray();
+			bool hasChanges = false;
 			switch (currentHandler.CurrentTarget)
 			{
 				case UIThemeHandler.Target.Image:
-					currentHandler.imageThemeName = PopupOrCustom("Color Option", "Custom Color Name", currentHandler.imageThemeName);
+					hasChanges = PopupOrCustom("Color Option", "Custom Color Name", ref currentHandler.imageThemeName);
 					break;
 				case UIThemeHandler.Target.Button:
-					currentHandler.imageThemeName = PopupOrCustom("Normal Button Option", "Normal Button Name", currentHandler.imageThemeName);
-					currentHandler.buttonHighlightedName = PopupOrCustom("Highlighted Button Option", "Hilighted Button Name", currentHandler.buttonHighlightedName);
-					currentHandler.buttonPressedName = PopupOrCustom("Pressed Button Option", "Pressed Button Name", currentHandler.buttonPressedName);
-					currentHandler.buttonSelectedName = PopupOrCustom("Selected Button Option", "Selected Button Name", currentHandler.buttonPressedName);
-					currentHandler.buttonDisabledName = PopupOrCustom("Disabled Button Option", "Disabled Button Name", currentHandler.buttonDisabledName);
+					hasChanges = PopupOrCustom("Normal Button Option", "Normal Button Name", ref currentHandler.imageThemeName)
+					 | PopupOrCustom("Highlighted Button Option", "Hilighted Button Name", ref currentHandler.buttonHighlightedName)
+					 | PopupOrCustom("Pressed Button Option", "Pressed Button Name", ref currentHandler.buttonPressedName)
+					 | PopupOrCustom("Selected Button Option", "Selected Button Name", ref currentHandler.buttonPressedName)
+					 | PopupOrCustom("Disabled Button Option", "Disabled Button Name", ref currentHandler.buttonDisabledName);
 					break;
 				default:
 					throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());
 			}
-			EditorUtility.ClearDirty(currentHandler);
-			string PopupOrCustom(string popupLabel, string textFieldLabel, string current)
+			if (hasChanges)
+				currentHandler.UpdateColors(currentHandler.CurrentTarget);
+			//EditorUtility.ClearDirty(currentHandler);
+			bool PopupOrCustom(string popupLabel, string textFieldLabel, ref string current)
 			{
+				string old = current;
 				// Popup box for defaults
 				int currentIndex = Array.IndexOf(optionStrings, current);
 				if (currentIndex == -1)
@@ -52,7 +56,7 @@
 					current = optionStrings[newIndex];
 				if (Array.IndexOf(allOptions, UIThemeHandler.Option.Custom) == currentIndex)
 					current = EditorGUILayout.TextField(textFieldLabel, current);
-				return current;
+				return current != old;
 			}
 		}
 	}
