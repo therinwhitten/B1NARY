@@ -26,7 +26,8 @@
 		public enum Target
 		{
 			Button,
-			Image
+			Image,
+			Raw_Image,
 		}
 
 		private static ColorFormat _currentlyEquippedFormat;
@@ -78,6 +79,7 @@
 		}
 
 		public Image ImageData { get; private set; }
+		public RawImage RawImageData { get; private set; }
 		public string imageThemeName = Option.Secondary.ToString();
 
 		public Button ButtonData { get; private set; }
@@ -104,6 +106,11 @@
 					ImageData = imageOut;
 					m_currentTarget = Target.Image;
 				}
+				else if (TryGetComponent(out RawImage rawImageOut))
+				{
+					RawImageData = rawImageOut;
+					m_currentTarget = Target.RawImage;
+				}
 				else
 				{
 					var exceptionBuilder = new StringBuilder("There is no components to hold onto: ");
@@ -127,6 +134,9 @@
 				case Target.Image:
 					previousColors = new Color[] { ImageData.color };
 					break;
+				case Target.RawImage:
+					previousColors = new Color[] { RawImageData.color };
+					break;
 				case Target.Button:
 					previousButtonColors = ButtonData.colors;
 					break;
@@ -141,6 +151,9 @@
 			{
 				case Target.Image:
 					ImageData.color = GetColor(imageThemeName);
+					return;
+				case Target.RawImage:
+					RawImageData.color = GetColor(imageThemeName);
 					return;
 				case Target.Button:
 					ButtonData.colors = new ColorBlock()
@@ -168,6 +181,9 @@
 					break;
 				case Target.Image:
 					ImageData.color = previousColors.Single();
+					break;
+				case Target.RawImage:
+					RawImageData.color = previousColors.Single();
 					break;
 				default:
 					throw new IndexOutOfRangeException(CurrentTarget.ToString());

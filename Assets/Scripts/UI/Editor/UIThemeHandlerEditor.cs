@@ -15,7 +15,7 @@
 		{
 			try
 			{
-				EditorGUILayout.LabelField($"Current Configuration: {currentHandler.CurrentTarget}", EditorStyles.boldLabel);
+				EditorGUILayout.LabelField($"Current Configuration: {currentHandler.CurrentTarget.ToString().Replace('_', ' ')}", EditorStyles.boldLabel);
 			}
 			catch (MissingComponentException ex)
 			{
@@ -35,13 +35,13 @@
 					hasChanges = PopupOrCustom("Normal Button Option", "Normal Button Name", ref currentHandler.imageThemeName)
 					 | PopupOrCustom("Highlighted Button Option", "Hilighted Button Name", ref currentHandler.buttonHighlightedName)
 					 | PopupOrCustom("Pressed Button Option", "Pressed Button Name", ref currentHandler.buttonPressedName)
-					 | PopupOrCustom("Selected Button Option", "Selected Button Name", ref currentHandler.buttonPressedName)
+					 | PopupOrCustom("Selected Button Option", "Selected Button Name", ref currentHandler.buttonSelectedName)
 					 | PopupOrCustom("Disabled Button Option", "Disabled Button Name", ref currentHandler.buttonDisabledName);
 					break;
 				default:
 					throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());
 			}
-			if (hasChanges)
+			if (hasChanges && Application.isPlaying)
 				currentHandler.UpdateColors(currentHandler.CurrentTarget);
 			//EditorUtility.ClearDirty(currentHandler);
 			bool PopupOrCustom(string popupLabel, string textFieldLabel, ref string current)
