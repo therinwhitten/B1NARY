@@ -7,11 +7,16 @@
 	[RequireComponent(typeof(Button))]
 	public sealed class TabButton : MonoBehaviour
 	{
-		public Button Button { get; private set; }
-		public GameObject contents;
-		private void Awake()
+		private Button m_button;
+		public Button Button 
 		{
-			Button = GetComponent<Button>();
+			get 
+			{
+				if (m_button == null)
+					m_button = GetComponent<Button>();
+				return m_button;
+			} 
 		}
+		public GameObject contents;
 	}
 }
