@@ -20,7 +20,11 @@
 			tabButtons[index].contents.SetActive(true);
 			var subList = new List<TabButton>(tabButtons);
 			subList.RemoveAt(index);
-			subList.ForEach(tab => tab.contents.SetActive(false));
+			for (int i = 0; i < subList.Count; i++)
+			{
+				if (subList[i].contents != null)
+					subList[i].contents.SetActive(false);
+			}
 		}
 	}
 }

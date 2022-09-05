@@ -2,7 +2,7 @@
 {
 	using System;
 	using UnityEngine;
-	using UnityEngine.Serialization;
+	using TMPro;
 	using UnityEngine.UI;
 	using UI;
 	using System.Text;
@@ -28,6 +28,8 @@
 			Button,
 			Image,
 			Raw_Image,
+			Scrollbar,
+			Dropdown_TextMeshPro,
 		}
 
 		private static ColorFormat _currentlyEquippedFormat;
@@ -87,6 +89,8 @@
 			buttonPressedName = Option.Primary.ToString(),
 			buttonSelectedName = Option.Primary.ToString(),
 			buttonDisabledName = Option.Primary.ToString();
+		public Scrollbar ScrollbarData { get; private set; }
+		public TMP_Dropdown DropdownData { get; private set; }
 
 		private Target? m_currentTarget;
 		public Target CurrentTarget 
@@ -110,6 +114,16 @@
 				{
 					RawImageData = rawImageOut;
 					m_currentTarget = Target.Raw_Image;
+				}
+				else if (TryGetComponent(out Scrollbar scrollbar))
+				{
+					ScrollbarData = scrollbar;
+					m_currentTarget = Target.Scrollbar;
+				}
+				else if (TryGetComponent(out TMP_Dropdown dropdown))
+				{
+					DropdownData = dropdown;
+					m_currentTarget = Target.Dropdown_TextMeshPro;
 				}
 				else
 				{
@@ -140,6 +154,12 @@
 				case Target.Button:
 					previousButtonColors = ButtonData.colors;
 					break;
+				case Target.Scrollbar:
+					previousButtonColors = ScrollbarData.colors;
+					break;
+				case Target.Dropdown_TextMeshPro:
+					previousButtonColors = DropdownData.colors;
+					break;
 				default:
 					throw new IndexOutOfRangeException(CurrentTarget.ToString());
 			}
@@ -167,6 +187,30 @@
 						selectedColor = GetColor(buttonSelectedName),
 					};
 					return;
+				case Target.Scrollbar:
+					ScrollbarData.colors = new ColorBlock()
+					{
+						colorMultiplier = ScrollbarData.colors.colorMultiplier,
+						disabledColor = GetColor(buttonDisabledName),
+						fadeDuration = ScrollbarData.colors.fadeDuration,
+						highlightedColor = GetColor(buttonHighlightedName),
+						normalColor = GetColor(imageThemeName),
+						pressedColor = GetColor(buttonPressedName),
+						selectedColor = GetColor(buttonSelectedName),
+					};
+					return;
+				case Target.Dropdown_TextMeshPro:
+					ScrollbarData.colors = new ColorBlock()
+					{
+						colorMultiplier = DropdownData.colors.colorMultiplier,
+						disabledColor = GetColor(buttonDisabledName),
+						fadeDuration = DropdownData.colors.fadeDuration,
+						highlightedColor = GetColor(buttonHighlightedName),
+						normalColor = GetColor(imageThemeName),
+						pressedColor = GetColor(buttonPressedName),
+						selectedColor = GetColor(buttonSelectedName),
+					};
+					return;
 				default:
 					throw new IndexOutOfRangeException(CurrentTarget.ToString());
 			}
@@ -184,6 +228,12 @@
 					break;
 				case Target.Raw_Image:
 					RawImageData.color = previousColors.Single();
+					break;
+				case Target.Scrollbar:
+					ScrollbarData.colors = previousButtonColors;
+					break;
+				case Target.Dropdown_TextMeshPro:
+					DropdownData.colors = previousButtonColors;
 					break;
 				default:
 					throw new IndexOutOfRangeException(CurrentTarget.ToString());
