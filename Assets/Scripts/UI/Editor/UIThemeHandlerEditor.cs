@@ -46,7 +46,6 @@
 			}
 			if (hasChanges && Application.isPlaying)
 				currentHandler.UpdateColors(currentHandler.CurrentTarget);
-			//EditorUtility.ClearDirty(currentHandler);
 			bool PopupOrCustom(string popupLabel, ref string current)
 			{
 				string old = current;

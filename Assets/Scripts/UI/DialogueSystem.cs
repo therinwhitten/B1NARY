@@ -10,6 +10,7 @@ namespace B1NARY.UI
 	using System.Collections.Generic;
 	using System.Text;
 	using System;
+	using TMPro;
 	using B1NARY.Scripting.Experimental;
 
 	[RequireComponent(typeof(FadeController))]
@@ -40,7 +41,7 @@ namespace B1NARY.UI
 			get => speakerBox.text;
 			set => speakerBox.text = value;
 		}
-		public Text speakerBox, textBox;
+		public TMP_Text speakerBox, textBox;
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
 		/// </summary>
