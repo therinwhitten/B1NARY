@@ -23,12 +23,12 @@
 				.ToDictionary(node => node.rootLine.lineData);
 		}
 
-		public override IEnumerator<ScriptLine> Perform()
+		public override IEnumerator<ScriptLine> Perform(bool dontPauseOnCommand)
 		{
 			ChoicePanel panel = ChoicePanel.StartNew(choices.Keys);
 			var taskCompletionSource = new TaskCompletionSource<string>();
 			panel.PickedChoice += str => taskCompletionSource.SetResult(str);
-			IEnumerator<ScriptLine> node = choices[taskCompletionSource.Task.Result].Perform();
+			IEnumerator<ScriptLine> node = choices[taskCompletionSource.Task.Result].Perform(dontPauseOnCommand);
 			while (node.MoveNext())
 				yield return node.Current;
 		}

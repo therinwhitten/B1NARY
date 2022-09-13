@@ -49,20 +49,21 @@
 		/// Performs <see cref="ScriptLine"/> and uses <see cref="ScriptDocument.ParseLine(ScriptLine)"/>
 		/// to determine to yield return a value or continue.
 		/// </summary>
-		public virtual IEnumerator<ScriptLine> Perform()
+		public virtual IEnumerator<ScriptLine> Perform(bool dontPauseOnCommands)
 		{
 			// i as 1 to skip the bracket, length - 1 for the same.
 			for (int i = 1; i < subLines.Length - 1; i++)
 			{
 				if (subLines[i].HasScriptNode)
 				{
-					IEnumerator<ScriptLine> subNode = subLines[i].scriptNode.Perform();
+					IEnumerator<ScriptLine> subNode = subLines[i].scriptNode.Perform(dontPauseOnCommands);
 					while (subNode.MoveNext())
 						yield return subNode.Current;
 					i += subLines[i].scriptNode.lineLength;
 				}
 				if (parseLine.Invoke(subLines[i].scriptLine))
-					continue;
+					if (dontPauseOnCommands)
+						continue;
 				yield return subLines[i].scriptLine;
 			}
 		}

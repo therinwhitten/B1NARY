@@ -1,5 +1,6 @@
 ﻿namespace B1NARY
 {
+	/*
 	using System;
 	using System.Collections;
 	using UnityEngine;
@@ -8,8 +9,8 @@
 	using B1NARY.Scripting.Experimental;
 	using B1NARY.Audio;
 
-	[RequireComponent(typeof(Animator))]
-	public class CharacterScript : MonoBehaviour
+	[RequireComponent(typeof(Animator)), Obsolete]
+	public class CharScriptOld : MonoBehaviour
 	{
 		private Animator animator;
 
@@ -112,101 +113,6 @@
 			foreach (CubismRenderer renderer in renderers)
 				renderer.Material = material;
 		}
-
-		public void Speak(string name, ScriptLine line)
-		{
-			AudioHandler.Instance.VoiceActorHandler.PlayVoice(name, line, voicevolume, voice);
-		}
-
-
-		public void UseAnimation(string animName)
-		{
-			animName = animName.Trim();
-			try
-			{
-				animator.SetTrigger(animName);
-				currentAnimation = animName;
-			}
-			catch (NullReferenceException ex)
-			{
-				Debug.LogError($"BackgroundHandler '{animName}' is not found in animation list"
-					+ $"of character '{charName}' \n{ex}");
-			}
-		}
-
-		public void changeExpression(string expressionName)
-		{
-			currentExpression = expressionName;
-			int expressionIndex = System.Array.IndexOf(expressions, expressionName);
-			// Debug.Log("Changing expression of character " + charName + ". Name: " + expressionName + ". Index: " + expressionIndex);
-			try
-			{
-				gameObject.GetComponent<CubismExpressionController>().CurrentExpressionIndex = expressionIndex;
-			}
-			catch (NullReferenceException)
-			{
-				Debug.LogWarning("Error! Expression " + expressionName + " not found in expression list of character: " + charName);
-			}
-		}
-
-		[HideInInspector]
-		public Vector2 targetPosition;
-		public Vector2 currentPosition;
-		Coroutine moving;
-		[HideInInspector]
-		public bool isMoving { get { return moving != null; } }
-
-		public void MoveTo(Vector2 Target, float speed, bool smooth = true)
-		{
-			StopMoving();
-			moving = StartCoroutine(Moving(Target, speed, smooth));
-			currentPosition = Target;
-		}
-		public void StopMoving(bool goToTarget = true)
-		{
-			if (isMoving)
-			{
-				StopCoroutine(moving);
-				if (goToTarget)
-				{
-					SetPosition(targetPosition);
-				}
-			}
-			// currentPosition = targetPosition;
-			moving = null;
-		}
-		public void SetPosition(Vector2 target)
-		{
-			currentPosition = target;
-			Vector2 padding = anchorPadding;
-
-			float maxX = 1f - padding.x;
-			float maxY = 1f - padding.y;
-
-			Vector2 minAnchorTarget = new Vector2(maxX * target.x, maxY * target.y);
-			rectTransform.anchorMin = minAnchorTarget;
-			rectTransform.anchorMax = rectTransform.anchorMin + padding;
-		}
-		IEnumerator Moving(Vector2 target, float speed, bool smooth)
-		{
-			targetPosition = target;
-
-			Vector2 padding = anchorPadding;
-
-			float maxX = 1f - padding.x;
-			float maxY = 1f - padding.y;
-
-			Vector2 minAnchorTarget = new Vector2(maxX * targetPosition.x, maxY * targetPosition.y);
-			speed *= Time.deltaTime;
-
-			while (rectTransform.anchorMin != minAnchorTarget)
-			{
-				rectTransform.anchorMin = (!smooth) ? Vector2.MoveTowards(rectTransform.anchorMin, minAnchorTarget, speed) : Vector2.Lerp(rectTransform.anchorMin, minAnchorTarget, speed);
-				rectTransform.anchorMax = rectTransform.anchorMin + padding;
-				yield return new WaitForEndOfFrame();
-			}
-			currentPosition = target;
-			StopMoving();
-		}
 	}
+	*/
 }

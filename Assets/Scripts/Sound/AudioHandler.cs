@@ -41,7 +41,7 @@ namespace B1NARY.Audio
 		private void HandleSceneSwitch(string newScene = null)
 		{
 			LoadNewLibrary(newScene);
-			VoiceActorHandler = new VoiceActorHandler();
+			VoiceActorHandler = new VoiceActorHandler(gameObject);
 		}
 
 		/// <summary>

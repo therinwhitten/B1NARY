@@ -86,7 +86,6 @@
 			scriptFactory.AddNormalOperationsFunctionality(line =>
 			{
 				PlayVoiceActor(line);
-				CharacterManager.Instance.changeLightingFocus();
 				DialogueSystem.Instance.Say(line.lineData);
 			});
 			scriptFactory.AddCommandFunctionality(
@@ -94,7 +93,7 @@
 				SceneManager.SceneDelegateCommands,
 				DialogueSystem.DialogueDelegateCommands,
 				ScriptHandler.ScriptDelegateCommands,
-				CharacterManager.CharacterDelegateCommands, 
+				B1NARY.CharacterController.CharacterDelegateCommands,
 				TransitionManager.TransitionDelegateCommands);
 			scriptDocument = (ScriptDocument)scriptFactory;
 			IsActive = true;
@@ -102,8 +101,8 @@
 		public void PlayVoiceActor(ScriptLine line)
 		{
 			string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
-			if (CharacterManager.Instance.charactersInScene.TryGetValue(currentSpeaker, out GameObject charObject))
-				charObject.GetComponent<CharacterScript>().Speak(currentSpeaker, line);
+			if (B1NARY.CharacterController.Instance.charactersInScene.TryGetValue(currentSpeaker, out var charObject))
+				charObject.characterScript.SayLine(line);
 			else
 				Debug.LogError($"Character '{currentSpeaker}' does not exist!");
 		}

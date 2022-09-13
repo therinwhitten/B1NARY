@@ -7,6 +7,8 @@
 	using UI;
 	using System.Text;
 	using System.Linq;
+	using B1NARY.DesignPatterns;
+	using System.Collections.Generic;
 
 	/// <summary>
 	/// Allows you to easily change a single gameObject with the <see cref="Image"/>
@@ -14,7 +16,7 @@
 	/// component stores. Disabling reverts to it's previous known color.
 	/// </summary>
 	/// <seealso cref="MonoBehaviour"/>
-	public class UIThemeHandler : MonoBehaviour
+	public class UIThemeHandler : Multiton<UIThemeHandler>
 	{
 		public const string resourcesColorThemePath = "UI/Color Themes";
 		public enum Option
@@ -79,6 +81,18 @@
 			throw new NullReferenceException($"'{name}' is not located within the currently " +
 				$"equipped format: {CurrentlyEquippedFormat.name}.");
 		}
+		public static void ChangeTheme(string themeName)
+		{
+			themeName = resourcesColorThemePath + themeName;
+			_currentlyEquippedFormat = Resources.Load<ColorFormat>(themeName);
+			if (Application.isPlaying)
+			{
+				IEnumerator<UIThemeHandler> themeHandlers = GetEnumerator();
+				while (themeHandlers.MoveNext())
+					themeHandlers.Current.UpdateColors(themeHandlers.Current.CurrentTarget);
+			}
+		}
+		public void ChangeThemeInstance(string themeName) => ChangeTheme(themeName);
 
 		public Image ImageData { get; private set; }
 		public RawImage RawImageData { get; private set; }
@@ -138,31 +152,8 @@
 			private set => m_currentTarget = value;
 		}
 
-		private ColorBlock previousButtonColors;
-		private Color[] previousColors;
-
-		public void OnEnable()
+		protected override void MultitonAwake()
 		{
-			switch (CurrentTarget)
-			{
-				case Target.Image:
-					previousColors = new Color[] { ImageData.color };
-					break;
-				case Target.Raw_Image:
-					previousColors = new Color[] { RawImageData.color };
-					break;
-				case Target.Button:
-					previousButtonColors = ButtonData.colors;
-					break;
-				case Target.Scrollbar:
-					previousButtonColors = ScrollbarData.colors;
-					break;
-				case Target.Dropdown_TextMeshPro:
-					previousButtonColors = DropdownData.colors;
-					break;
-				default:
-					throw new IndexOutOfRangeException(CurrentTarget.ToString());
-			}
 			UpdateColors(CurrentTarget);
 		}
 		public void UpdateColors(Target target)
@@ -211,30 +202,6 @@
 						selectedColor = GetColor(buttonSelectedName),
 					};
 					return;
-				default:
-					throw new IndexOutOfRangeException(CurrentTarget.ToString());
-			}
-		}
-
-		public void OnDisable()
-		{
-			switch (CurrentTarget)
-			{
-				case Target.Button:
-					ButtonData.colors = previousButtonColors;
-					break;
-				case Target.Image:
-					ImageData.color = previousColors.Single();
-					break;
-				case Target.Raw_Image:
-					RawImageData.color = previousColors.Single();
-					break;
-				case Target.Scrollbar:
-					ScrollbarData.colors = previousButtonColors;
-					break;
-				case Target.Dropdown_TextMeshPro:
-					DropdownData.colors = previousButtonColors;
-					break;
 				default:
 					throw new IndexOutOfRangeException(CurrentTarget.ToString());
 			}

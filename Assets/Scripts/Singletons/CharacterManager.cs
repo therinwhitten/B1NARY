@@ -1,5 +1,6 @@
 ﻿namespace B1NARY
 {
+	/*
 	using System.Collections.Generic;
 	using UnityEngine;
 	using B1NARY.DesignPatterns;
@@ -47,65 +48,13 @@
 
 
 
-		public GameObject SummonCharacter(string prefabName, string positionRaw, string charName = "")
-		{
-			Transform transform = characterLayer.transform;
-			GameObject characterObject = Instantiate(Resources.Load<GameObject>(prefabsPath + prefabName), transform);
-			characterObject.SetActive(true);
-			characterObject.transform.position = new Vector3(transform.position.x, characterObject.transform.position.y, characterObject.transform.position.z);
-			characterObject.GetComponent<CharacterScript>().SetPosition(new Vector2(float.Parse(positionRaw), 0));
-			characterObject.GetComponent<CharacterScript>().prefabName = prefabName;
-			// if (charactersInScene == null)
-			// {
-			//     charactersInScene = new Dictionary<string, GameObject>();
-			// }
-			if (charName != "")
-			{
-				charactersInScene.Add(charName, characterObject);
-				characterObject.GetComponent<CharacterScript>().charName = charName;
-			}
-			else
-			{
 
-				charactersInScene.Add(prefabName, characterObject);
-			}
-			return characterObject;
-		}
-
-
-		// deletes all characters in the scene
-		public void emptyScene()
-		{
-			// foreach (GameObject character in charactersInScene.Values)
-			// {
-			//     Debug.Log("Destroying " + character.GetComponent<CharacterScript>().charName);
-			//     Destroy(character);
-			// }
-			foreach (Transform child in characterLayer.transform)
-			{
-				Destroy(child.gameObject);
-			}
-			charactersInScene.Clear();
-
-			// foreach (Transform transform in characterLayer.transform)
-			// {
-			//     GameObject.Destroy(transform.gameObject);
-			// }
-		}
-
-
-		public void changeAnimation(string charName, string animName)
-		{
-			GameObject character;
-			charactersInScene.TryGetValue(charName, out character);
-			character.GetComponent<CharacterScript>().UseAnimation(animName);
-		}
 
 		public void changeExpression(string charName, string exrpName)
 		{
 			GameObject character;
 			charactersInScene.TryGetValue(charName, out character);
-			character.GetComponent<CharacterScript>().changeExpression(exrpName);
+			character.GetComponent<CharScriptOld>().changeExpression(exrpName);
 		}
 
 		// moves a character horizontally to a position.
@@ -118,7 +67,7 @@
 			float positionx = float.Parse(positionRaw);
 
 			Vector2 targetPosition = new Vector2(positionx, 0);
-			character.GetComponent<CharacterScript>().MoveTo(targetPosition, 5, true);
+			character.GetComponent<CharScriptOld>().MoveTo(targetPosition, 5, true);
 		}
 
 		public void changeLightingFocus()
@@ -127,7 +76,7 @@
 			{
 				GameObject obj;
 				Instance.charactersInScene.TryGetValue(key, out obj);
-				CharacterScript script = obj.GetComponent<CharacterScript>();
+				CharScriptOld script = obj.GetComponent<CharScriptOld>();
 
 				if (script.focused)
 				{
@@ -169,4 +118,5 @@
 			}
 		}
 	}
+	*/
 }

@@ -11,6 +11,7 @@ namespace B1NARY.DataPersistence
 	using System.IO;
 	using System.Runtime.Serialization.Formatters.Binary;
 	using B1NARY.Scripting.Experimental;
+	using B1NARY.DesignPatterns;
 
 	[Serializable]
 	public class GameState
@@ -20,8 +21,6 @@ namespace B1NARY.DataPersistence
 			using (var stream = new FileStream(savePathWithFileNameAndExtension, FileMode.Open))
 				return new BinaryFormatter().Deserialize(stream) as GameState;
 		}
-
-		private static Dictionary<string, GameObject> CharactersInScene => CharacterManager.Instance.charactersInScene;
 
 		public Dictionary<string, string> strings;
 		public Dictionary<string, bool> bools;
@@ -50,10 +49,12 @@ namespace B1NARY.DataPersistence
 			//index = ScriptHandler.Instance.;
 
 			// Chardata
+			throw new NotImplementedException();
+			/*
 			characterSnapshots = CharactersInScene.Values.Select(GetCharacterData).ToArray();
 			CharacterSnapshot GetCharacterData(GameObject character)
 			{
-				var charScript = character.GetComponent<CharacterScript>();
+				var charScript = character.GetComponent<CharScriptOld>();
 				return new CharacterSnapshot()
 				{
 					name = charScript.charName,
@@ -63,7 +64,7 @@ namespace B1NARY.DataPersistence
 					animation = charScript.currentAnimation,
 					focused = charScript.focused
 				};
-			}
+			}*/
 
 			// Audio
 			//audioSounds = AudioHandler.Instance.SoundCoroutineCache.Values
@@ -95,7 +96,14 @@ namespace B1NARY.DataPersistence
 
 			void LoadCharacters()
 			{
-				CharacterManager.Instance.emptyScene();
+				throw new NotImplementedException();
+				B1NARY.CharacterController.Instance.ClearAllCharacters();
+				foreach (CharacterSnapshot characterSnapshot in characterSnapshots)
+				{
+					GameObject charObj = B1NARY.CharacterController.Instance
+						.SummonCharacter(characterSnapshot.prefabName, )
+				}
+				/*
 				foreach (CharacterSnapshot character in characterSnapshots)
 				{
 					GameObject gameObject = CharacterManager.Instance.SummonCharacter(
@@ -104,9 +112,10 @@ namespace B1NARY.DataPersistence
 						character.name
 					);
 					CharacterManager.Instance.changeExpression(character.name, character.expression);
+
 					CharacterManager.Instance.changeAnimation(character.name, character.animation);
 					// CharacterManager.Instance.moveCharacter(character.name, character.positionX.ToString());
-				}
+				}*/
 			}
 			void LoadDialogue()
 			{
@@ -147,11 +156,9 @@ namespace B1NARY.DataPersistence
 		{
 			public string name;
 			public string prefabName;
-			public float positionX;
-			public float positionY;
+			public Vector2 position;
 			public string expression;
 			public string animation;
-			public bool focused;
 		}
 
 		[Serializable]

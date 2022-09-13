@@ -28,11 +28,11 @@
 		}
 
 
-		public override IEnumerator<ScriptLine> Perform()
+		public override IEnumerator<ScriptLine> Perform(bool dontPauseOnCommand)
 		{
 			if (!CanPerform)
 				yield break;
-			IEnumerator<ScriptLine> @base = base.Perform();
+			IEnumerator<ScriptLine> @base = base.Perform(dontPauseOnCommand);
 			while (@base.MoveNext())
 				yield return @base.Current;
 		}

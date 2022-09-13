@@ -84,7 +84,7 @@
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);
-					CharacterManager.Instance.changeExpression(DialogueSystem.Instance.CurrentSpeaker, expression);
+					B1NARY.CharacterController.Instance.charactersInScene[DialogueSystem.Instance.CurrentSpeaker].characterScript.ChangeExpression(expression);
 					return true;
 				case ScriptLine.Type.Speaker:
 					string speaker = ScriptLine.CastSpeaker(line);
@@ -128,7 +128,7 @@
 		public sealed class Factory
 		{
 			public static explicit operator ScriptDocument(Factory factory)
-				=> factory.Parse();
+				=> factory.Parse(true);
 
 			private readonly string documentName;
 			private readonly List<IReadOnlyDictionary<string, Delegate>> categorizedCommands
@@ -158,7 +158,7 @@
 				=> this.categorizedCommands.AddRange(categorizedCommands);
 			public void AddNormalOperationsFunctionality(Action<ScriptLine> action)
 				=> normalAction = action;
-			public ScriptDocument Parse()
+			public ScriptDocument Parse(bool dontPauseOnCommand)
 			{
 				var output = new ScriptDocument();
 				// Assigning lines
@@ -210,7 +210,7 @@
 					(ScriptPair)new ScriptLine("{", () => documentName, 0)
 				});
 				list.Add((ScriptPair)new ScriptLine("::End", () => documentName, list.Count));
-				output.data = new ScriptNode(output.ParseLine, list.ToArray()).Perform();
+				output.data = new ScriptNode(output.ParseLine, list.ToArray()).Perform(dontPauseOnCommand);
 				output.performLine = normalAction;
 				return output;
 
