@@ -1,5 +1,6 @@
 ﻿namespace B1NARY.Editor
 {
+	/*
 	using UnityEditor;
 	using UnityEngine;
 	using System;
@@ -42,5 +43,5 @@
 			serializedObject.ApplyModifiedProperties();
 			//var genericMenu = new GenericMenu();
 		}
-	}
+	}*/
 }

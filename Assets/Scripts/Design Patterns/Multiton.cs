@@ -50,8 +50,13 @@
 			foreach (T item in instances.Values)
 				yield return item;
 		}
+		public static IEnumerable<T> AsEnumerable()
+		{
+			foreach (T item in instances.Values)
+				yield return item;
+		}
 
-		public static int Index { get; private set; }
+		public int Index { get; private set; }
 		private void Awake()
 		{
 			Index = nextIndex;

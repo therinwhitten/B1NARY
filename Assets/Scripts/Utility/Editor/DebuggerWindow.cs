@@ -7,6 +7,8 @@
 	using B1NARY.Audio;
 	using B1NARY.UI;
 	using B1NARY.Scripting.Experimental;
+	using B1NARY.DesignPatterns;
+	using System.Collections.Generic;
 
 	public class DebuggerWindow : EditorWindow
 	{
@@ -99,23 +101,15 @@
 		}
 		private void SpeakerShow()
 		{
-			string startingLine = "On Character: Empty";
+			const string emptySlot = "Empty";
+			string startingLine = "On Character: " + emptySlot;
 			string[] bottomLengthLabel = { "NaN", "/", "NaN" };
-			float percentage = 0;
-			if (TryGetter<DialogueSystem>.TryGetObject(out var charScript) && charScript.CurrentSpeaker.Length != 0)
-				startingLine = startingLine.Replace("Empty", charScript.CurrentSpeaker);
-			if (TryGetter<AudioHandler>.TryGetObject(out var audioHandler))
-			{
-				try // Try/Catching is easier than trying to fit all the bool requirements.
-				{
-					percentage = audioHandler.VoiceActorHandler.audioSource.time / audioHandler.VoiceActorHandler.audioSource.clip.length;
-					bottomLengthLabel[0] = audioHandler.VoiceActorHandler.audioSource.time.ToString("N2");
-					bottomLengthLabel[2] = audioHandler.VoiceActorHandler.audioSource.clip.length.ToString("N2");
-				}
-				catch (NullReferenceException) { }
-				catch (MissingReferenceException) { }
-			}
-			EditorGUI.ProgressBar(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), percentage, string.Join(" ", bottomLengthLabel));
+			CharacterScript currentCharacter = Multiton<CharacterScript>.AsEnumerable()
+				.Where(@char => @char.PrefabName == DialogueSystem.Instance.CurrentSpeaker).Single();
+			startingLine = startingLine.Replace(emptySlot, DialogueSystem.Instance.CurrentSpeaker);
+			bottomLengthLabel[0] = currentCharacter.VoiceActorHandler.PlayedTime.ToString("N2");
+			bottomLengthLabel[2] = currentCharacter.VoiceActorHandler.ClipLength.ToString("N2");
+			EditorGUI.ProgressBar(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), currentCharacter.VoiceActorHandler.Completion, string.Join(" ", bottomLengthLabel));
 			EditorGUI.LabelField(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), startingLine, EditorStyles.whiteMiniLabel);
 		}
 	}

@@ -13,8 +13,6 @@ namespace B1NARY.Audio
 	/// themselves.</summary>
 	public partial class AudioHandler : SingletonAlt<AudioHandler>
 	{
-		public VoiceActorHandler VoiceActorHandler { get; private set; }
-
 		/// <summary> Custom sounds for each scene, may not be used if 
 		/// audiofiles are called directly or via file in resources folder </summary>
 		public SoundLibrary CustomAudioData { get; private set; }
@@ -41,7 +39,6 @@ namespace B1NARY.Audio
 		private void HandleSceneSwitch(string newScene = null)
 		{
 			LoadNewLibrary(newScene);
-			VoiceActorHandler = new VoiceActorHandler(gameObject);
 		}
 
 		/// <summary>

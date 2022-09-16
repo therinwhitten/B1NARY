@@ -9,6 +9,10 @@
 	{
 		private AudioSource audioSource;
 		private AudioClip currentVoiceLine;
+		public float Completion => audioSource != null ? (audioSource.time / audioSource.clip.length) : 0f;
+		public float ClipLength => audioSource != null ? audioSource.clip.length : float.NaN;
+		public float PlayedTime => audioSource != null ? audioSource.time : float.NaN;
+		public bool IsPlaying => audioSource != null ? audioSource.isPlaying : false;
 		public VoiceActorHandler(GameObject parent)
 		{
 			audioSource = parent.AddComponent<AudioSource>();
