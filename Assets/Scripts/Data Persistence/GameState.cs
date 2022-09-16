@@ -98,6 +98,8 @@ namespace B1NARY.DataPersistence
 			{
 				throw new NotImplementedException();
 				B1NARY.CharacterController.Instance.ClearAllCharacters();
+				
+				/*
 				foreach (CharacterSnapshot characterSnapshot in characterSnapshots)
 				{
 					GameObject charObj = B1NARY.CharacterController.Instance
