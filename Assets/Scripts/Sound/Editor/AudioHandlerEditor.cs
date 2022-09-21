@@ -3,14 +3,14 @@
 	using UnityEditor;
 	using B1NARY.Audio;
 
-	[CustomEditor(typeof(AudioHandler))]
+	[CustomEditor(typeof(SFXAudioController))]
 	public class AudioHandlerEditor : Editor
 	{
 		public override void OnInspectorGUI()
 		{
-			AudioHandler audioHandler = (AudioHandler)target;
-			if (audioHandler.SoundCoroutineCache != null)
-				EditorGUILayout.LabelField($"Total {nameof(AudioTracker)}s tracked: {audioHandler.SoundCoroutineCache.Count}");
+			SFXAudioController audioHandler = (SFXAudioController)target;
+			if (audioHandler.ActiveAudioTrackers != null)
+				EditorGUILayout.LabelField($"Total {nameof(AudioTracker)}s tracked: {audioHandler.ActiveAudioTrackers.Count}");
 		}
 	}
 }

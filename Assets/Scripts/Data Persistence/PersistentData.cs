@@ -31,8 +31,9 @@
 
 		public static async Task LoadGame()
 		{
+			throw new System.NotImplementedException();
 			var state = GameState.LoadExistingData(FullSavePath);
-			await SceneManager.FadeToNextScene(state.scene);
+			//await SceneManager.FadeToNextScene(state.scene);
 			await state.LoadDataIntoMemory();
 		}
 	}

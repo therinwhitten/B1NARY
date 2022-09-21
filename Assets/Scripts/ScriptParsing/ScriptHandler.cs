@@ -71,11 +71,6 @@
 		{
 			foreach (string key in nextLineButtons)
 				playerInput.actions.FindAction(key, true).performed += context => NextLine().FreeBlockPath();
-			SceneManager.SwitchedScenes.AddPersistentListener(SceneChange);
-		}
-		private void SceneChange(string sceneName)
-		{
-
 		}
 
 		public void InitializeNewScript(string scriptPath = "")
@@ -89,7 +84,7 @@
 				DialogueSystem.Instance.Say(line.lineData);
 			});
 			scriptFactory.AddCommandFunctionality(
-				AudioHandler.AudioDelegateCommands, 
+				SFXAudioController.AudioDelegateCommands, 
 				SceneManager.SceneDelegateCommands,
 				DialogueSystem.DialogueDelegateCommands,
 				ScriptHandler.ScriptDelegateCommands,
@@ -123,11 +118,6 @@
 				IsActive = false;
 				throw;
 			}
-		}
-
-		private void OnDestroy()
-		{
-			SceneManager.SwitchedScenes.RemoveListener(SceneChange);
 		}
 	}
 }

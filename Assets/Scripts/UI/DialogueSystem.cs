@@ -16,6 +16,13 @@ namespace B1NARY.UI
 	[RequireComponent(typeof(FadeController))]
 	public class DialogueSystem : SingletonAlt<DialogueSystem>
 	{
+		public static void InitializeSystem(DialogueSystem systemComponent)
+		{
+			if (!systemComponent.gameObject.activeSelf) 
+				systemComponent.gameObject.SetActive(true);
+			systemComponent.enabled = true;
+		}
+
 		public static IReadOnlyDictionary<string, Delegate> DialogueDelegateCommands = new Dictionary<string, Delegate>()
 		{
 			/* There is already a system in ScriptHandler that handles more of it.
@@ -30,8 +37,15 @@ namespace B1NARY.UI
 			}),
 			*/
 		};
+		/*
+		public int ChatFontIndex { get => PlayerPrefs.GetInt(chatFontIndex, 0); set => PlayerPrefs.SetInt(chatFontIndex, value); }
+		public Font CurrentFontAsset => AccessibleFontAssets[ChatFontIndex];
+		public Font[] AccessibleFontAssets => Resources.LoadAll<Font>(fontDirectory);
+		public string[] AccessibleFontAssetNames => AccessibleFontAssets.Select(asset => asset.name).ToArray();
+		private const string chatFontIndex = "ChatFontIndex";*/
 
-		
+
+		public string fontDirectory = "UI/Fonts";
 
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
@@ -52,6 +66,7 @@ namespace B1NARY.UI
 		}
 		private FadeController fadeController;
 
+
 		[HideInInspector]
 		public bool additiveTextEnabled = false;
 
@@ -69,6 +84,13 @@ namespace B1NARY.UI
 		{
 			CurrentSpeaker = string.Empty;
 			CurrentText = string.Empty;
+		}
+		private void OnEnable()
+		{
+			/*
+			Font asset = CurrentFontAsset;
+			speakerBox.fon = asset;
+			textBox.font = asset;*/
 		}
 		public void FadeIn(float fadeTime = 0.5f)
 		{
@@ -139,6 +161,7 @@ namespace B1NARY.UI
 		private async Task<string> Speaking(string speech, CancellationToken token, int lengthPerChar = 30)
 		{
 			CurrentText = NewLine();
+			var tagsList = new List<Tag>();
 			int tagsLength = 0;
 			for (int i = 0; i < speech.Length && !token.IsCancellationRequested; i++)
 			{
@@ -153,16 +176,19 @@ namespace B1NARY.UI
 						i++;
 					}
 					tag.Append('>');
-					string tagFull = tag.ToString();
+					var currentTag = new Tag(tag.ToString());
 					// Behaviour among the tag.
-					if (tagFull[1] != '/')
+					if (currentTag.disableTag)
 					{
-						string endTag = tagFull.Insert(1, "/");
-						CurrentText += tagFull + endTag;
-						tagsLength += endTag.Length;
+						tagsList.Remove(currentTag.Opposite());
+						tagsLength -= currentTag.TotalLength;
 					}
 					else
-						tagsLength -= tagFull.Length;
+					{
+						tagsLength += currentTag.Opposite().TotalLength;
+						tagsList.Add(currentTag);
+					}
+
 					continue;
 				}
 				CurrentText = CurrentText.Insert(CurrentText.Length - tagsLength, speech[i].ToString());
@@ -171,6 +197,43 @@ namespace B1NARY.UI
 			isWaitingForUserInput = true;
 			return speech;
 		}
+	}
 
+	public struct Tag
+	{
+		public int TagLength => tagName.Length;
+		public int TotalLength => ToString().Length;
+		public readonly string tagName;
+		public readonly bool disableTag;
+		public Tag(string rawTag)
+		{
+			tagName = rawTag.Trim('<', '>', '/');
+			disableTag = rawTag[1] == '/';
+		}
+		private Tag(string tag, bool disableTag)
+		{
+			tagName = tag;
+			this.disableTag = disableTag;
+		}
+		public bool Equals(Tag tag, bool explicitType)
+			=> (tag.tagName == tagName) && (explicitType ? disableTag == tag.disableTag : true);
+		/// <summary>
+		/// Simply returns an opposite <see cref="Tag"/>, doesn't affect the original.
+		/// </summary>
+		public Tag Opposite()
+		{
+			return new Tag(tagName, !disableTag);
+		}
+		public override bool Equals(object obj)
+		{
+			if (obj is Tag tag)
+				return Equals(tag, true);
+			return base.Equals(obj);
+		}
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
+		public override string ToString() => $"<{(disableTag ? "/" : "")}{tagName}>";
 	}
 }

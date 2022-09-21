@@ -1,244 +1,97 @@
-namespace B1NARY.Audio
+﻿namespace B1NARY.Audio
 {
 	using System;
 	using System.Collections;
 	using UnityEngine;
-	using UnityEngine.Audio;
 
-	/// <summary>
-	///		An extended <see cref="UnityEngine.AudioSource"/> for easily manipulating
-	///		sounds and contains Garbage Collection and Events when finished playing.
-	/// </summary>
-	public class AudioTracker
+	public sealed class AudioTracker : IDisposable
 	{
-		public bool IsFadingAway { get; private set; } = false;
-		public bool DeleteAudioSourceOnSwap { get; set; } = true;
-		public bool IsPlaying
-		{
-			get
-			{
-				if (AudioSource != null)
-					return AudioSource.isPlaying;
-				return false;
-			}
-		}
-		public bool IsStopping { get; private set; } = false;
+		public event Action FinishedPlaying;
+		public event Action Disposing;
 
-		public MonoBehaviour monoBehaviour;
-		public AudioMixerGroup AudioMixerGroup { get; private set; }
-		private AudioSource audioSource;
-		public AudioSource AudioSource
-		{
-			get => audioSource;
-			set
-			{
-				if (audioSource == value)
-					return;
-				if (DeleteAudioSourceOnSwap && audioSource != null)
-					UnityEngine.Object.Destroy(audioSource);
-				audioSource = value;
-				if (audioSource == null)
-				{
-					Debug.LogWarning(nameof(AudioTracker) + 
-						$" assigned to an empty audioSource");
-					return;
-				}
-				audioSource.outputAudioMixerGroup = AudioMixerGroup;
-			}
-		}
-		private Coroutine garbageCollection = null;
-		public bool destroyOnFinish = true;
-		public readonly string currentSoundLibrary;
+		private readonly AudioSource audioSource;
+		private readonly MonoBehaviour monoBehaviour;
 
-		private Ref<float> GetVolumeRef(Func<float> get = null, Action<float> set = null)
-			=> new Ref<float>(get == null ? (() => audioSource != null ? audioSource.volume : float.NaN) : get,
-				set == null ? ((setVar) => audioSource.volume = setVar) : set);
+		private CoroutineWrapper garbageCollector;
+		
+		public CustomAudioClip CustomAudioClip { get; private set; }
+		public bool IsPlaying => audioSource.isPlaying;
+		public string ClipName => audioSource.clip.name;
+		public float Volume => audioSource.volume;
+		public float Pitch => audioSource.pitch;
+		public bool Loop => audioSource.loop;
+		public TimeSpan PlayedSeconds => TimeSpan.FromSeconds(audioSource.time);
+		public TimeSpan TotalSeconds => TimeSpan.FromSeconds(audioSource.clip.length);
+		public float CompletionPercent => audioSource.time / audioSource.clip.length;
 
-
-
-		public AudioTracker(MonoBehaviour monoBehaviour, string soundLibrary,
-			AudioMixerGroup mixerGroup = null, CustomAudioClip clip = null)
+		public AudioTracker(MonoBehaviour monoBehaviour)
 		{
 			this.monoBehaviour = monoBehaviour;
 			audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
-			audioSource.outputAudioMixerGroup = AudioMixerGroup;
-			AudioMixerGroup = mixerGroup;
-			audioSource.outputAudioMixerGroup = mixerGroup;
-			currentSoundLibrary = soundLibrary;
-			if (clip != null)
-				AudioClip = clip;
-			SceneManager.SwitchedScenes.AddPersistentListener(SwitchSceneCheck);
+		}
+		public AudioTracker(MonoBehaviour monoBehaviour, AudioSource audioSource)
+		{
+			this.monoBehaviour = monoBehaviour;
+			this.audioSource = audioSource;
 		}
 
-		private CustomAudioClip _audioClipCache;
-		public CustomAudioClip AudioClip
+		public void PlaySingle(CustomAudioClip audioClip)
 		{
-			get => _audioClipCache;
-			set
-			{
-				_audioClipCache = value;
-
-				audioSource.clip = value;
-				audioSource.volume = value.FinalVolume;
-				audioSource.pitch = value.FinalPitch;
-				audioSource.outputAudioMixerGroup = value.audioMixerGroup;
-				audioSource.loop = value.loop;
-
-				// This should be handled by other outside sources like AudioHandler
-				audioSource.playOnAwake = value.playOnAwake;
-			}
+			if (CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
+				throw new InvalidOperationException("It is already being played!");
+			CustomAudioClip = audioClip;
+			audioSource.clip = audioClip;
+			audioSource.outputAudioMixerGroup = audioClip.audioMixerGroup;
+			audioSource.loop = audioClip.loop;
+			audioSource.volume = audioClip.FinalVolume;
+			audioSource.pitch = audioClip.FinalPitch;
+			garbageCollector = new CoroutineWrapper(monoBehaviour, WaitUntil()).Start();
+		}
+		public void PlaySingle(CustomAudioClip audioClip, float fadeIn)
+		{
+			PlaySingle(audioClip);
+			float finalVolume = audioSource.volume;
+			audioSource.volume = 0f;
+			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume, 
+				volume => audioSource.volume = volume), finalVolume, fadeIn);
+		}
+		
+		public void PlayOneShot(AudioClip audioClip, float volume)
+		{
+			audioSource.PlayOneShot(audioClip, volume);
 		}
 
 
-
-		public void PlaySingle()
+		private void StopOneShots()
 		{
-			if (audioSource == null)
-			{
-				Debug.LogError(nameof(AudioTracker) + 
-					": Cannot play sounds because there is no AudioSource to play on!");
-				return;
-			}
-			if (IsPlaying)
-			{
-				Debug.LogError(nameof(AudioTracker) + $": Only one instance of {AudioClip.Name} can be " +
-					$"played one at a time, or use '{nameof(PlayOneShot)}' method");
-				return;
-			}
-			audioSource.Play();
-			if (garbageCollection == null)
-				garbageCollection = monoBehaviour.StartCoroutine(GarbageCollectionCoroutine());
+			throw new NotImplementedException();
+		}
+		public void Stop()
+		{
+			if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
+				throw new InvalidOperationException("It does not have the single sound playing!");
+			garbageCollector.Dispose();
+			StopOneShots();
+		}
+		public void Stop(float fadeOut)
+		{
+			if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
+				throw new InvalidOperationException("It does not have the single sound playing!");
+			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume,
+				volume => audioSource.volume = volume), 0, fadeOut, () => garbageCollector.Dispose());
+			StopOneShots();
 		}
 
-		public void PlaySingle(float fadeInSeconds)
+		public void Dispose()
 		{
-			if (audioSource == null)
-			{
-				Debug.LogError(nameof(AudioTracker) +
-					": Cannot play sounds because there is no AudioSource to play on!");
-				return;
-			}
-			if (IsPlaying)
-			{
-				Debug.LogError(nameof(AudioTracker) + $": Only one instance of {AudioClip.Name} can be " +
-					$"played one at a time, or use '{nameof(PlayOneShot)}' method");
-				return;
-			}
-			float targetValue = audioSource.volume;
-			audioSource.volume = 0;
-			_ = monoBehaviour.ChangeFloatAsync
-				(
-				new Ref<float>(() => audioSource.volume, set => audioSource.volume = set),
-				targetValue,
-				fadeInSeconds);
-			audioSource.Play();
-			if (garbageCollection == null)
-				garbageCollection = monoBehaviour.StartCoroutine(GarbageCollectionCoroutine());
-		}
-
-		public void PlayOneShot()
-		{
-			if (audioSource == null)
-			{
-				Debug.LogError(nameof(AudioTracker) +
-					": Cannot play sounds because there is no AudioSource to play on!");
-				return;
-			}
-			audioSource.PlayOneShot(audioSource.clip, audioSource.volume);
-			if (garbageCollection == null)
-				garbageCollection = monoBehaviour.StartCoroutine(GarbageCollectionCoroutine());
-		}
-
-		private IEnumerator GarbageCollectionCoroutine()
-		{
-			Func<YieldInstruction> yield = audioSource.clip.length > 5 ?
-				(Func<YieldInstruction>)
-					(() => new WaitForSeconds(0.1f * audioSource.clip.length))
-				: (Func<YieldInstruction>)(() => new WaitForEndOfFrame());
-			while (audioSource.isPlaying)
-				yield return yield();
-			IsStopping = false;
-			Stop();
-		}
-		public event Action Finished;
-
-		public void Stop(float fadeOutSeconds, bool destroy = true)
-		{
-			CalledToStop?.Invoke();
-			if (monoBehaviour == null)
-			{
-				monoBehaviour = UnityEngine.Object.FindObjectOfType<MonoBehaviour>();
-				Debug.LogError(nameof(AudioTracker) + $" does" +
-					$" not have an availible {nameof(MonoBehaviour)}!");
-			}
-			IsStopping = true;
-			IsFadingAway = true;
-			_ = monoBehaviour.ChangeFloatAsync(
-				GetVolumeRef(set: (@float) =>
-				{
-					// Because of how dynamically changing the value works,
-					// - im going to have to write the action in the setter
-					if (audioSource == null || audioSource.volume <= 0)
-					{
-						IsFadingAway = false;
-						Stop(destroy);
-					}
-					else
-						audioSource.volume = @float;
-				}
-				),
-				0,
-				fadeOutSeconds);
-		}
-
-		public void Stop(bool destroy = true)
-		{
-			CalledToStop?.Invoke();
-			Finished?.Invoke();
 			if (audioSource != null)
-				audioSource.Stop();
-			IsStopping = false;
-			if (garbageCollection != null)
-				monoBehaviour.StopCoroutine(garbageCollection);
-			if (destroyOnFinish && destroy)
-				OnDestroy();
+				GameObject.Destroy(audioSource);
+			Disposing?.Invoke();
 		}
-		public event Action CalledToStop;
-
-		private void SwitchSceneCheck(string sceneName)
+		private IEnumerator WaitUntil()
 		{
-			if (AudioClip != null)
-			{
-				if (AudioSource == null)
-					audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
-				if (AudioClip.destroyWhenTransitioningScenes)
-					if (AudioClip.fadeTime != 0)
-						Stop(AudioClip.fadeTime);
-					else
-						Stop();
-			}
-			else
-				Debug.LogError(nameof(AudioTracker) + $": No availible {nameof(AudioClip)}" +
-					" and won't be terminated, please tell a dev!");
-		}
-
-		private bool isDestroyed = false;
-		private void OnDestroy()
-		{
-			if (IsPlaying)
-				Stop(false);
-			if (isDestroyed)
-				return;
-			GarbageCollection?.Invoke();
-		}
-		public Action GarbageCollection;
-
-		~AudioTracker()
-		{
-			OnDestroy();
-			if (AudioSource != null)
-				UnityEngine.Object.Destroy(AudioSource);
-			SceneManager.SwitchedScenes.RemoveListener(SwitchSceneCheck);
+			yield return new WaitUntil(() => !garbageCollector.IsRunning);
+			FinishedPlaying?.Invoke();
 		}
 	}
 }

@@ -19,7 +19,7 @@
 		{
 			if (sound == null)
 				return;
-			AudioHandler.Instance.PlayOneShot(sound, mixerGroup, true);
+			SFXAudioController.Instance.PlayOneShot(sound, 1f);
 		}
 	}
 }

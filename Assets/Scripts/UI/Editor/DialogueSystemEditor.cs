@@ -18,12 +18,13 @@
 		public override void OnInspectorGUI()
 		{
 			var serializedObject = new SerializedObject(dialogueSystem);
+			//EditorGUILayout.LabelField("Current Font: " + dialogueSystem.CurrentFontAsset.name);
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.speakerBox)));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.textBox)));
 			if (GUILayout.Button("Test Example Dialogue System"))
 				if (Application.isPlaying)
 					if (testTask.IsCompleted)
-						testTask = Test("Beep Boop I am the <b>tester</b> with the name {0}", "Tester Boogyman");
+						testTask = Test("Beep Boop <i>I am the <b>tester man</b></i> with the name {0}", "Tester Boogyman");
 					else
 						Debug.LogError("Cannot play test, its already in succession!");
 				else
@@ -34,8 +35,8 @@
 		public static async Task Test(string message, string speaker)
 		{
 			var dialogueSystem = DialogueSystem.Instance;
-			Debug.Log($"Testing {nameof(DialogueSystem)}, fading in instantly.");
-			dialogueSystem.FadeIn(0f);
+			Debug.Log($"Testing {nameof(DialogueSystem)}, fading in nearly instantly.");
+			dialogueSystem.FadeIn(0.01f);
 			await Task.Delay(1000);
 			Debug.Log($"Testing Typewriter Rich Text with name '{speaker}', " +
 				$"\nExpected result: {message}");

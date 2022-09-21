@@ -17,7 +17,7 @@
 		public void NewGame()
 		{
 			mainMenuFadeController.FadeOut(0.5f);
-			SceneManager.Initialize(1f);
+			SceneManager.Initialize();
 		}
 		public void Exit() => Application.Quit();
 	}

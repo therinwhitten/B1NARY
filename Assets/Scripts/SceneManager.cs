@@ -4,42 +4,71 @@
 	using B1NARY.Scripting.Experimental;
 	using B1NARY.UI;
 	using System;
+	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Threading.Tasks;
 	using UnityEngine;
+	using UnityEngine.SceneManagement;
 	using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
 	public delegate void SceneManagerEvent(string sceneName);
-	public class SceneManager
+	public delegate void SwitchScenesDelegate();
+	public static class SceneManager
 	{
-		public static string CurrentScene => UnitySceneManager.GetActiveScene().name;
 		public static readonly IReadOnlyDictionary<string, Delegate> SceneDelegateCommands = new Dictionary<string, Delegate>()
 		{
-			["changescene"] = (Action<string>)ChangeScene,
+			["changescene"] = (Action<string>)(str => _ = ChangeScene(str)),
 		};
-		/// <summary>
-		/// Data
-		/// </summary>
-		public static SwitchedScenes SwitchedScenes { get; private set; } = new SwitchedScenes();
-		public static SwitchingScenes SwitchingScenes { get; private set; } = new SwitchingScenes();
+		public static Lazy<Scene[]> activeScenes = new(() =>
+		{
+			List<Scene> scenes = new();
+			for (int i = 0; i < UnitySceneManager.sceneCount; i++)
+			{
+				try { scenes.Add(UnitySceneManager.GetSceneByBuildIndex(i)); }
+				catch { continue; }
+			}
+			return scenes.ToArray();
+		});
+		public static Scene ActiveScene => UnitySceneManager.GetActiveScene();
 
+		public static PersistentListenerGroup SwitchingScenes { get; private set; } = new PersistentListenerGroup();
+		public static PersistentListenerGroup SwitchedScenes { get; private set; } = new PersistentListenerGroup();
+
+		public static async Task ChangeScene(string sceneName)
+		{
+			SwitchingScenes.AddNonPersistentListener(FadeScene);
+			await Task.Run(SwitchingScenes.Invoke);
+			UnitySceneManager.LoadScene(sceneName);
+			await Task.Run(SwitchedScenes.Invoke);
+		}
 		/// <summary>
 		/// Initialized the <see cref="ScriptParser"/>, the system expects the
 		/// current scriptName, or the first scriptName to switch scenes on the first command.
 		/// </summary>
 		/// <param name="fadeTime">The fade time to take.</param>
-		public static void Initialize(float fadeTime = 0.5f)
+		public static void Initialize()//float fadeTime = 0.5f)
 		{
-			SwitchedScenes.AddNonPersistentListener(LoadSpeakingObjects);
+			//SwitchedScenes.AddNonPersistentListener(LoadSpeakingObjects);
 			ScriptHandler.Instance.InitializeNewScript();
 			ScriptHandler.Instance.NextLine().FreeBlockPath();
 			//ScriptHandler.Instance.NextLine();
-			void LoadSpeakingObjects(string sceneName)
-			{
-				DialogueSystem.Instance.FadeIn(fadeTime);
-			}
+			//void LoadSpeakingObjects()
+			//{
+			//	DialogueSystem.Instance.FadeIn(fadeTime);
+			//}
 		}
+
+		private static void FadeScene()
+		{
+			TransitionObject transition = Multiton<TransitionObject>.First();
+			transition.SetToOpaque().Wait();
+		}
+		/*
+
+		
+
+		
 
 		/// <summary>
 		/// Changes the scene, a Boneless version of <see cref="FadeToNextScene(string, TransitionObject, float)"/>
@@ -101,119 +130,56 @@
 				await transitionObject.SetToOpaque(fadeMultiplier);
 			SwitchedScenes.SwitchScenes(sceneName);
 		}
+		*/
 	}
 
-	public class SwitchingScenes
+	public sealed class PersistentListenerGroup : IEnumerable<SwitchScenesDelegate>
 	{
-		internal SwitchingScenes()
+		public Action<SwitchScenesDelegate[]> loadingAPIDelegate = actions =>
 		{
-
-		}
-		internal void PrepareSwitchingScenes()
-		{
-			// Some events wants to constantly listen to scene switches, so they usually
-			// - re-assign the same method. This allows them to have the ability to
-			// - easily do so without having a 'buffer' or wait until it is finished
-			// - emptying out the event.
-			IEnumerable<Action> allEvents = new List<Action>[] { nonPersistentEvents, persistentEvents }
-				.SelectMany(list => list);
-			nonPersistentEvents.Clear();
-			// Invokes and compiles at compile time, not runtime.
-			allEvents.Select(action => { action.Invoke(); return action; });
-		}
-
-		private List<Action> nonPersistentEvents = new List<Action>(),
-			persistentEvents = new List<Action>();
-		/// <summary>
-		/// Stores and executes a method that is activated once, and not on
-		/// concurrent events.
-		/// </summary>
-		/// <param name="sceneManagerEvent">The method to invoke.</param>
-		public void AddNonPersistentListener(Action sceneManagerEvent)
-			=> nonPersistentEvents.Add(sceneManagerEvent);
-		/// <summary>
-		/// Stores and executes a method that is activated every time the scene
-		/// is changed.
-		/// </summary>
-		/// <param name="sceneManagerEvent">The method to invoke.</param>
-		public void AddPersistentListener(Action sceneManagerEvent)
-			=> persistentEvents.Add(sceneManagerEvent);
-		/// <summary>
-		/// Removes the 
-		/// </summary>
-		/// <param name="sceneManagerEvent">The scene manager event.</param>
-		public bool RemoveListener(Action sceneManagerEvent)
-		{
-			if (nonPersistentEvents.Contains(sceneManagerEvent))
+			for (int i = 0; i < actions.Length; i++)
 			{
-				nonPersistentEvents.Remove(sceneManagerEvent);
-				return true;
+				Debug.Log($"Loading method: {actions[i].Method.Name}");
+				actions[i].Invoke();
 			}
-			if (persistentEvents.Contains(sceneManagerEvent))
-			{
-				persistentEvents.Remove(sceneManagerEvent);
-				return true;
-			}
-			return false;
-		}
-	}
-	public class SwitchedScenes
-	{ 
-		internal SwitchedScenes()
+		};
+		internal void Invoke()
 		{
-
+			SwitchScenesDelegate[] delegates =
+				new List<SwitchScenesDelegate>[] { persistentListeners, nonPersistentListeners }
+				.SelectMany(list => list).ToArray();
+			nonPersistentListeners.Clear();
+			loadingAPIDelegate.Invoke(delegates);
 		}
+		private readonly List<SwitchScenesDelegate> persistentListeners = new(),
+			nonPersistentListeners = new();
 
 
-		/// <summary>
-		/// Invokes <see cref="SwitchedScenes"/> and clear it. Also loads the scene
-		/// right before/during scene switch.
-		/// </summary>
-		/// <param name="sceneName">Name of the scene to switch.</param>
-		/// <returns> When the scene is finished loading. </returns>
-		internal void SwitchScenes(string sceneName)
+		public void AddPersistentListener(SwitchScenesDelegate @delegate)
 		{
-			UnitySceneManager.LoadScene(sceneName);
-			IEnumerable<SceneManagerEvent> allEvents =
-				new IEnumerable<SceneManagerEvent>[] { nonPersistentEvents, persistentEvents }
-				.SelectMany(dict => dict);
-			nonPersistentEvents.Clear();
-			LoadingScreenAPI.LoadObjects(allEvents, sceneName);
+			if (persistentListeners.Contains(@delegate))
+				throw new InvalidOperationException();
+			persistentListeners.Add(@delegate);
 		}
-
-		private List<SceneManagerEvent> nonPersistentEvents = new List<SceneManagerEvent>(),
-			persistentEvents = new List<SceneManagerEvent>();
-		/// <summary>
-		/// Stores and executes a method that is activated once, and not on
-		/// concurrent events.
-		/// </summary>
-		/// <param name="sceneManagerEvent">The method to invoke.</param>
-		public void AddNonPersistentListener(SceneManagerEvent sceneManagerEvent)
-			=> nonPersistentEvents.Add(sceneManagerEvent);
-		/// <summary>
-		/// Stores and executes a method that is activated every time the scene
-		/// is changed.
-		/// </summary>
-		/// <param name="sceneManagerEvent">The method to invoke.</param>
-		public void AddPersistentListener(SceneManagerEvent sceneManagerEvent)
-			=> persistentEvents.Add(sceneManagerEvent);
-		/// <summary>
-		/// Removes the 
-		/// </summary>
-		/// <param name="sceneManagerEvent">The scene manager event.</param>
-		public bool RemoveListener(SceneManagerEvent sceneManagerEvent)
+		public void RemovePersistentListener(SwitchScenesDelegate @delegate) =>
+			persistentListeners.Remove(@delegate);
+		public void AddNonPersistentListener(SwitchScenesDelegate @delegate)
 		{
-			if (nonPersistentEvents.Contains(sceneManagerEvent))
-			{
-				nonPersistentEvents.Remove(sceneManagerEvent);
-				return true;
-			}
-			if (persistentEvents.Contains(sceneManagerEvent))
-			{
-				persistentEvents.Remove(sceneManagerEvent);
-				return true;
-			}
-			return false;
+			if (nonPersistentListeners.Contains(@delegate))
+				throw new InvalidOperationException();
+			nonPersistentListeners.Add(@delegate);
 		}
+		public void RemoveNonPersistentListener(SwitchScenesDelegate @delegate)
+			=> nonPersistentListeners.Remove(@delegate);
+
+		public IEnumerable<SwitchScenesDelegate> AsEnumerable()
+		{
+			for (int i = 0; i < persistentListeners.Count; i++)
+				yield return persistentListeners[i];
+			for (int i = 0; i < nonPersistentListeners.Count; i++)
+				yield return nonPersistentListeners[i];
+		}
+		public IEnumerator<SwitchScenesDelegate> GetEnumerator() => AsEnumerable().GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => AsEnumerable().GetEnumerator();
 	}
 }

@@ -51,7 +51,7 @@
 			SceneManager.SwitchedScenes.AddPersistentListener(PerScene);
 			PerScene();
 		}
-		private void PerScene(string sceneName = "")
+		private void PerScene()
 		{
 			m_backgroundHandler = new BackgroundHandler(BGCanvasName);
 		}
@@ -83,7 +83,7 @@
 
 		private void OnDestroy()
 		{
-			SceneManager.SwitchedScenes.RemoveListener(PerScene);
+			SceneManager.SwitchedScenes.RemovePersistentListener(PerScene);
 		}
 
 		[Serializable]
