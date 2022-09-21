@@ -45,8 +45,8 @@ namespace B1NARY.Audio
 			if (customAudioClips == null)
 			{
 				customAudioClips = new List<CustomAudioClip>();
-				IngameDebugger.LogError(nameof(SoundLibrary), "Clip data has been found "
-					+ "null. Replacing default settings. Hopefully you made a backup of them?");
+				Debug.LogError("Clip data has been found null. Replacing " +
+					"default settings. Hopefully you made a backup of them?", this);
 				return;
 			}
 			IEnumerable<CustomAudioClip> playAwakeClips = customAudioClips.Where(CClip => CClip.playOnAwake);
