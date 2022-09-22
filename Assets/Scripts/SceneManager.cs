@@ -20,9 +20,9 @@
 		{
 			["changescene"] = (Action<string>)(str => _ = ChangeScene(str)),
 		};
-		public static Lazy<Scene[]> activeScenes = new(() =>
+		public static Lazy<Scene[]> activeScenes = new Lazy<Scene[]>(() =>
 		{
-			List<Scene> scenes = new();
+			var scenes = new List<Scene>();
 			for (int i = 0; i < UnitySceneManager.sceneCount; i++)
 			{
 				try { scenes.Add(UnitySceneManager.GetSceneByBuildIndex(i)); }
@@ -151,8 +151,8 @@
 			nonPersistentListeners.Clear();
 			loadingAPIDelegate.Invoke(delegates);
 		}
-		private readonly List<SwitchScenesDelegate> persistentListeners = new(),
-			nonPersistentListeners = new();
+		private readonly List<SwitchScenesDelegate> persistentListeners = new List<SwitchScenesDelegate>(),
+			nonPersistentListeners = new List<SwitchScenesDelegate>();
 
 
 		public void AddPersistentListener(SwitchScenesDelegate @delegate)
