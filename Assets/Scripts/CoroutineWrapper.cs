@@ -15,13 +15,6 @@
 			return !coroutineWrapper.IsRunning;
 		}
 
-		[Obsolete("Use the chainable command .Start()")]
-		public static CoroutineWrapper StartNew(MonoBehaviour tiedMonoBehaviour, IEnumerator enumerator)
-		{
-			CoroutineWrapper wrapper = new(tiedMonoBehaviour, enumerator);
-			wrapper.Start();
-			return wrapper;
-		}
 		public Task Awaiter => Task.Run(() => SpinWait.SpinUntil(() => !IsRunning));
 		private Coroutine coroutineData = null;
 		private readonly MonoBehaviour tiedMonoBehaviour;
