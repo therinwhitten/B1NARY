@@ -57,7 +57,7 @@ namespace Live2D.Cubism.Editor.Importers
         /// Allows customizing import of textures used by a Cubism model.
         /// </summary>
         /// <remarks>
-        /// Set <see langword="null"/> in case you don't want Cubism model texture importing to be customized from scriptName.
+        /// Set <see langword="null"/> in case you don't want Cubism model texture importing to be customized from script.
         /// </remarks>
         public static TextureImportHandler OnDidImportTexture = BuiltinTextureImportHandler;
 
@@ -210,7 +210,7 @@ namespace Live2D.Cubism.Editor.Importers
         #region Builtin Texture Import Handler
 
         /// <summary>
-        /// Makes sure textures used by Cubism models have the <see cref="TextureImporter.alphaIsTransparency"/> imageOption enabled.
+        /// Makes sure textures used by Cubism models have the <see cref="TextureImporter.alphaIsTransparency"/> option enabled.
         /// </summary>
         /// <param name="importer">Importer.</param>
         /// <param name="model">Imported model.</param>

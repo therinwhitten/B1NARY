@@ -269,6 +269,10 @@ namespace Live2D.Cubism.Core
             // Revive unmanaged model.
             TaskableModel = new CubismTaskableModel(Moc);
 
+            if (TaskableModel == null || TaskableModel.UnmanagedModel == null)
+            {
+                return;
+            }
 
             // Revive proxies.
             Parameters = GetComponentsInChildren<CubismParameter>();
@@ -294,8 +298,12 @@ namespace Live2D.Cubism.Core
             name = moc.name;
             TaskableModel = new CubismTaskableModel(moc);
 
+            if (TaskableModel == null || TaskableModel.UnmanagedModel == null)
+            {
+                return;
+            }
 
-            // Create and Initialize proxies.
+            // Create and initialize proxies.
             var parameters = CubismParameter.CreateParameters(TaskableModel.UnmanagedModel);
             var parts = CubismPart.CreateParts(TaskableModel.UnmanagedModel);
             var drawables = CubismDrawable.CreateDrawables(TaskableModel.UnmanagedModel);

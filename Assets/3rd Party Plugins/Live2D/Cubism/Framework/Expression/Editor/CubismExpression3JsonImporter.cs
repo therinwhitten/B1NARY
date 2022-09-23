@@ -188,7 +188,7 @@ namespace Live2D.Cubism.Editor.Importers
         /// Load the .expressionList.
         /// If it does not exist, create a new one.
         /// </summary>
-        /// <param name="expressionListPath">The savePath of the .expressionList.asset relative to the project.</param>
+        /// <param name="expressionListPath">The path of the .expressionList.asset relative to the project.</param>
         /// <returns>.expressionList.asset</returns>
         private static CubismExpressionList GetExpressionList(string expressionListPath)
         {

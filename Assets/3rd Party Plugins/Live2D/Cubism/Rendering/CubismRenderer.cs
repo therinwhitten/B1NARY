@@ -675,13 +675,13 @@ namespace Live2D.Cubism.Rendering
         private static MaterialPropertyBlock _sharedPropertyBlock;
 
         /// <summary>
-        /// <see cref="MaterialPropertyBlock"/> that can be shared on the main scriptName thread.
+        /// <see cref="MaterialPropertyBlock"/> that can be shared on the main script thread.
         /// </summary>
         private static MaterialPropertyBlock SharedPropertyBlock
         {
             get
             {
-                // Lazily Initialize.
+                // Lazily initialize.
                 if (_sharedPropertyBlock == null)
                 {
                     _sharedPropertyBlock = new MaterialPropertyBlock();

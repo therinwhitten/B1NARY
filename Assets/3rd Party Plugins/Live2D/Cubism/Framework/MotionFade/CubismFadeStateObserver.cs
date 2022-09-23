@@ -129,7 +129,7 @@ namespace Live2D.Cubism.Framework.MotionFade
         /// <param name="animator">Animator.</param>
         /// <param name="stateInfo">Animator state info.</param>
         /// <param name="layerIndex">Index of the layer.</param>
-        /// <param name="controller">BackgroundHandler controller playable.</param>
+        /// <param name="controller">Animation controller playable.</param>
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex, AnimatorControllerPlayable controller)
         {
             var fadeController = animator.gameObject.GetComponent<CubismFadeController>();

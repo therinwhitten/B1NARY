@@ -108,7 +108,7 @@ namespace Live2D.Cubism.Core.Unmanaged
         /// <param name="moc">Moc.</param>
         private CubismUnmanagedModel(CubismUnmanagedMoc moc)
         {
-            // Allocate and Initialize memory (returning on fail).
+            // Allocate and initialize memory (returning on fail).
             var size = CubismCoreDll.GetSizeofModel(moc.Ptr);
             var memory = CubismUnmanagedMemory.Allocate((int)size, CubismCoreDll.AlignofModel);
 

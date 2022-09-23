@@ -225,7 +225,7 @@ namespace Live2D.Cubism.Framework.MotionFade
         /// Load the .fadeMotionList.
         /// If it does not exist, create a new one.
         /// </summary>
-        /// <param name="fadeMotionListPath">The savePath of the .fadeMotionList.asset relative to the project.</param>
+        /// <param name="fadeMotionListPath">The path of the .fadeMotionList.asset relative to the project.</param>
         /// <returns>.fadeMotionList.asset.</returns>
         private static CubismFadeMotionList GetFadeMotionList(string fadeMotionListPath)
         {

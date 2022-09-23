@@ -17,7 +17,7 @@ namespace Live2D.Cubism.Editor.Deleters
     public abstract class CubismDeleterBase : ICubismDeleter
     {
         /// <summary>
-        /// Gets the savePath to the imported asset.
+        /// Gets the path to the imported asset.
         /// </summary>
         public string AssetPath { get; private set; }
 
@@ -29,7 +29,7 @@ namespace Live2D.Cubism.Editor.Deleters
         #region ICubismDeleter
 
         /// <summary>
-        /// Sets the asset savePath.
+        /// Sets the asset path.
         /// </summary>
         void ICubismDeleter.SetAssetPath(string value)
         {

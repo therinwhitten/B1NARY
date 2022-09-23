@@ -14,7 +14,7 @@ namespace Live2D.Cubism.Editor.Importers
     public interface ICubismImporter
     {
         /// <summary>
-        /// Sets the asset savePath.
+        /// Sets the asset path.
         /// </summary>
         void SetAssetPath(string value);
 

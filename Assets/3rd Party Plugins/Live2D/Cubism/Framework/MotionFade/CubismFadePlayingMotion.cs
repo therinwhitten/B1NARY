@@ -15,13 +15,13 @@ namespace Live2D.Cubism.Framework.MotionFade
     public struct CubismFadePlayingMotion
     {
         /// <summary>
-        /// BackgroundHandler clip start time.
+        /// Animation clip start time.
         /// </summary>
         [SerializeField]
         public float StartTime;
 
         /// <summary>
-        /// BackgroundHandler clip end time.
+        /// Animation clip end time.
         /// </summary>
         [SerializeField]
         public float EndTime;
@@ -33,7 +33,7 @@ namespace Live2D.Cubism.Framework.MotionFade
         public float FadeInStartTime;
 
         /// <summary>
-        /// BackgroundHandler playing speed.
+        /// Animation playing speed.
         /// </summary>
         [SerializeField, Range(0.0f, float.MaxValue)]
         public float Speed;
