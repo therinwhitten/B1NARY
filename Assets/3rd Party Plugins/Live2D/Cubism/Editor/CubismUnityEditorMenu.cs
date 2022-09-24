@@ -73,7 +73,7 @@ namespace Live2D.Cubism.Editor
         /// <summary>
         /// Unity editor menu clear animation curves.
         /// </summary>
-        [MenuItem ("Live2D/Cubism/OriginalWorkflow/Should Clear BackgroundHandler Curves")]
+        [MenuItem ("Live2D/Cubism/OriginalWorkflow/Should Clear Animation Curves")]
         private static void ClearAnimationCurves()
         {
             SetClearAnimationCurves(!ShouldClearAnimationCurves);
@@ -143,7 +143,7 @@ namespace Live2D.Cubism.Editor
         public static void SetClearAnimationCurves(bool isEnable)
         {
             ShouldClearAnimationCurves= (ShouldImportAsOriginalWorkflow && isEnable);
-            Menu.SetChecked ("Live2D/Cubism/OriginalWorkflow/Should Clear BackgroundHandler Curves", ShouldClearAnimationCurves);
+            Menu.SetChecked ("Live2D/Cubism/OriginalWorkflow/Should Clear Animation Curves", ShouldClearAnimationCurves);
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace Live2D.Cubism.Editor
         private static void Initialize()
         {
             EditorApplication.delayCall += () => Menu.SetChecked ("Live2D/Cubism/OriginalWorkflow/Should Import As Original Workflow", ShouldImportAsOriginalWorkflow);
-            EditorApplication.delayCall += () => Menu.SetChecked ("Live2D/Cubism/OriginalWorkflow/Should Clear BackgroundHandler Curves", ShouldClearAnimationCurves);
+            EditorApplication.delayCall += () => Menu.SetChecked ("Live2D/Cubism/OriginalWorkflow/Should Clear Animation Curves", ShouldClearAnimationCurves);
         }
 
     }

@@ -1,8 +1,12 @@
+[English](README.md) / [日本語](README.ja.md)
+
+---
+
 # Live2D Cubism Core
 
 This folder contains platform-specific library files.
 
-**If you encounter exceptions upon first import, restart Unity**
+**If you encounter exceptions upon first import, restart Unity.**
 
 ## Library List
 

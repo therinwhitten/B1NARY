@@ -61,7 +61,7 @@ namespace Live2D.Cubism.Core.Unmanaged
         /// <returns>Address of allocated memory.</returns>
         public static IntPtr Allocate(int size, int align)
         {
-            // Lazily Initialize container.
+            // Lazily initialize container.
             if (Allocations == null)
             {
                 Allocations = new List<AllocationItem>();

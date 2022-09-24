@@ -44,7 +44,7 @@ namespace Live2D.Cubism.Samples.Raycasting
 
 
         /// <summary>
-        /// Hit PlaySoundOnStartTransition.
+        /// Hit test.
         /// </summary>
         private void DoRaycast()
         {

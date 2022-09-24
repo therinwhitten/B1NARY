@@ -13,7 +13,7 @@ using UnityEngine;
 namespace Live2D.Cubism.Samples.AsyncBenchmark
 {
     /// <summary>
-    /// Shows how to enable the <see cref="CubismBuiltinAsyncTaskHandler"/> from scriptName.
+    /// Shows how to enable the <see cref="CubismBuiltinAsyncTaskHandler"/> from script.
     /// </summary>
     public sealed class AsyncToggler : MonoBehaviour
     {

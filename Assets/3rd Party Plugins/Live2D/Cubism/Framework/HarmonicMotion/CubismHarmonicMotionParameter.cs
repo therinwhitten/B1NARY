@@ -126,7 +126,7 @@ namespace Live2D.Cubism.Framework.HarmonicMotion
         /// <returns>Parameter value.</returns>
         internal float Evaluate()
         {
-            // Lazily Initialize.
+            // Lazily initialize.
             if (!IsInitialized)
             {
                 Initialize();
