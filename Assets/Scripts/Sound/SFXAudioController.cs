@@ -7,7 +7,7 @@
 	using UnityEngine;
 	using System.Collections;
 
-	public sealed class SFXAudioController : SingletonAlt<SFXAudioController>
+	public sealed class SFXAudioController : Singleton<SFXAudioController>
 	{
 		public const string baseResourcesPath = "Sounds/Sound Libraries";
 		public static readonly IReadOnlyDictionary<string, Delegate> AudioDelegateCommands = new Dictionary<string, Delegate>()

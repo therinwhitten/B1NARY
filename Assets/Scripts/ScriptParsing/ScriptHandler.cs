@@ -11,7 +11,7 @@
 	using B1NARY.DesignPatterns;
 	using UnityEngine.InputSystem;
 
-	public class ScriptHandler : SingletonAlt<ScriptHandler>
+	public class ScriptHandler : Singleton<ScriptHandler>
 	{
 		public static IReadOnlyDictionary<string, Delegate> ScriptDelegateCommands = new Dictionary<string, Delegate>()
 		{
@@ -47,8 +47,6 @@
 			}
 			return null;
 		}
-
-		public GameObject dialogueSystemPrefab;
 		/// <summary> Gets the name of the script loaded. </summary>
 		public string ScriptName { get; private set; } = string.Empty;
 		/// <summary> 

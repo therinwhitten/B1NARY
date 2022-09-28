@@ -14,7 +14,7 @@ namespace B1NARY.UI
 	using B1NARY.Scripting.Experimental;
 
 	[RequireComponent(typeof(FadeController))]
-	public class DialogueSystem : SingletonAlt<DialogueSystem>
+	public class DialogueSystem : Singleton<DialogueSystem>
 	{
 		public static void InitializeSystem(DialogueSystem systemComponent)
 		{
