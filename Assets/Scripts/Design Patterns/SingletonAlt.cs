@@ -9,12 +9,22 @@
 	///		instead of using fields for monoBehaviours.
 	/// </summary>
 	/// <typeparam name="T">A MonoBehaviour Script to tie it to.</typeparam>
-	public abstract class SingletonAlt<T> : InstanceHolder<T> where T : MonoBehaviour
+	public abstract class Singleton<T> : InstanceHolder<T> where T : MonoBehaviour
 	{
 		public static bool HasInstance => instance != null;
 
 		private static T instance;
-		/// <summary> A Single instance </summary>
+
+		/// <summary> A Single instance. </summary>
+		public static T InstanceOrDefault
+		{
+			get
+			{
+				ThrowErrorIfEmpty = false;
+				return Instance;
+			}
+		}
+		/// <summary> A Single instance. </summary>
 		public static T Instance
 		{
 			get
@@ -35,6 +45,7 @@
 						throw new MissingComponentException($"{typeof(T)} does not " +
 							"have an instance created!");
 					var @object = new GameObject($"{typeof(T)} (Singleton)");
+					DontDestroyOnLoad(@object);
 					instance = @object.AddComponent<T>();
 					return instance;
 				}

@@ -15,7 +15,7 @@
 	using B1NARY.Scripting.Experimental;
 
 	[RequireComponent(typeof(CanvasGroup))]
-	public class TransitionManager : SingletonAlt<TransitionManager>
+	public class TransitionManager : Singleton<TransitionManager>
 	{
 		public static IReadOnlyDictionary<string, Delegate> TransitionDelegateCommands = new Dictionary<string, Delegate>()
 		{

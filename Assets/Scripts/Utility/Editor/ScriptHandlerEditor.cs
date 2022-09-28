@@ -11,26 +11,21 @@
 	[CustomEditor(typeof(ScriptHandler))]
 	public class ScriptHandlerEditor : Editor
 	{
-		private static string basePath => $"{Application.streamingAssetsPath}/Docs/";
+		private static string BasePath => $"{Application.streamingAssetsPath}/Docs/";
 
 		public override void OnInspectorGUI()
 		{
 			var serializedObj = new SerializedObject(target);
-			serializedObj.Update();
-			EditorGUILayout.PropertyField(serializedObj.FindProperty(nameof(ScriptHandler.dialogueSystemPrefab)));
-			serializedObj.ApplyModifiedProperties();
 			var scriptHandler = (ScriptHandler)target;
-			EditorUtility.SetDirty(scriptHandler);
-			string[] allFullPaths = GetFullDocumentsPath(basePath).ToArray(),
-				visualPaths = allFullPaths.Select(str => str.Replace(basePath, "").Replace(".txt", "")).ToArray();
+			string[] allFullPaths = GetFullDocumentsPath(BasePath).ToArray(),
+				visualPaths = allFullPaths.Select(str => str.Replace(BasePath, "").Replace(".txt", "")).ToArray();
 			int oldIndex = Array.IndexOf(allFullPaths, scriptHandler.StartupScriptPath),
-				newIndex = EditorGUILayout.Popup("Starting Script", oldIndex, visualPaths);
+				newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, visualPaths);
 			if (oldIndex != newIndex)
 				scriptHandler.StartupScriptPath = allFullPaths[newIndex];
 			InputActions(scriptHandler);
 			if (scriptHandler.IsActive)
 				Inspect(scriptHandler.ScriptDocument.documentData.ToArray());
-			EditorUtility.ClearDirty(scriptHandler);
 		}
 		public List<string> GetFullDocumentsPath(string currentPath)
 		{
@@ -57,7 +52,6 @@
 		}
 		private void InputActions(in ScriptHandler scriptHandler)
 		{
-			var serializedObject = new SerializedObject(scriptHandler);
 			serializedObject.Update();
 			EditorGUILayout.Space();
 			EditorGUILayout.LabelField("Input", EditorStyles.boldLabel);
@@ -77,11 +71,12 @@
 					catch { EditorGUILayout.HelpBox(
 						$"'{scriptHandler.nextLineButtons[i]}' may not exist in the player input!", 
 						MessageType.Error); }
-					scriptHandler.nextLineButtons[i] = EditorGUI
-						.DelayedTextField(textEditorRect, $"Action {i}", 
+					scriptHandler.nextLineButtons[i] = DirtyAuto
+						.Field(textEditorRect, scriptHandler, new GUIContent($"Action {i}"), 
 						scriptHandler.nextLineButtons[i]);
 					if (GUI.Button(deleteButtonRect, "Remove"))
 					{
+						EditorUtility.SetDirty(scriptHandler);
 						List<string> newArray = scriptHandler.nextLineButtons.ToList();
 						newArray.RemoveAt(i);
 						scriptHandler.nextLineButtons = newArray.ToArray();
