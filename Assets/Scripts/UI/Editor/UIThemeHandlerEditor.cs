@@ -16,7 +16,8 @@
 		{
 			try
 			{
-				EditorGUILayout.LabelField($"Current Configuration: {currentHandler.CurrentTarget.ToString().Replace('_', ' ')}", EditorStyles.boldLabel);
+				string componentName = currentHandler.CurrentTarget.GetType().ToString();
+				EditorGUILayout.LabelField($"Current Configuration: {componentName.Substring(componentName.LastIndexOf('.') + 1).Replace('_', ' ')}", EditorStyles.boldLabel);
 			}
 			catch (MissingComponentException ex)
 			{

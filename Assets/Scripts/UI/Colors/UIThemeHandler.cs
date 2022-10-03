@@ -10,6 +10,7 @@
 	using System.Reflection;
 	using B1NARY.DesignPatterns;
 	using System.Collections.Generic;
+	using UnityEngine.Rendering;
 
 	/// <summary>
 	/// Allows you to easily change a single gameObject with the <see cref="Image"/>
@@ -93,22 +94,29 @@
 			buttonPressedName = Option.Primary.ToString(),
 			buttonSelectedName = Option.Primary.ToString(),
 			buttonDisabledName = Option.Primary.ToString();
+		public Color Color => GetColor(imageThemeName);
 
 		/// <summary>
-		/// Contains the first <see cref="Color"/> or <see cref="ColorBlock"/>,
+		/// Contains the first <see cref="UnityEngine.Color"/> or <see cref="ColorBlock"/>,
 		/// these are always value types, so these are referenced via Func.
 		/// </summary>
-		public Ref<object> ColorEdit 
+		public Ref<dynamic> ColorEdit 
 		{
 			get
 			{
-				if (m_colorEdit == null)
+				if (m_colorEdit == null || m_colorEdit.Value == null)
+				{
+					m_currentTarget = null;
 					_ = CurrentTarget;
+				}
+
+				if (m_colorEdit == null)
+					throw new NullReferenceException($"despite {nameof(CurrentTarget)} being called, there is no reference for the color!");
 				return m_colorEdit;
 			} 
 			private set => m_colorEdit = value; 
 		}
-		private Ref<object> m_colorEdit;
+		private Ref<dynamic> m_colorEdit;
 
 		public Component CurrentTarget 
 		{ 
@@ -116,28 +124,28 @@
 			{
 				if (m_currentTarget != null)
 					return m_currentTarget;
-				Component[] components = GetComponents<Component>();
+				Component[] components = GetComponents(typeof(Component));
 				for (int i = 0; i < components.Length; i++)
 				{
 					// Get any color properties in the component that has any color parameter.
-					var colorEnum = components[i].GetType().GetProperties(BindingFlags.Public).Where(info => info.PropertyType == typeof(Color));
+					var colorEnum = components[i].GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(info => info.PropertyType == typeof(Color));
 					if (colorEnum.Any())
 					{
-						ColorEdit = new Ref<object>(() => colorEnum.Single(), set => colorEnum.Single().SetValue(components[i], set));
+						m_colorEdit = new Ref<dynamic>(() => colorEnum.Single().GetValue(components[i]), set => colorEnum.Single().SetValue(components[i], set));
 						m_currentTarget = components[i];
 						return m_currentTarget;
 					}
 					// Get any color block properties in the component that has any color block parameter.
-					var colorBlockEnum = components[i].GetType().GetProperties(BindingFlags.Public).Where(info => info.PropertyType == typeof(ColorBlock));
+					var colorBlockEnum = components[i].GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(info => info.PropertyType == typeof(ColorBlock));
 					if (colorBlockEnum.Any())
 					{
-						ColorEdit = new Ref<object>(() => colorBlockEnum.Single(), set => colorBlockEnum.Single().SetValue(components[i], set));
+						m_colorEdit = new Ref<dynamic>(() => colorBlockEnum.Single().GetValue(components[i]), set => colorBlockEnum.Single().SetValue(components[i], set));
 						m_currentTarget = components[i];
 						return m_currentTarget;
 					}
 				}
 				throw new MissingComponentException("There is no components " +
-					$"to hold onto that has a {nameof(Color)} or {nameof(ColorBlock)}");
+					$"to hold onto that has a {nameof(UnityEngine.Color)} or {nameof(ColorBlock)}");
 			}
 		}
 		private Component m_currentTarget;
