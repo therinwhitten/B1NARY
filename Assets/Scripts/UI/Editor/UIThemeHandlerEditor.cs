@@ -4,6 +4,7 @@
 	using System.Linq;
 	using UnityEditor;
 	using UnityEngine;
+	using UnityEngine.UI;
 
 	[CustomEditor(typeof(UIThemeHandler))]
 	public class UIThemeHandlerEditor : Editor
@@ -26,26 +27,18 @@
 			UIThemeHandler.Option[] allOptions = (UIThemeHandler.Option[])Enum.GetValues(typeof(UIThemeHandler.Option));
 			string[] optionStrings = allOptions.Select(option => option.ToString()).ToArray();
 			bool hasChanges = false;
-			switch (currentHandler.CurrentTarget)
-			{
-				case UIThemeHandler.Target.Image:
-				case UIThemeHandler.Target.Raw_Image:
-					hasChanges = PopupOrCustom("Color Option", ref currentHandler.imageThemeName);
-					break;
-				case UIThemeHandler.Target.Dropdown_TextMeshPro:
-				case UIThemeHandler.Target.Scrollbar:
-				case UIThemeHandler.Target.Button:
-					hasChanges = PopupOrCustom("Normal Color", ref currentHandler.imageThemeName)
-					 | PopupOrCustom("Highlighted Color", ref currentHandler.buttonHighlightedName)
-					 | PopupOrCustom("Pressed Color", ref currentHandler.buttonPressedName)
-					 | PopupOrCustom("Selected Color", ref currentHandler.buttonSelectedName)
-					 | PopupOrCustom("Disabled Color", ref currentHandler.buttonDisabledName);
-					break;
-				default:
-					throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());
-			}
+			if (currentHandler.ColorEdit.Value is Color)
+				hasChanges = PopupOrCustom("Color Option", ref currentHandler.imageThemeName);
+			else if (currentHandler.ColorEdit.Value is ColorBlock)
+				hasChanges = PopupOrCustom("Normal Color", ref currentHandler.imageThemeName)
+				 | PopupOrCustom("Highlighted Color", ref currentHandler.buttonHighlightedName)
+				 | PopupOrCustom("Pressed Color", ref currentHandler.buttonPressedName)
+				 | PopupOrCustom("Selected Color", ref currentHandler.buttonSelectedName)
+				 | PopupOrCustom("Disabled Color", ref currentHandler.buttonDisabledName);
+			else
+				throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());
 			if (hasChanges && Application.isPlaying)
-				currentHandler.UpdateColors(currentHandler.CurrentTarget);
+				currentHandler.UpdateColors();
 			bool PopupOrCustom(string popupLabel, ref string current)
 			{
 				string old = current;

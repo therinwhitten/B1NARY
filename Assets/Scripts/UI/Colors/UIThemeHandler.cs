@@ -7,6 +7,7 @@
 	using UI;
 	using System.Text;
 	using System.Linq;
+	using System.Reflection;
 	using B1NARY.DesignPatterns;
 	using System.Collections.Generic;
 
@@ -24,14 +25,6 @@
 			Primary,
 			Secondary,
 			Custom
-		}
-		public enum Target
-		{
-			Button,
-			Image,
-			Raw_Image,
-			Scrollbar,
-			Dropdown_TextMeshPro,
 		}
 
 		private static ColorFormat _currentlyEquippedFormat;
@@ -89,122 +82,88 @@
 			{
 				IEnumerator<UIThemeHandler> themeHandlers = GetEnumerator();
 				while (themeHandlers.MoveNext())
-					themeHandlers.Current.UpdateColors(themeHandlers.Current.CurrentTarget);
+					themeHandlers.Current.UpdateColors();
 			}
 		}
 		public void ChangeThemeInstance(string themeName) => ChangeTheme(themeName);
 
-		public Image ImageData { get; private set; }
-		public RawImage RawImageData { get; private set; }
-		public string imageThemeName = Option.Secondary.ToString();
 
-		public Button ButtonData { get; private set; }
-		public string buttonHighlightedName = Option.Primary.ToString(),
+		public string imageThemeName = Option.Secondary.ToString(),
+			buttonHighlightedName = Option.Primary.ToString(),
 			buttonPressedName = Option.Primary.ToString(),
 			buttonSelectedName = Option.Primary.ToString(),
 			buttonDisabledName = Option.Primary.ToString();
-		public Scrollbar ScrollbarData { get; private set; }
-		public TMP_Dropdown DropdownData { get; private set; }
 
-		private Target? m_currentTarget;
-		public Target CurrentTarget 
+		/// <summary>
+		/// Contains the first <see cref="Color"/> or <see cref="ColorBlock"/>,
+		/// these are always value types, so these are referenced via Func.
+		/// </summary>
+		public Ref<object> ColorEdit 
+		{
+			get
+			{
+				if (m_colorEdit == null)
+					_ = CurrentTarget;
+				return m_colorEdit;
+			} 
+			private set => m_colorEdit = value; 
+		}
+		private Ref<object> m_colorEdit;
+
+		public Component CurrentTarget 
 		{ 
 			get 
 			{
-				if (m_currentTarget.HasValue)
-					return m_currentTarget.Value;
-
-				if (TryGetComponent(out Button buttonOut))
+				if (m_currentTarget != null)
+					return m_currentTarget;
+				Component[] components = GetComponents<Component>();
+				for (int i = 0; i < components.Length; i++)
 				{
-					ButtonData = buttonOut;
-					m_currentTarget = Target.Button;
+					// Get any color properties in the component that has any color parameter.
+					var colorEnum = components[i].GetType().GetProperties(BindingFlags.Public).Where(info => info.PropertyType == typeof(Color));
+					if (colorEnum.Any())
+					{
+						ColorEdit = new Ref<object>(() => colorEnum.Single(), set => colorEnum.Single().SetValue(components[i], set));
+						m_currentTarget = components[i];
+						return m_currentTarget;
+					}
+					// Get any color block properties in the component that has any color block parameter.
+					var colorBlockEnum = components[i].GetType().GetProperties(BindingFlags.Public).Where(info => info.PropertyType == typeof(ColorBlock));
+					if (colorBlockEnum.Any())
+					{
+						ColorEdit = new Ref<object>(() => colorBlockEnum.Single(), set => colorBlockEnum.Single().SetValue(components[i], set));
+						m_currentTarget = components[i];
+						return m_currentTarget;
+					}
 				}
-				else if (TryGetComponent(out Image imageOut))
-				{
-					ImageData = imageOut;
-					m_currentTarget = Target.Image;
-				}
-				else if (TryGetComponent(out RawImage rawImageOut))
-				{
-					RawImageData = rawImageOut;
-					m_currentTarget = Target.Raw_Image;
-				}
-				else if (TryGetComponent(out Scrollbar scrollbar))
-				{
-					ScrollbarData = scrollbar;
-					m_currentTarget = Target.Scrollbar;
-				}
-				else if (TryGetComponent(out TMP_Dropdown dropdown))
-				{
-					DropdownData = dropdown;
-					m_currentTarget = Target.Dropdown_TextMeshPro;
-				}
-				else
-				{
-					var exceptionBuilder = new StringBuilder("There is no components to hold onto: ");
-					foreach (Target @enum in Enum.GetValues(typeof(Target)))
-						exceptionBuilder.Append($"{@enum}, ");
-					exceptionBuilder.Append("are acceptable.");
-					throw new MissingComponentException(exceptionBuilder.ToString());
-				}
-				return m_currentTarget.Value;
+				throw new MissingComponentException("There is no components " +
+					$"to hold onto that has a {nameof(Color)} or {nameof(ColorBlock)}");
 			}
-			private set => m_currentTarget = value;
 		}
+		private Component m_currentTarget;
+
 
 		protected override void MultitonAwake()
 		{
-			UpdateColors(CurrentTarget);
+			UpdateColors();
 		}
-		public void UpdateColors(Target target)
+		public void UpdateColors()
 		{
-			switch (target)
-			{
-				case Target.Image:
-					ImageData.color = GetColor(imageThemeName);
-					return;
-				case Target.Raw_Image:
-					RawImageData.color = GetColor(imageThemeName);
-					return;
-				case Target.Button:
-					ButtonData.colors = new ColorBlock()
-					{
-						colorMultiplier = ButtonData.colors.colorMultiplier,
-						disabledColor = GetColor(buttonDisabledName),
-						fadeDuration = ButtonData.colors.fadeDuration,
-						highlightedColor = GetColor(buttonHighlightedName),
-						normalColor = GetColor(imageThemeName),
-						pressedColor = GetColor(buttonPressedName),
-						selectedColor = GetColor(buttonSelectedName),
-					};
-					return;
-				case Target.Scrollbar:
-					ScrollbarData.colors = new ColorBlock()
-					{
-						colorMultiplier = ScrollbarData.colors.colorMultiplier,
-						disabledColor = GetColor(buttonDisabledName),
-						fadeDuration = ScrollbarData.colors.fadeDuration,
-						highlightedColor = GetColor(buttonHighlightedName),
-						normalColor = GetColor(imageThemeName),
-						pressedColor = GetColor(buttonPressedName),
-						selectedColor = GetColor(buttonSelectedName),
-					};
-					return;
-				case Target.Dropdown_TextMeshPro:
-					ScrollbarData.colors = new ColorBlock()
-					{
-						colorMultiplier = DropdownData.colors.colorMultiplier,
-						disabledColor = GetColor(buttonDisabledName),
-						fadeDuration = DropdownData.colors.fadeDuration,
-						highlightedColor = GetColor(buttonHighlightedName),
-						normalColor = GetColor(imageThemeName),
-						pressedColor = GetColor(buttonPressedName),
-						selectedColor = GetColor(buttonSelectedName),
-					};
-					return;
-				default:
-					throw new IndexOutOfRangeException(CurrentTarget.ToString());
-			}
+			if (ColorEdit.Value is Color)
+				ColorEdit.Value = GetColor(imageThemeName);
+			else if (ColorEdit.Value is ColorBlock)
+				ColorEdit.Value = new ColorBlock()
+				{
+					colorMultiplier = ((ColorBlock)ColorEdit.Value).colorMultiplier,
+					disabledColor = GetColor(buttonDisabledName),
+					fadeDuration = ((ColorBlock)ColorEdit.Value).fadeDuration,
+					highlightedColor = GetColor(buttonHighlightedName),
+					normalColor = GetColor(imageThemeName),
+					pressedColor = GetColor(buttonPressedName),
+					selectedColor = GetColor(buttonSelectedName),
+				};
+			else
+				throw new IndexOutOfRangeException(CurrentTarget.ToString());
 		}
 	}
 }
