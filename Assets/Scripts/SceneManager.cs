@@ -4,7 +4,6 @@
 	using B1NARY.Scripting.Experimental;
 	using B1NARY.UI;
 	using System;
-	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Threading.Tasks;
@@ -12,13 +11,13 @@
 	using UnityEngine.SceneManagement;
 	using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-	public delegate void SceneManagerEvent(string sceneName);
 	public delegate void SwitchScenesDelegate();
-	public static class SceneManager
+
+	public sealed class SceneManager : Singleton<SceneManager>
 	{
 		public static readonly IReadOnlyDictionary<string, Delegate> SceneDelegateCommands = new Dictionary<string, Delegate>()
 		{
-			["changescene"] = (Action<string>)(str => _ = ChangeScene(str)),
+			["changescene"] = (Action<string>)(str => _ = InstanceOrDefault.ChangeScene(str)),
 		};
 		public static Lazy<Scene[]> activeScenes = new Lazy<Scene[]>(() =>
 		{
@@ -31,16 +30,18 @@
 			return scenes.ToArray();
 		});
 		public static Scene ActiveScene => UnitySceneManager.GetActiveScene();
+		public PersistentListenerGroup SwitchingScenes { get; private set; } = new PersistentListenerGroup();
+		public PersistentListenerGroup SwitchedScenes { get; private set; } = new PersistentListenerGroup();
 
-		public static PersistentListenerGroup SwitchingScenes { get; private set; } = new PersistentListenerGroup();
-		public static PersistentListenerGroup SwitchedScenes { get; private set; } = new PersistentListenerGroup();
-
-		public static async Task ChangeScene(string sceneName)
+		private void Awake()
+		{
+			UnitySceneManager.sceneLoaded += (old, @new) => SwitchedScenes.Invoke();
+		}
+		public async Task ChangeScene(string sceneName)
 		{
 			SwitchingScenes.AddNonPersistentListener(FadeScene);
 			await Task.Run(SwitchingScenes.Invoke);
 			UnitySceneManager.LoadScene(sceneName);
-			await Task.Run(SwitchedScenes.Invoke);
 		}
 		/// <summary>
 		/// Initialized the <see cref="ScriptParser"/>, the system expects the
@@ -49,14 +50,8 @@
 		/// <param name="fadeTime">The fade time to take.</param>
 		public static void Initialize()//float fadeTime = 0.5f)
 		{
-			//SwitchedScenes.AddNonPersistentListener(LoadSpeakingObjects);
 			ScriptHandler.Instance.InitializeNewScript();
 			ScriptHandler.Instance.NextLine().FreeBlockPath();
-			//ScriptHandler.Instance.NextLine();
-			//void LoadSpeakingObjects()
-			//{
-			//	DialogueSystem.Instance.FadeIn(fadeTime);
-			//}
 		}
 
 		private static void FadeScene()
@@ -64,83 +59,33 @@
 			TransitionObject transition = Multiton<TransitionObject>.First();
 			transition.SetToOpaque().Wait();
 		}
-		/*
-
-		
-
-		
-
-		/// <summary>
-		/// Changes the scene, a Boneless version of <see cref="FadeToNextScene(string, TransitionObject, float)"/>
-		/// </summary>
-		/// <param name="sceneName">Name of the scene.</param>
-		public static void ChangeScene(string sceneName)
-		{
-			FadeToNextScene(sceneName, 0, 1f).FreeBlockPath();
-		}
-		public static Task FadeToNextScene(string sceneName, string transitionName, float fadeMultiplier = 1f)
-		{
-			var enumerator = Multiton<TransitionObject>.GetEnumerator();
-			while (enumerator.MoveNext())
-			{
-				if (enumerator.Current.name != transitionName)
-					continue;
-				return FadeToNextScene(sceneName, enumerator.Current, fadeMultiplier);
-			}
-			throw new KeyNotFoundException($"{transitionName} as a transition object doesn't exist!");
-		}
-		public static Task FadeToNextScene(string sceneName, int transitionIndex, float fadeMultiplier = 1f) 
-			=> FadeToNextScene(sceneName, Multiton<TransitionObject>.GetViaIndex(transitionIndex), fadeMultiplier);
-		public static Task FadeToNextScene(string sceneName, float fadeMultiplier = 1f)
-			=> FadeToNextScene(sceneName, Multiton<TransitionObject>.First(), fadeMultiplier);
-		/// <summary>
-		///		<para>
-		///			Fades to next scene.
-		///		</para>
-		///		<br>
-		///			This executes a list of commands:
-		///			<list type="number">
-		///				<item>use <see cref="SwitchingScenes"/> to execute all events tied to that.</item>
-		///				<item>
-		///					use <paramref name="transitionObject"/> to fade 
-		///					in/to opaque, if <see langword="null"/>, use 2000 ms 
-		///					to simaulate it
-		///				</item>
-		///				<item>
-		///					actually switch scenes using 
-		///					<see cref="SwitchedScenes.SwitchScenes(string)"/>,
-		///					which contains a scene change command inide.
-		///				</item>
-		///			</list>
-		///		</br>
-		///	</summary>
-		/// <param name="sceneName">Name of the scene to switch to.</param>
-		/// <param name="transitionObject">The transition slide data. </param>
-		/// <param name="fadeMultiplier">The fade/speed animation multiplier.</param>
-		public static async Task FadeToNextScene(string sceneName, 
-			TransitionObject transitionObject, float fadeMultiplier = 1f)
-		{
-			SwitchingScenes.PrepareSwitchingScenes();
-			if (transitionObject == null)
-			{
-				Debug.Log($"{nameof(transitionObject)} is null, waiting for 2 sec.");
-				await Task.Delay(2000 / (int)fadeMultiplier);
-			}
-			else
-				await transitionObject.SetToOpaque(fadeMultiplier);
-			SwitchedScenes.SwitchScenes(sceneName);
-		}
-		*/
 	}
-
-	public sealed class PersistentListenerGroup : IEnumerable<SwitchScenesDelegate>
+	public sealed class PersistentListenerGroup
 	{
+		public static PersistentListenerGroup operator +(PersistentListenerGroup setter, SwitchScenesDelegate persistentListener)
+		{
+			setter.AddPersistentListener(persistentListener);
+			return setter;
+		}
+		public static PersistentListenerGroup operator -(PersistentListenerGroup setter, SwitchScenesDelegate persistentListener)
+		{
+			setter.RemovePersistentListener(persistentListener);
+			return setter;
+		}
+
 		public Action<SwitchScenesDelegate[]> loadingAPIDelegate = actions =>
 		{
 			for (int i = 0; i < actions.Length; i++)
 			{
-				Debug.Log($"Loading method: {actions[i].Method.Name}");
-				actions[i].Invoke();
+				Debug.Log($"Loading method: '{actions[i].Method.Name}' from class '{actions[i].Method.DeclaringType.Name}'\nScene Manager");
+				try
+				{
+					actions[i].Invoke();
+				}
+				catch (Exception ex)
+				{
+					Debug.LogException(ex);
+				}
 			}
 		};
 		internal void Invoke()
@@ -153,13 +98,22 @@
 		}
 		private readonly List<SwitchScenesDelegate> persistentListeners = new List<SwitchScenesDelegate>(),
 			nonPersistentListeners = new List<SwitchScenesDelegate>();
-
-
 		public void AddPersistentListener(SwitchScenesDelegate @delegate)
 		{
 			if (persistentListeners.Contains(@delegate))
 				throw new InvalidOperationException();
 			persistentListeners.Add(@delegate);
+		}
+		public bool ContainsPersistentListener(SwitchScenesDelegate @delegate)
+			=> persistentListeners.Contains(@delegate);
+		public bool ContainsNonPersistentListener(SwitchScenesDelegate @delegate)
+			=> nonPersistentListeners.Contains(@delegate);
+		public void RemoveListener(SwitchScenesDelegate @delegate)
+		{
+			if (ContainsNonPersistentListener(@delegate))
+				RemoveNonPersistentListener(@delegate);
+			else
+				RemovePersistentListener(@delegate);
 		}
 		public void RemovePersistentListener(SwitchScenesDelegate @delegate) =>
 			persistentListeners.Remove(@delegate);
@@ -171,15 +125,5 @@
 		}
 		public void RemoveNonPersistentListener(SwitchScenesDelegate @delegate)
 			=> nonPersistentListeners.Remove(@delegate);
-
-		public IEnumerable<SwitchScenesDelegate> AsEnumerable()
-		{
-			for (int i = 0; i < persistentListeners.Count; i++)
-				yield return persistentListeners[i];
-			for (int i = 0; i < nonPersistentListeners.Count; i++)
-				yield return nonPersistentListeners[i];
-		}
-		public IEnumerator<SwitchScenesDelegate> GetEnumerator() => AsEnumerable().GetEnumerator();
-		IEnumerator IEnumerable.GetEnumerator() => AsEnumerable().GetEnumerator();
 	}
 }

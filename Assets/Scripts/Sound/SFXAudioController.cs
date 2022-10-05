@@ -82,7 +82,7 @@
 		private void Awake()
 		{
 			m_activeAudioTrackers = new Dictionary<AudioClip, AudioTracker>();
-			SceneManager.SwitchedScenes.AddPersistentListener(PerScene);
+			SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(PerScene);
 			PerScene();
 		}
 		private void PerScene()

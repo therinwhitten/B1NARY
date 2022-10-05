@@ -20,6 +20,27 @@
 	/// <seealso cref="MonoBehaviour"/>
 	public class UIThemeHandler : Multiton<UIThemeHandler>
 	{
+		// Allow the user to pick their own theme as persistent. Otherwise, have it
+		// - command dependent.
+
+		[ExecuteAlways]
+		private static void Constructor()
+		{
+			if (SceneManager.InstanceOrDefault.SwitchedScenes.ContainsPersistentListener(ThemeSceneSwitch))
+				SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(ThemeSceneSwitch);
+		}
+		private static void ThemeSceneSwitch()
+		{
+			if (PlayerOverride)
+				return;
+			ColorFormat colorFormat = Resources.Load<ColorFormat>($"{resourcesColorThemePath}/{SceneManager.ActiveScene.name}");
+			if (colorFormat == null)
+				colorFormat = Resources.Load<ColorFormat>($"{resourcesColorThemePath}/Default");
+			CurrentlyEquippedFormat = colorFormat;
+		}
+
+		public static bool PlayerOverride = false;
+
 		public const string resourcesColorThemePath = "UI/Color Themes";
 		public enum Option
 		{
@@ -56,9 +77,11 @@
 			switch (option)
 			{
 				case Option.Primary:
-					return CurrentlyEquippedFormat.primaryUI;
+					ColorUtility.TryParseHtmlString(CurrentlyEquippedFormat.primary, out var primary);
+					return primary;
 				case Option.Secondary:
-					return CurrentlyEquippedFormat.SecondaryUI;
+					ColorUtility.TryParseHtmlString(CurrentlyEquippedFormat.secondary, out var secondary);
+					return secondary;
 				case Option.Custom:
 					throw new ArgumentException($"although {option} is a enum, you need" +
 						$"another argument or name to differentiate other settings!");
@@ -70,8 +93,12 @@
 		{
 			if (Enum.TryParse(name, out Option option))
 				return GetColor(option);
-			if (CurrentlyEquippedFormat.ExtraUIValues.TryGetValue(name, out Color color))
+			if (CurrentlyEquippedFormat.ExtraUIValues.TryGetValue(name, out string colorHex))
+			{
+				ColorUtility.TryParseHtmlString(colorHex, out var color);
 				return color;
+			}
+
 			throw new NullReferenceException($"'{name}' is not located within the currently " +
 				$"equipped format: {CurrentlyEquippedFormat.name}.");
 		}

@@ -12,26 +12,16 @@
 	[CreateAssetMenu(fileName = "New UI Color Format", menuName = "B1NARY/Color UI Format", order = 1)]
 	public class ColorFormat : ScriptableObject
 	{
-		public static float ToPercent(byte value)
+		public string primary = "FFFFFFFF", secondary = "FFFFFFFF";
+		public List<string> keys = new List<string>(), colorHex = new List<string>();
+		public IReadOnlyDictionary<string, string> ExtraUIValues
 		{
-			return (float)value / byte.MaxValue;
+			get
+			{
+				int i = -1;
+				return colorHex.ToDictionary(hex => { i++; return keys[i]; });
+			}
 		}
-
-		public static byte ToByte(float percent)
-		{
-			return Convert.ToByte(percent * byte.MaxValue);
-		}
-
-		public Color primaryUI = new Color(ToPercent(47), ToPercent(161), ToPercent(206)),
-			SecondaryUI = new Color(ToPercent(47), ToPercent(206), ToPercent(172));
-		public List<string> keys = new List<string>();
-		public List<ColorSerializable> values = new List<ColorSerializable>();
-
-
-		public IReadOnlyDictionary<string, Color> ExtraUIValues => Pairs
-			.ToDictionary(pair => pair.Key, pair => pair.Value);
-		public IEnumerable<KeyValuePair<string, Color>> Pairs =>
-			keys.Zip(values, (key, value) => new KeyValuePair<string, Color>(key, (Color)value));
 
 		public void InsertKey(string old, string @new)
 		{
@@ -42,21 +32,20 @@
 		public void Append(string key, Color color)
 		{
 			keys.Add(key);
-			values.Add((ColorSerializable)color);
+			colorHex.Add(ColorUtility.ToHtmlStringRGBA(color));
 		}
 		public void Modify(string key, in Color input)
 		{
 			int index = keys.IndexOf(key);
-			if (input == null || (Color)values[index] == input)
+			if (input == null || colorHex[index] == ColorUtility.ToHtmlStringRGBA(input))
 				return;
-			values.RemoveAt(index);
-			values.Add((ColorSerializable)input);
+			colorHex[index] = ColorUtility.ToHtmlStringRGBA(input);
 		}
 		public void Remove(string key)
 		{
 			int index = keys.IndexOf(key);
 			keys.RemoveAt(index);
-			values.RemoveAt(index);
+			colorHex.RemoveAt(index);
 		}
 
 	}

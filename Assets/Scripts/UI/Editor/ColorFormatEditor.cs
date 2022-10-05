@@ -20,50 +20,58 @@
 				return _colorFormat;
 			}
 		}
-		private bool openedHeader = false;
 		public override void OnInspectorGUI()
 		{
-			EditorUtility.SetDirty(ColorFormat);
-			ColorFormat.primaryUI = EditorGUILayout.ColorField("Primary Color", ColorFormat.primaryUI);
-			ColorFormat.SecondaryUI = EditorGUILayout.ColorField("Secondary Color", ColorFormat.SecondaryUI);
-			if (openedHeader = EditorGUILayout.BeginFoldoutHeaderGroup(openedHeader, new GUIContent("Extra UI Color Data")))
+			bool changedValue = false;
+			if (ColorUtility.TryParseHtmlString(ColorFormat.primary, out var primaryColor))
 			{
-				EditorGUI.indentLevel++;
-				(string @new, string old)? setNewDictionaryValue = null;
-				string remove = string.Empty;
-				(Color color, string key)? modifyColor = null;
-				foreach (var pair in ColorFormat.Pairs)
-				{
-					Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20),
-						colorRect = fullRect, removeRect = fullRect;
-					colorRect.width /= 1.2f;
-					colorRect.xMin = colorRect.width / 2;
-					removeRect.xMin = colorRect.xMax + 2;
-					removeRect.xMax = fullRect.xMax;
-					Color newColor = EditorGUI.ColorField(colorRect, pair.Value);
-					if (newColor != pair.Value)
-						modifyColor = (newColor, pair.Key);
-					Rect stringRect = GUILayoutUtility.GetLastRect();
-					stringRect.xMax = colorRect.xMin + 12;
-					string newString = EditorGUI.DelayedTextField(stringRect, pair.Key);
-					if (newString != pair.Key)
-						setNewDictionaryValue = (newString, pair.Key);
-					if (GUI.Button(removeRect, "Remove"))
-						remove = pair.Key;
-				}
-				if (setNewDictionaryValue.HasValue)
-					ColorFormat.InsertKey(setNewDictionaryValue.Value.old, setNewDictionaryValue.Value.@new);
-				if (modifyColor.HasValue)
-					ColorFormat.Modify(modifyColor.Value.key, modifyColor.Value.color);
-				if (!string.IsNullOrEmpty(remove))
-					ColorFormat.Remove(remove);
-				if (GUI.Button(EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20)), "Add New Color Entry"))
-					ColorFormat.Append("New Color Entry", Color.white);
-				EditorGUI.indentLevel--;
+				Color newColor = EditorGUILayout.ColorField("Primary Color", primaryColor);
+				if (changedValue |= newColor != primaryColor)
+					ColorFormat.primary = ColorUtility.ToHtmlStringRGBA(newColor);
 			}
-			EditorGUILayout.EndFoldoutHeaderGroup();
-			EditorUtility.SetDirty(ColorFormat);
-			serializedObject.ApplyModifiedProperties(); // Just in case
+			else
+				ColorFormat.primary = ColorUtility.ToHtmlStringRGBA(Color.white);
+			if (ColorUtility.TryParseHtmlString(ColorFormat.secondary, out var secondaryColor))
+			{
+				Color newColor = EditorGUILayout.ColorField("Secondary Color", secondaryColor);
+				if (changedValue |= newColor != secondaryColor)
+					ColorFormat.primary = ColorUtility.ToHtmlStringRGBA(newColor);
+			}
+			else
+				ColorFormat.primary = ColorUtility.ToHtmlStringRGBA(Color.white);
+			EditorGUILayout.Space();
+			for (int i = 0; i < ColorFormat.colorHex.Count; i++)
+			{
+				Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20),
+					colorRect = fullRect, 
+					removeRect = fullRect;
+				colorRect.width /= 1.2f;
+				colorRect.xMin = colorRect.width / 2;
+				removeRect.xMin = colorRect.xMax + 2;
+				removeRect.xMax = fullRect.xMax;
+				Rect stringRect = GUILayoutUtility.GetLastRect();
+				stringRect.xMax = colorRect.xMin + 12;
+
+
+				if (changedValue |= GUI.Button(removeRect, "Remove"))
+				{
+					ColorFormat.Remove(ColorFormat.keys[i]);
+					i--;
+				}
+
+				ColorUtility.TryParseHtmlString(ColorFormat.colorHex[i], out var currentColor);
+				Color newColor = EditorGUI.ColorField(colorRect, currentColor);
+				if (changedValue |= newColor != currentColor)
+					ColorFormat.colorHex[i] = ColorUtility.ToHtmlStringRGBA(newColor);
+
+				string newName = EditorGUI.DelayedTextField(stringRect, ColorFormat.keys[i]);
+				if (changedValue |= newName != ColorFormat.keys[i])
+					ColorFormat.keys[i] = newName;
+			}
+			if (changedValue |= GUI.Button(EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20)), "Add New Color Entry"))
+				ColorFormat.Append("New Color Entry", Color.white);
+			if (changedValue)
+				EditorUtility.SetDirty(ColorFormat);
 		}
 	}
 }
