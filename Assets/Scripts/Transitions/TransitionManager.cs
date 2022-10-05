@@ -48,7 +48,7 @@
 
 		protected override void SingletonAwake()
 		{
-			SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(PerScene);
+			SceneManager.SwitchedScenes.AddPersistentListener(PerScene);
 			PerScene();
 		}
 		private void PerScene()
@@ -83,7 +83,7 @@
 
 		private void OnDestroy()
 		{
-			SceneManager.InstanceOrDefault.SwitchedScenes.RemovePersistentListener(PerScene);
+			SceneManager.SwitchedScenes.RemovePersistentListener(PerScene);
 		}
 
 		[Serializable]
