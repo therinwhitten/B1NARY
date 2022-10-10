@@ -10,6 +10,7 @@
 	using B1NARY.Audio;
 	using B1NARY.DesignPatterns;
 	using UnityEngine.InputSystem;
+	using System.Threading;
 
 	public class ScriptHandler : Singleton<ScriptHandler>
 	{
@@ -31,6 +32,19 @@
 			["changescript"] = (Action<string>)(scriptPath =>
 			{
 				Instance.InitializeNewScript(Application.streamingAssetsPath + '/' + scriptPath);
+			}),
+			["usegameobject"] = (Action<string>)(gameObjectName =>
+			{
+				GameObject @object = GameObject.Find(gameObjectName);
+				if (@object == null)
+					throw new MissingMemberException($"Gameobject '{gameObjectName}' is not found");
+				@object.SetActive(true);
+				Instance.ShouldPause = true;
+				Task.Run(() =>
+				{
+					SpinWait.SpinUntil(() => !@object.activeSelf);
+					Instance.ShouldPause = false;
+				}).FreeBlockPath();
 			}),
 		};
 		public static ScriptNode GetDefinedScriptNodes(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines)
@@ -59,6 +73,19 @@
 		public string StartupScriptPath;
 		public PlayerInput playerInput;
 		public string[] nextLineButtons;
+
+		/// <summary>
+		/// If the game should pause input. Modifying the variable 
+		/// can be stacked with other scripts to allow compatibility. This comes 
+		/// into play if you a script allows it to continue, but another says it
+		/// shouldn't. In this case, it will read <see langword="true"/>.
+		/// </summary>
+		public bool ShouldPause 
+		{ 
+			get => m_pauseIterations > 0;
+			set { if (value) m_pauseIterations++; else m_pauseIterations = checked(m_pauseIterations - 1); }
+		}
+		private uint m_pauseIterations = 0;
 		/// <summary>
 		/// A value that determines if it is running a script and ready to use.
 		/// </summary>
@@ -105,7 +132,7 @@
 		/// <returns> The <see cref="ScriptLine"/> it stopped at. </returns>
 		public Task<ScriptLine> NextLine()
 		{
-			if (scriptDocument == null)
+			if (scriptDocument == null || ShouldPause)
 				return Task.FromResult(default(ScriptLine));
 			try
 			{

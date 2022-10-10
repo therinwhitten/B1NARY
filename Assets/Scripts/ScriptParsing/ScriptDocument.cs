@@ -4,15 +4,11 @@
 	using System.IO;
 	using System.Collections.Generic;
 	using System.Linq;
-	using System.Threading.Tasks;
 	using B1NARY.UI;
 	using System.Collections.ObjectModel;
 	using UnityEngine;
-	using System.Threading;
 	using System.Text;
 
-	// working on this made me realize this is just a really fancy ScriptNode.
-	// - oh well!
 	public sealed class ScriptDocument
 	{
 		public static readonly HashSet<string> enabledHashset = new HashSet<string>()

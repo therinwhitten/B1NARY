@@ -27,6 +27,7 @@ namespace B1NARY.DataPersistence
 		public Dictionary<string, int> ints;
 		public Dictionary<string, float> floats;
 
+		public string playerName;
 		public readonly string scriptName, scene, textBoxContent;
 		public readonly ScriptLine expectedScriptLine;
 		public readonly bool additiveTextEnabled;

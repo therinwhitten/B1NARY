@@ -13,7 +13,7 @@
 			mainMenuFadeController = GetComponent<FadeController>();
 		}
 
-		// BUTTON BEHAVIOURS
+		// Buttons
 		public void NewGame()
 		{
 			mainMenuFadeController.FadeOut(0.5f);

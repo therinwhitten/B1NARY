@@ -11,6 +11,7 @@
 		public static readonly string savePath = Application.persistentDataPath + "/Saves";
 		public static string FullSavePath => savePath + SaveFileName;
 
+		public static string name = string.Empty;
 		public static Dictionary<string, string> strings = new Dictionary<string, string>();
 		public static Dictionary<string, bool> bools = new Dictionary<string, bool>();
 		public static Dictionary<string, int> ints = new Dictionary<string, int>();
@@ -20,6 +21,7 @@
 		{
 			var gameState = new GameState()
 			{
+				playerName = name,
 				strings = strings,
 				bools = bools,
 				floats = floats,

@@ -13,7 +13,6 @@ namespace B1NARY.UI
 	using TMPro;
 	using B1NARY.Scripting.Experimental;
 
-	[RequireComponent(typeof(FadeController))]
 	public class DialogueSystem : Singleton<DialogueSystem>
 	{
 		public static void InitializeSystem(DialogueSystem systemComponent)
@@ -37,12 +36,6 @@ namespace B1NARY.UI
 			}),
 			*/
 		};
-		/*
-		public int ChatFontIndex { get => PlayerPrefs.GetInt(chatFontIndex, 0); set => PlayerPrefs.SetInt(chatFontIndex, value); }
-		public Font CurrentFontAsset => AccessibleFontAssets[ChatFontIndex];
-		public Font[] AccessibleFontAssets => Resources.LoadAll<Font>(fontDirectory);
-		public string[] AccessibleFontAssetNames => AccessibleFontAssets.Select(asset => asset.name).ToArray();
-		private const string chatFontIndex = "ChatFontIndex";*/
 
 
 		public string fontDirectory = "UI/Fonts";
@@ -64,7 +57,6 @@ namespace B1NARY.UI
 			get => textBox.text;
 			private set => textBox.text = value;
 		}
-		private FadeController fadeController;
 
 
 		[HideInInspector]
@@ -73,32 +65,13 @@ namespace B1NARY.UI
 		[HideInInspector] public bool isWaitingForUserInput = false;
 		/// <summary> A task that gradually reveals the text. </summary>
 		/// <returns> The final speech <see cref="string"/>. Not affected by abruptly stopping. </returns>
-		public Task<string> SpeakingTask = Task.FromResult(string.Empty);
+		public Task<string> SpeakingTask { get; private set; } = Task.FromResult(string.Empty);
 		private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
-		private void Awake()
-		{
-			fadeController = GetComponent<FadeController>();
-		}
 		private void Start()
 		{
 			CurrentSpeaker = string.Empty;
 			CurrentText = string.Empty;
-		}
-		private void OnEnable()
-		{
-			/*
-			Font asset = CurrentFontAsset;
-			speakerBox.fon = asset;
-			textBox.font = asset;*/
-		}
-		public void FadeIn(float fadeTime = 0.5f)
-		{
-			fadeController.FadeIn(fadeTime);
-		}
-		public void FadeOut(float fadeTime = 0.5f)
-		{
-			fadeController.FadeOut(fadeTime);
 		}
 
 		/// <summary>
