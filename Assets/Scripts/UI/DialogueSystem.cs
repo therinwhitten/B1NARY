@@ -22,7 +22,7 @@ namespace B1NARY.UI
 			systemComponent.enabled = true;
 		}
 
-		public static IReadOnlyDictionary<string, Delegate> DialogueDelegateCommands = new Dictionary<string, Delegate>()
+		/*public static IReadOnlyDictionary<string, Delegate> DialogueDelegateCommands = new Dictionary<string, Delegate>()
 		{
 			/* There is already a system in ScriptHandler that handles more of it.
 			["additive"] = (Action<string>)(str =>
@@ -34,8 +34,8 @@ namespace B1NARY.UI
 				else 
 					throw new Exception();
 			}),
-			*/
-		};
+			
+		};*/
 
 
 		public string fontDirectory = "UI/Fonts";

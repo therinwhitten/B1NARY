@@ -14,7 +14,7 @@
 
 	public class ScriptHandler : Singleton<ScriptHandler>
 	{
-		public static IReadOnlyDictionary<string, Delegate> ScriptDelegateCommands = new Dictionary<string, Delegate>()
+		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
 			["additive"] = (Action<string>)(boolRaw =>
 			{
@@ -108,13 +108,12 @@
 				PlayVoiceActor(line);
 				DialogueSystem.Instance.Say(line.lineData);
 			});
-			scriptFactory.AddCommandFunctionality(
-				SFXAudioController.AudioDelegateCommands, 
-				SceneManager.SceneDelegateCommands,
-				DialogueSystem.DialogueDelegateCommands,
-				ScriptHandler.ScriptDelegateCommands,
-				B1NARY.CharacterController.CharacterDelegateCommands,
-				TransitionManager.TransitionDelegateCommands);
+			scriptFactory.AddCommandFunctionality(SFXAudioController.Commands);
+			scriptFactory.AddCommandFunctionality(SceneManager.Commands);
+			//scriptFactory.AddCommandFunctionality(DialogueSystem.DialogueDelegateCommands);
+			scriptFactory.AddCommandFunctionality(ScriptHandler.Commands);
+			scriptFactory.AddCommandFunctionality(B1NARY.CharacterController.Commands);
+			scriptFactory.AddCommandFunctionality(TransitionManager.Commands);
 			scriptDocument = (ScriptDocument)scriptFactory;
 			IsActive = true;
 		}
@@ -132,7 +131,7 @@
 		/// <returns> The <see cref="ScriptLine"/> it stopped at. </returns>
 		public Task<ScriptLine> NextLine()
 		{
-			if (scriptDocument == null || ShouldPause)
+			if (ShouldPause || scriptDocument == null)
 				return Task.FromResult(default(ScriptLine));
 			try
 			{
@@ -144,5 +143,10 @@
 				throw;
 			}
 		}
+	}
+
+	public interface IScriptCommands
+	{
+		IEnumerable<KeyValuePair<string, Delegate>> Commands { get; }
 	}
 }

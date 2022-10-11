@@ -47,7 +47,7 @@
 		/// <param name="task">The task to target.</param>
 		public static void FreeBlockPath(this Task task)
 		{
-			_ = task.ContinueWith(subTask => Debug.LogError(subTask.Exception), 
+			_ = task.ContinueWith(subTask => Debug.LogException(subTask.Exception), 
 				TaskContinuationOptions.OnlyOnFaulted);
 		}
 

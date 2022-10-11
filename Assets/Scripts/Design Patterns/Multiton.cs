@@ -41,8 +41,9 @@
 		/// </summary>
 		private static IEnumerable<int> instancesKeys => instances.Keys;
 		private static int nextIndex = 0;
-		public static T First() => instances[instances.Keys.Min()];
-		public static T Last() => instances[instances.Keys.Max()];
+		public static T First => instances[instances.Keys.Min()];
+		public static T Last => instances[instances.Keys.Max()];
+		public static bool Any => instances.Any();
 		public static T GetViaIndex(int index) => instances.ElementAt(index).Value;
 		public static T GetViaID(int ID) => instances[ID];
 		public static IEnumerator<T> GetEnumerator()

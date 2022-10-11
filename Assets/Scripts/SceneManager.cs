@@ -7,6 +7,7 @@
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Threading;
 	using System.Threading.Tasks;
 	using UnityEngine;
 	using UnityEngine.SceneManagement;
@@ -16,9 +17,9 @@
 	public delegate void SwitchScenesDelegate();
 	public static class SceneManager
 	{
-		public static readonly IReadOnlyDictionary<string, Delegate> SceneDelegateCommands = new Dictionary<string, Delegate>()
+		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
-			["changescene"] = (Action<string>)(str => _ = ChangeScene(str)),
+			["changescene"] = (Action<string>)(str => ChangeScene(str).FreeBlockPath()),
 		};
 		public static Lazy<Scene[]> activeScenes = new Lazy<Scene[]>(() =>
 		{
@@ -37,10 +38,9 @@
 
 		public static async Task ChangeScene(string sceneName)
 		{
-			SwitchingScenes.AddNonPersistentListener(FadeScene);
-			await Task.Run(SwitchingScenes.Invoke);
+			await FadeScene();
+			SwitchingScenes.Invoke();
 			UnitySceneManager.LoadScene(sceneName);
-			await Task.Run(SwitchedScenes.Invoke);
 		}
 		/// <summary>
 		/// Initialized the <see cref="ScriptParser"/>, the system expects the
@@ -59,10 +59,15 @@
 			//}
 		}
 
-		private static void FadeScene()
+		private static async Task FadeScene()
 		{
-			TransitionObject transition = Multiton<TransitionObject>.First();
-			transition.SetToOpaque().Wait();
+			if (!TransitionObject.Any)
+			{
+				Debug.LogWarning($"Was called to fade scene, but there are no {nameof(TransitionObject)}s to transition with!\n{nameof(SceneManager)}");
+				return;
+			}
+			TransitionObject transition = TransitionObject.First;
+			await transition.SetToOpaque();
 		}
 		/*
 
