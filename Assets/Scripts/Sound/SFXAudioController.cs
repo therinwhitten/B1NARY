@@ -6,11 +6,13 @@
 	using System.Collections.Generic;
 	using UnityEngine;
 	using System.Collections;
+	using B1NARY.Scripting.Experimental;
 
 	public sealed class SFXAudioController : Singleton<SFXAudioController>
 	{
 		public const string baseResourcesPath = "Sounds/Sound Libraries";
-		public static readonly IReadOnlyDictionary<string, Delegate> AudioDelegateCommands = new Dictionary<string, Delegate>()
+		
+		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
 			// Although reflection is computationally heavy normally, it doesn't
 			// - seem so in this situation.
@@ -72,6 +74,7 @@
 		public SoundLibrary CurrentSoundLibrary { get; private set; }
 
 		public IReadOnlyDictionary<AudioClip, AudioTracker> ActiveAudioTrackers => m_activeAudioTrackers;
+
 		private Dictionary<AudioClip, AudioTracker> m_activeAudioTrackers;
 		private void AddAudioClipToDictionary(CustomAudioClip customAudioClip)
 		{

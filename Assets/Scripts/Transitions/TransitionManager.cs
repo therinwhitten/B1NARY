@@ -17,7 +17,7 @@
 	[RequireComponent(typeof(CanvasGroup))]
 	public class TransitionManager : Singleton<TransitionManager>
 	{
-		public static IReadOnlyDictionary<string, Delegate> TransitionDelegateCommands = new Dictionary<string, Delegate>()
+		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
 			["changebg"] = (Action<string>)(backgroundName =>
 			{

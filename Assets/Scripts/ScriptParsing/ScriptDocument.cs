@@ -4,15 +4,12 @@
 	using System.IO;
 	using System.Collections.Generic;
 	using System.Linq;
-	using System.Threading.Tasks;
 	using B1NARY.UI;
 	using System.Collections.ObjectModel;
 	using UnityEngine;
-	using System.Threading;
 	using System.Text;
+	using System.Threading;
 
-	// working on this made me realize this is just a really fancy ScriptNode.
-	// - oh well!
 	public sealed class ScriptDocument
 	{
 		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
@@ -32,7 +29,7 @@
 		private IEnumerator<ScriptLine> data;
 		/// <summary> A readonly array of <see cref="ScriptLine"/>. </summary>
 		public ReadOnlyCollection<ScriptLine> documentData;
-		private Dictionary<string, Delegate> commands;
+		private Lookup<string, Delegate> commands;
 
 		/// <summary>
 		/// If the current dialogue should be added instead of skipping to a new
@@ -92,7 +89,7 @@
 					return true;
 				case ScriptLine.Type.Command:
 					var (command, arguments) = ScriptLine.CastCommand(line);
-					if (commands.ContainsKey(command) == false)
+					if (commands.Contains(command) == false)
 					{
 						var exceptionBuilder = new StringBuilder($"{line} does not have a command for it!");
 						if (arguments.Any())
@@ -103,8 +100,15 @@
 						}
 						throw new MissingMethodException(exceptionBuilder.ToString().TrimEnd(',', ' '));
 					}
-					commands[command].DynamicInvoke(arguments);
-					return true;
+					IEnumerator<Delegate> commandsPacket = commands[command].GetEnumerator();
+					while (commandsPacket.MoveNext())
+						try 
+						{
+							commandsPacket.Current.DynamicInvoke(arguments); 
+							return true;
+						}
+						catch (ArgumentException ex) when (ex.Message.Contains("cannot be converted to type")) { }
+					throw new MissingMethodException($"'{command}' does not lead to a valid command!");
 				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:
@@ -131,8 +135,9 @@
 				=> factory.Parse(true);
 
 			private readonly string documentName;
-			private readonly List<IReadOnlyDictionary<string, Delegate>> categorizedCommands
-				= new List<IReadOnlyDictionary<string, Delegate>>();
+
+			private readonly List<KeyValuePair<string, Delegate>> commands 
+				= new List<KeyValuePair<string, Delegate>>();
 			private readonly List<ScriptNodeParser> scriptNodeParsers =
 				new List<ScriptNodeParser>();
 			private Action<ScriptLine> normalAction;
@@ -154,8 +159,13 @@
 			}
 			public void AddNodeParserFunctionality(params ScriptNodeParser[] scriptNodeParsers)
 				=> this.scriptNodeParsers.AddRange(scriptNodeParsers);
-			public void AddCommandFunctionality(params IReadOnlyDictionary<string, Delegate>[] categorizedCommands) 
-				=> this.categorizedCommands.AddRange(categorizedCommands);
+			public void AddCommandFunctionality(IEnumerable<KeyValuePair<string, Delegate>> commands) => AddCommandFunctionality(commands.GetEnumerator());
+			public void AddCommandFunctionality(IEnumerator<KeyValuePair<string, Delegate>> commands)
+			{
+				while (commands.MoveNext())
+					this.commands.Add(commands.Current);
+			}
+
 			public void AddNormalOperationsFunctionality(Action<ScriptLine> action)
 				=> normalAction = action;
 			public ScriptDocument Parse(bool dontPauseOnCommand)
@@ -186,9 +196,8 @@
 				output.documentData = Array.AsReadOnly(
 					list.Select(pair => pair.scriptLine).ToArray());
 				// Merging all dictionaries.
-				output.commands = categorizedCommands
-					.SelectMany(dict => dict)
-					.ToDictionary(pair => pair.Key, pair => pair.Value);
+				output.commands = (Lookup<string, Delegate>)commands
+					.ToLookup(pair => pair.Key, pair => pair.Value);
 				// Assigning nodes, highest first
 				var nodeQueue = new Queue<(int startIndex, int endIndex)>
 					(nodes.OrderByDescending(pair => pair.indentation)

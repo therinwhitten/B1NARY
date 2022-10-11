@@ -10,7 +10,7 @@
 	public sealed class CharacterController : Singleton<CharacterController>
 	{
 		public const string prefabsPath = "Characters/Prefabs/";
-		public static readonly IReadOnlyDictionary<string, Delegate> CharacterDelegateCommands = new Dictionary<string, Delegate>()
+		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
 			["spawnchar"] = (Action<string, string, string>)((prefabName, positionRaw, characterName) =>
 			{

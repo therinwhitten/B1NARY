@@ -36,7 +36,6 @@
 		{
 			var dialogueSystem = DialogueSystem.Instance;
 			Debug.Log($"Testing {nameof(DialogueSystem)}, fading in nearly instantly.");
-			dialogueSystem.FadeIn(0.01f);
 			await Task.Delay(1000);
 			Debug.Log($"Testing Typewriter Rich Text with name '{speaker}', " +
 				$"\nExpected result: {message}");

@@ -89,7 +89,7 @@
 			if (line.type != Type.Command)
 				throw new InvalidCastException($"'{line}' is not a command!");
 			string[] dataArray = line.lineData.Trim('{', '}').Split(':', ',');
-			return (dataArray.First().Trim().ToLower(), dataArray.Skip(1).Select(str => str.Trim().ToLower()).ToArray());
+			return (dataArray.First().Trim().ToLower(), dataArray.Skip(1).Select(str => str.Trim()).ToArray());
 		}
 		/// <summary>
 		/// Casts the current <see cref="ScriptLine"/> as an emotion value, trimmed.
