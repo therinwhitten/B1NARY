@@ -73,11 +73,8 @@
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
-					if (performLine != null)
-						performLine.Invoke(line);
-					else
-						Debug.Log($"{nameof(performLine)} has no assignment for" +
-							$" a speaking line to run. Printing; \n {line}");
+					PlayVoiceActor(line);
+					DialogueSystem.Instance.Say(line.lineData);
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);
@@ -120,8 +117,16 @@
 					Debug.LogError($"There seems to be an enum as '{line.type}' that is not part of the switch command case. Skipping.");
 					return true;
 			}
+
+			void PlayVoiceActor(ScriptLine speechLine)
+			{
+				string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
+				if (B1NARY.CharacterController.Instance.charactersInScene.TryGetValue(currentSpeaker, out var charObject))
+					charObject.characterScript.SayLine(speechLine);
+				else
+					Debug.LogError($"Character '{currentSpeaker}' does not exist!");
+			}
 		}
-		private Action<ScriptLine> performLine;
 
 
 		//*-------------- FACTORY ----------------*//
@@ -132,7 +137,7 @@
 		public sealed class Factory
 		{
 			public static explicit operator ScriptDocument(Factory factory)
-				=> factory.Parse(true);
+				=> factory.Parse(false);
 
 			private readonly string documentName;
 
@@ -140,7 +145,6 @@
 				= new List<KeyValuePair<string, Delegate>>();
 			private readonly List<ScriptNodeParser> scriptNodeParsers =
 				new List<ScriptNodeParser>();
-			private Action<ScriptLine> normalAction;
 			private IEnumerator<ScriptLine> fileData;
 
 			public Factory(string fullFilePath)
@@ -165,10 +169,7 @@
 				while (commands.MoveNext())
 					this.commands.Add(commands.Current);
 			}
-
-			public void AddNormalOperationsFunctionality(Action<ScriptLine> action)
-				=> normalAction = action;
-			public ScriptDocument Parse(bool dontPauseOnCommand)
+			public ScriptDocument Parse(bool pauseOnCommand)
 			{
 				var output = new ScriptDocument();
 				// Assigning lines
@@ -219,8 +220,7 @@
 					(ScriptPair)new ScriptLine("{", () => documentName, 0)
 				});
 				list.Add((ScriptPair)new ScriptLine("::End", () => documentName, list.Count));
-				output.data = new ScriptNode(output.ParseLine, list.ToArray()).Perform(dontPauseOnCommand);
-				output.performLine = normalAction;
+				output.data = new ScriptNode(output.ParseLine, list.ToArray()).Perform(pauseOnCommand);
 				return output;
 
 			}

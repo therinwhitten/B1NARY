@@ -51,58 +51,45 @@
 
 		protected override void SingletonAwake()
 		{
-			DontDestroyOnLoad(characterLayer);
 			charLayerTransform = characterLayer.transform;
 		}
 
 		public KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)>
-			InitiateCharacter(string name, string positionRaw, string charName = "")
+			InitiateCharacter(string prefabName, string positionRaw, string charName = "")
 		{
 			// Retrieving Character from current scene
 			Dictionary<string, CharacterScript> characterScripts = FindObjectsOfType<CharacterScript>()
 				.ToDictionary(@char => @char.PrefabName);
-			if (charactersInScene.TryGetValue(name, out var pair))
+			if (charactersInScene.TryGetValue(prefabName, out var pair))
 			{
-				if (charactersInScene[name].gameObject.activeSelf)
+				if (charactersInScene[prefabName].gameObject.activeSelf)
 					throw new Exception();
-				charactersInScene[name].gameObject.SetActive(true);
-				charactersInScene[name].characterScript.SetPositionOverTime(
-					new Vector2(charactersInScene[name].gameObject.transform.position.x, float.Parse(positionRaw)), 1f, true);
-				return new KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)>(name, pair);
+				charactersInScene[prefabName].gameObject.SetActive(true);
+				charactersInScene[prefabName].characterScript.SetPositionOverTime(
+					new Vector2(charactersInScene[prefabName].gameObject.transform.position.x, float.Parse(positionRaw)), 1f, true);
+				return new KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)>(prefabName, pair);
 			}
-
 			// 'Summoning' the Character
-			return SummonCharacter(name, positionRaw, charName);
+			return SummonCharacter(prefabName, positionRaw, charName);
 		}
 
 		public KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)> 
 			SummonCharacter(string prefabName, string positionRaw, string charName = "")
 		{
-			Debug.LogWarning("Spawning a character is costly on performance, make sure to have them in the scene beforehand!");
+			Debug.LogWarning("Spawning a character is costly on performance, make sure to have them in the scene beforehand!", this);
 			GameObject output = Resources.Load<GameObject>(prefabsPath + prefabName);
 			if (output == null)
 				throw new FileNotFoundException($"character prefab '{prefabName}'" +
 					$" is not found in {prefabsPath}{prefabName}!", 
 					Application.streamingAssetsPath + prefabsPath + prefabName);
 			output = Instantiate(output, charLayerTransform);
-			string outputName;
-			if (output.TryGetComponent(out CharacterScript characterScript))
-			{
-				if (string.IsNullOrEmpty(charName) == false)
-					characterScript.PrefabName = charName;
-				outputName = characterScript.PrefabName;
-			}
-			else
-			{
-				if (string.IsNullOrEmpty(charName) == false)
-					output.name = charName;
-				outputName = output.name;
-				Debug.LogError($"{output.name} does not have a {nameof(CharacterScript)} component!", this);
-			}
+			string outputName = string.IsNullOrEmpty(charName) ? prefabName : charName;
 			output.SetActive(true);
-			charactersInScene.Add(outputName, (output, characterScript));
+			if (!output.TryGetComponent<CharacterScript>(out var script))
+				Debug.LogError("Bruh you drunk bro uwu", this);
+			charactersInScene.Add(outputName, (output, script));
 			return new KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)>
-				(outputName, (output, characterScript));
+				(outputName, (output, script));
 		}
 
 		public void ClearAllCharacters()

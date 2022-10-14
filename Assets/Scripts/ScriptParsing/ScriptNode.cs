@@ -49,21 +49,36 @@
 		/// Performs <see cref="ScriptLine"/> and uses <see cref="ScriptDocument.ParseLine(ScriptLine)"/>
 		/// to determine to yield return a value or continue.
 		/// </summary>
-		public virtual IEnumerator<ScriptLine> Perform(bool dontPauseOnCommands)
+		public virtual IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
 		{
 			// i as 1 to skip the bracket, length - 1 for the same.
 			for (int i = 1; i < subLines.Length - 1; i++)
 			{
+				Debug.Log(subLines[i].scriptLine.Index);
 				if (subLines[i].HasScriptNode)
 				{
-					IEnumerator<ScriptLine> subNode = subLines[i].scriptNode.Perform(dontPauseOnCommands);
+					IEnumerator<ScriptLine> subNode = subLines[i].scriptNode.Perform(pauseOnCommands);
 					while (subNode.MoveNext())
 						yield return subNode.Current;
 					i += subLines[i].scriptNode.lineLength;
 				}
-				if (parseLine.Invoke(subLines[i].scriptLine))
-					if (dontPauseOnCommands)
-						continue;
+				bool canFreelyPass = true;
+				bool forceBlock = false;
+				try
+				{
+					string command = ScriptLine.CastCommand(subLines[i].scriptLine).command;
+					forceBlock = SceneManager.Commands.ContainsKey(command);
+					canFreelyPass = parseLine.Invoke(subLines[i].scriptLine);
+				}
+				catch (Exception ex) when (!ex.Message.Contains("Managed to hit a intentation"))
+				{
+					Debug.LogException(new Exception("There is an error in the scriptDocument", ex));
+					canFreelyPass = subLines[i].LineType != ScriptLine.Type.Normal;
+				}
+				if (forceBlock)
+					yield return subLines[i].scriptLine;
+				if (canFreelyPass && pauseOnCommands == false)
+					continue;
 				yield return subLines[i].scriptLine;
 			}
 		}

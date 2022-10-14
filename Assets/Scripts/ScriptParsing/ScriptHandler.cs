@@ -92,10 +92,11 @@
 		public bool IsActive { get; private set; } = false;
 		/// <summary> Gets the current line. </summary>
 		public ScriptLine CurrentLine => scriptDocument.CurrentLine;
-		private void Awake()
+		protected override void SingletonAwake()
 		{
 			foreach (string key in nextLineButtons)
 				playerInput.actions.FindAction(key, true).performed += context => NextLine().FreeBlockPath();
+			DontDestroyOnLoad(gameObject);
 		}
 
 		public void InitializeNewScript(string scriptPath = "")
@@ -103,18 +104,13 @@
 			string finalPath = string.IsNullOrWhiteSpace(scriptPath) ? StartupScriptPath : scriptPath;
 			var scriptFactory = new ScriptDocument.Factory(finalPath);
 			scriptFactory.AddNodeParserFunctionality(GetDefinedScriptNodes);
-			scriptFactory.AddNormalOperationsFunctionality(line =>
-			{
-				PlayVoiceActor(line);
-				DialogueSystem.Instance.Say(line.lineData);
-			});
 			scriptFactory.AddCommandFunctionality(SFXAudioController.Commands);
 			scriptFactory.AddCommandFunctionality(SceneManager.Commands);
 			//scriptFactory.AddCommandFunctionality(DialogueSystem.DialogueDelegateCommands);
 			scriptFactory.AddCommandFunctionality(ScriptHandler.Commands);
 			scriptFactory.AddCommandFunctionality(B1NARY.CharacterController.Commands);
 			scriptFactory.AddCommandFunctionality(TransitionManager.Commands);
-			scriptDocument = (ScriptDocument)scriptFactory;
+			scriptDocument = scriptFactory.Parse(false);
 			IsActive = true;
 		}
 		public void PlayVoiceActor(ScriptLine line)
@@ -135,6 +131,7 @@
 				return Task.FromResult(default(ScriptLine));
 			try
 			{
+				Debug.Log(scriptDocument.CurrentLine.ToString());
 				return Task.FromResult(scriptDocument.NextLine());
 			}
 			catch (IndexOutOfRangeException)

@@ -85,10 +85,9 @@
 		private void Awake()
 		{
 			m_activeAudioTrackers = new Dictionary<AudioClip, AudioTracker>();
-			SceneManager.SwitchedScenes.AddPersistentListener(PerScene);
-			PerScene();
+			SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(ReloadSoundLibrary);
 		}
-		private void PerScene()
+		private void ReloadSoundLibrary()
 		{
 			LoadSoundLibrary(baseResourcesPath + '/' + SceneManager.ActiveScene.name);
 		}

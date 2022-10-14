@@ -131,8 +131,8 @@
 		public string ScriptDocument => docPointer.Invoke();
 		// I know strings are stored on a heap, regardless of structs. But it would
 		// - help knowing multiple instances of the same document shares a pointer
-		// - to the same thing and just multiplying it over and over again.
-		private Func<string> docPointer; // scriptDocument;		
+		// - to the same thing and not just multiplying it over and over again.
+		private Func<string> docPointer; // scriptDocument;
 		/// <summary> The index where it appears in <see cref="ScriptDocument"/>. </summary>
 		public readonly int Index;
 		/// <summary> The type of line it detects which. </summary>

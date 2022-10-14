@@ -72,7 +72,7 @@
 			catch (NullReferenceException ex)
 			{
 				Debug.LogError($"BackgroundHandler '{animationName}' is not found in animation list"
-					+ $"of character '{PrefabName}' \n{ex}");
+					+ $"of character '{name}' \n{ex}");
 			}
 		}
 		public void ChangeExpression(string expressionName)
