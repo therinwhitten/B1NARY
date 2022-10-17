@@ -3,14 +3,18 @@
 	using UnityEngine;
 	using UI;
 
-	public sealed class MainMenuCommands : MonoBehaviour
+	public  class MainMenuCommands : MonoBehaviour 
 	{
-
 		// Buttons
 		public void NewGame()
 		{
 			SceneManager.Initialize();
 		}
-		public void Exit() => Application.Quit();
+		public void  QuitGame ()
+		{
+			Debug.Log("Quitting!");
+			Application.Quit();
+		}
+		
 	}
 }
