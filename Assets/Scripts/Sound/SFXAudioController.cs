@@ -7,9 +7,11 @@
 	using UnityEngine;
 	using System.Collections;
 	using B1NARY.Scripting.Experimental;
+	using System.Linq;
 
 	public sealed class SFXAudioController : Singleton<SFXAudioController>
 	{
+		
 		public const string baseResourcesPath = "Sounds/Sound Libraries";
 		
 		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
@@ -70,23 +72,49 @@
 				}
 			}),
 		};
-
+		/// <summary>
+		/// Determines where it would convert a simple string name into an actual
+		/// <see cref="CustomAudioClip"/>
+		/// </summary>
 		public SoundLibrary CurrentSoundLibrary { get; private set; }
 
-		public IReadOnlyDictionary<AudioClip, AudioTracker> ActiveAudioTrackers => m_activeAudioTrackers;
+		public IReadOnlyDictionary<(string name, int index), AudioTracker> ActiveAudioTrackers => m_activeAudioTrackers;
 
-		private Dictionary<AudioClip, AudioTracker> m_activeAudioTrackers;
-		private void AddAudioClipToDictionary(CustomAudioClip customAudioClip)
+		private Dictionary<(string name, int index), AudioTracker> m_activeAudioTrackers;
+		private (string name, int index) AddAudioClipToDictionary(CustomAudioClip customAudioClip)
 		{
-			m_activeAudioTrackers.Add(customAudioClip.clip, new AudioTracker(this));
-			m_activeAudioTrackers[customAudioClip.clip].FinishedPlaying += () => m_activeAudioTrackers.Remove(customAudioClip.clip);
+			int index = 0;
+			while (m_activeAudioTrackers.ContainsKey((customAudioClip.Name, index)))
+				index++;
+			m_activeAudioTrackers.Add((customAudioClip.Name, index), new AudioTracker());
+			return (customAudioClip.Name, index);
 		}
 
 		private void Awake()
 		{
-			m_activeAudioTrackers = new Dictionary<AudioClip, AudioTracker>();
+			m_activeAudioTrackers = new Dictionary<(string name, int index), AudioTracker>();
+			disposableCoroutines = new Dictionary<(string name, int index), IEnumerator>();
 			SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(ReloadSoundLibrary);
 		}
+
+		private Dictionary<(string name, int index), IEnumerator> disposableCoroutines;
+		private void Update()
+		{
+			KeyValuePair<(string name, int index), IEnumerator>[] coroutines =
+				disposableCoroutines.ToArray();
+			for (int i = 0; i < coroutines.Length; i++)
+			{
+				if (coroutines[i].Value.MoveNext())
+					continue;
+				disposableCoroutines.Remove(coroutines[i].Key);
+				if (m_activeAudioTrackers.TryGetValue(coroutines[i].Key, out var tracker))
+				{
+					tracker.Dispose();
+					m_activeAudioTrackers.Remove(coroutines[i].Key);
+				}
+			}
+		}
+		
 		private void ReloadSoundLibrary()
 		{
 			LoadSoundLibrary(baseResourcesPath + '/' + SceneManager.ActiveScene.name);
@@ -103,8 +131,8 @@
 				var enumerator = newSoundLibrary.PlayOnAwakeCommands.GetEnumerator();
 				while (enumerator.MoveNext())
 				{
-					AddAudioClipToDictionary(enumerator.Current);
-					m_activeAudioTrackers[enumerator.Current].PlaySingle(enumerator.Current);
+					var pairKey = AddAudioClipToDictionary(enumerator.Current);
+					disposableCoroutines.Add(pairKey, m_activeAudioTrackers[pairKey].PlaySingle(enumerator.Current));
 				}
 			}
 		}
@@ -112,22 +140,32 @@
 		public void PlaySound(string soundName)
 		{
 			CustomAudioClip audioClip = CurrentSoundLibrary.GetCustomAudioClip(CurrentSoundLibrary.GetAudioClip(soundName));
-			AddAudioClipToDictionary(audioClip);
-			m_activeAudioTrackers[audioClip].PlaySingle(audioClip);
+			var pairKey = AddAudioClipToDictionary(audioClip);
+			disposableCoroutines.Add(pairKey, m_activeAudioTrackers[pairKey].PlaySingle(audioClip));
 		}
 		public void PlaySound(string soundName, float fadeIn)
 		{
 			CustomAudioClip audioClip = CurrentSoundLibrary.GetCustomAudioClip(CurrentSoundLibrary.GetAudioClip(soundName));
-			AddAudioClipToDictionary(audioClip);
-			m_activeAudioTrackers[audioClip].PlaySingle(audioClip, fadeIn);
+			var pairKey = AddAudioClipToDictionary(audioClip);
+			disposableCoroutines.Add(pairKey, m_activeAudioTrackers[pairKey].PlaySingle(audioClip, fadeIn));
 		}
 		public void StopSound(string soundName)
 		{
-			m_activeAudioTrackers[CurrentSoundLibrary.GetAudioClip(soundName)].Stop();
+			var exampleClip = new CustomAudioClip(CurrentSoundLibrary.GetAudioClip(soundName));
+			IEnumerable<(string name, int index)> items = m_activeAudioTrackers.Keys.Where(pair => exampleClip.Name == pair.name);
+			if (items.Count() == 1)
+				m_activeAudioTrackers[items.Single()].Stop();
+			Debug.Log($"Stopping multiple sounds with '{exampleClip.Name}'");
+			Array.ForEach(items.ToArray(), pair => m_activeAudioTrackers[pair].Stop());
 		}
 		public void StopSound(string soundName, float fadeOut)
 		{
-			m_activeAudioTrackers[CurrentSoundLibrary.GetAudioClip(soundName)].Stop(fadeOut);
+			var exampleClip = new CustomAudioClip(CurrentSoundLibrary.GetAudioClip(soundName));
+			IEnumerable<(string name, int index)> items = m_activeAudioTrackers.Keys.Where(pair => exampleClip.Name == pair.name);
+			if (items.Count() == 1)
+				m_activeAudioTrackers[items.Single()].Stop(fadeOut);
+			Debug.Log($"Stopping multiple sounds with '{exampleClip.Name}'");
+			Array.ForEach(items.ToArray(), pair => m_activeAudioTrackers[pair].Stop(fadeOut));
 		}
 
 		private AudioSource oneShotAudioSource;

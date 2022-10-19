@@ -6,16 +6,48 @@
 	using System.Collections.Generic;
 	using UnityEngine;
 	using System.Linq;
+	using B1NARY.UI;
+	using B1NARY.Scripting.Experimental;
 
 	public sealed class CharacterController : Singleton<CharacterController>
 	{
 		public const string prefabsPath = "Characters/Prefabs/";
 		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
-			["spawnchar"] = (Action<string, string, string>)((prefabName, positionRaw, characterName) =>
+			["spawnchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
-				Instance.InitiateCharacter(prefabName, positionRaw, characterName);
+				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName))
+					return;
+				if (Instance.SummonCharacter(gameObjectName, positionRaw, characterName))
+				{
+					Debug.LogWarning($"GameObject or Character named '{gameObjectName}'" +
+						" is not found in the scene, trying to summmon in Resources Folder " +
+						$"'{prefabsPath}{gameObjectName}'.\nKeep in mind summoning a " +
+						"character takes alot of processing power! use command " +
+						"'summonchar' to explicitly say to get it from a prefab!");
+					return;
+				}
+				throw new MissingReferenceException("GameObject or Character " +
+					$"named '{gameObjectName}' is not found as prefab in " +
+					$"Resources Folder '{prefabsPath}{gameObjectName}', nor found" +
+					"in the scene!");
 			}),
+			["initiatechar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
+			{
+				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName))
+					return;
+				throw new MissingReferenceException("GameObject or Character " +
+					$"named '{gameObjectName}' is not found in the scene!");
+			}),
+			["summonchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
+			{
+				if (Instance.SummonCharacter(gameObjectName, positionRaw, characterName))
+					return;
+				throw new MissingReferenceException("GameObject or Character " +
+					$"named '{gameObjectName}' is not found as prefab in " +
+					$"Resources Folder '{prefabsPath}{gameObjectName}'!");
+			}),
+
 			["anim"] = (Action<string, string>)((characterName, animationName) =>
 			{
 				Instance.charactersInScene[characterName].characterScript.PlayAnimation(animationName);
@@ -45,6 +77,7 @@
 		{
 			var pair = charactersInScene[oldKey];
 			charactersInScene.Remove(oldKey);
+			pair.gameObject.name = newKey;
 			charactersInScene.Add(newKey, pair);
 		}
 
@@ -53,43 +86,50 @@
 		{
 			charLayerTransform = characterLayer.transform;
 		}
-
-		public KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)>
-			InitiateCharacter(string prefabName, string positionRaw, string charName = "")
+		public void PlayVoiceActor(ScriptLine speechLine)
 		{
-			// Retrieving Character from current scene
-			Dictionary<string, CharacterScript> characterScripts = FindObjectsOfType<CharacterScript>()
-				.ToDictionary(@char => @char.PrefabName);
-			if (charactersInScene.TryGetValue(prefabName, out var pair))
-			{
-				if (charactersInScene[prefabName].gameObject.activeSelf)
-					throw new Exception();
-				charactersInScene[prefabName].gameObject.SetActive(true);
-				charactersInScene[prefabName].characterScript.SetPositionOverTime(
-					new Vector2(charactersInScene[prefabName].gameObject.transform.position.x, float.Parse(positionRaw)), 1f, true);
-				return new KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)>(prefabName, pair);
-			}
-			// 'Summoning' the Character
-			return SummonCharacter(prefabName, positionRaw, charName);
+			string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
+			if (charactersInScene.TryGetValue(currentSpeaker, out var charObject))
+				charObject.characterScript.SayLine(speechLine);
+			else
+				Debug.LogError($"Character '{currentSpeaker}' does not exist!");
 		}
 
-		public KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)> 
-			SummonCharacter(string prefabName, string positionRaw, string charName = "")
+		public bool InitiateCharacter(string gameObjectName, string positionRaw, string characterName)
+			=> InitiateCharacter(gameObjectName, float.Parse(positionRaw), characterName);
+		public bool InitiateCharacter(string gameObjectName, float xPosition, string characterName = "")
 		{
-			Debug.LogWarning("Spawning a character is costly on performance, make sure to have them in the scene beforehand!", this);
-			GameObject output = Resources.Load<GameObject>(prefabsPath + prefabName);
-			if (output == null)
-				throw new FileNotFoundException($"character prefab '{prefabName}'" +
-					$" is not found in {prefabsPath}{prefabName}!", 
-					Application.streamingAssetsPath + prefabsPath + prefabName);
-			output = Instantiate(output, charLayerTransform);
-			string outputName = string.IsNullOrEmpty(charName) ? prefabName : charName;
-			output.SetActive(true);
-			if (!output.TryGetComponent<CharacterScript>(out var script))
-				Debug.LogError("Bruh you drunk bro uwu", this);
-			charactersInScene.Add(outputName, (output, script));
-			return new KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)>
-				(outputName, (output, script));
+			Transform charTransform = charLayerTransform.Find(gameObjectName);
+			if (charTransform == null)
+				return false;
+			CharacterScript script = charTransform.GetComponent<CharacterScript>();
+			InitiateCharacter(script.gameObject, script, xPosition, characterName);
+			return true;
+		}
+		private void InitiateCharacter(GameObject @object, CharacterScript script, float xPosition, string characterName)
+		{
+			@object.SetActive(true);
+			script.CharacterName = ModifyGameObjectName(@object.name, characterName);
+			charactersInScene.Add(script.CharacterName, (@object, script));
+		}
+		public bool SummonCharacter(string gameObjectName, string positionRaw, string characterName)
+			=> SummonCharacter(gameObjectName, float.Parse(positionRaw), characterName);
+		public bool SummonCharacter(string gameObjectName, float xPosition, string characterName = "")
+		{
+			GameObject gameObject = Resources.Load<GameObject>(prefabsPath + gameObjectName);
+			if (gameObject == null)
+				return false;
+			if (!gameObject.TryGetComponent<CharacterScript>(out var characterScript))
+				return false;
+			InitiateCharacter(gameObject, characterScript, xPosition, characterName);
+			return true;
+		}
+
+		private string ModifyGameObjectName(string gameObjectName, string characterName)
+		{
+			if (string.IsNullOrWhiteSpace(characterName))
+				return gameObjectName;
+			return characterName;
 		}
 
 		public void ClearAllCharacters()

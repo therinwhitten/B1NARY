@@ -8,7 +8,7 @@
 
 	public sealed class IfBlock : ScriptNode
 	{
-		public IfBlock(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines) : base(parseLine, subLines)
+		public IfBlock(ScriptDocument scriptDocument, ScriptPair[] subLines) : base(scriptDocument, subLines)
 		{
 
 		}
@@ -19,7 +19,7 @@
 		{
 			get // {if: Name, Bool}
 			{
-				string[] arguments = ScriptLine.CastCommand(rootLine).arguments;
+				string[] arguments = ((Command)rootLine).arguments;
 				bool canPerform = bool.Parse(arguments[1]);
 				if (PersistentData.bools.TryGetValue(arguments[0], out bool value))
 					canPerform = value;

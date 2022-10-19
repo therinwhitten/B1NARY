@@ -27,7 +27,6 @@
 				else
 					throw new InvalidCastException(boolRaw);
 				Instance.scriptDocument.AdditiveEnabled = setting;
-				DialogueSystem.Instance.additiveTextEnabled = setting;
 			}),
 			["changescript"] = (Action<string>)(scriptPath =>
 			{
@@ -47,17 +46,17 @@
 				}).FreeBlockPath();
 			}),
 		};
-		public static ScriptNode GetDefinedScriptNodes(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines)
+		public static ScriptNode GetDefinedScriptNodes(ScriptDocument document, ScriptPair[] subLines)
 		{
 			if (subLines.First().LineType != ScriptLine.Type.Command)
 				return null;
-			string command = ScriptLine.CastCommand(subLines.First().scriptLine).command;
+			string command = ((Command)subLines.First().scriptLine).command;
 			switch (command.Trim().ToLower())
 			{
 				case "if":
-					return new IfBlock(parseLine, subLines);
+					return new IfBlock(document, subLines);
 				case "choice":
-					return new ChoiceBlock(parseLine, subLines);
+					return new ChoiceBlock(document, subLines);
 			}
 			return null;
 		}
@@ -95,7 +94,7 @@
 		protected override void SingletonAwake()
 		{
 			foreach (string key in nextLineButtons)
-				playerInput.actions.FindAction(key, true).performed += context => NextLine().FreeBlockPath();
+				playerInput.actions.FindAction(key, true).performed += context => NextLine();
 			DontDestroyOnLoad(gameObject);
 		}
 
@@ -106,7 +105,6 @@
 			scriptFactory.AddNodeParserFunctionality(GetDefinedScriptNodes);
 			scriptFactory.AddCommandFunctionality(SFXAudioController.Commands);
 			scriptFactory.AddCommandFunctionality(SceneManager.Commands);
-			//scriptFactory.AddCommandFunctionality(DialogueSystem.DialogueDelegateCommands);
 			scriptFactory.AddCommandFunctionality(ScriptHandler.Commands);
 			scriptFactory.AddCommandFunctionality(B1NARY.CharacterController.Commands);
 			scriptFactory.AddCommandFunctionality(TransitionManager.Commands);
@@ -125,14 +123,13 @@
 		/// Plays lines until it hits a normal dialogue or similar.
 		/// </summary>
 		/// <returns> The <see cref="ScriptLine"/> it stopped at. </returns>
-		public Task<ScriptLine> NextLine()
+		public ScriptLine NextLine()
 		{
 			if (ShouldPause || scriptDocument == null)
-				return Task.FromResult(default(ScriptLine));
+				return default;
 			try
 			{
-				Debug.Log(scriptDocument.CurrentLine.ToString());
-				return Task.FromResult(scriptDocument.NextLine());
+				return scriptDocument.NextLine();
 			}
 			catch (IndexOutOfRangeException)
 			{
@@ -140,10 +137,5 @@
 				throw;
 			}
 		}
-	}
-
-	public interface IScriptCommands
-	{
-		IEnumerable<KeyValuePair<string, Delegate>> Commands { get; }
 	}
 }

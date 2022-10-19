@@ -9,6 +9,7 @@
 	public class DialogueSystemEditor : Editor
 	{
 		private DialogueSystem dialogueSystem;
+		private CoroutineWrapper coroutineWrapper;
 		private void Awake()
 		{
 			dialogueSystem = (DialogueSystem)target;
@@ -41,7 +42,8 @@
 				$"\nExpected result: {message}");
 			dialogueSystem.CurrentSpeaker = speaker;
 			dialogueSystem.Say(message.Replace("{0}", speaker));
-			await dialogueSystem.SpeakingTask;
+
+
 			Debug.Log("Testing completed and reached to end.");
 		}
 	}

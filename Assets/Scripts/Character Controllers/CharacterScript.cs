@@ -17,9 +17,9 @@
 		private Transform m_transform;
 		public VoiceActorHandler VoiceActorHandler { get; private set; }
 		public CubismExpressionController expressionController;
-		public string PrefabName { get; set; }
 		public string CurrentAnimation => animator.GetCurrentAnimatorClipInfo(0).Single().clip.name;
 		public string CurrentExpression => expressionController.ExpressionsList.CubismExpressionObjects[expressionController.CurrentExpressionIndex].name;
+		public string CharacterName { get => gameObject.name; set => gameObject.name = value; }
 		public Vector2 Position 
 		{ 
 			get => m_transform.position;
@@ -56,10 +56,11 @@
 
 		protected override void MultitonAwake()
 		{
-			PrefabName = name;
 			m_transform = transform;
 			animator = GetComponent<Animator>();
 			VoiceActorHandler = new VoiceActorHandler(gameObject);
+			if (string.IsNullOrEmpty(CharacterName))
+				CharacterName = gameObject.name;
 		}
 
 		public void PlayAnimation(string animationName)
@@ -83,7 +84,7 @@
 			if (expressionIndex == -1)
 			{
 				Debug.LogException(new IndexOutOfRangeException($"'{expressionName}' " +
-					$"is not an expression listed in the expressions of {PrefabName}!"), gameObject);
+					$"is not an expression listed in the expressions of {name}!"), gameObject);
 				return;
 			}
 			expressionController.CurrentExpressionIndex = expressionIndex;

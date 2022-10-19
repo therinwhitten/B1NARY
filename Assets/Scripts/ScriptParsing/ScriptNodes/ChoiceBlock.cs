@@ -13,7 +13,7 @@
 	{
 		private Dictionary<string, ScriptNode> choices;
 
-		public ChoiceBlock(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines) : base(parseLine, subLines)
+		public ChoiceBlock(ScriptDocument scriptDocument, ScriptPair[] subLines) : base(scriptDocument, subLines)
 		{
 			choices = (
 				from pair in subLines 

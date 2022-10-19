@@ -9,7 +9,7 @@
 	using System.Threading.Tasks;
 	using UnityEngine;
 	
-	public delegate ScriptNode ScriptNodeParser(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines);
+	public delegate ScriptNode ScriptNodeParser(ScriptDocument document, ScriptPair[] subLines);
 	/// <summary>
 	/// A block of <see cref="ScriptLine"/>s that is run over time via 
 	/// <see cref="Perform"/>
@@ -37,10 +37,10 @@
 		/// The data stored for the sub-block
 		/// </summary>
 		protected ScriptPair[] subLines;
-		protected readonly Func<ScriptLine, bool> parseLine;
-		public ScriptNode(Func<ScriptLine, bool> parseLine, ScriptPair[] subLines)
+		private ScriptDocument document;
+		public ScriptNode(ScriptDocument document, ScriptPair[] subLines)
 		{
-			this.parseLine = parseLine;
+			this.document = document;
 			lineLength = subLines.Length;
 			rootLine = subLines.First().scriptLine;
 			this.subLines = subLines.Skip(1).ToArray();
@@ -54,7 +54,7 @@
 			// i as 1 to skip the bracket, length - 1 for the same.
 			for (int i = 1; i < subLines.Length - 1; i++)
 			{
-				Debug.Log(subLines[i].scriptLine.Index);
+				Debug.Log(subLines[i].scriptLine);
 				if (subLines[i].HasScriptNode)
 				{
 					IEnumerator<ScriptLine> subNode = subLines[i].scriptNode.Perform(pauseOnCommands);
@@ -66,9 +66,12 @@
 				bool forceBlock = false;
 				try
 				{
-					string command = ScriptLine.CastCommand(subLines[i].scriptLine).command;
-					forceBlock = SceneManager.Commands.ContainsKey(command);
-					canFreelyPass = parseLine.Invoke(subLines[i].scriptLine);
+					if (subLines[i].scriptLine.type == ScriptLine.Type.Command)
+					{
+						string command = ((Command)subLines[i].scriptLine).command;
+						forceBlock = SceneManager.Commands.ContainsKey(command);
+					}
+					canFreelyPass = document.ParseLine(subLines[i].scriptLine);
 				}
 				catch (Exception ex) when (!ex.Message.Contains("Managed to hit a intentation"))
 				{

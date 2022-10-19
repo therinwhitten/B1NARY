@@ -12,6 +12,7 @@
 
 	public sealed class ScriptDocument
 	{
+		
 		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
 		{ "on", "true", "enable" };
 		public static readonly HashSet<string> disabledHashset = new HashSet<string>()
@@ -58,7 +59,6 @@
 			// It should constantly move to other scripts to prevent this from happening.
 			throw new IndexOutOfRangeException($"{nameof(ScriptDocument)} has reached to end of scriptName.");
 		}
-
 		/// <summary>
 		/// Parses the line to do various things. Commands to interact with the
 		/// scene with the scriptName, emotions to show emotes to the current speaker,
@@ -73,7 +73,7 @@
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
-					PlayVoiceActor(line);
+					B1NARY.CharacterController.Instance.PlayVoiceActor(line);
 					DialogueSystem.Instance.Say(line.lineData);
 					return false;
 				case ScriptLine.Type.Emotion:
@@ -85,27 +85,9 @@
 					DialogueSystem.Instance.CurrentSpeaker = speaker;
 					return true;
 				case ScriptLine.Type.Command:
-					var (command, arguments) = ScriptLine.CastCommand(line);
-					if (commands.Contains(command) == false)
-					{
-						var exceptionBuilder = new StringBuilder($"{line} does not have a command for it!");
-						if (arguments.Any())
-						{
-							exceptionBuilder.Append("\n Arguments: ");
-							foreach (string argument in arguments)
-								exceptionBuilder.Append($"{argument}, ");
-						}
-						throw new MissingMethodException(exceptionBuilder.ToString().TrimEnd(',', ' '));
-					}
-					IEnumerator<Delegate> commandsPacket = commands[command].GetEnumerator();
-					while (commandsPacket.MoveNext())
-						try 
-						{
-							commandsPacket.Current.DynamicInvoke(arguments); 
-							return true;
-						}
-						catch (ArgumentException ex) when (ex.Message.Contains("cannot be converted to type")) { }
-					throw new MissingMethodException($"'{command}' does not lead to a valid command!");
+					Command command = (Command)line;
+					command.Invoke(commands);
+					return true;
 				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:
@@ -117,16 +99,11 @@
 					Debug.LogError($"There seems to be an enum as '{line.type}' that is not part of the switch command case. Skipping.");
 					return true;
 			}
-
-			void PlayVoiceActor(ScriptLine speechLine)
-			{
-				string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
-				if (B1NARY.CharacterController.Instance.charactersInScene.TryGetValue(currentSpeaker, out var charObject))
-					charObject.characterScript.SayLine(speechLine);
-				else
-					Debug.LogError($"Character '{currentSpeaker}' does not exist!");
-			}
 		}
+
+
+
+
 
 
 		//*-------------- FACTORY ----------------*//
@@ -211,7 +188,7 @@
 						.Take(endIndex - startIndex + 1)
 						.ToArray();
 					list[startIndex] = new ScriptPair(list[startIndex].scriptLine,
-						ParseNode(output.ParseLine, subArray));
+						ParseNode(output, subArray));
 				}
 				// Messing with the baseline entry scriptnode code.
 				list.InsertRange(0, new ScriptPair[]
@@ -220,20 +197,20 @@
 					(ScriptPair)new ScriptLine("{", () => documentName, 0)
 				});
 				list.Add((ScriptPair)new ScriptLine("::End", () => documentName, list.Count));
-				output.data = new ScriptNode(output.ParseLine, list.ToArray()).Perform(pauseOnCommand);
+				output.data = new ScriptNode(output, list.ToArray()).Perform(pauseOnCommand);
 				return output;
 
 			}
 
-			private ScriptNode ParseNode(Func<ScriptLine, bool> parseLine, ScriptPair[] subValues)
+			private ScriptNode ParseNode(ScriptDocument document, ScriptPair[] subValues)
 			{
 				for (int i = 0; i < scriptNodeParsers.Count; i++)
 				{
-					ScriptNode node = scriptNodeParsers[i].Invoke(parseLine, subValues);
+					ScriptNode node = scriptNodeParsers[i].Invoke(document, subValues);
 					if (node != null)
 						return node;
 				}
-				return new ScriptNode(parseLine, subValues);
+				return new ScriptNode(document, subValues);
 			}
 		}
 

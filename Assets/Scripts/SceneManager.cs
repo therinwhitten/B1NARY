@@ -47,11 +47,11 @@
 			SwitchingScenes.Invoke();
 			UnitySceneManager.LoadScene(sceneName);
 			StartCoroutine(AfterLoadTask());
-			//SwitchedScenes.Invoke();
+			SwitchedScenes.Invoke();
 			IEnumerator AfterLoadTask()
 			{
 				yield return new WaitForFixedUpdate();
-				ScriptHandler.Instance.NextLine().Wait();
+				ScriptHandler.Instance.NextLine(); 
 			}
 		}
 		/// <summary>
@@ -62,7 +62,7 @@
 		public static void Initialize()
 		{
 			ScriptHandler.Instance.InitializeNewScript();
-			ScriptHandler.Instance.NextLine().FreeBlockPath();
+			ScriptHandler.Instance.NextLine();
 		}
 
 		private async Task FadeScene()
