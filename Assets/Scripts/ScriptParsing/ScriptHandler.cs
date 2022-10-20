@@ -111,14 +111,6 @@
 			scriptDocument = scriptFactory.Parse(false);
 			IsActive = true;
 		}
-		public void PlayVoiceActor(ScriptLine line)
-		{
-			string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
-			if (B1NARY.CharacterController.Instance.charactersInScene.TryGetValue(currentSpeaker, out var charObject))
-				charObject.characterScript.SayLine(line);
-			else
-				Debug.LogError($"Character '{currentSpeaker}' does not exist!");
-		}
 		/// <summary>
 		/// Plays lines until it hits a normal dialogue or similar.
 		/// </summary>

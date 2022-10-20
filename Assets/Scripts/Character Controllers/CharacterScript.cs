@@ -11,7 +11,7 @@
 	using UnityEngine;
 
 	[RequireComponent(typeof(Animator))]
-	public sealed class CharacterScript : Multiton<CharacterScript>
+	public sealed class CharacterScript : Multiton<CharacterScript>, ICharacterController
 	{
 		private Animator animator;
 		private Transform m_transform;
@@ -30,7 +30,7 @@
 			=> Position = newPosition;
 		public void SetPosition(float xCoord)
 			=> Position = new Vector2(xCoord, Position.y);
-		public void SetPositionOverTime(Vector2 newPosition, float time, bool smooth)
+		public void SetPositionOverTime(float newXPosition, float time, bool smooth)
 		{
 			if (smooth)
 				StartCoroutine(SmoothPosChanger());
@@ -38,11 +38,11 @@
 				StartCoroutine(StaticPosChanger());
 			IEnumerator SmoothPosChanger()
 			{
-				var acceptableRect = new Rect(newPosition, new Vector2(0.1f, 0.1f));
+				var acceptableRect = new Rect(new Vector2(newXPosition, 0f), new Vector2(0.1f, 1000f));
 				Vector2 velocity = Vector2.zero;
 				while (acceptableRect.Contains(m_transform.position) == false)
 				{
-					m_transform.position = Vector2.SmoothDamp(m_transform.position, newPosition, ref velocity, Time.deltaTime / time);
+					m_transform.position = Vector2.SmoothDamp(m_transform.position, acceptableRect.position, ref velocity, Time.deltaTime / time);
 					yield return new WaitForEndOfFrame();
 				}
 				Debug.Log("Finished smooth transfer");

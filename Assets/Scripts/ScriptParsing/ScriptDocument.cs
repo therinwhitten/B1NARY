@@ -73,8 +73,10 @@
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
-					B1NARY.CharacterController.Instance.PlayVoiceActor(line);
-					DialogueSystem.Instance.Say(line.lineData);
+					if (B1NARY.CharacterController.Instance.charactersInScene.TryGetValue(DialogueSystem.Instance.CurrentSpeaker, out var pair))
+						pair.characterScript.SayLine(line);
+					else
+						throw new MissingMemberException($"Character '{DialogueSystem.Instance.CurrentSpeaker}' couldn't be played to say anthing!");
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);
