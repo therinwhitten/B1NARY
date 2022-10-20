@@ -90,7 +90,7 @@ namespace B1NARY.Audio
 				if (_stringLink == null)
 				{
 					int i = -1;
-					_stringLink = customAudioClips.ToDictionary(clip => clip.Name, input => { i++; return i; });
+					_stringLink = customAudioClips.ToDictionary(clip => clip.Name.ToLower(), input => { i++; return i; });
 				}
 				return _stringLink;
 			}

@@ -48,10 +48,10 @@
 
 		protected override void SingletonAwake()
 		{
-			SceneManager.SwitchedScenes.AddPersistentListener(PerScene);
-			PerScene();
+			SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(UpdateBackgroundHandler);
+			UpdateBackgroundHandler();
 		}
-		private void PerScene()
+		private void UpdateBackgroundHandler()
 		{
 			m_backgroundHandler = new BackgroundHandler(BGCanvasName);
 		}
@@ -83,7 +83,7 @@
 
 		private void OnDestroy()
 		{
-			SceneManager.SwitchedScenes.RemovePersistentListener(PerScene);
+			SceneManager.InstanceOrDefault.SwitchedScenes.RemovePersistentListener(UpdateBackgroundHandler);
 		}
 
 		[Serializable]

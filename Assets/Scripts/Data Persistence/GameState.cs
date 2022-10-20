@@ -22,6 +22,12 @@ namespace B1NARY.DataPersistence
 				return new BinaryFormatter().Deserialize(stream) as GameState;
 		}
 
+		#region About
+		public TimeSpan timePlayed;
+		public DateTime lastSaved;
+		#endregion
+
+
 		public Dictionary<string, string> strings;
 		public Dictionary<string, bool> bools;
 		public Dictionary<string, int> ints;
@@ -37,9 +43,9 @@ namespace B1NARY.DataPersistence
 		public GameState()
 		{
 			// Additive
-			additiveTextEnabled = DialogueSystem.Instance.additiveTextEnabled;
+			additiveTextEnabled = DialogueSystem.Instance.AdditiveTextEnabled;
 			if (additiveTextEnabled)
-				textBoxContent = DialogueSystem.Instance.SpeakingTask.Result;
+				textBoxContent = DialogueSystem.Instance.CurrentText;
 			else
 				textBoxContent = string.Empty;
 
@@ -90,7 +96,7 @@ namespace B1NARY.DataPersistence
 			ApplyDictionaries();
 			ScriptHandler.Instance.InitializeNewScript(scriptName);
 			while (ScriptHandler.Instance.CurrentLine != expectedScriptLine)
-				ScriptHandler.Instance.NextLine().Wait();
+				ScriptHandler.Instance.NextLine();
 			//LoadAudio(audioSounds);
 			Debug.Log("Loaded game!");
 			return Task.CompletedTask;
@@ -122,9 +128,9 @@ namespace B1NARY.DataPersistence
 			}
 			void LoadDialogue()
 			{
-				DialogueSystem.Instance.additiveTextEnabled = false;
+				DialogueSystem.Instance.AdditiveTextEnabled = false;
 				DialogueSystem.Instance.Say(string.Empty);
-				DialogueSystem.Instance.additiveTextEnabled = additiveTextEnabled;
+				DialogueSystem.Instance.AdditiveTextEnabled = additiveTextEnabled;
 			}
 			/*
 			void LoadAudio(AudioData[] audioSounds)

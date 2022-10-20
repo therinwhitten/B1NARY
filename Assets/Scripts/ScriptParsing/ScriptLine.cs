@@ -1,6 +1,7 @@
 ﻿namespace B1NARY.Scripting.Experimental
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text.RegularExpressions;
 
@@ -84,12 +85,15 @@
 		/// <param name="line">The line to parse.</param>
 		/// <returns>Command with arguments.</returns>
 		/// <exception cref="InvalidCastException">'{line}' is not a command!</exception>
-		public static (string command, string[] arguments) CastCommand(ScriptLine line)
+		public static bool TryCastCommand(ScriptLine line, out Command command)
 		{
 			if (line.type != Type.Command)
-				throw new InvalidCastException($"'{line}' is not a command!");
-			string[] dataArray = line.lineData.Trim('{', '}').Split(':', ',');
-			return (dataArray.First().Trim().ToLower(), dataArray.Skip(1).Select(str => str.Trim()).ToArray());
+			{
+				command = default;
+				return false;
+			}
+			command = (Command)line;
+			return true; 
 		}
 		/// <summary>
 		/// Casts the current <see cref="ScriptLine"/> as an emotion value, trimmed.
@@ -131,8 +135,8 @@
 		public string ScriptDocument => docPointer.Invoke();
 		// I know strings are stored on a heap, regardless of structs. But it would
 		// - help knowing multiple instances of the same document shares a pointer
-		// - to the same thing and just multiplying it over and over again.
-		private Func<string> docPointer; // scriptDocument;		
+		// - to the same thing and not just multiplying it over and over again.
+		private Func<string> docPointer; // scriptDocument;
 		/// <summary> The index where it appears in <see cref="ScriptDocument"/>. </summary>
 		public readonly int Index;
 		/// <summary> The type of line it detects which. </summary>
@@ -179,6 +183,68 @@
 				return this == line;
 			return base.Equals(obj);
 		}
-		public override string ToString() => $"{type}.{Index}\t: {lineData}";
+		public override string ToString() => $"{type}\t{Index}: {lineData}";
+
+		internal static object TryCastCommand(ScriptLine scriptLine)
+		{
+			throw new NotImplementedException();
+		}
+	}
+
+	public struct Command
+	{
+		public static explicit operator Command(ScriptLine line)
+		{
+			if (line.type != ScriptLine.Type.Command)
+				throw new InvalidCastException($"'{line.type}' is not a command!");
+			string[] dataArray = line.lineData.Trim('{', '}').Split(':', ',');
+			return new Command(dataArray.First().Trim().ToLower(),
+				dataArray.Skip(1).Select(str => str.Trim()).ToArray());
+		}
+
+		/// <summary>
+		/// The command itself, this is automatically trimmed and lowered.
+		/// </summary>
+		public readonly string command;
+		/// <summary>
+		/// The arguments of the command, there can be none or some. These are
+		/// trimmed, but not lowered.
+		/// </summary>
+		public readonly string[] arguments;
+
+		public Command(string command, string[] arguments)
+		{
+			this.command = command.ToLower();
+			this.arguments = arguments.Select(str => str.Trim()).ToArray();
+		}
+
+		public bool TryInvoke(Lookup<string, Delegate> commands)
+		{
+			if (!commands.Contains(command))
+				return false;
+			IEnumerator<Delegate> delegates = commands[command].GetEnumerator();
+			while (delegates.MoveNext())
+				if (delegates.Current.Method.GetParameters().Length == arguments.Length)
+				{
+					delegates.Current.DynamicInvoke(arguments);
+					return true;
+				}
+			return false;
+		}
+		public void Invoke(Lookup<string, Delegate> commands)
+		{
+			if (TryInvoke(commands))
+				return;
+			if (!commands.Contains(command))
+				throw new MissingMethodException($"'{command}' is not located" +
+					" in the the lookup command list!");
+			throw new ArgumentOutOfRangeException("arguments of " +
+				$"{arguments.Length} is not found accessible in the " +
+				"lookup command list!");
+		}
+
+		public override string ToString() => arguments.Length > 0 
+			? $"{{{command}: {string.Join(", ", arguments)}}}"
+			: $"{{{command}}}";
 	}
 }

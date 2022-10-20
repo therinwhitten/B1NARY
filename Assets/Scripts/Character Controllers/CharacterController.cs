@@ -6,19 +6,65 @@
 	using System.Collections.Generic;
 	using UnityEngine;
 	using System.Linq;
+	using B1NARY.UI;
+	using B1NARY.Scripting.Experimental;
 
 	public sealed class CharacterController : Singleton<CharacterController>
 	{
+		/// <summary>
+		/// The preset path for using <see cref="Resources.Load(string)"/> to 
+		/// easily load in characters.
+		/// </summary>
 		public const string prefabsPath = "Characters/Prefabs/";
+
+		/// <summary>
+		/// Commands for <see cref="ScriptHandler"/>.
+		/// </summary>
 		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
-			["spawnchar"] = (Action<string, string, string>)((prefabName, positionRaw, characterName) =>
+
+			["spawnchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
-				Instance.InitiateCharacter(prefabName, positionRaw, characterName);
+				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName))
+					return;
+				if (Instance.SummonCharacter(gameObjectName, positionRaw, characterName))
+				{
+					Debug.LogWarning($"GameObject or Character named '{gameObjectName}'" +
+						" is not found in the scene, trying to summmon in Resources Folder " +
+						$"'{prefabsPath}{gameObjectName}'.\nKeep in mind summoning a " +
+						"character takes alot of processing power! use command " +
+						"'summonchar' to explicitly say to get it from a prefab!");
+					return;
+				}
+				throw new MissingReferenceException("GameObject or Character " +
+					$"named '{gameObjectName}' is not found as prefab in " +
+					$"Resources Folder '{prefabsPath}{gameObjectName}', nor found" +
+					"in the scene!");
 			}),
+			["initiatechar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
+			{
+				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName))
+					return;
+				throw new MissingReferenceException("GameObject or Character " +
+					$"named '{gameObjectName}' is not found in the scene!");
+			}),
+			["summonchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
+			{
+				if (Instance.SummonCharacter(gameObjectName, positionRaw, characterName))
+					return;
+				throw new MissingReferenceException("GameObject or Character " +
+					$"named '{gameObjectName}' is not found as prefab in " +
+					$"Resources Folder '{prefabsPath}{gameObjectName}'!");
+			}),
+			["spawnempty"] = (Action<string>)(characterName =>
+			{
+				var pair = EmptyController.Instantiate(Instance.transform, characterName);
+				Instance.charactersInScene.Add(characterName, pair);
+			}),
+
 			["anim"] = (Action<string, string>)((characterName, animationName) =>
 			{
-				Instance.charactersInScene[characterName].characterScript.PlayAnimation(animationName);
+				Instance. charactersInScene[characterName].characterScript.PlayAnimation(animationName);
 			}),
 			["movechar"] = (Action<string, string>)((characterName, positionRaw) =>
 			{
@@ -39,72 +85,141 @@
 		[SerializeField] private Canvas characterLayer;
 		private Transform charLayerTransform;
 
-		public Dictionary<string, (GameObject gameObject, CharacterScript characterScript)> charactersInScene =
-			new Dictionary<string, (GameObject gameObject, CharacterScript characterScript)>(5);
+
+		public Dictionary<string, (GameObject gameObject, ICharacterController characterScript)> charactersInScene =
+			new Dictionary<string, (GameObject gameObject, ICharacterController characterScript)>(5);
+
+		/// <summary>
+		/// Modifies a character name for <see cref="charactersInScene"/>.
+		/// </summary>
+		/// <param name="oldKey"> The current name to change. </param>
+		/// <param name="newKey"> The new name. </param>
 		public void ChangeName(string oldKey, string newKey)
 		{
 			var pair = charactersInScene[oldKey];
 			charactersInScene.Remove(oldKey);
+			pair.gameObject.name = newKey;
 			charactersInScene.Add(newKey, pair);
 		}
 
 
 		protected override void SingletonAwake()
 		{
-			DontDestroyOnLoad(characterLayer);
 			charLayerTransform = characterLayer.transform;
 		}
 
-		public KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)>
-			InitiateCharacter(string name, string positionRaw, string charName = "")
-		{
-			// Retrieving Character from current scene
-			Dictionary<string, CharacterScript> characterScripts = FindObjectsOfType<CharacterScript>()
-				.ToDictionary(@char => @char.PrefabName);
-			if (charactersInScene.TryGetValue(name, out var pair))
-			{
-				if (charactersInScene[name].gameObject.activeSelf)
-					throw new Exception();
-				charactersInScene[name].gameObject.SetActive(true);
-				charactersInScene[name].characterScript.SetPositionOverTime(
-					new Vector2(charactersInScene[name].gameObject.transform.position.x, float.Parse(positionRaw)), 1f, true);
-				return new KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)>(name, pair);
-			}
+		///// <summary>
+		/// Plays a voice line from a index that is brought to the current speaker
+		/// in <see cref="DialogueSystem.CurrentSpeaker"/>.
+		/// </summary>
+		/// <param name="speechLine">The voiceline source.</param>
+		//public void PlayVoiceActor(ScriptLine speechLine)
+		//{
+		//	string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
+		//	if (charactersInScene.TryGetValue(currentSpeaker, out var charObject))
+		//		charObject.characterScript.SayLine(speechLine);
+		//	else
+		//		Debug.LogError($"Character '{currentSpeaker}' does not exist!");
+		//}
 
-			// 'Summoning' the Character
-			return SummonCharacter(name, positionRaw, charName);
+		/// <summary>
+		/// Explicitly takes a character from disabled memory onto the scene.
+		/// <para>
+		/// This is the text only version for scripts, for hard-coding use, see
+		/// <see cref="InitiateCharacter(string, float, string)"/>.
+		/// </para>
+		/// </summary>
+		/// <param name="gameObjectName"> The character's <see cref="GameObject"/> name. </param>
+		/// <param name="positionRaw"> The new position to assign on the X axis. Text only, will be parsed as <see cref="float"/> </param>
+		/// <param name="characterName"> The value to modify the character's name. </param>
+		/// <returns> If the <see cref="GameObject"/> is found under <paramref name="gameObjectName"/>. </returns>
+		public bool InitiateCharacter(string gameObjectName, string positionRaw, string characterName)
+			=> InitiateCharacter(gameObjectName, float.Parse(positionRaw), characterName);
+
+		/// <summary>
+		/// Explicitly takes a character from disabled memory onto the scene.
+		/// </summary>
+		/// <param name="gameObjectName"> The character's <see cref="GameObject"/> name. </param>
+		/// <param name="xPosition"> The new position to assign on the X axis. </param>
+		/// <param name="characterName"> The value to modify the character's name. </param>
+		/// <returns> If the <see cref="GameObject"/> is found under <paramref name="gameObjectName"/>. </returns>
+		public bool InitiateCharacter(string gameObjectName, float xPosition, string characterName = "")
+		{
+			Transform charTransform = charLayerTransform.Find(gameObjectName);
+			if (charTransform == null)
+				return false;
+			CharacterScript script = charTransform.GetComponent<CharacterScript>();
+			InitiateCharacter(script.gameObject, script, xPosition, characterName);
+			return true;
 		}
 
-		public KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)> 
-			SummonCharacter(string prefabName, string positionRaw, string charName = "")
+		/// <summary>
+		/// Base method that makes the character more manage-able in code.
+		/// </summary>
+		/// <param name="script"> The character's <see cref="CharacterScript"/>. </param>
+		/// <param name="object"> The character's <see cref="GameObject"/>. </param>
+		/// <param name="xPosition"> The new position to assign on the X axis. </param>
+		/// <param name="characterName"> The value to modify the character's name. </param>
+		private void InitiateCharacter(GameObject @object, CharacterScript script, float xPosition, string characterName)
 		{
-			Debug.LogWarning("Spawning a character is costly on performance, make sure to have them in the scene beforehand!");
-			GameObject output = Resources.Load<GameObject>(prefabsPath + prefabName);
-			if (output == null)
-				throw new FileNotFoundException($"character prefab '{prefabName}'" +
-					$" is not found in {prefabsPath}{prefabName}!", 
-					Application.streamingAssetsPath + prefabsPath + prefabName);
-			output = Instantiate(output, charLayerTransform);
-			string outputName;
-			if (output.TryGetComponent(out CharacterScript characterScript))
-			{
-				if (string.IsNullOrEmpty(charName) == false)
-					characterScript.PrefabName = charName;
-				outputName = characterScript.PrefabName;
-			}
-			else
-			{
-				if (string.IsNullOrEmpty(charName) == false)
-					output.name = charName;
-				outputName = output.name;
-				Debug.LogError($"{output.name} does not have a {nameof(CharacterScript)} component!", this);
-			}
-			output.SetActive(true);
-			charactersInScene.Add(outputName, (output, characterScript));
-			return new KeyValuePair<string, (GameObject gameObject, CharacterScript characterScript)>
-				(outputName, (output, characterScript));
+			@object.SetActive(true);
+			ModifyGameObjectName(@object, characterName);
+			script.SetPosition(xPosition);
+			charactersInScene.Add(script.CharacterName, (@object, script));
 		}
 
+		/// <summary>
+		/// Explicitly tries to take a prefab of an existing character by combining
+		/// <see cref="prefabsPath"/> and the <paramref name="gameObjectName"/>
+		/// for <see cref="Resources.Load(string)"/> for use in the scene.
+		/// <para>
+		/// This is the text only version for scripts, for hard-coding use, see
+		/// <see cref="SummonCharacter(string, float, string)"/>.
+		/// </para>
+		/// </summary>
+		/// <param name="gameObjectName"> The character's <see cref="GameObject"/> name. </param>
+		/// <param name="positionRaw"> The new position to assign on the X axis. Text only, will be parsed as <see cref="float"/> </param>
+		/// <param name="characterName"> The value to modify the character's name. </param>
+		/// <returns> If the character is found in the path. </returns>
+		public bool SummonCharacter(string gameObjectName, string positionRaw, string characterName)
+			=> SummonCharacter(gameObjectName, float.Parse(positionRaw), characterName);
+		
+		/// <summary>
+		/// Explicitly tries to take a prefab of an existing character by combining
+		/// <see cref="prefabsPath"/> and the <paramref name="gameObjectName"/>
+		/// for <see cref="Resources.Load(string)"/> for use in the scene.
+		/// </summary>
+		/// <param name="gameObjectName"> The character's <see cref="GameObject"/> name. </param>
+		/// <param name="positionRaw"> The new position to assign on the X axis. Text only, will be parsed as <see cref="float"/> </param>
+		/// <param name="characterName"> The value to modify the character's name. </param>
+		/// <returns> If the character is found in the path. </returns>
+		public bool SummonCharacter(string gameObjectName, float xPosition, string characterName = "")
+		{
+			GameObject gameObject = Resources.Load<GameObject>(prefabsPath + gameObjectName);
+			if (gameObject == null)
+				return false;
+			if (!gameObject.TryGetComponent<CharacterScript>(out var characterScript))
+				return false;
+			InitiateCharacter(gameObject, characterScript, xPosition, characterName);
+			return true;
+		}
+
+		/// <summary>
+		/// Modifies the <paramref name="gameObject"/>'s name if <paramref name="characterName"/>
+		/// is not <see langword="null"/> or empty.
+		/// </summary>
+		/// <param name="gameObject"> The GameObject to modify. </param>
+		/// <param name="characterName"> The new name to assign. Does nothing if empty. </param>
+		private void ModifyGameObjectName(GameObject gameObject, string characterName)
+		{
+			if (string.IsNullOrWhiteSpace(characterName))
+				return;
+			gameObject.name = characterName;
+		}
+
+		/// <summary>
+		/// Clears all characters from the scene.
+		/// </summary>
 		public void ClearAllCharacters()
 		{
 			string[] keys = charactersInScene.Keys.ToArray();

@@ -105,7 +105,7 @@
 			string startingLine = "On Character: " + emptySlot;
 			string[] bottomLengthLabel = { "NaN", "/", "NaN" };
 			CharacterScript currentCharacter = Multiton<CharacterScript>.AsEnumerable()
-				.Where(@char => @char.PrefabName == DialogueSystem.Instance.CurrentSpeaker).Single();
+				.Where(@char => @char.name == DialogueSystem.Instance.CurrentSpeaker).Single();
 			startingLine = startingLine.Replace(emptySlot, DialogueSystem.Instance.CurrentSpeaker);
 			bottomLengthLabel[0] = currentCharacter.VoiceActorHandler.PlayedTime.ToString("N2");
 			bottomLengthLabel[2] = currentCharacter.VoiceActorHandler.ClipLength.ToString("N2");

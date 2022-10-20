@@ -17,13 +17,16 @@ namespace B1NARY.UI
 	{
 		public static void InitializeSystem(DialogueSystem systemComponent)
 		{
-			if (!systemComponent.gameObject.activeSelf) 
+			if (!systemComponent.gameObject.activeSelf)
 				systemComponent.gameObject.SetActive(true);
 			systemComponent.enabled = true;
 		}
-
-		/*public static IReadOnlyDictionary<string, Delegate> DialogueDelegateCommands = new Dictionary<string, Delegate>()
+		public static IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
+			["textspeed"] = (Action<string>)(speedRaw =>
+			{
+				Instance.ticksPerChar = int.Parse(speedRaw);
+			}),
 			/* There is already a system in ScriptHandler that handles more of it.
 			["additive"] = (Action<string>)(str =>
 			{
@@ -33,13 +36,21 @@ namespace B1NARY.UI
 					Instance.additiveTextEnabled = false;
 				else 
 					throw new Exception();
-			}),
-			
-		};*/
+			}),*/
+		};
 
-
-		public string fontDirectory = "UI/Fonts";
-
+		public int ticksPerChar = 30;
+		/// <summary>
+		/// If the current dialogue should be added instead of skipping to a new
+		/// line. Uses <see cref="ScriptHandler.ScriptDocument"/> in order to store
+		/// the field.
+		/// </summary>
+		public bool AdditiveTextEnabled
+		{
+			get => ScriptHandler.Instance.ScriptDocument.AdditiveEnabled;
+			set => ScriptHandler.Instance.ScriptDocument.AdditiveEnabled = value;
+		}
+		public TMP_Text speakerBox, textBox;
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
 		/// </summary>
@@ -48,7 +59,6 @@ namespace B1NARY.UI
 			get => speakerBox.text;
 			set => speakerBox.text = value;
 		}
-		public TMP_Text speakerBox, textBox;
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
 		/// </summary>
@@ -57,86 +67,65 @@ namespace B1NARY.UI
 			get => textBox.text;
 			private set => textBox.text = value;
 		}
+		/// <summary>
+		/// A property that tells what the final result of <see cref="CurrentText"/>
+		/// should be when it finishes without interupption.
+		/// </summary>
+		public string FinalText { get; private set; }
+		private bool IsAprilFools;
+		private string NewLine()
+		{
+			if (AdditiveTextEnabled)
+				return CurrentText + ' ';
+			return string.Empty;
+		}
 
-
-		[HideInInspector]
-		public bool additiveTextEnabled = false;
-
-		[HideInInspector] public bool isWaitingForUserInput = false;
-		/// <summary> A task that gradually reveals the text. </summary>
-		/// <returns> The final speech <see cref="string"/>. Not affected by abruptly stopping. </returns>
-		public Task<string> SpeakingTask { get; private set; } = Task.FromResult(string.Empty);
-		private CancellationTokenSource tokenSource = new CancellationTokenSource();
-
+		private void Awake()
+		{
+			IsAprilFools = DateTime.Today == new DateTime(DateTime.Today.Year, 4, 1);
+		}
 		private void Start()
 		{
 			CurrentSpeaker = string.Empty;
 			CurrentText = string.Empty;
 		}
 
-		/// <summary>
-		/// Say something and show it on the speech box. rich text works or otherwise.
-		/// </summary>
-		public void Say(string speech)
+		private CoroutineWrapper speakCoroutine;
+
+		public void Say(string message)
 		{
-			StopSpeaking(true).Wait();
-			SpeakingTask = Speaking(speech, tokenSource.Token);
+			if (!IsAprilFools)
+				if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
+					speakCoroutine.Dispose();
+			speakCoroutine = new CoroutineWrapper(this, Speaking(message)).Start();
 		}
-		/// <summary>
-		/// Say something and show it on the speech box. rich text works or otherwise.
-		/// </summary>
-		public void Say(string speech, string speaker)
+
+		public void Say(string message, string speaker)
 		{
 			CurrentSpeaker = speaker;
-			StopSpeaking(true).Wait();
-			SpeakingTask = Speaking(speech, tokenSource.Token);
+			Say(message);
 		}
 
-		/// <summary>
-		/// Stops the speaker <see cref="Task"/>. 
-		/// </summary>
-		/// <param name="setFinalResultToCurrentText">
-		/// <see langword="true"/> to set the intended speech to reach, <see langword="false"/>
-		/// if it will be set as empty. <see langword="null"/> if it just resides as
-		/// the same.
-		/// </param>
-		public async Task StopSpeaking(bool? setFinalResultToCurrentText)
+		public void StopSpeaking(bool? setFinalResultToCurrentText)
 		{
-			tokenSource.Cancel();
-			await SpeakingTask;
+			if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
+				speakCoroutine.Dispose();
 			if (setFinalResultToCurrentText != null)
 				if (setFinalResultToCurrentText == true)
-					CurrentText = SpeakingTask.Result;
+					CurrentText = FinalText;
 				else
 					CurrentText = string.Empty;
-			tokenSource = new CancellationTokenSource();
 		}
 
-		private string NewLine()
-		{
-			if (additiveTextEnabled)
-				return CurrentText + ' ';
-			return string.Empty;
-		}
 
-		protected override void OnSingletonDestroy()
-		{
-			_ = StopSpeaking(null);
-		}
-
-		/// <summary>
-		/// A <see cref="Task"/> that reveals <paramref name="speech"/> over time.
-		/// </summary>
-		/// <param name="speech">The speech to reveal.</param>
-		/// <param name="token">The token to stop it.</param>
-		/// <param name="lengthPerChar">Milliseconds to wait per character.</param>
-		/// <returns> <paramref name="speech"/>. </returns>
-		private async Task<string> Speaking(string speech, CancellationToken token, int lengthPerChar = 30)
+		private IEnumerator Speaking(string speech)
 		{
 			CurrentText = NewLine();
+			FinalText = NewLine() + speech;
 			var tagsList = new List<Tag>();
 			int tagsLength = 0;
-			for (int i = 0; i < speech.Length && !token.IsCancellationRequested; i++)
+			float seconds = ticksPerChar / 1000f;
+			for (int i = 0; i < speech.Length; i++)
 			{
 				if (speech[i] == '<') // Tag starts
 				{
@@ -153,22 +142,20 @@ namespace B1NARY.UI
 					// Behaviour among the tag.
 					if (currentTag.disableTag)
 					{
-						tagsList.Remove(currentTag.Opposite());
+						tagsList.Remove(currentTag.Opposite);
 						tagsLength -= currentTag.TotalLength;
 					}
 					else
 					{
-						tagsLength += currentTag.Opposite().TotalLength;
+						tagsLength += currentTag.Opposite.TotalLength;
 						tagsList.Add(currentTag);
 					}
 
 					continue;
 				}
 				CurrentText = CurrentText.Insert(CurrentText.Length - tagsLength, speech[i].ToString());
-				await Task.Delay(lengthPerChar);
+				yield return new WaitForSeconds(seconds);
 			}
-			isWaitingForUserInput = true;
-			return speech;
 		}
 	}
 
@@ -193,10 +180,7 @@ namespace B1NARY.UI
 		/// <summary>
 		/// Simply returns an opposite <see cref="Tag"/>, doesn't affect the original.
 		/// </summary>
-		public Tag Opposite()
-		{
-			return new Tag(tagName, !disableTag);
-		}
+		public Tag Opposite => new Tag(tagName, !disableTag);
 		public override bool Equals(object obj)
 		{
 			if (obj is Tag tag)

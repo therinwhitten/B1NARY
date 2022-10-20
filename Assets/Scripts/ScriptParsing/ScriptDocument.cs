@@ -12,6 +12,7 @@
 
 	public sealed class ScriptDocument
 	{
+		
 		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
 		{ "on", "true", "enable" };
 		public static readonly HashSet<string> disabledHashset = new HashSet<string>()
@@ -58,7 +59,6 @@
 			// It should constantly move to other scripts to prevent this from happening.
 			throw new IndexOutOfRangeException($"{nameof(ScriptDocument)} has reached to end of scriptName.");
 		}
-
 		/// <summary>
 		/// Parses the line to do various things. Commands to interact with the
 		/// scene with the scriptName, emotions to show emotes to the current speaker,
@@ -73,11 +73,10 @@
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
-					if (performLine != null)
-						performLine.Invoke(line);
+					if (B1NARY.CharacterController.Instance.charactersInScene.TryGetValue(DialogueSystem.Instance.CurrentSpeaker, out var pair))
+						pair.characterScript.SayLine(line);
 					else
-						Debug.Log($"{nameof(performLine)} has no assignment for" +
-							$" a speaking line to run. Printing; \n {line}");
+						throw new MissingMemberException($"Character '{DialogueSystem.Instance.CurrentSpeaker}' couldn't be played to say anthing!");
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);
@@ -88,27 +87,9 @@
 					DialogueSystem.Instance.CurrentSpeaker = speaker;
 					return true;
 				case ScriptLine.Type.Command:
-					var (command, arguments) = ScriptLine.CastCommand(line);
-					if (commands.Contains(command) == false)
-					{
-						var exceptionBuilder = new StringBuilder($"{line} does not have a command for it!");
-						if (arguments.Any())
-						{
-							exceptionBuilder.Append("\n Arguments: ");
-							foreach (string argument in arguments)
-								exceptionBuilder.Append($"{argument}, ");
-						}
-						throw new MissingMethodException(exceptionBuilder.ToString().TrimEnd(',', ' '));
-					}
-					IEnumerator<Delegate> commandsPacket = commands[command].GetEnumerator();
-					while (commandsPacket.MoveNext())
-						try 
-						{
-							commandsPacket.Current.DynamicInvoke(arguments); 
-							return true;
-						}
-						catch (ArgumentException ex) when (ex.Message.Contains("cannot be converted to type")) { }
-					throw new MissingMethodException($"'{command}' does not lead to a valid command!");
+					Command command = (Command)line;
+					command.Invoke(commands);
+					return true;
 				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:
@@ -121,7 +102,10 @@
 					return true;
 			}
 		}
-		private Action<ScriptLine> performLine;
+
+
+
+
 
 
 		//*-------------- FACTORY ----------------*//
@@ -132,7 +116,7 @@
 		public sealed class Factory
 		{
 			public static explicit operator ScriptDocument(Factory factory)
-				=> factory.Parse(true);
+				=> factory.Parse(false);
 
 			private readonly string documentName;
 
@@ -140,7 +124,6 @@
 				= new List<KeyValuePair<string, Delegate>>();
 			private readonly List<ScriptNodeParser> scriptNodeParsers =
 				new List<ScriptNodeParser>();
-			private Action<ScriptLine> normalAction;
 			private IEnumerator<ScriptLine> fileData;
 
 			public Factory(string fullFilePath)
@@ -165,10 +148,7 @@
 				while (commands.MoveNext())
 					this.commands.Add(commands.Current);
 			}
-
-			public void AddNormalOperationsFunctionality(Action<ScriptLine> action)
-				=> normalAction = action;
-			public ScriptDocument Parse(bool dontPauseOnCommand)
+			public ScriptDocument Parse(bool pauseOnCommand)
 			{
 				var output = new ScriptDocument();
 				// Assigning lines
@@ -210,7 +190,7 @@
 						.Take(endIndex - startIndex + 1)
 						.ToArray();
 					list[startIndex] = new ScriptPair(list[startIndex].scriptLine,
-						ParseNode(output.ParseLine, subArray));
+						ParseNode(output, subArray));
 				}
 				// Messing with the baseline entry scriptnode code.
 				list.InsertRange(0, new ScriptPair[]
@@ -219,21 +199,20 @@
 					(ScriptPair)new ScriptLine("{", () => documentName, 0)
 				});
 				list.Add((ScriptPair)new ScriptLine("::End", () => documentName, list.Count));
-				output.data = new ScriptNode(output.ParseLine, list.ToArray()).Perform(dontPauseOnCommand);
-				output.performLine = normalAction;
+				output.data = new ScriptNode(output, list.ToArray()).Perform(pauseOnCommand);
 				return output;
 
 			}
 
-			private ScriptNode ParseNode(Func<ScriptLine, bool> parseLine, ScriptPair[] subValues)
+			private ScriptNode ParseNode(ScriptDocument document, ScriptPair[] subValues)
 			{
 				for (int i = 0; i < scriptNodeParsers.Count; i++)
 				{
-					ScriptNode node = scriptNodeParsers[i].Invoke(parseLine, subValues);
+					ScriptNode node = scriptNodeParsers[i].Invoke(document, subValues);
 					if (node != null)
 						return node;
 				}
-				return new ScriptNode(parseLine, subValues);
+				return new ScriptNode(document, subValues);
 			}
 		}
 
