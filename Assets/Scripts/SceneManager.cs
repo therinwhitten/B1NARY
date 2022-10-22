@@ -7,8 +7,6 @@
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
-	using System.Threading;
-	using System.Threading.Tasks;
 	using UnityEngine;
 	using UnityEngine.SceneManagement;
 	using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
@@ -19,8 +17,14 @@
 	{
 		public static readonly IReadOnlyDictionary<string, Delegate> Commands = new Dictionary<string, Delegate>()
 		{
-			["changescene"] = (Action<string>)(str => InstanceOrDefault.ChangeScene(str).Wait()),
+			["changescene"] = (Action<string>)ChangeSceneCommand,
 		};
+		[ForcePause]
+		private static void ChangeSceneCommand(string newScene)
+		{
+			InstanceOrDefault.StartCoroutine(InstanceOrDefault.ChangeScene(newScene));
+		}
+
 		public static Lazy<Scene[]> activeScenes = new Lazy<Scene[]>(() =>
 		{
 			var scenes = new List<Scene>();
@@ -35,24 +39,35 @@
 
 		public PersistentListenerGroup SwitchingScenes { get; private set; } = new PersistentListenerGroup();
 		public PersistentListenerGroup SwitchedScenes { get; private set; } = new PersistentListenerGroup();
+		public bool IsSwitchingScenes { get; private set; } = false;
 
 		protected override void SingletonAwake()
 		{
-			UnitySceneManager.activeSceneChanged += (scene1, scene2) => SwitchedScenes.Invoke();
+			UnitySceneManager.activeSceneChanged += (scene1, scene2) => this.SwitchedScenes.Invoke();
+
+			this.SwitchingScenes.AddPersistentListener(SwitchingScenes);
+			this.SwitchedScenes.AddPersistentListener(SwitchedScenes);
+
+			void SwitchingScenes() => IsSwitchingScenes = true;
+			void SwitchedScenes() => IsSwitchingScenes = false;
 		}
 
-		public async Task ChangeScene(string sceneName)
+		public IEnumerator ChangeScene(string sceneName)
 		{
-			await FadeScene();
+			IEnumerator fadeEnum = FadeScene();
+			while (fadeEnum.MoveNext())
+				yield return fadeEnum.Current;
+
+			IsSwitchingScenes = true;
 			SwitchingScenes.Invoke();
+			bool cannotPerformNext = true;
+			SwitchedScenes.AddNonPersistentListener(() => cannotPerformNext = false);
 			UnitySceneManager.LoadScene(sceneName);
-			StartCoroutine(AfterLoadTask());
-			SwitchedScenes.Invoke();
-			IEnumerator AfterLoadTask()
-			{
+
+			do
 				yield return new WaitForFixedUpdate();
-				ScriptHandler.Instance.NextLine(); 
-			}
+			while (cannotPerformNext);
+			ScriptHandler.Instance.NextLine(); 
 		}
 		/// <summary>
 		/// Initialized the <see cref="ScriptParser"/>, the system expects the
@@ -65,15 +80,16 @@
 			ScriptHandler.Instance.NextLine();
 		}
 
-		private async Task FadeScene()
+		private IEnumerator FadeScene()
 		{
 			if (!TransitionObject.Any)
 			{
 				Debug.LogWarning($"Was called to fade scene, but there are no {nameof(TransitionObject)}s to transition with!\n{nameof(SceneManager)}");
-				return;
+				yield break;
 			}
-			TransitionObject transition = TransitionObject.First;
-			await transition.SetToOpaque();
+			IEnumerator transition = TransitionObject.First.SetToOpaqueEnumerator();
+			while (transition.MoveNext())
+				yield return transition.Current;
 		}
 	}
 
@@ -97,6 +113,9 @@
 		}
 		private readonly List<SwitchScenesDelegate> persistentListeners = new List<SwitchScenesDelegate>(),
 			nonPersistentListeners = new List<SwitchScenesDelegate>();
+		public IReadOnlyList<SwitchScenesDelegate> PersistentListeners => persistentListeners;
+		public IReadOnlyList<SwitchScenesDelegate> NonPersistentListeners => nonPersistentListeners;
+
 
 
 		public void AddPersistentListener(SwitchScenesDelegate @delegate)

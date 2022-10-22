@@ -66,19 +66,6 @@
 			return gameObject.GetComponent<TransitionObject>();
 		}
 
-		public async Task SetToOpaque(int index, float fadeMultiplier = 1f)
-		{
-			TransitionObject transitionObject = GetTransitionObject(transitions[index]);
-			await transitionObject.SetToOpaque(fadeMultiplier);
-			Destroy(transitionObject.gameObject);
-		}
-		public async Task SetToTransparent(int index, float fadeMultiplier = 1f)
-		{
-			TransitionObject transitionObject = GetTransitionObject(transitions[index]);
-			await transitionObject.SetToTransparent(fadeMultiplier);
-			Destroy(transitionObject.gameObject);
-		}
-
 
 
 		private void OnDestroy()

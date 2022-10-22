@@ -11,11 +11,11 @@
 
 		public override void DisplayTab()
 		{
-			var audioHandler = SFXAudioController.Instance;
+			var audioHandler = AudioController.Instance;
 			EditorGUILayout.LabelField($"Current Library: {(audioHandler == null || audioHandler.CurrentSoundLibrary == null ? "Null" : audioHandler.CurrentSoundLibrary.name)}");
 			ShowSoundData(audioHandler);
 		}
-		private void ShowSoundData(SFXAudioController audioHandler)
+		private void ShowSoundData(AudioController audioHandler)
 		{
 			bool hasAudioHandlerValue = audioHandler != null;
 			EditorGUILayout.LabelField(new GUIContent($"Sound Count : {(hasAudioHandlerValue ? audioHandler.ActiveAudioTrackers.Count.ToString(CultureInfo.CurrentCulture) : "NaN")}"), EditorStyles.boldLabel);

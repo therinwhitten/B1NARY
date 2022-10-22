@@ -26,24 +26,45 @@
 		private CoroutineWrapper garbageCollector;
 		
 		public CustomAudioClip CustomAudioClip { get; private set; }
-		public bool IsPlaying => audioSource.isPlaying;
+		public bool IsPlaying
+		{
+			get => audioSource.isPlaying;
+			set
+			{
+				if (IsPlaying == value)
+					return;
+				if (value)
+				{
+					CreateAutoDisposableCoroutine = true;
+					PlaySingle(CustomAudioClip);
+					return;
+				}
+				Stop();
+			}
+		}
 		public string ClipName => audioSource.clip.name;
-		public float Volume => audioSource.volume;
-		public float Pitch => audioSource.pitch;
-		public bool Loop => audioSource.loop;
+		public float Volume 
+		{
+			get => audioSource.volume; 
+			set => audioSource.volume = value;
+		}
+		public float Pitch
+		{
+			get => audioSource.pitch;
+			set => audioSource.pitch = value;
+		}
+
+		public bool Loop
+		{
+			get => audioSource.loop;
+			set => audioSource.loop = value;
+		}
+
 		public bool CreateAutoDisposableCoroutine { get; private set; }
 		public TimeSpan PlayedSeconds => TimeSpan.FromSeconds(audioSource.time);
 		public TimeSpan TotalSeconds => TimeSpan.FromSeconds(audioSource.clip.length);
 		public float CompletionPercent => audioSource.time / audioSource.clip.length;
-
-		public AudioTracker() : this(monoBehaviour: null)
-		{
-			CreateAutoDisposableCoroutine = false;
-		}
-		public AudioTracker(AudioSource audioSource) : this(null, audioSource)
-		{
-			CreateAutoDisposableCoroutine = false;
-		}
+		public string TimeInfo => $"{audioSource.time:N2} : {audioSource.clip.length:N2}";
 		public AudioTracker(MonoBehaviour monoBehaviour)
 		{
 			CreateAutoDisposableCoroutine = true;
@@ -57,7 +78,7 @@
 			this.audioSource = audioSource;
 		}
 
-		public IEnumerator PlaySingle(CustomAudioClip audioClip)
+		public void PlaySingle(CustomAudioClip audioClip)
 		{
 			if (CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
 				throw new InvalidOperationException("It is already being played!");
@@ -65,15 +86,16 @@
 			ApplyCustomSoundData(audioSource, audioClip);
 			if (CreateAutoDisposableCoroutine)
 				garbageCollector = new CoroutineWrapper(monoBehaviour, WaitUntil()).Start();
-			return WaitUntil();
+			audioSource.Play();
 		}
-		public IEnumerator PlaySingle(CustomAudioClip audioClip, float fadeIn)
+		public void PlaySingle(CustomAudioClip audioClip, float fadeIn)
 		{
 			float finalVolume = audioSource.volume;
 			audioSource.volume = 0f;
 			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume, 
 				volume => audioSource.volume = volume), finalVolume, fadeIn);
-			return PlaySingle(audioClip);
+			ApplyCustomSoundData(audioSource, audioClip);
+			audioSource.Play();
 		}
 		
 		public void PlayOneShot(AudioClip audioClip, float volume)

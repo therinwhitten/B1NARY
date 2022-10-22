@@ -108,19 +108,6 @@
 			charLayerTransform = characterLayer.transform;
 		}
 
-		///// <summary>
-		/// Plays a voice line from a index that is brought to the current speaker
-		/// in <see cref="DialogueSystem.CurrentSpeaker"/>.
-		/// </summary>
-		/// <param name="speechLine">The voiceline source.</param>
-		//public void PlayVoiceActor(ScriptLine speechLine)
-		//{
-		//	string currentSpeaker = DialogueSystem.Instance.CurrentSpeaker;
-		//	if (charactersInScene.TryGetValue(currentSpeaker, out var charObject))
-		//		charObject.characterScript.SayLine(speechLine);
-		//	else
-		//		Debug.LogError($"Character '{currentSpeaker}' does not exist!");
-		//}
 
 		/// <summary>
 		/// Explicitly takes a character from disabled memory onto the scene.

@@ -74,7 +74,7 @@ namespace B1NARY.DataPersistence
 			}*/
 
 			// Audio
-			//audioSounds = AudioHandler.Instance.SoundCoroutineCache.Values
+			//hoverSounds = AudioHandler.Instance.SoundCoroutineCache.Values
 			//	.Select(coroutine => new AudioData(coroutine.AudioClip.Name,
 			//	coroutine.currentSoundLibrary, coroutine.AudioSource.time)).ToArray();
 		}
@@ -97,7 +97,7 @@ namespace B1NARY.DataPersistence
 			ScriptHandler.Instance.InitializeNewScript(scriptName);
 			while (ScriptHandler.Instance.CurrentLine != expectedScriptLine)
 				ScriptHandler.Instance.NextLine();
-			//LoadAudio(audioSounds);
+			//LoadAudio(hoverSounds);
 			Debug.Log("Loaded game!");
 			return Task.CompletedTask;
 
@@ -133,20 +133,20 @@ namespace B1NARY.DataPersistence
 				DialogueSystem.Instance.AdditiveTextEnabled = additiveTextEnabled;
 			}
 			/*
-			void LoadAudio(AudioData[] audioSounds)
+			void LoadAudio(AudioData[] hoverSounds)
 			{
 				const string fileDirectory = "Audio/Sound Libraries";
-				foreach (var (clip, libraryName, length) in audioSounds)
+				foreach (var (clip, libraryName, length) in hoverSounds)
 				{
 					CoroutinePointer soundCoroutinePointer;
 					if (AudioHandler.Instance.CustomAudioData.name != libraryName)
 					{
 						var library = Resources.Load<SoundLibrary>($"{fileDirectory}/{libraryName}");
-						soundCoroutinePointer = AudioHandler.Instance.PlaySound(
+						soundCoroutinePointer = AudioHandler.Instance.PlayHoverSound(
 							library.GetCustomAudioClip(library.GetAudioClip(clip)));
 					}
 					else
-						soundCoroutinePointer = AudioHandler.Instance.PlaySound(clip);
+						soundCoroutinePointer = AudioHandler.Instance.PlayHoverSound(clip);
 					soundCoroutinePointer().AudioSource.time = length;
 				}
 			}

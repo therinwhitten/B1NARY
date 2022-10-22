@@ -9,7 +9,7 @@
 		public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 		{
 			if (animator.TryGetComponent<ButtonSoundBehaviour>(out var buttonSound))
-				buttonSound.PlaySound(soundIndex);
+				buttonSound.PlayHoverSound(soundIndex);
 			else
 				Debug.LogError("Cannot find a valid output to play sounds!", this);
 		}

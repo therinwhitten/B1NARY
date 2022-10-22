@@ -66,11 +66,6 @@
 				bool forceBlock = false;
 				try
 				{
-					if (subLines[i].scriptLine.type == ScriptLine.Type.Command)
-					{
-						string command = ((Command)subLines[i].scriptLine).command;
-						forceBlock = SceneManager.Commands.ContainsKey(command);
-					}
 					canFreelyPass = document.ParseLine(subLines[i].scriptLine);
 				}
 				catch (Exception ex) when (!ex.Message.Contains("Managed to hit a intentation"))

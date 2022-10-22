@@ -25,7 +25,7 @@
 				scriptHandler.StartupScriptPath = allFullPaths[newIndex];
 			InputActions(scriptHandler);
 			if (scriptHandler.IsActive)
-				Inspect(scriptHandler.ScriptDocument.documentData.ToArray());
+				EditorGUILayout.LabelField($"Current Line: {scriptHandler.ScriptDocument.CurrentLine}");
 		}
 		public List<string> GetFullDocumentsPath(string currentPath)
 		{
@@ -35,20 +35,6 @@
 				foreach (string directory in directories)
 					output.AddRange(GetFullDocumentsPath(directory));
 			return output;
-		}
-
-		private Vector2 scroll = Vector2.zero;
-		private void Inspect(ScriptLine[] data)
-		{
-			Rect scrollWindowRect = GUILayoutUtility.GetRect(Screen.width, 140),
-				viewBoxRect = scrollWindowRect;
-			viewBoxRect.height = data.Length * 20;
-			scroll = GUI.BeginScrollView(scrollWindowRect, scroll, viewBoxRect, true, false);
-			for (int i = 0; i < data.Length; i++)
-			{
-				EditorGUILayout.LabelField(data[i].ToString());
-			}
-			GUI.EndScrollView();
 		}
 		private void InputActions(in ScriptHandler scriptHandler)
 		{

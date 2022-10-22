@@ -52,53 +52,28 @@ namespace B1NARY.Audio
 			IEnumerable<CustomAudioClip> playAwakeClips = customAudioClips.Where(CClip => CClip.playOnAwake);
 			if (ContainsPlayOnAwakeCommands = playAwakeClips.Any())
 				PlayOnAwakeCommands = playAwakeClips;
-			// Initializing the values first-hand due to how loading times
-			_ = AudioClipLink;
-			_ = StringLink;
 		}
-
-		private Dictionary<AudioClip, int> _audioClipLink;
-		private Dictionary<AudioClip, int> AudioClipLink
+		public bool TryGetCustomAudioClip(string name, out CustomAudioClip clip)
 		{
-			get
-			{
-				if (_audioClipLink == null)
+			for (int i = 0; i < customAudioClips.Count; i++)
+				if (customAudioClips[i].Name == name)
 				{
-					int i = -1;
-					_audioClipLink = customAudioClips.ToDictionary(clip => clip.clip, input => { i++; return i; });
+					clip = customAudioClips[i];
+					return true;
 				}
-				return _audioClipLink;
-			}
+			clip = null;
+			return false;
 		}
-		public CustomAudioClip GetCustomAudioClip(AudioClip audioClip) =>
-			customAudioClips[AudioClipLink[audioClip]];
-
-		/// <summary>
-		/// Determines whether the audio library contains the <see cref="CustomAudioClip"/>
-		/// within <see cref="customAudioClips"/>. Uses an algorithm if it cannot find one
-		/// as it is parsed when needed.
-		/// </summary>
-		/// <param name="audioClip">The audio clip to check if it contains it.</param>
-		public bool ContainsCustomAudioClip(AudioClip audioClip) =>
-			AudioClipLink.ContainsKey(audioClip);
-
-		private Dictionary<string, int> _stringLink;
-		private Dictionary<string, int> StringLink
+		public bool TryGetCustomAudioClip(AudioClip example, out CustomAudioClip clip)
 		{
-			get
-			{
-				if (_stringLink == null)
+			for (int i = 0; i < customAudioClips.Count; i++)
+				if (customAudioClips[i].clip == example)
 				{
-					int i = -1;
-					_stringLink = customAudioClips.ToDictionary(clip => clip.Name.ToLower(), input => { i++; return i; });
+					clip = customAudioClips[i];
+					return true;
 				}
-				return _stringLink;
-			}
+			clip = null;
+			return false;
 		}
-		public AudioClip GetAudioClip(string audioClip) =>
-			customAudioClips[StringLink[audioClip]];
-
-		public bool ContainsAudioClip(string audioClip) =>
-			StringLink.ContainsKey(audioClip);
 	}
 }

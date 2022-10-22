@@ -2,7 +2,9 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Diagnostics;
 	using System.Linq;
+	using System.Reflection;
 	using System.Text.RegularExpressions;
 
 	/// <summary>
@@ -218,8 +220,9 @@
 			this.arguments = arguments.Select(str => str.Trim()).ToArray();
 		}
 
-		public bool TryInvoke(Lookup<string, Delegate> commands)
+		public bool TryInvoke(Lookup<string, Delegate> commands, out bool forceStop)
 		{
+			forceStop = false;
 			if (!commands.Contains(command))
 				return false;
 			IEnumerator<Delegate> delegates = commands[command].GetEnumerator();
@@ -227,14 +230,15 @@
 				if (delegates.Current.Method.GetParameters().Length == arguments.Length)
 				{
 					delegates.Current.DynamicInvoke(arguments);
+					forceStop = delegates.Current.Method.GetCustomAttributes<ForcePauseAttribute>().Any();
 					return true;
 				}
 			return false;
 		}
-		public void Invoke(Lookup<string, Delegate> commands)
+		public bool Invoke(Lookup<string, Delegate> commands)
 		{
-			if (TryInvoke(commands))
-				return;
+			if (TryInvoke(commands, out var forceStop))
+				return forceStop;
 			if (!commands.Contains(command))
 				throw new MissingMethodException($"'{command}' is not located" +
 					" in the the lookup command list!");

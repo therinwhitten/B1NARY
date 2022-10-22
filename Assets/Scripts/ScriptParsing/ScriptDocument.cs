@@ -88,8 +88,7 @@
 					return true;
 				case ScriptLine.Type.Command:
 					Command command = (Command)line;
-					command.Invoke(commands);
-					return true;
+					return !command.Invoke(commands);
 				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:

@@ -1,6 +1,6 @@
 ﻿namespace B1NARY.DesignPatterns
 {
-	using System;
+	using System.Linq;
 	using UnityEngine;
 
 
@@ -65,9 +65,10 @@
 
 		private void Awake()
 		{
-			if (instance != null)
+			if (instance != null && instance != this)
 			{
-				Debug.LogError($"{typeof(T)} already has a singleton in the scene! Deleting..");
+				Debug.LogError($"{typeof(T)} already has a singleton in the scene! " +
+					$"Deleting..\nAll Objects: {string.Join("\n\t", FindObjectsOfType<T>().Select(data => $"{data.name}"))}");
 				Destroy(this);
 				return; // Just in case.
 			}

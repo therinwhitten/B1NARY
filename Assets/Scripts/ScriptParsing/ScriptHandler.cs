@@ -103,7 +103,7 @@
 			string finalPath = string.IsNullOrWhiteSpace(scriptPath) ? StartupScriptPath : scriptPath;
 			var scriptFactory = new ScriptDocument.Factory(finalPath);
 			scriptFactory.AddNodeParserFunctionality(GetDefinedScriptNodes);
-			scriptFactory.AddCommandFunctionality(SFXAudioController.Commands);
+			scriptFactory.AddCommandFunctionality(AudioController.Commands);
 			scriptFactory.AddCommandFunctionality(SceneManager.Commands);
 			scriptFactory.AddCommandFunctionality(ScriptHandler.Commands);
 			scriptFactory.AddCommandFunctionality(B1NARY.CharacterController.Commands);
