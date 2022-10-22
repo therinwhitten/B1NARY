@@ -2,6 +2,7 @@
 {
 	using TMPro;
 	using UnityEngine;
+	using UnityEngine.Rendering;
 
 	public sealed class DisplayOptionsBehaviour : MonoBehaviour
 	{
