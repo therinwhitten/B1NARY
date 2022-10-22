@@ -15,8 +15,7 @@
     public AudioClip hoverSound;
     public AudioClip clickSound;
     public AudioClip releaseSound;
-    public AudioClip slideSound;
-    public AudioClip scrollSound;
+   
 
       //Section to allow you to choose a one shot, which allows custom audio files. 
 
@@ -32,14 +31,7 @@
      {
         UISounds.PlayOneShot (releaseSound);
     }
-    public void SlideSound()
-    {
-       UISounds.PlayOneShot (slideSound);
-    }
-    public void ScrollSound()
-    {
-      UISounds.PlayOneShot (scrollSound);
-    }
+  
   }
 
 }

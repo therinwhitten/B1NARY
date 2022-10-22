@@ -6,7 +6,7 @@
 
 	public  class FollowMouse : MonoBehaviour 
 	{
-		// Mouse Tracking Grabby Hand!
+		// Mouse Tracking Grabby Hand!  (Not Finished Yet: Erase when tested and verified)
 		Vector3 pos;
 		public float speed = 1f;
 
