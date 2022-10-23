@@ -1,5 +1,7 @@
 ﻿namespace B1NARY.UI
 {
+	using System.Collections;
+    using System.Collections.Generic;
 	using TMPro;
 	using UnityEngine;
 	using UnityEngine.Rendering;
@@ -22,11 +24,11 @@
 			dropdown.value = QualitySettings.GetQualityLevel();
 		}
 	    
-        public void ChangeLevel(int value) //Graphic Levels (Need to Fix)
-		  {
-             QualitySettings.SetQualityLevel(value);
-             QualitySettings.renderPipeline = qualityLevels[value];
-          } 
+    public void ChangeLevel(int value) // Graphics Quality
+	 {
+        QualitySettings.SetQualityLevel(value);
+        QualitySettings.renderPipeline = qualityLevels[value];
+     } 
 		public void ChangedHentaiValue(int option) => HentaiMode = option == 1;
 		public void ChangedFullScreenValue(int fullScreen) => InFullScreen = fullScreen == 0;
 		
