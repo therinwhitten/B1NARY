@@ -4,7 +4,7 @@
 	using UnityEngine.Audio;
 	using B1NARY.Audio;
 
-	[AddComponentMenu("Audio/Buttons/Animated Button Sound Behaviour")]
+	[AddComponentMenu("Audio/Buttons/Button Sound Behaviour")]
 	public class ButtonSoundBehaviour : MonoBehaviour
 	{
 		[Tooltip("The Mixer Group to apply to the sound.")]

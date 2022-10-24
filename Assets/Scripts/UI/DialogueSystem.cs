@@ -11,7 +11,9 @@ namespace B1NARY.UI
 	using System.Text;
 	using System;
 	using TMPro;
-	using B1NARY.Scripting.Experimental;
+	using CharacterController = CharacterController;
+	using B1NARY.Scripting;
+	using B1NARY.Audio;
 
 	public class DialogueSystem : Singleton<DialogueSystem>
 	{
@@ -72,6 +74,30 @@ namespace B1NARY.UI
 		/// should be when it finishes without interupption.
 		/// </summary>
 		public string FinalText { get; private set; }
+		/// <summary>
+		/// If both speaker and line are both finished playing and it should
+		/// automatically move to the next line.
+		/// </summary>
+		public bool AutoSkip 
+		{ 
+			get => m_autoSkip;
+			set
+			{
+				if (m_autoSkip == value)
+					return;
+				m_autoSkip = value;
+				if (value)
+				{
+					autoSkipCoroutine = new CoroutineWrapper(this, AutoSkipCoroutine()).Start();
+					return;
+				}
+				if (CoroutineWrapper.IsNotRunningOrNull(autoSkipCoroutine))
+					autoSkipCoroutine.Dispose();
+			}
+		}
+		private bool m_autoSkip = false;
+		public void ToggleAutoSkip() => AutoSkip = !AutoSkip;
+
 		private bool IsAprilFools;
 		private string NewLine()
 		{
@@ -84,12 +110,8 @@ namespace B1NARY.UI
 		{
 			IsAprilFools = DateTime.Today == new DateTime(DateTime.Today.Year, 4, 1);
 		}
-		private void Start()
-		{
-			CurrentSpeaker = string.Empty;
-			CurrentText = string.Empty;
-		}
 
+		private CoroutineWrapper autoSkipCoroutine;
 		private CoroutineWrapper speakCoroutine;
 
 		public void Say(string message)
@@ -98,6 +120,7 @@ namespace B1NARY.UI
 				if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
 					speakCoroutine.Dispose();
 			speakCoroutine = new CoroutineWrapper(this, Speaking(message)).Start();
+			speakCoroutine.AfterActions += () => CurrentText = FinalText;
 		}
 
 		public void Say(string message, string speaker)
@@ -155,6 +178,18 @@ namespace B1NARY.UI
 				}
 				CurrentText = CurrentText.Insert(CurrentText.Length - tagsLength, speech[i].ToString());
 				yield return new WaitForSeconds(seconds);
+			}
+		}
+		private IEnumerator AutoSkipCoroutine()
+		{
+			while (AutoSkip)
+			{
+				yield return new WaitForEndOfFrame();
+				if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
+					continue;
+				if (CharacterController.Instance.charactersInScene.Values.Any(pair => pair.characterScript.VoiceData.IsPlaying))
+					continue;
+				ScriptHandler.Instance.NextLine();
 			}
 		}
 	}

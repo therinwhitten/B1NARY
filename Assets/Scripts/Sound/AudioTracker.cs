@@ -5,7 +5,7 @@
 	using System.Collections.Generic;
 	using UnityEngine;
 
-	public sealed class AudioTracker : IDisposable
+	public sealed class AudioTracker : IDisposable, IAudioInfo
 	{
 		//TODO: add custom audio data to regular audiosources!
 		public static void ApplyCustomSoundData(AudioSource audioSource, CustomAudioClip clip)

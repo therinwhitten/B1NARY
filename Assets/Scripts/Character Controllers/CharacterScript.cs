@@ -2,7 +2,7 @@
 {
 	using B1NARY.Audio;
 	using B1NARY.DesignPatterns;
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.Scripting;
 	using B1NARY.UI;
 	using Live2D.Cubism.Framework.Expression;
 	using System;
@@ -14,8 +14,8 @@
 	public sealed class CharacterScript : Multiton<CharacterScript>, ICharacterController
 	{
 		private Animator animator;
-		private Transform m_transform;
-		public VoiceActorHandler VoiceActorHandler { get; private set; }
+		private RectTransform m_transform;
+		public VoiceActorHandler VoiceData { get; private set; }
 		public CubismExpressionController expressionController;
 		public string CurrentAnimation => animator.GetCurrentAnimatorClipInfo(0).Single().clip.name;
 		public string CurrentExpression => expressionController.ExpressionsList.CubismExpressionObjects[expressionController.CurrentExpressionIndex].name;
@@ -25,40 +25,36 @@
 			get => m_transform.position;
 			set => m_transform.position = value; 
 		}
-		[Obsolete("Just set Position instead")]
-		public void SetPosition(Vector2 newPosition)
-			=> Position = newPosition;
-		public void SetPosition(float xCoord)
-			=> Position = new Vector2(xCoord, Position.y);
-		public void SetPositionOverTime(float newXPosition, float time, bool smooth)
+		public float HorizontalPosition
 		{
-			if (smooth)
-				StartCoroutine(SmoothPosChanger());
-			else
-				StartCoroutine(StaticPosChanger());
+			get => m_transform.anchorMin.x;
+			set
+			{
+				m_transform.anchorMin = new Vector2(value, m_transform.anchorMin.y);
+				m_transform.anchorMax = new Vector2(value, m_transform.anchorMax.y);
+			}
+		}
+		public void SetPositionOverTime(float newXPosition, float time)
+		{
+			StartCoroutine(SmoothPosChanger());
 			IEnumerator SmoothPosChanger()
 			{
-				var acceptableRect = new Rect(new Vector2(newXPosition, 0f), new Vector2(0.1f, 1000f));
-				Vector2 velocity = Vector2.zero;
-				while (acceptableRect.Contains(m_transform.position) == false)
+				float acceptablePoint = 0.005f;
+				float velocity = 0f;
+				while (Math.Abs(HorizontalPosition - newXPosition) > acceptablePoint)
 				{
-					m_transform.position = Vector2.SmoothDamp(m_transform.position, acceptableRect.position, ref velocity, Time.deltaTime / time);
+					HorizontalPosition = Mathf.SmoothDamp(HorizontalPosition, newXPosition, ref velocity, time);
 					yield return new WaitForEndOfFrame();
 				}
 				Debug.Log("Finished smooth transfer");
-			}
-			IEnumerator StaticPosChanger()
-			{
-				throw new NotImplementedException();
-				Debug.Log("Finished static transfer");
 			}
 		}
 
 		protected override void MultitonAwake()
 		{
-			m_transform = transform;
+			m_transform = GetComponent<RectTransform>();
 			animator = GetComponent<Animator>();
-			VoiceActorHandler = new VoiceActorHandler(gameObject);
+			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
 		}
@@ -92,7 +88,7 @@
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.lineData);
-			VoiceActorHandler.Play(line);
+			VoiceData.Play(line);
 		}
 	}
 }

@@ -1,14 +1,16 @@
 ﻿namespace B1NARY
 {
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.Audio;
+	using B1NARY.Scripting;
 	
 	public interface ICharacterController
 	{
 		string CharacterName { get; set; }
+		VoiceActorHandler VoiceData { get; }
 		void SayLine(ScriptLine line);
 
-		void SetPosition(float xCoord);
-		void SetPositionOverTime(float xCoord, float time, bool smooth);
+		float HorizontalPosition { get; set; }
+		void SetPositionOverTime(float xCoord, float time);
 
 		string CurrentAnimation { get; }
 		void PlayAnimation(string animationName);

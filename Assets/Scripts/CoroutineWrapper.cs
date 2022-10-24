@@ -8,6 +8,10 @@
 
 	public sealed class CoroutineWrapper : IDisposable
 	{
+		/// <summary>
+		/// <see cref="true"/> if the coroutine is set as <see langword="null"/>
+		/// or it is not running. Otherwise, <see cref="false"/>.
+		/// </summary>
 		public static bool IsNotRunningOrNull(CoroutineWrapper coroutineWrapper)
 		{
 			if (coroutineWrapper == null)

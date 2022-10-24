@@ -6,7 +6,7 @@
 	using UnityEditor;
 	using B1NARY.Audio;
 	using B1NARY.UI;
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.Scripting;
 	using B1NARY.DesignPatterns;
 	using System.Collections.Generic;
 
@@ -107,9 +107,9 @@
 			CharacterScript currentCharacter = Multiton<CharacterScript>.AsEnumerable()
 				.Where(@char => @char.name == DialogueSystem.Instance.CurrentSpeaker).Single();
 			startingLine = startingLine.Replace(emptySlot, DialogueSystem.Instance.CurrentSpeaker);
-			bottomLengthLabel[0] = currentCharacter.VoiceActorHandler.PlayedTime.ToString("N2");
-			bottomLengthLabel[2] = currentCharacter.VoiceActorHandler.ClipLength.ToString("N2");
-			EditorGUI.ProgressBar(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), currentCharacter.VoiceActorHandler.Completion, string.Join(" ", bottomLengthLabel));
+			bottomLengthLabel[0] = currentCharacter.VoiceData.PlayedSeconds.TotalSeconds.ToString("N2");
+			bottomLengthLabel[2] = currentCharacter.VoiceData.TotalSeconds.TotalSeconds.ToString("N2");
+			EditorGUI.ProgressBar(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), currentCharacter.VoiceData.CompletionPercent(), string.Join(" ", bottomLengthLabel));
 			EditorGUI.LabelField(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), startingLine, EditorStyles.whiteMiniLabel);
 		}
 	}

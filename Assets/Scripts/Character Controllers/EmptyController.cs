@@ -1,7 +1,7 @@
 ﻿namespace B1NARY
 {
 	using B1NARY.Audio;
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.Scripting;
 	using B1NARY.UI;
 	using System;
 	using UnityEngine;
@@ -18,11 +18,11 @@
 
 		private void Awake()
 		{
-			VoiceActorHandler = new VoiceActorHandler(gameObject);
+			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
 		}
-		public VoiceActorHandler VoiceActorHandler { get; private set; }
+		public VoiceActorHandler VoiceData { get; private set; }
 		public string CharacterName
 		{
 			get => gameObject.name;
@@ -31,14 +31,11 @@
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.lineData);
-			VoiceActorHandler.Play(line);
+			VoiceData.Play(line);
 		}
 
-		void ICharacterController.SetPosition(float xCoord)
-		{
-			
-		}
-		void ICharacterController.SetPositionOverTime(float xCoord, float time, bool smooth)
+		float ICharacterController.HorizontalPosition { get => 0f; set { } }
+		void ICharacterController.SetPositionOverTime(float xCoord, float time)
 		{
 			
 		}
