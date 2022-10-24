@@ -24,17 +24,6 @@
 		{
 			InstanceOrDefault.StartCoroutine(InstanceOrDefault.ChangeScene(newScene));
 		}
-
-		public static Lazy<Scene[]> activeScenes = new Lazy<Scene[]>(() =>
-		{
-			var scenes = new List<Scene>();
-			for (int i = 0; i < UnitySceneManager.sceneCount; i++)
-			{
-				try { scenes.Add(UnitySceneManager.GetSceneByBuildIndex(i)); }
-				catch { continue; }
-			}
-			return scenes.ToArray();
-		});
 		public static Scene ActiveScene => UnitySceneManager.GetActiveScene();
 
 		public PersistentListenerGroup SwitchingScenes { get; private set; } = new PersistentListenerGroup();

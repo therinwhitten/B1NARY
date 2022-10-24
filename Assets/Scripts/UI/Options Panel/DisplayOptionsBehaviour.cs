@@ -1,7 +1,9 @@
 ﻿namespace B1NARY.UI
 {
+	using System;
+	using System.Linq;
 	using System.Collections;
-    using System.Collections.Generic;
+	using System.Collections.Generic;
 	using TMPro;
 	using UnityEngine;
 	using UnityEngine.UI;
@@ -14,52 +16,37 @@
 		public bool InFullScreen { get => Screen.fullScreen; set => Screen.fullScreen = value; }
 		public TMP_Dropdown fullScreenDropdown;
 		public RenderPipelineAsset[] qualityLevels;
-        public TMP_Dropdown qualityDropdown;
-		public TMPro.TMP_Dropdown resolutionDropdown;
-         Resolution[] resolutions;
+		public TMP_Dropdown qualityDropdown;
+		public TMP_Dropdown resolutionDropdown;
+		private Resolution[] resolutions;
 
-		 void Start ()
-		 {
-           resolutions = Screen.resolutions;
+		private void Start()
+		{
+			resolutions = Screen.resolutions;
 			resolutionDropdown.ClearOptions();
-			List<string> options = new List<string>();
-			int currentResolutionIndex = 0;
+			var options = new string[resolutions.Length];
 			for (int i = 0; i < resolutions.Length; i++)
-			 {
-			    string option = resolutions[i].width + " x " + resolutions[i].height + " @ " + resolutions[i].refreshRate + "hz";
-				options.Add(option);
-
-				if (resolutions[i].width == Screen.currentResolution.width &&
-				    resolutions[i].height == Screen.currentResolution.height)
-				{
-					currentResolutionIndex = i;
-				}						
-			 }
-			resolutionDropdown.AddOptions(resolutions);
-			resolutionDropdown.value = currentResolutionIndex;
+				options[i] = $"{resolutions[i].width}x{resolutions[i].height}@{resolutions[i].refreshRate}hz";
+			resolutionDropdown.AddOptions(options.Select(str => new TMP_Dropdown.OptionData(str)).ToList());
+			resolutionDropdown.value = Array.IndexOf(options, options.First(str => str.StartsWith($"{Screen.currentResolution.width}x{Screen.currentResolution.height}")));
 			resolutionDropdown.RefreshShownValue();
-		 }
-        private void Awake()
+		}
+		private void Awake()
 		{
 			hentaiDropdown.value = HentaiMode ? 1 : 0;
 			hentaiDropdown.onValueChanged.AddListener(ChangedHentaiValue);
 			fullScreenDropdown.value = InFullScreen ? 0 : 1;
 			fullScreenDropdown.onValueChanged.AddListener(ChangedFullScreenValue);
 			qualityDropdown.value = QualitySettings.GetQualityLevel();
-			
 		}
-	    
-     public void ChangeLevel(int value) // Graphics Quality
-	 {
-        QualitySettings.SetQualityLevel(value);
-        QualitySettings.renderPipeline = qualityLevels[value];
-     } 
+		
+		public void ChangeLevel(int value) // Graphics Quality
+		{
+			QualitySettings.SetQualityLevel(value);
+			QualitySettings.renderPipeline = qualityLevels[value];
+		} 
 		public void ChangedHentaiValue(int option) => HentaiMode = option == 1;
 		public void ChangedFullScreenValue(int fullScreen) => InFullScreen = fullScreen == 0;
 		
-         
-		
-        
-
 	}
 }
