@@ -8,6 +8,7 @@
 	using UnityEngine;
 	using UnityEngine.UI;
 	using UnityEngine.Rendering;
+	using UnityEngine.Rendering.Universal;
 
 	public sealed class DisplayOptionsBehaviour : MonoBehaviour
 	{
@@ -19,8 +20,11 @@
 		public TMP_Dropdown qualityDropdown;
 		public TMP_Dropdown resolutionDropdown;
 		private Resolution[] resolutions;
+		public Slider glowSlider;
+		public TMP_Dropdown themeDropdown;
+		public TMP_Dropdown languageDropdown;
 
-		private void Start()
+		private void Start() //Dynamic Resolution Settings and Bloom Slider
 		{
 			resolutions = Screen.resolutions;
 			resolutionDropdown.ClearOptions();
@@ -30,6 +34,7 @@
 			resolutionDropdown.AddOptions(options.Select(str => new TMP_Dropdown.OptionData(str)).ToList());
 			resolutionDropdown.value = Array.IndexOf(options, options.First(str => str.StartsWith($"{Screen.currentResolution.width}x{Screen.currentResolution.height}")));
 			resolutionDropdown.RefreshShownValue();
+
 		}
 		private void Awake()
 		{
