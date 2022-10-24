@@ -6,7 +6,7 @@
 	using System.Collections.Generic;
 	using UnityEngine;
 	using System.Collections;
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.Scripting;
 	using System.Linq;
 	using UnityEngine.Audio;
 
@@ -191,7 +191,7 @@
 			customAudioSource.PlayOneShot(clip, volume);
 			var coroutineWrapper = new CoroutineWrapper(this, WaitUntil(audioMixerGroup.name));
 			coroutineWrapper.AfterActions += () => Destroy(oneShotSounds[audioMixerGroup.name].source);
-			coroutineWrapper.AfterActions += oneShotSounds[audioMixerGroup.name].disposeWrapper.Dispose;
+			coroutineWrapper.AfterActions += () => oneShotSounds[audioMixerGroup.name].disposeWrapper.Dispose();
 			oneShotSounds.Add(audioMixerGroup.name, (coroutineWrapper, customAudioSource));
 			oneShotSounds[audioMixerGroup.name].disposeWrapper.Start();
 		}

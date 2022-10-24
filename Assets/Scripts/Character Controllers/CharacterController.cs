@@ -7,7 +7,7 @@
 	using UnityEngine;
 	using System.Linq;
 	using B1NARY.UI;
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.Scripting;
 
 	public sealed class CharacterController : Singleton<CharacterController>
 	{
@@ -68,7 +68,7 @@
 			}),
 			["movechar"] = (Action<string, string>)((characterName, positionRaw) =>
 			{
-				Instance.charactersInScene[characterName].characterScript.SetPosition(float.Parse(positionRaw));
+				Instance.charactersInScene[characterName].characterScript.HorizontalPosition = float.Parse(positionRaw);
 			}),
 			["emptyscene"] = (Action)(() =>
 			{
@@ -151,7 +151,7 @@
 		{
 			@object.SetActive(true);
 			ModifyGameObjectName(@object, characterName);
-			script.SetPosition(xPosition);
+			script.HorizontalPosition = xPosition;
 			charactersInScene.Add(script.CharacterName, (@object, script));
 		}
 

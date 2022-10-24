@@ -2,20 +2,49 @@
 {
 	using System;
 	using UnityEngine;
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.DesignPatterns;
+	using B1NARY.Scripting;
 	using System.Collections.Generic;
 
-	public class VoiceActorHandler
+	public class VoiceActorHandler : Multiton<VoiceActorHandler>, IAudioInfo
 	{
 		private AudioSource audioSource;
 		private AudioClip currentVoiceLine;
-		public float Completion => audioSource != null ? (audioSource.time / audioSource.clip.length) : 0f;
-		public float ClipLength => audioSource != null ? audioSource.clip.length : float.NaN;
-		public float PlayedTime => audioSource != null ? audioSource.time : float.NaN;
-		public bool IsPlaying => audioSource != null ? audioSource.isPlaying : false;
-		public VoiceActorHandler(GameObject parent)
+		public bool IsPlaying
 		{
-			audioSource = parent.AddComponent<AudioSource>();
+			get => audioSource != null ? audioSource.isPlaying : false;
+			set 
+			{
+				if (audioSource != null && audioSource.isPlaying != value)
+					if (value)
+						audioSource.Play();
+					else
+						audioSource.Stop();
+			}
+		}
+
+		public string ClipName => audioSource != null ? audioSource.clip.name : string.Empty;
+		public float Volume 
+		{ 
+			get => audioSource != null ? audioSource.volume : float.NaN;
+			set { if (audioSource != null) audioSource.volume = value; }
+		}
+		float IAudioInfo.Pitch 
+		{ 
+			get => audioSource != null ? audioSource.pitch : float.NaN;
+			set { if (audioSource != null) audioSource.pitch = value; } 
+		}
+		bool IAudioInfo.Loop
+		{
+			get => audioSource != null ? audioSource.loop : false;
+			set { if (audioSource != null) audioSource.loop = value; }
+		}
+		public TimeSpan PlayedSeconds => audioSource != null ? TimeSpan.FromSeconds(audioSource.time) : TimeSpan.Zero;
+		public TimeSpan TotalSeconds => audioSource != null ? TimeSpan.FromSeconds(audioSource.clip.length) : TimeSpan.Zero;
+
+		private void Awake()
+		{
+			audioSource = gameObject.AddComponent<AudioSource>();
 		}
 		public void Stop()
 		{
@@ -26,7 +55,9 @@
 		{
 			string filePath = $"Voice/{line.ScriptDocument}/{line.Index}";
 			currentVoiceLine = Resources.Load<AudioClip>(filePath);
-			Stop();
+			using (IEnumerator<VoiceActorHandler> enumerator = GetEnumerator())
+				while (enumerator.MoveNext())
+					enumerator.Current.Stop();
 			audioSource.clip = currentVoiceLine;
 			audioSource.Play();
 		}

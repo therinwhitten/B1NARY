@@ -9,7 +9,7 @@
 	using System.Text.RegularExpressions;
 	using System.Diagnostics;
 	using System.Threading.Tasks;
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.Scripting;
 
 	public sealed class ScriptsTab : DebuggerTab
 	{

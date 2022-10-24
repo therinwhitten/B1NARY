@@ -12,7 +12,7 @@
 	using System.Collections;
 	using B1NARY.UI;
 	using System.Collections.Generic;
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.Scripting;
 
 	[RequireComponent(typeof(CanvasGroup))]
 	public class TransitionManager : Singleton<TransitionManager>

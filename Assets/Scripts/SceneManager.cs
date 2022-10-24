@@ -1,7 +1,7 @@
 ﻿namespace B1NARY
 {
 	using B1NARY.DesignPatterns;
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.Scripting;
 	using B1NARY.UI;
 	using System;
 	using System.Collections;
@@ -64,8 +64,7 @@
 			SwitchedScenes.AddNonPersistentListener(() => cannotPerformNext = false);
 			UnitySceneManager.LoadScene(sceneName);
 
-			do
-				yield return new WaitForFixedUpdate();
+			do yield return new WaitForFixedUpdate();
 			while (cannotPerformNext);
 			ScriptHandler.Instance.NextLine(); 
 		}

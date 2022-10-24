@@ -6,7 +6,7 @@
 	using System.Collections.Generic;
 	using UnityEditor;
 	using UnityEngine;
-	using B1NARY.Scripting.Experimental;
+	using B1NARY.Scripting;
 
 	[CustomEditor(typeof(ScriptHandler))]
 	public class ScriptHandlerEditor : Editor
