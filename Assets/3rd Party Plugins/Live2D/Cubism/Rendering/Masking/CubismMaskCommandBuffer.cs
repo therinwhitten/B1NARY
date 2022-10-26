@@ -44,7 +44,7 @@ namespace Live2D.Cubism.Rendering.Masking
         /// </summary>
         private static void Initialize()
         {
-            // Initialize containers.
+            // InitializeGame containers.
             if (Sources == null)
             {
                 Sources = new List<ICubismMaskCommandSource>();

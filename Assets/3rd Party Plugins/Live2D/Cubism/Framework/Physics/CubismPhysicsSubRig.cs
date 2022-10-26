@@ -278,14 +278,14 @@ namespace Live2D.Cubism.Framework.Physics
         {
             var strand = Particles;
 
-            // Initialize the top of particle.
+            // InitializeGame the top of particle.
             strand[0].InitialPosition = Vector2.zero;
             strand[0].LastPosition = strand[0].InitialPosition;
             strand[0].LastGravity = Rig.Gravity;
             strand[0].LastGravity.y *= -1.0f;
 
 
-            // Initialize particles.
+            // InitializeGame particles.
             for (var i = 1; i < strand.Length; ++i)
             {
                 var radius = Vector2.zero;
@@ -298,7 +298,7 @@ namespace Live2D.Cubism.Framework.Physics
             }
 
 
-            // Initialize inputs.
+            // InitializeGame inputs.
             for (var i = 0; i < Input.Length; ++i)
             {
                 Input[i].InitializeGetter();
@@ -310,7 +310,7 @@ namespace Live2D.Cubism.Framework.Physics
             Array.Resize(ref _previousRigOutput.Output, Output.Length);
             Array.Resize(ref _currentRigOutput.Output, Output.Length);
 
-            // Initialize outputs.
+            // InitializeGame outputs.
             for (var i = 0; i < Output.Length; ++i)
             {
                 Output[i].InitializeGetter();

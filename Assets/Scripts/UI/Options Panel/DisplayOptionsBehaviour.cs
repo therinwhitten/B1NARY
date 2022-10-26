@@ -25,10 +25,15 @@
 			resolutions = Screen.resolutions;
 			resolutionDropdown.ClearOptions();
 			var options = new string[resolutions.Length];
+			int index = -1;
 			for (int i = 0; i < resolutions.Length; i++)
+			{
 				options[i] = $"{resolutions[i].width}x{resolutions[i].height}@{resolutions[i].refreshRate}hz";
+				if (Screen.currentResolution.width == resolutions[i].width && Screen.currentResolution.height == resolutions[i].height)
+					index = i;
+			}
 			resolutionDropdown.AddOptions(options.Select(str => new TMP_Dropdown.OptionData(str)).ToList());
-			resolutionDropdown.value = Array.IndexOf(options, options.First(str => str.StartsWith($"{Screen.currentResolution.width}x{Screen.currentResolution.height}")));
+			resolutionDropdown.value = index;
 			resolutionDropdown.RefreshShownValue();
 		}
 		private void Awake()

@@ -84,7 +84,7 @@ namespace Live2D.Cubism.Framework.Tasking
             }
 
 
-            // Initialize fields.
+            // InitializeGame fields.
             Tasks = new Queue<ICubismTask>();
             Worker = new Thread(Work);
             Lock = new object();

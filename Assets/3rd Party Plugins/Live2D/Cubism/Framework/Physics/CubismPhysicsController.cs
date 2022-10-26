@@ -115,7 +115,7 @@ namespace Live2D.Cubism.Framework.Physics
             }
 
 
-            // Initialize rig.
+            // InitializeGame rig.
             Rig.Controller = this;
 
 

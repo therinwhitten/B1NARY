@@ -131,7 +131,7 @@ namespace Live2D.Cubism.Rendering.Masking
             RecalculateMaskTransform();
 
 
-            // Initialize and enqueue masks.
+            // InitializeGame and enqueue masks.
             for (var i = 0; i < Masks.Length; ++i)
             {
                 Masks[i]

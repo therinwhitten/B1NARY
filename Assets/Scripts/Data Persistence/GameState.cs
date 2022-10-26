@@ -34,6 +34,14 @@ namespace B1NARY.DataPersistence
 		public Dictionary<string, float> floats;
 
 		public string playerName;
+		public string scene, documentPath;
+
+		public GameState()
+		{
+
+		}
+		/*
+		public string playerName;
 		public readonly string scriptName, scene, textBoxContent;
 		public readonly ScriptLine expectedScriptLine;
 		public readonly bool additiveTextEnabled;
@@ -77,8 +85,8 @@ namespace B1NARY.DataPersistence
 			//hoverSounds = AudioHandler.Instance.SoundCoroutineCache.Values
 			//	.Select(coroutine => new AudioData(coroutine.AudioClip.Name,
 			//	coroutine.currentSoundLibrary, coroutine.AudioSource.time)).ToArray();
+	/*
 		}
-
 		public void SaveDataIntoMemory(string savePathWithFileNameAndExtension)
 		{
 			string directoryPath = savePathWithFileNameAndExtension.Remove(
@@ -125,7 +133,7 @@ namespace B1NARY.DataPersistence
 					CharacterManager.Instance.changeAnimation(character.name, character.animation);
 					// CharacterManager.Instance.moveCharacter(character.name, character.positionX.ToString());
 				}*/
-			}
+			}/*
 			void LoadDialogue()
 			{
 				DialogueSystem.Instance.AdditiveTextEnabled = false;
@@ -150,7 +158,7 @@ namespace B1NARY.DataPersistence
 					soundCoroutinePointer().AudioSource.time = length;
 				}
 			}
-			*/
+			*//*
 			void ApplyDictionaries()
 			{
 				PersistentData.strings = strings;
@@ -192,4 +200,5 @@ namespace B1NARY.DataPersistence
 			}
 		}
 	}
+	*/
 }

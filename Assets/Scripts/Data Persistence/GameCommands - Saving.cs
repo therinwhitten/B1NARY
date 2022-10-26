@@ -23,13 +23,13 @@
 
 		}
 
-		private static void OnSave()
-		{
-			PersistentData.SaveGame();
-		}
-		private static void OnLoad()
-		{
-			_ = PersistentData.LoadGame();
-		}
+		//private static void OnSave()
+		//{
+		//	PersistentData.SaveGame();
+		//}
+		//private static void OnLoad()
+		//{
+		//	_ = PersistentData.LoadGame();
+		//}
 	}
 }

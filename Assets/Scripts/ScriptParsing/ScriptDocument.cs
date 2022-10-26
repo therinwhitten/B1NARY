@@ -127,9 +127,9 @@
 
 			public Factory(string fullFilePath)
 			{
-				documentName = Path.GetFileNameWithoutExtension(fullFilePath);
 				if (!File.Exists(fullFilePath))
 					throw new ArgumentException($"{fullFilePath} does not lead to a playable file!");
+				documentName = Path.GetFileNameWithoutExtension(fullFilePath);
 				// TODO: add a way to parse it over time.
 				fileData = LineReader();
 				IEnumerator<ScriptLine> LineReader()
@@ -165,26 +165,29 @@
 					{
 						int indentation = incompletePairs.Count;
 						if (incompletePairs.Count == 0)
-							throw new InvalidOperationException($"{fileData.Current} is a end Indent, but there is no start indent to end with!");
+							throw new InvalidDataException($"{fileData.Current} is a end Indent, but there is no start indent to end with!");
 						int startIndex = incompletePairs.Pop();
 						// line number to array index.
 						nodes.Add((startIndex, fileData.Current.Index - 1, indentation));
 					}
 					list.Add((ScriptPair)fileData.Current);
 				}
+				if (incompletePairs.Count > 0)
+					throw new InvalidDataException($"{documentName} has incomplete indentations/brackets!");
 				output.documentData = Array.AsReadOnly(
 					list.Select(pair => pair.scriptLine).ToArray());
 				// Merging all dictionaries.
 				output.commands = (Lookup<string, Delegate>)commands
 					.ToLookup(pair => pair.Key, pair => pair.Value);
 				// Assigning nodes, highest first
-				var nodeQueue = new Queue<(int startIndex, int endIndex)>
-					(nodes.OrderByDescending(pair => pair.indentation)
-					.Select(triple => (triple.startIndex, triple.endIndex)));
+				IEnumerator<(int startIndex, int endIndex)> nodeQueue = 
+					nodes.OrderByDescending(pair => pair.indentation)
+					.Select(triple => (triple.startIndex, triple.endIndex))
+					.GetEnumerator();
 				
-				while (nodeQueue.Count > 0)
+				while (nodeQueue.MoveNext())
 				{
-					var (startIndex, endIndex) = nodeQueue.Dequeue();
+					var (startIndex, endIndex) = nodeQueue.Current;
 					var subArray = list.Skip(startIndex + 1)
 						.Take(endIndex - startIndex + 1)
 						.ToArray();
@@ -200,7 +203,6 @@
 				list.Add((ScriptPair)new ScriptLine("::End", () => documentName, list.Count));
 				output.data = new ScriptNode(output, list.ToArray()).Perform(pauseOnCommand);
 				return output;
-
 			}
 
 			private ScriptNode ParseNode(ScriptDocument document, ScriptPair[] subValues)

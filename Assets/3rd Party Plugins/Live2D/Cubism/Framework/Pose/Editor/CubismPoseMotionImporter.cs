@@ -280,7 +280,7 @@ namespace Live2D.Cubism.Editor.Importers
         }
 
         /// <summary>
-        /// Initialize pose part.
+        /// InitializeGame pose part.
         /// </summary>
         /// <param name="parts">Model parts.</param>
         /// <param name="groups">Pose groups.</param>

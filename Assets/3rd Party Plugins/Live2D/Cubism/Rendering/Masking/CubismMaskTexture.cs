@@ -179,7 +179,7 @@ namespace Live2D.Cubism.Rendering.Masking
             TryRevive();
 
 
-            // Initialize container if necessary.
+            // InitializeGame container if necessary.
             if (Sources == null)
             {
                 Sources = new List<SourcesItem>();

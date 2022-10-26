@@ -57,12 +57,11 @@
 			while (cannotPerformNext);
 			ScriptHandler.Instance.NextLine(); 
 		}
-		/// <summary>
-		/// Initialized the <see cref="ScriptParser"/>, the system expects the
-		/// current scriptName, or the first scriptName to switch scenes on the first command.
-		/// </summary>
-		/// <param name="fadeTime">The fade time to take.</param>
-		public static void Initialize()
+		//// <summary>
+		//// Initializes the <see cref="ScriptHandler"/>, the system expects the
+		//// current scriptName, or the first scriptName to switch scenes on the first command.
+		//// </summary>
+		public void InitializeGame()
 		{
 			ScriptHandler.Instance.InitializeNewScript();
 			ScriptHandler.Instance.NextLine();

@@ -162,7 +162,7 @@ namespace Live2D.Cubism.Framework.Motion
         #region Function
 
         /// <summary>
-        /// Initialize motion layer.
+        /// InitializeGame motion layer.
         /// </summary>
         /// <param name="playableGraph">.</param>
         /// <param name="fadeMotionList">.</param>

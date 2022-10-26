@@ -105,6 +105,7 @@
 						continue;
 					enumerator.Current.Value.Dispose();
 					m_activeAudioTrackers.Remove(enumerator.Current.Key);
+					LateUpdate(); // Use a IEnumerator again to clear others
 					return;
 				}
 		}

@@ -30,7 +30,7 @@ namespace Live2D.Cubism.Core
             var buffer = new CubismDynamicDrawableData[unmanagedDrawables.Count];
 
 
-            // Initialize buffers.
+            // InitializeGame buffers.
             var vertexCounts = unmanagedDrawables.VertexCounts;
 
 

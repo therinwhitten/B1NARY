@@ -71,7 +71,7 @@ namespace Live2D.Cubism.Framework.Raycasting
         /// </summary>
         private void Start()
         {
-            // Initialize cache.
+            // InitializeGame cache.
             Refresh();
         }
 

@@ -120,7 +120,7 @@ namespace Live2D.Cubism.Framework.Json
                 return new Keyframe[0];
             }
 
-            // Initialize container for keyframes.
+            // InitializeGame container for keyframes.
             var keyframes = new List<Keyframe> { new Keyframe(segments[0], segments[1]) };
 
 

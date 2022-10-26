@@ -10,7 +10,7 @@
 		// Buttons
 		public void NewGame()
 		{
-			SceneManager.Initialize();
+			SceneManager.Instance.InitializeGame();
 		}
 		public void  QuitGame ()
 		{

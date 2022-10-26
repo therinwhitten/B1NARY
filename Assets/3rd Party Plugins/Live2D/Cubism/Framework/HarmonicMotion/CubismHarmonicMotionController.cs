@@ -123,7 +123,7 @@ namespace Live2D.Cubism.Framework.HarmonicMotion
         /// </summary>
         private void Start()
         {
-            // Initialize cache.
+            // InitializeGame cache.
             Refresh();
         }
 
@@ -145,7 +145,7 @@ namespace Live2D.Cubism.Framework.HarmonicMotion
         /// </summary>
         private void Reset()
         {
-            // Reset/Initialize channel timescales.
+            // Reset/InitializeGame channel timescales.
             ChannelTimescales = new float[DefaultChannelCount];
 
 
