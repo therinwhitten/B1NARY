@@ -19,12 +19,16 @@
 		public RenderPipelineAsset[] qualityLevels;
 		public TMP_Dropdown qualityDropdown;
 		public TMP_Dropdown resolutionDropdown;
-		private Resolution[] resolutions;
-		public Slider glowSlider;
 		public TMP_Dropdown themeDropdown;
 		public TMP_Dropdown languageDropdown;
+		private Resolution[] resolutions;
+		[SerializeField] Slider glow;
+		[SerializeField] Volume volumeProfile;
+		
+		
+		
 
-		private void Start() //Dynamic Resolution Settings and Bloom Slider
+		private void Start() //Dynamic Resolution Settings
 		{
 			resolutions = Screen.resolutions;
 			resolutionDropdown.ClearOptions();
@@ -34,7 +38,6 @@
 			resolutionDropdown.AddOptions(options.Select(str => new TMP_Dropdown.OptionData(str)).ToList());
 			resolutionDropdown.value = Array.IndexOf(options, options.First(str => str.StartsWith($"{Screen.currentResolution.width}x{Screen.currentResolution.height}")));
 			resolutionDropdown.RefreshShownValue();
-
 		}
 		private void Awake()
 		{
@@ -43,8 +46,13 @@
 			fullScreenDropdown.value = InFullScreen ? 0 : 1;
 			fullScreenDropdown.onValueChanged.AddListener(ChangedFullScreenValue);
 			qualityDropdown.value = QualitySettings.GetQualityLevel();
+			glow.onValueChanged.Addlistener();
 		}
 		
+		public void ChangeVolume(float value)
+		{
+			volumeProfile.
+		}
 		public void ChangeLevel(int value) // Graphics Quality
 		{
 			QualitySettings.SetQualityLevel(value);
