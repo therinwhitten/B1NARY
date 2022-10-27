@@ -7,36 +7,32 @@
 
 	public static class PersistentData
 	{
-		public const string SaveFileName = "Quicksave.sav";
-		public static readonly string savePath = Application.persistentDataPath + "/Saves";
-		public static string FullSavePath => savePath + SaveFileName;
-
-		public static string name = string.Empty;
+		public static string playerName = string.Empty;
 		public static Dictionary<string, string> strings = new Dictionary<string, string>();
 		public static Dictionary<string, bool> bools = new Dictionary<string, bool>();
 		public static Dictionary<string, int> ints = new Dictionary<string, int>();
 		public static Dictionary<string, float> floats = new Dictionary<string, float>();
 
-		//public static void SaveGame()
-		//{
-		//	var gameState = new GameState()
-		//	{
-		//		playerName = name,
-		//		strings = strings,
-		//		bools = bools,
-		//		floats = floats,
-		//		ints = ints,
-		//	};
-		//	gameState.SaveDataIntoMemory(FullSavePath);
-		//	Debug.Log("Game Saved!");
-		//}
-		//
-		//public static void LoadGame()
-		//{
-		//	throw new System.NotImplementedException();
-		//	var state = GameState.LoadExistingData(FullSavePath);
-		//	//await SceneManager.FadeToNextScene(state.scene);
-		//	await state.LoadDataIntoMemory();
-		//}
+		/// <summary>
+		/// Saves data as a <see cref="GameState"/> and writes it into the saves
+		/// folder.
+		/// </summary>
+		/// <param name="index"> The index for the save. </param>
+		public static void SaveGame(int index = 0)
+		{
+			new GameState().Save(index);
+			Debug.Log("Game Saved!");
+		}
+
+		/// <summary>
+		/// Load data from Binary format into as a <see cref="GameState"/> and 
+		/// writes it back into <see cref="PersistentData"/>.
+		/// </summary>
+		/// <param name="index"> The index for the save. </param>
+		public static void LoadGame(int index = 0)
+		{
+			GameState.LoadExistingData(index).Load();
+			Debug.Log("Game Loaded!");
+		}
 	}
 }

@@ -10,6 +10,10 @@
 	using System.Text;
 	using System.Threading;
 
+	/// <summary>
+	/// A document that tracks the <see cref="ScriptNode"/>s and parses information
+	/// from the given file document.
+	/// </summary>
 	public sealed class ScriptDocument
 	{
 		
@@ -22,6 +26,7 @@
 		/// The file name that the <see cref="ScriptDocument"/> is a part of.
 		/// </summary>
 		public readonly string documentName;
+		public readonly string documentPath;
 		/// <summary>
 		/// The current line it stopped at, usually at dialogue. You may be 
 		/// able to get a command via multiple threads.
@@ -38,9 +43,10 @@
 		/// </summary>
 		public bool AdditiveEnabled { get; set; } = false;
 
-		private ScriptDocument()
+		private ScriptDocument(string docName, string docPath)
 		{
-			
+			documentName = docName;
+			documentPath = docPath;
 		}
 
 		/// <summary>
@@ -117,19 +123,48 @@
 			public static explicit operator ScriptDocument(Factory factory)
 				=> factory.Parse(false);
 
-			private readonly string documentName;
+			/// <summary>
+			/// The document's file name in the <see cref="documentPath"/>.
+			/// </summary>
+			public readonly string documentName;
+			/// <summary>
+			/// The full document path that is located on the drive.
+			/// </summary>
+			public readonly string documentPath;
 
+			/// <summary>
+			/// A collection of accumulated commands to convert them as a 
+			/// <see cref="Lookup{string, Delegate}"/> to invoke.
+			/// </summary>
 			private readonly List<KeyValuePair<string, Delegate>> commands 
 				= new List<KeyValuePair<string, Delegate>>();
+			/// <summary>
+			/// A collection of parsers that allows them make them more defined
+			/// and causes different behaviour as such.
+			/// </summary>
 			private readonly List<ScriptNodeParser> scriptNodeParsers =
 				new List<ScriptNodeParser>();
+			/// <summary>
+			/// A type-writer like way to read through the file while compiling
+			/// the document.
+			/// </summary>
 			private IEnumerator<ScriptLine> fileData;
 
+			/// <summary>
+			/// Creates an instance of the <see cref="Factory"/> of 
+			/// <see cref="ScriptDocument"/>.
+			/// </summary>
+			/// <param name="fullFilePath"> 
+			/// a full path to get the document and define <see cref="fileData"/>
+			/// and <see cref="documentPath"/> and <see cref="documentName"/>.
+			/// </param>
+			/// <exception cref="ArgumentException"/>
 			public Factory(string fullFilePath)
 			{
 				if (!File.Exists(fullFilePath))
 					throw new ArgumentException($"{fullFilePath} does not lead to a playable file!");
 				documentName = Path.GetFileNameWithoutExtension(fullFilePath);
+				documentPath = fullFilePath;
 				// TODO: add a way to parse it over time.
 				fileData = LineReader();
 				IEnumerator<ScriptLine> LineReader()
@@ -139,17 +174,40 @@
 						yield return new ScriptLine(reader.ReadLine(), () => documentName, i);
 				}
 			}
+			/// <summary>
+			/// Adds a single or multiple methods that further defines the
+			/// <see cref="ScriptNode"/> to add behaviour to it.
+			/// </summary>
+			/// <param name="scriptNodeParsers"> The parsers to add. </param>
 			public void AddNodeParserFunctionality(params ScriptNodeParser[] scriptNodeParsers)
 				=> this.scriptNodeParsers.AddRange(scriptNodeParsers);
+			/// <summary>
+			/// Adds a bunch of executable commands whenever they pop up.
+			/// </summary>
+			/// <param name="commands"> The commands to add. </param>
 			public void AddCommandFunctionality(IEnumerable<KeyValuePair<string, Delegate>> commands) => AddCommandFunctionality(commands.GetEnumerator());
+			/// <summary>
+			/// Adds a bunch of executable commands whenever they pop up.
+			/// </summary>
+			/// <param name="commands"> The commands to add. </param>
 			public void AddCommandFunctionality(IEnumerator<KeyValuePair<string, Delegate>> commands)
 			{
 				while (commands.MoveNext())
 					this.commands.Add(commands.Current);
 			}
+			/// <summary>
+			/// Compiles all information in the <see cref="Factory"/>.
+			/// </summary>
+			/// <param name="pauseOnCommand">
+			/// Because <see cref="IEnumerator{T}"/> will have their method argument
+			/// persists, you determine if the document should pause their commands
+			/// or not, by default, this should be <see langword="true"/>.
+			/// </param>
+			/// <returns> The fully completed document, ready to use. </returns>
+			/// <exception cref="InvalidDataException"/>
 			public ScriptDocument Parse(bool pauseOnCommand)
 			{
-				var output = new ScriptDocument();
+				var output = new ScriptDocument(documentName, documentPath);
 				// Assigning lines
 				var list = new List<ScriptPair>();
 				var nodes = new List<(int startIndex, int endIndex, int indentation)>();
@@ -205,6 +263,13 @@
 				return output;
 			}
 
+			/// <summary>
+			/// Whenever a possible <see cref="ScriptNode"/> is found, then it will
+			/// iterate through the parsers.
+			/// </summary>
+			/// <param name="document"> The document to reference. </param>
+			/// <param name="subValues"> The group of data the scriptNode is allowed to use. </param>
+			/// <returns> The defined or default <see cref="ScriptNode"/>. </returns>
 			private ScriptNode ParseNode(ScriptDocument document, ScriptPair[] subValues)
 			{
 				for (int i = 0; i < scriptNodeParsers.Count; i++)
