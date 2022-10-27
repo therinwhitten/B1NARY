@@ -1,4 +1,4 @@
-﻿namespace B1NARY.UI
+﻿namespace B1NARY.UI// Suggestion: Change this to the H Scene Trigger Script for hit boxes and moaning. 
 {
 	using UnityEngine;
 	using UnityEngine.Audio;
