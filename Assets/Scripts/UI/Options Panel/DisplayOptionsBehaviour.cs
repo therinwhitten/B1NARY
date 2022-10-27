@@ -24,6 +24,11 @@
 		private Resolution[] resolutions;
 		[SerializeField] Slider glow;
 		[SerializeField] Volume volumeProfile;
+		public float BloomIntensity
+		{
+			get => volumeProfile.profile.components.Single().parameters[1].GetValue<float>();
+			set => ((VolumeParameter<float>)volumeProfile.profile.components.Single().parameters[1]).value = value;
+		}
 		
 		
 		
@@ -51,15 +56,10 @@
 			fullScreenDropdown.value = InFullScreen ? 0 : 1;
 			fullScreenDropdown.onValueChanged.AddListener(ChangedFullScreenValue);
 			qualityDropdown.value = QualitySettings.GetQualityLevel();
+			glow.value = BloomIntensity;
 		}
-		
-		public void ChangeIntensity(float value)
-		{
-			// This will get the single volume component expectedly called intensity,
-			// - and modify the second parameter called intensity.
-			VolumeParameter<float> parameter = (VolumeParameter<float>)volumeProfile.profile.components.Single().parameters[1];
-			parameter.value = value;
-		}
+
+		public void ChangeIntensity(float value) => BloomIntensity = value;
 		public void ChangeLevel(int value) // Graphics Quality
 		{
 			QualitySettings.SetQualityLevel(value);

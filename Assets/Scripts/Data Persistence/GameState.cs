@@ -16,14 +16,15 @@ namespace B1NARY.DataPersistence
 	[Serializable]
 	public class GameState
 	{
-		public static GameState LoadExistingData(string savePathWithFileNameAndExtension)
+		public static string FileSavePath(int index) => $"{Application.persistentDataPath}/Saves/Save{index}";
+		public static GameState LoadExistingData(int index)
 		{
-			using (var stream = new FileStream(savePathWithFileNameAndExtension, FileMode.Open))
+			using (var stream = new FileStream(FileSavePath(index), FileMode.Open))
 				return new BinaryFormatter().Deserialize(stream) as GameState;
 		}
 
 		#region About
-		public TimeSpan timePlayed;
+		public TimeSpan timePlayed = TimeSpan.Zero;
 		public DateTime lastSaved;
 		#endregion
 
@@ -34,171 +35,42 @@ namespace B1NARY.DataPersistence
 		public Dictionary<string, float> floats;
 
 		public string playerName;
-		public string scene, documentPath;
+		public int sceneIndex;
+		public string documentPath;
+		private ScriptLine lastLine;
 
 		public GameState()
 		{
-
+			documentPath = ScriptHandler.Instance.ScriptDocument.documentPath;
+			sceneIndex = SceneManager.GetActiveScene().buildIndex;
+			strings = PersistentData.strings;
+			bools = PersistentData.bools;
+			ints = PersistentData.ints;
+			floats = PersistentData.floats;
+			playerName = PersistentData.playerName;
+			lastSaved = DateTime.Now;
+			timePlayed += lastSaved - ScriptHandler.Instance.playedTime;
 		}
-		/*
-		public string playerName;
-		public readonly string scriptName, scene, textBoxContent;
-		public readonly ScriptLine expectedScriptLine;
-		public readonly bool additiveTextEnabled;
-		public readonly AudioData[] audioSounds;
-		public readonly CharacterSnapshot[] characterSnapshots;
-
-		public GameState()
+		public void Save(int index)
 		{
-			// Additive
-			additiveTextEnabled = DialogueSystem.Instance.AdditiveTextEnabled;
-			if (additiveTextEnabled)
-				textBoxContent = DialogueSystem.Instance.CurrentText;
-			else
-				textBoxContent = string.Empty;
-
-			// Basics
-			scene = SceneManager.GetActiveScene().name;
-			scriptName = ScriptHandler.Instance.ScriptName;
-			expectedScriptLine = ScriptHandler.Instance.CurrentLine;
-			//index = ScriptHandler.Instance.;
-
-			// Chardata
-			throw new NotImplementedException();
-			/*
-			characterSnapshots = CharactersInScene.Values.Select(GetCharacterData).ToArray();
-			CharacterSnapshot GetCharacterData(GameObject character)
-			{
-				var charScript = character.GetComponent<CharScriptOld>();
-				return new CharacterSnapshot()
-				{
-					name = charScript.charName,
-					prefabName = charScript.prefabName,
-					positionX = charScript.currentPosition.x,
-					positionY = charScript.currentPosition.y,
-					animation = charScript.currentAnimation,
-					focused = charScript.focused
-				};
-			}*/
-
-			// Audio
-			//hoverSounds = AudioHandler.Instance.SoundCoroutineCache.Values
-			//	.Select(coroutine => new AudioData(coroutine.AudioClip.Name,
-			//	coroutine.currentSoundLibrary, coroutine.AudioSource.time)).ToArray();
-	/*
-		}
-		public void SaveDataIntoMemory(string savePathWithFileNameAndExtension)
-		{
-			string directoryPath = savePathWithFileNameAndExtension.Remove(
-				savePathWithFileNameAndExtension.LastIndexOfAny(new char[] { '/', '\\' }));
-			if (!Directory.Exists(directoryPath))
-				Directory.CreateDirectory(directoryPath);
-			using (var stream = new FileStream(savePathWithFileNameAndExtension, FileMode.Create))
+			string path = FileSavePath(index);
+			string savesPath = path.Remove(path.LastIndexOf('/'));
+			if (!Directory.Exists(savesPath))
+				Directory.CreateDirectory(savesPath);
+			using (var stream = new FileStream(path, FileMode.Create))
 				new BinaryFormatter().Serialize(stream, this);
 		}
-
-		public Task LoadDataIntoMemory()
+		public void Load()
 		{
-			LoadCharacters();
-			LoadDialogue();
-			ApplyDictionaries();
-			ScriptHandler.Instance.InitializeNewScript(scriptName);
-			while (ScriptHandler.Instance.CurrentLine != expectedScriptLine)
+			PersistentData.playerName = playerName;
+			PersistentData.strings = strings;
+			PersistentData.bools = bools;
+			PersistentData.ints = ints;
+			PersistentData.floats = floats;
+			SceneManager.LoadScene(sceneIndex);
+			ScriptHandler.Instance.InitializeNewScript(documentPath);
+			while (ScriptHandler.Instance.CurrentLine != lastLine)
 				ScriptHandler.Instance.NextLine();
-			//LoadAudio(hoverSounds);
-			Debug.Log("Loaded game!");
-			return Task.CompletedTask;
-
-			void LoadCharacters()
-			{
-				throw new NotImplementedException();
-				B1NARY.CharacterController.Instance.ClearAllCharacters();
-				
-				/*
-				foreach (CharacterSnapshot characterSnapshot in characterSnapshots)
-				{
-					GameObject charObj = B1NARY.CharacterController.Instance
-						.SummonCharacter(characterSnapshot.prefabName, )
-				}
-				/*
-				foreach (CharacterSnapshot character in characterSnapshots)
-				{
-					GameObject gameObject = CharacterManager.Instance.SummonCharacter(
-						character.prefabName,
-						character.positionX.ToString(),
-						character.name
-					);
-					CharacterManager.Instance.changeExpression(character.name, character.expression);
-
-					CharacterManager.Instance.changeAnimation(character.name, character.animation);
-					// CharacterManager.Instance.moveCharacter(character.name, character.positionX.ToString());
-				}*/
-			}/*
-			void LoadDialogue()
-			{
-				DialogueSystem.Instance.AdditiveTextEnabled = false;
-				DialogueSystem.Instance.Say(string.Empty);
-				DialogueSystem.Instance.AdditiveTextEnabled = additiveTextEnabled;
-			}
-			/*
-			void LoadAudio(AudioData[] hoverSounds)
-			{
-				const string fileDirectory = "Audio/Sound Libraries";
-				foreach (var (clip, libraryName, length) in hoverSounds)
-				{
-					CoroutinePointer soundCoroutinePointer;
-					if (AudioHandler.Instance.CustomAudioData.name != libraryName)
-					{
-						var library = Resources.Load<SoundLibrary>($"{fileDirectory}/{libraryName}");
-						soundCoroutinePointer = AudioHandler.Instance.PlayHoverSound(
-							library.GetCustomAudioClip(library.GetAudioClip(clip)));
-					}
-					else
-						soundCoroutinePointer = AudioHandler.Instance.PlayHoverSound(clip);
-					soundCoroutinePointer().AudioSource.time = length;
-				}
-			}
-			*//*
-			void ApplyDictionaries()
-			{
-				PersistentData.strings = strings;
-				PersistentData.bools = bools;
-				PersistentData.ints = ints;
-				PersistentData.floats = floats;
-			}
-		}
-
-		[Serializable]
-		public class CharacterSnapshot
-		{
-			public string name;
-			public string prefabName;
-			public Vector2 position;
-			public string expression;
-			public string animation;
-		}
-
-		[Serializable]
-		public struct AudioData
-		{
-			public static explicit operator AudioData((string soundName, string soundLibrary, float currentPoint) inputTuple)
-				=> new AudioData(inputTuple.soundName, inputTuple.soundLibrary, inputTuple.currentPoint);
-
-			public readonly string soundName, soundLibrary;
-			public readonly float currentPoint;
-			public AudioData(string soundName, string soundLibrary, float currentPoint)
-			{
-				this.soundName = soundName;
-				this.soundLibrary = soundLibrary;
-				this.currentPoint = currentPoint;
-			}
-			public void Deconstruct(out string soundName, out string soundLibrary, out float currentPoint)
-			{
-				soundName = this.soundName;
-				soundLibrary = this.soundLibrary;
-				currentPoint = this.currentPoint;
-			}
 		}
 	}
-	*/
 }

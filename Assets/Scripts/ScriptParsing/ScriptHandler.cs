@@ -11,9 +11,14 @@
 	using B1NARY.DesignPatterns;
 	using UnityEngine.InputSystem;
 	using System.Threading;
+	using B1NARY.DataPersistence;
 
 	public class ScriptHandler : Singleton<ScriptHandler>
 	{
+		/// <summary>
+		/// All script-based commands for the script itself and the 
+		/// <see cref="DialogueSystem"/>
+		/// </summary>
 		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
 			["additive"] = (Action<string>)(boolRaw =>
@@ -46,6 +51,17 @@
 				}).FreeBlockPath();
 			}),
 		};
+		/// <summary>
+		/// Gets a custom <see cref="ScriptNode"/> based on the requirements.
+		/// </summary>
+		/// <param name="document"> The document to reference. </param>
+		/// <param name="subLines"> 
+		/// All the data that the <see cref="ScriptNode"/> is limited to. 
+		/// </param>
+		/// <returns>
+		/// <see langword="null"/> if none of them fits the requirements, 
+		/// otherwise returns a <see cref="ScriptNode"/> derived from the class. 
+		/// </returns>
 		public static ScriptNode GetDefinedScriptNodes(ScriptDocument document, ScriptPair[] subLines)
 		{
 			if (subLines.First().LineType != ScriptLine.Type.Command)
@@ -70,8 +86,20 @@
 		private ScriptDocument scriptDocument;
 		[Tooltip("Where the script starts when it initializes a new script.")]
 		public string StartupScriptPath;
+		/// <summary>
+		/// The player's input.
+		/// </summary>
 		public PlayerInput playerInput;
+		/// <summary>
+		/// The names of the keybinds from <see cref="playerInput"/> to make it
+		/// go to the <see cref="NextLine"/> on press.
+		/// </summary>
 		public string[] nextLineButtons;
+		/// <summary>
+		/// From where the game session starts, or when 
+		/// <see cref="InitializeNewScript(string)"/> is called.
+		/// </summary>
+		public DateTime playedTime;
 
 		/// <summary>
 		/// If the game should pause input. Modifying the variable 
@@ -98,6 +126,17 @@
 			DontDestroyOnLoad(gameObject);
 		}
 
+		/// <summary>
+		/// A non-static method for <see cref="PersistentData.LoadGame(int)"/>
+		/// </summary>
+		/// <param name="index"> The index for the save. </param>
+		public void LoadExistingSave(int index) => PersistentData.LoadGame(index);
+		/// <summary>
+		/// A non-static method for <see cref="PersistentData.SaveGame(int)"/>
+		/// </summary>
+		/// <param name="index"> The index for the save. </param>
+		public void SaveGame(int index) => PersistentData.SaveGame(index);
+
 		public void InitializeNewScript(string scriptPath = "")
 		{
 			string finalPath = string.IsNullOrWhiteSpace(scriptPath) ? StartupScriptPath : scriptPath;
@@ -110,6 +149,8 @@
 			scriptFactory.AddCommandFunctionality(TransitionManager.Commands);
 			scriptDocument = scriptFactory.Parse(false);
 			IsActive = true;
+
+			playedTime = DateTime.Now;
 		}
 		/// <summary>
 		/// Plays lines until it hits a normal dialogue or similar.
