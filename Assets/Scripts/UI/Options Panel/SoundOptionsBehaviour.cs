@@ -18,7 +18,7 @@ namespace B1NARY.UI
         [SerializeField] Slider playerSlider;
         [SerializeField] Slider npcSlider;
         [SerializeField] Slider cameosSlider;
-        //Adding the slider components for inspector for VA but not attached.
+        //Adding the slider components for inspector for VA. Attached to Voice Volume and Mixer
          [SerializeField] Slider candiiSlider;
          [SerializeField] Slider asterellaSlider;
          [SerializeField] Slider benosphereSlider;
@@ -40,6 +40,7 @@ namespace B1NARY.UI
         const string MIXER_PLAYER = "Player";
         const string MIXER_NPC = "NPC";
         const string MIXER_CAMEOS = "Cameos"; 
+        const string MIXER_VOICE = "Voice"; 
         //Sliders Assignment to Mixer
         void Awake()
         {
@@ -50,6 +51,7 @@ namespace B1NARY.UI
             playerSlider.onValueChanged.AddListener(SetPlayerVolume);
             npcSlider.onValueChanged.AddListener(SetNPCVolume);
             cameosSlider.onValueChanged.AddListener(SetCameosVolume);
+            candiiSlider.onValueChanged.AddListener(SetVoiceVolume);
         }
          //Logrithmic Volume Values. Need these set up like this. Slider Values in inspector need to be around .1 for lowest with 1 the highest. If 0, will break channel.
         void SetMasterVolume(float value)
@@ -79,6 +81,10 @@ namespace B1NARY.UI
          void SetCameosVolume(float value)
         {
             mixer.SetFloat(MIXER_CAMEOS, Mathf.Log10(value) * 100);
+        }
+         void SetVoiceVolume(float value)
+        {
+            mixer.SetFloat(MIXER_VOICE, Mathf.Log10(value) * 100);
         }
     }
     
