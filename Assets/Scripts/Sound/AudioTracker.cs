@@ -106,7 +106,7 @@
 
 		private void StopOneShots()
 		{
-			throw new NotImplementedException();
+			audioSource.Stop();
 		}
 		public void Stop()
 		{

@@ -16,7 +16,25 @@
 	/// </summary>
 	public sealed class ScriptDocument
 	{
-		
+		//public static IEnumerator<ScriptPair> SkipNode(IEnumerator<ScriptPair> start)
+		//{
+		//	//// this will assume this will start with a non-bracket, then bracket
+		//	//start.MoveNext();
+		//	//start.MoveNext();
+		//	//int count = 0;
+		//	//
+		//	//while (start.MoveNext())
+		//	//{
+		//	//	if (count < 0)
+		//	//		return start;
+		//	//	if (start.Current.LineType == ScriptLine.Type.BeginIndent)
+		//	//		count++;
+		//	//	else if (start.Current.LineType == ScriptLine.Type.EndIndent)
+		//	//		count--;
+		//	//}
+		//	//throw new IndexOutOfRangeException();
+		//}
+
 		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
 		{ "on", "true", "enable" };
 		public static readonly HashSet<string> disabledHashset = new HashSet<string>()
@@ -76,6 +94,7 @@
 		/// </returns>
 		public bool ParseLine(ScriptLine line)
 		{
+			DebugLineTester.Instance.AddLine(line.lineData);
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
@@ -98,7 +117,7 @@
 				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:
-					throw new ArgumentException("Managed to hit a intentation"
+					throw new ArgumentException("Managed to hit a intentation "
 						+ $"on line '{line.Index}'.");
 				case ScriptLine.Type.Empty:
 					return true;
@@ -169,9 +188,9 @@
 				fileData = LineReader();
 				IEnumerator<ScriptLine> LineReader()
 				{
-					var reader = new StreamReader(fullFilePath);
-					for (int i = 1; !reader.EndOfStream; i++)
-						yield return new ScriptLine(reader.ReadLine(), () => documentName, i);
+					using (var reader = new StreamReader(fullFilePath))
+						for (int i = 1; !reader.EndOfStream; i++)
+							yield return new ScriptLine(reader.ReadLine(), () => documentName, i);
 				}
 			}
 			/// <summary>
@@ -246,7 +265,7 @@
 				while (nodeQueue.MoveNext())
 				{
 					var (startIndex, endIndex) = nodeQueue.Current;
-					var subArray = list.Skip(startIndex + 1)
+					var subArray = list.Skip(startIndex)
 						.Take(endIndex - startIndex + 1)
 						.ToArray();
 					list[startIndex] = new ScriptPair(list[startIndex].scriptLine,

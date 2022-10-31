@@ -2,10 +2,10 @@
 {
 	using UnityEngine;
 	using UnityEditor;
-
+	
 	public sealed class RandomDataTab : DebuggerTab
 	{
-		public override string Name => "Random Data";
+		public override GUIContent Name => new GUIContent("Random Data");
 
 		private bool showLimitValues = false;
 		public override void DisplayTab()
@@ -35,5 +35,7 @@
 				return output;
 			}
 		}
+
+		public override bool ConstantlyRepaint => throw new System.NotImplementedException();
 	}
 }

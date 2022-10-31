@@ -85,18 +85,57 @@ namespace B1NARY.UI
 			{
 				if (m_autoSkip == value)
 					return;
+				FastSkip = false;
 				m_autoSkip = value;
+				if (!CoroutineWrapper.IsNotRunningOrNull(eventCoroutine))
+					eventCoroutine.Dispose();
 				if (value)
+					eventCoroutine = new CoroutineWrapper(this, AutoSkipCoroutine()).Start();
+
+				IEnumerator AutoSkipCoroutine()
 				{
-					autoSkipCoroutine = new CoroutineWrapper(this, AutoSkipCoroutine()).Start();
-					return;
+					while (AutoSkip)
+					{
+						yield return new WaitForEndOfFrame();
+						if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
+							continue;
+						if (CharacterController.Instance.charactersInScene.Values.Any(pair => pair.characterScript.VoiceData.IsPlaying))
+							continue;
+						ScriptHandler.Instance.NextLine();
+					}
 				}
-				if (CoroutineWrapper.IsNotRunningOrNull(autoSkipCoroutine))
-					autoSkipCoroutine.Dispose();
 			}
+
 		}
 		private bool m_autoSkip = false;
 		public void ToggleAutoSkip() => AutoSkip = !AutoSkip;
+
+		public bool FastSkip
+		{
+			get => m_fastSkip;
+			set
+			{
+				if (m_fastSkip == value)
+					return;
+				AutoSkip = false;
+				m_fastSkip = value;
+				if (!CoroutineWrapper.IsNotRunningOrNull(eventCoroutine))
+					eventCoroutine.Dispose();
+				if (value)
+					eventCoroutine = new CoroutineWrapper(this, FastSkipCoroutine()).Start();
+
+				IEnumerator FastSkipCoroutine()
+				{
+					while (FastSkip)
+					{
+						yield return new WaitForSeconds(0.15f);
+						ScriptHandler.Instance.NextLine();
+					}
+				}
+			}
+		}
+		private bool m_fastSkip = false;
+		public void ToggleFastSkip() => FastSkip = !FastSkip;
 
 		private bool IsAprilFools;
 		private string NewLine()
@@ -111,7 +150,7 @@ namespace B1NARY.UI
 			IsAprilFools = DateTime.Today == new DateTime(DateTime.Today.Year, 4, 1);
 		}
 
-		private CoroutineWrapper autoSkipCoroutine;
+		private CoroutineWrapper eventCoroutine;
 		private CoroutineWrapper speakCoroutine;
 
 		public void Say(string message)
@@ -178,18 +217,6 @@ namespace B1NARY.UI
 				}
 				CurrentText = CurrentText.Insert(CurrentText.Length - tagsLength, speech[i].ToString());
 				yield return new WaitForSeconds(seconds);
-			}
-		}
-		private IEnumerator AutoSkipCoroutine()
-		{
-			while (AutoSkip)
-			{
-				yield return new WaitForEndOfFrame();
-				if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
-					continue;
-				if (CharacterController.Instance.charactersInScene.Values.Any(pair => pair.characterScript.VoiceData.IsPlaying))
-					continue;
-				ScriptHandler.Instance.NextLine();
 			}
 		}
 	}

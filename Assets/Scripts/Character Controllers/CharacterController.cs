@@ -39,7 +39,7 @@
 				throw new MissingReferenceException("GameObject or Character " +
 					$"named '{gameObjectName}' is not found as prefab in " +
 					$"Resources Folder '{prefabsPath}{gameObjectName}', nor found" +
-					"in the scene!");
+					" in the scene!");
 			}),
 			["initiatechar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
@@ -64,11 +64,17 @@
 
 			["anim"] = (Action<string, string>)((characterName, animationName) =>
 			{
-				Instance. charactersInScene[characterName].characterScript.PlayAnimation(animationName);
+				if (Instance.charactersInScene.TryGetValue(characterName, out var pair))
+					pair.characterScript.PlayAnimation(animationName);
+				else
+					Debug.LogError($"{characterName} does not exist!", Instance);
 			}),
 			["movechar"] = (Action<string, string>)((characterName, positionRaw) =>
 			{
-				Instance.charactersInScene[characterName].characterScript.HorizontalPosition = float.Parse(positionRaw);
+				if (Instance.charactersInScene.TryGetValue(characterName, out var pair))
+					pair.characterScript.HorizontalPosition = float.Parse(positionRaw);
+				else
+					Debug.LogError($"{characterName} does not exist!", Instance);
 			}),
 			["emptyscene"] = (Action)(() =>
 			{
@@ -87,7 +93,7 @@
 
 
 		public Dictionary<string, (GameObject gameObject, ICharacterController characterScript)> charactersInScene =
-			new Dictionary<string, (GameObject gameObject, ICharacterController characterScript)>(5);
+			new Dictionary<string, (GameObject gameObject, ICharacterController characterScript)>(10);
 
 		/// <summary>
 		/// Modifies a character name for <see cref="charactersInScene"/>.

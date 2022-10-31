@@ -7,7 +7,8 @@
 
 	public sealed class AudioTab : DebuggerTab
 	{
-		public override string Name => "Audio";
+		public override GUIContent Name => new GUIContent("Audio");
+		public override bool ConstantlyRepaint => true;
 
 		public override void DisplayTab()
 		{

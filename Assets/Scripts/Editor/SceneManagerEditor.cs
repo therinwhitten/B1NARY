@@ -3,25 +3,30 @@
 	using UnityEngine;
 	using UnityEditor;
 	using System.Collections.Generic;
+	using UnityEditor.UI;
+	using System;
 
 	[CustomEditor(typeof(SceneManager))]
 	public class SceneManagerEditor : Editor
 	{
 		private SceneManager sceneManager;
 		private void Awake() => sceneManager = (SceneManager)target;
-
-		private Vector2 scroll = Vector2.zero;
+		
 		public override void OnInspectorGUI()
 		{
 			EditorGUILayout.LabelField($"Active Scene: {SceneManager.ActiveScene.name}, Index: {SceneManager.ActiveScene.buildIndex}");
 			EditorGUILayout.LabelField($"Currently Switching Scenes: {sceneManager.IsSwitchingScenes}");
 			EditorGUILayout.Separator();
-			scroll = EditorGUILayout.BeginScrollView(scroll);
 			DisplayTab("Before Switching Scenes", sceneManager.SwitchingScenes);
 			DisplayTab("After Switching Scenes", sceneManager.SwitchedScenes);
-			EditorGUILayout.EndScrollView();
 		}
 
+		/// <summary>
+		/// Displays a tab's persistent and non-persistent listeners.
+		/// </summary>
+		/// <param name="header"></param>
+		/// <param name="group"></param>
+		/// <returns> The taken space in the rect. </returns>
 		private static void DisplayTab(string header, PersistentListenerGroup group)
 		{
 			Rect masterHeaderRect = GUILayoutUtility.GetRect(Screen.width / 4 * 3, 22f);

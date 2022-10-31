@@ -14,94 +14,74 @@
 	using System.Collections.Generic;
 	using B1NARY.Scripting;
 
-	[RequireComponent(typeof(CanvasGroup))]
 	public class TransitionManager : Singleton<TransitionManager>
 	{
 		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
 			["changebg"] = (Action<string>)(backgroundName =>
 			{
-				Instance.Backgrounds.SetNewStaticBackground(backgroundName);
-				Instance.Backgrounds.SetNewAnimatedBackground(backgroundName);
+				InstanceOrDefault.SetNewStaticBackground(backgroundName);
+				InstanceOrDefault.SetNewAnimatedBackground(backgroundName);
 			}),
 			["loopbg"] = (Action<string>)(str =>
 			{
 				if (ScriptDocument.enabledHashset.Contains(str))
-					Instance.Backgrounds.LoopingAnimBG = true;
+					InstanceOrDefault.LoopingAnimBG = true;
 				else if (ScriptDocument.disabledHashset.Contains(str))
-					Instance.Backgrounds.LoopingAnimBG = false;
+					InstanceOrDefault.LoopingAnimBG = false;
 				else throw new ArgumentException($"{str} is not a valid " +
 					$"argument for loopbg!");
 			}),
 			["playbg"] = (Action<string>)(backgroundName =>
 			{
-				TransitionManager.Instance.Backgrounds.SetNewAnimatedBackground(backgroundName);
+				InstanceOrDefault.SetNewAnimatedBackground(backgroundName);
 			}),
 		};
 
 		[SerializeField] private string BGCanvasName = "BG-Canvas";
-		[SerializeField] private GameObject[] transitions;
-		//[SerializeField] private bool showTransitionOnFirstLoad = true;
-		private BackgroundHandler m_backgroundHandler;
-		public BackgroundHandler Backgrounds => m_backgroundHandler;
-
+		//private BackgroundHandler m_backgroundHandler;
+		//public BackgroundHandler Backgrounds => m_backgroundHandler;
 
 		protected override void SingletonAwake()
 		{
-			SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(UpdateBackgroundHandler);
-			UpdateBackgroundHandler();
-		}
-		private void UpdateBackgroundHandler()
-		{
-			m_backgroundHandler = new BackgroundHandler(BGCanvasName);
-		}
-
-
-		public TransitionObject GetTransitionObject(GameObject gameSchematic)
-		{
-			if (gameSchematic == null)
-				throw new NullReferenceException($"{gameSchematic.name} doesn't exist!");
-			var gameObject = Instantiate(gameSchematic, this.gameObject.transform);
-			gameObject.SetActive(true);
-			return gameObject.GetComponent<TransitionObject>();
-		}
-
-
-
-		private void OnDestroy()
-		{
-			SceneManager.InstanceOrDefault.SwitchedScenes.RemovePersistentListener(UpdateBackgroundHandler);
-		}
-
-		[Serializable]
-		public class BackgroundHandler
-		{
-			public bool AutomaticallyAssignAnimatedBG = true;
-			public (GameObject gameObject, Image staticBG, VideoPlayer animatedBG) BGCanvas { get; private set; }
-			public bool LoopingAnimBG { get => BGCanvas.animatedBG.isLooping; set => BGCanvas.animatedBG.isLooping = value; }
-
-			internal BackgroundHandler(string BGCanvasName)
+			UpdateBackgroundReferences();
+			SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(UpdateBackgroundReferences);
+			void UpdateBackgroundReferences()
 			{
 				var obj = GameObject.Find(BGCanvasName);
 				if (obj == null)
 					throw new NullReferenceException(BGCanvasName);
-				BGCanvas = (obj, obj.GetComponentWithChildren<Image>(), obj.GetComponentWithChildren<VideoPlayer>());
+				m_staticBackground = obj.GetComponentWithChildren<Image>();
+				m_animatedBackground = obj.GetComponentInChildren<VideoPlayer>();
 			}
-
-			public void SetNewStaticBackground(string resourcesPath)
-				=> SetNewStaticBackground(Resources.Load<Sprite>(resourcesPath));
-			public void SetNewStaticBackground(Sprite sprite) =>
-				BGCanvas.staticBG.sprite = sprite;
-			public void SetNewAnimatedBackground(string resourcesPath)
-				=> SetNewAnimatedBackground(Resources.Load<VideoClip>(resourcesPath));
-			public void SetNewAnimatedBackground(VideoClip videoClip)
-			{
-				BGCanvas.animatedBG.Stop();
-				BGCanvas.animatedBG.clip = videoClip;
-				BGCanvas.animatedBG.Play();
-			}
-
-			
 		}
+
+		public Sprite StaticBackground
+		{
+			get => m_staticBackground.sprite;
+			set => m_staticBackground.sprite = value;
+		}
+		private Image m_staticBackground;
+		public void SetNewStaticBackground(string resourcesPath)
+			=> StaticBackground = Resources.Load<Sprite>(resourcesPath);
+
+		public VideoClip AnimatedBackground
+		{
+			get => m_animatedBackground.clip;
+			set
+			{
+				m_animatedBackground.Stop();
+				m_animatedBackground.clip = value;
+				m_animatedBackground.Play();
+			}
+		}
+		private VideoPlayer m_animatedBackground;
+		public bool LoopingAnimBG
+		{
+			get => m_animatedBackground.isLooping;
+			set => m_animatedBackground.isLooping = value;
+		}
+		public void SetNewAnimatedBackground(string resourcesPath)
+			=> AnimatedBackground = Resources.Load<VideoClip>(resourcesPath);
 	}
 }

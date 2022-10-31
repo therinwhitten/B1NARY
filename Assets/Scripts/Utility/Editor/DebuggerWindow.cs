@@ -9,34 +9,25 @@
 	using B1NARY.Scripting;
 	using B1NARY.DesignPatterns;
 	using System.Collections.Generic;
+	using System.Text;
 
-	public class DebuggerWindow : EditorWindow
+	public sealed class DebuggerWindow : EditorWindow
 	{
-		public static class TryGetter<T> where T : MonoBehaviour
-		{
-			private static T valueCache;
-			public static bool TryGetObject(out T value)
-			{
-				if (valueCache == null)
-					valueCache = FindObjectOfType<T>();
-				if (valueCache == null)
-				{
-					value = null;
-					return false;
-				}
-				value = valueCache;
-				return true;
-			}
+		private const string @null = "Null", notPlaying = "Not Playing!";
+
+		public static int SlotsLength 
+		{ 
+			get => EditorPrefs.GetInt(slotsLengthKey, 3); 
+			set => EditorPrefs.SetInt(slotsLengthKey, value); 
 		}
-
-
+		public const string slotsLengthKey = "B1NARY Slots Debugger";
 
 		private static readonly Vector2Int defaultMinSize = new Vector2Int(300, 350);
+
 
 		[MenuItem("B1NARY/Debugger", priority = 1)]
 		public static void ShowWindow()
 		{
-
 			// Get existing open window or if none, make a new one:
 			DebuggerWindow window = GetWindow<DebuggerWindow>();
 			window.titleContent = new GUIContent("B1NARY Debugger");
@@ -44,73 +35,70 @@
 			window.Show();
 		}
 
+
+
+		private DebuggerTab CurrentTab
+		{
+			get
+			{
+				if (m_currentTab < 0)
+					return null;
+				return DebuggerTab.AllTabs[m_currentTab];
+			}
+		}
+		private int m_currentTab = 0;
+
+
+		Vector2 scrollPos = Vector2.zero;
 		private void OnGUI()
 		{
-			TopBar();
-			//EditorGUILayout.Space(10);
-			ShowTabs();
+			EditorGUILayout.LabelField(CurrentSpeaker());
+			EditorGUILayout.LabelField(CurrentLine());
+			DisplayTabs();
+
+
+			string CurrentSpeaker()
+			{
+				var onSpeaker = new StringBuilder("On Speaker: ");
+				if (!Application.isPlaying)
+					return onSpeaker.Append(notPlaying).ToString();
+				if (!DialogueSystem.HasInstance || string.IsNullOrEmpty(DialogueSystem.Instance.CurrentSpeaker))
+					return onSpeaker.Append(@null).ToString();
+				return onSpeaker.Append(DialogueSystem.Instance.CurrentSpeaker).ToString();
+			}
+			string CurrentLine()
+			{
+				var onLine = new StringBuilder("On Line: ");
+				if (!Application.isPlaying)
+					return onLine.Append(notPlaying).ToString();
+				if (!ScriptHandler.HasInstance || ScriptHandler.Instance.CurrentLine == default)
+					return onLine.Append(@null).ToString();
+				return onLine.Append(ScriptHandler.Instance.CurrentLine).ToString();
+			}
+			void DisplayTabs()
+			{
+				const int slotHeight = 20;
+				
+				int tabHeight = (int)Math.Ceiling((double)DebuggerTab.AllTabs.Count / SlotsLength);
+				tabHeight *= slotHeight;
+				GUIContent[] content = DebuggerTab.AllTabs.Select(tab => tab.Name).ToArray();
+				Rect rect = GUILayoutUtility.GetRect(Screen.width, tabHeight);
+				rect.xMax -= 2;
+				rect.xMin += 2;
+				m_currentTab = GUI.SelectionGrid(rect, m_currentTab, content, SlotsLength);
+
+				if (CurrentTab == null)
+					return;
+				scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
+				CurrentTab.DisplayTab();
+				EditorGUILayout.EndScrollView();
+			}
 		}
 
 		private void OnInspectorUpdate()
 		{
-			Repaint();
-		}
-
-		private void TopBar()
-		{
-			CurrentLineShow();
-			SpeakerShow();
-		}
-
-
-		Vector2 scrollPos = Vector2.zero;
-		int selected = 0, oldTabLength = -1;
-		private void ShowTabs()
-		{
-			const int slotHeight = 20;
-			int slotsEach = EditorPrefs.GetInt("B1NARY Slots Debugger", 3);
-			string[] tabNames = DebuggerTab.ShownTabs.Select(tab => tab.Name).ToArray();
-			if (oldTabLength != tabNames.Length)
-				if (oldTabLength == -1)
-					oldTabLength = tabNames.Length;
-				else
-				{
-					selected += tabNames.Length - oldTabLength;
-					oldTabLength += tabNames.Length - oldTabLength;
-				}
-			int RectHeight = 0;
-			for (int i = 0; i < tabNames.Length; i += slotsEach)
-				RectHeight += slotHeight;
-			Rect guiRect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, RectHeight);
-			guiRect.width -= 10;
-			guiRect.x += 5;
-			selected = GUI.SelectionGrid(guiRect, selected, tabNames, slotsEach);
-			scrollPos = EditorGUILayout.BeginScrollView(scrollPos);
-			DebuggerTab.ShownTabs[selected].DisplayTab();
-			EditorGUILayout.EndScrollView();
-		}
-
-
-		private void CurrentLineShow()
-		{
-			const string startingLine = "On line: ";
-			if (TryGetter<ScriptHandler>.TryGetObject(out var scriptHandler) && scriptHandler.IsActive)
-				EditorGUILayout.LabelField(startingLine + scriptHandler.CurrentLine.Index, EditorStyles.boldLabel);
-			else
-				EditorGUILayout.LabelField(startingLine + "NaN", EditorStyles.boldLabel);
-		}
-		private void SpeakerShow()
-		{
-			const string emptySlot = "Empty";
-			string startingLine = "On Character: " + emptySlot;
-			string[] bottomLengthLabel = { "NaN", "/", "NaN" };
-			CharacterScript currentCharacter = Multiton<CharacterScript>.AsEnumerable()
-				.Where(@char => @char.name == DialogueSystem.Instance.CurrentSpeaker).Single();
-			startingLine = startingLine.Replace(emptySlot, DialogueSystem.Instance.CurrentSpeaker);
-			bottomLengthLabel[0] = currentCharacter.VoiceData.PlayedSeconds.TotalSeconds.ToString("N2");
-			bottomLengthLabel[2] = currentCharacter.VoiceData.TotalSeconds.TotalSeconds.ToString("N2");
-			EditorGUI.ProgressBar(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), currentCharacter.VoiceData.CompletionPercent(), string.Join(" ", bottomLengthLabel));
-			EditorGUI.LabelField(GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth, 20), startingLine, EditorStyles.whiteMiniLabel);
+			if (CurrentTab.ConstantlyRepaint)
+				Repaint();
 		}
 	}
 }
