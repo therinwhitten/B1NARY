@@ -9,6 +9,13 @@
 	using System.Threading.Tasks;
 	using UnityEngine;
 	
+	/// <summary>
+	/// A delegate that is related to the <see cref="ScriptNode.ScriptNode(ScriptDocument, ScriptPair[])"/>
+	/// constructor.
+	/// </summary>
+	/// <param name="document"> The reference of the document to tie to. </param>
+	/// <param name="subLines"> The contents of the <see cref="ScriptNode"/> </param>
+	/// <returns> A node, or a class that derived from it. </returns>
 	public delegate ScriptNode ScriptNodeParser(ScriptDocument document, ScriptPair[] subLines);
 	/// <summary>
 	/// A block of <see cref="ScriptLine"/>s that is run over time via 
@@ -16,6 +23,10 @@
 	/// </summary>
 	public class ScriptNode
 	{
+		/// <summary>
+		/// The line count of all the contents, and the <see cref="rootLine"/> and 
+		/// brackets. 
+		/// </summary>
 		public int LineLength
 		{
 			get
@@ -53,12 +64,16 @@
 		/// <summary>
 		/// The data stored for the sub-block
 		/// </summary>
-		protected List<ScriptPair> subLines;
-		private ScriptDocument document;
+		protected readonly List<ScriptPair> subLines;
+		protected readonly ScriptDocument document;
+		/// <summary>
+		/// Creates an instance of a node, or a block of lines to read through.
+		/// </summary>
+		/// <param name="document"> The document to reference to. </param>
+		/// <param name="subLines"> The contents of the node. </param>
 		public ScriptNode(ScriptDocument document, ScriptPair[] subLines)
 		{
 			const int skip = 2; // Skip leading line and bracket
-			//Debug.Log($"ScriptNode Created: {subLines[0].scriptLine}\n{subLines[0].HasScriptNode}, subNodes: {subLines.Count(pair => pair.HasScriptNode)}");
 			this.document = document;
 			rootLine = subLines[0].scriptLine;
 			beginIndex = subLines[1].scriptLine.Index;

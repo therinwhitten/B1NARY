@@ -16,24 +16,26 @@
 	/// </summary>
 	public sealed class ScriptDocument
 	{
-		//public static IEnumerator<ScriptPair> SkipNode(IEnumerator<ScriptPair> start)
-		//{
-		//	//// this will assume this will start with a non-bracket, then bracket
-		//	//start.MoveNext();
-		//	//start.MoveNext();
-		//	//int count = 0;
-		//	//
-		//	//while (start.MoveNext())
-		//	//{
-		//	//	if (count < 0)
-		//	//		return start;
-		//	//	if (start.Current.LineType == ScriptLine.Type.BeginIndent)
-		//	//		count++;
-		//	//	else if (start.Current.LineType == ScriptLine.Type.EndIndent)
-		//	//		count--;
-		//	//}
-		//	//throw new IndexOutOfRangeException();
-		//}
+		/// <summary>
+		/// Takes the incoming stream that iterates the contents of the 
+		/// <see cref="ScriptNode"/>, and it has just hit a detected scriptNode
+		/// from the currentLine, which this commands skips to right after the
+		/// final end bracket.
+		/// </summary>
+		/// <param name="start"> the enumeration to reference. </param>
+		/// <returns> 
+		/// The same <see cref="IEnumerator{ScriptPair}"/>, but skipped the detected
+		/// <see cref="ScriptNode"/>.
+		/// </returns>
+		public static IEnumerator<ScriptPair> SkipNode(IEnumerator<ScriptPair> start, ScriptNode node)
+		{
+			if (start.Current.scriptLine.Index > node.endIndex)
+				throw new InvalidOperationException($"index of '{start.Current.scriptLine.Index}' is greater than '{node.endIndex}'");
+			while (start.Current.scriptLine.Index != node.endIndex)
+				start.MoveNext();
+			start.MoveNext(); // To skip the end bracket.
+			return start;
+		}
 
 		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
 		{ "on", "true", "enable" };
@@ -53,6 +55,7 @@
 		private IEnumerator<ScriptLine> data;
 		/// <summary> A readonly array of <see cref="ScriptLine"/>. </summary>
 		public ReadOnlyCollection<ScriptLine> documentData;
+		//public ReadOnlyCollection<ScriptNode> nodes;
 		private Lookup<string, Delegate> commands;
 
 		/// <summary>

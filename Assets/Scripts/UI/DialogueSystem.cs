@@ -1,7 +1,5 @@
 namespace B1NARY.UI
 {
-	using System.Threading.Tasks;
-	using System.Threading;
 	using UnityEngine;
 	using UnityEngine.UI;
 	using DesignPatterns;
@@ -13,7 +11,6 @@ namespace B1NARY.UI
 	using TMPro;
 	using CharacterController = CharacterController;
 	using B1NARY.Scripting;
-	using B1NARY.Audio;
 
 	public class DialogueSystem : Singleton<DialogueSystem>
 	{
@@ -41,6 +38,7 @@ namespace B1NARY.UI
 			}),*/
 		};
 
+		[Tooltip("How many ticks or milliseconds should the game wait per character?")]
 		public int ticksPerChar = 30;
 		/// <summary>
 		/// If the current dialogue should be added instead of skipping to a new
@@ -137,7 +135,6 @@ namespace B1NARY.UI
 		private bool m_fastSkip = false;
 		public void ToggleFastSkip() => FastSkip = !FastSkip;
 
-		private bool IsAprilFools;
 		private string NewLine()
 		{
 			if (AdditiveTextEnabled)
@@ -145,17 +142,12 @@ namespace B1NARY.UI
 			return string.Empty;
 		}
 
-		private void Awake()
-		{
-			IsAprilFools = DateTime.Today == new DateTime(DateTime.Today.Year, 4, 1);
-		}
-
 		private CoroutineWrapper eventCoroutine;
 		private CoroutineWrapper speakCoroutine;
 
 		public void Say(string message)
 		{
-			if (!IsAprilFools)
+			if (!DateTimeTracker.IsAprilFools)
 				if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
 					speakCoroutine.Dispose();
 			speakCoroutine = new CoroutineWrapper(this, Speaking(message)).Start();
