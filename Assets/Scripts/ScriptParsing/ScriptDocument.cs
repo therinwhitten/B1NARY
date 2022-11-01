@@ -16,7 +16,27 @@
 	/// </summary>
 	public sealed class ScriptDocument
 	{
-		
+		/// <summary>
+		/// Takes the incoming stream that iterates the contents of the 
+		/// <see cref="ScriptNode"/>, and it has just hit a detected scriptNode
+		/// from the currentLine, which this commands skips to right after the
+		/// final end bracket.
+		/// </summary>
+		/// <param name="start"> the enumeration to reference. </param>
+		/// <returns> 
+		/// The same <see cref="IEnumerator{ScriptPair}"/>, but skipped the detected
+		/// <see cref="ScriptNode"/>.
+		/// </returns>
+		public static IEnumerator<ScriptPair> SkipNode(IEnumerator<ScriptPair> start, ScriptNode node)
+		{
+			if (start.Current.scriptLine.Index > node.endIndex)
+				throw new InvalidOperationException($"index of '{start.Current.scriptLine.Index}' is greater than '{node.endIndex}'");
+			while (start.Current.scriptLine.Index != node.endIndex)
+				start.MoveNext();
+			start.MoveNext(); // To skip the end bracket.
+			return start;
+		}
+
 		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
 		{ "on", "true", "enable" };
 		public static readonly HashSet<string> disabledHashset = new HashSet<string>()
@@ -35,6 +55,7 @@
 		private IEnumerator<ScriptLine> data;
 		/// <summary> A readonly array of <see cref="ScriptLine"/>. </summary>
 		public ReadOnlyCollection<ScriptLine> documentData;
+		//public ReadOnlyCollection<ScriptNode> nodes;
 		private Lookup<string, Delegate> commands;
 
 		/// <summary>
@@ -76,6 +97,7 @@
 		/// </returns>
 		public bool ParseLine(ScriptLine line)
 		{
+			DebugLineTester.Instance.AddLine(line.lineData);
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
@@ -98,7 +120,7 @@
 				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:
-					throw new ArgumentException("Managed to hit a intentation"
+					throw new ArgumentException("Managed to hit a intentation "
 						+ $"on line '{line.Index}'.");
 				case ScriptLine.Type.Empty:
 					return true;
@@ -169,9 +191,9 @@
 				fileData = LineReader();
 				IEnumerator<ScriptLine> LineReader()
 				{
-					var reader = new StreamReader(fullFilePath);
-					for (int i = 1; !reader.EndOfStream; i++)
-						yield return new ScriptLine(reader.ReadLine(), () => documentName, i);
+					using (var reader = new StreamReader(fullFilePath))
+						for (int i = 1; !reader.EndOfStream; i++)
+							yield return new ScriptLine(reader.ReadLine(), () => documentName, i);
 				}
 			}
 			/// <summary>
@@ -246,7 +268,7 @@
 				while (nodeQueue.MoveNext())
 				{
 					var (startIndex, endIndex) = nodeQueue.Current;
-					var subArray = list.Skip(startIndex + 1)
+					var subArray = list.Skip(startIndex)
 						.Take(endIndex - startIndex + 1)
 						.ToArray();
 					list[startIndex] = new ScriptPair(list[startIndex].scriptLine,

@@ -8,6 +8,7 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using UnityEngine;
+	using UnityEngine.Diagnostics;
 	using UnityEngine.SceneManagement;
 	using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
@@ -90,7 +91,22 @@
 			SwitchingScenes.Invoke();
 			bool cannotPerformNext = true;
 			SwitchedScenes.AddNonPersistentListener(() => cannotPerformNext = false);
-			UnitySceneManager.LoadScene(sceneName);
+			int oldIndex = ActiveScene.buildIndex;
+			var async = UnitySceneManager.LoadSceneAsync(sceneName);
+			if (async == null)
+			{
+				if (Application.isEditor)
+				{
+					Debug.LogException(new MissingReferenceException($"'{sceneName}' does not exist as a scene, fix this before production!"));
+					ScriptHandler.Instance.ShouldPause = true;
+				}
+				else
+					Utils.ForceCrash(ForcedCrashCategory.FatalError);
+			}
+
+			yield return new WaitUntil(() => async.isDone);
+			//if (UnitySceneManager.GetActiveScene().buildIndex == oldIndex)
+				
 
 			do yield return new WaitForFixedUpdate();
 			while (cannotPerformNext);

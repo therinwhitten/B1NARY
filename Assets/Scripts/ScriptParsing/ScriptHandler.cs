@@ -5,6 +5,7 @@
 	using System.Collections.Generic;
 	using System.Threading.Tasks;
 	using UnityEngine;
+	using UnityEngine.Diagnostics;
 	using B1NARY.UI;
 	using System.Linq;
 	using B1NARY.Audio;
@@ -44,11 +45,12 @@
 					throw new MissingMemberException($"Gameobject '{gameObjectName}' is not found");
 				@object.SetActive(true);
 				Instance.ShouldPause = true;
-				Task.Run(() =>
+				Instance.StartCoroutine(Wait());
+				IEnumerator Wait()
 				{
-					SpinWait.SpinUntil(() => !@object.activeSelf);
+					yield return new WaitUntil(() => !@object.activeSelf);
 					Instance.ShouldPause = false;
-				}).FreeBlockPath();
+				}
 			}),
 		};
 		/// <summary>
@@ -64,10 +66,10 @@
 		/// </returns>
 		public static ScriptNode GetDefinedScriptNodes(ScriptDocument document, ScriptPair[] subLines)
 		{
-			if (subLines.First().LineType != ScriptLine.Type.Command)
+			if (subLines[0].LineType != ScriptLine.Type.Command)
 				return null;
-			string command = ((Command)subLines.First().scriptLine).command;
-			switch (command.Trim().ToLower())
+			string command = ((Command)subLines[0].scriptLine).command;
+			switch (command)
 			{
 				case "if":
 					return new IfBlock(document, subLines);
@@ -110,9 +112,20 @@
 		public bool ShouldPause 
 		{ 
 			get => m_pauseIterations > 0;
-			set { if (value) m_pauseIterations++; else m_pauseIterations = checked(m_pauseIterations - 1); }
+			set 
+			{ 
+				if (value)
+				{
+					m_pauseIterations++;
+				}
+				else 
+					m_pauseIterations = (byte)checked(m_pauseIterations - 1);
+
+				if (m_pauseIterations > 12)
+					Utils.ForceCrash(ForcedCrashCategory.Abort);
+			}
 		}
-		private uint m_pauseIterations = 0;
+		private byte m_pauseIterations = 0;
 		/// <summary>
 		/// A value that determines if it is running a script and ready to use.
 		/// </summary>
@@ -158,7 +171,12 @@
 		/// <returns> The <see cref="ScriptLine"/> it stopped at. </returns>
 		public ScriptLine NextLine()
 		{
-			if (ShouldPause || scriptDocument == null)
+			if (ShouldPause)
+			{
+				Debug.Log($"Cannot progress to next line due to {nameof(ShouldPause)} is active\n{m_pauseIterations} Instance(s)");
+				return default;
+			}
+			if (scriptDocument == null)
 				return default;
 			try
 			{

@@ -6,25 +6,26 @@
 	using B1NARY.DataPersistence;
 	using UnityEditor;
 	using UnityEngine;
-
+	/*
 	public sealed class PersistentDataTab : DebuggerTab
 	{
 		public override string Name => "Persistent Data";
+		public override bool ConstantlyRepaint => true;
 
-		/*
+		
 		private static readonly Type[] persistentDataTypes =
 		{
 			typeof(GamePreferences),
 			typeof(PersistentData),
 		};
-		*/
+		
 
 		public override void DisplayTab()
 		{
 			ShowGameStateBlock();
 		}
 
-		/* It doesn't exist here
+		It doesn't exist here
 		private Vector2 gamePreferencesScroll = Vector2.zero;
 		private void ShowGamePreferences()
 		{
@@ -43,7 +44,7 @@
 		{
 			var output = new List<(string type, string data)>();
 		}
-		*/
+		
 
 		private Vector2 gameStateScroll = Vector2.zero;
 		private void ShowGameStateBlock()
@@ -71,7 +72,7 @@
 
 
 
-		/*
+		
 		private void DisplayClassData(Type type)
 		{
 			BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic |
@@ -93,7 +94,7 @@
 				|| info.FieldType == typeof(Dictionary<string, bool>)) // Get the key of dictionary from string with unknown values
 				.ToLookup(info => (info.GetType().GetGenericArguments()[0].);
 		}
-		*/
+		
 
 
 
@@ -106,4 +107,5 @@
 			EditorGUI.LabelField(rect, input.ToString());
 		}
 	}
+	*/
 }

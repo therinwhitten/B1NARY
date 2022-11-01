@@ -5,57 +5,34 @@
 	using System.Collections.Generic;
 	using UnityEditor;
 	using System;
+	using UnityEngine;
+	using System.Collections.ObjectModel;
 
 	public abstract class DebuggerTab : IComparable<DebuggerTab>
 	{
-
-		static DebuggerTab()
+		public static IReadOnlyList<DebuggerTab> AllTabs => m_allTabs.Value;
+		private static readonly Lazy<DebuggerTab[]> m_allTabs = new Lazy<DebuggerTab[]>(() =>
 		{
-			Tabs = (
+			return (
 				from type in typeof(DebuggerTab).Assembly.GetTypes()
 				where type.IsSubclassOf(typeof(DebuggerTab)) && !type.IsAbstract && type.IsClass
 				let tab = (DebuggerTab)Activator.CreateInstance(type)
+				orderby tab.Order descending
 				select tab
 				).ToArray();
-			Array.Sort(Tabs);
-			DefineData();
-		}
-		private static void DefineData()
+		});
+		public static DebuggerPreferences Preferences => m_preferences.Value;
+		private static readonly Lazy<DebuggerPreferences> m_preferences = new Lazy<DebuggerPreferences>(() =>
 		{
-			Data = (
-				from tab in Tabs
-				where tab.DebuggerPreferences != null
-				select (tab.Name, tab.DebuggerPreferences)).ToArray();
-			/* This code turns all datatabs into a single merged DataPreference
+			var enumerator = AllTabs.SelectMany(tab => tab.DebuggerPreferences).GetEnumerator();
+			var prefs = new DebuggerPreferences();
+			while (enumerator.MoveNext())
+				prefs.Add(enumerator.Current.Key, enumerator.Current.Value);
+			return prefs;
+		});
 
-			IEnumerable<DebuggerPreferences> dataTabs =
-				Tabs.Select(tab => tab.DebuggerPreferences).Where(pref => pref != null);
-			if (!dataTabs.Any())
-				return;
-			Data = new DebuggerPreferences();
-			foreach (var dataTab in dataTabs)
-			{
-				IEnumerable<DebuggerPreferences.DataType> dataTypes = dataTab.Select(x => x.Key);
-				foreach (var dataType in dataTypes)
-				{
-					if (Data.ContainsKey(dataType))
-						Data.Add(dataType, new List<(string name, object @default)>());
-					Data[dataType].AddRange(dataTab[dataType]);
-				}
-
-			}
-			*/
-		}
-		public static DebuggerTab[] Tabs { get; private set; }
-		public static DebuggerTab[] ShownTabs =>
-			(from tab in Tabs
-			 let type = tab.GetType()
-			 where EditorPrefs.GetBool($"B1NARY Tab: {tab.Name}", tab.ShowInDebugger)
-			 select tab).ToArray();
-		public static (string name, DebuggerPreferences data)[] Data { get; private set; }
-
-
-		public abstract string Name { get; }
+		public abstract bool ConstantlyRepaint { get; }
+		public abstract GUIContent Name { get; }
 		public abstract void DisplayTab();
 		public virtual int Order => 0;
 		public virtual bool ShowInDebugger => true;

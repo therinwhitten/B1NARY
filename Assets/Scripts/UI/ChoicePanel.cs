@@ -8,30 +8,55 @@
 	using System.Threading.Tasks;
 	using B1NARY.Scripting;
 	using System.Collections.Generic;
-	using System.Linq;
+	using TMPro;
+	using B1NARY.DesignPatterns;
 
-	[RequireComponent(typeof(FadeController))]
-	public sealed class ChoicePanel : MonoBehaviour, IDisposable
+	/// <summary>
+	/// An interface in unity to allow the player to choose between options that
+	/// is entirely written in the scripts, allowing to save on prefab loading cost
+	/// and hard drive space.
+	/// </summary>
+	/// <remarks>
+	/// This uses a singleton, as it is meant to be created within a canvas,
+	/// such as the UI canvas. DO NOT CREATE A NEW CHOICE PANEL. Instead, use
+	/// <see cref="Initialize(IEnumerable{string})"/> to use it, as it will have
+	/// their own prefabs already defined.
+	/// </remarks>
+	[RequireComponent(typeof(VerticalLayoutGroup))]
+	public sealed class ChoicePanel : Singleton<ChoicePanel>, IDisposable
 	{
+		/// <summary>
+		/// Uses an existing instance to create a panel of choices.
+		/// </summary>
+		/// <param name="choices"> The choices to iterate through. </param>
+		/// <returns> The choice panel that has been selected to do the bidding. </returns>
 		public static ChoicePanel StartNew(IEnumerable<string> choices)
 		{
-			ChoicePanel panel = GameObject.FindObjectOfType<ChoicePanel>();
+			ChoicePanel panel = Instance;
 			panel.Initialize(choices);
 			return panel;
 		}
 
 
-		private FadeController fadeController;
 		[SerializeField, Tooltip("The prefab will need: 'Button' and 'Text'.")]
 		private GameObject choiceButtonPrefab;
 
 		private bool hasBeenInitialized = false;
-		private GameObject[] choiceButtons;
+		private List<GameObject> choiceButtons;
 		public event Action<string> PickedChoice;
+		/// <summary>
+		/// A nullable string that depicts what choice the player chose. Should
+		/// be used with a <see cref="Dictionary{string, object}"/>
+		/// </summary>
+		public string CurrentlyPickedChoice { get; private set; } = null;
 
-		private void Awake()
+		private void OnEnable()
 		{
-			fadeController = GetComponent<FadeController>();
+			Debug.Log($"{name} with {nameof(ChoicePanel)} is enabled!");
+		}
+		private void OnDisable()
+		{
+			Debug.Log($"{name} with {nameof(ChoicePanel)} is disabled!");
 		}
 
 		public void Initialize(IEnumerable<string> choices)
@@ -40,33 +65,26 @@
 				throw new InvalidOperationException($"{nameof(ChoicePanel)} is already" +
 					" been used to make a choice panel. Did you forget to dispose?");
 			hasBeenInitialized = true;
-			choiceButtons = new GameObject[choices.Count()];
-			choiceButtons = choices
-				.Select(choice =>
-				{
-					GameObject button = Instantiate(choiceButtonPrefab, transform);
-					button.GetComponentInChildren<Text>().text = choice;
-					Action action = () => HandlePress(choice); // Capturing value.
-					button.GetComponentInChildren<Button>().onClick
-						.AddListener(new UnityAction(action));
-					return button;
-				}).ToArray();
+			enabled = true;
+			ScriptHandler.Instance.ShouldPause = true;
+			gameObject.SetActive(true);
+			var enumerator = choices.GetEnumerator();
+			for (int i = 0; enumerator.MoveNext(); i++)
+			{
+				GameObject button = Instantiate(choiceButtonPrefab, transform);
+				button.GetComponentInChildren<TMP_Text>().text = enumerator.Current;
+				void HandlePress() => this.HandlePress(enumerator.Current); // Capturing value.
+				button.GetComponentInChildren<Button>().onClick
+					.AddListener(new UnityAction((Action)HandlePress));
+				choiceButtons.Add(button);
+			}
 		}
-		/*
-		private Task ConsoleBuilder(string[] choices)
-		{
-			var consoleBuilder = new StringBuilder("Starting new choice panel with options:");
-			for (int i = 0; i < choices.Length; i++)
-				consoleBuilder.Append($"\n{choices[i]}");
-			Debug.Log(name + ": " + consoleBuilder.ToString());
-			return Task.CompletedTask;
-		}
-		*/
 
 		public void HandlePress(string value)
 		{
 			if (!hasBeenInitialized)
 				return;
+			CurrentlyPickedChoice = value;
 			PickedChoice?.Invoke(value);
 		}
 
@@ -75,11 +93,14 @@
 			if (!hasBeenInitialized)
 				return;
 			hasBeenInitialized = false;
-			fadeController.FadeOut(0.1f);
-			choiceButtons = null;
+			CurrentlyPickedChoice = null;
+			ScriptHandler.Instance.ShouldPause = false;
+			gameObject.SetActive(false);
+			enabled = false;
+			for (int i = 0; i < choiceButtons.Count; i++)
+				Destroy(choiceButtons[i]);
+			choiceButtons.Clear();
 			PickedChoice = null;
-			foreach (GameObject obj in choiceButtons)
-				Destroy(obj);
 		}
 
 		private void OnDestroy()

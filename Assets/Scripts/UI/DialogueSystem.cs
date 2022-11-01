@@ -1,7 +1,5 @@
 namespace B1NARY.UI
 {
-	using System.Threading.Tasks;
-	using System.Threading;
 	using UnityEngine;
 	using UnityEngine.UI;
 	using DesignPatterns;
@@ -13,7 +11,6 @@ namespace B1NARY.UI
 	using TMPro;
 	using CharacterController = CharacterController;
 	using B1NARY.Scripting;
-	using B1NARY.Audio;
 
 	public class DialogueSystem : Singleton<DialogueSystem>
 	{
@@ -41,6 +38,7 @@ namespace B1NARY.UI
 			}),*/
 		};
 
+		[Tooltip("How many ticks or milliseconds should the game wait per character?")]
 		public int ticksPerChar = 30;
 		/// <summary>
 		/// If the current dialogue should be added instead of skipping to a new
@@ -85,20 +83,58 @@ namespace B1NARY.UI
 			{
 				if (m_autoSkip == value)
 					return;
+				FastSkip = false;
 				m_autoSkip = value;
+				if (!CoroutineWrapper.IsNotRunningOrNull(eventCoroutine))
+					eventCoroutine.Dispose();
 				if (value)
+					eventCoroutine = new CoroutineWrapper(this, AutoSkipCoroutine()).Start();
+
+				IEnumerator AutoSkipCoroutine()
 				{
-					autoSkipCoroutine = new CoroutineWrapper(this, AutoSkipCoroutine()).Start();
-					return;
+					while (AutoSkip)
+					{
+						yield return new WaitForEndOfFrame();
+						if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
+							continue;
+						if (CharacterController.Instance.charactersInScene.Values.Any(pair => pair.characterScript.VoiceData.IsPlaying))
+							continue;
+						ScriptHandler.Instance.NextLine();
+					}
 				}
-				if (CoroutineWrapper.IsNotRunningOrNull(autoSkipCoroutine))
-					autoSkipCoroutine.Dispose();
 			}
+
 		}
 		private bool m_autoSkip = false;
 		public void ToggleAutoSkip() => AutoSkip = !AutoSkip;
 
-		private bool IsAprilFools;
+		public bool FastSkip
+		{
+			get => m_fastSkip;
+			set
+			{
+				if (m_fastSkip == value)
+					return;
+				AutoSkip = false;
+				m_fastSkip = value;
+				if (!CoroutineWrapper.IsNotRunningOrNull(eventCoroutine))
+					eventCoroutine.Dispose();
+				if (value)
+					eventCoroutine = new CoroutineWrapper(this, FastSkipCoroutine()).Start();
+
+				IEnumerator FastSkipCoroutine()
+				{
+					while (FastSkip)
+					{
+						yield return new WaitForSeconds(0.15f);
+						ScriptHandler.Instance.NextLine();
+					}
+				}
+			}
+		}
+		private bool m_fastSkip = false;
+		public void ToggleFastSkip() => FastSkip = !FastSkip;
+
 		private string NewLine()
 		{
 			if (AdditiveTextEnabled)
@@ -106,17 +142,12 @@ namespace B1NARY.UI
 			return string.Empty;
 		}
 
-		private void Awake()
-		{
-			IsAprilFools = DateTime.Today == new DateTime(DateTime.Today.Year, 4, 1);
-		}
-
-		private CoroutineWrapper autoSkipCoroutine;
+		private CoroutineWrapper eventCoroutine;
 		private CoroutineWrapper speakCoroutine;
 
 		public void Say(string message)
 		{
-			if (!IsAprilFools)
+			if (!DateTimeTracker.IsAprilFools)
 				if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
 					speakCoroutine.Dispose();
 			speakCoroutine = new CoroutineWrapper(this, Speaking(message)).Start();
@@ -178,18 +209,6 @@ namespace B1NARY.UI
 				}
 				CurrentText = CurrentText.Insert(CurrentText.Length - tagsLength, speech[i].ToString());
 				yield return new WaitForSeconds(seconds);
-			}
-		}
-		private IEnumerator AutoSkipCoroutine()
-		{
-			while (AutoSkip)
-			{
-				yield return new WaitForEndOfFrame();
-				if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
-					continue;
-				if (CharacterController.Instance.charactersInScene.Values.Any(pair => pair.characterScript.VoiceData.IsPlaying))
-					continue;
-				ScriptHandler.Instance.NextLine();
 			}
 		}
 	}

@@ -153,7 +153,7 @@
 		/// <param name="value">The <see cref="float"/> value to dynamicChange, as a reference. </param>
 		/// <param name="final">The final expected value. </param>
 		/// <param name="secondsTaken">The seconds taken to reach to that <paramref name="final"/> value.</param>
-		/// <param name="action"> An action to perform after it is finished. </param>
+		/// <param name="action"> An HandlePress to perform after it is finished. </param>
 		public static void ChangeFloat(this MonoBehaviour monoBehaviour,
 			Ref<float> value, float final, float secondsTaken, Action action = null)
 		{

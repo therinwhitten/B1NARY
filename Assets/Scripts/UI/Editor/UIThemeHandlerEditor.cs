@@ -24,7 +24,6 @@
 				EditorGUILayout.HelpBox(ex.Message, MessageType.Error);
 				throw;
 			}
-			EditorUtility.SetDirty(currentHandler);
 			UIThemeHandler.Option[] allOptions = (UIThemeHandler.Option[])Enum.GetValues(typeof(UIThemeHandler.Option));
 			string[] optionStrings = allOptions.Select(option => option.ToString()).ToArray();
 			bool hasChanges = false;
@@ -38,8 +37,14 @@
 				 | PopupOrCustom("Disabled Color", ref currentHandler.buttonDisabledName);
 			else
 				throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());
-			if (hasChanges && Application.isPlaying)
-				currentHandler.UpdateColors();
+			if (hasChanges)
+			{
+				if (Application.isPlaying)
+					currentHandler.UpdateColors();
+				else
+					EditorUtility.SetDirty(currentHandler);
+			}
+
 			bool PopupOrCustom(string popupLabel, ref string current)
 			{
 				string old = current;

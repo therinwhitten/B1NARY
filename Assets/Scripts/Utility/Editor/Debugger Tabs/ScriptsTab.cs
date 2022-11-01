@@ -35,7 +35,8 @@
 		};
 
 
-		public override string Name => "Scripts";
+		public override GUIContent Name => new GUIContent("Scripts");
+		public override bool ConstantlyRepaint => false;
 		public override void DisplayTab()
 		{
 
