@@ -50,15 +50,6 @@
 		/// </summary>
 		public string CurrentlyPickedChoice { get; private set; } = null;
 
-		private void OnEnable()
-		{
-			Debug.Log($"{name} with {nameof(ChoicePanel)} is enabled!");
-		}
-		private void OnDisable()
-		{
-			Debug.Log($"{name} with {nameof(ChoicePanel)} is disabled!");
-		}
-
 		public void Initialize(IEnumerable<string> choices)
 		{
 			if (hasBeenInitialized)

@@ -51,7 +51,7 @@
 				var obj = GameObject.Find(BGCanvasName);
 				if (obj == null)
 					throw new NullReferenceException(BGCanvasName);
-				m_staticBackground = obj.GetComponentWithChildren<Image>();
+				m_staticBackground = obj.GetComponentInChildren<Image>();
 				m_animatedBackground = obj.GetComponentInChildren<VideoPlayer>();
 			}
 		}

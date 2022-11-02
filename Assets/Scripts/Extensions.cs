@@ -7,63 +7,6 @@
 	using System.Threading.Tasks;
 	using UnityEngine;
 
-	public static class ExceptionHandling
-	{
-		public static bool TryInvoke(this Action action)
-			=> TryInvoke(action, out _);
-		public static bool TryInvoke(this Action action, out Exception exception)
-			=> TryInvoke<Exception>(action, out exception);
-		public static bool TryInvoke<TException>(this Action action, out TException exception)
-			where TException : Exception
-		{
-			try { action.Invoke(); }
-			catch (TException e) { exception = e; return false; }
-			exception = null;
-			return true;
-		}
-
-		public static bool TryInvoke<TOut>(this Func<TOut> func, out TOut @out)
-			=> TryInvoke(func, out @out, out _);
-		public static bool TryInvoke<TOut>(this Func<TOut> func, out TOut @out, out Exception exception)
-			=> TryInvoke<TOut, Exception>(func, out @out, out exception);
-		public static bool TryInvoke<TOut, TException>
-			(this Func<TOut> func, out TOut @out, out Exception exception) where TException : Exception
-		{
-			try { @out = func.Invoke(); }
-			catch (TException e)
-			{
-				@out = default;
-				exception = e;
-				return false;
-			}
-			exception = null;
-			return true;
-		}
-
-		/// <summary>
-		/// Allows progression of code while providing it's own exception handler
-		/// inside.
-		/// </summary>
-		/// <param name="task">The task to target.</param>
-		public static void FreeBlockPath(this Task task)
-		{
-			_ = task.ContinueWith(subTask => Debug.LogException(subTask.Exception), 
-				TaskContinuationOptions.OnlyOnFaulted);
-		}
-
-		public static T GetComponentWithChildren<T>(this GameObject parent) where T : UnityEngine.Object
-		{
-			T output = parent.GetComponent<T>();
-			if (output == null)
-			{
-				T[] components = parent.GetComponentsInChildren<T>();
-				if (components.Any())
-					return components.First();
-				throw new NullReferenceException($"{parent.name} does not have {typeof(T)}!");
-			}
-			return output;
-		}
-	}
 
 	public static class CoroutineUtilities
 	{
@@ -96,52 +39,7 @@
 	}
 		*/
 
-		/// <summary>
-		/// Uses a <see cref="MonoBehaviour"/> to dynamicChange a float value over time.
-		/// </summary>
-		/// <remarks>
-		/// The <see cref="Task"/> allows you to tell if you want the method to wait for it to
-		/// finish or not. If not, use <c>_ =</c> under it. Use <see cref="Task.Wait()"/>
-		/// or <c>await</c> to wait for it to finish.
-		/// </remarks>
-		/// <returns>
-		/// The referenced <paramref name="value"/>, should be representative of 
-		/// <paramref name="final"/> once it has been returned.
-		/// </returns>
-		/// <param name="monoBehaviour">The monoBehaviour to dynamicChange it over time. </param>
-		/// <param name="value">The <see cref="float"/> value to dynamicChange, as a reference. </param>
-		/// <param name="final">The final expected value. </param>
-		/// <param name="secondsTaken">The seconds taken to reach to that <paramref name="final"/> value.</param>
-		/// <param name="token"> A token to cancel the float changing coroutine over time. </param>
-		public static async Task ChangeFloatAsync(this MonoBehaviour monoBehaviour,
-			Ref<float> value, float final, float secondsTaken, CancellationToken? token = null)
-		{
-			float difference = (value.Value - final) * -1;
-			Func<float, bool> condition = GetCondition(final, difference);
-			Func<bool> tokenCondition = token.HasValue ?
-				(Func<bool>)(() => token.Value.IsCancellationRequested) : (Func<bool>)(() => true);
-			bool completed = false;
-			Coroutine coroutine = monoBehaviour.StartCoroutine(Coroutine());
-			await Task.Run(() => SpinWait.SpinUntil(() => completed));
-			monoBehaviour.StopCoroutine(coroutine);
-
-			IEnumerator Coroutine()
-			{
-				if (!float.IsNaN(value.Value))
-					while (tokenCondition.Invoke())
-					{
-						float dynamicChange = (Time.deltaTime / secondsTaken) * difference;
-						value.Value += dynamicChange;
-						//Debug.Log($"New: {value.Value}, dynamicChange: {dynamicChange}, desired: {final}, isFinal: {condition.Invoke(value.Value)}");
-						if (condition.Invoke(value.Value))
-							break;
-						yield return new WaitForEndOfFrame();
-					}
-				value.Value = final;
-				completed = true;
-			}
-
-		}
+		
 
 		/// <summary>
 		/// Uses a <see cref="MonoBehaviour"/> to dynamicChange a float value over time.

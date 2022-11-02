@@ -1,9 +1,10 @@
-﻿namespace B1NARY.UI// Suggestion: Change this to the H Scene Trigger Script for hit boxes and moaning. 
+﻿namespace B1NARY.UI
 {
 	using UnityEngine;
 	using UnityEngine.Audio;
 	using B1NARY.Audio;
 
+	// Suggestion: Change this to the H Scene Trigger Script for hit boxes and moaning. 
 	[AddComponentMenu("Audio/Buttons/Button Sound Behaviour")]
 	public class ButtonSoundBehaviour : MonoBehaviour
 	{

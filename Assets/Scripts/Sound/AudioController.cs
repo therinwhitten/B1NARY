@@ -122,6 +122,7 @@
 					while (enumerator.MoveNext())
 						AddAudioClipToDictionary(enumerator.Current);
 			}
+			// NATURAL FADE OUT BETWEEN SCENES, gamer
 		}
 
 		public void PlaySound(string soundName)
