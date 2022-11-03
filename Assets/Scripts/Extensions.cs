@@ -10,34 +10,6 @@
 
 	public static class CoroutineUtilities
 	{
-		/*
-		
-	private static Task ChangeFloat(ref float input, float final, float time)
-	{
-		float dynamicChange = (input - final) * -1;
-		Console.WriteLine($"{(dynamicChange > 0 ? "Increasing" : "Decreasing")}, {dynamicChange}");
-		Func<float, bool> isFinal = dynamicChange > 0 ? @in => @in >= final : @in => @in <= final;
-
-		int iterations = 1;
-		Stopwatch stopwatch = Stopwatch.StartNew();
-		while (true)
-		{
-			stopwatch.Stop();
-			Console.WriteLine($"Iteration: {iterations} at time {stopwatch.Elapsed.TotalSeconds}");
-			float secondMultiplier = (float)stopwatch.Elapsed.TotalSeconds;
-			float dynamicChange = secondMultiplier * dynamicChange / time;
-			stopwatch.Restart();
-			Console.WriteLine($"dynamicChange: {dynamicChange} for {input} to {input + dynamicChange}, expecting final {final}");
-			input += dynamicChange;
-			if (isFinal.Invoke(input))
-				break;
-			iterations++;
-		}
-		Console.WriteLine($"Finished with {input}");
-
-		return Task.CompletedTask;
-	}
-		*/
 
 		
 
@@ -75,39 +47,6 @@
 				action?.Invoke();
 			}
 
-		}
-
-		/// <summary>
-		/// Adds awaitable coroutines.
-		/// </summary>
-		/// <remarks>
-		/// This allows the coroutine to be waited via the <see cref="Task"/> output.
-		/// </remarks>
-		/// <param name="monoBehaviour">The mono behaviour to run the <paramref name="monoBehaviour"/>.</param>
-		/// <param name="coroutine">The coroutine to run. </param>
-		/// <param name="cancellationToken">The cancellation token to stop it abruptly.</param>
-		public static async Task StartAwaitableCoroutine(this MonoBehaviour monoBehaviour,
-			IEnumerator coroutine)
-		{
-			// Creates an instance of taskCompletionSource; This uses the WaitingForActivation
-			// - that is found in tasks. Unfortunately, my IDE doesn't tell me that
-			// - there is a typeless taskCompletionSource
-			// https://docs.microsoft.com/en-us/dotnet/api/system.threading.tasks.taskcompletionsource-1.task?view=net-6.0
-			//var taskCompletionSource = new TaskCompletionSource<object>();
-			// Sets the value to tell it to stop waiting for activation
-			bool completed = false;
-			Coroutine activeCoroutine = monoBehaviour.StartCoroutine(Encapsulator(coroutine));
-			await Task.Run(() => SpinWait.SpinUntil(() => completed));
-			if (activeCoroutine != null)
-				monoBehaviour.StopCoroutine(activeCoroutine);
-
-			IEnumerator Encapsulator(IEnumerator child)
-			{
-				while (child.MoveNext())
-					yield return child.Current;
-				completed = true;
-				yield break;
-			}
 		}
 
 		private static Func<float, bool> GetCondition(float final, float change)

@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.IO;
+	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
 	using B1NARY.UI;
@@ -19,8 +20,7 @@
 		/// <summary>
 		/// Takes the incoming stream that iterates the contents of the 
 		/// <see cref="ScriptNode"/>, and it has just hit a detected scriptNode
-		/// from the currentLine, which this commands skips to right after the
-		/// final end bracket.
+		/// from the currentLine, which this commands skips to the end bracket.
 		/// </summary>
 		/// <param name="start"> the enumeration to reference. </param>
 		/// <returns> 
@@ -31,9 +31,11 @@
 		{
 			if (start.Current.scriptLine.Index > node.endIndex)
 				throw new InvalidOperationException($"index of '{start.Current.scriptLine.Index}' is greater than '{node.endIndex}'");
+			int oldIndex = start.Current.scriptLine.Index;
 			while (start.Current.scriptLine.Index != node.endIndex)
 				start.MoveNext();
-			start.MoveNext(); // To skip the end bracket.
+			//start.MoveNext(); // To skip the end bracket.
+			Debug.Log($"Skipped from {oldIndex} to {start.Current.scriptLine}");
 			return start;
 		}
 

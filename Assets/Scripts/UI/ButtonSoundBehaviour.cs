@@ -11,43 +11,68 @@
 		[Tooltip("The Mixer Group to apply to the sound.")]
 		public AudioMixerGroup audioMixerGroup;
 
-		[Tooltip("The sounds to play when the button is being hovered over, or " +
-			"when a method that invokes a method relating to playing the hovering sound")]
-		public AudioClip[] hoverSounds;
+		public ButtonSoundConfig config;
 
-		[Tooltip("The sounds to play when the button is pressed, or when a method"
-			+ " that invokes a method relating to playing the pressed sound")]
-		public AudioClip[] pressedSounds;
 
+		#region Hover
 		/// <summary>
 		/// Plays a one-shot sound using <see cref="hoverSounds"/> using a
 		/// <paramref name="index"/> to select a sound within it.
 		/// </summary>
 		/// <param name="index"> The index to play within it. </param>
 		public void PlayHoverSound(int index) =>
-			PlaySound(hoverSounds[index]);
+			PlaySound(config.hoverSounds[index]);
 		/// <summary>
 		/// Plays a one-shot sound using <see cref="hoverSounds"/> using a
 		/// random number generator to randomly select a sound.
 		/// </summary>
 		/// <param name="randomType"> The random type to pass into <see cref="RandomFowarder"/>. </param>
-		public void PlayHoverSound(RandomFowarder.RandomType randomType = RandomFowarder.RandomType.Unity) =>
-			PlaySound(hoverSounds[RandomFowarder.Next(hoverSounds.Length, randomType)]);
+		public void PlayRandomHoverSound(RandomFowarder.RandomType randomType = RandomFowarder.RandomType.Unity) =>
+			PlaySound(config.GetRandomAudioClip(ButtonSoundConfig.SoundType.Hover, randomType));
+		#endregion
 
+		#region Pressed
 		/// <summary>
 		/// Plays a one-shot sound using <see cref="pressedSounds"/> using a
 		/// <paramref name="index"/> to select a sound within it.
 		/// </summary>
 		/// <param name="index"> The index to play within it. </param>
 		public void PlayPressedSound(int index)
-			=> PlaySound(pressedSounds[index]);
+			=> PlaySound(config.pressedSounds[index]);
 		/// <summary>
 		/// Plays a one-shot sound using <see cref="pressedSounds"/> using a
 		/// random number generator to randomly select a sound.
 		/// </summary>
 		/// <param name="randomType"> The random type to pass into <see cref="RandomFowarder"/>. </param>
-		public void PlayPressedSound(RandomFowarder.RandomType randomType = RandomFowarder.RandomType.Unity) =>
-			PlaySound(pressedSounds[RandomFowarder.Next(pressedSounds.Length, randomType)]);
+		public void PlayRandomPressedSound(RandomFowarder.RandomType randomType = RandomFowarder.RandomType.Unity) =>
+			PlaySound(config.GetRandomAudioClip(ButtonSoundConfig.SoundType.Pressed, randomType));
+		#endregion
+
+		#region Highlighted
+		/// <summary>
+		/// Plays a one-shot sound using <see cref="highlightedSounds"/> using a
+		/// <paramref name="index"/> to select a sound within it.
+		/// </summary>
+		/// <param name="index"> The index to play within it. </param>
+		public void PlayHighlightedSound(int index)
+			=> PlaySound(config.highlightedSounds[index]);
+		/// <summary>
+		/// Plays a one-shot sound using <see cref="highlightedSounds"/> using a
+		/// random number generator to randomly select a sound.
+		/// </summary>
+		/// <param name="randomType"> The random type to pass into <see cref="RandomFowarder"/>. </param>
+		public void PlayRandomHighlightedSound(RandomFowarder.RandomType randomType = RandomFowarder.RandomType.Unity) =>
+			PlaySound(config.GetRandomAudioClip(ButtonSoundConfig.SoundType.Highlighted, randomType));
+		#endregion
+
+		#region Any
+		/// <summary>
+		/// Selects any sounds located in <see cref="config"/> to play.
+		/// </summary>
+		/// <param name="randomType"> The random value to pass through <see cref="RandomFowarder"/>. </param>
+		public void PlayRandomSound(RandomFowarder.RandomType randomType = RandomFowarder.RandomType.Unity)
+			=> PlaySound(config.GetRandomAudioClip(ButtonSoundConfig.SoundType.Any, randomType));
+		#endregion
 
 		/// <summary>
 		/// Plays a OneShot sound through <see cref="AudioController"/>

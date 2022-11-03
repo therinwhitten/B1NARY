@@ -1,7 +1,9 @@
 ﻿namespace B1NARY.Editor
 {
+	using ICSharpCode.NRefactory.Ast;
 	using System;
 	using System.Linq;
+	using System.Reflection;
 	using UnityEditor;
 	using UnityEngine;
 	using UnityEngine.UI;
@@ -14,6 +16,22 @@
 
 		public override void OnInspectorGUI()
 		{
+			if (!Application.isPlaying)
+			{
+				int count = 0;
+				Transform transform = currentHandler.transform;
+				for (int i = 0; i < transform.childCount; i++)
+				{
+					if (transform.GetChild(i).GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+						.Any(info => info.PropertyType == typeof(Color) || info.PropertyType == typeof(ColorBlock)))
+						count++;
+				}
+				if (count > 1)
+					EditorGUILayout.HelpBox("There is more than one " +
+						"color-related blocks detected in the components, " +
+						"make sure that the one you want to modify is at the top!", 
+						MessageType.Info);
+			}
 			try
 			{
 				string componentName = currentHandler.CurrentTarget.GetType().ToString();

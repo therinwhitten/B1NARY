@@ -36,7 +36,7 @@
 			this.choices = choices;
 			if (choices.Count < 1)
 				Debug.LogWarning($"Choice block of line '{rootLine.Index}' has one or less choices!");
-			Debug.Log($"Choice Block of line {subLines[0].scriptLine.Index}: \n{string.Join(",\n", this.choices.Keys)}");
+			//Debug.Log($"Choice Block of line {subLines[0].scriptLine.Index}: \n{string.Join(",\n", this.choices.Keys)}");
 		}
 
 		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)

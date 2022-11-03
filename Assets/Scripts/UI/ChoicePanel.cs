@@ -41,8 +41,21 @@
 		[SerializeField, Tooltip("The prefab will need: 'Button' and 'Text'.")]
 		private GameObject choiceButtonPrefab;
 
+		/// <summary>
+		/// If the <see cref="MonoBehaviour"/> has been initialized, important
+		/// for using <see cref="IDisposable"/>.
+		/// </summary>
 		private bool hasBeenInitialized = false;
+		/// <summary>
+		/// All the buttons attached to the choice panel. Usually they can also
+		/// be achieved via <see cref="Transform.GetChild(int)"/> with count
+		/// enumeration.
+		/// </summary>
 		private List<GameObject> choiceButtons;
+		/// <summary>
+		/// What to do when the player picks up a choice when they press the button.
+		/// Modifies <see cref="CurrentlyPickedChoice"/> to reflect firsthand.
+		/// </summary>
 		public event Action<string> PickedChoice;
 		/// <summary>
 		/// A nullable string that depicts what choice the player chose. Should
@@ -50,6 +63,13 @@
 		/// </summary>
 		public string CurrentlyPickedChoice { get; private set; } = null;
 
+		/// <summary>
+		/// Starts up a new choice box for the player to pick up.
+		/// </summary>
+		/// <param name="choices"> All the choices to enumerate through. </param>
+		/// <exception cref="InvalidOperationException">
+		/// When the current panel is not yet disposed or is already initialized.
+		/// </exception>
 		public void Initialize(IEnumerable<string> choices)
 		{
 			if (hasBeenInitialized)
@@ -64,13 +84,18 @@
 			{
 				GameObject button = Instantiate(choiceButtonPrefab, transform);
 				button.GetComponentInChildren<TMP_Text>().text = enumerator.Current;
-				void HandlePress() => this.HandlePress(enumerator.Current); // Capturing value.
+				string capturedValue = enumerator.Current;
+				void HandlePress() => this.HandlePress(capturedValue); // Capturing value.
 				button.GetComponentInChildren<Button>().onClick
 					.AddListener(new UnityAction((Action)HandlePress));
 				choiceButtons.Add(button);
 			}
 		}
-
+		/// <summary>
+		/// What the button sends out when pressed. Make sure you to not use 
+		/// referencing your values if you use method capturing!
+		/// </summary>
+		/// <param name="value"> The key to send out when pressed. </param>
 		public void HandlePress(string value)
 		{
 			if (!hasBeenInitialized)

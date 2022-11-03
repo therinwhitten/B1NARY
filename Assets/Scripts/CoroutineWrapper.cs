@@ -8,6 +8,36 @@
 
 	public sealed class CoroutineWrapper : IDisposable
 	{
+
+		/*
+		
+	private static Task ChangeFloat(ref float input, float final, float time)
+	{
+		float dynamicChange = (input - final) * -1;
+		Console.WriteLine($"{(dynamicChange > 0 ? "Increasing" : "Decreasing")}, {dynamicChange}");
+		Func<float, bool> isFinal = dynamicChange > 0 ? @in => @in >= final : @in => @in <= final;
+
+		int iterations = 1;
+		Stopwatch stopwatch = Stopwatch.StartNew();
+		while (true)
+		{
+			stopwatch.Stop();
+			Console.WriteLine($"Iteration: {iterations} at time {stopwatch.Elapsed.TotalSeconds}");
+			float secondMultiplier = (float)stopwatch.Elapsed.TotalSeconds;
+			float dynamicChange = secondMultiplier * dynamicChange / time;
+			stopwatch.Restart();
+			Console.WriteLine($"dynamicChange: {dynamicChange} for {input} to {input + dynamicChange}, expecting final {final}");
+			input += dynamicChange;
+			if (isFinal.Invoke(input))
+				break;
+			iterations++;
+		}
+		Console.WriteLine($"Finished with {input}");
+
+		return Task.CompletedTask;
+	}
+		*/
+
 		/// <summary>
 		/// Changes the integer over time.
 		/// </summary>
@@ -24,16 +54,29 @@
 		/// <returns> 
 		/// The coroutine that modifies the <paramref name="value"/> over time
 		/// </returns>
-		//public static CoroutineWrapper ChangeInt eger(MonoBehaviour monoBehaviour, Ref<float> value, float finalValue, float overTime)
-		//{
-		//
-		//
-		//
-		//	IEnumerator ModifyCoroutine()
-		//	{
-		//
-		//	}
-		//}
+		public static CoroutineWrapper ChangeInteger(MonoBehaviour monoBehaviour, Ref<float> value, float finalValue, float overTime)
+		{
+			return new CoroutineWrapper(monoBehaviour, ModifyCoroutine()).Start();
+			IEnumerator ModifyCoroutine()
+			{
+				float changeResult = finalValue - value;
+				float deltaChangePerSecond = changeResult * overTime;
+				float currentDelta = 0f;
+				while (true)
+				{
+					yield return new WaitForFixedUpdate();
+					float change = deltaChangePerSecond * Time.fixedDeltaTime;
+					if (currentDelta + change > currentDelta)
+					{
+						change = (change - currentDelta) * -1;
+						value.Value += change;
+						yield break;
+					}
+					value.Value += change;
+					currentDelta += change;
+				}
+			}
+		}
 		/// <summary>
 		/// <see cref="true"/> if the coroutine is set as <see langword="null"/>
 		/// or it is not running. Otherwise, <see cref="false"/>.
@@ -73,7 +116,7 @@
 			invokedBefore = true;
 			IsRunning = true;
 			if (!IgnoreTiedActions)
-				BeforeActions.Invoke();
+				BeforeActions?.Invoke();
 			return true;
 		}
 		/// <summary>
@@ -88,7 +131,7 @@
 			invokedAfter = true;
 			IsRunning = false;
 			if (!IgnoreTiedActions)
-				AfterActions.Invoke();
+				AfterActions?.Invoke();
 			return true;
 		}
 		/// <summary>
@@ -126,7 +169,8 @@
 		{
 			if (IsRunning)
 				tiedMonoBehaviour.StopCoroutine(coroutineData);
-			TryInvokeAfter();
+			if (!IgnoreTiedActions)
+				TryInvokeAfter();
 		}
 
 		/// <summary>
@@ -138,7 +182,6 @@
 		/// <returns> <paramref name="enumerator"/>'s value. </returns>
 		private IEnumerator Wrapper(IEnumerator enumerator)
 		{
-			BeforeActions.Invoke();
 			IsRunning = true;
 			bool hasMovedNext = true;
 			object output = null;
@@ -151,18 +194,13 @@
 				}
 				catch
 				{
-					StopPoint();
+					Stop();
 					throw;
 				}
 				if (hasMovedNext)
 					yield return output;
 			}
-			StopPoint();
-			void StopPoint()
-			{
-				AfterActions.Invoke();
-				Stop();
-			}
+			Stop();
 		}
 		public void Dispose()
 		{
