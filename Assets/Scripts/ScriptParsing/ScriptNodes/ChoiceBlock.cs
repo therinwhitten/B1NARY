@@ -41,15 +41,15 @@
 
 		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
 		{
-			ChoicePanel panel = ChoicePanel.StartNew(choices.Keys);
 			document.ParseLine(new ScriptLine(string.Join(",", ((Command)rootLine).arguments), null, rootLine.Index));
-			while (panel.CurrentlyPickedChoice == null)
+			ChoicePanel panel = ChoicePanel.StartNew(choices.Keys);
+			panel.PickedChoice += str => document.NextLine();
+			while (!panel.HasPickedChoice)
 				yield return default;
 			IEnumerator<ScriptLine> node = choices[panel.CurrentlyPickedChoice].Perform(pauseOnCommands);
 			panel.Dispose();
 			while (node.MoveNext())
 				yield return node.Current;
-
 		}
 	}
 }

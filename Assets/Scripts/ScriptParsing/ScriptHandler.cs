@@ -14,6 +14,7 @@
 	using System.Threading;
 	using B1NARY.DataPersistence;
 
+	[AddComponentMenu("B1NARY/Script Handler")]
 	public class ScriptHandler : Singleton<ScriptHandler>
 	{
 		/// <summary>

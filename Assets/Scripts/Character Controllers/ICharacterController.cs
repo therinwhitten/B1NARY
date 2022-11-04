@@ -12,9 +12,7 @@
 		float HorizontalPosition { get; set; }
 		void SetPositionOverTime(float xCoord, float time);
 
-		string CurrentAnimation { get; }
-		void PlayAnimation(string animationName);
-		string CurrentExpression { get; }
-		void ChangeExpression(string expressionName);
+		string CurrentAnimation { get; set; }
+		string CurrentExpression { get; set; }
 	}
 }

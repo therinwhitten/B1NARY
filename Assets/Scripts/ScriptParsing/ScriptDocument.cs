@@ -35,7 +35,7 @@
 			while (start.Current.scriptLine.Index != node.endIndex)
 				start.MoveNext();
 			//start.MoveNext(); // To skip the end bracket.
-			Debug.Log($"Skipped from {oldIndex} to {start.Current.scriptLine}");
+			//Debug.Log($"Skipped from {oldIndex} to {start.Current.scriptLine}");
 			return start;
 		}
 
@@ -110,7 +110,7 @@
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);
-					B1NARY.CharacterController.Instance.charactersInScene[DialogueSystem.Instance.CurrentSpeaker].characterScript.ChangeExpression(expression);
+					B1NARY.CharacterController.Instance.charactersInScene[DialogueSystem.Instance.CurrentSpeaker].characterScript.CurrentExpression = expression;
 					return true;
 				case ScriptLine.Type.Speaker:
 					string speaker = ScriptLine.CastSpeaker(line);

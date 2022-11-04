@@ -65,7 +65,7 @@
 			["anim"] = (Action<string, string>)((characterName, animationName) =>
 			{
 				if (Instance.charactersInScene.TryGetValue(characterName, out var pair))
-					pair.characterScript.PlayAnimation(animationName);
+					pair.characterScript.CurrentAnimation = animationName;
 				else
 					Debug.LogError($"{characterName} does not exist!", Instance);
 			}),

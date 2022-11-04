@@ -4,8 +4,6 @@
 	using UnityEngine.UI;
 	using UnityEngine.Events;
 	using System;
-	using System.Text;
-	using System.Threading.Tasks;
 	using B1NARY.Scripting;
 	using System.Collections.Generic;
 	using TMPro;
@@ -51,7 +49,7 @@
 		/// be achieved via <see cref="Transform.GetChild(int)"/> with count
 		/// enumeration.
 		/// </summary>
-		private List<GameObject> choiceButtons = new List<GameObject>();
+		private List<(GameObject obj, TMP_Text , Button button)> choiceButtons;
 		/// <summary>
 		/// What to do when the player picks up a choice when they press the button.
 		/// Modifies <see cref="CurrentlyPickedChoice"/> to reflect firsthand.
@@ -62,6 +60,15 @@
 		/// be used with a <see cref="Dictionary{string, object}"/>
 		/// </summary>
 		public string CurrentlyPickedChoice { get; private set; } = null;
+		/// <summary>
+		/// If the player has even picked a choice yet.
+		/// </summary>
+		public bool HasPickedChoice => !string.IsNullOrEmpty(CurrentlyPickedChoice);
+
+		private void Awake()
+		{
+			choiceButtons = new List<(GameObject obj, TMP_Text, Button button)>(2);
+		}
 
 		/// <summary>
 		/// Starts up a new choice box for the player to pick up.
@@ -79,16 +86,28 @@
 			enabled = true;
 			ScriptHandler.Instance.ShouldPause = true;
 			gameObject.SetActive(true);
+			PickedChoice = key => gameObject.SetActive(false);
+			PickedChoice = key => Debug.Log($"Picked Choice: {key}", this);
 			var enumerator = choices.GetEnumerator();
 			for (int i = 0; enumerator.MoveNext(); i++)
 			{
-				GameObject button = Instantiate(choiceButtonPrefab, transform);
-				button.GetComponentInChildren<TMP_Text>().text = enumerator.Current;
-				string capturedValue = enumerator.Current;
-				void HandlePress() => this.HandlePress(capturedValue); // Capturing value.
-				button.GetComponentInChildren<Button>().onClick
-					.AddListener(new UnityAction((Action)HandlePress));
-				choiceButtons.Add(button);
+				(GameObject obj, TMP_Text text, Button button) button;
+				bool add = false;
+				if (i >= choiceButtons.Count)
+				{
+					button = choiceButtons[i];
+				}
+				else
+				{
+					GameObject obj = Instantiate(choiceButtonPrefab, transform);
+					button = (obj, obj.GetComponentInChildren<TMP_Text>(), obj.GetComponentInChildren<Button>());
+					add = true;
+				}
+				button.obj.SetActive(true);
+				button.text.text = enumerator.Current;
+				button.button.onClick.AddListener(new UnityAction(() => HandlePress(enumerator.Current)));
+				if (add)
+					choiceButtons.Add(button);
 			}
 		}
 		/// <summary>
@@ -101,7 +120,7 @@
 			if (!hasBeenInitialized)
 				return;
 			CurrentlyPickedChoice = value;
-			PickedChoice?.Invoke(value);
+			PickedChoice.Invoke(value);
 		}
 
 		public void Dispose()
@@ -114,7 +133,7 @@
 			gameObject.SetActive(false);
 			enabled = false;
 			for (int i = 0; i < choiceButtons.Count; i++)
-				Destroy(choiceButtons[i]);
+				choiceButtons[i].obj.SetActive(false);
 			choiceButtons.Clear();
 			PickedChoice = null;
 		}

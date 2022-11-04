@@ -100,7 +100,7 @@
 		/// Contains the first <see cref="UnityEngine.Color"/> or <see cref="ColorBlock"/>,
 		/// these are always value types, so these are referenced via Func.
 		/// </summary>
-		public Ref<dynamic> ColorEdit 
+		public Ref<object> ColorEdit 
 		{
 			get
 			{
@@ -116,7 +116,7 @@
 			} 
 			private set => m_colorEdit = value; 
 		}
-		private Ref<dynamic> m_colorEdit;
+		private Ref<object> m_colorEdit;
 
 		public Component CurrentTarget 
 		{ 
@@ -131,7 +131,7 @@
 					var colorEnum = components[i].GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(info => info.PropertyType == typeof(Color));
 					if (colorEnum.Any())
 					{
-						m_colorEdit = new Ref<dynamic>(() => colorEnum.Single().GetValue(components[i]), set => colorEnum.Single().SetValue(components[i], set));
+						m_colorEdit = new Ref<object>(() => colorEnum.Single().GetValue(components[i]), set => colorEnum.Single().SetValue(components[i], set));
 						m_currentTarget = components[i];
 						return m_currentTarget;
 					}
@@ -139,7 +139,7 @@
 					var colorBlockEnum = components[i].GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(info => info.PropertyType == typeof(ColorBlock));
 					if (colorBlockEnum.Any())
 					{
-						m_colorEdit = new Ref<dynamic>(() => colorBlockEnum.Single().GetValue(components[i]), set => colorBlockEnum.Single().SetValue(components[i], set));
+						m_colorEdit = new Ref<object>(() => colorBlockEnum.Single().GetValue(components[i]), set => colorBlockEnum.Single().SetValue(components[i], set));
 						m_currentTarget = components[i];
 						return m_currentTarget;
 					}

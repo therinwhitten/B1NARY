@@ -16,13 +16,12 @@
 		{
 			Hover,
 			Pressed,
-			Highlighted,
 			Any
 		}
 
 		public Lazy<AudioClip[]> AllSounds { get; private set; }
 
-		[Tooltip("The sounds to play when the button is being hovered over, or " +
+		[Tooltip("The sounds to play when the button is being hovered over, highlighted, or " +
 			"when a method that invokes a method relating to playing the hovering sound")]
 		public AudioClip[] hoverSounds;
 
@@ -30,14 +29,10 @@
 			+ " that invokes a method relating to playing the pressed sound")]
 		public AudioClip[] pressedSounds;
 
-		[Tooltip("The sounds to play when the button is hovered over, or when a " +
-			"method that invokes a method relating to playing the highlighted sound")]
-		public AudioClip[] highlightedSounds;
-
 		private void Awake()
 		{
 			AllSounds = new Lazy<AudioClip[]>(() => new AudioClip[][] 
-			{ hoverSounds, pressedSounds, highlightedSounds }
+			{ hoverSounds, pressedSounds }
 				.SelectMany(array => array).ToArray());
 		}
 
@@ -60,9 +55,6 @@
 					break;
 				case SoundType.Pressed:
 					selection = pressedSounds;
-					break;
-				case SoundType.Highlighted:
-					selection = highlightedSounds;
 					break;
 				case SoundType.Any:
 					selection = AllSounds.Value;

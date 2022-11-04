@@ -39,9 +39,16 @@
 		{
 			
 		}
-		string ICharacterController.CurrentAnimation => throw new NotSupportedException();
-		string ICharacterController.CurrentExpression => throw new NotSupportedException();
-		void ICharacterController.ChangeExpression(string expressionName) => throw new NotSupportedException();
-		void ICharacterController.PlayAnimation(string animationName) => throw new NotSupportedException();
+		string ICharacterController.CurrentAnimation
+		{
+			get => string.Empty;
+			set => throw new NotSupportedException();
+		}
+
+		string ICharacterController.CurrentExpression
+		{
+			get => string.Empty;
+			set => throw new NotSupportedException();
+		}
 	}
 }

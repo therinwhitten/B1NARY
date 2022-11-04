@@ -17,8 +17,45 @@
 		private RectTransform m_transform;
 		public VoiceActorHandler VoiceData { get; private set; }
 		public CubismExpressionController expressionController;
-		public string CurrentAnimation => animator.GetCurrentAnimatorClipInfo(0).Single().clip.name;
-		public string CurrentExpression => expressionController.ExpressionsList.CubismExpressionObjects[expressionController.CurrentExpressionIndex].name;
+		public string CurrentAnimation
+		{
+			get
+			{
+				return animator.GetCurrentAnimatorClipInfo(0).Single().clip.name;
+			}
+			set
+			{
+				value = value.Trim();
+				try
+				{
+					animator.SetTrigger(value);
+				}
+				catch (NullReferenceException ex)
+				{
+					Debug.LogError($"BackgroundHandler '{value}' is not found in animation list"
+						+ $"of character '{name}' \n{ex}");
+				}
+			}
+		}
+
+		public string CurrentExpression
+		{
+			get => expressionController.ExpressionsList.CubismExpressionObjects[expressionController.CurrentExpressionIndex].name;
+			set
+			{
+				string[] cubismExpressions = expressionController.ExpressionsList
+					.CubismExpressionObjects.Select(data => data.name).ToArray();
+				int expressionIndex = Array.IndexOf(cubismExpressions, value);
+				if (expressionIndex == -1)
+				{
+					Debug.LogException(new IndexOutOfRangeException($"'{value}' " +
+						$"is not an expression listed in the expressions of {name}!"), gameObject);
+					return;
+				}
+				expressionController.CurrentExpressionIndex = expressionIndex;
+			}
+		}
+
 		public string CharacterName { get => gameObject.name; set => gameObject.name = value; }
 		public Vector2 Position 
 		{ 
@@ -57,33 +94,6 @@
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
-		}
-
-		public void PlayAnimation(string animationName)
-		{
-			animationName = animationName.Trim(); 
-			try
-			{
-				animator.SetTrigger(animationName);
-			}
-			catch (NullReferenceException ex)
-			{
-				Debug.LogError($"BackgroundHandler '{animationName}' is not found in animation list"
-					+ $"of character '{name}' \n{ex}");
-			}
-		}
-		public void ChangeExpression(string expressionName)
-		{
-			string[] cubismExpressions = expressionController.ExpressionsList
-				.CubismExpressionObjects.Select(data => data.name).ToArray();
-			int expressionIndex = Array.IndexOf(cubismExpressions, expressionName);
-			if (expressionIndex == -1)
-			{
-				Debug.LogException(new IndexOutOfRangeException($"'{expressionName}' " +
-					$"is not an expression listed in the expressions of {name}!"), gameObject);
-				return;
-			}
-			expressionController.CurrentExpressionIndex = expressionIndex;
 		}
 		public void SayLine(ScriptLine line)
 		{

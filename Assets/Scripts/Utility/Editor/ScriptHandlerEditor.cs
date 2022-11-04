@@ -19,8 +19,14 @@
 			var scriptHandler = (ScriptHandler)target;
 			string[] allFullPaths = GetFullDocumentsPath(BasePath).ToArray(),
 				visualPaths = allFullPaths.Select(str => str.Replace(BasePath, "").Replace(".txt", "")).ToArray();
-			int oldIndex = Array.IndexOf(allFullPaths, scriptHandler.StartupScriptPath),
-				newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, visualPaths);
+			int oldIndex = Array.IndexOf(allFullPaths, scriptHandler.StartupScriptPath);
+			if (oldIndex < 0)
+			{
+				oldIndex = 0; 
+				scriptHandler.StartupScriptPath = allFullPaths[oldIndex];
+				EditorUtility.SetDirty(scriptHandler);
+			}
+			int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, visualPaths);
 			if (oldIndex != newIndex)
 				scriptHandler.StartupScriptPath = allFullPaths[newIndex];
 			InputActions(scriptHandler);

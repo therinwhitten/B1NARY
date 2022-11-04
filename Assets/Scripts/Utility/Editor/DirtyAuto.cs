@@ -5,18 +5,29 @@
 	using UnityEngine;
 	using Object = UnityEngine.Object;
 
+	/// <summary>
+	/// A class that automatically deals with Dirty calling & serialization for you.
+	/// </summary>
 	public static class DirtyAuto
 	{
-		public static Vector3 Field(in Object target, in GUIContent content, in Vector3 input)
+		public static void SetDirty(this Object target, bool clearDirty = false)
 		{
-			Vector3 output = EditorGUILayout.Vector3Field(content, input);
+			if (clearDirty)
+				EditorUtility.SetDirty(target);
+			else
+				EditorUtility.ClearDirty(target);
+		}
+
+		public static bool Toggle(in Object target, in GUIContent content, in bool input)
+		{
+			bool output = EditorGUILayout.Toggle(content, input);
 			if (output != input)
 				EditorUtility.SetDirty(target);
 			return output;
 		}
-		public static bool Toggle(in Object target, in GUIContent content, in bool input)
+		public static bool ToggleLeft(in Object target, in GUIContent content, in bool input)
 		{
-			bool output = EditorGUILayout.Toggle(content, input);
+			bool output = EditorGUILayout.ToggleLeft(content, input);
 			if (output != input)
 				EditorUtility.SetDirty(target);
 			return output;
@@ -35,21 +46,8 @@
 			int newIndex = EditorGUILayout.Popup(content, index, enumNames);
 			if (index != newIndex)
 				EditorUtility.SetDirty(target);
+			// Enum.Parse<T> doesn't like me
 			return (TEnum)Enum.Parse(typeof(TEnum), enumNames[newIndex]);
-		}
-		public static string Field(in Object target, in GUIContent content, in string input)
-		{
-			string output = EditorGUILayout.TextField(content, input);
-			if (output != input)
-				EditorUtility.SetDirty(target);
-			return output;
-		}
-		public static string Field(in Rect rect, in Object target, in GUIContent content, in string input)
-		{
-			string output = EditorGUI.TextField(rect, content, input);
-			if (output != input)
-				EditorUtility.SetDirty(target);
-			return output;
 		}
 		public static float DelayedField(in Object target, in GUIContent content, in float input)
 		{
@@ -65,9 +63,44 @@
 				EditorUtility.SetDirty(target);
 			return output;
 		}
+		public static Vector3 Field(in Object target, in GUIContent content, in Vector3 input)
+		{
+			Vector3 output = EditorGUILayout.Vector3Field(content, input);
+			if (output != input)
+				EditorUtility.SetDirty(target);
+			return output;
+		}
+		public static string Field(in Object target, in GUIContent content, in string input)
+		{
+			string output = EditorGUILayout.TextField(content, input);
+			if (output != input)
+				EditorUtility.SetDirty(target);
+			return output;
+		}
+		public static string Field(Rect rect, in Object target, in GUIContent content, in string input)
+		{
+			string output = EditorGUI.TextField(rect, content, input);
+			if (output != input)
+				EditorUtility.SetDirty(target);
+			return output;
+		}
 		public static int Field(in Object target, in GUIContent content, in int input)
 		{
 			int output = EditorGUILayout.IntField(content, input);
+			if (output != input)
+				EditorUtility.SetDirty(target);
+			return output;
+		}
+		public static int Field(Rect rect, in Object target, in GUIContent content, in int input)
+		{
+			int output = EditorGUI.IntField(rect, content, input);
+			if (output != input)
+				EditorUtility.SetDirty(target);
+			return output;
+		}
+		public static float Field(Rect rect, in Object target, in GUIContent content, in float input)
+		{
+			float output = EditorGUI.FloatField(rect, content, input);
 			if (output != input)
 				EditorUtility.SetDirty(target);
 			return output;
@@ -89,6 +122,51 @@
 		public static int Slider(in Object target, in GUIContent content, in int input, in int left, in int right)
 		{
 			int output = EditorGUILayout.IntSlider(content, input, left, right);
+			if (output != input)
+				EditorUtility.SetDirty(target);
+			return output;
+		}
+		//public static (float left, float right) Slider(in Object target, in GUIContent content, in float leftMax, in float left, in float right, in float rightMax)
+		//{
+		//}
+		public static void Property(in SerializedObject serializedObject, string fieldName)
+		{
+			serializedObject.Update();
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(fieldName));
+			serializedObject.ApplyModifiedProperties();
+		}
+		public static void Property(Rect rect, in SerializedObject serializedObject, string fieldName)
+		{
+			serializedObject.Update();
+			EditorGUI.PropertyField(rect, serializedObject.FindProperty(fieldName));
+			serializedObject.ApplyModifiedProperties();
+		}
+		public static string Area(Rect rect, in Object target, in string input)
+		{
+			string output = EditorGUI.TextArea(rect, input);
+			if (output != input)
+				EditorUtility.SetDirty(target);
+			return output;
+		}
+		public static string Area(Rect rect, in Object target, in GUIContent content, in string input)
+		{
+			Rect labelRect = rect;
+			labelRect.height = 20f;
+			rect.yMin += 20f;
+			EditorGUI.LabelField(rect, content);
+			string output = EditorGUI.TextArea(rect, input);
+			if (output != input)
+				EditorUtility.SetDirty(target);
+			return output;
+		}
+		public static string Area(in Object target, GUIContent content, in string input)
+		{
+			EditorGUILayout.LabelField(content);
+			return Area(target, content, input);
+		}
+		public static string Area(in Object target, in string input)
+		{
+			string output = EditorGUILayout.TextArea(input);
 			if (output != input)
 				EditorUtility.SetDirty(target);
 			return output;
