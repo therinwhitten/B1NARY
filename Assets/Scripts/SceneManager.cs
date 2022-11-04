@@ -83,6 +83,7 @@
 		/// <returns> The Coroutine. </returns>
 		public IEnumerator ChangeScene(string sceneName)
 		{
+			ScriptHandler.Instance.ShouldPause = true;
 			IEnumerator fadeEnum = FadeScene();
 			while (fadeEnum.MoveNext())
 				yield return fadeEnum.Current;
@@ -110,6 +111,7 @@
 
 			do yield return new WaitForFixedUpdate();
 			while (cannotPerformNext);
+			ScriptHandler.Instance.ShouldPause = false;
 			ScriptHandler.Instance.NextLine(); 
 		}
 		/// <summary>

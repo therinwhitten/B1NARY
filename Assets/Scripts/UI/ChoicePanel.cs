@@ -51,7 +51,7 @@
 		/// be achieved via <see cref="Transform.GetChild(int)"/> with count
 		/// enumeration.
 		/// </summary>
-		private List<GameObject> choiceButtons;
+		private List<GameObject> choiceButtons = new List<GameObject>();
 		/// <summary>
 		/// What to do when the player picks up a choice when they press the button.
 		/// Modifies <see cref="CurrentlyPickedChoice"/> to reflect firsthand.
