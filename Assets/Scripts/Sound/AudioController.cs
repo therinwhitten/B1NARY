@@ -192,10 +192,10 @@
 			customAudioSource.outputAudioMixerGroup = audioMixerGroup;
 			customAudioSource.PlayOneShot(clip, volume);
 			var coroutineWrapper = new CoroutineWrapper(this, WaitUntil(audioMixerGroup.name));
-			coroutineWrapper.AfterActions += () =>
+			coroutineWrapper.AfterActions += mono =>
 			{
 				Destroy(oneShotSounds[audioMixerGroup.name].source);
-				oneShotSounds[audioMixerGroup.name].disposeWrapper.Dispose();
+				oneShotSounds[audioMixerGroup.name].disposeWrapper.Stop();
 				oneShotSounds.Remove(audioMixerGroup.name);
 			};
 			oneShotSounds.Add(audioMixerGroup.name, (coroutineWrapper, customAudioSource));

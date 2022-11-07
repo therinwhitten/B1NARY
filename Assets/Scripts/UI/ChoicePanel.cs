@@ -8,6 +8,7 @@
 	using System.Collections.Generic;
 	using TMPro;
 	using B1NARY.DesignPatterns;
+	using System.Collections;
 
 	/// <summary>
 	/// An interface in unity to allow the player to choose between options that
@@ -49,7 +50,7 @@
 		/// be achieved via <see cref="Transform.GetChild(int)"/> with count
 		/// enumeration.
 		/// </summary>
-		private List<(GameObject obj, TMP_Text , Button button)> choiceButtons;
+		private List<(GameObject obj, TMP_Text text, Button button)> choiceButtons;
 		/// <summary>
 		/// What to do when the player picks up a choice when they press the button.
 		/// Modifies <see cref="CurrentlyPickedChoice"/> to reflect firsthand.
@@ -64,6 +65,8 @@
 		/// If the player has even picked a choice yet.
 		/// </summary>
 		public bool HasPickedChoice => !string.IsNullOrEmpty(CurrentlyPickedChoice);
+
+		private int additiveSlots = -1;
 
 		private void Awake()
 		{
@@ -86,28 +89,35 @@
 			enabled = true;
 			ScriptHandler.Instance.ShouldPause = true;
 			gameObject.SetActive(true);
-			PickedChoice = key => gameObject.SetActive(false);
-			PickedChoice = key => Debug.Log($"Picked Choice: {key}", this);
+			PickedChoice = key =>
+			{
+				for (int i = 0; i < choiceButtons.Count; i++)
+					choiceButtons[i].obj.SetActive(false);
+				Debug.Log($"Picked Choice: {key}", this);
+			};
+			StartCoroutine(WaitForAdditive());
 			var enumerator = choices.GetEnumerator();
 			for (int i = 0; enumerator.MoveNext(); i++)
 			{
-				(GameObject obj, TMP_Text text, Button button) button;
-				bool add = false;
-				if (i >= choiceButtons.Count)
-				{
-					button = choiceButtons[i];
-				}
-				else
+				if (i <= choiceButtons.Count)
 				{
 					GameObject obj = Instantiate(choiceButtonPrefab, transform);
-					button = (obj, obj.GetComponentInChildren<TMP_Text>(), obj.GetComponentInChildren<Button>());
-					add = true;
+					choiceButtons.Add((obj, obj.GetComponentInChildren<TMP_Text>(), obj.GetComponentInChildren<Button>()));
 				}
-				button.obj.SetActive(true);
-				button.text.text = enumerator.Current;
-				button.button.onClick.AddListener(new UnityAction(() => HandlePress(enumerator.Current)));
-				if (add)
-					choiceButtons.Add(button);
+				choiceButtons[i].obj.SetActive(true);
+				choiceButtons[i].text.text = enumerator.Current;
+				for (int ii = 0; ii <= i; ii++)
+					choiceButtons[i].button.onClick.AddListener((UnityAction)(() => additiveSlots++));
+			}
+
+			IEnumerator WaitForAdditive()
+			{
+				while (additiveSlots < 0)
+				{
+					yield return new WaitForFixedUpdate();
+				}
+				ScriptHandler.Instance.ShouldPause = false;
+				HandlePress(choiceButtons[additiveSlots].text.text);
 			}
 		}
 		/// <summary>

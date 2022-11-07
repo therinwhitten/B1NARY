@@ -9,25 +9,16 @@
 	public class DialogueSystemEditor : Editor
 	{
 		private DialogueSystem dialogueSystem;
-		//private CoroutineWrapper testWrapper;
 		private void Awake()
 		{
 			dialogueSystem = (DialogueSystem)target;
 		}
 		public override void OnInspectorGUI()
 		{
-			var serializedObject = new SerializedObject(dialogueSystem);
 			//EditorGUILayout.LabelField("Current Font: " + dialogueSystem.CurrentFontAsset.name);
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.speakerBox)));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.textBox)));
-			//if (GUILayout.Button("Test Example Dialogue System"))
-			//	if (Application.isPlaying)
-			//		if (CoroutineWrapper.IsNotRunningOrNull(testWrapper))
-			//			testWrapper = Test("Beep Boop <i>I am the <b>tester man</b></i> with the name {0}", "Tester Boogyman");
-			//		else
-			//			Debug.LogError("Cannot play test, its already in succession!");
-			//	else
-			//		Debug.LogError("Cannot play test, it may be not in play mode!");
+			dialogueSystem.TicksPerCharacter = DirtyAuto.Slider(target, new GUIContent("Ticks Waited Per Character", "How long the text box will wait per character within milliseconds, with 0 being instantaneous. 30 by default."), dialogueSystem.TicksPerCharacter, 0, 200);
 			serializedObject.ApplyModifiedProperties();
 		}
 

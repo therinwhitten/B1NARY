@@ -121,6 +121,29 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &706072311 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2538100477995107641, guid: 1cf3bb6ffc8a0c2439c1aaf56e04fbcf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1716249533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &706072313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 706072311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e41de3d30b4174bbdd0ac22bba5e27, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixerGroup: {fileID: 704485296697243133, guid: e149b04e0d2c2174a925c5eaaf359315,
+    type: 2}
+  config: {fileID: 11400000, guid: 66e3f70a05a8eb741841f5f7cb298ff3, type: 2}
+  hoverIndex: 0
+  pressedIndex: 0
 --- !u!114 &1430887130 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7960023945817529747, guid: 135af6989c2cd3546943edd0d2842d66,
@@ -1250,7 +1273,15 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 8721171757903474352, guid: 1cf3bb6ffc8a0c2439c1aaf56e04fbcf,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 1658.0007
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2538100477995107648, guid: 1cf3bb6ffc8a0c2439c1aaf56e04fbcf, type: 3}
+    - {fileID: 2538100477995107649, guid: 1cf3bb6ffc8a0c2439c1aaf56e04fbcf, type: 3}
+    - {fileID: 2538100477995107647, guid: 1cf3bb6ffc8a0c2439c1aaf56e04fbcf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1cf3bb6ffc8a0c2439c1aaf56e04fbcf, type: 3}
 --- !u!1001 &1934965871
 PrefabInstance:
@@ -1262,7 +1293,7 @@ PrefabInstance:
     - target: {fileID: 1156601245126608702, guid: 135af6989c2cd3546943edd0d2842d66,
         type: 3}
       propertyPath: StartupScriptPath
-      value: D:/Games/B1NARY Unity Editor/B1NARY Knights Branch/Assets/StreamingAssets/Docs/PrologueStory.txt
+      value: C:/Users/gooey/source/repos/Github/B1NARY/B1NARY Knights Branch/Assets/StreamingAssets/Docs/PrologueStory.txt
       objectReference: {fileID: 0}
     - target: {fileID: 2401848206790257842, guid: 135af6989c2cd3546943edd0d2842d66,
         type: 3}

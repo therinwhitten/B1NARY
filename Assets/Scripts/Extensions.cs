@@ -38,7 +38,7 @@
 					{
 						float dynamicChange = (Time.deltaTime / secondsTaken) * difference;
 						value.Value += dynamicChange;
-						//Debug.Log($"New: {value.Value}, dynamicChange: {dynamicChange}, desired: {final}, isFinal: {condition.Invoke(value.Value)}");
+						//Debug.Log($"New: {value.Value}, dynamicChange: {dynamicChange}, desired: {final}, isFinal: {condition.InvokeAll(value.Value)}");
 						if (condition.Invoke(value.Value))
 							break;
 						yield return new WaitForEndOfFrame();

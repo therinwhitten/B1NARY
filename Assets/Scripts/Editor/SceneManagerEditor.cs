@@ -27,7 +27,7 @@
 		/// <param name="header"></param>
 		/// <param name="group"></param>
 		/// <returns> The taken space in the rect. </returns>
-		private static void DisplayTab(string header, PersistentListenerGroup group)
+		private static void DisplayTab(string header, ListenerGroup group)
 		{
 			Rect masterHeaderRect = GUILayoutUtility.GetRect(Screen.width / 4 * 3, 22f);
 			masterHeaderRect = EditorGUI.IndentedRect(masterHeaderRect);
@@ -36,7 +36,7 @@
 			DisplaySubCategory("Persistent Listeners", group.PersistentListeners);
 			DisplaySubCategory("Non-Persistent Listeners", group.NonPersistentListeners);
 			EditorGUI.indentLevel--;
-			void DisplaySubCategory(string subHeader, IReadOnlyList<SwitchScenesDelegate> delegates)
+			void DisplaySubCategory(string subHeader, IReadOnlyList<Action> delegates)
 			{
 				EditorGUILayout.LabelField(subHeader, EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;

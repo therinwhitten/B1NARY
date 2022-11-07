@@ -120,13 +120,13 @@
 					m_pauseIterations++;
 				}
 				else 
-					m_pauseIterations = (byte)checked(m_pauseIterations - 1);
+					m_pauseIterations = (sbyte)checked(m_pauseIterations - 1);
 
-				if (m_pauseIterations > 12)
+				if (m_pauseIterations > 12 && m_pauseIterations < -12)
 					Utils.ForceCrash(ForcedCrashCategory.Abort);
 			}
 		}
-		private byte m_pauseIterations = 0;
+		private sbyte m_pauseIterations = 0;
 		/// <summary>
 		/// A value that determines if it is running a script and ready to use.
 		/// </summary>
