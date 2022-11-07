@@ -5,9 +5,32 @@
 	using System.Threading.Tasks;
 	using System.Collections;
 	using UnityEngine;
+	using System.Collections.Generic;
 
-	public sealed class CoroutineWrapper : IDisposable
+	public sealed class CoroutineWrapper
 	{
+		/// <summary>
+		/// A coroutineWrapper that expects you to use <see cref="AfterActions"/>
+		/// to invoke commands.
+		/// </summary>
+		/// <param name="attached"> The behaviour to attach the coroutine to. </param>
+		/// <param name="predicate"> The condition to wait until it results to <see langword="true"/>.</param>
+		/// <returns> The wrapper to attach commands to. </returns>
+		public static CoroutineWrapper WaitUntil(MonoBehaviour attached, Func<bool> predicate)
+		{
+			return new CoroutineWrapper(attached, WaitUntilCoroutine());
+			IEnumerator WaitUntilCoroutine() { yield return new WaitUntil(predicate); }
+		}
+		/// <summary>
+		/// <see cref="true"/> if the coroutine is set as <see langword="null"/>
+		/// or it is not running. Otherwise, <see cref="false"/>.
+		/// </summary>
+		public static bool IsNotRunningOrNull(CoroutineWrapper coroutineWrapper)
+		{
+			if (coroutineWrapper == null)
+				return true;
+			return !coroutineWrapper.IsRunning;
+		}
 
 		/*
 		
@@ -28,7 +51,7 @@
 			stopwatch.Restart();
 			Console.WriteLine($"dynamicChange: {dynamicChange} for {input} to {input + dynamicChange}, expecting final {final}");
 			input += dynamicChange;
-			if (isFinal.Invoke(input))
+			if (isFinal.InvokeAll(input))
 				break;
 			iterations++;
 		}
@@ -36,7 +59,8 @@
 
 		return Task.CompletedTask;
 	}
-		*/
+		*//*
+		
 
 		/// <summary>
 		/// Changes the integer over time.
@@ -76,68 +100,7 @@
 					currentDelta += change;
 				}
 			}
-		}
-		/// <summary>
-		/// <see cref="true"/> if the coroutine is set as <see langword="null"/>
-		/// or it is not running. Otherwise, <see cref="false"/>.
-		/// </summary>
-		public static bool IsNotRunningOrNull(CoroutineWrapper coroutineWrapper)
-		{
-			if (coroutineWrapper == null)
-				return true;
-			return !coroutineWrapper.IsRunning;
-		}
-
-		/// <summary>
-		/// Gives a <see cref="Task"/> that will wait until <see cref="IsRunning"/>
-		/// returns false, using CPU spinning.
-		/// </summary>
-		public Task Awaiter => Task.Run(() => SpinWait.SpinUntil(() => !IsRunning));
-		/// <summary> The coroutine to reference when deleting. </summary>
-		private Coroutine coroutineData = null;
-		/// <summary>
-		/// The <see cref="MonoBehaviour"/> to tie into for the <see cref="Coroutine"/>.
-		/// </summary>
-		private readonly MonoBehaviour tiedMonoBehaviour;
-		/// <summary>
-		/// The enumerator that the constructor defined, and can be readily used
-		/// for making <see cref="coroutineData"/>.
-		/// </summary>
-		private readonly IEnumerator enumCopy;
-		/// <summary>
-		/// Actions before the coroutine starts.
-		/// </summary>
-		public event Action BeforeActions;
-		private bool invokedBefore = false;
-		private bool TryInvokeBefore(bool IgnoreTiedActions = false)
-		{
-			if (invokedBefore)
-				return false;
-			invokedBefore = true;
-			IsRunning = true;
-			if (!IgnoreTiedActions)
-				BeforeActions?.Invoke();
-			return true;
-		}
-		/// <summary>
-		/// Actions after the coroutine starts.
-		/// </summary>
-		public event Action AfterActions;
-		private bool invokedAfter = false;
-		private bool TryInvokeAfter(bool IgnoreTiedActions = false)
-		{
-			if (invokedAfter)
-				return false;
-			invokedAfter = true;
-			IsRunning = false;
-			if (!IgnoreTiedActions)
-				AfterActions?.Invoke();
-			return true;
-		}
-		/// <summary>
-		/// If it is running, .
-		/// </summary>
-		public bool IsRunning { get; private set; }
+		}*/
 		/// <summary>
 		/// Creates a new instance of <see cref="CoroutineWrapper"/>
 		/// </summary>
@@ -150,27 +113,61 @@
 			this.tiedMonoBehaviour = tiedMonoBehaviour;
 			enumCopy = enumerator;
 		}
-		/// <summary>
-		/// Starts the <see cref="Coroutine"/> and <see cref="CoroutineWrapper"/>.
-		/// Is chainable, as to simply create it in one line and start immediately.
-		/// </summary>
-		/// <returns> itself. </returns>
+
+		// General Data
+		/// <summary> The copy of the enumerator. </summary>
+		private readonly IEnumerator enumCopy;
+		/// <summary> The place where the coroutine is tied to. </summary>
+		public readonly MonoBehaviour tiedMonoBehaviour;
+		public bool IsRunning { get; private set; } = false;
+		private Coroutine coroutineMarker;
+
+		// Before Actions
+		public event Action<MonoBehaviour> BeforeActions;
+		private bool invokedBefore = false;
+		private void InvokeBeforeActions()
+		{
+			if (invokedBefore)
+				throw new InvalidOperationException("Actions has already been invoked!");
+			invokedBefore = true;
+			invokedAfter = false;
+			IsRunning = true;
+			BeforeActions?.Invoke(tiedMonoBehaviour);
+		}
+
+		// After Actions
+		public event Action<MonoBehaviour> AfterActions;
+		private bool invokedAfter = false;
+		private void InvokeAfterActions()
+		{
+			if (invokedAfter)
+				throw new InvalidOperationException("Actions has already been invoked!");
+			invokedAfter = true;
+			invokedBefore = false;
+			IsRunning = false;
+			AfterActions?.Invoke(tiedMonoBehaviour);
+		}
+
 		public CoroutineWrapper Start()
 		{
-			TryInvokeBefore();
-			coroutineData = tiedMonoBehaviour.StartCoroutine(Wrapper(enumCopy));
+			if (IsRunning)
+				throw new InvalidOperationException();
+			InvokeBeforeActions();
+			coroutineMarker = tiedMonoBehaviour.StartCoroutine(Wrapper(enumCopy));
 			return this;
 		}
+
 		/// <summary>
-		/// Forcefully stops the <see cref="Coroutine"/>, usually 'cutting' the
-		/// enumeration mid-way.
+		/// Stops the wrapper.
 		/// </summary>
-		public void Stop(bool IgnoreTiedActions = false)
+		/// <returns> If the object has successfully stopped. </returns>
+		public bool Stop()
 		{
-			if (IsRunning)
-				tiedMonoBehaviour.StopCoroutine(coroutineData);
-			if (!IgnoreTiedActions)
-				TryInvokeAfter();
+			if (!IsRunning)
+				return false;
+			tiedMonoBehaviour.StopCoroutine(coroutineMarker);
+			InvokeAfterActions();
+			return true;
 		}
 
 		/// <summary>
@@ -182,29 +179,31 @@
 		/// <returns> <paramref name="enumerator"/>'s value. </returns>
 		private IEnumerator Wrapper(IEnumerator enumerator)
 		{
-			IsRunning = true;
 			bool hasMovedNext = true;
-			object output = null;
-			while (hasMovedNext)
+			object yieldInstruction;
+			while (true)
 			{
 				try
 				{
-					if (hasMovedNext = enumerator.MoveNext())
-						output = enumerator.Current;
+					hasMovedNext = enumerator.MoveNext();
+					if (hasMovedNext == false)
+					{
+						FinishedCoroutine();
+						yield break;
+					}
+					yieldInstruction = enumerator.Current;
 				}
 				catch
 				{
-					Stop();
+					FinishedCoroutine();
 					throw;
 				}
-				if (hasMovedNext)
-					yield return output;
+				yield return yieldInstruction;
 			}
-			Stop();
-		}
-		public void Dispose()
-		{
-			Stop();
+			void FinishedCoroutine()
+			{
+				InvokeAfterActions();
+			}
 		}
 	}
 }

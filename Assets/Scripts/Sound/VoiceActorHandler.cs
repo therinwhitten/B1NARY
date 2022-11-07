@@ -44,7 +44,10 @@
 
 		private void Awake()
 		{
-			audioSource = gameObject.AddComponent<AudioSource>();
+			if (gameObject.TryGetComponent<AudioSource>(out var audioSource))
+				this.audioSource = audioSource;
+			else
+				this.audioSource = gameObject.AddComponent<AudioSource>();
 		}
 		public void Stop()
 		{

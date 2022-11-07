@@ -14,17 +14,49 @@ namespace B1NARY.UI
 
 	public class DialogueSystem : Singleton<DialogueSystem>
 	{
-		public static void InitializeSystem(DialogueSystem systemComponent)
+		/// <summary>
+		/// A command that adds all the inputs together into a split list that
+		/// separates from regular text and tags. <paramref name="original"/> 
+		/// is considered a tag, regardless of it's status.
+		/// </summary>
+		/// <param name="original">
+		/// The original text to stack upon, can be completely empty for a newString
+		/// line.
+		/// </param>
+		/// <param name="newString"> The newString text to add. Tags can be used. </param>
+		/// <returns> 
+		/// A list of split <see cref="string"/>s, that tags is marked to intend
+		/// that it will be shown instantly.
+		/// </returns>
+		public static List<(string value, bool isTag)> SplitDialogue(string original, string newString)
 		{
-			if (!systemComponent.gameObject.activeSelf)
-				systemComponent.gameObject.SetActive(true);
-			systemComponent.enabled = true;
+			var parsableText = string.IsNullOrEmpty(original) 
+				? new List<(string value, bool isTag)>()
+				: new List<(string value, bool isTag)>() { (original, true) };
+			var activeSlot = new StringBuilder();
+			for (int i = 0; i < newString.Length; i++)
+			{
+				if (newString[i] == '<')
+				{
+					parsableText.Add((activeSlot.ToString(), false));
+					activeSlot = new StringBuilder();
+				}
+				activeSlot.Append(newString[i]);
+				if (newString[i] == '>')
+				{
+					parsableText.Add((activeSlot.ToString(), true));
+					activeSlot = new StringBuilder();
+				}
+			}
+			if (activeSlot.Length > 0)
+				parsableText.Add((activeSlot.ToString(), false));
+			return parsableText;
 		}
 		public static IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
 		{
 			["textspeed"] = (Action<string>)(speedRaw =>
 			{
-				Instance.ticksPerChar = int.Parse(speedRaw);
+				Instance.TicksPerCharacter = int.Parse(speedRaw);
 			}),
 			/* There is already a system in ScriptHandler that handles more of it.
 			["additive"] = (Action<string>)(str =>
@@ -34,14 +66,26 @@ namespace B1NARY.UI
 				else if (ScriptDocument.disabledHashset.Contains(str))
 					Instance.additiveTextEnabled = false;
 				else 
-					throw new Exception();
+					throw newString Exception();
 			}),*/
 		};
 
+		public int TicksPerCharacter
+		{
+			get => m_ticksPerChar;
+			set
+			{
+				m_ticksPerChar = Math.Max(0, value);
+				m_secondsChar = m_ticksPerChar / 1000f;
+			}
+		}
 		[Tooltip("How many ticks or milliseconds should the game wait per character?")]
-		public int ticksPerChar = 30;
+		private int m_ticksPerChar = 30;
+		private float m_secondsChar = 30f / 1000f;
+		public WaitForSeconds WaitSecondsPerChar => new WaitForSeconds(m_secondsChar);
+
 		/// <summary>
-		/// If the current dialogue should be added instead of skipping to a new
+		/// If the current dialogue should be added instead of skipping to a newString
 		/// line. Uses <see cref="ScriptHandler.ScriptDocument"/> in order to store
 		/// the field.
 		/// </summary>
@@ -86,7 +130,7 @@ namespace B1NARY.UI
 				FastSkip = false;
 				m_autoSkip = value;
 				if (!CoroutineWrapper.IsNotRunningOrNull(eventCoroutine))
-					eventCoroutine.Dispose();
+					eventCoroutine.Stop();
 				if (value)
 					eventCoroutine = new CoroutineWrapper(this, AutoSkipCoroutine()).Start();
 
@@ -106,8 +150,17 @@ namespace B1NARY.UI
 
 		}
 		private bool m_autoSkip = false;
+		/// <summary>
+		/// Helper method that inverts <see cref="AutoSkip"/>, used by 
+		/// <see cref="UnityEngine.Events.UnityEvent"/>
+		/// </summary>
 		public void ToggleAutoSkip() => AutoSkip = !AutoSkip;
 
+		/// <summary>
+		/// A toggle between if it should move foward within a fast, fixed 
+		/// timeframe. Regardless of what is the current status of the text and 
+		/// audio speech.
+		/// </summary>
 		public bool FastSkip
 		{
 			get => m_fastSkip;
@@ -118,7 +171,7 @@ namespace B1NARY.UI
 				AutoSkip = false;
 				m_fastSkip = value;
 				if (!CoroutineWrapper.IsNotRunningOrNull(eventCoroutine))
-					eventCoroutine.Dispose();
+					eventCoroutine.Stop();
 				if (value)
 					eventCoroutine = new CoroutineWrapper(this, FastSkipCoroutine()).Start();
 
@@ -133,6 +186,10 @@ namespace B1NARY.UI
 			}
 		}
 		private bool m_fastSkip = false;
+		/// <summary>
+		/// Helper method that inverts <see cref="FastSkip"/>, used by 
+		/// <see cref="UnityEngine.Events.UnityEvent"/>
+		/// </summary>
 		public void ToggleFastSkip() => FastSkip = !FastSkip;
 
 		private string NewLine()
@@ -145,13 +202,13 @@ namespace B1NARY.UI
 		private CoroutineWrapper eventCoroutine;
 		private CoroutineWrapper speakCoroutine;
 
+		private void Awake() => m_secondsChar = m_ticksPerChar / 1000f;
+
 		public void Say(string message)
 		{
 			if (!DateTimeTracker.IsAprilFools)
-				if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
-					speakCoroutine.Dispose();
+				StopSpeaking(!AdditiveTextEnabled);
 			speakCoroutine = new CoroutineWrapper(this, Speaking(message)).Start();
-			speakCoroutine.AfterActions += () => CurrentText = FinalText;
 		}
 
 		public void Say(string message, string speaker)
@@ -160,10 +217,29 @@ namespace B1NARY.UI
 			Say(message);
 		}
 
+		/// <summary>
+		/// Stops the speaking coroutine.
+		/// </summary>
+		/// <param name="setFinalResultToCurrentText">
+		/// What to do when it completes the stopped coroutine.
+		/// <list type="bullet">
+		/// <item>
+		///	<see langword="null"/>: Don't do anything relating to <see cref="CurrentText"/>
+		/// </item>
+		/// <item>
+		///		<see langword="false"/>: Set the <see cref="CurrentText"/> to be
+		///		completely empty
+		/// </item>
+		/// <item>
+		/// <see langword="true"/>: Set the text from <see cref="FinalText"/>
+		/// to <see cref="CurrentText"/>
+		/// </item>
+		/// </list>
+		/// </param>
 		public void StopSpeaking(bool? setFinalResultToCurrentText)
 		{
 			if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
-				speakCoroutine.Dispose();
+				speakCoroutine.Stop();
 			if (setFinalResultToCurrentText != null)
 				if (setFinalResultToCurrentText == true)
 					CurrentText = FinalText;
@@ -171,80 +247,37 @@ namespace B1NARY.UI
 					CurrentText = string.Empty;
 		}
 
-
+		/// <summary>
+		/// A coroutine that slowly type-writes the current text, with 
+		/// <see cref="AdditiveTextEnabled"/>. kept in mind, as it can add over
+		/// previous text.
+		/// </summary>
+		/// <param name="speech"> The newString text to add to. </param>
+		/// <returns> <see cref="WaitForSeconds"/> with <see cref="WaitSecondsPerChar"/>. </returns>
 		private IEnumerator Speaking(string speech)
 		{
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
-			var tagsList = new List<Tag>();
-			int tagsLength = 0;
-			float seconds = ticksPerChar / 1000f;
-			for (int i = 0; i < speech.Length; i++)
+			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
+
+			string[] splitText = new string[parsableText.Count];
+			// Adding all tags n' stuff beforehand.
+			for (int i = 0; i < parsableText.Count; i++)
+				if (parsableText[i].isTag)
+					splitText[i] = parsableText[i].value;
+			// Iterating per char here, printing them in the process.
+			for (int i = 0; i < parsableText.Count; i++)
 			{
-				if (speech[i] == '<') // Tag starts
-				{
-					// Building the tag
-					var tag = new StringBuilder();
-					// TODO: Add a check that will catch an out of bounds exception.
-					while (speech[i] != '>')
-					{
-						tag.Append(speech[i]);
-						i++;
-					}
-					tag.Append('>');
-					var currentTag = new Tag(tag.ToString());
-					// Behaviour among the tag.
-					if (currentTag.disableTag)
-					{
-						tagsList.Remove(currentTag.Opposite);
-						tagsLength -= currentTag.TotalLength;
-					}
-					else
-					{
-						tagsLength += currentTag.Opposite.TotalLength;
-						tagsList.Add(currentTag);
-					}
-
+				if (parsableText[i].isTag)
 					continue;
+				for (int ii = 0; ii < parsableText[i].value.Length; ii++)
+				{
+					splitText[i] += parsableText[i].value[ii];
+					CurrentText = string.Join("", splitText);
+					yield return WaitSecondsPerChar;
 				}
-				CurrentText = CurrentText.Insert(CurrentText.Length - tagsLength, speech[i].ToString());
-				yield return new WaitForSeconds(seconds);
 			}
+			CurrentText = FinalText;
 		}
-	}
-
-	public struct Tag
-	{
-		public int TagLength => tagName.Length;
-		public int TotalLength => ToString().Length;
-		public readonly string tagName;
-		public readonly bool disableTag;
-		public Tag(string rawTag)
-		{
-			tagName = rawTag.Trim('<', '>', '/');
-			disableTag = rawTag[1] == '/';
-		}
-		private Tag(string tag, bool disableTag)
-		{
-			tagName = tag;
-			this.disableTag = disableTag;
-		}
-		public bool Equals(Tag tag, bool explicitType)
-			=> (tag.tagName == tagName) && (explicitType ? disableTag == tag.disableTag : true);
-		/// <summary>
-		/// Simply returns an opposite <see cref="Tag"/>, doesn't affect the original.
-		/// </summary>
-		public Tag Opposite => new Tag(tagName, !disableTag);
-		public override bool Equals(object obj)
-		{
-			if (obj is Tag tag)
-				return Equals(tag, true);
-			return base.Equals(obj);
-		}
-		public override int GetHashCode()
-		{
-			return base.GetHashCode();
-		}
-		public override string ToString() => $"<{(disableTag ? "/" : "")}{tagName}>";
-	}
+	} 
 }
