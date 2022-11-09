@@ -12,13 +12,6 @@
 	[AddComponentMenu("Audio/Buttons/Button Sound Behaviour"), RequireComponent(typeof(Button))]
 	public class ButtonSoundBehaviour : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 	{
-		/// <summary>
-		/// If the object or int value is a negative value or not. Recommended
-		/// to use <see cref="Math.Sign(int)"/> for other purposes.
-		/// </summary>
-		/// <param name="value"> The value to check. </param>
-		/// <returns> if the int value is negative. </returns>
-		public static bool Sign(in int value) => value < 0;
 
 		[Tooltip("The Mixer Group to apply to the sound.")]
 		public AudioMixerGroup audioMixerGroup;

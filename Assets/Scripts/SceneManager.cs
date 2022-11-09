@@ -115,7 +115,6 @@
 		public void InitializeGame()
 		{
 			ScriptHandler.Instance.InitializeNewScript();
-			ScriptHandler.Instance.NextLine();
 		}
 
 		/// <summary>

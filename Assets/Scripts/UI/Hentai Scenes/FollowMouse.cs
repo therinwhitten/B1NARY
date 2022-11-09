@@ -4,7 +4,7 @@
 	using UnityEngine;
 	using UI;
 
-	public  class FollowMouse : MonoBehaviour 
+	public class FollowMouse : MonoBehaviour 
 	{
 		// Mouse Tracking Grabby Hand!  (Not Finished Yet: Erase when tested and verified)
 		Vector3 pos;

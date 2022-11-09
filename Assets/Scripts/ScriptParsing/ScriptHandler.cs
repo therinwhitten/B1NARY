@@ -35,10 +35,7 @@
 					throw new InvalidCastException(boolRaw);
 				Instance.scriptDocument.AdditiveEnabled = setting;
 			}),
-			["changescript"] = (Action<string>)(scriptPath =>
-			{
-				Instance.InitializeNewScript(Application.streamingAssetsPath + '/' + scriptPath);
-			}),
+			["changescript"] = (Action<string>)(ChangeScript),
 			["usegameobject"] = (Action<string>)(gameObjectName =>
 			{
 				GameObject @object = GameObject.Find(gameObjectName);
@@ -53,7 +50,20 @@
 					Instance.ShouldPause = false;
 				}
 			}),
+			["setbool"] = (Action<string, string>)((name, value) =>
+			{
+				if (PersistentData.InstanceOrDefault.bools.ContainsKey(name))
+					PersistentData.Instance.bools[name] = bool.Parse(value);
+				else
+					PersistentData.Instance.bools.Add(name, bool.Parse(value));
+			}),
 		};
+
+		[ForcePause]
+		internal static void ChangeScript(string scriptPath)
+		{
+			Instance.InitializeNewScript(Application.streamingAssetsPath + "/Docs/" + scriptPath);
+		}
 		/// <summary>
 		/// Gets a custom <see cref="ScriptNode"/> based on the requirements.
 		/// </summary>
@@ -114,16 +124,24 @@
 		{ 
 			get => m_pauseIterations > 0;
 			set 
-			{ 
+			{
+				const sbyte maxIterations = 12, 
+					halfIterations = maxIterations / 2,
+					negativeIterations = -maxIterations;
 				if (value)
-				{
 					m_pauseIterations++;
-				}
-				else 
-					m_pauseIterations = (sbyte)checked(m_pauseIterations - 1);
-
-				if (m_pauseIterations > 12 && m_pauseIterations < -12)
+				else
+					m_pauseIterations--; 
+				if (m_pauseIterations > maxIterations || m_pauseIterations < negativeIterations)
 					Utils.ForceCrash(ForcedCrashCategory.Abort);
+				if (m_pauseIterations < 0)
+					Debug.LogWarning($"The {nameof(ShouldPause)} count is found to be negative, make" +
+						" sure to avoid negative values as this will impact other" +
+						$" systems! Currently at {m_pauseIterations}");
+				else if (m_pauseIterations > halfIterations)
+					Debug.LogWarning($"The {nameof(ShouldPause)} is reaching it's" +
+						$" limit on the amount iterations it can have, currently" +
+						$"at {m_pauseIterations}");
 			}
 		}
 		private sbyte m_pauseIterations = 0;
@@ -138,6 +156,7 @@
 			foreach (string key in nextLineButtons)
 				playerInput.actions.FindAction(key, true).performed += context => NextLine();
 			DontDestroyOnLoad(gameObject);
+			PersistentData.ThrowErrorIfEmpty = false;
 		}
 
 		/// <summary>
@@ -150,10 +169,15 @@
 		/// </summary>
 		/// <param name="index"> The index for the save. </param>
 		public void SaveGame(int index) => PersistentData.SaveGame(index);
-
-		public void InitializeNewScript(string scriptPath = "")
+		/// <summary>
+		/// Starts a new script from stratch.
+		/// </summary>
+		/// <param name="scriptPath"> The path of the document. </param>
+		public ScriptLine InitializeNewScript(string scriptPath = "")
 		{
 			string finalPath = string.IsNullOrWhiteSpace(scriptPath) ? StartupScriptPath : scriptPath;
+			IsActive = false;
+			scriptDocument = null;
 			var scriptFactory = new ScriptDocument.Factory(finalPath);
 			scriptFactory.AddNodeParserFunctionality(GetDefinedScriptNodes);
 			scriptFactory.AddCommandFunctionality(AudioController.Commands);
@@ -165,6 +189,8 @@
 			IsActive = true;
 
 			playedTime = DateTime.Now;
+
+			return NextLine();
 		}
 		/// <summary>
 		/// Plays lines until it hits a normal dialogue or similar.

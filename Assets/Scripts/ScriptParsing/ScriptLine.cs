@@ -159,9 +159,10 @@
 		/// <param name="index">The index.</param>
 		public ScriptLine(string lineData, Func<string> scriptDocument, int index)
 		{
+			int commentIndex = lineData.IndexOf("//");
+			if (commentIndex != -1) // Comments
+				lineData = lineData.Remove(commentIndex);
 			lineData = lineData.Trim();
-			if (lineData.Contains("//")) // Comments
-				lineData.Remove(lineData.IndexOf("//"));
 			this.lineData = lineData;
 			docPointer = scriptDocument;
 			Index = index;

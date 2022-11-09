@@ -80,6 +80,7 @@
 			this.subLines = new List<ScriptPair>(subLines.Skip(skip));
 			endIndex = this.subLines[this.subLines.Count - 1].scriptLine.Index;
 			this.subLines.RemoveAt(this.subLines.Count - 1);
+			//Debug.Log($"Last Line: {this.subLines[this.subLines.Count - 1].scriptLine}\n From block {beginIndex}");
 			//Debug.Log($"ScriptNode Starts with '{subLines[0].scriptLine}'\nStart Bracket = {subLines[1].scriptLine.Index}, End Bracket = {subLines.Last().scriptLine.Index}\nAll Lines: \n{string.Join(",\n", subLines.Skip(2).Select(pair => pair.scriptLine))}");
 		}
 		/// <summary>
@@ -90,17 +91,18 @@
 		{
 			for (int i = 0; i < subLines.Count; i++)
 			{
-				Debug.Log(subLines[i].scriptLine);
+				ScriptLine CurrentLine() => subLines[i].scriptLine;
+				Debug.Log(CurrentLine());
 				if (subLines[i].HasScriptNode)
 				{
 					IEnumerator<ScriptLine> subNode = subLines[i].scriptNode.Perform(pauseOnCommands);
 					while (subNode.MoveNext())
 						yield return subNode.Current;
-					i += subLines[i].scriptNode.LineLength - 1;
+					i += subLines[i].scriptNode.LineLength;
 				}
-				if (InvokeCommand(subLines[i].scriptLine, pauseOnCommands))
+				if (InvokeCommand(CurrentLine(), pauseOnCommands))
 					continue;
-				yield return subLines[i].scriptLine;
+				yield return CurrentLine();
 			}
 		}
 		public virtual bool InvokeCommand(ScriptLine line, bool pauseOnCommands)

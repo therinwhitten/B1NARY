@@ -13,14 +13,17 @@ namespace B1NARY.DataPersistence
 	using B1NARY.Scripting;
 	using B1NARY.DesignPatterns;
 
+	/// <summary>
+	/// This stores data about the player specificially.
+	/// </summary>
 	[Serializable]
-	public class GameState
+	public class GameSlotData
 	{
-		public static string FileSavePath(int index) => $"{Application.persistentDataPath}/Saves/Save{index}";
-		public static GameState LoadExistingData(int index)
+		public static string FileSavePath(int index) => $"{Application.persistentDataPath}/Saves/Save{index}.amogus";
+		public static GameSlotData LoadExistingData(int index)
 		{
 			using (var stream = new FileStream(FileSavePath(index), FileMode.Open))
-				return new BinaryFormatter().Deserialize(stream) as GameState;
+				return new BinaryFormatter().Deserialize(stream) as GameSlotData;
 		}
 
 		#region About
@@ -39,15 +42,15 @@ namespace B1NARY.DataPersistence
 		public string documentPath;
 		private ScriptLine lastLine;
 
-		public GameState()
+		public GameSlotData()
 		{
 			documentPath = ScriptHandler.Instance.ScriptDocument.documentPath;
 			sceneIndex = SceneManager.GetActiveScene().buildIndex;
-			strings = PersistentData.strings;
-			bools = PersistentData.bools;
-			ints = PersistentData.ints;
-			floats = PersistentData.floats;
-			playerName = PersistentData.playerName;
+			strings = PersistentData.Instance.strings;
+			bools = PersistentData.Instance.bools;
+			ints = PersistentData.Instance.ints;
+			floats = PersistentData.Instance.floats;
+			playerName = PersistentData.Instance.playerName;
 			lastSaved = DateTime.Now;
 			timePlayed += lastSaved - ScriptHandler.Instance.playedTime;
 		}
@@ -62,11 +65,11 @@ namespace B1NARY.DataPersistence
 		}
 		public void Load()
 		{
-			PersistentData.playerName = playerName;
-			PersistentData.strings = strings;
-			PersistentData.bools = bools;
-			PersistentData.ints = ints;
-			PersistentData.floats = floats;
+			PersistentData.Instance.playerName = playerName;
+			PersistentData.Instance.strings = strings;
+			PersistentData.Instance.bools = bools;
+			PersistentData.Instance.ints = ints;
+			PersistentData.Instance.floats = floats;
 			SceneManager.LoadScene(sceneIndex);
 			ScriptHandler.Instance.InitializeNewScript(documentPath);
 			while (ScriptHandler.Instance.CurrentLine != lastLine)

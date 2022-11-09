@@ -66,8 +66,6 @@
 		/// </summary>
 		public bool HasPickedChoice => !string.IsNullOrEmpty(CurrentlyPickedChoice);
 
-		private int additiveSlots = -1;
-
 		private void Awake()
 		{
 			choiceButtons = new List<(GameObject obj, TMP_Text, Button button)>(2);
@@ -95,29 +93,16 @@
 					choiceButtons[i].obj.SetActive(false);
 				Debug.Log($"Picked Choice: {key}", this);
 			};
-			StartCoroutine(WaitForAdditive());
 			var enumerator = choices.GetEnumerator();
 			for (int i = 0; enumerator.MoveNext(); i++)
 			{
-				if (i <= choiceButtons.Count)
-				{
-					GameObject obj = Instantiate(choiceButtonPrefab, transform);
-					choiceButtons.Add((obj, obj.GetComponentInChildren<TMP_Text>(), obj.GetComponentInChildren<Button>()));
-				}
+				GameObject obj = Instantiate(choiceButtonPrefab, transform);
+				choiceButtons.Add((obj, obj.GetComponentInChildren<TMP_Text>(), obj.GetComponentInChildren<Button>()));
 				choiceButtons[i].obj.SetActive(true);
 				choiceButtons[i].text.text = enumerator.Current;
+				int capturedValue = i;
 				for (int ii = 0; ii <= i; ii++)
-					choiceButtons[i].button.onClick.AddListener((UnityAction)(() => additiveSlots++));
-			}
-
-			IEnumerator WaitForAdditive()
-			{
-				while (additiveSlots < 0)
-				{
-					yield return new WaitForFixedUpdate();
-				}
-				ScriptHandler.Instance.ShouldPause = false;
-				HandlePress(choiceButtons[additiveSlots].text.text);
+					choiceButtons[i].button.onClick.AddListener((UnityAction)(() => HandlePress(capturedValue)));
 			}
 		}
 		/// <summary>
@@ -125,10 +110,11 @@
 		/// referencing your values if you use method capturing!
 		/// </summary>
 		/// <param name="value"> The key to send out when pressed. </param>
-		public void HandlePress(string value)
+		public void HandlePress(int index)
 		{
 			if (!hasBeenInitialized)
 				return;
+			string value = choiceButtons[index].text.text;
 			CurrentlyPickedChoice = value;
 			PickedChoice.Invoke(value);
 		}
@@ -143,7 +129,7 @@
 			gameObject.SetActive(false);
 			enabled = false;
 			for (int i = 0; i < choiceButtons.Count; i++)
-				choiceButtons[i].obj.SetActive(false);
+				Destroy(choiceButtons[i].obj);
 			choiceButtons.Clear();
 			PickedChoice = null;
 		}

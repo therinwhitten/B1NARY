@@ -22,10 +22,10 @@
 
 		public void Complete()
 		{
-			PersistentData.playerName = nameInput.text;
-			if (PersistentData.bools.ContainsKey(isMaleDocument))
-				PersistentData.bools[isMaleDocument] = !isFemale;
-			PersistentData.bools.Add(isMaleDocument, !isFemale);
+			PersistentData.Instance.playerName = nameInput.text;
+			if (PersistentData.Instance.bools.ContainsKey(isMaleDocument))
+				PersistentData.Instance.bools[isMaleDocument] = !isFemale;
+			PersistentData.Instance.bools.Add(isMaleDocument, !isFemale);
 		}
 	}
 }

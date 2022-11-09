@@ -15,9 +15,9 @@
 			nonBinaryButton.onClick.AddListener(() => OnBinaryClick(false));
 			void OnBinaryClick(bool isBinary)
 			{
-				if (PersistentData.bools.ContainsKey(IsBinaryKey))
-					PersistentData.bools[IsBinaryKey] = isBinary;
-				PersistentData.bools.Add(IsBinaryKey, isBinary);
+				if (PersistentData.Instance.bools.ContainsKey(IsBinaryKey))
+					PersistentData.Instance.bools[IsBinaryKey] = isBinary;
+				PersistentData.Instance.bools.Add(IsBinaryKey, isBinary);
 			}
 		}
 	}

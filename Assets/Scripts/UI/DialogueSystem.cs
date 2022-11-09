@@ -12,6 +12,9 @@ namespace B1NARY.UI
 	using CharacterController = CharacterController;
 	using B1NARY.Scripting;
 
+	/// <summary>
+	/// 
+	/// </summary>
 	public class DialogueSystem : Singleton<DialogueSystem>
 	{
 		/// <summary>
@@ -204,6 +207,10 @@ namespace B1NARY.UI
 
 		private void Awake() => m_secondsChar = m_ticksPerChar / 1000f;
 
+		/// <summary>
+		/// Starts the speaking coroutine to say it.
+		/// </summary>
+		/// <param name="message"> The message to say. </param>
 		public void Say(string message)
 		{
 			if (!DateTimeTracker.IsAprilFools)
