@@ -80,6 +80,7 @@
 			this.subLines = new List<ScriptPair>(subLines.Skip(skip));
 			endIndex = this.subLines[this.subLines.Count - 1].scriptLine.Index;
 			this.subLines.RemoveAt(this.subLines.Count - 1);
+			Debug.Log($"Script Node Length: {LineLength}");
 			//Debug.Log($"Last Line: {this.subLines[this.subLines.Count - 1].scriptLine}\n From block {beginIndex}");
 			//Debug.Log($"ScriptNode Starts with '{subLines[0].scriptLine}'\nStart Bracket = {subLines[1].scriptLine.Index}, End Bracket = {subLines.Last().scriptLine.Index}\nAll Lines: \n{string.Join(",\n", subLines.Skip(2).Select(pair => pair.scriptLine))}");
 		}
@@ -95,6 +96,7 @@
 				Debug.Log(CurrentLine());
 				if (subLines[i].HasScriptNode)
 				{
+					Debug.Log($"Entering Script Node in line {CurrentLine().Index}..");
 					IEnumerator<ScriptLine> subNode = subLines[i].scriptNode.Perform(pauseOnCommands);
 					while (subNode.MoveNext())
 						yield return subNode.Current;

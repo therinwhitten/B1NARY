@@ -13,6 +13,10 @@
 	[Serializable]
 	public struct ScriptLine
 	{
+		static ScriptLine()
+		{
+
+		}
 		public static bool operator ==(ScriptLine left, ScriptLine right)
 			=> left.lineData == right.lineData && left.docPointer() == right.docPointer()
 			&& left.Index == right.Index;
@@ -47,6 +51,17 @@
 			DocumentFlag,
 		}
 
+		public static readonly HashSet<char> startIndents = new HashSet<char>()
+		{
+			'{',
+			'[',
+		};
+		public static readonly HashSet<char> endIndents = new HashSet<char>()
+		{
+			'}',
+			']',
+		};
+
 		/// <summary>
 		/// Determines what type of line it is at a glance.
 		/// </summary>
@@ -59,11 +74,10 @@
 				return Type.Empty;
 			if (lineData.Length == 1)
 			{
-				if (lineData.IndexOfAny(new char[] { '}', ']' }) != -1)
-					return Type.EndIndent;
-				if (lineData.IndexOfAny(new char[] { '{', '[' }) != -1)
+				if (startIndents.Contains(lineData[0]))
 					return Type.BeginIndent;
-				throw new ArgumentException($"{lineData} is not an indent!");
+				if (endIndents.Contains(lineData[0]))
+					return Type.EndIndent;
 			}
 			if (emoteRegex.IsMatch(lineData))
 				return Type.Emotion;
