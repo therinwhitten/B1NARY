@@ -2,7 +2,6 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Diagnostics;
 	using System.Linq;
 	using System.Reflection;
 	using System.Text.RegularExpressions;
@@ -13,10 +12,6 @@
 	[Serializable]
 	public struct ScriptLine
 	{
-		static ScriptLine()
-		{
-
-		}
 		public static bool operator ==(ScriptLine left, ScriptLine right)
 			=> left.lineData == right.lineData && left.docPointer() == right.docPointer()
 			&& left.Index == right.Index;
@@ -33,21 +28,29 @@
 		/// </summary>
 		public enum Type
 		{
-			/// <summary> Normal speaking bubble, just plain text. </summary>
-			Normal,
 			/// <summary> An empty block. Contains nothing. </summary>
-			Empty,
-			/// <summary> A command to run and parse. </summary>
+			Empty = -1,
+			/// <summary> 
+			/// Normal speaking bubble, just plain text. May or may not contain
+			/// rich tags. 
+			/// </summary>
+			Normal,
+			/// <summary> A command to run and parse. Can potentially be casted
+			/// into <see cref="Command"/> 
+			/// </summary>
 			Command,
 			/// <summary> The new speaker set to speak future lines. </summary>
 			Speaker,
-			/// <summary> A set emotion of the current speaker. Used for animations. </summary>
+			/// <summary> A set emotion of the current speaker. Used for expressions. </summary>
 			Emotion,
 			/// <summary> A starting indent for blocks. </summary>
 			BeginIndent,
 			/// <summary> A ending indent for blocks. </summary>
 			EndIndent,
-			/// <summary> A flag to determine if its at the end or start. </summary>
+			/// <summary> 
+			/// A flag to determine if its at the end or start. There is no
+			/// reason the script should hit these tags!
+			/// </summary>
 			DocumentFlag,
 		}
 
@@ -79,19 +82,22 @@
 				if (endIndents.Contains(lineData[0]))
 					return Type.EndIndent;
 			}
-			if (emoteRegex.IsMatch(lineData))
-				return Type.Emotion;
-			if (commandRegex.IsMatch(lineData))
-				return Type.Command;
-			if (lineData.EndsWith("::"))
-				return Type.Speaker;
-			if (lineData.StartsWith("::"))
+			else
 			{
-				lineData = lineData.ToLower();
-				if (lineData.Contains("start") || lineData.Contains("end"))
-					return Type.DocumentFlag;
-				throw new ArgumentException($"{lineData} has the marking of a " +
-					"document flag, but does not possess any of the traits!");
+				if (emoteRegex.IsMatch(lineData))
+					return Type.Emotion;
+				if (commandRegex.IsMatch(lineData))
+					return Type.Command;
+				if (lineData.EndsWith("::"))
+					return Type.Speaker;
+				if (lineData.StartsWith("::"))
+				{
+					lineData = lineData.ToLower();
+					if (lineData.Contains("start") || lineData.Contains("end"))
+						return Type.DocumentFlag;
+					throw new ArgumentException($"{lineData} has the marking of a " +
+						"document flag, but does not possess any of the traits!");
+				}
 			}
 			return Type.Normal;
 		}
@@ -208,8 +214,18 @@
 		}
 	}
 
+	/// <summary>
+	/// A command that contains the method, and the arguments with it. Mainly
+	/// created via <see cref="ScriptLine"/>.
+	/// </summary>
 	public struct Command
 	{
+		/// <summary>
+		/// Converts a <see cref="ScriptLine"/> to a <see cref="Command"/>.
+		/// Must have the <see cref="ScriptLine.Type.Command"/> tag or it will
+		/// throw an exception.
+		/// </summary>
+		/// <exception cref="InvalidCastException"/>
 		public static explicit operator Command(ScriptLine line)
 		{
 			if (line.type != ScriptLine.Type.Command)
@@ -225,16 +241,32 @@
 		public readonly string command;
 		/// <summary>
 		/// The arguments of the command, there can be none or some. These are
-		/// trimmed, but not lowered.
+		/// trimmed, but not lowered. They are strings as they are meant
+		/// to be used via <see cref="ScriptDocument"/> and 
+		/// <see cref="Lookup{string, Delegate}"/> together via the file string
+		/// input.
 		/// </summary>
 		public readonly string[] arguments;
 
+		/// <summary>
+		/// Defines all the command arguments when creating an instance.
+		/// </summary>
+		/// <param name="command"> The command/method name itself. </param>
+		/// <param name="arguments"> The arguments. </param>
 		public Command(string command, string[] arguments)
 		{
-			this.command = command.ToLower();
+			this.command = command.ToLower().Trim();
 			this.arguments = arguments.Select(str => str.Trim()).ToArray();
 		}
 
+		/// <summary>
+		/// Tries to invoke a command by using <see cref="command"/> to get the
+		/// array of commands to the name, and invokes which one that has the 
+		/// same length of matching arguments.
+		/// </summary>
+		/// <param name="commands"> The collection of commands to look up and invoke. </param>
+		/// <param name="forceStop"> If the invoker should pause all concurrent commands. </param>
+		/// <returns> If it has been successfully invoked. </returns>
 		public bool TryInvoke(Lookup<string, Delegate> commands, out bool forceStop)
 		{
 			forceStop = false;
@@ -250,6 +282,15 @@
 				}
 			return false;
 		}
+		/// <summary>
+		/// Tries to invoke a command by using <see cref="command"/> to get the
+		/// array of commands to the name, and invokes which one that has the 
+		/// same length of matching arguments.
+		/// </summary>
+		/// <param name="commands"> The collection of commands to look up and invoke. </param>
+		/// <returns> If the invoker should pause all concurrent commands. </returns>
+		/// <exception cref="MissingMethodException"/>
+		/// <exception cref="ArgumentOutOfRangeException"/>
 		public bool Invoke(Lookup<string, Delegate> commands)
 		{
 			if (TryInvoke(commands, out var forceStop))

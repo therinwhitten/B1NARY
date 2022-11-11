@@ -13,6 +13,7 @@
 	using UnityEngine.InputSystem;
 	using System.Threading;
 	using B1NARY.DataPersistence;
+	using JetBrains.Annotations;
 
 	[AddComponentMenu("B1NARY/Script Handler")]
 	public class ScriptHandler : Singleton<ScriptHandler>
@@ -180,11 +181,15 @@
 			scriptDocument = null;
 			var scriptFactory = new ScriptDocument.Factory(finalPath);
 			scriptFactory.AddNodeParserFunctionality(GetDefinedScriptNodes);
-			scriptFactory.AddCommandFunctionality(AudioController.Commands);
-			scriptFactory.AddCommandFunctionality(SceneManager.Commands);
-			scriptFactory.AddCommandFunctionality(ScriptHandler.Commands);
-			scriptFactory.AddCommandFunctionality(B1NARY.CharacterController.Commands);
-			scriptFactory.AddCommandFunctionality(TransitionManager.Commands);
+			scriptFactory.AddCommandFunctionality(
+				new IEnumerable<KeyValuePair<string, Delegate>>[]
+				{
+					AudioController.Commands,
+					SceneManager.Commands,
+					ScriptHandler.Commands,
+					B1NARY.CharacterController.Commands,
+					TransitionManager.Commands
+				}.SelectMany(array => array));
 			scriptDocument = scriptFactory.Parse(false);
 			IsActive = true;
 
