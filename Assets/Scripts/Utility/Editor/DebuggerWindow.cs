@@ -71,7 +71,7 @@
 				var onLine = new StringBuilder("On Line: ");
 				if (!Application.isPlaying)
 					return onLine.Append(notPlaying).ToString();
-				if (!ScriptHandler.HasInstance || ScriptHandler.Instance.CurrentLine == default)
+				if (!ScriptHandler.HasInstance || ScriptHandler.Instance.CurrentLine.Equals(default))
 					return onLine.Append(@null).ToString();
 				return onLine.Append(ScriptHandler.Instance.CurrentLine).ToString();
 			}

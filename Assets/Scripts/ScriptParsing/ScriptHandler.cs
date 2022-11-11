@@ -151,7 +151,9 @@
 		/// </summary>
 		public bool IsActive { get; private set; } = false;
 		/// <summary> Gets the current line. </summary>
-		public ScriptLine CurrentLine => scriptDocument.CurrentLine;
+		public ScriptLine CurrentLine => ScriptDocument != null 
+			? scriptDocument.CurrentLine
+			: default;
 		protected override void SingletonAwake()
 		{
 			foreach (string key in nextLineButtons)

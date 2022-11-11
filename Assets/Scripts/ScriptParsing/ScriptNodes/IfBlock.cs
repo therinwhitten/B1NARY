@@ -32,7 +32,9 @@
 		{
 			Debug.Log($"Starting If Statement in line {rootLine.Index}: {CanPerform}");
 			if (!CanPerform)
+			{
 				yield break;
+			}
 			IEnumerator<ScriptLine> @base = base.Perform(pauseOnCommands);
 			while (@base.MoveNext())
 				yield return @base.Current;

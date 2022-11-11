@@ -36,6 +36,6 @@
 			}
 		}
 
-		public override bool ConstantlyRepaint => throw new System.NotImplementedException();
+		public override bool ConstantlyRepaint => false;
 	}
 }

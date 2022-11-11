@@ -10,7 +10,7 @@
 	public class PersistentData : Singleton<PersistentData>
 	{
 		#region Game Slot Data
-		public string playerName = string.Empty;
+		[HideInInspector] public string playerName = string.Empty;
 		public Dictionary<string, string> strings = new Dictionary<string, string>();
 		public Dictionary<string, bool> bools = new Dictionary<string, bool>();
 		public Dictionary<string, int> ints = new Dictionary<string, int>();
