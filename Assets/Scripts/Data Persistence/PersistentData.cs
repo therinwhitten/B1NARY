@@ -3,6 +3,7 @@
 	using B1NARY.DesignPatterns;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.Linq;
 	using System.Runtime.Serialization.Formatters.Binary;
 	using System.Threading.Tasks;
 	using UnityEngine;
@@ -10,7 +11,7 @@
 	public class PersistentData : Singleton<PersistentData>
 	{
 		#region Game Slot Data
-		public string playerName = string.Empty;
+		[HideInInspector] public string playerName = string.Empty;
 		public Dictionary<string, string> strings = new Dictionary<string, string>();
 		public Dictionary<string, bool> bools = new Dictionary<string, bool>();
 		public Dictionary<string, int> ints = new Dictionary<string, int>();
@@ -55,13 +56,15 @@
 				return;
 			}
 
-			using (FileStream fileStream = GetPlayerDataFile(FileMode.OpenOrCreate))
+			using (FileStream fileStream = GetPlayerDataFile(FileMode.Open))
 			{
 				object[] objects = (object[])new BinaryFormatter().Deserialize(fileStream);
 				playerStrings = (Dictionary<string, string>)objects[0];
 				playerBools = (Dictionary<string, bool>)objects[1];
 				playerFloats = (Dictionary<string, float>)objects[2];
 				playerInts = (Dictionary<string, int>)objects[3];
+				UIThemeHandler.uiThemeName = (string)objects[4];
+				UIThemeHandler.overridedFormat = (bool)objects[5];
 			}
 		}
 
@@ -70,13 +73,17 @@
 		public Dictionary<string, int> playerInts;
 		public Dictionary<string, float> playerFloats;
 
+
+
 		protected virtual void OnDestroy() => new BinaryFormatter().Serialize(GetPlayerDataFile(FileMode.Create),
 			new object[]
 			{
 				playerStrings,
 				playerBools,
 				playerFloats,
-				playerInts
+				playerInts,
+				UIThemeHandler.uiThemeName,
+				UIThemeHandler.overridedFormat
 			});
 		#endregion
 	}

@@ -21,12 +21,10 @@
 	public class UIThemeHandler : Multiton<UIThemeHandler>
 	{
 		public const string resourcesColorThemePath = "UI/Color Themes";
-		public enum Option
-		{
-			Primary,
-			Secondary,
-			Custom
-		}
+		public static string uiThemeName = "Default";
+		public static string CurrentResourcesFormatPath => $"{resourcesColorThemePath}/{uiThemeName}";
+
+		public static bool overridedFormat = false;
 
 		private static ColorFormat _currentlyEquippedFormat;
 		public static ColorFormat CurrentlyEquippedFormat
@@ -34,21 +32,23 @@
 			get
 			{
 				if (_currentlyEquippedFormat == null)
-				{
-					string formatName = PlayerPrefs.GetString(nameof(CurrentlyEquippedFormat), string.Empty);
-					if (string.IsNullOrEmpty(formatName) == false)
-						CurrentlyEquippedFormat = Resources.Load<ColorFormat>($"{resourcesColorThemePath}/{formatName}");
-					else
-						_currentlyEquippedFormat = Resources.Load<ColorFormat>($"{resourcesColorThemePath}/Default");
-				}
+					CurrentlyEquippedFormat = Resources.Load<ColorFormat>(CurrentResourcesFormatPath);
 				return _currentlyEquippedFormat;
 			}
 			set
 			{
-				PlayerPrefs.SetString(nameof(CurrentlyEquippedFormat), value.name);
+				uiThemeName = value.name;
 				_currentlyEquippedFormat = value;
 			}
 		}
+
+		public enum Option
+		{
+			Primary,
+			Secondary,
+			Custom
+		}
+
 
 
 		public static Color GetColor(Option option)

@@ -1,6 +1,7 @@
 ﻿namespace B1NARY.Editor
 {
 	using System;
+	using System.Collections.Generic;
 	using UnityEditor;
 	using UnityEngine;
 	using Object = UnityEngine.Object;
@@ -62,6 +63,20 @@
 			if (output != input)
 				EditorUtility.SetDirty(target);
 			return output;
+		}
+		public static T Field<T>(in Object target, in GUIContent content, in T input, bool assignSceneObjects) where T : Object
+		{
+			T output = (T)EditorGUILayout.ObjectField(content, input, typeof(T), assignSceneObjects);
+			if (output != input)
+				EditorUtility.SetDirty(target);
+			return output;
+		}
+		public static Color Field(in Object target, in GUIContent content, in Color input)
+		{
+			Color output = EditorGUILayout.ColorField(content, input);
+			if (output != input)
+				EditorUtility.SetDirty(target);
+			return input;
 		}
 		public static Vector3 Field(in Object target, in GUIContent content, in Vector3 input)
 		{

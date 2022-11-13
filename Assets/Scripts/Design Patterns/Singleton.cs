@@ -11,7 +11,15 @@
 	/// <typeparam name="T">A MonoBehaviour Script to tie it to.</typeparam>
 	public abstract class Singleton<T> : InstanceHolder<T> where T : MonoBehaviour
 	{
-		public static bool HasInstance => instance != null;
+		public static bool HasInstance
+		{
+			get
+			{
+				if (instance == null)
+					instance = FindObjectOfType<T>();
+				return instance != null;
+			}
+		}
 
 		private static T instance;
 
