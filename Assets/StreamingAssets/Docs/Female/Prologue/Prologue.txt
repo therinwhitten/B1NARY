@@ -6,9 +6,8 @@
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {fadeinsound: Fast Heartbeat, 1}
-{spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo1, 2, Shirobi}
-
+{spawnEmpty: MC}
+{spawnChar: malesilo3, 1.5, Shirobi}
 Shirobi::
 {if: n-b,false}
 { 
@@ -82,7 +81,7 @@ I'm pumped to get to work!"
 I look at the camera closest to me.
 "I won't let you down!" 
 {additive: off}
-{spawnChar: malesilo, -1, Cliff}
+{spawnChar: malesilo2, -1, Cliff}
 Cliff::
 {moveChar: Cliff, .25}  
 {anim: Cliff, kime2}
@@ -195,8 +194,8 @@ Shirobi::
 {fadeinsound: FastHeartbeat, .5}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
-{spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo1, 2, Shirobi}
+{spawnEmpty: MC}
+{spawnChar: malesilo3, 2, Shirobi}
 MC::
 I center myself in front of the portal to the Digital Realm.
 It feels so surreal.
@@ -268,10 +267,4 @@ Oh my god, I think I'm...
 {fadeoutsound: Laptop-Lab,.1}
 Then, with an almost gut-wrenching lurch, everything escapes from the top of my head...
 {fadeinsound: Brain Sucking Chair Activate, .5}
-
-
-**TODO:Fade To Black**
-
-
-
 {changeScript: Female/Prologue/Prologue II}

@@ -1,16 +1,10 @@
 {changeScene: Brain Sucking Chair Side}
-
-**TODO:Fade From Black**
-
 {fadeinsound: Fast Keyboard Typing, .5}
 {fadeinsound: Discovery Music, 4}
-{spawnChar: malesilo1, 2, Shirobi}
+{spawnChar: malesilo3, 2, Shirobi}
 {spawnChar: malesilo, -1, Cliff}
 {spawnChar: femalesilo, -1.5, Becks}
-{spawnChar: malesilo, -1.5, Narrator}
-{anim: Cliff, idle}
-{anim: Shirobi, Thinking}
-{anim: Becks, Denial}
+{spawnEmpty: Narrator}
 Narrator::
 The window changes, becoming dark as midnight.
 No one dares make a sound.
@@ -19,7 +13,7 @@ The quick chatter of the laptops betrays the sense of urgency and tension that p
 Cliff leans on the back of Shirobi's chair, impatiently tapping on the wooden back.
 On the screen, a diagnostic runs on the DIHI. 
 Shirobi, pale as a ghost, just stares at the screen without looking at it. 
-{moveChar: Shirobi, .8  }
+{moveChar: Shirobi, .8}
 {moveChar: Cliff, .2}
 Shirobi::
 {if: n-b,false}
@@ -301,7 +295,4 @@ Narrator::
 }
 {fadeoutsound: Discovery Music, 5}
 {fadeoutsound: Laptop Lab Scene, 5}
-
-**TODO:Fade to White**
-{emptyScene}
 {changeScript: Female/Prologue/Denizen}

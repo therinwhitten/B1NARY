@@ -3,11 +3,10 @@
 {fadeinsound: DIHI Power Down, .2}
 {fadeinsound: Laptop Lab Scene, 2}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
-{spawnChar: malesilo, -1, Narrator}
-{spawnChar: malesilo, -1.5, John}
-{spawnChar: femalesilo, 2, Cindy}
-{spawnChar: femalesilo, 2, Female Reporter}
-
+{spawnEmpty: Narrator}
+{spawnEmpty: John}
+{spawnEmpty: Cindy}
+{spawnEmpty: Female Reporter}
 Narrator::
 {if: n-b,false}
 {
@@ -230,10 +229,6 @@ John::
 "You saw it yourself, Cindy. We wait."
 Narrator::
 No one seems to notice the sweat on Cliff's forehead as the window turns into a solid wall, blocking the truth out...
-{moveChar: Cliff, -1}
 {fadeoutsound: smallgroupwhisper, 1}
 {fadeoutsound: Lab Tension, .2}
-
-
-**TODO: Fade to Black**
 {changeScript: Female/Prologue/Prologue III}
