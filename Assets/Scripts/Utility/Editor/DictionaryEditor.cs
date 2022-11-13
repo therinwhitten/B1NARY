@@ -6,13 +6,35 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Collections;
+	using B1NARY.DataPersistence;
 
 	public class DictionaryEditor<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
+		private static object Modify(object oldValue, Rect rect) 
+		{
+			if (oldValue is null)
+				throw new ArgumentNullException();
+			if (oldValue is UnityEngine.Object @object)
+				return EditorGUI.ObjectField(rect, @object, @object.GetType(), false);
+			else if (oldValue is string @string)
+				return EditorGUI.TextField(rect, @string);
+			else if (oldValue is float @float)
+				return EditorGUI.FloatField(rect, @float);
+			else if (oldValue is int @int)
+				return EditorGUI.IntField(rect, @int);
+			else if (oldValue is Color color)
+				return EditorGUI.ColorField(rect, color);
+			else if (oldValue is ColorSerializable colorSer)
+				return (ColorSerializable)EditorGUI.ColorField(rect, (Color)colorSer);
+			throw new InvalidCastException(oldValue.GetType().Name);
+		}
+
 		/// <summary>
 		/// Source material of the array/list.
 		/// </summary>
 		public IReadOnlyList<KeyValuePair<TKey, TValue>> Items => m_items;
+		public TKey defaultKey = default;
+		public TValue defaultValue = default;
 		private List<KeyValuePair<TKey, TValue>> m_items;
 		/// <summary>
 		/// Creates an instance using the source dictionary. Roughly similar to
@@ -22,6 +44,13 @@
 		public DictionaryEditor(Dictionary<TKey, TValue> values) : this(values.AsEnumerable())
 		{
 			
+		}
+		/// <summary>
+		/// Uses the same input from the list of keyValuePairs to modify.
+		/// </summary>
+		public DictionaryEditor(List<KeyValuePair<TKey, TValue>> values)
+		{
+			m_items = values;
 		}
 		/// <summary>
 		/// Creates an instance using the enumerable pairKeys.
@@ -42,27 +71,33 @@
 		/// Repaints the array/list with it's own system.
 		/// </summary>
 		/// <returns> If the object is dirty. </returns>
-		public bool Repaint(SerializedObject @object)
+		public bool Repaint()
 		{
 			bool dirty = false;
+			if (GUILayout.Button($"Add New Entry {{{typeof(TKey).Name}, {typeof(TValue).Name}}}"))
+			{
+				m_items.Add(new KeyValuePair<TKey, TValue>(defaultKey, defaultValue));
+				dirty = true;
+			}
 			for (int i = 0; i < m_items.Count; i++)
 			{
 				// Rects & Positions
-				Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 24f);
-				fullRect.yMax -= 2;
-				fullRect.yMin += 2;
+				Rect fullRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 22f));
+				fullRect.yMax -= 1f;
+				fullRect.yMin += 1f;
 				Rect keyRect = new Rect(fullRect)
 				{
-					width = fullRect.width / 3,
-				},
-				valueRect = new Rect(fullRect)
-				{
-					xMin = keyRect.xMax + 2,
-					xMax = fullRect.width / 3 * 2,
+					xMax = (fullRect.xMax / 3f) + 24f,
 				},
 				removeButtonRect = new Rect(fullRect)
 				{
-					xMin = valueRect.xMax + 2
+					width = fullRect.width / 5f,
+					x = fullRect.xMax - (fullRect.width / 5f),
+				},
+				valueRect = new Rect(fullRect)
+				{
+					xMin = keyRect.xMax - 14f,
+					xMax = removeButtonRect.xMin - 2f,
 				};
 
 				// Modifying
@@ -85,17 +120,6 @@
 				}
 			}
 			return dirty;
-
-			object Modify(object oldValue, Rect rect)
-			{
-				if (oldValue is string @string)
-					return EditorGUI.TextField(rect, @string);
-				else if (oldValue is float @float)
-					return EditorGUI.FloatField(rect, @float);
-				else if (oldValue is int @int)
-					return EditorGUI.IntField(rect, @int);
-				throw new InvalidCastException();
-			}
 		}
 
 		/// <summary>

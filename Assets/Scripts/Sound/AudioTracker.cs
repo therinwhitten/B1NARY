@@ -111,16 +111,13 @@
 		public void Stop()
 		{
 			if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
-				throw new InvalidOperationException("It does not have the single sound playing!");
-			garbageCollector.Stop();
+				garbageCollector.Stop();
 			StopOneShots();
 		}
 		public void Stop(float fadeOut)
 		{
-			if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
-				throw new InvalidOperationException("It does not have the single sound playing!");
 			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume,
-				volume => audioSource.volume = volume), 0, fadeOut, () => garbageCollector.Stop());
+				volume => audioSource.volume = volume), 0, fadeOut, () => { if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector)) garbageCollector.Stop(); });
 			StopOneShots();
 		}
 

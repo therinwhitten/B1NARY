@@ -5,6 +5,7 @@
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
 	using System.Collections.Generic;
+	using Live2D.Cubism.Framework.MouthMovement;
 
 	public class VoiceActorHandler : Multiton<VoiceActorHandler>, IAudioInfo
 	{
@@ -44,10 +45,20 @@
 
 		private void Awake()
 		{
-			if (gameObject.TryGetComponent<AudioSource>(out var audioSource))
-				this.audioSource = audioSource;
-			else
-				this.audioSource = gameObject.AddComponent<AudioSource>();
+			audioSource = GetSource();
+
+			AudioSource GetSource()
+			{
+				if (gameObject.TryGetComponent<AudioSource>(out var audioSource))
+					return audioSource;
+				AudioSource output;
+				if (gameObject.TryGetComponent<CubismAudioMouthInput>(out var cubismAudioMouthInput) && cubismAudioMouthInput.AudioInput != null)
+					return cubismAudioMouthInput.AudioInput;
+				output = gameObject.AddComponent<AudioSource>();
+				if (cubismAudioMouthInput != null)
+					cubismAudioMouthInput.AudioInput = output;
+				return output;
+			}
 		}
 		public void Stop()
 		{

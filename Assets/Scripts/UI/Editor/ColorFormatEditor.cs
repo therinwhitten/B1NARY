@@ -4,6 +4,9 @@
 	using UnityEngine;
 	using UnityEditor;
 	using B1NARY.UI;
+	using B1NARY.DataPersistence;
+	using System;
+	using System.Collections.Generic;
 
 	[CustomEditor(typeof(ColorFormat))]
 	public class ColorFormatEditor : Editor
@@ -24,46 +27,24 @@
 		public override void OnInspectorGUI()
 		{
 			EditorUtility.SetDirty(ColorFormat);
-			ColorFormat.primaryUI = EditorGUILayout.ColorField("Primary Color", ColorFormat.primaryUI);
-			ColorFormat.SecondaryUI = EditorGUILayout.ColorField("Secondary Color", ColorFormat.SecondaryUI);
+			ColorFormat.primaryUI = DirtyAuto.Field(ColorFormat, new GUIContent("Primary Color"), ColorFormat.primaryUI);
+			ColorFormat.SecondaryUI = DirtyAuto.Field(ColorFormat, new GUIContent("Secondary Color"), ColorFormat.SecondaryUI);
 			if (openedHeader = EditorGUILayout.BeginFoldoutHeaderGroup(openedHeader, new GUIContent("Extra UI Color Data")))
 			{
 				EditorGUI.indentLevel++;
-				(string @new, string old)? setNewDictionaryValue = null;
-				string remove = string.Empty;
-				(Color color, string key)? modifyColor = null;
-				foreach (var pair in ColorFormat.Pairs)
+				var editable = new DictionaryEditor<string, Color>(ColorFormat.ExtraUIValues.AsEnumerable())
 				{
-					Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20),
-						colorRect = fullRect, removeRect = fullRect;
-					colorRect.width /= 1.2f;
-					colorRect.xMin = colorRect.width / 2;
-					removeRect.xMin = colorRect.xMax + 2;
-					removeRect.xMax = fullRect.xMax;
-					Color newColor = EditorGUI.ColorField(colorRect, pair.Value);
-					if (newColor != pair.Value)
-						modifyColor = (newColor, pair.Key);
-					Rect stringRect = GUILayoutUtility.GetLastRect();
-					stringRect.xMax = colorRect.xMin + 12;
-					string newString = EditorGUI.DelayedTextField(stringRect, pair.Key);
-					if (newString != pair.Key)
-						setNewDictionaryValue = (newString, pair.Key);
-					if (GUI.Button(removeRect, "Remove"))
-						remove = pair.Key;
+					defaultValue = Color.white,
+					defaultKey = ""
+				};
+				if (editable.Repaint())
+				{
+					ColorFormat.ExtraUIValues = editable.Flush();
+					EditorUtility.SetDirty(ColorFormat);
 				}
-				if (setNewDictionaryValue.HasValue)
-					ColorFormat.InsertKey(setNewDictionaryValue.Value.old, setNewDictionaryValue.Value.@new);
-				if (modifyColor.HasValue)
-					ColorFormat.Modify(modifyColor.Value.key, modifyColor.Value.color);
-				if (!string.IsNullOrEmpty(remove))
-					ColorFormat.Remove(remove);
-				if (GUI.Button(EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20)), "Add New Color Entry"))
-					ColorFormat.Append("New Color Entry", Color.white);
 				EditorGUI.indentLevel--;
 			}
 			EditorGUILayout.EndFoldoutHeaderGroup();
-			EditorUtility.SetDirty(ColorFormat);
-			serializedObject.ApplyModifiedProperties(); // Just in case
 		}
 	}
 }

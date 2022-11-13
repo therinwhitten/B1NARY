@@ -10,7 +10,7 @@
 		private bool showLimitValues = false;
 		public override void DisplayTab()
 		{
-			showLimitValues = EditorGUILayout.ToggleLeft("Show 32bit limit count values", showLimitValues);
+			showLimitValues = EditorGUILayout.ToggleLeft("Show unsigned 32bit limit count values", showLimitValues);
 			EditorGUILayout.LabelField($"C# Random Iterations: {RandomFowarder.CSharpRandomIterations}");
 			if (showLimitValues)
 				EditorGUI.ProgressBar(BarRect, RandomFowarder.CSharpRandomIterations / uint.MaxValue, $"{RandomFowarder.CSharpRandomIterations}/{uint.MaxValue}");

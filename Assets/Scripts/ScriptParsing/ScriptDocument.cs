@@ -57,8 +57,13 @@
 		private IEnumerator<ScriptLine> data;
 		/// <summary> A readonly array of <see cref="ScriptLine"/>. </summary>
 		public ReadOnlyCollection<ScriptLine> documentData;
-		//public ReadOnlyCollection<ScriptNode> nodes;
 		private Lookup<string, Delegate> commands;
+
+		/// <summary>
+		/// All nodes attached to the document. Does not include the base node
+		/// that it starts with.
+		/// </summary>
+		public ReadOnlyCollection<ScriptNode> nodes;
 
 		/// <summary>
 		/// If the current dialogue should be added instead of skipping to a new
@@ -266,15 +271,16 @@
 					nodes.OrderByDescending(pair => pair.indentation)
 					.Select(triple => (triple.startIndex, triple.endIndex))
 					.GetEnumerator();
+				var nodeArray = new ScriptNode[nodes.Count];
 				
-				while (nodeQueue.MoveNext())
+				for (int i = 0; nodeQueue.MoveNext(); i++)
 				{
 					var (startIndex, endIndex) = nodeQueue.Current;
 					var subArray = list.Skip(startIndex)
 						.Take(endIndex - startIndex + 1)
 						.ToArray();
-					list[startIndex] = new ScriptPair(list[startIndex].scriptLine,
-						ParseNode(output, subArray));
+					nodeArray[i] = ParseNode(output, subArray);
+					list[startIndex] = new ScriptPair(list[startIndex].scriptLine, nodeArray[i]);
 				}
 				// Messing with the baseline entry scriptnode code.
 				list.InsertRange(0, new ScriptPair[]
@@ -283,6 +289,7 @@
 					(ScriptPair)new ScriptLine("{", () => documentName, 0)
 				});
 				list.Add((ScriptPair)new ScriptLine("::End", () => documentName, list.Count));
+				output.nodes = Array.AsReadOnly(nodeArray);
 				output.data = new ScriptNode(output, list.ToArray()).Perform(pauseOnCommand);
 				return output;
 			}
