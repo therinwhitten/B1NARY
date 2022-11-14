@@ -76,7 +76,7 @@
 			Color output = EditorGUILayout.ColorField(content, input);
 			if (output != input)
 				EditorUtility.SetDirty(target);
-			return input;
+			return output;
 		}
 		public static Vector3 Field(in Object target, in GUIContent content, in Vector3 input)
 		{
