@@ -5,13 +5,11 @@ Narrator::
 New York City in Times Square: the year is 2040. Midday on a blistering Summer Day.
 On any normal day, most people can be seen milling about, heading to work, the cacophony of vehicles, pedestrians, and advertisements matching beat in perfect harmony.
 Not today... 
-{setbool: n-b, true}
 Today, everyone's attention is fixed on the largest of the holo-screens in the sky.
 In fact, every holo-display is now featuring the same broadcast, their sound in stereo across the square.
 Cars are stopped dead in a silent gridlock. Pedestrians are murmuring, gazing up.
 {additive: on}
 No.
-{setbool: n-b, false}
 The world is about to witness a pivotal moment in humanity's history.
 Today marks man's first attempt at digitizing one of their own.
 {additive: off}
@@ -34,7 +32,7 @@ Isn't VR good enough for people?"
 Narrator::
 She shakes her head and sighs.
 {anim: Female Bystander, Noarmscrossed}
-{spawnChar: malesilo, 2,Male Bystander 2}
+{spawnChar: malesilo2, 2,Male Bystander 2}
 {moveChar: Male Bystander 2, 0.80}
 {anim: Male Bystander 2, kime1}
 Male Bystander 2::
@@ -111,10 +109,10 @@ Let's find out together. LIVE!"
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {spawnChar: malesilo, -1, John}
-{spawnChar: femalesilo, 1.75, Cindy}
-{spawnChar: malesilo1, -1, Male Bystander}
-{spawnChar: malesilo (1), -1.5, Male Bystander 2}
-{spawnChar: femalesilo1, 2, Female Bystander}
+{spawnEmpty: Cindy}
+{spawnEmpty: Male Bystander}
+{spawnEmpty: Male Bystander 2} 
+{spawnEmpty: Female Bystander}
 {spawnEmpty: Narrator}
 {anim: John, kime2}
 {moveChar: John, .20}
@@ -170,8 +168,8 @@ John::
 "And they will come through <i>that</i> door..."
 Narrator::
 John sidesteps awkwardly as a few lab techs push past him in front of the camera.
-{spawnChar: malesilo (2), 1.4, LabTech0}
-{spawnChar: malesilo1 (1), 1.4, LabTech1}
+{spawnChar: malesilo2, 1.4, LabTech0}
+{spawnChar: malesilo3, 1.4, LabTech1}
 {moveChar: LabTech0, .5}
 {moveChar: LabTech1, .75}
 John::
@@ -261,7 +259,7 @@ Female Bystander::
 "You two are drowning out the broadcast."
 Narrator::
 The quip is sharp...
-{spawnChar: malesilo1 (2), 1.3, Lab Tech }
+{spawnChar: malesilo3, 1.3, Lab Tech} 
 {moveChar: Lab Tech, .65}
 {anim: Lab Tech, Checktime}
 Narrator::
