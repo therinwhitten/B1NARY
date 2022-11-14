@@ -8,6 +8,9 @@
 	using System.Collections;
 	using B1NARY.DataPersistence;
 
+	/// <summary>
+	/// A key-value pair editor primarily used for <see cref="ScriptableObject"/>s
+	/// </summary>
 	public class DictionaryEditor<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
 	{
 		private static object Modify(object oldValue, Rect rect) 

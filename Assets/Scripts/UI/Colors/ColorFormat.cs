@@ -47,7 +47,7 @@
 			get => m_extraUIValues; set
 			{
 				savedKeys = value.Keys.ToArray();
-				savedValues = value.Values.Select(color => ColorUtility.ToHtmlStringRGBA(color)).ToArray();
+				savedValues = value.Values.ToArray();
 				m_extraUIValues = value;
 			}
 		}
@@ -64,29 +64,24 @@
 		/// gods being angry at us for making our lives easier. Use 
 		/// <see cref="SavedPairs"/> for the pairs.
 		/// </summary>
-		public string[] savedValues = Array.Empty<string>();
+		public Color[] savedValues = Array.Empty<Color>();
 		/// <summary>
 		/// The KeyValuePairs to modify. Its set as read only due to property 
 		/// magic.
 		/// </summary>
-		public IReadOnlyList<KeyValuePair<string, string>> SavedPairs
+		public IReadOnlyList<KeyValuePair<string, Color>> SavedPairs
 		{
-			get => savedKeys.Zip(savedValues, (left, right) => new KeyValuePair<string, string>(left, right)).ToList();
+			get => savedKeys.Zip(savedValues, (left, right) => new KeyValuePair<string, Color>(left, right)).ToList();
 			set
 			{
 				savedKeys = new string[value.Count];
-				savedValues = new string[value.Count];
+				savedValues = new Color[value.Count];
 				for (int i = 0; i < value.Count; i++)
 				{
 					savedKeys[i] = value[i].Key;
 					savedValues[i] = value[i].Value;
 				}
-				m_extraUIValues = SavedPairs.ToDictionary(pair => pair.Key, pair => 
-				{ 
-					if (ColorUtility.TryParseHtmlString(pair.Value, out Color color)) 
-						return color;
-					throw new Exception($"Invalid Value: {pair.Value}");
-				});
+				m_extraUIValues = SavedPairs.ToDictionary(pair => pair.Key, pair => pair.Value);
 			}
 		}
 
@@ -95,8 +90,7 @@
 		/// </summary>
 		private void OnEnable()
 		{
-			m_extraUIValues = SavedPairs.ToDictionary(pair => pair.Key, pair => { ColorUtility.TryParseHtmlString(pair.Value, out Color color); return color; });
-			Debug.Log($"All values from {name}: \n{string.Join("\n", savedKeys.Zip(savedValues, (left, right) => $"{left}: {right}"))}");
+			m_extraUIValues = SavedPairs.ToDictionary(pair => pair.Key, pair => pair.Value);
 		}
 	}
 }
