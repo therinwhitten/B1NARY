@@ -1,5 +1,3 @@
-// TODO:Fade From White
-
 {changeScene: Scenes/Star/Outside Night Default}
 {fadeoutsound: Normal Heartbeat Prologue, 5}
 {fadeinsound: Star Piano, 10}
@@ -7,7 +5,7 @@
 {fadeoutsound: Ears Ringing, 15}
 {spawnChar: szycrotic default, 2, Masked Punk}
 {anim: Masked Punk, idle} 
-{spawnChar: malesilo, 2, MC}
+{spawnEmpty: MC}
 MC::
 My mind becomes one piece again in a violent snap, like a rubber band stretching too taut..
 I'm suddenly me again, muscle spasms and tingling all over. 
@@ -88,7 +86,7 @@ I can't move.
 This is simply too much to process. 
 <i>Who is this?!</i>
 Masked Punk::
-"Hey! Shithead! I distinctly remember asking you a question."
+"Hey. Shithead... I distinctly remember asking you a question."
 {anim: Masked Punk, wind idle}
 [Default]
 MC:: 
@@ -209,9 +207,11 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        {fadeinsound: Szy Laugh 2, .1}
        Szycrotic::
        [Lewd]
-       **TODO: Make henable**
-       if: henabled, true
-       "I haven't stuck anything in you yet, little pogchamp."
+       {if: henabled, true}
+       {
+         "I haven't stuck anything in you yet, little pogchamp."
+       }
+
        if: henable, false
        "Calm down bro. Just gonna tie you up. Can't have Star blaming me for your injuries, now can we?"
        [Default]

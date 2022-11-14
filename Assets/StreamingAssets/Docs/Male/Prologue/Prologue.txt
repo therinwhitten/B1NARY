@@ -4,10 +4,9 @@
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
-{spawnChar: malesilo1, 2, Shirobi}
-{spawnChar: malesilo, 2, MC}
+{spawnChar: malesilo3, 2, Shirobi}
+{spawnEmpty: MC}
 {fadeinsound: Fast Heartbeat, 1}
-
 Shirobi::
 {if: n-b,false}
 {
@@ -23,7 +22,7 @@ The noise registers as words for a split second as I am being escorted into the 
 {additive: on}
 The lab techs hate when I call it that, but to look at that
 <i>thing</i> as anything else,
-would be an excerise of blatant brainwashing.
+would be an exercise of blatant brainwashing.
 {additive: off}
 {additive: on}
 I can't stop myself from sweating.
@@ -70,7 +69,7 @@ Smug Reporter::
 "MC! 
 Are you ok? You look unsteady."
 MC::
-The smug reporter laughs to allievate the obvious tension in the room. 
+The smug reporter laughs to alleviate the obvious tension in the room. 
 Smug Reporter::
 "Must be nerve wracking for billions of people to watch you make history, am I right?"
 MC::
@@ -87,7 +86,7 @@ So naturally I dryly, and very sarcastically, retort back.
 I swallow some acid down. I lick my chapping lips a bit.
 Gesturing at the behemoth sitting in the center of the room, I clarify.
 "I would be lying if I didn't say the DIHI makes me nervous."
-{spawnChar: malesilo, -1, Cliff}
+{spawnChar: malesilo2, -1, Cliff}
 {moveChar: Cliff, .20}
 {anim: Cliff, handwave}
 Eyes start to adjust, and I notice Cliff, the lead project manager, behind the press, his arms crossing in combination to a stern face.
@@ -96,7 +95,7 @@ Why is no one saying anything?
 Oh... Right...
 I open my mouth.
 "Knowing that Digital Horizons is in control is the <i>only</i> reason I'm 'just' nervous." 
-"I know they will bring me back in one peice. Of that, you can be assured."
+"I know they will bring me back in one piece. Of that, you can be assured."
 Hopefully I come back with all of my memories.
 So many things to forget: my internship, my parents, my hentai collection...
 Would I even be the same person if I lost my memories?
@@ -208,8 +207,8 @@ I walk to the center of the room, looking straight at the chair.
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {fadeoutsound: Lab Ambience Music Light, 2} 
-{spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo, 2, Shirobi}
+{spawnEmpty: MC}
+{spawnEmpty: Shirobi}
 It vibrates my bones as I get closer.
 The DIHI fills my whole vision.
 {additive: on}
@@ -279,9 +278,4 @@ No press, no coworkers: just my heartbeat, the thrum of the chair, and my sudden
 <i>Then, with an almost gut-wrenching lurch, everything suddenly feels like it is being pulled to the top of my head...</i>
 {fadeoutsound: DIHI Power Up, 1}
 {fadeinsound: Brain Sucking Chair Activate, .5}
-
-
-**TODO:Fade To Black**
-
-
 {changeScript: Male/Prologue/Prologue II}
