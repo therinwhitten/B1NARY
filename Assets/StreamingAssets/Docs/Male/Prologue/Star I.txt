@@ -209,11 +209,12 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        [Lewd]
        {if: henabled, true}
        {
-         "I haven't stuck anything in you yet, little pogchamp."
+          "I haven't stuck anything in you yet, little pogchamp."
        }
-
-       if: henable, false
-       "Calm down bro. Just gonna tie you up. Can't have Star blaming me for your injuries, now can we?"
+       {if: henable, false}
+       {
+          "Calm down bro. Just gonna tie you up. Can't have Star blaming me for your injuries, now can we?"
+       }
        [Default]
        MC::
        Suddenly, I feel iron grips grabbing my wrists. 
@@ -485,7 +486,7 @@ And with those words, we saunter into the largest mansion I have ever seen...
 {changeScene: Scenes/Star/Star Bedroom Night}
 {fadeinsound:Szy and Star Dinner, 1}
 {fadeinsound: fireplace, 1}
-{spawnChar: malesilo, 2, MC}
+{spawnEmpty: MC}
 {spawnChar: szycrotic default, -1, Szycrotic}
 {spawnChar: star nightgown, 2, Asterella}
 {anim: Szycrotic, Idle}
@@ -629,8 +630,3 @@ MC::
 Star watches Szy close the door, with a look of satisfaction on her face. 
 When the door closes, she sighs, closing her eyes for a brief moment.
 {changeScript: Male/Prologue/Star II, 135}
-
-
-
-
-
