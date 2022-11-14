@@ -12,6 +12,8 @@
 	{
 		private static object Modify(object oldValue, Rect rect) 
 		{
+			// Would use better tools, but the bullshit primitive ass Live2D 
+			// - Cubism Legacy code tells me no. 
 			if (oldValue is null)
 				throw new ArgumentNullException();
 			if (oldValue is UnityEngine.Object @object)
@@ -28,6 +30,7 @@
 				return (ColorSerializable)EditorGUI.ColorField(rect, (Color)colorSer);
 			throw new InvalidCastException(oldValue.GetType().Name);
 		}
+
 
 		/// <summary>
 		/// Source material of the array/list.
@@ -108,7 +111,7 @@
 					dirty = true;
 				}
 				TValue newValue = (TValue)Modify(m_items[i].Value, valueRect); 
-				if (!newData.Equals(m_items[i].Key))
+				if (!newValue.Equals(m_items[i].Value))
 				{
 					ModifyValue(i, newValue);
 					dirty = true;

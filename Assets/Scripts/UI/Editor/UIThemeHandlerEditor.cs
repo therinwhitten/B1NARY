@@ -1,16 +1,23 @@
 ﻿namespace B1NARY.Editor
 {
-	using ICSharpCode.NRefactory.Ast;
+	using B1NARY.UI;
 	using System;
+	using System.Collections.ObjectModel;
 	using System.Linq;
 	using System.Reflection;
 	using UnityEditor;
 	using UnityEngine;
 	using UnityEngine.UI;
+	using Object = UnityEngine.Object;
 
 	[CustomEditor(typeof(UIThemeHandler))]
 	public class UIThemeHandlerEditor : Editor
 	{
+		internal static UIThemeHandler.Option[] options = (UIThemeHandler.Option[])Enum.GetValues(typeof(UIThemeHandler.Option));
+		internal static string[] optionNames = Enum.GetNames(typeof(UIThemeHandler.Option));
+
+
+
 		UIThemeHandler currentHandler;
 		private void Awake() => currentHandler = (UIThemeHandler)target;
 
@@ -30,7 +37,9 @@
 					EditorGUILayout.HelpBox("There is more than one " +
 						"color-related blocks detected in the components, " +
 						"make sure that the one you want to modify is at the top!", 
-						MessageType.Info);
+						MessageType.Info); 
+				EditorGUILayout.ObjectField(new GUIContent("Color Format [readonly]", "The currently used format across all Theme Handlers"), UIThemeHandler.CurrentlyEquippedFormat, typeof(ColorFormat), false);
+				EditorGUILayout.Space();
 			}
 			try
 			{
@@ -42,17 +51,15 @@
 				EditorGUILayout.HelpBox(ex.Message, MessageType.Error);
 				throw;
 			}
-			UIThemeHandler.Option[] allOptions = (UIThemeHandler.Option[])Enum.GetValues(typeof(UIThemeHandler.Option));
-			string[] optionStrings = allOptions.Select(option => option.ToString()).ToArray();
 			bool hasChanges = false;
 			if (currentHandler.ColorEdit.Value is Color)
-				hasChanges = PopupOrCustom("Color Option", ref currentHandler.imageThemeName);
+				hasChanges = ModifyColor("Color Option", new Ref<string>(() => currentHandler.imageThemeName, str => currentHandler.imageThemeName = str));
 			else if (currentHandler.ColorEdit.Value is ColorBlock)
-				hasChanges = PopupOrCustom("Normal Color", ref currentHandler.imageThemeName)
-				 | PopupOrCustom("Highlighted Color", ref currentHandler.buttonHighlightedName)
-				 | PopupOrCustom("Pressed Color", ref currentHandler.buttonPressedName)
-				 | PopupOrCustom("Selected Color", ref currentHandler.buttonSelectedName)
-				 | PopupOrCustom("Disabled Color", ref currentHandler.buttonDisabledName);
+				hasChanges = ModifyColor("Normal Color", new Ref<string>(() => currentHandler.imageThemeName, str => currentHandler.imageThemeName = str))
+				 | ModifyColor("Highlighted Color", new Ref<string>(() => currentHandler.buttonHighlightedName, str => currentHandler.buttonHighlightedName = str))
+				 | ModifyColor("Pressed Color", new Ref<string>(() => currentHandler.buttonPressedName, str => currentHandler.buttonPressedName = str))
+				 | ModifyColor("Selected Color", new Ref<string>(() => currentHandler.buttonSelectedName, str => currentHandler.buttonSelectedName = str))
+				 | ModifyColor("Disabled Color", new Ref<string>(() => currentHandler.buttonDisabledName, str => currentHandler.buttonDisabledName = str));
 			else
 				throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());
 			if (hasChanges)
@@ -62,21 +69,49 @@
 				else
 					EditorUtility.SetDirty(currentHandler);
 			}
+		}
 
-			bool PopupOrCustom(string popupLabel, ref string current)
+		public bool ModifyColor(string label, Ref<string> colorName)
+		{
+			string old = colorName;
+			// Popup box for defaults
+			int currentIndex = Array.IndexOf(optionNames, colorName);
+			if (currentIndex == -1)
+				currentIndex = Array.IndexOf(options, UIThemeHandler.Option.Custom);
+			int newIndex = EditorGUILayout.Popup(label, currentIndex, optionNames);
+			if (newIndex != currentIndex)
+				colorName.Value = optionNames[newIndex];
+			if (Array.IndexOf(options, UIThemeHandler.Option.Custom) == currentIndex)
 			{
-				string old = current;
-				// Popup box for defaults
-				int currentIndex = Array.IndexOf(optionStrings, current);
-				if (currentIndex == -1)
-					currentIndex = Array.IndexOf(allOptions, UIThemeHandler.Option.Custom);
-				int newIndex = EditorGUILayout.Popup(popupLabel, currentIndex, optionStrings);
-				if (newIndex != currentIndex)
-					current = optionStrings[newIndex];
-				if (Array.IndexOf(allOptions, UIThemeHandler.Option.Custom) == currentIndex)
-					current = EditorGUILayout.TextField(current);
-				return current != old;
+				CustomMenu(colorName);
 			}
+			return colorName != old;
+		}
+
+		public void CustomMenu(Ref<string> newValueAction)
+		{
+			Rect fullRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f)),
+						popupRect = new Rect(fullRect) { width = 20f };
+			fullRect.xMin += 22f;
+			newValueAction.Value = EditorGUI.TextField(fullRect, newValueAction);
+
+			if (!GUI.Button(popupRect, "", EditorStyles.foldout))
+				return;
+			// Context Menu
+			var menu = new GenericMenu();
+			menu.AddDisabledItem(new GUIContent($"Current Selection: {UIThemeHandler.CurrentlyEquippedFormat.name}"));
+			menu.AddSeparator("");
+			for (int i = 0; i < UIThemeHandler.CurrentlyEquippedFormat.SavedPairs.Count; i++)
+			{
+				int currentIterative = i;
+				string capturedKey = UIThemeHandler.CurrentlyEquippedFormat.SavedPairs[i].Key;
+				menu.AddItem(new GUIContent(capturedKey), newValueAction.Value == capturedKey, () =>
+				{
+					newValueAction.Value = capturedKey;
+					EditorUtility.SetDirty(target);
+				});
+			}
+			menu.ShowAsContext();
 		}
 	}
 }

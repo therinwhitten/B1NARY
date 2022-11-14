@@ -23,7 +23,7 @@
 				return _colorFormat;
 			}
 		}
-		private bool openedHeader = false;
+		private bool openedHeader = true;
 		public override void OnInspectorGUI()
 		{
 			EditorUtility.SetDirty(ColorFormat);
@@ -32,9 +32,9 @@
 			if (openedHeader = EditorGUILayout.BeginFoldoutHeaderGroup(openedHeader, new GUIContent("Extra UI Color Data")))
 			{
 				EditorGUI.indentLevel++;
-				var editable = new DictionaryEditor<string, Color>(ColorFormat.ExtraUIValues.AsEnumerable())
+				var editable = new DictionaryEditor<string, Color>(ColorFormat.ExtraUIValues)
 				{
-					defaultValue = Color.white,
+					defaultValue = Color.black,
 					defaultKey = ""
 				};
 				if (editable.Repaint())

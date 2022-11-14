@@ -10,7 +10,7 @@
 	// Have it change formats per scene if it exists.
 	[Serializable]
 	[CreateAssetMenu(fileName = "New UI Color Format", menuName = "B1NARY/Color UI Format", order = 1)]
-	public class ColorFormat : ScriptableObject, ISerializationCallbackReceiver
+	public class ColorFormat : ScriptableObject
 	{
 		/// <summary>
 		/// Converts a byte to a float ranging from 0 to 1 into 0 to 255.
@@ -38,27 +38,33 @@
 		/// </summary>
 		public Color SecondaryUI = new Color(ToPercent(47), ToPercent(206), ToPercent(172));
 
-
+		/// <summary>
+		/// uses the setter/getter to modify values and notify the color format
+		/// to change states.
+		/// </summary>
 		public IReadOnlyDictionary<string, Color> ExtraUIValues 
 		{ 
 			get => m_extraUIValues; set
 			{
-				value.Select(pair => (pair.Key, ColorUtility.ToHtmlStringRGBA(pair.Value)));
-				m_extraUIValues = (Dictionary<string, Color>)value;
+				savedKeys = value.Keys.ToArray();
+				savedValues = value.Values.Select(color => ColorUtility.ToHtmlStringRGBA(color)).ToArray();
+				m_extraUIValues = value;
 			}
 		}
+		private IReadOnlyDictionary<string, Color> m_extraUIValues;
+
 		/// <summary>
 		/// The keys of the keyValuePair list. Separated due to the serialization 
 		/// gods being angry at us for making our lives easier. Use 
 		/// <see cref="SavedPairs"/> for the pairs.
 		/// </summary>
-		public List<string> savedKeys = new List<string>();
+		public string[] savedKeys = Array.Empty<string>();
 		/// <summary>
 		/// The values of the keyValuePair list. Separated due to the serialization 
 		/// gods being angry at us for making our lives easier. Use 
 		/// <see cref="SavedPairs"/> for the pairs.
 		/// </summary>
-		public List<string> savedValues = new List<string>();
+		public string[] savedValues = Array.Empty<string>();
 		/// <summary>
 		/// The KeyValuePairs to modify. Its set as read only due to property 
 		/// magic.
@@ -68,33 +74,29 @@
 			get => savedKeys.Zip(savedValues, (left, right) => new KeyValuePair<string, string>(left, right)).ToList();
 			set
 			{
-				savedKeys.Clear();
-				savedValues.Clear();
+				savedKeys = new string[value.Count];
+				savedValues = new string[value.Count];
 				for (int i = 0; i < value.Count; i++)
 				{
-					savedKeys.Add(value[i].Key);
-					savedValues.Add(value[i].Value);
+					savedKeys[i] = value[i].Key;
+					savedValues[i] = value[i].Value;
 				}
+				m_extraUIValues = SavedPairs.ToDictionary(pair => pair.Key, pair => 
+				{ 
+					if (ColorUtility.TryParseHtmlString(pair.Value, out Color color)) 
+						return color;
+					throw new Exception($"Invalid Value: {pair.Value}");
+				});
 			}
 		}
-		private Dictionary<string, Color> m_extraUIValues = new Dictionary<string, Color>();
 
-
-		void ISerializationCallbackReceiver.OnBeforeSerialize()
-		{
-			SavedPairs = m_extraUIValues.Select(pair => new KeyValuePair<string, string>(pair.Key, ColorUtility.ToHtmlStringRGBA(pair.Value))).ToList();
-		}
 		/// <summary>
 		/// On Deserialization/use.
 		/// </summary>
 		private void OnEnable()
 		{
 			m_extraUIValues = SavedPairs.ToDictionary(pair => pair.Key, pair => { ColorUtility.TryParseHtmlString(pair.Value, out Color color); return color; });
-		}
-
-		void ISerializationCallbackReceiver.OnAfterDeserialize()
-		{
-			
+			Debug.Log($"All values from {name}: \n{string.Join("\n", savedKeys.Zip(savedValues, (left, right) => $"{left}: {right}"))}");
 		}
 	}
 }
