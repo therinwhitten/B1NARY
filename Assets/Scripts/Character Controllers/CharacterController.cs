@@ -80,6 +80,10 @@
 			{
 				Instance.ClearAllCharacters();
 			}),
+			["removechar"] = (Action<string>)(charName =>
+			{
+				Instance.RemoveCharacter(charName);
+			}),
 			["changename"] = (Action<string, string>)((oldName, newName) =>
 			{
 				Instance.ChangeName(oldName, newName);
@@ -217,10 +221,16 @@
 		{
 			string[] keys = charactersInScene.Keys.ToArray();
 			for (int i = 0; i < charactersInScene.Count; i++)
-			{
-				Destroy(charactersInScene[keys[i]].gameObject);
-				charactersInScene.Remove(keys[i]);
-			}
+				RemoveCharacter(keys[i]);
+		}
+
+		/// <summary>
+		/// Removes a single character from the scene.
+		/// </summary>
+		public void RemoveCharacter(string character)
+		{
+			Destroy(charactersInScene[character].gameObject);
+			charactersInScene.Remove(character);
 		}
 	}
 }

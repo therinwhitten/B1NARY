@@ -7,12 +7,10 @@
 	[CustomEditor(typeof(CubismRendererControllerExtension))]
 	public class CubismRendererControllerExtensionEditor : CubismRenderControllerInspector
 	{
-		private CubismRendererControllerExtension extension;
-		private void Awake() => extension = (CubismRendererControllerExtension)target;
-
 		public override void OnInspectorGUI()
 		{
 			base.OnInspectorGUI();
+			var extension = (CubismRendererControllerExtension)target;
 			EditorGUILayout.Space();
 			EditorGUILayout.LabelField(new GUIContent("B1NARY's Extensions", 
 				"Because this is being edited by an outside source, this will" +
