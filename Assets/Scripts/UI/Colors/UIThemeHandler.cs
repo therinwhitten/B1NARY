@@ -24,8 +24,6 @@
 		public static string uiThemeName = "Default";
 		public static string CurrentResourcesFormatPath => $"{resourcesColorThemePath}/{uiThemeName}";
 
-		public static bool overridedFormat = false;
-
 		private static ColorFormat _currentlyEquippedFormat;
 		public static ColorFormat CurrentlyEquippedFormat
 		{
