@@ -34,7 +34,28 @@
 			}),
 			["playbg"] = (Action<string>)(backgroundName =>
 			{
-				InstanceOrDefault.SetNewAnimatedBackground(backgroundName);
+				InstanceOrDefault.SetNewAnimatedBackground("Backgrounds/" + backgroundName);
+			}),
+			["queuebg"] = (Action<string>)(backgroundName =>
+			{
+				InstanceOrDefault.AddQueueBackground("Backgrounds/" + backgroundName);
+				InstanceOrDefault.LoopingAnimBG = false;
+			}),
+			["queuebgwait"] = (Action<string>)(length =>
+			{
+				InstanceOrDefault.queueWait = float.Parse(length);
+			}),
+			["queueloopbg"] = (Action<string>)(str =>
+			{
+				InstanceOrDefault.queuedActions.Enqueue((Action)(() =>
+				{
+					if (ScriptDocument.enabledHashset.Contains(str))
+						InstanceOrDefault.LoopingAnimBG = true;
+					else if (ScriptDocument.disabledHashset.Contains(str))
+						InstanceOrDefault.LoopingAnimBG = false;
+					else throw new ArgumentException($"{str} is not a valid " +
+						$"argument for loopbg!");
+				}));
 			}),
 		};
 
@@ -54,6 +75,25 @@
 				m_staticBackground = obj.GetComponentInChildren<Image>();
 				m_animatedBackground = obj.GetComponentInChildren<VideoPlayer>();
 			}
+		}
+		private float queueWait = 0f;
+		protected virtual void LateUpdate()
+		{
+			if (m_animatedBackground.isLooping || m_animatedBackground.isPlaying || !m_animatedBackground.isPaused)
+				return;
+			if (queueWait > 0f)
+			{
+				queueWait -= Time.deltaTime;
+				return;
+			}
+			while (queuedActions.Count > 0 && !(queuedActions.Peek() is VideoClip))
+			{
+				object current = queuedActions.Dequeue();
+				if (current is Action action)
+					action.Invoke();
+			}
+			if (queuedActions.Count > 0 && queuedActions.Dequeue() is VideoClip clip)
+				AnimatedBackground = clip;
 		}
 
 		public Sprite StaticBackground
@@ -87,6 +127,16 @@
 			if (clip == null)
 				throw new InvalidOperationException($"'{resourcesPath}' animated background does not exist!");
 			AnimatedBackground = clip;
+			queuedActions.Clear();
+			queueWait = 0f;
+		}
+		private Queue<object> queuedActions = new Queue<object>();
+		public void AddQueueBackground(string resourcesPath)
+		{
+			var clip = Resources.Load<VideoClip>(resourcesPath);
+			if (clip == null)
+				throw new InvalidOperationException($"'{resourcesPath}' animated background does not exist!");
+			queuedActions.Enqueue(clip);
 		}
 	}
 }

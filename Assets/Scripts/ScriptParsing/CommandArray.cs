@@ -6,25 +6,25 @@
 	using System.Linq;
 
 
-	public class CommandArray : IDictionary<string, OverloadableCommand<Delegate>>,
-		IReadOnlyDictionary<string, OverloadableCommand<Delegate>>,
-		IList<OverloadableCommand<Delegate>>, IReadOnlyList<OverloadableCommand<Delegate>>,
-		IEnumerable<OverloadableCommand<Delegate>>, IEnumerable<Delegate>
+	public class CommandArray : IDictionary<string, OverloadableCommand>,
+		IReadOnlyDictionary<string, OverloadableCommand>,
+		IList<OverloadableCommand>, IReadOnlyList<OverloadableCommand>,
+		IEnumerable<OverloadableCommand>, IEnumerable<Delegate>
 	{
-		public static explicit operator List<OverloadableCommand<Delegate>>(CommandArray arr)
+		public static explicit operator List<OverloadableCommand>(CommandArray arr)
 		{
-			return new List<OverloadableCommand<Delegate>>(arr.commands);
+			return arr.commands;
 		}
 
-		ICollection<string> IDictionary<string, OverloadableCommand<Delegate>>.Keys => nameToDel.Keys;
-		IEnumerable<string> IReadOnlyDictionary<string, OverloadableCommand<Delegate>>.Keys => nameToDel.Keys;
-		ICollection<OverloadableCommand<Delegate>> IDictionary<string, OverloadableCommand<Delegate>>.Values => commands;
-		IEnumerable<OverloadableCommand<Delegate>> IReadOnlyDictionary<string, OverloadableCommand<Delegate>>.Values => commands;
+		ICollection<string> IDictionary<string, OverloadableCommand>.Keys => nameToDel.Keys;
+		IEnumerable<string> IReadOnlyDictionary<string, OverloadableCommand>.Keys => nameToDel.Keys;
+		ICollection<OverloadableCommand> IDictionary<string, OverloadableCommand>.Values => commands;
+		IEnumerable<OverloadableCommand> IReadOnlyDictionary<string, OverloadableCommand>.Values => commands;
 
 		public bool IsReadOnly => false;
 
-		private readonly List<OverloadableCommand<Delegate>> commands;
-		public IReadOnlyList<OverloadableCommand<Delegate>> Commands => commands;
+		private readonly List<OverloadableCommand> commands;
+		public IReadOnlyList<OverloadableCommand> Commands => commands;
 		private readonly Dictionary<string, int> nameToDel;
 		public ICollection<string> MethodNames => nameToDel.Keys;
 
@@ -32,26 +32,26 @@
 
 		public CommandArray()
 		{
-			commands = new List<OverloadableCommand<Delegate>>();
+			commands = new List<OverloadableCommand>();
 			nameToDel = new Dictionary<string, int>();
 		}
 		public CommandArray(int capacity)
 		{
-			commands = new List<OverloadableCommand<Delegate>>(capacity);
+			commands = new List<OverloadableCommand>(capacity);
 			nameToDel = new Dictionary<string, int>();
 		}
 
-		OverloadableCommand<Delegate> IList<OverloadableCommand<Delegate>>.this[int index]
+		OverloadableCommand IList<OverloadableCommand>.this[int index]
 		{
 			get => commands[index];
 			set => commands[index] = value;
 		}
-		OverloadableCommand<Delegate> IReadOnlyList<OverloadableCommand<Delegate>>.this[int index]
+		OverloadableCommand IReadOnlyList<OverloadableCommand>.this[int index]
 		{
 			get => commands[index];
 		}
 
-		public OverloadableCommand<Delegate> this[string key]
+		public OverloadableCommand this[string key]
 		{
 			get
 			{
@@ -69,7 +69,7 @@
 			}
 		}
 
-		public bool TryGetValue(string key, out OverloadableCommand<Delegate> value)
+		public bool TryGetValue(string key, out OverloadableCommand value)
 		{
 			bool output = nameToDel.TryGetValue(key, out int index);
 			value = index == -1 ? null : commands[index];
@@ -77,7 +77,7 @@
 		}
 
 		public bool ContainsKey(string key) => nameToDel.ContainsKey(key);
-		public bool Contains(OverloadableCommand<Delegate> command)
+		public bool Contains(OverloadableCommand command)
 		{
 			return commands.Contains(command);
 		}
@@ -88,17 +88,17 @@
 					return true;
 			return false;
 		}
-		public bool Contains(KeyValuePair<string, OverloadableCommand<Delegate>> item)
+		public bool Contains(KeyValuePair<string, OverloadableCommand> item)
 		{
-			return Contains(new OverloadableCommand<Delegate>(item.Key, item.Value));
+			return Contains(new OverloadableCommand(item.Key, item.Value));
 		}
 
-		public int IndexOf(OverloadableCommand<Delegate> item)
+		public int IndexOf(OverloadableCommand item)
 		{
 			return commands.IndexOf(item);
 		}
 
-		public void Add(OverloadableCommand<Delegate> command)
+		public void Add(OverloadableCommand command)
 		{
 			if (nameToDel.TryGetValue(command.Name, out int index))
 				commands[index] += command;
@@ -111,25 +111,25 @@
 		}
 		public void Add(string methodName, Delegate firstDelegate, IEnumerable<Delegate> delegates)
 		{
-			var command = new OverloadableCommand<Delegate>(methodName, firstDelegate);
+			var command = new OverloadableCommand(methodName, firstDelegate);
 			using (var enumerator = delegates.GetEnumerator())
 				while (enumerator.MoveNext())
 					command.AddOverload(enumerator.Current);
 			Add(command); 
 		}
-		public void Add(string key, OverloadableCommand<Delegate> value)
+		public void Add(string key, OverloadableCommand value)
 		{
 			Add(key, value.First(), value.Skip(1));
 		}
-		public void Add(KeyValuePair<string, OverloadableCommand<Delegate>> item)
+		public void Add(KeyValuePair<string, OverloadableCommand> item)
 		{
 			Add(item.Key, item.Value);
 		}
-		public void AddRange(params OverloadableCommand<Delegate>[] commands)
+		public void AddRange(params OverloadableCommand[] commands)
 		{
 			AddRange(commands.AsEnumerable());
 		}
-		public void AddRange(IEnumerable<OverloadableCommand<Delegate>> commands)
+		public void AddRange(IEnumerable<OverloadableCommand> commands)
 		{
 			using (var enumerator = commands.GetEnumerator())
 				while (enumerator.MoveNext())
@@ -148,11 +148,11 @@
 			RemoveAt(nameToDel[key]);
 			return true;
 		}
-		public bool Remove(KeyValuePair<string, OverloadableCommand<Delegate>> keyValuePair)
+		public bool Remove(KeyValuePair<string, OverloadableCommand> keyValuePair)
 		{
 			return Remove(keyValuePair.Key);
 		}
-		public bool Remove(OverloadableCommand<Delegate> item)
+		public bool Remove(OverloadableCommand item)
 		{
 			int index = IndexOf(item);
 			if (index == -1)
@@ -167,7 +167,7 @@
 			nameToDel.Remove(name);
 		}
 
-		public IEnumerator<OverloadableCommand<Delegate>> GetEnumerator()
+		public IEnumerator<OverloadableCommand> GetEnumerator()
 		{
 			return commands.GetEnumerator();
 		}
@@ -180,10 +180,10 @@
 						yield return enumerator.Current;
 		}
 
-		IEnumerator<KeyValuePair<string, OverloadableCommand<Delegate>>> IEnumerable<KeyValuePair<string, OverloadableCommand<Delegate>>>.GetEnumerator()
+		IEnumerator<KeyValuePair<string, OverloadableCommand>> IEnumerable<KeyValuePair<string, OverloadableCommand>>.GetEnumerator()
 		{
 			for (int i = 0; i < Count; i++)
-				yield return new KeyValuePair<string, OverloadableCommand<Delegate>>(commands[i].Name, commands[i]);
+				yield return new KeyValuePair<string, OverloadableCommand>(commands[i].Name, commands[i]);
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
@@ -199,16 +199,16 @@
 
 
 		
-		void ICollection<KeyValuePair<string, OverloadableCommand<Delegate>>>.CopyTo(KeyValuePair<string, OverloadableCommand<Delegate>>[] array, int arrayIndex)
+		void ICollection<KeyValuePair<string, OverloadableCommand>>.CopyTo(KeyValuePair<string, OverloadableCommand>[] array, int arrayIndex)
 		{
 			throw new NotImplementedException();
 		}
-		void IList<OverloadableCommand<Delegate>>.Insert(int index, OverloadableCommand<Delegate> item)
+		void IList<OverloadableCommand>.Insert(int index, OverloadableCommand item)
 		{
 			throw new NotSupportedException();
 		}
 
-		void ICollection<OverloadableCommand<Delegate>>.CopyTo(OverloadableCommand<Delegate>[] array, int arrayIndex)
+		void ICollection<OverloadableCommand>.CopyTo(OverloadableCommand[] array, int arrayIndex)
 		{
 			throw new NotSupportedException();
 		}

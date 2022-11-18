@@ -54,7 +54,7 @@
 		private IEnumerator<ScriptLine> data;
 		/// <summary> A readonly array of <see cref="ScriptLine"/>. </summary>
 		public ReadOnlyCollection<ScriptLine> documentData;
-		private IReadOnlyDictionary<string, OverloadableCommand<Delegate>> commands;
+		private IReadOnlyDictionary<string, OverloadableCommand> commands;
 
 		/// <summary>
 		/// All nodes attached to the document. Does not include the base node
@@ -119,7 +119,7 @@
 					DialogueSystem.Instance.CurrentSpeaker = speaker;
 					return true;
 				case ScriptLine.Type.Command:
-					return !OverloadableCommand<Delegate>.Invoke(commands, ScriptLine.CastCommand(line));
+					return !OverloadableCommand.Invoke(commands, ScriptLine.CastCommand(line));
 				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:

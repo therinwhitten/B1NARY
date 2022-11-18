@@ -7,7 +7,7 @@
 	using System;
 	using System.Text;
 
-	public sealed class OverloadableCommand<TDel> : IGrouping<string, TDel>, IEquatable<OverloadableCommand<TDel>> where TDel : Delegate
+	public sealed class OverloadableCommand : IGrouping<string, Delegate>, IEquatable<OverloadableCommand>
 	{
 		// Operators
 		/// <summary>
@@ -17,7 +17,7 @@
 		/// <param name="left"> Source command. </param>
 		/// <param name="right"> The delegates to add. </param>
 		/// <returns> The overloaded comamnd with the delegates inside. </returns>
-		public static OverloadableCommand<TDel> operator +(OverloadableCommand<TDel> left, OverloadableCommand<TDel> right)
+		public static OverloadableCommand operator +(OverloadableCommand left, OverloadableCommand right)
 		{
 			return left + right.AsEnumerable();
 		}
@@ -27,7 +27,7 @@
 		/// <param name="left"> Source command. </param>
 		/// <param name="right"> The delegates to add. </param>
 		/// <returns> The overloaded comamnd with the delegates inside. </returns>
-		public static OverloadableCommand<TDel> operator +(OverloadableCommand<TDel> left, IEnumerable<TDel> right)
+		public static OverloadableCommand operator +(OverloadableCommand left, IEnumerable<Delegate> right)
 		{
 			using (var enumerator = right.GetEnumerator())
 				while (enumerator.MoveNext())
@@ -40,7 +40,7 @@
 		/// <param name="left"> Source command. </param>
 		/// <param name="right"> The delegate to add. </param>
 		/// <returns> The overloaded comamnd with the delegate inside. </returns>
-		public static OverloadableCommand<TDel> operator +(OverloadableCommand<TDel> left, TDel right)
+		public static OverloadableCommand operator +(OverloadableCommand left, Delegate right)
 		{
 			left.AddOverload(right);
 			return left;
@@ -49,7 +49,7 @@
 		/// Checks for exact equality: has null checking built-in. Checks the name,
 		/// delegate count, then the delegates themselves.
 		/// </summary>
-		public static bool operator ==(OverloadableCommand<TDel> left, OverloadableCommand<TDel> right)
+		public static bool operator ==(OverloadableCommand left, OverloadableCommand right)
 		{
 			if (left is null || right is null)
 			{
@@ -70,25 +70,25 @@
 		/// Checks for opposite exact equality: has null checking built-in. Checks the name,
 		/// delegate count, then the delegates themselves.
 		/// </summary>
-		public static bool operator !=(OverloadableCommand<TDel> left, OverloadableCommand<TDel> right)
+		public static bool operator !=(OverloadableCommand left, OverloadableCommand right)
 		{
 			return !(left == right);
 		}
-		public static implicit operator OverloadableCommand<TDel>(TDel @delegate)
+		public static implicit operator OverloadableCommand(Delegate @delegate)
 		{
-			return new OverloadableCommand<TDel>(@delegate);
+			return new OverloadableCommand(@delegate);
 		}
 
-		public static bool Invoke(IReadOnlyDictionary<string, OverloadableCommand<TDel>> commands, (string command, string[] arguments) command)
+		public static bool Invoke(IReadOnlyDictionary<string, OverloadableCommand> commands, (string command, string[] arguments) command)
 		{
 			return Invoke(commands, command.command, command.arguments);
 		}
 
-		public static bool Invoke(IReadOnlyDictionary<string, OverloadableCommand<TDel>> commands, string commandKey, params string[] arguments)
+		public static bool Invoke(IReadOnlyDictionary<string, OverloadableCommand> commands, string commandKey, params string[] arguments)
 		{
 			if (commands == null || arguments == null)
 				throw new ArgumentNullException();
-			if (!commands.TryGetValue(commandKey, out OverloadableCommand<TDel> activeCommand))
+			if (!commands.TryGetValue(commandKey, out OverloadableCommand activeCommand))
 				throw new MissingMemberException($"Inputted commands does not contain a command in the keys with '{commandKey}'!");
 			return Invoke(activeCommand, arguments);
 		}
@@ -100,18 +100,18 @@
 		/// <param name="arguments"> The arguments. </param>
 		/// <returns> If it should forcefully pause. </returns>
 		/// <exception cref="ArgumentNullException"/>
-		public static bool Invoke(OverloadableCommand<TDel> command, params string[] arguments)
+		public static bool Invoke(OverloadableCommand command, params string[] arguments)
 		{
 			if (command == null || arguments == null)
 				throw new ArgumentNullException();
-			TDel @delegate = command.Invoke(arguments);
+			Delegate @delegate = command.Invoke(arguments);
 			return @delegate.Method.GetCustomAttributes<ForcePauseAttribute>().Any();
 		}
 
 		/// <summary>
 		/// All invokable commmands, should only have string as its parameters.
 		/// </summary>
-		private List<TDel> delegates;
+		private List<Delegate> delegates;
 		/// <summary>
 		/// Takes the length of a delegate as key, and spits out an index
 		/// for use in <see cref="delegates"/>.
@@ -124,7 +124,7 @@
 		/// <summary>
 		/// The Command Name.
 		/// </summary>
-		string IGrouping<string, TDel>.Key => Name;
+		string IGrouping<string, Delegate>.Key => Name;
 
 		/// <summary>
 		/// The count of all the overloaded delegates.
@@ -133,28 +133,28 @@
 
 		public OverloadableCommand(string methodName)
 		{
-			delegates = new List<TDel>(1);
+			delegates = new List<Delegate>(1);
 			lengthShortcut = new Dictionary<int, int>();
 			Name = methodName;
 		}
-		public OverloadableCommand(TDel command) : this(command.Method.Name, command)
+		public OverloadableCommand(Delegate command) : this(command.Method.Name, command)
 		{
 
 		}
-		public OverloadableCommand(string methodname, TDel command)
+		public OverloadableCommand(string methodname, Delegate command)
 		{
-			delegates = new List<TDel>(1);
+			delegates = new List<Delegate>(1);
 			lengthShortcut = new Dictionary<int, int>();
 			AddOverload(command);
 			Name = methodname;
 		}
-		public OverloadableCommand(string methodName, OverloadableCommand<TDel> source)
+		public OverloadableCommand(string methodName, OverloadableCommand source)
 		{
 			delegates = source.delegates;
 			lengthShortcut = source.lengthShortcut;
 			Name = methodName;
 		}
-		public OverloadableCommand(OverloadableCommand<TDel> source)
+		public OverloadableCommand(OverloadableCommand source)
 		{
 			delegates = source.delegates;
 			lengthShortcut = source.lengthShortcut;
@@ -163,7 +163,7 @@
 
 
 
-		public void AddOverload(TDel command)
+		public void AddOverload(Delegate command)
 		{
 			ParameterInfo[] info = command.Method.GetParameters();
 			if (info.Any(param => param.ParameterType != typeof(string)))
@@ -174,11 +174,11 @@
 			delegates.Add(command);
 			lengthShortcut.Add(length, delegates.Count - 1);
 		}
-		public bool Contains(TDel @delegate)
+		public bool Contains(Delegate @delegate)
 		{
 			return delegates.Contains(@delegate);
 		}
-		public bool TryGetDelegate(int argumentCount, out TDel @delegate)
+		public bool TryGetDelegate(int argumentCount, out Delegate @delegate)
 		{
 			if (!lengthShortcut.TryGetValue(argumentCount, out int index))
 			{
@@ -189,9 +189,9 @@
 			return true;
 		}
 
-		public TDel Invoke(params string[] arguments)
+		public Delegate Invoke(params string[] arguments)
 		{
-			if (TryGetDelegate(arguments.Length, out TDel @delegate))
+			if (TryGetDelegate(arguments.Length, out Delegate @delegate))
 			{
 				@delegate.DynamicInvoke(arguments);
 				return @delegate;
@@ -220,9 +220,9 @@
 			new StringBuilder(del.Method.Name).Append("; L.")
 			.Append(del.Method.GetParameters().Length).ToString()))).ToString();
 
-		public IEnumerator<TDel> GetEnumerator() => delegates.GetEnumerator();
+		public IEnumerator<Delegate> GetEnumerator() => delegates.GetEnumerator();
 		IEnumerator IEnumerable.GetEnumerator() => delegates.GetEnumerator();
 
-		bool IEquatable<OverloadableCommand<TDel>>.Equals(OverloadableCommand<TDel> other) => this == other;
+		bool IEquatable<OverloadableCommand>.Equals(OverloadableCommand other) => this == other;
 	}
 }

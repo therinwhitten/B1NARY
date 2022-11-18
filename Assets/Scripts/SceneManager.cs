@@ -32,7 +32,7 @@
 		/// </summary>
 		public static readonly CommandArray Commands = new CommandArray()
 		{
-			new OverloadableCommand<Delegate>("changescene", (Action<string>)ChangeSceneCommand)//["changescene"] = (Action<string>)ChangeSceneCommand,
+			new OverloadableCommand("changescene", (Action<string>)ChangeSceneCommand)//["changescene"] = (Action<string>)ChangeSceneCommand,
 		};
 		[ForcePause]
 		private static void ChangeSceneCommand(string newScene)

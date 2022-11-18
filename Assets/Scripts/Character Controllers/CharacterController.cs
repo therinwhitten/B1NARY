@@ -88,7 +88,20 @@
 			["movechar"] = (Action<string, string>)((characterName, positionRaw) =>
 			{
 				if (Instance.charactersInScene.TryGetValue(characterName, out var pair))
-					pair.characterScript.HorizontalPosition = float.Parse(positionRaw);
+					pair.characterScript.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
+				else
+					Debug.LogError($"{characterName} does not exist!", Instance);
+			}),
+			["movechar"] = (Action<string, string, string>)((characterName, positionRaw, time) =>
+			{
+				if (Instance.charactersInScene.TryGetValue(characterName, out var pair))
+				{
+					float timeParsed = float.Parse(time);
+					if (timeParsed == 0f)
+						pair.characterScript.HorizontalPosition = float.Parse(positionRaw);
+					else
+						pair.characterScript.SetPositionOverTime(float.Parse(positionRaw), timeParsed);
+				}
 				else
 					Debug.LogError($"{characterName} does not exist!", Instance);
 			}),
