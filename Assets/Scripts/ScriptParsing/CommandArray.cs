@@ -51,10 +51,22 @@
 			get => commands[index];
 		}
 
-		public OverloadableCommand<Delegate> this[string key] 
-		{ 
-			get => commands[nameToDel[key]];
-			set => commands[nameToDel[key]] = value;
+		public OverloadableCommand<Delegate> this[string key]
+		{
+			get
+			{
+				if (!nameToDel.ContainsKey(key))
+					throw new KeyNotFoundException($"'{key}' is not present in the command array!");
+				return commands[nameToDel[key]];
+			}
+
+			set
+			{
+				if (nameToDel.ContainsKey(key))
+					commands[nameToDel[key]] += value;
+				else
+					Add(key, value);
+			}
 		}
 
 		public bool TryGetValue(string key, out OverloadableCommand<Delegate> value)
@@ -75,6 +87,10 @@
 				if (commands[i].Contains(@delegate))
 					return true;
 			return false;
+		}
+		public bool Contains(KeyValuePair<string, OverloadableCommand<Delegate>> item)
+		{
+			return Contains(new OverloadableCommand<Delegate>(item.Key, item.Value));
 		}
 
 		public int IndexOf(OverloadableCommand<Delegate> item)
@@ -164,38 +180,29 @@
 						yield return enumerator.Current;
 		}
 
-
-
-
-
-
-		
-
-		
-
-		bool ICollection<KeyValuePair<string, OverloadableCommand<Delegate>>>.Contains(KeyValuePair<string, OverloadableCommand<Delegate>> item)
-		{
-			throw new NotImplementedException();
-		}
-
-		void ICollection<KeyValuePair<string, OverloadableCommand<Delegate>>>.CopyTo(KeyValuePair<string, OverloadableCommand<Delegate>>[] array, int arrayIndex)
-		{
-			throw new NotImplementedException();
-		}
-
 		IEnumerator<KeyValuePair<string, OverloadableCommand<Delegate>>> IEnumerable<KeyValuePair<string, OverloadableCommand<Delegate>>>.GetEnumerator()
 		{
-			throw new NotImplementedException();
+			for (int i = 0; i < Count; i++)
+				yield return new KeyValuePair<string, OverloadableCommand<Delegate>>(commands[i].Name, commands[i]);
 		}
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			throw new NotImplementedException();
+			return GetEnumerator();
 		}
 
 
-		
 
+
+
+
+
+
+		
+		void ICollection<KeyValuePair<string, OverloadableCommand<Delegate>>>.CopyTo(KeyValuePair<string, OverloadableCommand<Delegate>>[] array, int arrayIndex)
+		{
+			throw new NotImplementedException();
+		}
 		void IList<OverloadableCommand<Delegate>>.Insert(int index, OverloadableCommand<Delegate> item)
 		{
 			throw new NotSupportedException();

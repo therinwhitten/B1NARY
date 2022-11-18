@@ -108,7 +108,7 @@
 					if (B1NARY.CharacterController.Instance.charactersInScene.TryGetValue(DialogueSystem.Instance.CurrentSpeaker, out var pair))
 						pair.characterScript.SayLine(line);
 					else
-						throw new MissingMemberException($"Character '{DialogueSystem.Instance.CurrentSpeaker}' couldn't be played to say anything!");
+						throw new MissingMemberException($"Character '{DialogueSystem.Instance.CurrentSpeaker}' couldn't be played to say anything, as they don't exist!");
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);
@@ -119,7 +119,7 @@
 					DialogueSystem.Instance.CurrentSpeaker = speaker;
 					return true;
 				case ScriptLine.Type.Command:
-					return OverloadableCommand<Delegate>.Invoke(commands, ScriptLine.CastCommand(line));
+					return !OverloadableCommand<Delegate>.Invoke(commands, ScriptLine.CastCommand(line));
 				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:
