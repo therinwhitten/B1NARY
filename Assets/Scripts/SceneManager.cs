@@ -30,7 +30,7 @@
 		/// <summary>
 		/// All script-based commands for <see cref="ScriptDocument"/>
 		/// </summary>
-		public static readonly IReadOnlyDictionary<string, Delegate> Commands = new Dictionary<string, Delegate>()
+		public static readonly CommandArray Commands = new CommandArray()
 		{
 			["changescene"] = (Action<string>)ChangeSceneCommand,
 		};

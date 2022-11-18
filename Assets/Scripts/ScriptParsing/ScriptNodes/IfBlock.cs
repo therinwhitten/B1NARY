@@ -19,7 +19,7 @@
 		{
 			get // {if: Name, Bool}
 			{
-				string[] arguments = ((Command)rootLine).arguments;
+				string[] arguments = ScriptLine.CastCommand(rootLine).arguments;
 				bool canPerform = bool.Parse(arguments[1]);
 				if (PersistentData.Instance.bools.TryGetValue(arguments[0], out bool value))
 					canPerform = value;

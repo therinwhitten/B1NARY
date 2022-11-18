@@ -16,7 +16,7 @@
 
 	public class TransitionManager : Singleton<TransitionManager>
 	{
-		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
+		public static readonly CommandArray Commands = new CommandArray()
 		{
 			["changebg"] = (Action<string>)(backgroundName =>
 			{
@@ -82,6 +82,11 @@
 			set => m_animatedBackground.isLooping = value;
 		}
 		public void SetNewAnimatedBackground(string resourcesPath)
-			=> AnimatedBackground = Resources.Load<VideoClip>(resourcesPath);
+		{
+			var clip = Resources.Load<VideoClip>(resourcesPath);
+			if (clip == null)
+				throw new InvalidOperationException($"'{resourcesPath}' animated background does not exist!");
+			AnimatedBackground = clip;
+		}
 	}
 }

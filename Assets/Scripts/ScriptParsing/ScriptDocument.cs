@@ -2,14 +2,11 @@
 {
 	using System;
 	using System.IO;
-	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
 	using B1NARY.UI;
 	using System.Collections.ObjectModel;
 	using UnityEngine;
-	using System.Text;
-	using System.Threading;
 
 	/// <summary>
 	/// A document that tracks the <see cref="ScriptNode"/>s and parses information
@@ -57,7 +54,7 @@
 		private IEnumerator<ScriptLine> data;
 		/// <summary> A readonly array of <see cref="ScriptLine"/>. </summary>
 		public ReadOnlyCollection<ScriptLine> documentData;
-		private Lookup<string, Delegate> commands;
+		private IReadOnlyDictionary<string, OverloadableCommand<Delegate>> commands;
 
 		/// <summary>
 		/// All nodes attached to the document. Does not include the base node
@@ -122,8 +119,7 @@
 					DialogueSystem.Instance.CurrentSpeaker = speaker;
 					return true;
 				case ScriptLine.Type.Command:
-					Command command = (Command)line;
-					return !command.Invoke(commands);
+					return OverloadableCommand<Delegate>.Invoke(commands, ScriptLine.CastCommand(line));
 				case ScriptLine.Type.DocumentFlag:
 				case ScriptLine.Type.BeginIndent:
 				case ScriptLine.Type.EndIndent:
@@ -160,13 +156,6 @@
 			/// The full document path that is located on the drive.
 			/// </summary>
 			public readonly string documentPath;
-
-			/// <summary>
-			/// A collection of accumulated commands to convert them as a 
-			/// <see cref="Lookup{string, Delegate}"/> to invoke.
-			/// </summary>
-			private readonly List<KeyValuePair<string, Delegate>> commands 
-				= new List<KeyValuePair<string, Delegate>>();
 			/// <summary>
 			/// A collection of parsers that allows them make them more defined
 			/// and causes different behaviour as such.
@@ -178,6 +167,11 @@
 			/// the document.
 			/// </summary>
 			private IEnumerator<ScriptLine> fileData;
+			/// <summary>
+			/// A collection of accumulated commands to convert them as a 
+			/// <see cref="Lookup{string, Delegate}"/> to invoke.
+			/// </summary>
+			public readonly CommandArray commands;
 
 			/// <summary>
 			/// Creates an instance of the <see cref="Factory"/> of 
@@ -194,6 +188,7 @@
 					throw new ArgumentException($"{fullFilePath} does not lead to a playable file!");
 				documentName = Path.GetFileNameWithoutExtension(fullFilePath);
 				documentPath = fullFilePath;
+				commands = new CommandArray();
 				// TODO: add a way to parse it over time.
 				fileData = LineReader();
 				IEnumerator<ScriptLine> LineReader()
@@ -210,20 +205,7 @@
 			/// <param name="scriptNodeParsers"> The parsers to add. </param>
 			public void AddNodeParserFunctionality(params ScriptNodeParser[] scriptNodeParsers)
 				=> this.scriptNodeParsers.AddRange(scriptNodeParsers);
-			/// <summary>
-			/// Adds a bunch of executable commands whenever they pop up.
-			/// </summary>
-			/// <param name="commands"> The commands to add. </param>
-			public void AddCommandFunctionality(IEnumerable<KeyValuePair<string, Delegate>> commands) => AddCommandFunctionality(commands.GetEnumerator());
-			/// <summary>
-			/// Adds a bunch of executable commands whenever they pop up.
-			/// </summary>
-			/// <param name="commands"> The commands to add. </param>
-			public void AddCommandFunctionality(IEnumerator<KeyValuePair<string, Delegate>> commands)
-			{
-				while (commands.MoveNext())
-					this.commands.Add(commands.Current);
-			}
+
 			/// <summary>
 			/// Compiles all information in the <see cref="Factory"/>.
 			/// </summary>
@@ -264,8 +246,9 @@
 				output.documentData = Array.AsReadOnly(
 					list.Select(pair => pair.scriptLine).ToArray());
 				// Merging all dictionaries.
-				output.commands = (Lookup<string, Delegate>)commands
-					.ToLookup(pair => pair.Key, pair => pair.Value);
+				output.commands = commands;
+
+				Debug.Log($"All commands:\n{string.Join("\n", output.commands.Select(pair => $"'{pair.Key}' lengths: {string.Join(", ", pair.Value.Select(del => del.Method.GetParameters().Length))}"))}");
 				// Assigning nodes, highest first
 				IEnumerator<(int startIndex, int endIndex)> nodeQueue = 
 					nodes.OrderByDescending(pair => pair.indentation)

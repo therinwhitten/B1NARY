@@ -39,52 +39,5 @@
 			Debug.Log("Game Loaded!");
 		}
 		#endregion
-
-		#region Player Data
-		private static string FileLocation => $"{Application.persistentDataPath}/Static.amogus2";
-		private static bool PlayerFileExists => File.Exists(FileLocation);
-		private static FileStream GetPlayerDataFile(FileMode mode) => new FileStream(FileLocation, mode);
-
-		protected virtual void Awake()
-		{
-			if (!PlayerFileExists)
-			{
-				playerStrings = new Dictionary<string, string>();
-				playerBools = new Dictionary<string, bool>();
-				playerFloats = new Dictionary<string, float>();
-				playerInts = new Dictionary<string, int>();
-				return;
-			}
-
-			using (FileStream fileStream = GetPlayerDataFile(FileMode.Open))
-			{
-				object[] objects = (object[])new BinaryFormatter().Deserialize(fileStream);
-				playerStrings = (Dictionary<string, string>)objects[0];
-				playerBools = (Dictionary<string, bool>)objects[1];
-				playerFloats = (Dictionary<string, float>)objects[2];
-				playerInts = (Dictionary<string, int>)objects[3];
-				UIThemeHandler.uiThemeName = (string)objects[4];
-				UIThemeHandler.overridedFormat = (bool)objects[5];
-			}
-		}
-
-		public Dictionary<string, string> playerStrings;
-		public Dictionary<string, bool> playerBools;
-		public Dictionary<string, int> playerInts;
-		public Dictionary<string, float> playerFloats;
-
-
-
-		protected virtual void OnDestroy() => new BinaryFormatter().Serialize(GetPlayerDataFile(FileMode.Create),
-			new object[]
-			{
-				playerStrings,
-				playerBools,
-				playerFloats,
-				playerInts,
-				UIThemeHandler.uiThemeName,
-				UIThemeHandler.overridedFormat
-			});
-		#endregion
 	}
 }

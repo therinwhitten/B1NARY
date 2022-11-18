@@ -15,7 +15,7 @@
 		
 		public const string baseResourcesPath = "Sounds/Sound Libraries";
 		
-		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
+		public static readonly CommandArray Commands = new CommandArray()
 		{
 			["fadeinsound"] = (Action<string, string>)((name, floatStr) =>
 			{

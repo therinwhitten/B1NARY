@@ -2,9 +2,12 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Collections.ObjectModel;
 	using System.Linq;
 	using System.Reflection;
 	using System.Text.RegularExpressions;
+	using UnityEngine;
+	using UnityEngine.XR;
 
 	/// <summary>
 	/// A single line of a scriptName, easily parsed and used for behaviours.
@@ -107,15 +110,13 @@
 		/// <param name="line">The line to parse.</param>
 		/// <returns>Command with arguments.</returns>
 		/// <exception cref="InvalidCastException">'{line}' is not a command!</exception>
-		public static bool TryCastCommand(ScriptLine line, out Command command)
+		public static (string command, string[] arguments) CastCommand(ScriptLine line)
 		{
 			if (line.type != Type.Command)
-			{
-				command = default;
-				return false;
-			}
-			command = (Command)line;
-			return true; 
+				throw new InvalidCastException($"'{line.type}' is not a command!");
+			string[] dataArray = line.lineData.Trim('{', '}').Split(':', ',');
+			return (dataArray.First().Trim().ToLower(),
+				dataArray.Skip(1).Select(str => str.Trim()).ToArray());
 		}
 		/// <summary>
 		/// Casts the current <see cref="ScriptLine"/> as an emotion value, trimmed.
@@ -212,99 +213,5 @@
 		{
 			throw new NotImplementedException();
 		}
-	}
-
-	/// <summary>
-	/// A command that contains the method, and the arguments with it. Mainly
-	/// created via <see cref="ScriptLine"/>.
-	/// </summary>
-	public struct Command
-	{
-		/// <summary>
-		/// Converts a <see cref="ScriptLine"/> to a <see cref="Command"/>.
-		/// Must have the <see cref="ScriptLine.Type.Command"/> tag or it will
-		/// throw an exception.
-		/// </summary>
-		/// <exception cref="InvalidCastException"/>
-		public static explicit operator Command(ScriptLine line)
-		{
-			if (line.type != ScriptLine.Type.Command)
-				throw new InvalidCastException($"'{line.type}' is not a command!");
-			string[] dataArray = line.lineData.Trim('{', '}').Split(':', ',');
-			return new Command(dataArray.First().Trim().ToLower(),
-				dataArray.Skip(1).Select(str => str.Trim()).ToArray());
-		}
-
-		/// <summary>
-		/// The command itself, this is automatically trimmed and lowered.
-		/// </summary>
-		public readonly string command;
-		/// <summary>
-		/// The arguments of the command, there can be none or some. These are
-		/// trimmed, but not lowered. They are strings as they are meant
-		/// to be used via <see cref="ScriptDocument"/> and 
-		/// <see cref="Lookup{string, Delegate}"/> together via the file string
-		/// input.
-		/// </summary>
-		public readonly string[] arguments;
-
-		/// <summary>
-		/// Defines all the command arguments when creating an instance.
-		/// </summary>
-		/// <param name="command"> The command/method name itself. </param>
-		/// <param name="arguments"> The arguments. </param>
-		public Command(string command, string[] arguments)
-		{
-			this.command = command.ToLower().Trim();
-			this.arguments = arguments.Select(str => str.Trim()).ToArray();
-		}
-
-		/// <summary>
-		/// Tries to invoke a command by using <see cref="command"/> to get the
-		/// array of commands to the name, and invokes which one that has the 
-		/// same length of matching arguments.
-		/// </summary>
-		/// <param name="commands"> The collection of commands to look up and invoke. </param>
-		/// <param name="forceStop"> If the invoker should pause all concurrent commands. </param>
-		/// <returns> If it has been successfully invoked. </returns>
-		public bool TryInvoke(Lookup<string, Delegate> commands, out bool forceStop)
-		{
-			forceStop = false;
-			if (!commands.Contains(command))
-				return false;
-			IEnumerator<Delegate> delegates = commands[command].GetEnumerator();
-			while (delegates.MoveNext())
-				if (delegates.Current.Method.GetParameters().Length == arguments.Length)
-				{
-					delegates.Current.DynamicInvoke(arguments);
-					forceStop = delegates.Current.Method.GetCustomAttributes<ForcePauseAttribute>().Any();
-					return true;
-				}
-			return false;
-		}
-		/// <summary>
-		/// Tries to invoke a command by using <see cref="command"/> to get the
-		/// array of commands to the name, and invokes which one that has the 
-		/// same length of matching arguments.
-		/// </summary>
-		/// <param name="commands"> The collection of commands to look up and invoke. </param>
-		/// <returns> If the invoker should pause all concurrent commands. </returns>
-		/// <exception cref="MissingMethodException"/>
-		/// <exception cref="ArgumentOutOfRangeException"/>
-		public bool Invoke(Lookup<string, Delegate> commands)
-		{
-			if (TryInvoke(commands, out var forceStop))
-				return forceStop;
-			if (!commands.Contains(command))
-				throw new MissingMethodException($"'{command}' is not located" +
-					" in the the lookup command list!");
-			throw new ArgumentOutOfRangeException("arguments of " +
-				$"{arguments.Length} is not found accessible in the " +
-				"lookup command list!");
-		}
-
-		public override string ToString() => arguments.Length > 0 
-			? $"{{{command}: {string.Join(", ", arguments)}}}"
-			: $"{{{command}}}";
 	}
 }

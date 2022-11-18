@@ -20,14 +20,31 @@
 		/// <summary>
 		/// Commands for <see cref="ScriptHandler"/>.
 		/// </summary>
-		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
+		public static readonly CommandArray Commands = new CommandArray()
 		{
-
 			["spawnchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
 				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName))
 					return;
 				if (Instance.SummonCharacter(gameObjectName, positionRaw, characterName))
+				{
+					Debug.LogWarning($"GameObject or Character named '{gameObjectName}'" +
+						" is not found in the scene, trying to summmon in Resources Folder " +
+						$"'{prefabsPath}{gameObjectName}'.\nKeep in mind summoning a " +
+						"character takes alot of processing power! use command " +
+						"'summonchar' to explicitly say to get it from a prefab!");
+					return;
+				}
+				throw new MissingReferenceException("GameObject or Character " +
+					$"named '{gameObjectName}' is not found as prefab in " +
+					$"Resources Folder '{prefabsPath}{gameObjectName}', nor found" +
+					" in the scene!");
+			}),
+			["spawnchar"] = (Action<string, string>)((gameObjectName, positionRaw) =>
+			{
+				if (Instance.InitiateCharacter(gameObjectName, positionRaw, gameObjectName))
+					return;
+				if (Instance.SummonCharacter(gameObjectName, positionRaw, gameObjectName))
 				{
 					Debug.LogWarning($"GameObject or Character named '{gameObjectName}'" +
 						" is not found in the scene, trying to summmon in Resources Folder " +
@@ -61,7 +78,6 @@
 				var pair = EmptyController.Instantiate(Instance.transform, characterName);
 				Instance.charactersInScene.Add(characterName, pair);
 			}),
-
 			["anim"] = (Action<string, string>)((characterName, animationName) =>
 			{
 				if (Instance.charactersInScene.TryGetValue(characterName, out var pair))
@@ -80,9 +96,9 @@
 			{
 				Instance.ClearAllCharacters();
 			}),
-			["removechar"] = (Action<string>)(charName =>
+			["disablechar"] = (Action<string>)(charName =>
 			{
-				Instance.RemoveCharacter(charName);
+				Instance.DisableCharacter(charName);
 			}),
 			["changename"] = (Action<string, string>)((oldName, newName) =>
 			{
@@ -221,15 +237,15 @@
 		{
 			string[] keys = charactersInScene.Keys.ToArray();
 			for (int i = 0; i < charactersInScene.Count; i++)
-				RemoveCharacter(keys[i]);
+				DisableCharacter(keys[i]);
 		}
 
 		/// <summary>
 		/// Removes a single character from the scene.
 		/// </summary>
-		public void RemoveCharacter(string character)
+		public void DisableCharacter(string character)
 		{
-			Destroy(charactersInScene[character].gameObject);
+			charactersInScene[character].gameObject.SetActive(false);
 			charactersInScene.Remove(character);
 		}
 	}

@@ -22,7 +22,7 @@
 		/// All script-based commands for the script itself and the 
 		/// <see cref="DialogueSystem"/>
 		/// </summary>
-		public static readonly IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
+		public static readonly CommandArray Commands = new CommandArray()
 		{
 			["additive"] = (Action<string>)(boolRaw =>
 			{
@@ -80,7 +80,7 @@
 		{
 			if (subLines[0].LineType != ScriptLine.Type.Command)
 				return null;
-			string command = ((Command)subLines[0].scriptLine).command;
+			string command = ScriptLine.CastCommand(subLines[0].scriptLine).command;
 			switch (command)
 			{
 				case "if":
@@ -183,15 +183,11 @@
 			scriptDocument = null;
 			var scriptFactory = new ScriptDocument.Factory(finalPath);
 			scriptFactory.AddNodeParserFunctionality(GetDefinedScriptNodes);
-			scriptFactory.AddCommandFunctionality(
-				new IEnumerable<KeyValuePair<string, Delegate>>[]
-				{
-					AudioController.Commands,
-					SceneManager.Commands,
-					ScriptHandler.Commands,
-					B1NARY.CharacterController.Commands,
-					TransitionManager.Commands
-				}.SelectMany(array => array));
+			scriptFactory.commands.AddRange(AudioController.Commands);
+			scriptFactory.commands.AddRange(SceneManager.Commands);
+			scriptFactory.commands.AddRange(ScriptHandler.Commands);
+			scriptFactory.commands.AddRange(B1NARY.CharacterController.Commands);
+			scriptFactory.commands.AddRange(TransitionManager.Commands);
 			scriptDocument = scriptFactory.Parse(false);
 			IsActive = true;
 
