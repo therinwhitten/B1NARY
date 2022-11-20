@@ -69,9 +69,12 @@
 		{
 			string filePath = $"Voice/{line.ScriptDocument}/{line.Index}";
 			currentVoiceLine = Resources.Load<AudioClip>(filePath);
-			using (IEnumerator<VoiceActorHandler> enumerator = GetEnumerator())
+			using (var enumerator = B1NARY.CharacterManager.Instance.charactersInScene.Values.GetEnumerator())
 				while (enumerator.MoveNext())
-					enumerator.Current.Stop();
+					enumerator.Current.characterScript.VoiceData.Stop();
+			//using (IEnumerator<VoiceActorHandler> enumerator = GetEnumerator())
+			//	while (enumerator.MoveNext())
+			//		enumerator.Current.Stop();
 			audioSource.clip = currentVoiceLine;
 			audioSource.Play();
 		}
