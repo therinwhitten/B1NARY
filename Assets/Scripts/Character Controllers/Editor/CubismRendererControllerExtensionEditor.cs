@@ -2,6 +2,7 @@
 {
 	using UnityEditor;
 	using UnityEngine;
+	using B1NARY.CharacterManagement;
 	using Live2D.Cubism.Editor.Inspectors;
 
 	[CustomEditor(typeof(CubismRendererControllerExtension))]

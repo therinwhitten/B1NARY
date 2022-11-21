@@ -13,10 +13,10 @@
 	/// A single line of a scriptName, easily parsed and used for behaviours.
 	/// </summary>
 	[Serializable]
-	public struct ScriptLine
+	public struct ScriptLine : IEquatable<ScriptLine>
 	{
 		public static bool operator ==(ScriptLine left, ScriptLine right)
-			=> left.lineData == right.lineData && left.docPointer() == right.docPointer()
+			=> left.lineData == right.lineData && left.ScriptDocument == right.ScriptDocument
 			&& left.Index == right.Index;
 		public static bool operator !=(ScriptLine left, ScriptLine right)
 			=> !(left == right);
@@ -155,11 +155,10 @@
 		/// <summary> The raw string contents. </summary>
 		public readonly string lineData;
 		/// <summary> The current document name it is tied to. </summary>
-		public string ScriptDocument => docPointer.Invoke();
+		public readonly string ScriptDocument;
 		// I know strings are stored on a heap, regardless of structs. But it would
 		// - help knowing multiple instances of the same document shares a pointer
 		// - to the same thing and not just multiplying it over and over again.
-		private Func<string> docPointer; // scriptDocument;
 		/// <summary> The index where it appears in <see cref="ScriptDocument"/>. </summary>
 		public readonly int Index;
 		/// <summary> The type of line it detects which. </summary>
@@ -169,7 +168,7 @@
 		{
 			lineData = source.lineData;
 			type = source.type;
-			docPointer = source.docPointer;
+			ScriptDocument = source.ScriptDocument;
 			Index = source.Index;
 		}
 		/// <summary>
@@ -178,14 +177,14 @@
 		/// <param name="lineData">The line data.</param>
 		/// <param name="scriptDocument">The scriptName document.</param>
 		/// <param name="index">The index.</param>
-		public ScriptLine(string lineData, Func<string> scriptDocument, int index)
+		public ScriptLine(string lineData, string scriptDocument, int index)
 		{
 			int commentIndex = lineData.IndexOf("//");
 			if (commentIndex != -1) // Comments
 				lineData = lineData.Remove(commentIndex);
 			lineData = lineData.Trim();
 			this.lineData = lineData;
-			docPointer = scriptDocument;
+			ScriptDocument = scriptDocument;
 			Index = index;
 			type = ParseLineAsType(lineData);
 		}
@@ -212,6 +211,11 @@
 		internal static object TryCastCommand(ScriptLine scriptLine)
 		{
 			throw new NotImplementedException();
+		}
+
+		bool IEquatable<ScriptLine>.Equals(ScriptLine other)
+		{
+			return this == other;
 		}
 	}
 }

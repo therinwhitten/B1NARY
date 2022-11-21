@@ -1,4 +1,4 @@
-﻿namespace B1NARY
+﻿namespace B1NARY.CharacterManagement
 {
 	using B1NARY.Audio;
 	using B1NARY.Scripting;
@@ -28,6 +28,7 @@
 			get => gameObject.name;
 			set => gameObject.name = value;
 		}
+		string ICharacterController.OldCharacterName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.lineData);

@@ -21,6 +21,7 @@
 	/// A block of <see cref="ScriptLine"/>s that is run over time via 
 	/// <see cref="Perform"/>
 	/// </summary>
+	[Serializable]
 	public class ScriptNode
 	{
 		/// <summary>

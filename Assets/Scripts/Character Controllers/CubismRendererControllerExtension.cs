@@ -1,4 +1,4 @@
-﻿namespace B1NARY
+﻿namespace B1NARY.CharacterManagement
 {
 	using Live2D.Cubism.Rendering;
 	using UnityEngine;

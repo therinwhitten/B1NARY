@@ -2,6 +2,7 @@
 {
 	using System;
 	using UnityEngine;
+	using UnityEngine.Audio;
 
 	/// <summary> Extension Methods for <see cref="IAudioInfo"/>. </summary>
 	public static class AudioInfo
@@ -30,6 +31,7 @@
 		float Volume { get; set; }
 		float Pitch { get; set; }
 		bool Loop { get; set; }
+		AudioMixerGroup CurrentGroup { get; set; }
 
 		TimeSpan PlayedSeconds { get; }
 		TimeSpan TotalSeconds { get; }

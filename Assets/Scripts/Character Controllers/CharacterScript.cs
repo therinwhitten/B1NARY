@@ -1,4 +1,4 @@
-﻿namespace B1NARY
+﻿namespace B1NARY.CharacterManagement
 {
 	using B1NARY.Audio;
 	using B1NARY.DesignPatterns;
@@ -57,6 +57,8 @@
 		}
 
 		public string CharacterName { get => gameObject.name; set => gameObject.name = value; }
+		string ICharacterController.OldCharacterName { get; set; }
+
 		public Vector2 Position 
 		{ 
 			get => m_transform.position;
@@ -94,6 +96,15 @@
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
+		}
+
+		private void OnEnable()
+		{
+			((ICharacterController)this).OldCharacterName = CharacterName;
+		}
+		private void OnDisable()
+		{
+			CharacterName = ((ICharacterController)this).OldCharacterName;
 		}
 		public void SayLine(ScriptLine line)
 		{

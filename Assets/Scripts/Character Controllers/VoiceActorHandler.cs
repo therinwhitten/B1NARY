@@ -1,14 +1,17 @@
-﻿namespace B1NARY.Audio
+﻿namespace B1NARY.CharacterManagement
 {
 	using System;
 	using UnityEngine;
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
-	using System.Collections.Generic;
+	using B1NARY.Audio;
 	using Live2D.Cubism.Framework.MouthMovement;
+	using UnityEngine.Audio;
 
 	public class VoiceActorHandler : Multiton<VoiceActorHandler>, IAudioInfo
 	{
+		public static bool BlockPreviousSpeakersOnNextLine { get; set; } = true;
+
 		private AudioSource audioSource;
 		private AudioClip currentVoiceLine;
 		public bool IsPlaying
@@ -40,6 +43,11 @@
 			get => audioSource != null ? audioSource.loop : false;
 			set { if (audioSource != null) audioSource.loop = value; }
 		}
+		public AudioMixerGroup CurrentGroup
+		{
+			get => audioSource.outputAudioMixerGroup;
+			set => audioSource.outputAudioMixerGroup = value;
+		}
 		public TimeSpan PlayedSeconds => audioSource != null ? TimeSpan.FromSeconds(audioSource.time) : TimeSpan.Zero;
 		public TimeSpan TotalSeconds => audioSource != null ? TimeSpan.FromSeconds(audioSource.clip.length) : TimeSpan.Zero;
 
@@ -69,12 +77,10 @@
 		{
 			string filePath = $"Voice/{line.ScriptDocument}/{line.Index}";
 			currentVoiceLine = Resources.Load<AudioClip>(filePath);
-			using (var enumerator = B1NARY.CharacterManager.Instance.charactersInScene.Values.GetEnumerator())
-				while (enumerator.MoveNext())
-					enumerator.Current.characterScript.VoiceData.Stop();
-			//using (IEnumerator<VoiceActorHandler> enumerator = GetEnumerator())
-			//	while (enumerator.MoveNext())
-			//		enumerator.Current.Stop();
+			if (BlockPreviousSpeakersOnNextLine)
+				using (var enumerator = CharacterController.Instance.charactersInScene.Values.GetEnumerator())
+					while (enumerator.MoveNext())
+						enumerator.Current.characterScript.VoiceData.Stop();
 			audioSource.clip = currentVoiceLine;
 			audioSource.Play();
 		}

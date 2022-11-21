@@ -5,8 +5,10 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using B1NARY.UI;
+	using CharacterController = CharacterManagement.CharacterController;
 	using System.Collections.ObjectModel;
 	using UnityEngine;
+	using System.Runtime.Serialization.Formatters.Binary;
 
 	/// <summary>
 	/// A document that tracks the <see cref="ScriptNode"/>s and parses information
@@ -14,6 +16,17 @@
 	/// </summary>
 	public sealed class ScriptDocument
 	{
+		/// <summary>
+		/// Saves the contents as a binary file. 
+		/// </summary>
+		public static void SerializeContents(string path)
+		{
+			string[] lines = File.ReadAllLines(path);
+			int endIndex = path.LastIndexOf('.');
+			string otherPath = path.Remove(endIndex) + ".rdsgpijoersgpiojsegrpiojgerspiojgers";
+			using (var stream = new FileStream(otherPath, FileMode.Create))
+				new BinaryFormatter().Serialize(stream, lines);
+		}
 		/// <summary>
 		/// Takes the incoming stream that iterates the contents of the 
 		/// <see cref="ScriptNode"/>, and it has just hit a detected scriptNode
@@ -105,14 +118,14 @@
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
-					if (B1NARY.CharacterController.Instance.charactersInScene.TryGetValue(DialogueSystem.Instance.CurrentSpeaker, out var pair))
+					if (CharacterController.Instance.charactersInScene.TryGetValue(DialogueSystem.Instance.CurrentSpeaker, out var pair))
 						pair.characterScript.SayLine(line);
 					else
 						throw new MissingMemberException($"Character '{DialogueSystem.Instance.CurrentSpeaker}' couldn't be played to say anything, as they don't exist!");
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);
-					B1NARY.CharacterController.Instance.charactersInScene[DialogueSystem.Instance.CurrentSpeaker].characterScript.CurrentExpression = expression;
+					CharacterController.Instance.ActiveCharacter.CurrentExpression = expression;
 					return true;
 				case ScriptLine.Type.Speaker:
 					string speaker = ScriptLine.CastSpeaker(line);
@@ -195,7 +208,7 @@
 				{
 					using (var reader = new StreamReader(fullFilePath))
 						for (int i = 1; !reader.EndOfStream; i++)
-							yield return new ScriptLine(reader.ReadLine(), () => documentName, i);
+							yield return new ScriptLine(reader.ReadLine(), documentName, i);
 				}
 			}
 			/// <summary>
@@ -234,15 +247,18 @@
 					{
 						int indentation = incompletePairs.Count;
 						if (incompletePairs.Count == 0)
-							throw new InvalidDataException($"{fileData.Current} is a end Indent, but there is no start indent to end with!");
+							throw new InvalidDataException(fileData.Current.ToString() +
+								" is a end Indent, but there is no start indent to end with!");
 						int startIndex = incompletePairs.Pop();
 						// line number to array index.
 						nodes.Add((startIndex, fileData.Current.Index - 1, indentation));
 					}
 					list.Add((ScriptPair)fileData.Current);
 				}
+				fileData.Dispose();
 				if (incompletePairs.Count > 0)
-					throw new InvalidDataException($"{documentName} has incomplete indentations/brackets!");
+					throw new InvalidDataException($"{documentName} has " +
+						$"incomplete indentations/brackets!");
 				output.documentData = Array.AsReadOnly(
 					list.Select(pair => pair.scriptLine).ToArray());
 				// Merging all dictionaries.
@@ -268,10 +284,10 @@
 				// Messing with the baseline entry scriptnode code.
 				list.InsertRange(0, new ScriptPair[]
 				{
-					(ScriptPair)new ScriptLine("::Start", () => documentName, -1),
-					(ScriptPair)new ScriptLine("{", () => documentName, 0)
+					(ScriptPair)new ScriptLine("::Start", documentName, -1),
+					(ScriptPair)new ScriptLine("{", documentName, 0)
 				});
-				list.Add((ScriptPair)new ScriptLine("::End", () => documentName, list.Count));
+				list.Add((ScriptPair)new ScriptLine("::End", documentName, list.Count));
 				output.nodes = Array.AsReadOnly(nodeArray);
 				output.data = new ScriptNode(output, list.ToArray()).Perform(pauseOnCommand);
 				return output;

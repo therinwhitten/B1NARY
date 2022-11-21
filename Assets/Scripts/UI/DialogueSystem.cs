@@ -9,7 +9,7 @@ namespace B1NARY.UI
 	using System.Text;
 	using System;
 	using TMPro;
-	using CharacterController = CharacterController;
+	using CharacterController = B1NARY.CharacterManagement.CharacterController;
 	using B1NARY.Scripting;
 
 	/// <summary>

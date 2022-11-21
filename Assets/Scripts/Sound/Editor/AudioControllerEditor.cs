@@ -1,4 +1,4 @@
-﻿namespace B1NARY.Editor
+﻿namespace B1NARY.Audio.Editor
 {
 	using UnityEditor;
 	using B1NARY.Audio;

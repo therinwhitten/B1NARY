@@ -10,6 +10,7 @@
 	using System.Linq;
 	using B1NARY.Audio;
 	using B1NARY.DesignPatterns;
+	using CharacterController = B1NARY.CharacterManagement.CharacterController;
 	using UnityEngine.InputSystem;
 	using System.Threading;
 	using B1NARY.DataPersistence;
@@ -186,7 +187,7 @@
 			scriptFactory.commands.AddRange(AudioController.Commands);
 			scriptFactory.commands.AddRange(SceneManager.Commands);
 			scriptFactory.commands.AddRange(ScriptHandler.Commands);
-			scriptFactory.commands.AddRange(B1NARY.CharacterController.Commands);
+			scriptFactory.commands.AddRange(CharacterController.Commands);
 			scriptFactory.commands.AddRange(TransitionManager.Commands);
 			scriptDocument = scriptFactory.Parse(false);
 			IsActive = true;

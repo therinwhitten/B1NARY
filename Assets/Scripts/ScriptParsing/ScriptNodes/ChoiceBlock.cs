@@ -19,17 +19,17 @@
 		/// A Dictionary that keeps track of the choices and the scriptNode that
 		/// is linked up to it.
 		/// </summary>
-		private readonly IReadOnlyDictionary<string, ScriptNode> choices;
+		private readonly IReadOnlyDictionary<ScriptLine, ScriptNode> choices;
 
 		public ChoiceBlock(ScriptDocument scriptDocument, ScriptPair[] subLines) : base(scriptDocument, subLines)
 		{
-			var choices = new Dictionary<string, ScriptNode>();
+			var choices = new Dictionary<ScriptLine, ScriptNode>();
 			var linesEnum = base.subLines.AsEnumerable().GetEnumerator();
 			while (linesEnum.MoveNext())
 			{
 				if (!linesEnum.Current.HasScriptNode)
 					continue;
-				choices.Add(linesEnum.Current.scriptLine.lineData, linesEnum.Current.scriptNode);
+				choices.Add(linesEnum.Current.scriptLine, linesEnum.Current.scriptNode);
 				linesEnum = ScriptDocument.SkipNode(linesEnum, linesEnum.Current.scriptNode);
 			}
 			linesEnum.Dispose();
@@ -41,12 +41,12 @@
 
 		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
 		{
-			document.ParseLine(new ScriptLine(string.Join(",", ScriptLine.CastCommand(rootLine).arguments), () => rootLine.ScriptDocument, rootLine.Index));
+			document.ParseLine(new ScriptLine(string.Join(",", ScriptLine.CastCommand(rootLine).arguments), rootLine.ScriptDocument, rootLine.Index));
 			ChoicePanel panel = ChoicePanel.StartNew(choices.Keys);
 			panel.PickedChoice += str => document.NextLine();
 			while (!panel.HasPickedChoice)
 				yield return default;
-			IEnumerator<ScriptLine> node = choices[panel.CurrentlyPickedChoice].Perform(pauseOnCommands);
+			IEnumerator<ScriptLine> node = choices[panel.CurrentlyPickedChoice.Value].Perform(pauseOnCommands);
 			panel.Dispose();
 			while (node.MoveNext())
 				yield return node.Current;

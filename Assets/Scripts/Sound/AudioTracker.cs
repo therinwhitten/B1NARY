@@ -4,13 +4,14 @@
 	using System.Collections;
 	using System.Collections.Generic;
 	using UnityEngine;
+	using UnityEngine.Audio;
 
 	public sealed class AudioTracker : IDisposable, IAudioInfo
 	{
 		//TODO: add custom audio data to regular audiosources!
 		public static void ApplyCustomSoundData(AudioSource audioSource, CustomAudioClip clip)
 		{
-			audioSource.clip = clip;
+			audioSource.clip = clip.clip;
 			audioSource.outputAudioMixerGroup = clip.audioMixerGroup;
 			audioSource.loop = clip.loop;
 			audioSource.volume = clip.FinalVolume;
@@ -58,6 +59,11 @@
 		{
 			get => audioSource.loop;
 			set => audioSource.loop = value;
+		}
+		public AudioMixerGroup CurrentGroup
+		{
+			get => audioSource.outputAudioMixerGroup;
+			set => audioSource.outputAudioMixerGroup = value;
 		}
 
 		public bool CreateAutoDisposableCoroutine { get; private set; }

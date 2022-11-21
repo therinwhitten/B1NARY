@@ -1,11 +1,13 @@
-﻿namespace B1NARY.Editor
+﻿namespace B1NARY.CharacterManagement.Editor
 {
-	using B1NARY.Audio;
+	using B1NARY.Audio.Editor;
 	using B1NARY.Scripting;
 	using B1NARY.UI;
 	using System;
 	using UnityEditor;
 
+
+	[CustomEditor(typeof(ICharacterController), true)]
 	public abstract class ControllerEditor : Editor
 	{
 		protected ICharacterController characterController;
@@ -28,12 +30,12 @@
 	[CustomEditor(typeof(EmptyController))]
 	public class EmptyControllerEditor : ControllerEditor
 	{
-
+	
 	}
-
+	
 	[CustomEditor(typeof(CharacterScript))]
 	public class CharacterScriptEditor : ControllerEditor
 	{
-
+	
 	}
 }

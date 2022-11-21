@@ -4,6 +4,7 @@
 	using UnityEngine;
 	using UnityEditor;
 	using B1NARY.Audio;
+	using B1NARY.Audio.Editor;
 
 	public sealed class AudioTab : DebuggerTab
 	{

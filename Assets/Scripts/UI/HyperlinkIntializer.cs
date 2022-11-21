@@ -4,6 +4,9 @@
 	using UnityEngine;
 	using UnityEngine.EventSystems;
 
+	/// <summary>
+	/// Beat you to it lol
+	/// </summary>
 	public sealed class HyperlinkInitializer : MonoBehaviour, IPointerClickHandler
 	{
 		public string hyperLink;

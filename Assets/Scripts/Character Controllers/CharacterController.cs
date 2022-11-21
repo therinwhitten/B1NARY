@@ -1,4 +1,4 @@
-﻿namespace B1NARY
+﻿namespace B1NARY.CharacterManagement
 {
 	using B1NARY.DesignPatterns;
 	using System;
@@ -125,6 +125,7 @@
 		private Transform charLayerTransform;
 
 
+		public ICharacterController ActiveCharacter => charactersInScene[DialogueSystem.Instance.CurrentSpeaker].characterScript;
 		public Dictionary<string, (GameObject gameObject, ICharacterController characterScript)> charactersInScene =
 			new Dictionary<string, (GameObject gameObject, ICharacterController characterScript)>(10);
 
