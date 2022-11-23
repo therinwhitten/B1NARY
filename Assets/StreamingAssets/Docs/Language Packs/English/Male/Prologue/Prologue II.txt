@@ -1,0 +1,240 @@
+{changeScene: Press Room}
+{fadeinsound: DIHI Power Down, .2}
+{fadeinsound: Lab Tension, .2}
+{fadeinsound: Laptop Lab Scene, 2}
+{fadeinsound: Lab Computer Room Beeps 2, 1}
+{spawnEmpty: Narrator}
+{spawnEmpty: John}
+{spawnEmpty: Cindy}
+{spawnEmpty: Female Reporter}
+Narrator::
+{additive: on}
+Finally,
+after what seems like an eternity, 
+{if: n-b,false}
+{
+ his face goes completely flaccid.
+}
+{if: n-b,true}
+{
+ their face relaxes.   
+}
+{if: n-b,false}
+{ 
+ For the onlookers, it was hell watching the boy's face.
+}
+{if: n-b,true}
+{
+ For the onlookers, it was hell watching the person's face.
+}
+{additive: off}
+{if: n-b,false}
+{
+ His eyes slowly close, peaceful now, devoid of any expression. 
+}
+{if: n-b,true}
+{
+ Their eyes slowly close, peaceful now, devoid of any expression.
+} 
+{additive: on}
+It seems almost anti-climatic as the hum of the digitizer just...
+ceases,
+the inert body limp on the seat.
+{additive: off}
+{fadeinsound: openclosedoor, .2}
+{fadeinsound: LabCrewLeavingFootsteps, .2}
+{fadeinsound: LabAmbience, .2}
+{fadeinsound: Fast Keyboard Typing, .5}
+As the press look on, cameras rolling, a team of medics with a cryotube slowly enter through the doorway along with medical equipment, efficiently prepping the cryochamber.
+{fadeinsound: Medic Stretcher, .1}
+Inside the press room, the silence is palpable.
+The press share glances, sip coffee, scribble down notes, waiting impatiently for <i>any</i> information.
+It felt like several hours to some, time gelling. 
+The transfer took only a few minutes. 
+Fluorescent lights in the lab crackle and come to life...
+{fadeinsound: fluorescent light flicker, .2}
+{if: n-b,false}
+{
+  Medics grab MC, carefully placing him into the cyrotube and applying sensors to the different sections of his body.
+}
+{if: n-b,true}
+{
+ Medics grab MC, carefully placing them into the cryotube and applying sensors to the different sections of their body.
+}
+MC looks so lifeless, it even unnerves the veteran journalist, John.
+With a pneumatic swoosh, the stasis chamber closes with MC inside. 
+{fadeinsound: CryoStasis Close, .1}
+{fadeinsound: Slow Heartbeat Machine, .1}
+The stasis chamber looks like nothing John has ever seen before, touchscreens covering the top of the lid.
+John can hear the heart rate monitor, even in the "press room." Even through the thick panel of glass. 
+John looks around.
+"Press room." It is basically the lab techs' break room. 
+{if: n-b,false}
+{
+ At least for the boy, Digital Horizons has spared no expense.
+} 
+{if: n-b,true}
+{
+ At least for this employee, Digital Horizons has spared no expense.
+}
+That knowledge does little to settle the onlookers though. 
+Through the panel of glass, lab-techs manning the laptops call over their Team Leader.
+{fadeinsound: LabCrewLeavingFootsteps, .1}
+{additive: on}
+John cannot follow the discussion, their lips are not in direct sight,
+but he can surmise careful discourse is happening.
+{additive: off}
+Like any good reporter, John smells a scoop.
+As the team continues the discussion, the medics remove the body, and the doors are shut tight. 
+{fadeinsound: openclosedoor, 2}
+{fadeoutsound: Lab Computer Room Beeps 2, 4}
+{fadeoutsound: Slow Heartbeat Machine, 4}
+{fadeoutsound: LabAmbience, 4}
+Once the doors close, the clicking of a single laptop keyboard can be heard from one of the other reporters. 
+Sounds from the lab are effectively cut off, save for a single loudspeaker next to the window. 
+Suddenly, the sound of Cindy's silky voice pops up in John's earpiece, startling him.
+Cindy::
+"John?"
+{additive:on}
+"Everything ok? 
+We cut the feed to you until the announcement. 
+And let me tell you, 
+that was some great footage... What's happening now?"
+{additive: off}
+Narrator::
+John cups one hand to his ear, activating the auto talk function.
+John::
+"Stand by Cindy. I think the Lab Supervisor is about to speak."
+Narrator::
+He continues to observe closely. Something is different.
+Cliff, the Project Lead, is leaning over a lab tech's laptop, his back to the room. 
+{additive: on}
+As he's asking questions,
+tension stiffens Cliff's back.
+John watches closely.
+{additive: off}
+{spawnChar: malesilo, -1, Cliff}
+{anim: Cliff, kime2}
+{moveChar: Cliff, .50}
+Cliff then stands up straight with confidence, turning to the press window.
+With a dramatic clearing of his throat, he speaks, projecting his voice. 
+{additive: on}
+Cliff::
+"To the denizens of Earth.
+I can officially announce the successful transfer of MC into the digital realm."
+{additive: off}
+Narrator::
+He pauses for effect, making eye contact with the press through the observation window, one by one.
+When he observes them talking amongst themselves, he continues, voice strong and steady.
+Cliff::
+{if: n-b,false}
+{
+ {additive: on}
+ "We have confirmed his thought patterns in server 10.
+ His body is stable and in room temperature stasis in our medical lab." 
+ {additive: off}
+ "Tests are still being conducted to ensure he is aware of his location and fully cognizant." 
+}
+{if: n-b,true}
+{
+ {additive: on}
+ "We have confirmed their thought patterns in server 10.
+ Their body is stable and in room temperature stasis in our medical lab." 
+ {additive: off}
+ "Tests are still being conducted to ensure they are aware of their location and fully cognizant." 
+}
+"I officially pronounce this experiment a resounding success!"
+Narrator::
+{fadeinsound: Press Conference Long, 1}
+{fadeinsound: smallgroupwhisper, 1}
+The symphony of camera shutters, and the flashing of lights, erupts as he makes his announcement to the world.
+{additive: on}
+That simple statement brings considerable excitement.
+The pent up tension ripples through the reporters like waves in a pond.
+{additive: off}
+John::
+<i>What are you hiding, Cliff?</i>
+Narrator::
+The raising of hands, like a wave themselves, plead for Cliff's attention.  
+Cliff points to one young reporter, a lady from another news channel.
+{anim: Cliff, kime1}
+Cliff::
+"Yes, you there. Go ahead and ask your question."
+{anim: Cliff, kime2}
+Narrator::
+She purses her lips, nervous.
+Female Reporter::
+"There are many concerns about the risks involved with an experiment like this one."
+"We would like to hear from them, <i>personally</i>, if that is possible..."
+"When can we talk to them? Perhaps something more... Like an interview while they are in the servers!"
+Narrator::
+The other news reporters stop whispering. All eyes lock on Cliff.
+{fadeoutsound: smallgroupwhisper, 1} 
+Cliff pauses for a few seconds, his face betraying no emotion.
+Cliff::
+"Well that is still up in the air. We must remain on high alert through this first test."
+{additive: on}
+"You see, we have to contend with a lot of unknowns.
+The pressure of dealing with a whole new frontier will keep MC most likely distracted.
+{if: n-b,false}
+{
+ It is <i>crucial</i> we keep him calm and safe. 
+} 
+{if: n-b,true}
+{
+ It is <i>crucial</i> we keep them calm and safe.
+}
+Regarding the information pertaining to this first experiment. For now, Digital Horizons has deemed this information to remain private."
+{additive: off}
+John::
+<i>There it is. Something is up. If everything was peachy, they would be happy to share their results.</i>
+Narrator::
+{fadeinsound: smallgroupwhisper, 1}
+The reporters raise their hands even higher, more urgent, as if they were grade school kids again. 
+Cliff sighs visibly, a touch of irritability cracking his normally calm facade.
+Cliff::
+{additive:on}
+"Look... 
+We've already warned you prior to the conference that this is a very high risk experiment."
+{additive: off}
+"We understand the world wants to know more as it develops." 
+"And we will endeavor to keep you informed." 
+{if: n-b,false}
+{
+   {additive: on}
+ "However,
+ there is a young man's life at stake here, 
+ and we want to be as careful as humanly possible. 
+ After the conclusion of the first test, 
+ and after Mr. MC has been cleared of quarantine, we will allow him to speak to the press."
+ {additive: off}
+}
+{if: n-b,true}
+{
+ {additive: on}
+ "However,
+ there is a young person's life at stake here, 
+ and we want to be as careful as humanly possible. 
+ After the conclusion of the first test, 
+ and after MC has been cleared of quarantine, we will allow them to speak to the press."
+ {additive: off}
+}
+Narrator::
+With his final words spoken, Cliff waves goodbye to the press with an air of finality.
+Cliff::
+"We won't take any more questions at this time."
+"You'll have to wait with the rest of the world."
+Narrator::
+{additive: on}
+John feels something wrong as he watches Cliff motion to the lab techs to smoke the window. 
+His fellow journalists just seem disappointed, as he would expect them to be.
+Nothing out of the ordinary there.
+{additive: off}
+John taps his headset to turn on the mic.
+John::
+"You saw it yourself, Cindy. We wait."
+Narrator::
+No one seems to notice the sweat on Cliff's forehead as the window turns into a solid wall, blocking the truth out...
+{fadeoutsound: smallgroupwhisper, 1}
+{fadeoutsound: Lab Tension, .2}
+{changeScript: Language Packs/English/Male/Prologue/Prologue III.txt}
