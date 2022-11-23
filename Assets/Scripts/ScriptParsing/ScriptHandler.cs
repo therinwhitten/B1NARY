@@ -1,24 +1,49 @@
 ﻿namespace B1NARY.Scripting
 {
 	using System;
+	using System.IO;
+	using System.Linq;
 	using System.Collections;
 	using System.Collections.Generic;
-	using System.Threading.Tasks;
 	using UnityEngine;
 	using UnityEngine.Diagnostics;
+	using UnityEngine.InputSystem;
 	using B1NARY.UI;
-	using System.Linq;
 	using B1NARY.Audio;
 	using B1NARY.DesignPatterns;
-	using CharacterController = B1NARY.CharacterManagement.CharacterController;
-	using UnityEngine.InputSystem;
-	using System.Threading;
 	using B1NARY.DataPersistence;
-	using JetBrains.Annotations;
+	using CharacterController = CharacterManagement.CharacterController;
 
 	[AddComponentMenu("B1NARY/Script Handler")]
 	public class ScriptHandler : Singleton<ScriptHandler>
 	{
+		public static List<string> GetFullDocumentsPaths(string currentPath)
+		{
+			var output = new List<string>(Directory.GetFiles(currentPath).Where(path => path.EndsWith(".txt")));
+			IEnumerable<string> directories = Directory.GetDirectories(currentPath);
+			if (directories.Any())
+				foreach (string directory in directories)
+					output.AddRange(GetFullDocumentsPaths(directory));
+			return output;
+		}
+		public static List<string> GetFullDocumentsPath()
+		{
+			return GetFullDocumentsPaths(BasePath);
+		}
+		public static List<string> GetVisualDocumentsPaths(in List<string> fullPaths)
+		{
+			var newList = new List<string>(fullPaths);
+			for (int i = 0; i < newList.Count; i++)
+				newList[i] = ToVisual(fullPaths[i]);
+			return newList;
+		}
+		public static List<string> GetVisualDocumentsPaths()
+		{
+			return GetVisualDocumentsPaths(GetFullDocumentsPaths(BasePath));
+		}
+		public static string ToVisual(string path) => path.Replace(BasePath, "").Replace(".txt", "");
+
+		public static string BasePath => $"{Application.streamingAssetsPath}/Docs/";
 		/// <summary>
 		/// All script-based commands for the script itself and the 
 		/// <see cref="DialogueSystem"/>
@@ -38,20 +63,7 @@
 				Instance.scriptDocument.AdditiveEnabled = setting;
 			}),
 			["changescript"] = (Action<string>)(ChangeScript),
-			["usegameobject"] = (Action<string>)(gameObjectName =>
-			{
-				GameObject @object = GameObject.Find(gameObjectName);
-				if (@object == null)
-					throw new MissingMemberException($"Gameobject '{gameObjectName}' is not found");
-				@object.SetActive(true);
-				Instance.ShouldPause = true;
-				Instance.StartCoroutine(Wait());
-				IEnumerator Wait()
-				{
-					yield return new WaitUntil(() => !@object.activeSelf);
-					Instance.ShouldPause = false;
-				}
-			}),
+			["usegameobject"] = (Action<string>)(UseGameObject),
 			["setbool"] = (Action<string, string>)((name, value) =>
 			{
 				if (PersistentData.InstanceOrDefault.bools.ContainsKey(name))
@@ -64,7 +76,23 @@
 		[ForcePause]
 		internal static void ChangeScript(string scriptPath)
 		{
-			Instance.InitializeNewScript(Application.streamingAssetsPath + "/Docs/" + scriptPath);
+			Instance.InitializeNewScript(scriptPath);
+		}
+		[ForcePause]
+		internal static void UseGameObject(string objectName)
+		{
+			GameObject @object = GameObject.Find(objectName);
+			if (@object == null)
+				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
+			@object.SetActive(true);
+			Instance.ShouldPause = true;
+			Instance.StartCoroutine(Wait());
+			IEnumerator Wait()
+			{
+				yield return new WaitUntil(() => !@object.activeSelf);
+				Instance.ShouldPause = false;
+				Instance.NextLine();
+			}
 		}
 		/// <summary>
 		/// Gets a custom <see cref="ScriptNode"/> based on the requirements.
@@ -160,7 +188,6 @@
 			foreach (string key in nextLineButtons)
 				playerInput.actions.FindAction(key, true).performed += context => NextLine();
 			DontDestroyOnLoad(gameObject);
-			PersistentData.ThrowErrorIfEmpty = false;
 		}
 
 		/// <summary>
@@ -177,11 +204,11 @@
 		/// Starts a new script from stratch.
 		/// </summary>
 		/// <param name="scriptPath"> The path of the document. </param>
-		public ScriptLine InitializeNewScript(string scriptPath = "")
+		public void InitializeNewScript(string scriptPath = "")
 		{
-			string finalPath = string.IsNullOrWhiteSpace(scriptPath) ? StartupScriptPath : scriptPath;
-			IsActive = false;
-			scriptDocument = null;
+			string finalPath = string.IsNullOrWhiteSpace(scriptPath) ? StartupScriptPath : BasePath + scriptPath;
+			Clear();
+			m_pauseIterations = 0;
 			var scriptFactory = new ScriptDocument.Factory(finalPath);
 			scriptFactory.AddNodeParserFunctionality(GetDefinedScriptNodes);
 			scriptFactory.commands.AddRange(AudioController.Commands);
@@ -194,7 +221,7 @@
 
 			playedTime = DateTime.Now;
 
-			return NextLine();
+			NextLine();
 		}
 		/// <summary>
 		/// Plays lines until it hits a normal dialogue or similar.
@@ -218,6 +245,16 @@
 				IsActive = false;
 				throw;
 			}
+		}
+
+		public bool Clear()
+		{
+			if (scriptDocument == null)
+				return false;
+			scriptDocument.Dispose();
+			scriptDocument = null;
+			IsActive = false;
+			return true;
 		}
 	}
 }

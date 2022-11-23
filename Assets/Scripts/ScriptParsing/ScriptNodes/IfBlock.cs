@@ -38,9 +38,9 @@
 				yield break;
 				// TODO: Add 'else'
 			}
-			IEnumerator<ScriptLine> @base = base.Perform(pauseOnCommands);
-			while (@base.MoveNext())
-				yield return @base.Current;
+			using (IEnumerator<ScriptLine> @base = base.Perform(pauseOnCommands))
+				while (@base.MoveNext())
+					yield return @base.Current;
 		}
 	}
 }

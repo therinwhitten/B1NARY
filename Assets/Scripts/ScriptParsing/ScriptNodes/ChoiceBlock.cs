@@ -41,7 +41,7 @@
 
 		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
 		{
-			document.ParseLine(new ScriptLine(string.Join(",", ScriptLine.CastCommand(rootLine).arguments), rootLine.ScriptDocument, rootLine.Index));
+			document.ParseLine(new ScriptLine(string.Join(",", ScriptLine.CastCommand(rootLine).arguments), rootLine.resourcesFilePath, rootLine.ScriptDocument, rootLine.Index));
 			ChoicePanel panel = ChoicePanel.StartNew(choices.Keys);
 			panel.PickedChoice += str => document.NextLine();
 			while (!panel.HasPickedChoice)
@@ -50,6 +50,7 @@
 			panel.Dispose();
 			while (node.MoveNext())
 				yield return node.Current;
+			node.Dispose();
 		}
 	}
 }
