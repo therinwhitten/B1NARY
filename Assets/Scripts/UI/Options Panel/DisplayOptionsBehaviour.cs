@@ -59,6 +59,11 @@
 			glow.value = BloomIntensity;
 		}
 
+		public void SetResolution (int resolutionIndex) // Apply resolutions to match Dropdown
+		{
+			Resolution resolution = resolutions[resolutionIndex];
+			Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+		}
 		public void ChangeIntensity(float value) => BloomIntensity = value;
 		public void ChangeLevel(int value) // Graphics Quality
 		{
