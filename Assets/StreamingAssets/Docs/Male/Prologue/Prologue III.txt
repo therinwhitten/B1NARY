@@ -1,47 +1,49 @@
 {changeScene: Brain Sucking Chair Side}
 {fadeinsound: Fast Keyboard Typing, .5}
 {fadeinsound: Discovery Music, 4}
-{spawnChar: malesilo3, 2, Shirobi}
+{spawnChar: malesilo1, 2, Shirobi}
 {spawnChar: malesilo, -1, Cliff}
 {spawnChar: femalesilo, -1.5, Becks}
 {spawnEmpty: Narrator}
+{anim: Cliff, idle}
+{anim: Shirobi, Thinking}
+{anim: Becks, Denial}
 Narrator::
-The window changes, becoming dark as midnight.
+The window goes dark.
 No one dares make a sound.
 The quick chatter of the laptops betrays the sense of urgency and tension that permeates the room. 
 {fadeinsound: Cliff Wood Tap, .1}
 Cliff leans on the back of Shirobi's chair, impatiently tapping on the wooden back.
 On the screen, a diagnostic runs on the DIHI. 
-Shirobi, pale as a ghost, just stares at the screen without looking at it. 
-{moveChar: Shirobi, .8}
-{moveChar: Cliff, .2}
+Shirobi, pale as a ghost, just stares at the screen without really looking at it. 
+{moveChar: Shirobi, .80}
+{moveChar: Cliff, .15}
 Shirobi::
 {if: n-b,false}
 {
- "I promised her, Sir. That she would be ok.... I told her it would just be four days. And..."
+ "I promised him, Sir. That he would be ok.... I told him it would just be four days. And..."
 }
 {if: n-b,true}
 {
  "I promised them, Sir. That they would be ok... I told them it would only be four days. And..."
 }
 Narrator::
-Shirobi chokes back panic, sighing in defeat.
+Shirobi sighs in defeat.
 {anim: Shirobi, Bow}
 Shirobi::
+{additive: on}
 {if: n-b,false}
 {
- <i>Crying won't bring her back safely...</i>
+ "I can't find him in any of the servers...
 }
 {if: n-b,true}
 {
- <i>Crying won't bring them back safely...</i>
+ "I can't find them on any of the servers...
 }
-{additive: on}
-"There are no thought patterns in any of the servers.
 Is it possible just for the DIHI to just...
 {if: n-b,false}
 {
- scramble her?"
+ scramble him?"
 }
 {if: n-b,true}
 {
@@ -51,7 +53,7 @@ Is it possible just for the DIHI to just...
 Narrator::
 Cliff shakes his head. He refuses to accept that fate.
 Cliff::
-"We can't rule that out, but I'm sure the DIHI is working as intended."
+"We can't rule that out, but I am sure the DIHI is working as intended."
 {additive: on}
 "Many tests have already been done:
 six months of preparation on that chair.
@@ -62,7 +64,7 @@ Cliff trails off, his body starting to shake.
 Cliff::
 {if: n-b,false}
 {
- "She's just a kid dammit!!"
+ "He's just a kid dammit!!"
 }
 {if: n-b,true}
 {
@@ -80,18 +82,23 @@ Cliff::
 "If the press had even suspected something was wrong..." 
 Narrator::
 Cliff looks down at his fist, forcibly relaxing it.
+<i>Calm. I need calm.</i>, he tells himself.
 Cliff::
 {additive: on}
-"It's ok. 
+"It's ok.
 {if: n-b,false}
 {
- We've got four days to find her.
+ We've got four days to find him."
 }
 {if: n-b,true}
 {
- We've got four days to find them.
+ We've got four days to find them."
 }
-Verify that test for me Shirobi, will you? I'm tired...
+{additive: off}
+Narrator::
+The supervisor looks at Shirobi.
+Cliff::
+"Verify that test for me Shirobi, will you? I'm tired...
 So tired."
 {additive: off}
 Narrator::
@@ -99,22 +106,22 @@ Cliff rubs the bridge of his nose in frustration.
 {additive: on}
 Shirobi, 
 pale, and obviously worrying for his friend, 
-visibly shakes his head and gets back to work.
-{anim: Shirobi: Checktime}
+shakes his head and gets back to work.
 {additive: off} 
+{anim: Shirobi, Checktime}
 Silence reigns as the techs systematically check ports, settings on the DIHI, and the laptops.
 Several minutes pass. Suddenly, someone pipes up.
 {moveChar: Becks, .55}
 {additive: on}
+{anim: Becks, Pensive}
 A young lab tech, fresh out of internship, 
 looks up from the laptop from across the room, 
 her auburn hair a mess, betraying the long hours of preparation for this experiment.
 {additive: off}
-{anim: Becks, Pensive}
 Becks::
-"Sir, I think I found the problem."
+"Sir... I think I found the problem."
 Narrator::
-She leans back in her chair and pivots, facing them.
+She leans back in her chair, and pivots, facing them.
 Becks::
 "It's a big one."
 Narrator::
@@ -136,7 +143,7 @@ Cliff::
 "The scan isn't even finished yet. What am I looking for?" 
 "Becks?"
 Becks::
-"Look at the lan status."
+"Cliff, look at the lan status."
 Narrator::
 Becks moves the mouse over and clicks open the network settings.
 Becks::
@@ -145,21 +152,23 @@ Becks::
 Narrator::
 As Becks clicks on the network status, they both see the problem.
 No local servers... none. One through ten should be there... 
-One thing catches Cliff's attention, causing him to breathe in sharply.
+One thing catches Cliff's attention, causing him to breath in sharply.
 The Lab Supervisor suddenly looks at Becks questionably, and Becks nods.
 Becks::
-"It has been connected the entire experiment."
+"It's been connected the entire experiment."
 Narrator::
-Cliff starts pacing, mumbling to himself, the words unrecognizable, even to the lab crew. 
+Cliff starts pacing, mumbling to himself, the words unrecognizable even to the lab crew. 
 He pauses in his rambling and focuses his attention to Shirobi.
 Panic, anger, and a light dose of despair paint his features clearly. 
 Cliff::
-"Good news, the DIHI's fine. They were not scrambled at least."
+"Good news, the DIHI's fine. They were not scrambled at least." 
 Narrator::
 {fadeoutsound: Fast Keyboard Typing, .5}
 Shirobi stops typing, looking up. 
+Shirobi::
+"Wait... then what happened?"
 Cliff::
-"That isn't the problem: The problem is the DIHI is not connected to the servers. It's connected to the internet."
+"I can't believe I didn't... The DIHI is not connected to the servers, but the internet."
 Narrator::
 {anim: Shirobi, Bow}
 {anim: Cliff, kime2}
@@ -167,17 +176,18 @@ Shirobi groans as he places his head between his hands.
 Shirobi::
 "Ohhhhhh FUCK!"
 Narrator::
+The realization hits the room hard. 
 Silence. Several seconds pass in dead silence.
 Massaging his forehead, Shirobi's voice picks up.
 Shirobi::
 {anim: Shirobi, Glasses}
 {if: n-b,false}
 {
- "Sir, do we even have a chance to find her in there? I mean she is the <i>only</i> human in the internet but..."
+ "Sir, do we even have a chance to find him? I mean, he is the <i>only</i> human in the internet, but..."
 }
 {if: n-b,true}
 {
- "Sir, do we even have a chance to find them? I mean they are the <i>only</i> human in the internet but..."
+ "Sir, do we even have a chance to find them? I mean, they are the <i>only</i> human in the internet, but..."
 }
 Narrator::
 The old man, looking at his laptop's display, sighs and replies.
@@ -185,78 +195,81 @@ Cliff::
 {if: n-b,false}
 {
  {additive: on}
- "It's possible, 
- but we would have to send an AI into the code to search for her brain patterns, and <i>hope</i> her patterns don't alter too much. 
- If they do, we won't be able to find her."
+ "It's possible but,
+ we would have to send AI into the code to search for his brain patterns, and <i>hope</i> they don't alter too much. 
+ If they do, we won't be able to find him."
  {additive: off}
- "I pray she lands somewhere semi-safe."
- "Will ransomware or malware hurt her? There are so many unknown dangers that we have no clue on..."
+ "I pray he lands somewhere semi-safe."
+ "Will ransomware or malware hurt him? There are so many unknown dangers that we are clueless on..."
 }
 {if: n-b,true}
 {
- {additive: on}
  "It's possible, 
- but we would have to send AI into the code to search for their brain patterns, and <i>hope</i> their patterns don't alter too much. 
+ but we would have to send AI into the code to search for their brain patterns, and <i>hope</i> they don't alter too much.
  If they do, we won't be able to find them."
  {additive: off}
- "I pray MC lands somewhere semi-safe."
- "Will ransomware or malware hurt them? There are so many unknown dangers that we have no clue on..."
+ "I pray they land somewhere semi-safe."
+ "Will ransomware or malware hurt MC? There are so many unknown dangers that we are clueless on..." 
 }
 Narrator::
 Shirobi, listening carefully, brightens up. 
 {anim: Shirobi, Thisway}
 Shirobi::
-"I got it! The browser history! It's so simple!" 
+"I've got it. We can trace through the browser history." 
 {additive: on}
-"We can start there. 
+"We can start there...
 How does that sound Chief? 
-It can at least focus our efforts. Youbtube is so <i>huge</i> now...
-We wouldn't know where the AI actually dwells without being a part of the structure."
+Focus our efforts. It narrows things down dramatically. But... Youbtube is so <i>huge</i> now...
+We wouldn't know where an AI actually dwells without being part of the actual code."
 {additive: off}
-Narrator:: 
+Narrator::
 Cliff nods, never taking his eyes off the screen, grim determination replacing panic.
 Cliff::
+"They need us, team." 
+{additive: on}
 {if: n-b,false}
 {
- "MC, she needs us."  
- {additive: on}
- "She will be brave, but clueless.
- More alone than any woman has ever been. 
+ "He will be clueless. 
+ More alone than any man has ever been. 
  The only human in the digital world. 
- I hope that's enough to find her."
- {additive: off} 
+ I <i>hope</i> that is enough to find him."
 }
-{if: n-b,true}
+{if: n-b, true}
 {
- "MC, they need us."  
- {additive: on}
- "They will be brave, but clueless.
+ "They will be clueless. 
  More alone than any person has ever been. 
  The only human in the digital world. 
- It just might be enough of an edge to find them quickly."
- {additive: off} 
+ I <i>hope</i> that is enough to find them."
 }
+{additive: off} 
 Narrator::
 His eyes focus on Shirobi. The command in his voice strong.
 Cliff::
-"Get MC's thought pattern impressions inputted into the mainframe and start training the AI."
-"Hopefully, we can start a full search pattern in 12 hours."
+{if: n-b,false}
+{
+ "Get his thought-pattern impressions inputted into the mainframe and start training the AI."
+}
+{if: n-b,true}
+{
+ "Get their thought-pattern impressions inputted into the mainframe and start training the AI."
+}
+"I want a full-spread sweep started in the next 12 hours."
 Becks::
 {anim: Becks, Thiswayleft}
 "What about the press Sir?"
 Narrator::
 Cliff glances over at Becks.
-Cliff:: 
+Cliff::
 "We have four days. Four days to find the answer."
 "For now, we will play it off as typical secretive corporate lab techs." 
 Narrator::
 He ends the sentence with a bit of irony.
 Cliff::
-"We at least can use that stereotype to buy us some time."
-"In the meantime, try to figure out a good way to explain to the world what is happening."
- {if: n-b,false}
+"We can use that stereotype to buy us some time."
+"In the meantime, try to figure out a good way to explain to the world what is happening." 
+{if: n-b,false}
 {
- "If we can't find her by then, there will be some serious backlash on this."
+ "If we can't find him by then, there will be some serious backlash on this."
 }
 {if: n-b,true}
 {
@@ -267,32 +280,35 @@ Cliff's path clear, his confidence comes back.
 Cliff::
 "And get someone to do a complete diagnostic on the DIHI. Ensure the report is..."
 Narrator::
+As Cliff continues to push out instructions to his team, he can't help but feel a pang of incredible sadness. 
+The kid is fresh out of college.
 {if: n-b,false}
 {
- As Cliff continues to push out instructions to his team, he couldn't help but feel a pang of incredible sadness. 
- The kid is fresh out of college.
- Chief actually knows the kid's parents, and they will be devastated to hear what happened to their daughter.
+ Cliff knows about the kid's parents, and they really wouldn't care if he vanishes.
+ From Cliff's meeting with them, the parents seemed annoyed he was involved in the project.
  {additive: on}
- She is calm, collected,and with a quick wit, he muses.
- A bright young woman to be sure,
- but prone to jumping without looking.
+ The MC is socially inept, and normally withdrawn.
+ A bright young man to be sure,
+ but inclusive to the ones around him.
  {additive: off}
- From her profile, she is pretty competent.
- He hopes that whereever she is, she will be smart enough to pace herself and make careful decisions...
+ From his profile, he is a resourceful lad.
+ He hopes that wherever he is, he will be smart enough to pace himself and make careful considerations...
 }
 {if: n-b,true}
 {
- As Cliff continues to push out instructions to his team, he couldn't help but feel a pang of incredible sadness. 
- The kid is fresh out of college.
- Chief actually knows the kid's parents, and they will be devastated to hear what happened to their child.
+ Cliff knows about the kid's parents, and they really wouldn't care if MC vanishes.
+ From Cliff's meeting with them, the parents seemed annoyed they were involved in the project.
  {additive: on}
- The MC is calm, collected, with a quick wit. He muses.
+ The MC is socially inept, and normally withdrawn.
  A bright young person to be sure,
- but prone to jumping without looking.
+ but inclusive to the ones around them.
  {additive: off}
- From their profile, they are competent.
- He hopes that whereever MC is, they will be smart enough to pace herself and make careful decisions...
+ From their profile, they are resourceful. 
+ He hopes that wherever they are, MC will be smart enough to pace themselves and make careful considerations...
 }
+Cliff::
+"Don't be stupid, MC. You have to be very careful. There is no telling what's in there."
+"There are things in the internet that we can't even begin to comprehend..."
 {fadeoutsound: Discovery Music, 5}
 {fadeoutsound: Laptop Lab Scene, 5}
-{changeScript: Language Packs/English/Female/Prologue/Denizen.txt}
+{changeScript: Male/Prologue/Denizen.txt}
