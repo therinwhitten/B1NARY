@@ -75,8 +75,7 @@
 		}
 		public void Play(ScriptLine line)
 		{
-			string filePath = $"Voice/{line.ScriptDocument}/{line.Index}";
-			currentVoiceLine = Resources.Load<AudioClip>(filePath);
+			currentVoiceLine = line.GetVoiceActorLine();
 			if (BlockPreviousSpeakersOnNextLine)
 				using (var enumerator = CharacterController.Instance.charactersInScene.Values.GetEnumerator())
 					while (enumerator.MoveNext())

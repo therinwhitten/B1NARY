@@ -6,6 +6,7 @@
 	using System.Linq;
 	using System.Reflection;
 	using System.Text.RegularExpressions;
+	using System.Xml.Linq;
 	using UnityEngine;
 	using UnityEngine.XR;
 
@@ -154,20 +155,21 @@
 
 		/// <summary> The raw string contents. </summary>
 		public readonly string lineData;
+
+		public readonly string resourcesFilePath;
 		/// <summary> The current document name it is tied to. </summary>
 		public readonly string ScriptDocument;
-		// I know strings are stored on a heap, regardless of structs. But it would
-		// - help knowing multiple instances of the same document shares a pointer
-		// - to the same thing and not just multiplying it over and over again.
 		/// <summary> The index where it appears in <see cref="ScriptDocument"/>. </summary>
 		public readonly int Index;
 		/// <summary> The type of line it detects which. </summary>
 		public readonly Type type;
 
+
 		public ScriptLine(ScriptLine source)
 		{
 			lineData = source.lineData;
 			type = source.type;
+			resourcesFilePath = source.resourcesFilePath;
 			ScriptDocument = source.ScriptDocument;
 			Index = source.Index;
 		}
@@ -177,7 +179,7 @@
 		/// <param name="lineData">The line data.</param>
 		/// <param name="scriptDocument">The scriptName document.</param>
 		/// <param name="index">The index.</param>
-		public ScriptLine(string lineData, string scriptDocument, int index)
+		public ScriptLine(string lineData, string resourcesFilePath, string scriptDocument, int index)
 		{
 			int commentIndex = lineData.IndexOf("//");
 			if (commentIndex != -1) // Comments
@@ -187,13 +189,17 @@
 			ScriptDocument = scriptDocument;
 			Index = index;
 			type = ParseLineAsType(lineData);
+			this.resourcesFilePath = resourcesFilePath;
 		}
 
-		public void Deconstruct(out Type type, out int index, out string lineData)
+		public AudioClip GetVoiceActorLine()
 		{
-			type = this.type;
-			index = Index;
-			lineData = this.lineData;
+			string filePath = $"{resourcesFilePath}/{Index}";
+			AudioClip clip = Resources.Load<AudioClip>(filePath);
+			if (clip == null)
+				Debug.LogWarning($"Voiceline in resources path '{filePath}' " +
+					"could not be retrieved.");
+			return clip;
 		}
 
 		public override int GetHashCode()
@@ -207,11 +213,6 @@
 			return base.Equals(obj);
 		}
 		public override string ToString() => $"{type}\t{Index}: {lineData}";
-
-		internal static object TryCastCommand(ScriptLine scriptLine)
-		{
-			throw new NotImplementedException();
-		}
 
 		bool IEquatable<ScriptLine>.Equals(ScriptLine other)
 		{

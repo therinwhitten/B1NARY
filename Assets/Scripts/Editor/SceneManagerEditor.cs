@@ -14,6 +14,7 @@
 		
 		public override void OnInspectorGUI()
 		{
+			sceneManager.MainMenuSceneIndex = Mathf.Clamp(DirtyAuto.Field(sceneManager, new GUIContent("Main Menu Scene Index"), sceneManager.MainMenuSceneIndex), 0, UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings - 1);
 			EditorGUILayout.LabelField($"Active Scene: {SceneManager.ActiveScene.name}, Index: {SceneManager.ActiveScene.buildIndex}");
 			EditorGUILayout.LabelField($"Currently Switching Scenes: {sceneManager.IsSwitchingScenes}");
 			EditorGUILayout.Separator();

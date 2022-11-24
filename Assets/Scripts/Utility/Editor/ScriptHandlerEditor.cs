@@ -11,36 +11,28 @@
 	[CustomEditor(typeof(ScriptHandler))]
 	public class ScriptHandlerEditor : Editor
 	{
-		private static string BasePath => $"{Application.streamingAssetsPath}/Docs/";
-
 		public override void OnInspectorGUI()
 		{
-			var serializedObj = new SerializedObject(target);
 			var scriptHandler = (ScriptHandler)target;
-			string[] allFullPaths = GetFullDocumentsPath(BasePath).ToArray(),
-				visualPaths = allFullPaths.Select(str => str.Replace(BasePath, "").Replace(".txt", "")).ToArray();
-			int oldIndex = Array.IndexOf(allFullPaths, scriptHandler.StartupScriptPath);
+			List<string> allFullPaths = ScriptHandler.GetFullDocumentsPath(),
+				visualPaths = ScriptHandler.GetVisualDocumentsPaths(allFullPaths);
+			int oldIndex = allFullPaths.IndexOf(scriptHandler.StartupScriptPath);
 			if (oldIndex < 0)
 			{
-				oldIndex = 0; 
-				scriptHandler.StartupScriptPath = allFullPaths[oldIndex];
+				oldIndex = 0;
+				scriptHandler.StartupScriptPath = allFullPaths[0];
 				EditorUtility.SetDirty(scriptHandler);
 			}
-			int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, visualPaths);
+			int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, visualPaths.ToArray());
 			if (oldIndex != newIndex)
+			{
+				Debug.Log(allFullPaths[newIndex]);
 				scriptHandler.StartupScriptPath = allFullPaths[newIndex];
+				EditorUtility.SetDirty(scriptHandler);
+			}
 			InputActions(scriptHandler);
 			if (scriptHandler.IsActive)
 				EditorGUILayout.LabelField($"Current Line: {scriptHandler.ScriptDocument.CurrentLine}");
-		}
-		public List<string> GetFullDocumentsPath(string currentPath)
-		{
-			var output = new List<string>(Directory.GetFiles(currentPath).Where(path => path.EndsWith(".txt")));
-			IEnumerable<string> directories = Directory.GetDirectories(currentPath);
-			if (directories.Any())
-				foreach (string directory in directories)
-					output.AddRange(GetFullDocumentsPath(directory));
-			return output;
 		}
 		private void InputActions(in ScriptHandler scriptHandler)
 		{

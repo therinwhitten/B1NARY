@@ -93,13 +93,12 @@
 			for (int i = 0; i < subLines.Count; i++)
 			{
 				ScriptLine CurrentLine() => subLines[i].scriptLine;
-				Debug.Log(CurrentLine());
 				if (subLines[i].HasScriptNode)
 				{
 					Debug.Log($"Entering Script Node in line {CurrentLine().Index}..");
-					IEnumerator<ScriptLine> subNode = subLines[i].scriptNode.Perform(pauseOnCommands);
-					while (subNode.MoveNext())
-						yield return subNode.Current;
+					using (IEnumerator<ScriptLine> subNode = subLines[i].scriptNode.Perform(pauseOnCommands))
+						while (subNode.MoveNext())
+							yield return subNode.Current;
 					i += subLines[i].scriptNode.LineLength - 1;
 					continue;
 				}

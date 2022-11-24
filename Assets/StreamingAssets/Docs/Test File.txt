@@ -2,32 +2,94 @@
 {spawnEmpty: Jhon Ultrakill}
 Jhon Ultrakill::
 Starting Test Sequence. // Yes
-// Looking at Background Changes
-// {playBG: Prologue/Times Square Pan Up}
-Testing Choice:
-{choice: Mougs}
+{choice: Test what?}
 {
-	Sussy
+	Backgrounds
 	{
-	
+		Looking at Background Changes
+		{playBG: Prologue/Times Square Pan Up}
+		{loopbg: false}
+		{queuebg: Prologue/Times Square Animated}
+		{queueloopbg: true }
 	}
-	Kekw
+	Character
+	{
+		Starting Move Char
+		{spawnChar: femalesilo, 0.5, Cindy}
+		Moving To Right
+		{moveChar: Cindy, .75}
+		Moving To Left
+		{moveChar: Cindy, .25}
+		Disabling Char...
+		{disablechar: Cindy}
+		Re-enabling Char...
+		{spawnChar: Cindy, 0.5}
+	}
+	Gameobject Initialization
+	{
+		testing GameObject Initialization..
+		{usegameobject: Bruh}
+		End Detected
+	}
+	Page 2
+	{
+		{choice: Page 2}
+		{
+			Exception Throwing
+			{
+				no
+			}
+			If Statements
+			{
+				Setting value named 'giga chad' as boolean.
+				{choice: set true or false?}
+				{
+					True
+					{
+						{setbool: giga chad, true}
+					}
+					False
+					{
+						{setbool: giga chad, false}
+					}
+					None
+					{
+					
+					}
+				}
+				{choice: 'giga chad' is now set, false as default. what path should we take?}
+				{
+					True
+					{
+						{if: giga chad, true}
+						{
+							Hit true
+						}
+						{if: giga chad, false}
+						{
+							Hit false, as the 'else'
+						}
+					}
+					False
+					{
+						{if: giga chad, false}
+						{
+							Hit false
+						}
+						{if: giga chad, true}
+						{
+							Hit true, as the 'else'
+						}
+					}
+				}
+			}
+		}
+	}
+	Skip
 	{
 	
 	}
 }
-// {loopbg: false}
-// {queuebg: Prologue/Times Square Animated}
-// {queueloopbg: true }
-Starting Move Char
-{spawnChar: femalesilo, 0.5, Cindy}
-Moving To Right
-{moveChar: Cindy, .75}
-Moving To Left
-{moveChar: Cindy, .25}
-Disabling Char...
-{disablechar: Cindy}
-Re-enabling Char...
-{spawnChar: Cindy, 0.5}
 
-Test Finished!
+Test Finished! Returning to menu.
+{returnToMainMenu}

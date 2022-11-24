@@ -14,7 +14,7 @@
 	/// A document that tracks the <see cref="ScriptNode"/>s and parses information
 	/// from the given file document.
 	/// </summary>
-	public sealed class ScriptDocument
+	public sealed class ScriptDocument : IDisposable
 	{
 		/// <summary>
 		/// Saves the contents as a binary file. 
@@ -146,7 +146,10 @@
 			}
 		}
 
-
+		public void Dispose()
+		{
+			data.Dispose();
+		}
 
 
 
@@ -184,7 +187,7 @@
 			/// A collection of accumulated commands to convert them as a 
 			/// <see cref="Lookup{string, Delegate}"/> to invoke.
 			/// </summary>
-			public readonly CommandArray commands;
+			public readonly CommandArray commands = new CommandArray();
 
 			/// <summary>
 			/// Creates an instance of the <see cref="Factory"/> of 
@@ -200,15 +203,16 @@
 				if (!File.Exists(fullFilePath))
 					throw new ArgumentException($"{fullFilePath} does not lead to a playable file!");
 				documentName = Path.GetFileNameWithoutExtension(fullFilePath);
+				string resourcesPath = ScriptHandler.ToVisual(fullFilePath);
+				resourcesPath = "Voice/" + resourcesPath;
 				documentPath = fullFilePath;
-				commands = new CommandArray();
 				// TODO: add a way to parse it over time.
 				fileData = LineReader();
 				IEnumerator<ScriptLine> LineReader()
 				{
 					using (var reader = new StreamReader(fullFilePath))
 						for (int i = 1; !reader.EndOfStream; i++)
-							yield return new ScriptLine(reader.ReadLine(), documentName, i);
+							yield return new ScriptLine(reader.ReadLine(), resourcesPath, documentName, i);
 				}
 			}
 			/// <summary>
@@ -284,10 +288,10 @@
 				// Messing with the baseline entry scriptnode code.
 				list.InsertRange(0, new ScriptPair[]
 				{
-					(ScriptPair)new ScriptLine("::Start", documentName, -1),
-					(ScriptPair)new ScriptLine("{", documentName, 0)
+					(ScriptPair)new ScriptLine("::Start", list[0].scriptLine.resourcesFilePath, documentName, -1),
+					(ScriptPair)new ScriptLine("{", list[0].scriptLine.resourcesFilePath, documentName, 0)
 				});
-				list.Add((ScriptPair)new ScriptLine("::End", documentName, list.Count));
+				list.Add((ScriptPair)new ScriptLine("::End", list[0].scriptLine.resourcesFilePath, documentName, list.Count));
 				output.nodes = Array.AsReadOnly(nodeArray);
 				output.data = new ScriptNode(output, list.ToArray()).Perform(pauseOnCommand);
 				return output;

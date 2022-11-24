@@ -40,7 +40,6 @@
 		public void OnPointerEnter(PointerEventData eventData)
 		{
 			VoiceActor.Play(currentLine);
-			Debug.Log("Test");
 		}
 		public void OnPointerClick(PointerEventData eventData)
 		{

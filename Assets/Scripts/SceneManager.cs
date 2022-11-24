@@ -32,12 +32,18 @@
 		/// </summary>
 		public static readonly CommandArray Commands = new CommandArray()
 		{
-			new OverloadableCommand("changescene", (Action<string>)ChangeSceneCommand)//["changescene"] = (Action<string>)ChangeSceneCommand,
+			["changescene"] = (Action<string>)ChangeSceneCommand,//["changescene"] = (Action<string>)ChangeSceneCommand,
+			["returntomainmenu"] = (Action)ReturnToMainMenuCommand,
 		};
 		[ForcePause]
 		private static void ChangeSceneCommand(string newScene)
 		{
 			InstanceOrDefault.StartCoroutine(InstanceOrDefault.ChangeScene(newScene));
+		}
+		[ForcePause]
+		internal static void ReturnToMainMenuCommand()
+		{
+			InstanceOrDefault.StartCoroutine(InstanceOrDefault.ReturnToMainMenu());
 		}
 		/// <summary> Gets the currently active/main scene. </summary>
 		public static Scene ActiveScene => UnitySceneManager.GetActiveScene();
@@ -57,6 +63,7 @@
 		/// <see cref="SwitchingScenes"/> and <see cref="SwitchedScenes"/>.
 		/// </summary>
 		public bool IsSwitchingScenes { get; private set; } = false;
+		public int MainMenuSceneIndex = 1;
 
 		protected override void SingletonAwake()
 		{
@@ -107,6 +114,29 @@
 			while (cannotPerformNext);
 			ScriptHandler.Instance.ShouldPause = false;
 			ScriptHandler.Instance.NextLine(); 
+		}
+		public IEnumerator ReturnToMainMenu()
+		{
+			ScriptHandler.Instance.ShouldPause = true;
+			IEnumerator fadeEnum = FadeScene();
+			while (fadeEnum.MoveNext())
+				yield return fadeEnum.Current;
+
+			IsSwitchingScenes = true;
+			SwitchingScenes.InvokeAll();
+			var async = UnitySceneManager.LoadSceneAsync(MainMenuSceneIndex);
+			if (async == null)
+			{
+				if (Application.isEditor)
+				{
+					Debug.LogException(new MissingReferenceException($"'{MainMenuSceneIndex}' does not exist as a scene index, fix this before production! IT WILL BREAK YOUR SHIT!"));
+					ScriptHandler.Instance.ShouldPause = true;
+				}
+				else
+					Utils.ForceCrash(ForcedCrashCategory.FatalError);
+			}
+			ScriptHandler.Instance.ShouldPause = false;
+			ScriptHandler.Instance.Clear();
 		}
 		/// <summary>
 		/// Initializes the <see cref="ScriptHandler"/>, the system expects the
