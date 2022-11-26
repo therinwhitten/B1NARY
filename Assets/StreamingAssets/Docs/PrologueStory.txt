@@ -348,28 +348,15 @@ So... which route would you like to go down?
 	"Male Route it is!"
 	 Do you prefer to identify as binary or non-binary? This choice will allow characters to refer to your person in a gender neutral fashion.
 	{usegameobject: binaryselection}
-	BINARY: Characters will refer to you based on your route choice. 
-	[
-		{setbool: n-b,false}
-	]
-	NON-BINARY: Characters will refer to you in a neutral fashion.
-	[
-		{setbool: n-b,true}
-	]
 	{changeScript: Male/Prologue/Prologue.txt}
 }	
 {if: Male, False}
 {
 	Narrator::
 	"Female Route it is!"
-	{choice: Do you prefer to identify as binary or non-binary? This choice will allow characters to refer to your person in a gender neutral fashion.} 
-	{
-	BINARY: Characters will refer to you based on your route choice. 
-		[
-			{setbool: n-b,false}
-		]
-		NON-BINARY: Characters will refer to you in a neutral fashion.
-		[
-			{setbool: n-b,true}
-		]
-		}
+	Do you prefer to identify as binary or non-binary? This choice will allow characters to refer to your person in a gender neutral fashion.
+	{usegameobject: binaryselection}	
+	{changeScript: Female/Prologue/Prologue.txt}
+}
+	
+
