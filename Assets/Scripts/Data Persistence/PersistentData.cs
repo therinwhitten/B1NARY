@@ -11,20 +11,22 @@
 	public class PersistentData : Singleton<PersistentData>
 	{
 		#region Game Slot Data
-		[HideInInspector] public string playerName = string.Empty;
-		public Dictionary<string, string> strings = new Dictionary<string, string>();
-		public Dictionary<string, bool> bools = new Dictionary<string, bool>();
-		public Dictionary<string, int> ints = new Dictionary<string, int>();
-		public Dictionary<string, float> floats = new Dictionary<string, float>();
+		public GameSlotData GameSlotData { get; set; }
+		public Dictionary<string, bool> Booleans => GameSlotData.bools;
+		public Dictionary<string, string> Strings => GameSlotData.strings;
+		public Dictionary<string, int> Integers => GameSlotData.ints;
+		public Dictionary<string, float> Singles => GameSlotData.floats;
 
+
+		
 		/// <summary>
 		/// Saves data as a <see cref="GameSlotData"/> and writes it into the saves
 		/// folder.
 		/// </summary>
 		/// <param name="index"> The index for the save. </param>
-		public static void SaveGame(int index = 0)
+		public void SaveGame(int index = 0)
 		{
-			new GameSlotData().Save(index);
+			GameSlotData.Serialize(index);
 			Debug.Log("Game Saved!");
 		}
 
@@ -33,10 +35,19 @@
 		/// writes it back into <see cref="PersistentData"/>.
 		/// </summary>
 		/// <param name="index"> The index for the save. </param>
-		public static void LoadGame(int index = 0)
+		public void LoadGame(int index = 0)
 		{
-			GameSlotData.LoadExistingData(index).Load();
+			GameSlotData = GameSlotData.LoadExistingData(index);
+			GameSlotData.LoadScene();
 			Debug.Log("Game Loaded!");
+		}
+
+		/// <summary>
+		/// Starts a new gameslot to save the data as a binary format.
+		/// </summary>
+		public void CreateNewSlot(int index = 0)
+		{
+			GameSlotData = new GameSlotData();
 		}
 		#endregion
 	}

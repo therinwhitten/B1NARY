@@ -26,8 +26,7 @@
 		{
 			for (int i = 0; i < actions.Length; i++)
 			{
-				Debug.Log($"Loading method: {actions[i].Method.Name}");
-				actions[i].Invoke();
+				actions[i]?.Invoke();
 			}
 		};
 

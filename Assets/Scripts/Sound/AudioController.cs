@@ -85,7 +85,8 @@
 			int index = 0;
 			while (m_activeAudioTrackers.ContainsKey((customAudioClip.Name, index)))
 				index++;
-			m_activeAudioTrackers.Add((customAudioClip.Name, index), new AudioTracker(this));
+			var audioTracker = new AudioTracker(this);
+			m_activeAudioTrackers.Add((customAudioClip.Name, index), audioTracker);
 			return (customAudioClip.Name, index);
 		}
 
@@ -111,7 +112,26 @@
 		}
 		private void ReloadSoundLibrary()
 		{
-			string resourcesPath = baseResourcesPath + '/' + SceneManager.ActiveScene.name; 
+			string resourcesPath = baseResourcesPath + '/' + SceneManager.ActiveScene.name;
+			using (var enumerator = ActiveAudioTrackers.GetEnumerator())
+				while (enumerator.MoveNext())
+				{
+					CustomAudioClip clip;
+					if (enumerator.Current.Value.CustomAudioClip != null)
+						clip = enumerator.Current.Value.CustomAudioClip;
+					else if (!CurrentSoundLibrary.TryGetCustomAudioClip(enumerator.Current.Value.ClipName, out clip))
+					{
+						Debug.LogError($"Cannot find info about {enumerator.Current.Key.name}!");
+						continue;
+					}
+
+					if (!clip.destroyWhenTransitioningScenes)
+						continue;
+					if (clip.fadeTime > 0f)
+						enumerator.Current.Value.Stop(clip.fadeTime);
+					else
+						enumerator.Current.Value.Stop();
+				}
 			SoundLibrary newSoundLibrary = Resources.Load<SoundLibrary>(resourcesPath);
 			if (newSoundLibrary == null)
 				throw new FileNotFoundException($"{resourcesPath} is not a valid resource path of sound library!");
@@ -122,7 +142,6 @@
 					while (enumerator.MoveNext())
 						AddAudioClipToDictionary(enumerator.Current);
 			}
-			// NATURAL FADE OUT BETWEEN SCENES, gamer
 		}
 
 		public void PlaySound(string soundName)

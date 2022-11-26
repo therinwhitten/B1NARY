@@ -13,17 +13,31 @@
 	using B1NARY.DesignPatterns;
 	using B1NARY.DataPersistence;
 	using CharacterController = CharacterManagement.CharacterController;
+	using System.Collections.ObjectModel;
 
 	[AddComponentMenu("B1NARY/Script Handler")]
 	public class ScriptHandler : Singleton<ScriptHandler>
 	{
+		public static CommandArray[] AllCommands => 
+			new CommandArray[]
+			{
+				Commands,
+				AudioController.Commands,
+				SceneManager.Commands,
+				CharacterController.Commands,
+				TransitionManager.Commands,
+				UIThemeHandler.Commands
+			};
 		public static List<string> GetFullDocumentsPaths(string currentPath)
 		{
 			var output = new List<string>(Directory.GetFiles(currentPath).Where(path => path.EndsWith(".txt")));
 			IEnumerable<string> directories = Directory.GetDirectories(currentPath);
 			if (directories.Any())
-				foreach (string directory in directories)
-					output.AddRange(GetFullDocumentsPaths(directory));
+			{
+				IEnumerator<string> enumerator = directories.GetEnumerator();
+				while (enumerator.MoveNext())
+					output.AddRange(GetFullDocumentsPaths(enumerator.Current));
+			}
 			return output;
 		}
 		public static List<string> GetFullDocumentsPath()
@@ -66,10 +80,7 @@
 			["usegameobject"] = (Action<string>)(UseGameObject),
 			["setbool"] = (Action<string, string>)((name, value) =>
 			{
-				if (PersistentData.InstanceOrDefault.bools.ContainsKey(name))
-					PersistentData.Instance.bools[name] = bool.Parse(value);
-				else
-					PersistentData.Instance.bools.Add(name, bool.Parse(value));
+				PersistentData.Instance.Booleans[name] = bool.Parse(value);
 			}),
 		};
 
@@ -194,12 +205,12 @@
 		/// A non-static method for <see cref="PersistentData.LoadGame(int)"/>
 		/// </summary>
 		/// <param name="index"> The index for the save. </param>
-		public void LoadExistingSave(int index) => PersistentData.LoadGame(index);
+		public void LoadExistingSave(int index) => PersistentData.Instance.LoadGame(index);
 		/// <summary>
 		/// A non-static method for <see cref="PersistentData.SaveGame(int)"/>
 		/// </summary>
 		/// <param name="index"> The index for the save. </param>
-		public void SaveGame(int index) => PersistentData.SaveGame(index);
+		public void SaveGame(int index) => PersistentData.Instance.SaveGame(index);
 		/// <summary>
 		/// Starts a new script from stratch.
 		/// </summary>
@@ -211,11 +222,9 @@
 			m_pauseIterations = 0;
 			var scriptFactory = new ScriptDocument.Factory(finalPath);
 			scriptFactory.AddNodeParserFunctionality(GetDefinedScriptNodes);
-			scriptFactory.commands.AddRange(AudioController.Commands);
-			scriptFactory.commands.AddRange(SceneManager.Commands);
-			scriptFactory.commands.AddRange(ScriptHandler.Commands);
-			scriptFactory.commands.AddRange(CharacterController.Commands);
-			scriptFactory.commands.AddRange(TransitionManager.Commands);
+			var allCommands = AllCommands;
+			for (int i = 0; i < allCommands.Length; i++)
+				scriptFactory.commands.AddRange(allCommands[i]);
 			scriptDocument = scriptFactory.Parse(false);
 			IsActive = true;
 

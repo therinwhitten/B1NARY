@@ -5,15 +5,22 @@
 	using System.Collections.Generic;
 	using System.Linq;
 
-
+	/// <summary>
+	/// A modifiable collection for multiple <see cref="OverloadableCommand"/>.
+	/// Can use the interface of either a Dictionary or List on creation.
+	/// </summary>
 	public class CommandArray : IDictionary<string, OverloadableCommand>,
 		IReadOnlyDictionary<string, OverloadableCommand>,
 		IList<OverloadableCommand>, IReadOnlyList<OverloadableCommand>,
 		IEnumerable<OverloadableCommand>, IEnumerable<Delegate>
 	{
+		/// <summary>
+		/// Returns a separate list of data originating from <see cref="commands"/>.
+		/// </summary>
+		/// <param name="arr"></param>
 		public static explicit operator List<OverloadableCommand>(CommandArray arr)
 		{
-			return arr.commands;
+			return new List<OverloadableCommand>(arr.commands);
 		}
 
 		ICollection<string> IDictionary<string, OverloadableCommand>.Keys => nameToDel.Keys;
@@ -30,11 +37,19 @@
 
 		public int Count => commands.Count;
 
+		/// <summary>
+		/// Creates an empty collection.
+		/// </summary>
 		public CommandArray()
 		{
 			commands = new List<OverloadableCommand>();
 			nameToDel = new Dictionary<string, int>();
 		}
+		/// <summary>
+		/// Creates an empty collection with a marked capacity. The capacity only
+		/// affects the <see cref="commands"/> list stored inside that is affected
+		/// by capacity due to reserving space for storage.
+		/// </summary>
 		public CommandArray(int capacity)
 		{
 			commands = new List<OverloadableCommand>(capacity);
@@ -131,6 +146,8 @@
 		}
 		public void AddRange(IEnumerable<OverloadableCommand> commands)
 		{
+			if (commands == null)
+				return;
 			using (var enumerator = commands.GetEnumerator())
 				while (enumerator.MoveNext())
 					Add(enumerator.Current);

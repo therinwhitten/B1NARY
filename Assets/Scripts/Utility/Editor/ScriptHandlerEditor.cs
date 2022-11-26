@@ -26,7 +26,6 @@
 			int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, visualPaths.ToArray());
 			if (oldIndex != newIndex)
 			{
-				Debug.Log(allFullPaths[newIndex]);
 				scriptHandler.StartupScriptPath = allFullPaths[newIndex];
 				EditorUtility.SetDirty(scriptHandler);
 			}
@@ -55,8 +54,8 @@
 					catch { EditorGUILayout.HelpBox(
 						$"'{scriptHandler.nextLineButtons[i]}' may not exist in the player input!", 
 						MessageType.Error); }
-					scriptHandler.nextLineButtons[i] = DirtyAuto
-						.Field(textEditorRect, scriptHandler, new GUIContent($"Action {i}"), 
+					scriptHandler.nextLineButtons[i] = DirtyAuto.Field(textEditorRect, 
+						scriptHandler, new GUIContent($"Action {i}"), 
 						scriptHandler.nextLineButtons[i]);
 					if (GUI.Button(deleteButtonRect, "Remove"))
 					{

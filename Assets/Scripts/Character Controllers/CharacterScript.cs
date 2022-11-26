@@ -85,7 +85,6 @@
 					HorizontalPosition = Mathf.SmoothDamp(HorizontalPosition, newXPosition, ref velocity, time);
 					yield return new WaitForEndOfFrame();
 				}
-				Debug.Log("Finished smooth transfer");
 			}
 		}
 

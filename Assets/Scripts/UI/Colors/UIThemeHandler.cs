@@ -11,6 +11,7 @@
 	using B1NARY.DesignPatterns;
 	using System.Collections.Generic;
 	using UnityEngine.Rendering;
+	using B1NARY.Scripting;
 
 	/// <summary>
 	/// Allows you to easily change a single gameObject with the <see cref="Image"/>
@@ -20,6 +21,15 @@
 	/// <seealso cref="MonoBehaviour"/>
 	public class UIThemeHandler : Multiton<UIThemeHandler>
 	{
+		// Add command array for selection.
+		public static CommandArray Commands = new CommandArray()
+		{
+			["colorformat"] = (Action<string>)(newColorFormat =>
+			{
+				
+			}),
+		};
+
 		public const string resourcesColorThemePath = "UI/Color Themes";
 		public static string uiThemeName = "Default";
 		public static string CurrentResourcesFormatPath => $"{resourcesColorThemePath}/{uiThemeName}";

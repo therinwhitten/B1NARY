@@ -1,6 +1,26 @@
 ﻿namespace B1NARY.UI.Globalization
 {
 	using System;
+	using System.Collections;
+	using System.Collections.Generic;
+	using UnityEngine;
+
+	public class LanguageCollection : ScriptableObject, IEnumerable<string>
+	{
+		public List<string> languages;
+
+		
+
+		private void Awake()
+		{
+
+		}
+
+		public IEnumerator<string> GetEnumerator() => ((IEnumerable<string>)languages).GetEnumerator();
+		IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable)languages).GetEnumerator();
+	}
+	/*
+	using System;
 	using System.Collections.Generic;
 	using System.Collections;
 
@@ -54,4 +74,5 @@
 				yield return new KeyValuePair<string, string>(keys[i], values[i]);
 		}
 	}
+	*/
 }

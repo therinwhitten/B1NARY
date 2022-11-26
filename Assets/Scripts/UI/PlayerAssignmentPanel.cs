@@ -22,10 +22,8 @@
 
 		public void Complete()
 		{
-			PersistentData.Instance.playerName = nameInput.text;
-			if (PersistentData.Instance.bools.ContainsKey(isMaleDocument))
-				PersistentData.Instance.bools[isMaleDocument] = !isFemale;
-			PersistentData.Instance.bools.Add(isMaleDocument, !isFemale);
+			PersistentData.Instance.GameSlotData.PlayerName = nameInput.text;
+			PersistentData.Instance.Booleans[isMaleDocument] = !isFemale;
 		}
 	}
 }

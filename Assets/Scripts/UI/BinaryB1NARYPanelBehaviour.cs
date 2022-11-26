@@ -4,6 +4,10 @@
 	using UnityEngine;
 	using UnityEngine.UI;
 
+	/// <summary>
+	/// a simple panel/component that adds functionality to the binary options 
+	/// in B1NARY's binary panel.
+	/// </summary>
 	public class BinaryB1NARYPanelBehaviour : MonoBehaviour
 	{
 		public const string IsBinaryKey = "n-b";
@@ -15,9 +19,7 @@
 			nonBinaryButton.onClick.AddListener(() => OnBinaryClick(false));
 			void OnBinaryClick(bool isBinary)
 			{
-				if (PersistentData.Instance.bools.ContainsKey(IsBinaryKey))
-					PersistentData.Instance.bools[IsBinaryKey] = isBinary;
-				PersistentData.Instance.bools.Add(IsBinaryKey, isBinary);
+				PersistentData.Instance.Booleans[IsBinaryKey] = isBinary;
 			}
 		}
 	}

@@ -21,6 +21,11 @@
 				throw new ArgumentNullException();
 			if (oldValue is UnityEngine.Object @object)
 				return EditorGUI.ObjectField(rect, @object, @object.GetType(), false);
+			else if (oldValue is GUIContent content)
+			{
+				EditorGUI.LabelField(rect, content);
+				return null;
+			}
 			else if (oldValue is string @string)
 				return EditorGUI.TextField(rect, @string);
 			else if (oldValue is float @float)

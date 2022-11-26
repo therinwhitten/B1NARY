@@ -1,7 +1,5 @@
 ﻿namespace B1NARY.Scripting
 {
-	using System;
-
 	public struct ScriptPair
 	{
 		public static explicit operator ScriptPair(ScriptLine line)

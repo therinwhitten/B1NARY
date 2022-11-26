@@ -21,7 +21,7 @@
 			{
 				string[] arguments = ScriptLine.CastCommand(rootLine).arguments;
 				bool canPerform = bool.Parse(arguments[1]);
-				if (PersistentData.Instance.bools.TryGetValue(arguments[0], out bool value))
+				if (PersistentData.Instance.Booleans.TryGetValue(arguments[0], out bool value))
 					canPerform = value;
 				return canPerform;
 			}

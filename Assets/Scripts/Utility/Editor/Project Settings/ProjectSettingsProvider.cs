@@ -12,7 +12,7 @@
 			{
 				guiHandler = searchContext =>
 				{
-
+					EditorGUILayout.LabelField("Bruh");
 				}
 			};
 		}

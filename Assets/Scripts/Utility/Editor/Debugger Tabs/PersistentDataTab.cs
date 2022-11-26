@@ -28,10 +28,10 @@
 				return;
 			}
 			scroll = EditorGUILayout.BeginScrollView(scroll);
-			DisplayBlock("Booleans", PersistentData.Instance.bools);
-			DisplayBlock("Integers", PersistentData.Instance.ints);
-			DisplayBlock("Floats/Single", PersistentData.Instance.floats);
-			DisplayBlock("Strings", PersistentData.Instance.strings);
+			DisplayBlock("Booleans", PersistentData.Instance.Booleans);
+			DisplayBlock("Integers", PersistentData.Instance.Integers);
+			DisplayBlock("Singles/Single", PersistentData.Instance.Singles);
+			DisplayBlock("Strings", PersistentData.Instance.Strings);
 			EditorGUILayout.EndScrollView();
 		}
 

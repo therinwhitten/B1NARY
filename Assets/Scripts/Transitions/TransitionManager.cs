@@ -79,6 +79,8 @@
 		private float queueWait = 0f;
 		protected virtual void LateUpdate()
 		{
+			if (m_animatedBackground == null)
+				return;
 			if (m_animatedBackground.isLooping || m_animatedBackground.isPlaying || !m_animatedBackground.isPaused)
 				return;
 			if (queueWait > 0f)

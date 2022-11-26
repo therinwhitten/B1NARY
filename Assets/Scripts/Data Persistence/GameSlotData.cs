@@ -37,24 +37,31 @@ namespace B1NARY.DataPersistence
 		public Dictionary<string, int> ints;
 		public Dictionary<string, float> floats;
 
-		public string playerName;
+		public string PlayerName
+		{
+			get => strings["Player Name"];
+			set => strings["Player Name"] = value;
+		}
 		public int sceneIndex;
 		public string documentPath;
 		private ScriptLine lastLine;
 
 		public GameSlotData()
 		{
+			strings = new Dictionary<string, string>();
+			PlayerName = string.Empty;
+			bools = new Dictionary<string, bool>();
+			ints = new Dictionary<string, int>();
+			floats = new Dictionary<string, float>();
+			//timePlayed += lastSaved - ScriptHandler.Instance.playedTime;
+		}
+		public void CaptureDocument()
+		{
 			documentPath = ScriptHandler.Instance.ScriptDocument.documentPath;
 			sceneIndex = SceneManager.GetActiveScene().buildIndex;
-			strings = PersistentData.Instance.strings;
-			bools = PersistentData.Instance.bools;
-			ints = PersistentData.Instance.ints;
-			floats = PersistentData.Instance.floats;
-			playerName = PersistentData.Instance.playerName;
-			lastSaved = DateTime.Now;
-			timePlayed += lastSaved - ScriptHandler.Instance.playedTime;
+			lastLine = ScriptHandler.Instance.CurrentLine;
 		}
-		public void Save(int index)
+		public void Serialize(int index = 0)
 		{
 			string path = FileSavePath(index);
 			string savesPath = path.Remove(path.LastIndexOf('/'));
@@ -63,13 +70,8 @@ namespace B1NARY.DataPersistence
 			using (var stream = new FileStream(path, FileMode.Create))
 				new BinaryFormatter().Serialize(stream, this);
 		}
-		public void Load()
+		public void LoadScene()
 		{
-			PersistentData.Instance.playerName = playerName;
-			PersistentData.Instance.strings = strings;
-			PersistentData.Instance.bools = bools;
-			PersistentData.Instance.ints = ints;
-			PersistentData.Instance.floats = floats;
 			SceneManager.LoadScene(sceneIndex);
 			ScriptHandler.Instance.InitializeNewScript(documentPath);
 			while (ScriptHandler.Instance.CurrentLine != lastLine)
