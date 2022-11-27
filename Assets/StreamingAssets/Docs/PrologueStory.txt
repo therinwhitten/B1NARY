@@ -342,7 +342,7 @@ Narrator::
 It's time to make your first choice. You will also be able to put in your own name, and add the non-binary option at this point.
 So... which route would you like to go down?
 {usegameobject: Character Selection Panel}
-{if: MalePath, true}
+{if: MalePath}
 {
 	Narrator::
 	"Male Route it is!"
@@ -350,7 +350,7 @@ So... which route would you like to go down?
 	
 	{changeScript: Male/Prologue/Prologue.txt}
 }	
-{if: MalePath, False}
+{if: !MalePath}
 {
 	Narrator::
 	"Female Route it is!"
