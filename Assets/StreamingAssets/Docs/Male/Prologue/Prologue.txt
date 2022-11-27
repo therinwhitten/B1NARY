@@ -8,11 +8,11 @@
 {spawnEmpty: MC}
 {fadeinsound: Fast Heartbeat, 1}
 Shirobi::
-{if: n-b,false}
+{if: !n-b}
 {
 	"He has been an intern with the company for over a year now..."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "They have been an intern with the company for over a year now..."
 }
@@ -117,11 +117,11 @@ Damn lights!
 {moveChar: Shirobi, .75}
 Shirobi::
 {anim: Shirobi, Glasses} 
-{if: n-b, true}
+{if: n-b}
 {
  "Well, at least they seem to have calmed down. I was starting to worry, to be frank."
 }
-{if: n-b, false}
+{if: !n-b}
 {
  "Well, at least he seems to have calmed down a bit. I was starting to worry, to be frank." 
 }

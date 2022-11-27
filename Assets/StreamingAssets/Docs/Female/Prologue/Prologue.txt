@@ -9,11 +9,11 @@
 {spawnEmpty: MC}
 {spawnChar: malesilo3, 1.5, Shirobi}
 Shirobi::
-{if: n-b,false}
+{if: !n-b}
 { 
  "MC! She has been an intern with the company for over a year now..."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "They have been an intern with the company for over a year now..."
 }
@@ -54,11 +54,11 @@ I attempt to blink away the glaring brightness, raising my hand to shade my eyes
 Old Reporter::
 {anim: Old Reporter, kime1}
 {moveChar: Old Reporter, .85}
-{if: n-b,false}
+{if: !n-b}
 {
  "There she is! MC?"
 }
-{if: n-b,true}
+{if: n-b}
 {
  "There they are! MC?"
 }

@@ -42,14 +42,14 @@ Asterella::
 MC::
 That dulcet voice is full of exasperation.
 Asterella::
-{if: n-b,false}
+{if: !n-b}
 {
  {additive:on}
  "I told you to <i>bring</i> him in,
  not beat him up and drag him!" 
  {additive:off}
 }
-{if: n-b,true}
+{if: n-b}
 {
  {additive:on}
  "I told you to <i>bring</i> them in,
@@ -60,13 +60,13 @@ MC::
 Szycrotic shrugs, a hint of defensiveness squaring up his shoulders. 
 Szycrotic::
 [Default]
-{if: n-b,false}
+{if: !n-b}
 {
  "Star, he literally tried to book it."
  "So, naturally. I tied him up."
  "Don't blame me! I think it's his kink."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "Star, they literally tried to book it."
  "So, naturally. I tied MC up."
@@ -83,11 +83,11 @@ Szycrotic::
 [OWO]
 Asterella::
 {anim: Asterella, Pouting}
-{if: n-b,false}
+{if: !n-b}
 {
  "Even if they seem to be intruders! What if he was a Demon Lord in disguise?"
 } 
-{if: n-b,true}
+{if: n-b}
 {
  "Even if they seem to be intruders! What if the were a Demon Lord in disguise?"
 } 
@@ -116,11 +116,11 @@ They seem to <i>live</i> here.
 Szycrotic::
 [Angry]
 "Fine, woman."
-{if: n-b,false}
+{if: !n-b}
 {
  "If he becomes hostile don't blame me, alright?"
 }
-{if: n-b,true}
+{if: n-b}
 {
  "If they become hostile don't blame me, alright?"
 }
@@ -162,13 +162,13 @@ Wait, was that a warning?
 I intend to take it as one.
 Asterella Star, not a foot from my face.
 In the flesh. 
-{if: henable, true}
+{if: henable}
 {
-    {if: n-b, true}
+    {if: n-b}
  {
    Be a gentleperson.
  }
- {if: n-b, false}
+ {if: !n-b}
  {
    Be a gentleman. 
  }
@@ -176,14 +176,14 @@ In the flesh.
  My eyes can't help but lock on her bouncing "assets."
  Task Failed Successfully.
 }
-{if: henable, false}
+{if: !henable}
 {
     She is short, her head only coming up to my mid chest.
- {if: n-b, true}
+ {if: n-b}
  {
    Being a gentleperson, I lock eyes with her.
  }
- {if: n-b, false}
+ {if: !n-b}
  {
   Being a gentleman, I lock eyes with her. 
  }
@@ -351,18 +351,18 @@ She confirms my suspicions by placing a gentle hand on my leg.
 Play it cool, MC. Play it cool.
 You're cool as a cucumber.
 Asterella::
-{if: n-b,false}
+{if: !n-b}
 {
  "Don't play dumb with me, MC. You seem to be a very kind, attractive elf boy, and I am a bit 'thirsty'..."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "Don't play dumb with me, MC. You seem to be a very kind, attractive elf, and I am a bit 'thirsty'..."
 }
 "And it's not for more wine."
 MC::
 The look on her face speaks volumes on what her true intentions were.
-{if: henable, true}
+{if: henable}
 {
     {additive:on}
     And, like a true virgin (it's been that long), 
@@ -373,7 +373,7 @@ The look on her face speaks volumes on what her true intentions were.
     Good to know the little man can wake up.
     I almost embarrass myself by choking on my wine. 
 }
-{if: henable, false}
+{if: !henable}
 {
     My heart leaps to my throat. The gentle feeling becomes more assertive.
     This can't be happening... 
@@ -383,13 +383,13 @@ The look on her face speaks volumes on what her true intentions were.
     Quite proud of that one. 
     Star gently begins caressing my leg.
 }
-{if: henable, true}
+{if: henable}
 {
     Getting incredibly close to my crotch.
     I feel my little man twitch. 
     Her movements become more assertive.
 }
-{if: henable, false}
+{if: !henable}
 {
     This is getting serious fast.
     Her motions become more assertive, and she looks into my eyes... 
@@ -428,7 +428,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
         Asterella::
         {anim: Asterella, Smug}
         [Horny]
-        {if: n-b,false}
+        {if: !n-b}
         {
          "Good boy..."
          MC::
@@ -436,7 +436,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
          Asterella::
          "Such a very good boy..."
         }
-        {if: n-b,true}
+        {if: n-b}
         {
          "Such a good toy you are..."
          MC::

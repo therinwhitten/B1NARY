@@ -8,7 +8,7 @@
 {spawnEmpty: Cindy}
 {spawnEmpty: Female Reporter}
 Narrator::
-{if: n-b,false}
+{if: !n-b}
 {
  {additive: on}
  Finally,
@@ -44,21 +44,21 @@ The press share glances, sip coffee, scribble down notes, as they wait impatient
 It feels like several hours to some, but time plays tricks on you when you are focusing.
 It only takes a few minutes. Then, the lights in the lab comes back on.
 {fadeinsound: fluorescent light flicker, .2}
-{if: n-b,false}
+{if: !n-b}
 {
   Medics grab MC, carefully placing her into the cryotube and applying sensors to the different sections of her body.
 }
-{if: n-b,true}
+{if: n-b}
 {
  Medics grab MC, carefully placing them into the cryotube and applying sensors to the different sections of their body.
 }
 The body looks so dead, it unnerves the veteran journalist.
 John wipes a bit of sweat off his head. 
-{if: n-b,false}
+{if: !n-b}
 { 
  With a pneumatic swoosh, the stasis chamber closes with her inside.
 }
-{if: n-b,true}
+{if: n-b}
 { 
  With a pneumatic swoosh, the stasis chamber closes with them inside.
 }
@@ -68,11 +68,11 @@ The stasis chamber looks like nothing John has ever seen before, touchscreens co
 The veteran reporter can hear the heart rate monitor, even in the "press room." Even through the thick panel of glass. 
 John looks around.
 "Press room." It is basically the lab techs' break room. 
-{if: n-b,false}
+{if: !n-b}
 {
  At least for the young lady, Digital Horizons has spared no expense.
 } 
-{if: n-b,true}
+{if: n-b}
 {
  At least for this employee, Digital Horizons has spared no expense.
 }
@@ -125,7 +125,7 @@ Narrator::
 He pauses for affect, making eye contact with the press through the observation window, one by one.
 When he observes them talking amongst themsevles, he continues, voice strong and steady.
 Cliff::
-{if: n-b,false}
+{if: !n-b}
 {
  {additive: on}
  "We have confirmed her thought patterns in server 10.
@@ -133,7 +133,7 @@ Cliff::
  {additive: off}
  "Tests are still being conducted to ensure she is aware of her location and fully cognizant." 
 }
-{if: n-b,true}
+{if: n-b}
 {
  {additive: on}
  "We have confirmed their thought patterns in server 10.
@@ -174,12 +174,12 @@ Cliff::
 {additive: on}
 "There are a lot of unknowns,
 and the pressure of dealing with a whole new frontier,
-{if: n-b,false}
+{if: !n-b}
 {
  will keep her most likely disorientated.
  It is crucial we keep her calm and safe. 
 }
-{if: n-b,true}
+{if: n-b}
 {
  will keep them most likely disorientated.
  It is crucial we keep them calm and safe. 
@@ -193,7 +193,7 @@ Cliff sighs visibly, a touch of irritability cracking his normally calm facade.
 Cliff::
 "Please understand, that we already have warned you prior to the conference that this is a very <i>high risk</i> experiment."
 "We understand the world wants to know more as it develops. And we will endeavor to keep you informed."
-{if: n-b,false}
+{if: !n-b}
 {
  {additive: on}
  "However,
@@ -203,7 +203,7 @@ Cliff::
  and after Ms MC has been cleared from quarantine, we will allow her to speak to the press."
  {additive: off}
 }
-{if: n-b,true}
+{if: n-b}
 {
  {additive: on}
  "However,
