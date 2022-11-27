@@ -282,7 +282,7 @@ Cliff::
 Narrator::
 As Cliff continues to push out instructions to his team, he can't help but feel a pang of incredible sadness. 
 The kid is fresh out of college.
-{if: n-b,false}
+{if: !n-b}
 {
  Cliff knows about the kid's parents, and they really wouldn't care if he vanishes.
  From Cliff's meeting with them, the parents seemed annoyed he was involved in the project.
@@ -294,7 +294,7 @@ The kid is fresh out of college.
  From his profile, he is a resourceful lad.
  He hopes that wherever he is, he will be smart enough to pace himself and make careful considerations...
 }
-{if: n-b,true}
+{if: n-b}
 {
  Cliff knows about the kid's parents, and they really wouldn't care if MC vanishes.
  From Cliff's meeting with them, the parents seemed annoyed they were involved in the project.

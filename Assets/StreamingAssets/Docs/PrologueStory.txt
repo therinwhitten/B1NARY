@@ -341,21 +341,21 @@ Shirobi::
 Narrator:: 
 It's time to make your first choice. You will also be able to put in your own name, and add the non-binary option at this point.
 So... which route would you like to go down?
-{usegameobject: routeselection}
-{if: Male, true}
+{usegameobject: Character Selection Panel}
+{if: MalePath, true}
 {
 	Narrator::
 	"Male Route it is!"
 	 Do you prefer to identify as binary or non-binary? This choice will allow characters to refer to your person in a gender neutral fashion.
-	{usegameobject: binaryselection}
+	
 	{changeScript: Male/Prologue/Prologue.txt}
 }	
-{if: Male, False}
+{if: MalePath, False}
 {
 	Narrator::
 	"Female Route it is!"
 	Do you prefer to identify as binary or non-binary? This choice will allow characters to refer to your person in a gender neutral fashion.
-	{usegameobject: binaryselection}	
+	
 	{changeScript: Female/Prologue/Prologue.txt}
 }
 	
