@@ -116,7 +116,7 @@
 		/// <see langword="null"/> if none of them fits the requirements, 
 		/// otherwise returns a <see cref="ScriptNode"/> derived from the class. 
 		/// </returns>
-		public static ScriptNode GetDefinedScriptNodes(ScriptDocument document, ScriptPair[] subLines)
+		public static ScriptNode GetDefinedScriptNodes(ScriptDocument document, ScriptPair[] subLines, int index)
 		{
 			if (subLines[0].LineType != ScriptLine.Type.Command)
 				return null;
@@ -124,9 +124,11 @@
 			switch (command)
 			{
 				case "if":
-					return new IfBlock(document, subLines);
+					return new IfBlock(document, subLines, index);
 				case "choice":
-					return new ChoiceBlock(document, subLines);
+					return new ChoiceBlock(document, subLines, index);
+				case "else":
+					return new ElseBlock(document, subLines, index);
 			}
 			return null;
 		}
@@ -215,9 +217,11 @@
 		/// Starts a new script from stratch.
 		/// </summary>
 		/// <param name="scriptPath"> The path of the document. </param>
-		public void InitializeNewScript(string scriptPath = "")
+		public void InitializeNewScript(string streamingAssetsPath = "")
 		{
-			string finalPath = string.IsNullOrWhiteSpace(scriptPath) ? StartupScriptPath : BasePath + scriptPath;
+			string finalPath = BasePath + (string.IsNullOrWhiteSpace(streamingAssetsPath) 
+				? StartupScriptPath 
+				: streamingAssetsPath) + ".txt";
 			Clear();
 			m_pauseIterations = 0;
 			var scriptFactory = new ScriptDocument.Factory(finalPath);

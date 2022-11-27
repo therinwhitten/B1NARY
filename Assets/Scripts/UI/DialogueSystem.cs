@@ -11,6 +11,7 @@ namespace B1NARY.UI
 	using TMPro;
 	using CharacterController = B1NARY.CharacterManagement.CharacterController;
 	using B1NARY.Scripting;
+	using B1NARY.DataPersistence;
 
 	/// <summary>
 	/// 
@@ -103,9 +104,24 @@ namespace B1NARY.UI
 		/// </summary>
 		public string CurrentSpeaker
 		{
-			get => speakerBox.text;
-			set => speakerBox.text = value;
+			get
+			{
+				if (string.IsNullOrEmpty(m_currentSpeaker))
+					return speakerBox.text;
+				return m_currentSpeaker;
+			}
+			set
+			{
+				if (value == "MC" && !string.IsNullOrEmpty(PersistentData.Instance.GameSlotData.PlayerName))
+				{
+					speakerBox.text = PersistentData.Instance.GameSlotData.PlayerName;
+					m_currentSpeaker = value;
+				}
+				speakerBox.text = value;
+				m_currentSpeaker = null;
+			}
 		}
+		private string m_currentSpeaker;
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
 		/// </summary>
@@ -265,6 +281,8 @@ namespace B1NARY.UI
 		{
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
+			if (FinalText.Contains("MC") && !string.IsNullOrEmpty(PersistentData.Instance.GameSlotData.PlayerName))
+				FinalText = FinalText.Replace("MC", PersistentData.Instance.GameSlotData.PlayerName);
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];

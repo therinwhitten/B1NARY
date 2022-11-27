@@ -144,6 +144,7 @@
 		/// </summary>
 		public void InitializeGame()
 		{
+			DataPersistence.PersistentData.Instance.CreateNewSlot();
 			ScriptHandler.Instance.InitializeNewScript();
 		}
 

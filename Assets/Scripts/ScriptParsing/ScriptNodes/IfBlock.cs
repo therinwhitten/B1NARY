@@ -3,12 +3,13 @@
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
+	using System.Linq;
 	using B1NARY.DataPersistence;
 	using UnityEngine;
 
 	public sealed class IfBlock : ScriptNode
 	{
-		public IfBlock(ScriptDocument scriptDocument, ScriptPair[] subLines) : base(scriptDocument, subLines)
+		public IfBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
 		{
 
 		}
@@ -17,13 +18,19 @@
 		/// </summary>
 		public bool CanPerform
 		{
-			get // {if: Name, Bool}
+			get // {if: Name}
 			{
-				string[] arguments = ScriptLine.CastCommand(rootLine).arguments;
-				bool canPerform = bool.Parse(arguments[1]);
-				if (PersistentData.Instance.Booleans.TryGetValue(arguments[0], out bool value))
-					canPerform = value;
-				return canPerform;
+				string argumentName = ScriptLine.CastCommand(rootLine).arguments.Single();
+				bool output = true;
+				while (argumentName[0] == '!') // Inverter
+				{
+					output = !output;
+					argumentName = argumentName.Substring(1);
+				}
+
+				if (PersistentData.Instance.Booleans.TryGetValue(argumentName, out bool value))
+					return output == value;
+				throw new MissingFieldException($"{argumentName} doesn't exist in the saves!");
 			}
 		}
 
@@ -34,13 +41,33 @@
 			if (!CanPerform)
 			{
 				// The else block behaviour
-
+				if (document.nodes[nodeIndex + 1] is ElseBlock elseBlock)
+				{
+					using (var elseEnumerator = elseBlock.IfStatementPerform(pauseOnCommands)) 
+						while (elseEnumerator.MoveNext())
+							yield return elseEnumerator.Current;
+				}
 				yield break;
-				// TODO: Add 'else'
 			}
 			using (IEnumerator<ScriptLine> @base = base.Perform(pauseOnCommands))
 				while (@base.MoveNext())
 					yield return @base.Current;
+		}
+	}
+	public sealed class ElseBlock : ScriptNode
+	{
+		public ElseBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
+		{
+
+		}
+
+		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
+		{
+			yield break;
+		}
+		internal IEnumerator<ScriptLine> IfStatementPerform(bool pauseOnCommands)
+		{
+			return base.Perform(pauseOnCommands);
 		}
 	}
 }

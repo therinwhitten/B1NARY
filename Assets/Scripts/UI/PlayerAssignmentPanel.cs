@@ -7,7 +7,7 @@
 
 	public class PlayerAssignmentPanel : MonoBehaviour
 	{
-		public string isMaleDocument = "MalePath";
+		public const string isMaleDocument = "MalePath";
 
 
 		public TMP_InputField nameInput;
@@ -24,6 +24,7 @@
 		{
 			PersistentData.Instance.GameSlotData.PlayerName = nameInput.text;
 			PersistentData.Instance.Booleans[isMaleDocument] = !isFemale;
+			gameObject.SetActive(false);
 		}
 	}
 }

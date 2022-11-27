@@ -21,7 +21,7 @@
 		/// </summary>
 		private readonly IReadOnlyDictionary<ScriptLine, ScriptNode> choices;
 
-		public ChoiceBlock(ScriptDocument scriptDocument, ScriptPair[] subLines) : base(scriptDocument, subLines)
+		public ChoiceBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
 		{
 			var choices = new Dictionary<ScriptLine, ScriptNode>();
 			var linesEnum = base.subLines.AsEnumerable().GetEnumerator();

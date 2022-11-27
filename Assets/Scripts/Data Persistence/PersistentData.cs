@@ -45,7 +45,7 @@
 		/// <summary>
 		/// Starts a new gameslot to save the data as a binary format.
 		/// </summary>
-		public void CreateNewSlot(int index = 0)
+		public void CreateNewSlot()
 		{
 			GameSlotData = new GameSlotData();
 		}

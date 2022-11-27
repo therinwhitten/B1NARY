@@ -20,6 +20,7 @@
 			void OnBinaryClick(bool isBinary)
 			{
 				PersistentData.Instance.Booleans[IsBinaryKey] = isBinary;
+				gameObject.SetActive(false);
 			}
 		}
 	}

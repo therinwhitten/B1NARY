@@ -282,7 +282,7 @@
 					var subArray = list.Skip(startIndex)
 						.Take(endIndex - startIndex + 1)
 						.ToArray();
-					nodeArray[i] = ParseNode(output, subArray);
+					nodeArray[i] = ParseNode(output, subArray, i);
 					list[startIndex] = new ScriptPair(list[startIndex].scriptLine, nodeArray[i]);
 				}
 				// Messing with the baseline entry scriptnode code.
@@ -293,7 +293,7 @@
 				});
 				list.Add((ScriptPair)new ScriptLine("::End", list[0].scriptLine.resourcesFilePath, documentName, list.Count));
 				output.nodes = Array.AsReadOnly(nodeArray);
-				output.data = new ScriptNode(output, list.ToArray()).Perform(pauseOnCommand);
+				output.data = new ScriptNode(output, list.ToArray(), -1).Perform(pauseOnCommand);
 				return output;
 			}
 
@@ -304,15 +304,15 @@
 			/// <param name="document"> The document to reference. </param>
 			/// <param name="subValues"> The group of data the scriptNode is allowed to use. </param>
 			/// <returns> The defined or default <see cref="ScriptNode"/>. </returns>
-			private ScriptNode ParseNode(ScriptDocument document, ScriptPair[] subValues)
+			private ScriptNode ParseNode(ScriptDocument document, ScriptPair[] subValues, int index)
 			{
 				for (int i = 0; i < scriptNodeParsers.Count; i++)
 				{
-					ScriptNode node = scriptNodeParsers[i].Invoke(document, subValues);
+					ScriptNode node = scriptNodeParsers[i].Invoke(document, subValues, index);
 					if (node != null)
 						return node;
 				}
-				return new ScriptNode(document, subValues);
+				return new ScriptNode(document, subValues, index);
 			}
 		}
 

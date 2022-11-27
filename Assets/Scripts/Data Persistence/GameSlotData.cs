@@ -28,7 +28,7 @@ namespace B1NARY.DataPersistence
 
 		#region About
 		public TimeSpan timePlayed = TimeSpan.Zero;
-		public DateTime lastSaved;
+		public DateTime lastSaved = default;
 		#endregion
 
 
@@ -53,7 +53,6 @@ namespace B1NARY.DataPersistence
 			bools = new Dictionary<string, bool>();
 			ints = new Dictionary<string, int>();
 			floats = new Dictionary<string, float>();
-			//timePlayed += lastSaved - ScriptHandler.Instance.playedTime;
 		}
 		public void CaptureDocument()
 		{

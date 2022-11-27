@@ -14,8 +14,7 @@
 		public override void OnInspectorGUI()
 		{
 			var scriptHandler = (ScriptHandler)target;
-			List<string> allFullPaths = ScriptHandler.GetFullDocumentsPath(),
-				visualPaths = ScriptHandler.GetVisualDocumentsPaths(allFullPaths);
+			List<string> allFullPaths = ScriptHandler.GetVisualDocumentsPaths();
 			int oldIndex = allFullPaths.IndexOf(scriptHandler.StartupScriptPath);
 			if (oldIndex < 0)
 			{
@@ -23,7 +22,7 @@
 				scriptHandler.StartupScriptPath = allFullPaths[0];
 				EditorUtility.SetDirty(scriptHandler);
 			}
-			int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, visualPaths.ToArray());
+			int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, allFullPaths.ToArray());
 			if (oldIndex != newIndex)
 			{
 				scriptHandler.StartupScriptPath = allFullPaths[newIndex];

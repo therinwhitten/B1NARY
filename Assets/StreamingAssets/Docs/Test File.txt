@@ -61,22 +61,22 @@ Starting Test Sequence. // Yes
 				{
 					True
 					{
-						{if: giga chad, true}
+						{if: giga chad}
 						{
 							Hit true
 						}
-						{if: giga chad, false}
+						{else}
 						{
 							Hit false, as the 'else'
 						}
 					}
 					False
 					{
-						{if: giga chad, false}
+						{if: !giga chad}
 						{
 							Hit false
 						}
-						{if: giga chad, true}
+						{else}
 						{
 							Hit true, as the 'else'
 						}

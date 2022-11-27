@@ -12,7 +12,7 @@
 	/// <param name="document"> The reference of the document to tie to. </param>
 	/// <param name="subLines"> The contents of the <see cref="ScriptNode"/> </param>
 	/// <returns> A node, or a class that derived from it. </returns>
-	public delegate ScriptNode ScriptNodeParser(ScriptDocument document, ScriptPair[] subLines);
+	public delegate ScriptNode ScriptNodeParser(ScriptDocument document, ScriptPair[] subLines, int index);
 	/// <summary>
 	/// A block of <see cref="ScriptLine"/>s that is run over time via 
 	/// <see cref="Perform"/>
@@ -62,13 +62,23 @@
 		/// The data stored for the sub-block
 		/// </summary>
 		protected readonly List<ScriptPair> subLines;
+		/// <summary>
+		/// The document to reference.
+		/// </summary>
 		protected readonly ScriptDocument document;
+		/// <summary>
+		/// Where it is located as the index in the node array in 
+		/// <see cref="ScriptDocument.nodes"/>.
+		/// </summary>
+		protected readonly int nodeIndex;
+
+
 		/// <summary>
 		/// Creates an instance of a node, or a block of lines to read through.
 		/// </summary>
 		/// <param name="document"> The document to reference to. </param>
 		/// <param name="subLines"> The contents of the node. </param>
-		public ScriptNode(ScriptDocument document, ScriptPair[] subLines)
+		public ScriptNode(ScriptDocument document, ScriptPair[] subLines, int index)
 		{
 			const int skip = 2; // Skip leading line and bracket
 			this.document = document;
@@ -77,6 +87,7 @@
 			this.subLines = new List<ScriptPair>(subLines.Skip(skip));
 			endIndex = this.subLines[this.subLines.Count - 1].scriptLine.Index;
 			this.subLines.RemoveAt(this.subLines.Count - 1);
+			nodeIndex = index;
 			//Debug.Log($"Last Line: {this.subLines[this.subLines.Count - 1].scriptLine}\n From block {beginIndex}");
 			//Debug.Log($"ScriptNode Starts with '{subLines[0].scriptLine}'\nStart Bracket = {subLines[1].scriptLine.Index}, End Bracket = {subLines.Last().scriptLine.Index}\nAll Lines: \n{string.Join(",\n", subLines.Skip(2).Select(pair => pair.scriptLine))}");
 		}
