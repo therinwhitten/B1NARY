@@ -13,11 +13,20 @@
 	using B1NARY.DesignPatterns;
 	using B1NARY.DataPersistence;
 	using CharacterController = CharacterManagement.CharacterController;
-	using System.Collections.ObjectModel;
 
+	/// <summary>
+	/// A controller of the <see cref="Scripting.ScriptDocument"/> in B1NARY.
+	/// This handles most of the behaviour of commands and initialization for
+	/// ease of use in the standard game, as it can be separated with 
+	/// <see cref="ScriptNode"/> to perhaps work on something else.
+	/// </summary>
 	[AddComponentMenu("B1NARY/Script Handler")]
 	public class ScriptHandler : Singleton<ScriptHandler>
 	{
+		/// <summary>
+		/// All the commands that it will use for each document created. Separated
+		/// as a regular array due to some script editors wanting to see it.
+		/// </summary>
 		public static CommandArray[] AllCommands => 
 			new CommandArray[]
 			{
@@ -28,6 +37,14 @@
 				TransitionManager.Commands,
 				UIThemeHandler.Commands
 			};
+		/// <summary>
+		/// Uses recursion to get all the documents as a full path, including
+		/// the drive and such.
+		/// </summary>
+		/// <param name="currentPath"> The directory to interact with. </param>
+		/// <returns> 
+		/// All the file paths that start with .txt within the directory.
+		/// </returns>
 		public static List<string> GetFullDocumentsPaths(string currentPath)
 		{
 			var output = new List<string>(Directory.GetFiles(currentPath).Where(path => path.EndsWith(".txt")));
@@ -40,21 +57,44 @@
 			}
 			return output;
 		}
+		/// <summary>
+		/// Uses recursion to get all the documents as a full path, including
+		/// the drive and such. This starts with <see cref="BasePath"/> as the
+		/// default parameter.
+		/// </summary>
+		/// <param name="currentPath"> The directory to interact with. </param>
+		/// <returns> 
+		/// All the file paths that start with .txt within the directory.
+		/// </returns>
 		public static List<string> GetFullDocumentsPath()
 		{
 			return GetFullDocumentsPaths(BasePath);
 		}
+		/// <summary>
+		/// Converts all the paths, expecting coming from 
+		/// <see cref="GetFullDocumentsPath"/>, to convert them to be more visual
+		/// and compatible with <see cref="Application.streamingAssetsPath"/>.
+		/// This creates a separate list instead of modifying the inputted list
+		/// as reference.
+		/// </summary>
+		/// <param name="fullPaths"> <see cref="GetFullDocumentsPath"/> </param>
+		/// <returns> Gets all the inputted paths as <see cref="ToVisual(string)"/>. </returns>
 		public static List<string> GetVisualDocumentsPaths(in List<string> fullPaths)
 		{
-			var newList = new List<string>(fullPaths);
+			var newList = new List<string>(fullPaths.Count);
 			for (int i = 0; i < newList.Count; i++)
-				newList[i] = ToVisual(fullPaths[i]);
+				newList.Add(ToVisual(fullPaths[i]));
 			return newList;
 		}
 		public static List<string> GetVisualDocumentsPaths()
 		{
 			return GetVisualDocumentsPaths(GetFullDocumentsPaths(BasePath));
 		}
+		/// <summary>
+		/// Converts a full path with drive mentioned, that will be replaced with
+		/// <see cref="BasePath"/> and .txt, leaving only the directories that 
+		/// start with <see cref="Application.streamingAssetsPath"/>.
+		/// </summary>
 		public static string ToVisual(string path) => path.Replace(BasePath, "").Replace(".txt", "");
 
 		public static string BasePath => $"{Application.streamingAssetsPath}/Docs/";
@@ -92,7 +132,7 @@
 		[ForcePause]
 		internal static void UseGameObject(string objectName)
 		{
-			GameObject @object = GameObject.Find(objectName);
+			GameObject @object = Marker.Find(objectName).First();
 			if (@object == null)
 				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
 			@object.SetActive(true);
