@@ -19,11 +19,11 @@ Shirobi, pale as a ghost, just stares at the screen without really looking at it
 {moveChar: Shirobi, .80}
 {moveChar: Cliff, .15}
 Shirobi::
-{if: n-b,false}
+{if: !n-b}
 {
  "I promised him, Sir. That he would be ok.... I told him it would just be four days. And..."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "I promised them, Sir. That they would be ok... I told them it would only be four days. And..."
 }
@@ -32,20 +32,20 @@ Shirobi sighs in defeat.
 {anim: Shirobi, Bow}
 Shirobi::
 {additive: on}
-{if: n-b,false}
+{if: !n-b}
 {
  "I can't find him in any of the servers...
 }
-{if: n-b,true}
+{if: n-b}
 {
  "I can't find them on any of the servers...
 }
 Is it possible just for the DIHI to just...
-{if: n-b,false}
+{if: !n-b}
 {
  scramble him?"
 }
-{if: n-b,true}
+{if: n-b}
 {
  scramble them?"
 }
@@ -62,11 +62,11 @@ Six whole months..."
 Narrator::
 Cliff trails off, his body starting to shake. 
 Cliff::
-{if: n-b,false}
+{if: !n-b}
 {
  "He's just a kid dammit!!"
 }
-{if: n-b,true}
+{if: n-b}
 {
  They're just a kid dammit!!"
 }
@@ -86,11 +86,11 @@ Cliff looks down at his fist, forcibly relaxing it.
 Cliff::
 {additive: on}
 "It's ok.
-{if: n-b,false}
+{if: !n-b}
 {
  We've got four days to find him."
 }
-{if: n-b,true}
+{if: n-b}
 {
  We've got four days to find them."
 }
@@ -181,18 +181,18 @@ Silence. Several seconds pass in dead silence.
 Massaging his forehead, Shirobi's voice picks up.
 Shirobi::
 {anim: Shirobi, Glasses}
-{if: n-b,false}
+{if: !n-b}
 {
  "Sir, do we even have a chance to find him? I mean, he is the <i>only</i> human in the internet, but..."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "Sir, do we even have a chance to find them? I mean, they are the <i>only</i> human in the internet, but..."
 }
 Narrator::
 The old man, looking at his laptop's display, sighs and replies.
 Cliff::
-{if: n-b,false}
+{if: !n-b}
 {
  {additive: on}
  "It's possible but,
@@ -202,7 +202,7 @@ Cliff::
  "I pray he lands somewhere semi-safe."
  "Will ransomware or malware hurt him? There are so many unknown dangers that we are clueless on..."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "It's possible, 
  but we would have to send AI into the code to search for their brain patterns, and <i>hope</i> they don't alter too much.
@@ -227,14 +227,14 @@ Cliff nods, never taking his eyes off the screen, grim determination replacing p
 Cliff::
 "They need us, team." 
 {additive: on}
-{if: n-b,false}
+{if: !n-b}
 {
  "He will be clueless. 
  More alone than any man has ever been. 
  The only human in the digital world. 
  I <i>hope</i> that is enough to find him."
 }
-{if: n-b, true}
+{if: n-b}
 {
  "They will be clueless. 
  More alone than any person has ever been. 
@@ -245,11 +245,11 @@ Cliff::
 Narrator::
 His eyes focus on Shirobi. The command in his voice strong.
 Cliff::
-{if: n-b,false}
+{if: !n-b}
 {
  "Get his thought-pattern impressions inputted into the mainframe and start training the AI."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "Get their thought-pattern impressions inputted into the mainframe and start training the AI."
 }
@@ -267,11 +267,11 @@ He ends the sentence with a bit of irony.
 Cliff::
 "We can use that stereotype to buy us some time."
 "In the meantime, try to figure out a good way to explain to the world what is happening." 
-{if: n-b,false}
+{if: !n-b}
 {
  "If we can't find him by then, there will be some serious backlash on this."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "If we can't find them by then, there will be some serious backlash on this."
 }

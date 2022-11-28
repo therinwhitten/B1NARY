@@ -44,7 +44,7 @@ MC::
 She closes the book with a finality.
 {fadeinsound: bookclose1, .1}
 Szycrotic casually retorts.
-{if: n-b,true}
+{if: n-b}
 {
  Szycrotic::
  "Woman, they wanted to see the garden, don't blame me."
@@ -61,7 +61,7 @@ Szycrotic casually retorts.
  {additive:off} 
  [Default]
 }
-{if: n-b,false}
+{if: !n-b}
 {
  Szycrotic::
  "Look woman, she wanted to see the garden. Don't blame me."
@@ -80,14 +80,14 @@ Szycrotic casually retorts.
 }
 MC::
 Asterella makes eye contact with me. I feel the red rushing to my cheeks. 
-{if: n-b, false}
+{if: !n-b}
 {
  Asterella::
  [Happy]
  "She <i>is</i> cute."
  "So cute, I could just <i>eat</i> her up!"
 }
-{if: n-b,true}
+{if: n-b}
 {
  Asterella::
  [Happy]
@@ -230,13 +230,13 @@ What am I doing?
            {moveChar: Szycrotic, .1}
            MC::
            Szy stops at the door.
-           {if: n-b,false}
+           {if: !n-b}
            {
              Szycrotic::
              [Angry]
              "Star, if she does <i>anything.</i>"
            }
-           {if: n-b,true}
+           {if: n-b}
            {
              Szycrotic::
              [Angry]
@@ -302,12 +302,12 @@ What am I doing?
 Oh my god I'm choking.
 I need to calm down.
 Asterella raises her eyebrows, standing up. 
-{if: n-b,false}
+{if: !n-b}
 { 
  Asterella::
  "She seems pretty protective of you. Do I need to increase the punishment?"
 }
-{if: n-b,true}
+{if: n-b}
 {
  Asterella::
  "They seem pretty protective of you, Szy. Should I increase the punishment?"
@@ -341,7 +341,7 @@ MC::
 She lets the question hang there open. 
 Oh!
 "Name is MC, Lord Star."
-{if: n-b,true}
+{if: n-b}
 {
  "My pronoun is they..."
 }
@@ -358,7 +358,7 @@ She nods and smiles a genuine smile.
 Asterella::
 [Happy]
 "That's a very nice name, MC."
-{if: n-b,true}
+{if: n-b}
 {
  "I gathered from Szy's speech. Very well."
 }

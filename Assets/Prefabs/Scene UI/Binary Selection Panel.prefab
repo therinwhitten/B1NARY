@@ -225,21 +225,21 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6766259558094487692}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6766259558251442712}
   - {fileID: 6766259558479351640}
   - {fileID: 6766259558260964715}
-  m_Father: {fileID: 6766259558837814517}
+  m_Father: {fileID: 3273463222210048741}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 41.8, y: 137.65}
+  m_SizeDelta: {x: 1920.2317, y: 1080}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &6766259558094491505
 Canvas:
   m_ObjectHideFlags: 0
@@ -1046,7 +1046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UISounds: {fileID: 6766259558260964718}
-  hoverSound: {fileID: 8300000, guid: 4e7d18d41c904764f88321eb324bae2c, type: 3}
+  hoverSound: {fileID: 8300000, guid: 5e0977b188da3c94a863a92b1b7cd94e, type: 3}
   clickSound: {fileID: 8300000, guid: fcdc012524fd5d64bb570056d4fa00b9, type: 3}
   releaseSound: {fileID: 0}
 --- !u!114 &6766259558260964712
@@ -1209,6 +1209,18 @@ MonoBehaviour:
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 8300000, guid: deb62b88140f4d34295987cf97f56521,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6766259558479351647}
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 5f0c9e15b216a2149bae93fa9a880722,
             type: 3}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
@@ -1513,7 +1525,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UISounds: {fileID: 6766259558479351647}
-  hoverSound: {fileID: 8300000, guid: 4e7d18d41c904764f88321eb324bae2c, type: 3}
+  hoverSound: {fileID: 8300000, guid: 5f0c9e15b216a2149bae93fa9a880722, type: 3}
   clickSound: {fileID: 8300000, guid: fcdc012524fd5d64bb570056d4fa00b9, type: 3}
   releaseSound: {fileID: 0}
 --- !u!114 &6766259558479351641
@@ -1816,7 +1828,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6766259558837814517}
+  - component: {fileID: 3273463222210048741}
   - component: {fileID: 6766259558837814521}
   - component: {fileID: 6766259558837814522}
   - component: {fileID: 6766259558837814520}
@@ -1828,15 +1840,15 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!4 &6766259558837814517
-Transform:
+--- !u!224 &3273463222210048741
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6766259558837814516}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1, y: 165.59, z: 1.0108026}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1.0108026}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6766259558094487693}
@@ -1844,6 +1856,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 1, y: 130.4}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6766259558837814521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1952,7 +1969,7 @@ MonoBehaviour:
   autoGenerate: 1
   isActive: 1
   isValid: 1
-  target: {fileID: 6766259558837814517}
+  target: {fileID: 3273463222210048741}
   animationType: 5
   targetType: 11
   forcedTargetType: 0
@@ -3350,7 +3367,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6766259560054143101}
   - component: {fileID: 6766259560054143074}
-  m_Layer: 10
+  m_Layer: 0
   m_Name: Background Blur Volume (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3368,7 +3385,7 @@ Transform:
   m_LocalPosition: {x: -0.000014793785, y: 0, z: -6246.991}
   m_LocalScale: {x: 63.508644, y: 63.508644, z: 63.508644}
   m_Children: []
-  m_Father: {fileID: 6766259558837814517}
+  m_Father: {fileID: 3273463222210048741}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6766259560054143074

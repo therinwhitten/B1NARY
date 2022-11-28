@@ -211,7 +211,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        {
           "I haven't stuck anything in you yet, little pogchamp."
        }
-       {if: henable, false}
+       {if: !henable}
        {
           "Calm down bro. Just gonna tie you up. Can't have Star blaming me for your injuries, now can we?"
        }
@@ -248,7 +248,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
         "Ok boy. Let's go."
        MC::
        "It's not 'boy.' It's MC."
-       {if: n-b,true}
+       {if: n-b}
        {
           "And I prefer 'they' please."
        }
@@ -590,13 +590,13 @@ Tell me, what's your name?"
 {additive:off}
 MC:: 
 "Name is MC, it's a pleasure to meet you."
-{if: n-b,true}
+{if: n-b}
 {
  "And if you please, my pronoun is 'they.'"
 }
 Asterella::
 "What a lovely name. MC."
-{if: n-b,true}
+{if: n-b}
 {
  "And very well, MC. I'll respect your request."
 }

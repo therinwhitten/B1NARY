@@ -16,11 +16,11 @@ Shirobi, pale as a ghost, just stares at the screen without looking at it.
 {moveChar: Shirobi, .8}
 {moveChar: Cliff, .2}
 Shirobi::
-{if: n-b,false}
+{if: !n-b}
 {
  "I promised her, Sir. That she would be ok.... I told her it would just be four days. And..."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "I promised them, Sir. That they would be ok... I told them it would only be four days. And..."
 }
@@ -28,22 +28,22 @@ Narrator::
 Shirobi chokes back panic, sighing in defeat.
 {anim: Shirobi, Bow}
 Shirobi::
-{if: n-b,false}
+{if: !n-b}
 {
  <i>Crying won't bring her back safely...</i>
 }
-{if: n-b,true}
+{if: n-b}
 {
  <i>Crying won't bring them back safely...</i>
 }
 {additive: on}
 "There are no thought patterns in any of the servers.
 Is it possible just for the DIHI to just...
-{if: n-b,false}
+{if: !n-b}
 {
  scramble her?"
 }
-{if: n-b,true}
+{if: n-b}
 {
  scramble them?"
 }
@@ -60,11 +60,11 @@ Six whole months..."
 Narrator::
 Cliff trails off, his body starting to shake. 
 Cliff::
-{if: n-b,false}
+{if: !n-b}
 {
  "She's just a kid dammit!!"
 }
-{if: n-b,true}
+{if: n-b}
 {
  They're just a kid dammit!!"
 }
@@ -83,11 +83,11 @@ Cliff looks down at his fist, forcibly relaxing it.
 Cliff::
 {additive: on}
 "It's ok. 
-{if: n-b,false}
+{if: !n-b}
 {
  We've got four days to find her.
 }
-{if: n-b,true}
+{if: n-b}
 {
  We've got four days to find them.
 }
@@ -171,18 +171,18 @@ Silence. Several seconds pass in dead silence.
 Massaging his forehead, Shirobi's voice picks up.
 Shirobi::
 {anim: Shirobi, Glasses}
-{if: n-b,false}
+{if: !n-b}
 {
  "Sir, do we even have a chance to find her in there? I mean she is the <i>only</i> human in the internet but..."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "Sir, do we even have a chance to find them? I mean they are the <i>only</i> human in the internet but..."
 }
 Narrator::
 The old man, looking at his laptop's display, sighs and replies.
 Cliff::
-{if: n-b,false}
+{if: !n-b}
 {
  {additive: on}
  "It's possible, 
@@ -192,7 +192,7 @@ Cliff::
  "I pray she lands somewhere semi-safe."
  "Will ransomware or malware hurt her? There are so many unknown dangers that we have no clue on..."
 }
-{if: n-b,true}
+{if: n-b}
 {
  {additive: on}
  "It's possible, 
@@ -216,7 +216,7 @@ We wouldn't know where the AI actually dwells without being a part of the struct
 Narrator:: 
 Cliff nods, never taking his eyes off the screen, grim determination replacing panic.
 Cliff::
-{if: n-b,false}
+{if: !n-b}
 {
  "MC, she needs us."  
  {additive: on}
@@ -226,7 +226,7 @@ Cliff::
  I hope that's enough to find her."
  {additive: off} 
 }
-{if: n-b,true}
+{if: n-b}
 {
  "MC, they need us."  
  {additive: on}
@@ -254,11 +254,11 @@ He ends the sentence with a bit of irony.
 Cliff::
 "We at least can use that stereotype to buy us some time."
 "In the meantime, try to figure out a good way to explain to the world what is happening."
- {if: n-b,false}
+ {if: !n-b}
 {
  "If we can't find her by then, there will be some serious backlash on this."
 }
-{if: n-b,true}
+{if: n-b}
 {
  "If we can't find them by then, there will be some serious backlash on this."
 }
@@ -267,7 +267,7 @@ Cliff's path clear, his confidence comes back.
 Cliff::
 "And get someone to do a complete diagnostic on the DIHI. Ensure the report is..."
 Narrator::
-{if: n-b,false}
+{if: !n-b}
 {
  As Cliff continues to push out instructions to his team, he couldn't help but feel a pang of incredible sadness. 
  The kid is fresh out of college.
@@ -280,7 +280,7 @@ Narrator::
  From her profile, she is pretty competent.
  He hopes that whereever she is, she will be smart enough to pace herself and make careful decisions...
 }
-{if: n-b,true}
+{if: n-b}
 {
  As Cliff continues to push out instructions to his team, he couldn't help but feel a pang of incredible sadness. 
  The kid is fresh out of college.
