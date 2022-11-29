@@ -1,6 +1,6 @@
 ﻿{changeScene: Times Square}
-{spawnEmpty: Jhon Ultrakill}
-Jhon Ultrakill::
+{spawnEmpty: Gabriel Ultrakill}
+Gabriel Ultrakill::
 Starting Test Sequence. // Yes
 {choice: Test what?}
 {
@@ -83,6 +83,16 @@ Starting Test Sequence. // Yes
 					}
 				}
 			}
+			Remote Nodes
+			{
+				Calling Remote node with name 'Bruh'..
+				{setbool: remoteTest, false}
+				{callremote: Bruh}
+				{if: !remoteTest}
+				{
+					Call remote failed to call!
+				}
+			}
 		}
 	}
 	Skip
@@ -93,3 +103,9 @@ Starting Test Sequence. // Yes
 
 Test Finished! Returning to menu.
 {returnToMainMenu}
+
+{remote: Bruh}
+{
+	Remote Line Tested and accessed!
+	{setbool: remoteTest, true}
+}

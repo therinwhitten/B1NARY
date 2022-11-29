@@ -15,18 +15,26 @@
 		{
 			var scriptHandler = (ScriptHandler)target;
 			List<string> allFullPaths = ScriptHandler.GetVisualDocumentsPaths();
-			int oldIndex = allFullPaths.IndexOf(scriptHandler.StartupScriptPath);
-			if (oldIndex < 0)
+			if (allFullPaths.Count > 0)
 			{
-				oldIndex = 0;
-				scriptHandler.StartupScriptPath = allFullPaths[0];
-				EditorUtility.SetDirty(scriptHandler);
+				int oldIndex = allFullPaths.IndexOf(scriptHandler.StartupScriptPath);
+				if (oldIndex < 0)
+				{
+					oldIndex = 0;
+					scriptHandler.StartupScriptPath = allFullPaths[0];
+					EditorUtility.SetDirty(scriptHandler);
+				}
+				int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, allFullPaths.ToArray());
+				if (oldIndex != newIndex)
+				{
+					scriptHandler.StartupScriptPath = allFullPaths[newIndex];
+					EditorUtility.SetDirty(scriptHandler);
+				}
 			}
-			int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, allFullPaths.ToArray());
-			if (oldIndex != newIndex)
+			else
 			{
-				scriptHandler.StartupScriptPath = allFullPaths[newIndex];
-				EditorUtility.SetDirty(scriptHandler);
+				EditorGUILayout.HelpBox("There is no .txt files in the " +
+					"StreamingAssets folder found!", MessageType.Error);
 			}
 			InputActions(scriptHandler);
 			if (scriptHandler.IsActive)

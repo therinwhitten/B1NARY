@@ -9,6 +9,7 @@
 	using System.Collections.ObjectModel;
 	using UnityEngine;
 	using System.Runtime.Serialization.Formatters.Binary;
+	using System.Reflection;
 
 	/// <summary>
 	/// A document that tracks the <see cref="ScriptNode"/>s and parses information
@@ -76,6 +77,12 @@
 		public ReadOnlyCollection<ScriptNode> nodes;
 
 		/// <summary>
+		/// This is <see langword="null"/> by default. This is a return value when
+		/// commands return something; such as the <see cref="RemoteBlock"/> as 
+		/// an example.
+		/// </summary>
+		public Func<bool, IEnumerator<ScriptLine>> returnValue;
+		/// <summary>
 		/// If the current dialogue should be added instead of skipping to a new
 		/// line.
 		/// </summary>
@@ -100,6 +107,7 @@
 				//	reader.WriteLine(data.Current);
 				return data.Current;
 			}
+			Dispose();
 			// It should constantly move to other scripts to prevent this from happening.
 			throw new IndexOutOfRangeException($"{nameof(ScriptDocument)} has reached to end of scriptName.");
 		}
@@ -176,8 +184,8 @@
 			/// A collection of parsers that allows them make them more defined
 			/// and causes different behaviour as such.
 			/// </summary>
-			private readonly List<ScriptNodeParser> scriptNodeParsers =
-				new List<ScriptNodeParser>();
+			private readonly List<(Func<ScriptPair[], bool> condition, Type node)> scriptNodeParsers = 
+				new List<(Func<ScriptPair[], bool> condition, Type node)>();
 			/// <summary>
 			/// A type-writer like way to read through the file while compiling
 			/// the document.
@@ -220,8 +228,26 @@
 			/// <see cref="ScriptNode"/> to add behaviour to it.
 			/// </summary>
 			/// <param name="scriptNodeParsers"> The parsers to add. </param>
-			public void AddNodeParserFunctionality(params ScriptNodeParser[] scriptNodeParsers)
-				=> this.scriptNodeParsers.AddRange(scriptNodeParsers);
+			public void AddNodeParserFunctionality(params Type[] nodes)
+			{
+				for (int i = 0; i < nodes.Length; i++)
+					AddNodeParserFunctionality(nodes[i]);
+			}
+
+			/// <summary>
+			/// Adds a single or multiple methods that further defines the
+			/// <see cref="ScriptNode"/> to add behaviour to it.
+			/// </summary>
+			/// <param name="scriptNodeParsers"> The parsers to add. </param>
+			public void AddNodeParserFunctionality(Type node)
+			{
+				if (!node.IsSubclassOf(typeof(ScriptNode)))
+					throw new InvalidOperationException($"'{node.Name}' is not derived from '{nameof(ScriptNode)}'!");
+				scriptNodeParsers.Add((
+					// Gets the possibly overrided static method to do a comparison.
+					(Func<ScriptPair[], bool>)node.GetMethod(nameof(ScriptNode.Predicate), BindingFlags.Static | BindingFlags.Public).CreateDelegate(typeof(Func<ScriptPair[], bool>)), 
+					node));
+			}
 
 			/// <summary>
 			/// Compiles all information in the <see cref="Factory"/>.
@@ -308,9 +334,9 @@
 			{
 				for (int i = 0; i < scriptNodeParsers.Count; i++)
 				{
-					ScriptNode node = scriptNodeParsers[i].Invoke(document, subValues, index);
-					if (node != null)
-						return node;
+					if (!scriptNodeParsers[i].condition.Invoke(subValues))
+						continue;
+					return (ScriptNode)scriptNodeParsers[i].node.GetConstructor(new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(int) }).Invoke(new object[] { document, subValues, index });
 				}
 				return new ScriptNode(document, subValues, index);
 			}

@@ -28,7 +28,7 @@
 		{
 			fullPath = ScriptHandler.HasInstance
 				? ScriptHandler.Instance.StartupScriptPath
-				: ScriptHandler.GetFullDocumentsPath()[0];
+				: ScriptHandler.GetFullDocumentsPaths()[0];
 		}
 		private void OnGUI()
 		{
@@ -69,7 +69,7 @@
 						}
 					}
 
-					menu.AddItem(new GUIContent(visualItems[i]), visualItems[i] == VisualPath, () => fullPath = ScriptHandler.GetFullDocumentsPath()[captured]);
+					menu.AddItem(new GUIContent(visualItems[i]), visualItems[i] == VisualPath, () => fullPath = ScriptHandler.GetFullDocumentsPaths()[captured]);
 				}
 				menu.DropDown(rect);
 

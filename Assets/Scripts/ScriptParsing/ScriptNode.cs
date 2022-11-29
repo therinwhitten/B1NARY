@@ -21,6 +21,17 @@
 	public class ScriptNode
 	{
 		/// <summary>
+		/// Checks the input and decides if it should be able to create a 
+		/// node off of it. This is meant to be overridden by derived classes
+		/// via the new keyword.
+		/// </summary>
+		/// <param name="pairs"> The contents of the scriptNode </param>
+		public static bool Predicate(ScriptPair[] pairs)
+		{
+			return true;
+		}
+
+		/// <summary>
 		/// The line count of all the contents, and the <see cref="rootLine"/> and 
 		/// brackets. 
 		/// </summary>
@@ -110,8 +121,25 @@
 					continue;
 				}
 				if (InvokeCommand(CurrentLine(), pauseOnCommands))
+				{
+					using (var remoteNode = CheckRemoteNode(pauseOnCommands))
+						while (remoteNode.MoveNext())
+							yield return remoteNode.Current;
 					continue;
+				}
 				yield return CurrentLine();
+			}
+			
+		}
+		protected virtual IEnumerator<ScriptLine> CheckRemoteNode(bool pauseOnCommands)
+		{
+			if (document.returnValue == null)
+				yield break;
+			using (IEnumerator<ScriptLine> remoteNode = document.returnValue.Invoke(pauseOnCommands))
+			{
+				document.returnValue = null;
+				while (remoteNode.MoveNext())
+					yield return remoteNode.Current;
 			}
 		}
 		public virtual bool InvokeCommand(ScriptLine line, bool pauseOnCommands)

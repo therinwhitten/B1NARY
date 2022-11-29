@@ -9,6 +9,11 @@
 
 	public sealed class IfBlock : ScriptNode
 	{
+		public static new bool Predicate(ScriptPair[] pairs)
+		{
+			return pairs[0].scriptLine.type == ScriptLine.Type.Command &&
+				ScriptLine.CastCommand(pairs[0].scriptLine).command == "if";
+		}
 		public IfBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
 		{
 
@@ -56,6 +61,11 @@
 	}
 	public sealed class ElseBlock : ScriptNode
 	{
+		public static new bool Predicate(ScriptPair[] pairs)
+		{
+			return pairs[0].scriptLine.type == ScriptLine.Type.Command &&
+				ScriptLine.CastCommand(pairs[0].scriptLine).command == "else";
+		}
 		public ElseBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
 		{
 

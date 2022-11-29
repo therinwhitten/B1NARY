@@ -66,23 +66,23 @@
 		/// <returns> 
 		/// All the file paths that start with .txt within the directory.
 		/// </returns>
-		public static List<string> GetFullDocumentsPath()
+		public static List<string> GetFullDocumentsPaths()
 		{
 			return GetFullDocumentsPaths(BasePath);
 		}
 		/// <summary>
 		/// Converts all the paths, expecting coming from 
-		/// <see cref="GetFullDocumentsPath"/>, to convert them to be more visual
+		/// <see cref="GetFullDocumentsPaths"/>, to convert them to be more visual
 		/// and compatible with <see cref="Application.streamingAssetsPath"/>.
 		/// This creates a separate list instead of modifying the inputted list
 		/// as reference.
 		/// </summary>
-		/// <param name="fullPaths"> <see cref="GetFullDocumentsPath"/> </param>
+		/// <param name="fullPaths"> <see cref="GetFullDocumentsPaths"/> </param>
 		/// <returns> Gets all the inputted paths as <see cref="ToVisual(string)"/>. </returns>
 		public static List<string> GetVisualDocumentsPaths(in List<string> fullPaths)
 		{
 			var newList = new List<string>(fullPaths.Count);
-			for (int i = 0; i < newList.Count; i++)
+			for (int i = 0; i < newList.Capacity; i++)
 				newList.Add(ToVisual(fullPaths[i]));
 			return newList;
 		}
@@ -122,6 +122,10 @@
 			{
 				PersistentData.Instance.Booleans[name] = bool.Parse(value);
 			}),
+			["callremote"] = ((Action<string>)((call) =>
+			{
+				Instance.ScriptDocument.returnValue = RemoteBlock.CallRemote(Instance.ScriptDocument, call);
+			})),
 		};
 
 		[ForcePause]
@@ -144,33 +148,6 @@
 				Instance.ShouldPause = false;
 				Instance.NextLine();
 			}
-		}
-		/// <summary>
-		/// Gets a custom <see cref="ScriptNode"/> based on the requirements.
-		/// </summary>
-		/// <param name="document"> The document to reference. </param>
-		/// <param name="subLines"> 
-		/// All the data that the <see cref="ScriptNode"/> is limited to. 
-		/// </param>
-		/// <returns>
-		/// <see langword="null"/> if none of them fits the requirements, 
-		/// otherwise returns a <see cref="ScriptNode"/> derived from the class. 
-		/// </returns>
-		public static ScriptNode GetDefinedScriptNodes(ScriptDocument document, ScriptPair[] subLines, int index)
-		{
-			if (subLines[0].LineType != ScriptLine.Type.Command)
-				return null;
-			string command = ScriptLine.CastCommand(subLines[0].scriptLine).command;
-			switch (command)
-			{
-				case "if":
-					return new IfBlock(document, subLines, index);
-				case "choice":
-					return new ChoiceBlock(document, subLines, index);
-				case "else":
-					return new ElseBlock(document, subLines, index);
-			}
-			return null;
 		}
 		/// <summary> Gets the name of the script loaded. </summary>
 		public string ScriptName { get; private set; } = string.Empty;
@@ -265,7 +242,11 @@
 			Clear();
 			m_pauseIterations = 0;
 			var scriptFactory = new ScriptDocument.Factory(finalPath);
-			scriptFactory.AddNodeParserFunctionality(GetDefinedScriptNodes);
+			scriptFactory.AddNodeParserFunctionality(
+				typeof(IfBlock),
+				typeof(ElseBlock),
+				typeof(ChoiceBlock),
+				typeof(RemoteBlock));
 			var allCommands = AllCommands;
 			for (int i = 0; i < allCommands.Length; i++)
 				scriptFactory.commands.AddRange(allCommands[i]);
