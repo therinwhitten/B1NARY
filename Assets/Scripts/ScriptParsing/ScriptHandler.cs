@@ -136,7 +136,7 @@
 		[ForcePause]
 		internal static void UseGameObject(string objectName)
 		{
-			GameObject @object = Marker.Find(objectName).First();
+			GameObject @object = Marker.FindWithMarker(objectName).FirstOrDefault();
 			if (@object == null)
 				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
 			@object.SetActive(true);
