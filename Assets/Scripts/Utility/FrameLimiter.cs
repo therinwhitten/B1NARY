@@ -7,12 +7,12 @@
 	{
 		public static int Target
 		{
-			get => GamePreferences.GetInt("FrameLimitValue", 120);
+			get => GamePreferences.GetInt("FrameLimitValue", 360);
 			set => GamePreferences.SetInt("FrameLimitValue", value);
 		}
 		public static int VSyncCount
 		{
-			get => GamePreferences.GetInt("VSYNCFrameLimitCount", 1);
+			get => GamePreferences.GetInt("VSYNCFrameLimitCount", 0);
 			set => GamePreferences.SetInt("VSYNCFrameLimitCount", value);
 		}
 		public static readonly GUIContent[] frameLimitSettings =
