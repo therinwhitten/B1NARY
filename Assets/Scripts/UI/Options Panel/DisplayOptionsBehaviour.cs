@@ -18,10 +18,13 @@
 		public TMP_Dropdown fullScreenDropdown;
 		public RenderPipelineAsset[] qualityLevels;
 		public TMP_Dropdown qualityDropdown;
-		public TMP_Dropdown resolutionDropdown;
+		[SerializeField] private TMP_Dropdown resolutionDropdown;
 		public TMP_Dropdown themeDropdown;
 		public TMP_Dropdown languageDropdown;
 		private Resolution[] resolutions;
+		private List<Resolution> filteredResolutions;
+		private float currentRefreshRate;
+		private int currentResolutionIndex = 0;
 		[SerializeField] Slider glow;
 		[SerializeField] Volume volumeProfile;
 		public float BloomIntensity
@@ -33,21 +36,35 @@
 		
 		
 
-		private void Start() //Dynamic Resolution Settings
+		void Start() //Dynamic Resolution Settings
 		{
 			resolutions = Screen.resolutions;
+			filteredResolutions = new List<Resolution>();
+
 			resolutionDropdown.ClearOptions();
-			var options = new string[resolutions.Length];
-			int index = -1;
+			currentRefreshRate = Screen.currentResolution.refreshRate;
+
 			for (int i = 0; i < resolutions.Length; i++)
 			{
-				options[i] = $"{resolutions[i].width}x{resolutions[i].height}@{resolutions[i].refreshRate}hz";
-				if (Screen.currentResolution.width == resolutions[i].width && Screen.currentResolution.height == resolutions[i].height)
-					index = i;
+				if (resolutions[i].refreshRate == currentRefreshRate)
+				{
+					filteredResolutions.Add(resolutions[i]);
+				}
 			}
-			resolutionDropdown.AddOptions(options.Select(str => new TMP_Dropdown.OptionData(str)).ToList());
-			resolutionDropdown.value = index;
-			resolutionDropdown.RefreshShownValue();
+
+			List<string> options = new List<string>();
+			for (int i = 0; i < filteredResolutions.Count; i++)
+			{
+				string resolutionOption =filteredResolutions[i].width + "x" +filteredResolutions[i].height + " " +filteredResolutions[i].refreshRate + "Hz";
+				options.Add(resolutionOption);
+				if (filteredResolutions[i].width == Screen.width && filteredResolutions[i].height == Screen.height)
+				{
+					currentResolutionIndex = i;
+				}
+				resolutionDropdown.AddOptions(options);
+				resolutionDropdown.value = currentResolutionIndex;
+				resolutionDropdown.RefreshShownValue();
+			}
 		}
 		private void Awake()
 		{
@@ -61,7 +78,7 @@
 
 		public void SetResolution (int resolutionIndex) // Apply resolutions to match Dropdown
 		{
-			Resolution resolution = resolutions[resolutionIndex];
+			Resolution resolution = filteredResolutions[resolutionIndex];
 			Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
 		}
 		public void ChangeIntensity(float value) => BloomIntensity = value;
