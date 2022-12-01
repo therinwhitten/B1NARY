@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a8588b9acd400a4fb25c307d25f2d92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartupScriptPath: C:/Users/gooey/source/repos/Github/B1NARY/B1NARY Knights Branch/Assets/StreamingAssets/Docs/PrologueStory.txt
+  StartupScriptPath: PrologueStory
   playerInput: {fileID: 1427849293}
   nextLineButtons:
   - Next Line
@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d49895e4456e5394b8bb4986f39f625d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MainMenuSceneIndex: 1
 --- !u!114 &6009660618435535854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,7 +245,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48c51065ca6966c44a2b7662b0f365a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: 
 --- !u!1 &6689982567584470584
 GameObject:
   m_ObjectHideFlags: 0
@@ -411,9 +411,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ddeee9a330ccb104ca323c20069ae9f1, type: 2}
-  m_sharedMaterial: {fileID: -2644918748529192071, guid: ddeee9a330ccb104ca323c20069ae9f1,
-    type: 2}
+  m_fontAsset: {fileID: 0}
+  m_sharedMaterial: {fileID: 0}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
