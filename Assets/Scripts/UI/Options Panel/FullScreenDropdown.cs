@@ -9,7 +9,8 @@
 
 		public override void PickedChoice(int index)
 		{
-			throw new NotImplementedException();
+			Resolution currentResolution = Screen.currentResolution;
+			Screen.SetResolution(currentResolution.width, currentResolution.height, CurrentValue, currentResolution.refreshRate);
 		}
 	}
 }

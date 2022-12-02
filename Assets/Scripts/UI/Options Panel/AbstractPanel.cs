@@ -13,6 +13,7 @@
 			get => dropdown.value;
 			set => dropdown.value = value;
 		}
+		public T CurrentValue => values[CurrentSelection];
 		public event Action<int> ChangedValue = integer => { };
 
 		[HideInInspector]

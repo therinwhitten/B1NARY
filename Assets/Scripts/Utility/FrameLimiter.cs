@@ -4,10 +4,9 @@
 
 	public class FrameLimiter
 	{
-		void Start() 
+		private void Awake()
 		{
-			Application.targetFramerate = Screen.currentResolution.refreshRate;
+			Application.targetFrameRate = Screen.currentResolution.refreshRate;
 		}
-		
 	}
 }

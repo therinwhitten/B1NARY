@@ -1,14 +1,11 @@
 ﻿namespace B1NARY.UI
 {
-	using System;
 	using System.Linq;
-	using System.Collections;
 	using System.Collections.Generic;
 	using TMPro;
 	using UnityEngine;
 	using UnityEngine.UI;
 	using UnityEngine.Rendering;
-	using UnityEngine.Rendering.Universal;
 
 	public sealed class DisplayOptionsBehaviour : MonoBehaviour
 	{
@@ -20,10 +17,10 @@
 		[SerializeField] private TMP_Dropdown resolutionDropdown;
 		public TMP_Dropdown themeDropdown;
 		public TMP_Dropdown languageDropdown;
-		private Resolution[] resolutions;
+		private Resolution[] AllResolutions => Screen.resolutions;
 
 		private List<Resolution> filteredResolutions;
-		private float currentRefreshRate;
+		private float CurrentRefreshRate => Screen.currentResolution.refreshRate;
 		private int currentResolutionIndex = 0;
 		[SerializeField] Slider glow;
 		[SerializeField] Volume volumeProfile;
@@ -38,24 +35,24 @@
 
 		void Start() //Dynamic Resolution Settings
 		{
-			resolutions = Screen.resolutions;
-			filteredResolutions = new List<Resolution>();
+			filteredResolutions = AllResolutions
+				.Where(resolution => resolution.refreshRate == CurrentRefreshRate)
+				.ToList();
+			var sortedList = new List<Resolution>(filteredResolutions.Count);
+			for (int i = 0; i < sortedList.Capacity; i++)
+			{
+				int reverseI = sortedList.Capacity - i - 1;
+				sortedList.Add(filteredResolutions[reverseI]);
+			}
+
 
 			resolutionDropdown.ClearOptions();
-			currentRefreshRate = Screen.currentResolution.refreshRate;
 
-			for (int i = 0; i < resolutions.Length; i++)
-			{
-				if (resolutions[i].refreshRate == currentRefreshRate)
-				{
-					filteredResolutions.Add(resolutions[i]);
-				}
-			}
 
 			var options = new List<string>(filteredResolutions.Count);
 			for (int i = 0; i < filteredResolutions.Count; i++)
 			{
-				string resolutionOption =filteredResolutions[i].width + "x" +filteredResolutions[i].height + " " +filteredResolutions[i].refreshRate + "Hz";
+				string resolutionOption = $"{filteredResolutions[i].width}x{filteredResolutions[i].height} {filteredResolutions[i].refreshRate}Hz";
 				options.Add(resolutionOption);
 				if (filteredResolutions[i].width == Screen.width && filteredResolutions[i].height == Screen.height)
 				{
