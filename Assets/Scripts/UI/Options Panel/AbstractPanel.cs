@@ -13,6 +13,8 @@
 			get => dropdown.value;
 			set => dropdown.value = value;
 		}
+		public T CurrentValue => values[CurrentSelection];
+		public event Action<int> ChangedValue = integer => { };
 
 		[HideInInspector]
 		public TMP_Dropdown dropdown;
@@ -22,6 +24,7 @@
 		{
 			DefineDropdown();
 			dropdown.onValueChanged.AddListener(PickedChoice);
+			dropdown.onValueChanged.AddListener(ChangedValue.Invoke);
 		}
 
 		protected virtual void DefineDropdown()

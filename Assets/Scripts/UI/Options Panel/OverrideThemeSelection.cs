@@ -46,7 +46,8 @@
 
 		public override void PickedChoice(int index)
 		{
-			throw new NotImplementedException();
+			Overrided = index != 0;
+			defaultFormat = values[index];
 		}
 	}
 }

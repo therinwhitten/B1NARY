@@ -86,7 +86,7 @@
 
 		public void PlaySingle(CustomAudioClip audioClip)
 		{
-			if (CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
+			if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
 				throw new InvalidOperationException("It is already being played!");
 			CustomAudioClip = audioClip;
 			ApplyCustomSoundData(audioSource, audioClip);
@@ -96,11 +96,16 @@
 		}
 		public void PlaySingle(CustomAudioClip audioClip, float fadeIn)
 		{
+			if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
+				throw new InvalidOperationException("It is already being played!");
+			CustomAudioClip = audioClip;
+			ApplyCustomSoundData(audioSource, audioClip);
+			if (CreateAutoDisposableCoroutine)
+				garbageCollector = new CoroutineWrapper(monoBehaviour, WaitUntil()).Start();
 			float finalVolume = audioSource.volume;
 			audioSource.volume = 0f;
 			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume, 
 				volume => audioSource.volume = volume), finalVolume, fadeIn);
-			ApplyCustomSoundData(audioSource, audioClip);
 			audioSource.Play();
 		}
 		
@@ -112,7 +117,7 @@
 
 		private void StopOneShots()
 		{
-			audioSource.Stop();
+			//audioSource.Stop();
 		}
 		public void Stop()
 		{
@@ -122,6 +127,7 @@
 		}
 		public void Stop(float fadeOut)
 		{
+			Debug.Log("H");
 			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume,
 				volume => audioSource.volume = volume), 0, fadeOut, () => { if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector)) garbageCollector.Stop(); });
 			StopOneShots();
@@ -135,8 +141,7 @@
 		}
 		public IEnumerator WaitUntil()
 		{
-			while (garbageCollector.IsRunning)
-				yield return null;
+			yield return new WaitUntil(() => !audioSource.isPlaying);
 			FinishedPlaying?.Invoke();
 		}
 	}

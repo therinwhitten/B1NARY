@@ -1,30 +1,26 @@
 ﻿namespace B1NARY.UI
 {
-	using System;
 	using System.Linq;
-	using System.Collections;
 	using System.Collections.Generic;
 	using TMPro;
 	using UnityEngine;
 	using UnityEngine.UI;
 	using UnityEngine.Rendering;
-	using UnityEngine.Rendering.Universal;
 
 	public sealed class DisplayOptionsBehaviour : MonoBehaviour
 	{
 		public bool HentaiMode { get => PlayerPrefsShortcuts.IsHentaiEnabled; set => PlayerPrefsShortcuts.IsHentaiEnabled = value; }
 		public TMP_Dropdown hentaiDropdown;
-		public bool InFullScreen { get => Screen.fullScreen; set => Screen.fullScreen = value; }
-		public TMP_Dropdown fullScreenDropdown;
+		public FullScreenDropdown fullScreenDropdown;
 		public RenderPipelineAsset[] qualityLevels;
 		public TMP_Dropdown qualityDropdown;
 		[SerializeField] private TMP_Dropdown resolutionDropdown;
 		public TMP_Dropdown themeDropdown;
 		public TMP_Dropdown languageDropdown;
-		private Resolution[] resolutions;
+		private Resolution[] AllResolutions => Screen.resolutions;
 
 		private List<Resolution> filteredResolutions;
-		private float currentRefreshRate;
+		private float CurrentRefreshRate => Screen.currentResolution.refreshRate;
 		private int currentResolutionIndex = 0;
 		[SerializeField] Slider glow;
 		[SerializeField] Volume volumeProfile;
@@ -39,24 +35,24 @@
 
 		void Start() //Dynamic Resolution Settings
 		{
-			resolutions = Screen.resolutions;
-			filteredResolutions = new List<Resolution>();
-
-			resolutionDropdown.ClearOptions();
-			currentRefreshRate = Screen.currentResolution.refreshRate;
-
-			for (int i = 0; i < resolutions.Length; i++)
+			filteredResolutions = AllResolutions
+				.Where(resolution => resolution.refreshRate == CurrentRefreshRate)
+				.ToList();
+			var sortedList = new List<Resolution>(filteredResolutions.Count);
+			for (int i = 0; i < sortedList.Capacity; i++)
 			{
-				if (resolutions[i].refreshRate == currentRefreshRate)
-				{
-					filteredResolutions.Add(resolutions[i]);
-				}
+				int reverseI = sortedList.Capacity - i - 1;
+				sortedList.Add(filteredResolutions[reverseI]);
 			}
 
-			List<string> options = new List<string>();
+
+			resolutionDropdown.ClearOptions();
+
+
+			var options = new List<string>(filteredResolutions.Count);
 			for (int i = 0; i < filteredResolutions.Count; i++)
 			{
-				string resolutionOption =filteredResolutions[i].width + "x" +filteredResolutions[i].height + " " +filteredResolutions[i].refreshRate + "Hz";
+				string resolutionOption = $"{filteredResolutions[i].width}x{filteredResolutions[i].height} {filteredResolutions[i].refreshRate}Hz";
 				options.Add(resolutionOption);
 				if (filteredResolutions[i].width == Screen.width && filteredResolutions[i].height == Screen.height)
 				{
@@ -72,17 +68,20 @@
 		{
 			hentaiDropdown.value = HentaiMode ? 1 : 0;
 			hentaiDropdown.onValueChanged.AddListener(ChangedHentaiValue);
-			fullScreenDropdown.value = InFullScreen ? 0 : 1;
-			fullScreenDropdown.onValueChanged.AddListener(ChangedFullScreenValue);
 			qualityDropdown.value = QualitySettings.GetQualityLevel();
 			glow.value = BloomIntensity;
 		}
-
-		public void SetResolution (int resolutionIndex) // Apply resolutions to match Dropdown
+		/// <summary>
+		/// This applies resolutions via a single index.
+		/// </summary>
+		/// <param name="resolutionIndex"> 
+		/// An index referencing <see cref="filteredResolutions"/>
+		/// </param>
+		public void SetResolution(int resolutionIndex) 
 		{
 			Resolution resolution = filteredResolutions[resolutionIndex];
-			Screen.SetResolution(resolution.width,resolution.height, Screen.fullScreen);
-
+			Screen.SetResolution(resolution.width, resolution.height,
+				fullScreenDropdown.values[fullScreenDropdown.CurrentSelection], resolution.refreshRate);
 		}
 		public void ChangeIntensity(float value) => BloomIntensity = value;
 		public void ChangeLevel(int value) // Graphics Quality
@@ -91,7 +90,6 @@
 			QualitySettings.renderPipeline = qualityLevels[value];
 		} 
 		public void ChangedHentaiValue(int option) => HentaiMode = option == 1;
-		public void ChangedFullScreenValue(int fullScreen) => InFullScreen = fullScreen == 0;
 		
 	}
 }
