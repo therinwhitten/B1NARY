@@ -36,10 +36,10 @@
 		{
 			dropdown = GetComponent<TMP_Dropdown>();
 			dropdown.ClearOptions();
-			var options = new List<TMP_Dropdown.OptionData>(values.Length + 1) {
+			var options = new List<TMP_Dropdown.OptionData>(values.Count + 1) {
 				new TMP_Dropdown.OptionData(defaultFormat.name)
 			};
-			for (int i = 0; i < values.Length; i++)
+			for (int i = 0; i < values.Count; i++)
 				options.Add(new TMP_Dropdown.OptionData(values[i].name));
 			dropdown.AddOptions(options);
 		}

@@ -1,11 +1,12 @@
 ﻿namespace B1NARY.UI
 {
 	using System;
+	using System.Collections.Generic;
 	using UnityEngine;
 
 	public sealed class FullScreenDropdown : DropdownPanel<FullScreenMode>
 	{
-		public new FullScreenMode[] values = (FullScreenMode[])Enum.GetValues(typeof(FullScreenMode));
+		public override List<FullScreenMode> DefinedValues => new List<FullScreenMode>((FullScreenMode[])Enum.GetValues(typeof(FullScreenMode)));
 
 		public override void PickedChoice(int index)
 		{

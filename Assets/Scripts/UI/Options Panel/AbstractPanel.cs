@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using TMPro;
 	using UnityEngine;
 
@@ -18,10 +19,16 @@
 
 		[HideInInspector]
 		public TMP_Dropdown dropdown;
-		public T[] values;
+		public virtual List<string> Visuals => values.Select(val => val.ToString()).ToList();
+		public virtual List<T> DefinedValues { get; } = null;
+		public List<T> values;
 
 		protected virtual void Awake()
 		{
+			if (DefinedValues != null && values == null)
+				values = DefinedValues;
+			if (values.Count != Visuals.Count)
+				Debug.LogError("The length of the values does nto match the visuals array!");
 			DefineDropdown();
 			dropdown.onValueChanged.AddListener(PickedChoice);
 			dropdown.onValueChanged.AddListener(ChangedValue.Invoke);
@@ -31,10 +38,7 @@
 		{
 			dropdown = GetComponent<TMP_Dropdown>();
 			dropdown.ClearOptions();
-			var options = new List<TMP_Dropdown.OptionData>(values.Length);
-			for (int i = 0; i < values.Length; i++)
-				options.Add(new TMP_Dropdown.OptionData(values[i].ToString()));
-			dropdown.AddOptions(options);
+			dropdown.AddOptions(Visuals);
 		}
 
 		public abstract void PickedChoice(int index);
