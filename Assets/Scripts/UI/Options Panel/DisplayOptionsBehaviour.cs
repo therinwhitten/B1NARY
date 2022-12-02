@@ -22,6 +22,7 @@
 		public TMP_Dropdown themeDropdown;
 		public TMP_Dropdown languageDropdown;
 		private Resolution[] resolutions;
+
 		private List<Resolution> filteredResolutions;
 		private float currentRefreshRate;
 		private int currentResolutionIndex = 0;
@@ -79,7 +80,10 @@
 		public void SetResolution (int resolutionIndex) // Apply resolutions to match Dropdown
 		{
 			Resolution resolution = filteredResolutions[resolutionIndex];
-			Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+			Screen.SetResolution(Screen.width, Screen.height, FullScreenMode.ExclusiveFullScreen);
+			Screen.SetResolution(Screen.width, Screen.height, FullScreenMode.FullScreenWindow);
+			Screen.SetResolution(Screen.width, Screen.height, FullScreenMode.Windowed);
+
 		}
 		public void ChangeIntensity(float value) => BloomIntensity = value;
 		public void ChangeLevel(int value) // Graphics Quality
