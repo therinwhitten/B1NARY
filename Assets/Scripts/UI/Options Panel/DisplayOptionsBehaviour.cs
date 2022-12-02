@@ -62,10 +62,11 @@
 				{
 					currentResolutionIndex = i;
 				}
-				resolutionDropdown.AddOptions(options);
-				resolutionDropdown.value = currentResolutionIndex;
-				resolutionDropdown.RefreshShownValue();
+				
 			}
+			resolutionDropdown.AddOptions(options);
+			resolutionDropdown.value = currentResolutionIndex;
+			resolutionDropdown.RefreshShownValue();
 		}
 		private void Awake()
 		{
@@ -80,9 +81,7 @@
 		public void SetResolution (int resolutionIndex) // Apply resolutions to match Dropdown
 		{
 			Resolution resolution = filteredResolutions[resolutionIndex];
-			Screen.SetResolution(Screen.width, Screen.height, FullScreenMode.ExclusiveFullScreen);
-			Screen.SetResolution(Screen.width, Screen.height, FullScreenMode.FullScreenWindow);
-			Screen.SetResolution(Screen.width, Screen.height, FullScreenMode.Windowed);
+			Screen.SetResolution(resolution.width,resolution.height,)
 
 		}
 		public void ChangeIntensity(float value) => BloomIntensity = value;
