@@ -81,7 +81,7 @@
 		public void SetResolution (int resolutionIndex) // Apply resolutions to match Dropdown
 		{
 			Resolution resolution = filteredResolutions[resolutionIndex];
-			Screen.SetResolution(resolution.width,resolution.height,)
+			Screen.SetResolution(resolution.width,resolution.height, Screen.fullScreen);
 
 		}
 		public void ChangeIntensity(float value) => BloomIntensity = value;
