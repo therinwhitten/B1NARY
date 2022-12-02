@@ -7,6 +7,7 @@
 	using UnityEditor;
 	using UnityEngine;
 	using B1NARY.Scripting;
+	using System.Diagnostics;
 
 	[CustomEditor(typeof(ScriptHandler))]
 	public class ScriptHandlerEditor : Editor
@@ -30,6 +31,8 @@
 					scriptHandler.StartupScriptPath = allFullPaths[newIndex];
 					EditorUtility.SetDirty(scriptHandler);
 				}
+				if (GUILayout.Button("Open File"))
+					Process.Start(scriptHandler.FullScriptPath(scriptHandler.StartupScriptPath));
 			}
 			else
 			{

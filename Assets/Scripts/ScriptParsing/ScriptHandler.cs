@@ -149,6 +149,11 @@
 				Instance.NextLine();
 			}
 		}
+
+		public string FullScriptPath(string docName) =>
+			BasePath + (string.IsNullOrWhiteSpace(docName)
+				? StartupScriptPath
+				: docName) + ".txt";
 		/// <summary> Gets the name of the script loaded. </summary>
 		public string ScriptName { get; private set; } = string.Empty;
 		/// <summary> 
@@ -236,9 +241,7 @@
 		/// <param name="scriptPath"> The path of the document. </param>
 		public void InitializeNewScript(string streamingAssetsPath = "")
 		{
-			string finalPath = BasePath + (string.IsNullOrWhiteSpace(streamingAssetsPath) 
-				? StartupScriptPath 
-				: streamingAssetsPath) + ".txt";
+			string finalPath = FullScriptPath(streamingAssetsPath);
 			Clear();
 			m_pauseIterations = 0;
 			var scriptFactory = new ScriptDocument.Factory(finalPath);

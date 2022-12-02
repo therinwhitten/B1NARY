@@ -93,6 +93,24 @@ Starting Test Sequence. // Yes
 					Call remote failed to call!
 				}
 			}
+			Sound Library
+			{
+				Starting Nearly Instantly..
+				{fadeinsound: Modern News, .1}
+				Fading to full in 2 seconds..
+				{fadeinsound: Modern News, 2}
+				Starting loopable sound; Full in 5.
+				{fadeinsound: Times Square Crowd, 5}
+				Stopping sound via code with Fadeout manual.
+				{fadeoutsound: Times Square Crowd, 1}
+				Restarting sound and switching scenes for testing.
+				{fadeinsound: Times Square Crowd, .1}
+				Testing now.
+				{changeScene: Times Square}
+				{spawnEmpty: Gabriel Ultrakill}
+				Gabriel Ultrakill::
+				Swapped Scenes.
+			}
 		}
 	}
 	Skip

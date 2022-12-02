@@ -149,7 +149,8 @@
 				case ScriptLine.Type.Empty:
 					return true;
 				default:
-					Debug.LogError($"There seems to be an enum as '{line.type}' that is not part of the switch command case. Skipping.");
+					Debug.LogError($"There seems to be an enum as '{line.type}'" +
+						" that is not part of the switch command case. Skipping.");
 					return true;
 			}
 		}
