@@ -10,18 +10,23 @@
 	/// </summary>
 	public class BinaryB1NARYPanelBehaviour : MonoBehaviour
 	{
-		public const string IsBinaryKey = "n-b";
+		public string BinaryKeyName = "n-b";
 
 		public Button binaryButton, nonBinaryButton;
 		private void Awake()
 		{
-			binaryButton.onClick.AddListener(() => OnBinaryClick(true));
-			nonBinaryButton.onClick.AddListener(() => OnBinaryClick(false));
-			void OnBinaryClick(bool isBinary)
-			{
-				PersistentData.Instance.Booleans[IsBinaryKey] = isBinary;
-				gameObject.SetActive(false);
-			}
+			binaryButton.onClick.AddListener(OnBinaryClick);
+			nonBinaryButton.onClick.AddListener(OnNonBinaryClick);
+		}
+		private void OnBinaryClick()
+		{
+			PersistentData.Instance.Booleans[BinaryKeyName] = true;
+			gameObject.SetActive(false);
+		}
+		private void OnNonBinaryClick()
+		{
+			PersistentData.Instance.Booleans[BinaryKeyName] = false;
+			gameObject.SetActive(false);
 		}
 	}
 }
