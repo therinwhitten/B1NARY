@@ -5,12 +5,13 @@
 	using System.Linq;
 	using UnityEngine;
 	using B1NARY.DataPersistence;
+	using System.Runtime.Remoting;
 
 
 	// Have it change formats per scene if it exists.
 	[Serializable]
 	[CreateAssetMenu(fileName = "New UI Color Format", menuName = "B1NARY/Color UI Format", order = 1)]
-	public class ColorFormat : ScriptableObject
+	public class ColorFormat : ScriptableObject, IEquatable<ColorFormat>
 	{
 		/// <summary>
 		/// Converts a byte to a float ranging from 0 to 1 into 0 to 255.
@@ -91,6 +92,14 @@
 		private void OnEnable()
 		{
 			m_extraUIValues = SavedPairs.ToDictionary(pair => pair.Key, pair => pair.Value);
+		}
+
+		public bool Equals(ColorFormat other)
+		{
+			return primaryUI == other.primaryUI &&
+				SecondaryUI == other.SecondaryUI &&
+				name == other.name &&
+				ExtraUIValues == other.ExtraUIValues;
 		}
 	}
 }

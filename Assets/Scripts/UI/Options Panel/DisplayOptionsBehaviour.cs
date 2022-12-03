@@ -71,18 +71,6 @@
 			qualityDropdown.value = QualitySettings.GetQualityLevel();
 			glow.value = BloomIntensity;
 		}
-		/// <summary>
-		/// This applies resolutions via a single index.
-		/// </summary>
-		/// <param name="resolutionIndex"> 
-		/// An index referencing <see cref="filteredResolutions"/>
-		/// </param>
-		public void SetResolution(int resolutionIndex) 
-		{
-			Resolution resolution = filteredResolutions[resolutionIndex];
-			Screen.SetResolution(resolution.width, resolution.height,
-				fullScreenDropdown.values[fullScreenDropdown.CurrentSelection], resolution.refreshRate);
-		}
 		public void ChangeIntensity(float value) => BloomIntensity = value;
 		public void ChangeLevel(int value) // Graphics Quality
 		{

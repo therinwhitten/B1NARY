@@ -18,6 +18,8 @@
 			}
 		}
 
+		public override int InitialValue => Values.IndexOf(defaultFormat);
+
 		public ColorFormat defaultFormat;
 		protected override void Awake()
 		{
@@ -29,25 +31,17 @@
 				if (defaultFormat != CurrentlyEquippedFormat)
 					CurrentlyEquippedFormat = defaultFormat;
 			}
-
 		}
-
 		protected override void DefineDropdown()
 		{
-			dropdown = GetComponent<TMP_Dropdown>();
-			dropdown.ClearOptions();
-			var options = new List<TMP_Dropdown.OptionData>(values.Count + 1) {
-				new TMP_Dropdown.OptionData(defaultFormat.name)
-			};
-			for (int i = 0; i < values.Count; i++)
-				options.Add(new TMP_Dropdown.OptionData(values[i].name));
-			dropdown.AddOptions(options);
+			base.DefineDropdown();
+			dropdown.value = Visuals.IndexOf(defaultFormat.ToString());
 		}
 
-		public override void PickedChoice(int index)
+		protected override void PickedChoice(int index)
 		{
 			Overrided = index != 0;
-			defaultFormat = values[index];
+			defaultFormat = Values[index];
 		}
 	}
 }
