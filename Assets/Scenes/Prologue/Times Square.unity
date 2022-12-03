@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -105446,7 +105446,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2111188530}
-  - component: {fileID: 2111188531}
   m_Layer: 5
   m_Name: Bruh
   m_TagString: Untagged
@@ -105473,18 +105472,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2111188531
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2111188529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b48d834b67e5444ab00470656f5977b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!43 &2118032371
 Mesh:
   m_ObjectHideFlags: 0
@@ -109791,6 +109778,18 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1719819787}
+    - target: {fileID: 3643117770048848280, guid: 5e31753d7132a674eaa1eb5250e5881f,
+        type: 3}
+      propertyPath: m_VideoClip
+      value: 
+      objectReference: {fileID: 32900000, guid: 60c8e1ba76cce54438f63d10036549ab,
+        type: 3}
+    - target: {fileID: 3643117770048848283, guid: 5e31753d7132a674eaa1eb5250e5881f,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 0039348ae8270ed44aee72d2c2f74ea8,
+        type: 3}
     - target: {fileID: 3643117770056618701, guid: 5e31753d7132a674eaa1eb5250e5881f,
         type: 3}
       propertyPath: m_Mesh
@@ -110089,7 +110088,7 @@ PrefabInstance:
     - target: {fileID: 3643117770179714853, guid: 5e31753d7132a674eaa1eb5250e5881f,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -656.3854
+      value: -656.3853
       objectReference: {fileID: 0}
     - target: {fileID: 3643117770182576296, guid: 5e31753d7132a674eaa1eb5250e5881f,
         type: 3}
@@ -111544,7 +111543,7 @@ PrefabInstance:
     - target: {fileID: 6513155553891556358, guid: 5e31753d7132a674eaa1eb5250e5881f,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6513155553891556359, guid: 5e31753d7132a674eaa1eb5250e5881f,
         type: 3}
@@ -111580,6 +111579,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8374645335214810233, guid: 5e31753d7132a674eaa1eb5250e5881f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8896419993257071971, guid: 5e31753d7132a674eaa1eb5250e5881f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e31753d7132a674eaa1eb5250e5881f, type: 3}
