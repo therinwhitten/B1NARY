@@ -2,41 +2,89 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using TMPro;
 	using UnityEngine;
+	using UnityEngine.Rendering.UI;
 
 	[RequireComponent(typeof(TMP_Dropdown))]
 	public abstract class DropdownPanel<T> : MonoBehaviour
 	{
+		/// <summary>
+		/// The <see cref="dropdown"/>'s value.
+		/// </summary>
 		public int CurrentSelection
 		{
 			get => dropdown.value;
 			set => dropdown.value = value;
 		}
-		public T CurrentValue => values[CurrentSelection];
-		public event Action<int> ChangedValue = integer => { };
+		/// <summary>
+		/// Uses <see cref="CurrentSelection"/> to get the current value of 
+		/// <see cref="Values"/>
+		/// </summary>
+		public T CurrentValue => Values[CurrentSelection];
+		/// <summary>
+		/// When the value changes; Equivalent to <see cref="TMP_Dropdown.onValueChanged"/>
+		/// </summary>
+		public event Action<int> ChangedValue;
+		/// <summary>
+		/// What is the value when it first starts up, so it wont start with a 0?
+		/// </summary>
+		public abstract int InitialValue { get; }
 
 		[HideInInspector]
 		public TMP_Dropdown dropdown;
-		public T[] values;
+		/// <summary>
+		/// What is shown directly to the dropdown. Keep in mind, this should have
+		/// the same count as <see cref="Values"/>!
+		/// </summary>
+		public virtual List<string> Visuals => Values.Select(val => val.ToString()).ToList();
+		/// <summary>
+		/// When the object is first initialized, and doesn't have any data to
+		/// start with.
+		/// </summary>
+		public virtual List<T> DefinedValues => new List<T>();
+		/// <summary>
+		/// The Currently stored values.
+		/// </summary>
+		public List<T> Values
+		{ 
+			get
+			{
+				if (m_values is null)
+					return new List<T>();
+				return m_values;
+			}
+			set => m_values = value;
+		}
+		protected List<T> m_values;
 
 		protected virtual void Awake()
 		{
+			if (m_values is null)
+				m_values = DefinedValues;
+			if (Values.Count != Visuals.Count)
+				Debug.LogError("The length of the values does not match the visuals array!");
 			DefineDropdown();
-			dropdown.onValueChanged.AddListener(PickedChoice);
+			dropdown.value = InitialValue;
+			ChangedValue = PickedChoice;
 			dropdown.onValueChanged.AddListener(ChangedValue.Invoke);
 		}
 
+		/// <summary>
+		/// Defines all the values from <see cref="Visuals"/> into the dropdown.
+		/// </summary>
 		protected virtual void DefineDropdown()
 		{
 			dropdown = GetComponent<TMP_Dropdown>();
 			dropdown.ClearOptions();
-			var options = new List<TMP_Dropdown.OptionData>(values.Length);
-			for (int i = 0; i < values.Length; i++)
-				options.Add(new TMP_Dropdown.OptionData(values[i].ToString()));
-			dropdown.AddOptions(options);
+			dropdown.AddOptions(Visuals);
 		}
 
-		public abstract void PickedChoice(int index);
+		/// <summary>
+		/// What to do when the dropdown changes value.
+		/// </summary>
+		/// <param name="index"></param>
+		protected abstract void PickedChoice(int index);
 	}
 }
