@@ -111,6 +111,26 @@ Starting Test Sequence. // Yes
 				Gabriel Ultrakill::
 				Swapped Scenes.
 			}
+			Page 3
+			{
+				{choice: page 3}
+				{
+					Gameobject Initialization
+					{
+						{changeScene: Brain Sucking Chair Side}
+						{spawnEmpty: Gabriel Ultrakill}
+						Gabriel Ultrakill::
+						binary selection panel.
+						{usegameobject: Binary Selection Panel}
+						Char selection panel.
+						{usegameobject: Character Selection Panel}
+					}
+					Return to main menu
+					{
+						{returnToMainMenu}
+					}
+				}
+			}
 		}
 	}
 	Skip
@@ -119,8 +139,8 @@ Starting Test Sequence. // Yes
 	}
 }
 
-Test Finished! Returning to menu.
-{returnToMainMenu}
+Test Finished! Repeating.
+{changeScript: Test File.txt}
 
 {remote: Bruh}
 {
