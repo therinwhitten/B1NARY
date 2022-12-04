@@ -5,7 +5,7 @@
 	using System.Linq;
 	using UnityEngine;
 
-	public sealed class RemoteBlock : ScriptNode
+	public class RemoteBlock : ScriptNode
 	{
 		public static new bool Predicate(ScriptPair[] pairs)
 		{
@@ -39,7 +39,6 @@
 
 		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
 		{
-			Debug.Log("Bruh");
 			yield break;
 		}
 
