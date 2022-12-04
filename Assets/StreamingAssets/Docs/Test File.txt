@@ -27,9 +27,13 @@ Starting Test Sequence. // Yes
 	}
 	Gameobject Initialization
 	{
-		testing GameObject Initialization..
-		{usegameobject: Bruh}
-		End Detected
+		{changeScene: Brain Sucking Chair Side}
+		{spawnEmpty: Gabriel Ultrakill}
+		Gabriel Ultrakill::
+		binary selection panel.
+		{usegameobject: Binary Selection Panel}
+		Char selection panel.
+		{usegameobject: Character Selection Panel}
 	}
 	Page 2
 	{
@@ -115,16 +119,6 @@ Starting Test Sequence. // Yes
 			{
 				{choice: page 3}
 				{
-					Gameobject Initialization
-					{
-						{changeScene: Brain Sucking Chair Side}
-						{spawnEmpty: Gabriel Ultrakill}
-						Gabriel Ultrakill::
-						binary selection panel.
-						{usegameobject: Binary Selection Panel}
-						Char selection panel.
-						{usegameobject: Character Selection Panel}
-					}
 					Return to main menu
 					{
 						{returnToMainMenu}

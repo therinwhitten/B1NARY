@@ -5,7 +5,6 @@
 	using System.Linq;
 	using TMPro;
 	using UnityEngine;
-	using UnityEngine.Rendering.UI;
 
 	[RequireComponent(typeof(TMP_Dropdown))]
 	public abstract class DropdownPanel<T> : MonoBehaviour
