@@ -5983,6 +5983,7 @@ GameObject:
   - component: {fileID: 1610249543609725018}
   - component: {fileID: 1610249543609725019}
   - component: {fileID: 1610249543609725016}
+  - component: {fileID: 6007664313801422117}
   m_Layer: 5
   m_Name: Resolution Drop Down
   m_TagString: Untagged
@@ -6108,8 +6109,8 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1610249544399019253}
-        m_MethodName: SetResolution
+      - m_Target: {fileID: 6007664313801422117}
+        m_MethodName: set_CurrentSelection
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6411,6 +6412,19 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &6007664313801422117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249543609724997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85cd1912e6d39a242a1e57240a536a3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 0}
 --- !u!1 &1610249543610367631
 GameObject:
   m_ObjectHideFlags: 0
