@@ -347,10 +347,10 @@ So... which route would you like to go down?
 {if: MalePath}
 {
 	"Male Route it is!"
-	{changeScript: Male/Prologue/Prologue.txt}
+	{changeScript: Male/Prologue/Prologue}
 }	
 {if: !MalePath}
 {
 	"Female Route it is!"
-	{changeScript: Female/Prologue/Prologue.txt}
+	{changeScript: Female/Prologue/Prologue}
 }
