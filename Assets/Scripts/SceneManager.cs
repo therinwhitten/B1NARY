@@ -147,6 +147,15 @@
 			DataPersistence.PersistentData.Instance.CreateNewSlot();
 			ScriptHandler.Instance.InitializeNewScript();
 		}
+		/// <summary>
+		/// Initializes the <see cref="ScriptHandler"/>, the system expects the
+		/// current scriptName, or the first scriptName to switch scenes on the first command.
+		/// </summary>
+		public void InitializeScript(string docPath)
+		{
+			DataPersistence.PersistentData.Instance.CreateNewSlot();
+			ScriptHandler.Instance.InitializeNewScript(docPath);
+		}
 
 		/// <summary>
 		/// A Coroutine that either transitions instantly if there are no

@@ -24,19 +24,13 @@
 		public static IEnumerable<GameObject> FindWithMarker(string name)
 		{
 			// https://docs.unity3d.com/ScriptReference/Resources.FindObjectsOfTypeAll.html
-#pragma warning disable CS0618 
-			// Type or member is obsolete
-			// The system that the source recommends doesn't work properly, even
-			// - even when copied. So just using an obselete method will have to 
-			// - do.
-			Marker[] markers = FindObjectsOfTypeAll(typeof(Marker)) as Marker[];
-			Debug.Log(string.Join($",\n", markers.Select(marker => marker.name)));
+			Marker[] markers = Resources.FindObjectsOfTypeAll<Marker>();
 			for (int i = 0; i < markers.Length; i++)
 			{
-				//if (!markers[i].SameName(name))
-				//	continue;
-				//if (!markers[i].InScene())
-				//	continue;
+				if (markers[i].name != name)
+					continue;
+				if (markers[i].hideFlags != HideFlags.None)
+					continue;
 				yield return markers[i].gameObject;
 			}
 		}
