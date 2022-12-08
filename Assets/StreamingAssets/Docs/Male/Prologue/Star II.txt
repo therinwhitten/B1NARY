@@ -49,7 +49,7 @@ Asterella::
  not beat him up and drag him!" 
  {additive:off}
 }
-{if: n-b}
+{else}
 {
  {additive:on}
  "I told you to <i>bring</i> them in,
@@ -66,7 +66,7 @@ Szycrotic::
  "So, naturally. I tied him up."
  "Don't blame me! I think it's his kink."
 }
-{if: n-b}
+{else}
 {
  "Star, they literally tried to book it."
  "So, naturally. I tied MC up."
@@ -87,7 +87,7 @@ Asterella::
 {
  "Even if they seem to be intruders! What if he was a Demon Lord in disguise?"
 } 
-{if: n-b}
+{else}
 {
  "Even if they seem to be intruders! What if the were a Demon Lord in disguise?"
 } 
@@ -120,7 +120,7 @@ Szycrotic::
 {
  "If he becomes hostile don't blame me, alright?"
 }
-{if: n-b}
+{else}
 {
  "If they become hostile don't blame me, alright?"
 }
@@ -168,7 +168,7 @@ In the flesh.
  {
    Be a gentleperson.
  }
- {if: !n-b}
+ {else}
  {
    Be a gentleman. 
  }
@@ -183,7 +183,7 @@ In the flesh.
  {
    Being a gentleperson, I lock eyes with her.
  }
- {if: !n-b}
+ {else}
  {
   Being a gentleman, I lock eyes with her. 
  }
@@ -355,7 +355,7 @@ Asterella::
 {
  "Don't play dumb with me, MC. You seem to be a very kind, attractive elf boy, and I am a bit 'thirsty'..."
 }
-{if: n-b}
+{else}
 {
  "Don't play dumb with me, MC. You seem to be a very kind, attractive elf, and I am a bit 'thirsty'..."
 }
@@ -436,7 +436,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
          Asterella::
          "Such a very good boy..."
         }
-        {if: n-b}
+        {else}
         {
          "Such a good toy you are..."
          MC::
@@ -520,5 +520,5 @@ Will Szycrotic be enraged if I go with Star's suggestion?
             I follow her lead, her steps leading both of us to the large bed.
         ]
     }
-    {changeScript: Male/Prologue/Star II Hentai.txt}
+    {changeScript: Male/Prologue/Star II Hentai}
 }

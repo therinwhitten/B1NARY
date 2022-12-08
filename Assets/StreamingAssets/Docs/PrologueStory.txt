@@ -33,7 +33,7 @@ Narrator::
 She shakes her head and sighs.
 {anim: Female Bystander, Noarmscrossed}
 {spawnChar: malesilo2, 2,Male Bystander 2}
-{moveChar: Male Bystander 2, 0.80}
+{moveChar: Male Bystander 2, 0.75}
 {anim: Male Bystander 2, kime1}
 Male Bystander 2::
 "You're stuck in the past, both of you."
@@ -101,7 +101,7 @@ Let's find out together. LIVE!"
 "On scene at the Digital Horizons Lab, we have our correspondent and lead news reporter, John Casnik."
 "John? Are you there?"
 {changeScene: Brain Sucking Chair Side}
-{fadeoutsound: Times Square Crowd, 1}
+
 {fadeinsound: Laptop Lab Scene, 1.5}
 {fadeinsound: Fast Keyboard Typing, 1.5}
 {fadeinsound: DIHI Low Power, 2}
@@ -115,7 +115,7 @@ Let's find out together. LIVE!"
 {spawnEmpty: Female Bystander}
 {spawnEmpty: Narrator}
 {anim: John, kime2}
-{moveChar: John, .20}
+{moveChar: John, .30}
 Narrator::
 In front of the screen is a man in his 40s, dressed in a sharp dark-grey suit, one hand fiddling with his ear piece.
 As the news correspondent listens in, he nods curtly. 
@@ -176,9 +176,9 @@ John::
 "Oh, excuse me gentlemen."
 {moveChar: LabTech0, -.4}
 {fadeinsound: openclosedoor, 0.1}
+{moveChar: LabTech1, -.4}
 {additive: on}
 "Sorry about that!
-{moveChar: LabTech1, -.4}
 {disablechar: LabTech0}
 {disablechar: LabTech1}
 Where was I?"
@@ -262,7 +262,7 @@ Female Bystander::
 Narrator::
 The quip is sharp...
 {spawnChar: malesilo3, 1.3, Lab Tech} 
-{moveChar: Lab Tech, .65}
+{moveChar: Lab Tech, .70}
 {anim: Lab Tech, Checktime}
 Narrator::
 John is now standing next to a lab tech.
@@ -347,10 +347,10 @@ So... which route would you like to go down?
 {if: MalePath}
 {
 	"Male Route it is!"
-	{changeScript: Male/Prologue/Prologue.txt}
+	{changeScript: Male/Prologue/Prologue}
 }	
 {if: !MalePath}
 {
 	"Female Route it is!"
-	{changeScript: Female/Prologue/Prologue.txt}
+	{changeScript: Female/Prologue/Prologue}
 }

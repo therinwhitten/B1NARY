@@ -15,7 +15,7 @@ after what seems like an eternity,
 {
  his face goes completely flaccid.
 }
-{if: n-b}
+{else}
 {
  their face relaxes.   
 }
@@ -23,7 +23,7 @@ after what seems like an eternity,
 { 
  For the onlookers, it was hell watching the boy's face.
 }
-{if: n-b}
+{else}
 {
  For the onlookers, it was hell watching the person's face.
 }
@@ -32,7 +32,7 @@ after what seems like an eternity,
 {
  His eyes slowly close, peaceful now, devoid of any expression. 
 }
-{if: n-b}
+{else}
 {
  Their eyes slowly close, peaceful now, devoid of any expression.
 } 
@@ -57,7 +57,7 @@ Fluorescent lights in the lab crackle and come to life...
 {
   Medics grab MC, carefully placing him into the cyrotube and applying sensors to the different sections of his body.
 }
-{if: n-b}
+{else}
 {
  Medics grab MC, carefully placing them into the cryotube and applying sensors to the different sections of their body.
 }
@@ -73,7 +73,7 @@ John looks around.
 {
  At least for the boy, Digital Horizons has spared no expense.
 } 
-{if: n-b}
+{else}
 {
  At least for this employee, Digital Horizons has spared no expense.
 }
@@ -135,7 +135,7 @@ Cliff::
  {additive: off}
  "Tests are still being conducted to ensure he is aware of his location and fully cognizant." 
 }
-{if: n-b}
+{else}
 {
  {additive: on}
  "We have confirmed their thought patterns in server 10.
@@ -180,7 +180,7 @@ The pressure of dealing with a whole new frontier will keep MC most likely distr
 {
  It is <i>crucial</i> we keep him calm and safe. 
 } 
-{if: n-b}
+{else}
 {
  It is <i>crucial</i> we keep them calm and safe.
 }
@@ -209,7 +209,7 @@ We've already warned you prior to the conference that this is a very high risk e
  and after Mr. MC has been cleared of quarantine, we will allow him to speak to the press."
  {additive: off}
 }
-{if: n-b}
+{else}
 {
  {additive: on}
  "However,
@@ -237,4 +237,4 @@ Narrator::
 No one seems to notice the sweat on Cliff's forehead as the window turns into a solid wall, blocking the truth out...
 {fadeoutsound: smallgroupwhisper, 1}
 {fadeoutsound: Lab Tension, .2}
-{changeScript: Male/Prologue/Prologue III.txt}
+{changeScript: Male/Prologue/Prologue III}

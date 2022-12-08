@@ -13,7 +13,7 @@ Shirobi::
 { 
  "MC! She has been an intern with the company for over a year now..."
 }
-{if: n-b}
+{else}
 {
  "They have been an intern with the company for over a year now..."
 }
@@ -58,7 +58,7 @@ Old Reporter::
 {
  "There she is! MC?"
 }
-{if: n-b}
+{else}
 {
  "There they are! MC?"
 }
@@ -195,7 +195,7 @@ Shirobi::
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {spawnEmpty: MC}
-{spawnChar: malesilo3, 2, Shirobi}
+{spawnEmpty: Shirobi}
 MC::
 I center myself in front of the portal to the Digital Realm.
 It feels so surreal.
@@ -267,4 +267,4 @@ Oh my god, I think I'm...
 {fadeoutsound: Laptop-Lab,.1}
 Then, with an almost gut-wrenching lurch, everything escapes from the top of my head...
 {fadeinsound: Brain Sucking Chair Activate, .5}
-{changeScript: Female/Prologue/Prologue II.txt}
+{changeScript: Female/Prologue/Prologue II}

@@ -18,7 +18,7 @@ Narrator::
  {additive: off}
  Her eyes slowly close, peaceful now, devoid of any expression. 
 }
-{if:n-b,true}
+{else}
 {
  {additive: on}
  Finally,
@@ -48,7 +48,7 @@ It only takes a few minutes. Then, the lights in the lab comes back on.
 {
   Medics grab MC, carefully placing her into the cryotube and applying sensors to the different sections of her body.
 }
-{if: n-b}
+{else}
 {
  Medics grab MC, carefully placing them into the cryotube and applying sensors to the different sections of their body.
 }
@@ -58,7 +58,7 @@ John wipes a bit of sweat off his head.
 { 
  With a pneumatic swoosh, the stasis chamber closes with her inside.
 }
-{if: n-b}
+{else}
 { 
  With a pneumatic swoosh, the stasis chamber closes with them inside.
 }
@@ -72,7 +72,7 @@ John looks around.
 {
  At least for the young lady, Digital Horizons has spared no expense.
 } 
-{if: n-b}
+{else}
 {
  At least for this employee, Digital Horizons has spared no expense.
 }
@@ -133,7 +133,7 @@ Cliff::
  {additive: off}
  "Tests are still being conducted to ensure she is aware of her location and fully cognizant." 
 }
-{if: n-b}
+{else}
 {
  {additive: on}
  "We have confirmed their thought patterns in server 10.
@@ -179,7 +179,7 @@ and the pressure of dealing with a whole new frontier,
  will keep her most likely disorientated.
  It is crucial we keep her calm and safe. 
 }
-{if: n-b}
+{else}
 {
  will keep them most likely disorientated.
  It is crucial we keep them calm and safe. 
@@ -203,7 +203,7 @@ Cliff::
  and after Ms MC has been cleared from quarantine, we will allow her to speak to the press."
  {additive: off}
 }
-{if: n-b}
+{else}
 {
  {additive: on}
  "However,
@@ -231,4 +231,4 @@ Narrator::
 No one seems to notice the sweat on Cliff's forehead as the window turns into a solid wall, blocking the truth out...
 {fadeoutsound: smallgroupwhisper, 1}
 {fadeoutsound: Lab Tension, .2}
-{changeScript: Female/Prologue/Prologue III.txt}
+{changeScript: Female/Prologue/Prologue III}

@@ -12,7 +12,7 @@ Shirobi::
 {
 	"He has been an intern with the company for over a year now..."
 }
-{if: n-b}
+{else}
 {
  "They have been an intern with the company for over a year now..."
 }
@@ -64,7 +64,7 @@ My eyes get a full blast of white light from those high tech cameras.
 The light erases my distractions, and I attempt to blink away the brightness.
 {spawnChar: malesilo, 2, Smug Reporter}
 {anim: Smug Reporter, kime1}
-{moveChar: Smug Reporter, .85}
+{moveChar: Smug Reporter, 75}
 Smug Reporter::
 "MC! 
 Are you ok? You look unsteady."
@@ -87,7 +87,7 @@ I swallow some acid down. I lick my chapping lips a bit.
 Gesturing at the behemoth sitting in the center of the room, I clarify.
 "I would be lying if I didn't say the DIHI makes me nervous."
 {spawnChar: malesilo2, -1, Cliff}
-{moveChar: Cliff, .20}
+{moveChar: Cliff, .25}
 {anim: Cliff, handwave}
 Eyes start to adjust, and I notice Cliff, the lead project manager, behind the press, his arms crossing in combination to a stern face.
 His posture is clearly saying, "If you mess this up, there goes your pay for a year."
@@ -114,16 +114,16 @@ I hear a chuckle somewhere... The voice sounds familiar.
 Damn lights!
 {moveChar: Cliff, -1}
 {moveChar: Smug Reporter, 2}
-{moveChar: Shirobi, .75}
+{moveChar: Shirobi, .65}
 Shirobi::
 {anim: Shirobi, Glasses} 
-{if: n-b}
-{
- "Well, at least they seem to have calmed down. I was starting to worry, to be frank."
-}
 {if: !n-b}
 {
- "Well, at least he seems to have calmed down a bit. I was starting to worry, to be frank." 
+ "Well, at least he seems to have calmed down a bit. I was starting to worry, to be frank."
+}
+{else}
+{
+ "Well, at least they seem to have calmed down. I was starting to worry, to be frank." 
 }
 MC::
 My eyes shoot daggers at him.
@@ -209,6 +209,7 @@ I walk to the center of the room, looking straight at the chair.
 {fadeoutsound: Lab Ambience Music Light, 2} 
 {spawnEmpty: MC}
 {spawnEmpty: Shirobi}
+MC::
 It vibrates my bones as I get closer.
 The DIHI fills my whole vision.
 {additive: on}
@@ -278,4 +279,4 @@ No press, no coworkers: just my heartbeat, the thrum of the chair, and my sudden
 <i>Then, with an almost gut-wrenching lurch, everything suddenly feels like it is being pulled to the top of my head...</i>
 {fadeoutsound: DIHI Power Up, 1}
 {fadeinsound: Brain Sucking Chair Activate, .5}
-{changeScript: Male/Prologue/Prologue II.txt}
+{changeScript: Male/Prologue/Prologue II}
