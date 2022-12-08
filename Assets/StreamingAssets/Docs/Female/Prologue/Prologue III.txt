@@ -20,7 +20,7 @@ Shirobi::
 {
  "I promised her, Sir. That she would be ok.... I told her it would just be four days. And..."
 }
-{if: n-b}
+{else}
 {
  "I promised them, Sir. That they would be ok... I told them it would only be four days. And..."
 }
@@ -32,7 +32,7 @@ Shirobi::
 {
  <i>Crying won't bring her back safely...</i>
 }
-{if: n-b}
+{else}
 {
  <i>Crying won't bring them back safely...</i>
 }
@@ -43,7 +43,7 @@ Is it possible just for the DIHI to just...
 {
  scramble her?"
 }
-{if: n-b}
+{else}
 {
  scramble them?"
 }
@@ -64,7 +64,7 @@ Cliff::
 {
  "She's just a kid dammit!!"
 }
-{if: n-b}
+{else}
 {
  They're just a kid dammit!!"
 }
@@ -87,7 +87,7 @@ Cliff::
 {
  We've got four days to find her.
 }
-{if: n-b}
+{else}
 {
  We've got four days to find them.
 }
@@ -175,7 +175,7 @@ Shirobi::
 {
  "Sir, do we even have a chance to find her in there? I mean she is the <i>only</i> human in the internet but..."
 }
-{if: n-b}
+{else}
 {
  "Sir, do we even have a chance to find them? I mean they are the <i>only</i> human in the internet but..."
 }
@@ -192,7 +192,7 @@ Cliff::
  "I pray she lands somewhere semi-safe."
  "Will ransomware or malware hurt her? There are so many unknown dangers that we have no clue on..."
 }
-{if: n-b}
+{else}
 {
  {additive: on}
  "It's possible, 
@@ -226,7 +226,7 @@ Cliff::
  I hope that's enough to find her."
  {additive: off} 
 }
-{if: n-b}
+{else}
 {
  "MC, they need us."  
  {additive: on}
@@ -258,7 +258,7 @@ Cliff::
 {
  "If we can't find her by then, there will be some serious backlash on this."
 }
-{if: n-b}
+{else}
 {
  "If we can't find them by then, there will be some serious backlash on this."
 }
@@ -280,7 +280,7 @@ Narrator::
  From her profile, she is pretty competent.
  He hopes that whereever she is, she will be smart enough to pace herself and make careful decisions...
 }
-{if: n-b}
+{else}
 {
  As Cliff continues to push out instructions to his team, he couldn't help but feel a pang of incredible sadness. 
  The kid is fresh out of college.

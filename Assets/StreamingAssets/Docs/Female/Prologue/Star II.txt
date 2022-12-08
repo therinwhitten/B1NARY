@@ -61,7 +61,7 @@ Szycrotic casually retorts.
  {additive:off} 
  [Default]
 }
-{if: !n-b}
+{else}
 {
  Szycrotic::
  "Look woman, she wanted to see the garden. Don't blame me."
@@ -87,7 +87,7 @@ Asterella makes eye contact with me. I feel the red rushing to my cheeks.
  "She <i>is</i> cute."
  "So cute, I could just <i>eat</i> her up!"
 }
-{if: n-b}
+{else}
 {
  Asterella::
  [Happy]
@@ -236,7 +236,7 @@ What am I doing?
              [Angry]
              "Star, if she does <i>anything.</i>"
            }
-           {if: n-b}
+           {else}
            {
              Szycrotic::
              [Angry]
@@ -307,7 +307,7 @@ Asterella raises her eyebrows, standing up.
  Asterella::
  "She seems pretty protective of you. Do I need to increase the punishment?"
 }
-{if: n-b}
+{else}
 {
  Asterella::
  "They seem pretty protective of you, Szy. Should I increase the punishment?"

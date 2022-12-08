@@ -12,7 +12,7 @@ Shirobi::
 {
 	"He has been an intern with the company for over a year now..."
 }
-{if: n-b}
+{else}
 {
  "They have been an intern with the company for over a year now..."
 }
@@ -117,13 +117,13 @@ Damn lights!
 {moveChar: Shirobi, .65}
 Shirobi::
 {anim: Shirobi, Glasses} 
-{if: n-b}
-{
- "Well, at least they seem to have calmed down. I was starting to worry, to be frank."
-}
 {if: !n-b}
 {
- "Well, at least he seems to have calmed down a bit. I was starting to worry, to be frank." 
+ "Well, at least he seems to have calmed down a bit. I was starting to worry, to be frank."
+}
+{else}
+{
+ "Well, at least they seem to have calmed down. I was starting to worry, to be frank." 
 }
 MC::
 My eyes shoot daggers at him.
@@ -209,6 +209,7 @@ I walk to the center of the room, looking straight at the chair.
 {fadeoutsound: Lab Ambience Music Light, 2} 
 {spawnEmpty: MC}
 {spawnEmpty: Shirobi}
+MC::
 It vibrates my bones as I get closer.
 The DIHI fills my whole vision.
 {additive: on}
