@@ -21,35 +21,6 @@
 	/// <seealso cref="MonoBehaviour"/>
 	public class UIThemeHandler : Multiton<UIThemeHandler>
 	{
-		// Add command array for selection.
-		public static CommandArray Commands = new CommandArray()
-		{
-			["colorformat"] = (Action<string>)(newColorFormat =>
-			{
-				
-			}),
-		};
-
-		public const string resourcesColorThemePath = "UI/Color Themes";
-		public static string uiThemeName = "Default";
-		public static string CurrentResourcesFormatPath => $"{resourcesColorThemePath}/{uiThemeName}";
-
-		private static ColorFormat _currentlyEquippedFormat;
-		public static ColorFormat CurrentlyEquippedFormat
-		{
-			get
-			{
-				if (_currentlyEquippedFormat == null)
-					CurrentlyEquippedFormat = Resources.Load<ColorFormat>(CurrentResourcesFormatPath);
-				return _currentlyEquippedFormat;
-			}
-			set
-			{
-				uiThemeName = value.name;
-				_currentlyEquippedFormat = value;
-			}
-		}
-
 		public enum Option
 		{
 			Primary,
@@ -64,9 +35,9 @@
 			switch (option)
 			{
 				case Option.Primary:
-					return CurrentlyEquippedFormat.primaryUI;
+					return ColorFormat.CurrentFormat.primaryUI;
 				case Option.Secondary:
-					return CurrentlyEquippedFormat.SecondaryUI;
+					return ColorFormat.CurrentFormat.SecondaryUI;
 				case Option.Custom:
 					throw new ArgumentException($"although {option} is a enum, you need" +
 						$"another argument or name to differentiate other settings!");
@@ -78,23 +49,11 @@
 		{
 			if (Enum.TryParse(name, out Option option))
 				return GetColor(option);
-			if (CurrentlyEquippedFormat.ExtraUIValues.TryGetValue(name, out Color color))
+			if (ColorFormat.CurrentFormat.ExtraUIValues.TryGetValue(name, out Color color))
 				return color;
 			throw new NullReferenceException($"'{name}' is not located within the currently " +
-				$"equipped format: {CurrentlyEquippedFormat.name}.");
+				$"equipped format: {ColorFormat.CurrentFormat.name}.");
 		}
-		public static void ChangeTheme(string themeName)
-		{
-			themeName = resourcesColorThemePath + themeName;
-			_currentlyEquippedFormat = Resources.Load<ColorFormat>(themeName);
-			if (Application.isPlaying)
-			{
-				IEnumerator<UIThemeHandler> themeHandlers = GetEnumerator();
-				while (themeHandlers.MoveNext())
-					themeHandlers.Current.UpdateColors();
-			}
-		}
-		public void ChangeThemeInstance(string themeName) => ChangeTheme(themeName);
 
 
 		public string imageThemeName = Option.Secondary.ToString(),
@@ -163,7 +122,15 @@
 		{
 			UpdateColors();
 		}
-		public void UpdateColors()
+		private void OnEnable()
+		{
+			ColorFormat.CurrentFormatChanged += UpdateColors;
+		}
+		private void OnDisable()
+		{
+			ColorFormat.CurrentFormatChanged -= UpdateColors;
+		}
+		public void UpdateColors(ColorFormat format = null)
 		{
 			if (ColorEdit.Value is Color)
 				ColorEdit.Value = GetColor(imageThemeName);

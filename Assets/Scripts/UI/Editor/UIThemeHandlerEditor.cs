@@ -38,7 +38,7 @@
 						"color-related blocks detected in the components, " +
 						"make sure that the one you want to modify is at the top!", 
 						MessageType.Info); 
-				EditorGUILayout.ObjectField(new GUIContent("Color Format [readonly]", "The currently used format across all Theme Handlers"), UIThemeHandler.CurrentlyEquippedFormat, typeof(ColorFormat), false);
+				//EditorGUILayout.ObjectField(new GUIContent("Color Format [readonly]", "The currently used format across all Theme Handlers"), , typeof(ColorFormat), false);
 				EditorGUILayout.Space();
 			}
 			try
@@ -98,20 +98,20 @@
 			if (!GUI.Button(popupRect, "", EditorStyles.foldout))
 				return;
 			// Context Menu
-			var menu = new GenericMenu();
-			menu.AddDisabledItem(new GUIContent($"Current Selection: {UIThemeHandler.CurrentlyEquippedFormat.name}"));
-			menu.AddSeparator("");
-			for (int i = 0; i < UIThemeHandler.CurrentlyEquippedFormat.SavedPairs.Count; i++)
-			{
-				int currentIterative = i;
-				string capturedKey = UIThemeHandler.CurrentlyEquippedFormat.SavedPairs[i].Key;
-				menu.AddItem(new GUIContent(capturedKey), newValueAction.Value == capturedKey, () =>
-				{
-					newValueAction.Value = capturedKey;
-					EditorUtility.SetDirty(target);
-				});
-			}
-			menu.ShowAsContext();
+			//var menu = new GenericMenu();
+			////menu.AddDisabledItem(new GUIContent($"Current Selection: {ColorFormat..name}"));
+			//menu.AddSeparator("");
+			//for (int i = 0; i < UIThemeHandler.CurrentlyEquippedFormat.SavedPairs.Count; i++)
+			//{
+			//	int currentIterative = i;
+			//	string capturedKey = UIThemeHandler.CurrentlyEquippedFormat.SavedPairs[i].Key;
+			//	menu.AddItem(new GUIContent(capturedKey), newValueAction.Value == capturedKey, () =>
+			//	{
+			//		newValueAction.Value = capturedKey;
+			//		EditorUtility.SetDirty(target);
+			//	});
+			//}
+			//menu.ShowAsContext();
 		}
 	}
 }

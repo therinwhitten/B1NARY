@@ -35,7 +35,7 @@
 				SceneManager.Commands,
 				CharacterController.Commands,
 				TransitionManager.Commands,
-				UIThemeHandler.Commands
+				ColorFormat.Commands
 			};
 		/// <summary>
 		/// Uses recursion to get all the documents as a full path, including

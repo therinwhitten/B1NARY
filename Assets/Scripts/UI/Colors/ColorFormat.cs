@@ -6,6 +6,8 @@
 	using UnityEngine;
 	using B1NARY.DataPersistence;
 	using System.Runtime.Remoting;
+	using System.Threading;
+	using B1NARY.Scripting;
 
 
 	// Have it change formats per scene if it exists.
@@ -13,6 +15,119 @@
 	[CreateAssetMenu(fileName = "New UI Color Format", menuName = "B1NARY/Color UI Format", order = 1)]
 	public class ColorFormat : ScriptableObject, IEquatable<ColorFormat>
 	{
+		// Add command array for selection.
+		public static CommandArray Commands = new CommandArray()
+		{
+			["colorformat"] = (Action<string>)(newColorFormat =>
+			{
+				SoftOverride(newColorFormat);
+			}),
+		};
+
+		/// <summary>
+		/// Adds <see cref="resourcesColorThemePath"/> and the added path into
+		/// it's own directory. Using <see cref="Resources.Load(string)"/> with
+		/// this is compatible and intended.
+		/// </summary>
+		/// <param name="path">The file name that is expected to be <see cref="ColorFormat"/>. </param>
+		/// <returns> A resources path to use. </returns>
+		public static string ResourcesPath(string path) => $"{resourcesColorThemePath}/{path}";
+		/// <summary>
+		/// A path in the resources folder as reference for color themes.
+		/// </summary>
+		public const string resourcesColorThemePath = "UI/Color Themes";
+
+		/// <summary>
+		/// The key for saving <see cref="PlayerPrefs"/>.
+		/// </summary>
+		private const string persistenceKey = "B1NARYColorFormat";
+		/// <summary>
+		/// The name of the <see cref="ColorFormat"/> to default to if there is 
+		/// none overrided.
+		/// </summary>
+		public const string defaultKey = "Default";
+		/// <summary>
+		/// Gets the currently saved overrided theme name, expected for use in 
+		/// <see cref="ResourcesPath(string)"/>. Returns <see cref="defaultKey"/>
+		/// if there is no key present, or <see cref="HasOverridedTheme"/> is 
+		/// false.
+		/// </summary>
+		public static string OverridedTheme
+		{
+			get => PlayerPrefs.GetString(persistenceKey, defaultKey);
+			set
+			{
+				if (m_currentFormat != null)
+					CurrentFormat = Resources.Load<ColorFormat>(ResourcesPath(value));
+				PlayerPrefs.SetString(persistenceKey, value);
+			}
+		}
+		/// <summary>
+		/// Modifies the current theme to the specified <paramref name="themeName"/>
+		/// and saved as a player preference.
+		/// </summary>
+		/// <param name="themeName"> The new theme to change to and persist. </param>
+		public static void HardOverride(string themeName)
+		{
+			OverridedTheme = themeName;
+		}
+		/// <summary>
+		/// Checks if it has a theme in store. Setting it to <see langword="true"/>
+		/// will cause to create a new key with <see cref="defaultKey"/>, or
+		/// <see cref="CurrentFormat"/> if it is currently active.
+		/// </summary>
+		public static bool HasOverridedTheme
+		{
+			get => PlayerPrefs.HasKey(persistenceKey);
+			set
+			{
+				if (value == HasOverridedTheme)
+					return;
+				if (value)
+					PlayerPrefs.SetString(persistenceKey, m_currentFormat == null ? defaultKey : m_currentFormat.name);
+				else
+					PlayerPrefs.DeleteKey(persistenceKey);
+				CurrentFormat = Resources.Load<ColorFormat>(ResourcesPath(OverridedTheme));
+			}
+		}
+
+		private static ColorFormat m_currentFormat;
+		/// <summary>
+		/// when <see cref="CurrentFormat"/> is modified in any way.
+		/// </summary>
+		public static event Action<ColorFormat> CurrentFormatChanged;
+		public static ColorFormat CurrentFormat
+		{
+			get
+			{
+				if (!Application.isPlaying)
+					throw new InvalidOperationException();
+				if (m_currentFormat == null)
+					m_currentFormat = Resources.Load<ColorFormat>(ResourcesPath(defaultKey));
+				return m_currentFormat;
+			}
+			private set
+			{
+				m_currentFormat = value;
+				CurrentFormatChanged?.Invoke(m_currentFormat);
+			}
+		}
+
+		/// <summary>
+		/// This modifies the currently used format, if it does not hold a theme
+		/// such as the <see cref="OverridedTheme"/>, then it will set to that
+		/// active theme.
+		/// </summary>
+		/// <returns><see cref="HasOverridedTheme"/></returns>
+		public static bool SoftOverride(string themeName)
+		{
+			if (HasOverridedTheme)
+				return false;
+			CurrentFormat = Resources.Load<ColorFormat>(ResourcesPath(themeName));
+			return true;
+		}
+
+
 		/// <summary>
 		/// Converts a byte to a float ranging from 0 to 1 into 0 to 255.
 		/// </summary>
