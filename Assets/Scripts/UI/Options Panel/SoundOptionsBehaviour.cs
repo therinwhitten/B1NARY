@@ -25,7 +25,7 @@
          [SerializeField] Slider benosphereSlider;
          [SerializeField] Slider comradeDelSlider;
          [SerializeField] Slider fefeSlider;
-         [SerializeField] Slider ironmouseSlider;
+         [SerializeField] Slider virtuallyLewdSlider;
          [SerializeField] Slider kittyMcpancakesSlider;
          [SerializeField] Slider natsumiMoeSlider;
          [SerializeField] Slider projektMelodySlider;
@@ -46,7 +46,7 @@
         const string MIXER_BENOSPHERE = "Benosphere";
         const string MIXER_DEL = "Del";
         const string MIXER_FEFE = "Fefe";
-        const string MIXER_IRONMOUSE = "Ironmouse";
+        const string MIXER_VL = "VL";
         const string MIXER_KITTY = "Kitty";
         const string MIXER_MOE = "Moe";
         const string MIXER_MELODY = "Melody";
@@ -68,7 +68,7 @@
             benosphereSlider.onValueChanged.AddListener(SetBenosphereVolume);
             comradeDelSlider.onValueChanged.AddListener(SetDelVolume);
             fefeSlider.onValueChanged.AddListener(SetFefeVolume);
-            ironmouseSlider.onValueChanged.AddListener(SetIronmouseVolume);
+            virtuallyLewdSlider.onValueChanged.AddListener(SetVLVolume);
             kittyMcpancakesSlider.onValueChanged.AddListener(SetKittyVolume);
             natsumiMoeSlider.onValueChanged.AddListener(SetMoeVolume);
             projektMelodySlider.onValueChanged.AddListener(SetMelodyVolume);
@@ -128,9 +128,9 @@
         {
             mixer.SetFloat(MIXER_FEFE, Mathf.Log10(value) * 100);
         }
-         void SetIronmouseVolume(float value)
+         void SetVLVolume(float value)
         {
-            mixer.SetFloat(MIXER_IRONMOUSE, Mathf.Log10(value) * 100);
+            mixer.SetFloat(MIXER_VL, Mathf.Log10(value) * 100);
         }
         void SetKittyVolume(float value)
         {
