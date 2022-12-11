@@ -244,10 +244,14 @@
 			{
 				if (!node.IsSubclassOf(typeof(ScriptNode)))
 					throw new InvalidOperationException($"'{node.Name}' is not derived from '{nameof(ScriptNode)}'!");
-				scriptNodeParsers.Add((
-					// Gets the possibly overrided static method to do a comparison.
-					(Func<ScriptPair[], bool>)node.GetMethod(nameof(ScriptNode.Predicate), BindingFlags.Static | BindingFlags.Public).CreateDelegate(typeof(Func<ScriptPair[], bool>)), 
-					node));
+				MethodInfo info = node.GetMethod(nameof(ScriptNode.Predicate), BindingFlags.Static | BindingFlags.Public);
+				if (info is null)
+					scriptNodeParsers.Add((ScriptNode.Predicate, node));
+				else
+					scriptNodeParsers.Add((
+						// Gets the possibly overrided static method to do a comparison.
+						(Func<ScriptPair[], bool>)node.GetMethod(nameof(ScriptNode.Predicate), BindingFlags.Static | BindingFlags.Public).CreateDelegate(typeof(Func<ScriptPair[], bool>)), 
+						node));
 			}
 
 			/// <summary>

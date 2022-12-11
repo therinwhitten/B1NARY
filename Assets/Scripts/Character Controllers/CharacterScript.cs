@@ -44,7 +44,7 @@
 			set
 			{
 				string[] cubismExpressions = expressionController.ExpressionsList
-					.CubismExpressionObjects.Select(data => data.name).ToArray();
+					.CubismExpressionObjects.Select(data => data.Type).ToArray();
 				int expressionIndex = Array.IndexOf(cubismExpressions, value);
 				if (expressionIndex == -1)
 				{
