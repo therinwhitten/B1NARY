@@ -1,4 +1,4 @@
-namespace B1NARY.UI
+ namespace B1NARY.UI
 {
 	using UnityEngine;
 	using UnityEngine.UI;
@@ -12,6 +12,7 @@ namespace B1NARY.UI
 	using CharacterController = B1NARY.CharacterManagement.CharacterController;
 	using B1NARY.Scripting;
 	using B1NARY.DataPersistence;
+	using B1NARY.CharacterManagement;
 
 	/// <summary>
 	/// 
@@ -99,29 +100,25 @@ namespace B1NARY.UI
 			set => ScriptHandler.Instance.ScriptDocument.AdditiveEnabled = value;
 		}
 		public TMP_Text speakerBox, textBox;
+
+
 		/// <summary>
-		/// A property that directly points to the text box of <see cref="Text"/>
+		/// A property that directly points to the text box of <see cref="Text"/>.
+		/// Use <see cref="CharacterController.ActiveCharacterName"/> instead 
+		/// for a more accurate name, as this can change visually within the game.
 		/// </summary>
-		public string CurrentSpeaker
+		public string SpeakerName
 		{
-			get
-			{
-				if (string.IsNullOrEmpty(m_currentSpeaker))
-					return speakerBox.text;
-				return m_currentSpeaker;
-			}
-			set
-			{
-				if (value == "MC" && !string.IsNullOrEmpty(PersistentData.Instance.GameSlotData.PlayerName))
-				{
-					speakerBox.text = PersistentData.Instance.GameSlotData.PlayerName;
-					m_currentSpeaker = value;
-				}
-				speakerBox.text = value;
-				m_currentSpeaker = null;
-			}
+			get => speakerBox.text;
+			set => speakerBox.text = value;
 		}
-		private string m_currentSpeaker;
+		private void ChangeSpeakerName(ICharacterController characterController)
+		{
+			if (characterController.CharacterName == "MC" && !string.IsNullOrEmpty(PersistentData.Instance.GameSlotData.PlayerName))
+				SpeakerName = PersistentData.Instance.GameSlotData.PlayerName;
+			else
+				SpeakerName = characterController.CharacterName;
+		}
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
 		/// </summary>
@@ -221,7 +218,11 @@ namespace B1NARY.UI
 		private CoroutineWrapper eventCoroutine;
 		private CoroutineWrapper speakCoroutine;
 
-		private void Awake() => m_secondsChar = m_ticksPerChar / 1000f;
+		private void Awake()
+		{
+			m_secondsChar = m_ticksPerChar / 1000f;
+			CharacterController.Instance.ActiveCharacterChanged += ChangeSpeakerName;
+		}
 
 		/// <summary>
 		/// Starts the speaking coroutine to say it.
@@ -236,7 +237,7 @@ namespace B1NARY.UI
 
 		public void Say(string message, string speaker)
 		{
-			CurrentSpeaker = speaker;
+			CharacterController.Instance.ChangeActiveCharacter(speaker);
 			Say(message);
 		}
 

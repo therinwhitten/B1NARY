@@ -126,10 +126,7 @@
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
-					if (CharacterController.Instance.charactersInScene.TryGetValue(DialogueSystem.Instance.CurrentSpeaker, out var pair))
-						pair.characterScript.SayLine(line);
-					else
-						throw new MissingMemberException($"Character '{DialogueSystem.Instance.CurrentSpeaker}' couldn't be played to say anything, as they don't exist!");
+					CharacterController.Instance.ActiveCharacter.SayLine(line);
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);
@@ -137,7 +134,8 @@
 					return true;
 				case ScriptLine.Type.Speaker:
 					string speaker = ScriptLine.CastSpeaker(line);
-					DialogueSystem.Instance.CurrentSpeaker = speaker;
+					if (!CharacterController.Instance.ChangeActiveCharacter(speaker))
+						Debug.LogError($"There is no character named '{speaker}'!");
 					return true;
 				case ScriptLine.Type.Command:
 					return !OverloadableCommand.Invoke(commands, ScriptLine.CastCommand(line));
@@ -185,8 +183,8 @@
 			/// A collection of parsers that allows them make them more defined
 			/// and causes different behaviour as such.
 			/// </summary>
-			private readonly List<(Func<ScriptPair[], bool> condition, Type node)> scriptNodeParsers = 
-				new List<(Func<ScriptPair[], bool> condition, Type node)>();
+			private readonly List<(Func<ScriptPair[], bool> condition, ConstructorInfo constructor)> scriptNodeParsers = 
+				new List<(Func<ScriptPair[], bool> condition, ConstructorInfo constructor)>();
 			/// <summary>
 			/// A type-writer like way to read through the file while compiling
 			/// the document.
@@ -245,13 +243,25 @@
 				if (!node.IsSubclassOf(typeof(ScriptNode)))
 					throw new InvalidOperationException($"'{node.Name}' is not derived from '{nameof(ScriptNode)}'!");
 				MethodInfo info = node.GetMethod(nameof(ScriptNode.Predicate), BindingFlags.Static | BindingFlags.Public);
-				if (info is null)
-					scriptNodeParsers.Add((ScriptNode.Predicate, node));
+				Func<ScriptPair[], bool> infoDel;
+				if (!(info is null))
+				{
+					infoDel = (Func<ScriptPair[], bool>)info.CreateDelegate(typeof(Func<ScriptPair[], bool>));
+				}
 				else
-					scriptNodeParsers.Add((
-						// Gets the possibly overrided static method to do a comparison.
-						(Func<ScriptPair[], bool>)node.GetMethod(nameof(ScriptNode.Predicate), BindingFlags.Static | BindingFlags.Public).CreateDelegate(typeof(Func<ScriptPair[], bool>)), 
-						node));
+				{
+					Debug.LogWarning($"There is no '{nameof(ScriptNode.Predicate)}' " +
+						"despite it being a scriptNode. Perhaps compiling issues?");
+					infoDel = ScriptNode.Predicate;
+				}
+				ConstructorInfo conInfo = node.GetConstructor(new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(int) });
+				if (conInfo is null)
+				{
+					Debug.LogWarning($"There is no standard constructor despite" +
+						$" it being a scriptNode.");
+					infoDel = ScriptNode.Predicate;
+				}
+				scriptNodeParsers.Add((infoDel, conInfo));
 			}
 
 			/// <summary>
@@ -298,8 +308,9 @@
 					list.Select(pair => pair.scriptLine).ToArray());
 				// Merging all dictionaries.
 				output.commands = commands;
-
+#if DEBUG
 				Debug.Log($"All commands:\n{string.Join("\n", output.commands.Select(pair => $"'{pair.Key}' lengths: {string.Join(", ", pair.Value.Select(del => del.Method.GetParameters().Length))}"))}");
+#endif
 				// Assigning nodes, highest first
 				IEnumerator<(int startIndex, int endIndex)> nodeQueue = 
 					nodes.OrderByDescending(pair => pair.indentation)
@@ -341,7 +352,7 @@
 				{
 					if (!scriptNodeParsers[i].condition.Invoke(subValues))
 						continue;
-					return (ScriptNode)scriptNodeParsers[i].node.GetConstructor(new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(int) }).Invoke(new object[] { document, subValues, index });
+					return (ScriptNode)scriptNodeParsers[i].constructor.Invoke(new object[] { document, subValues, index });
 				}
 				return new ScriptNode(document, subValues, index);
 			}

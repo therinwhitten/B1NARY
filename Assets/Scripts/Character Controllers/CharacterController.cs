@@ -125,9 +125,27 @@
 		private Transform charLayerTransform;
 
 
-		public ICharacterController ActiveCharacter => charactersInScene[DialogueSystem.Instance.CurrentSpeaker].characterScript;
+		public string ActiveCharacterName { get; private set; }
+		public ICharacterController ActiveCharacter => charactersInScene[ActiveCharacterName].characterScript;
+		public event Action<ICharacterController> ActiveCharacterChanged;
 		public Dictionary<string, (GameObject gameObject, ICharacterController characterScript)> charactersInScene =
 			new Dictionary<string, (GameObject gameObject, ICharacterController characterScript)>(10);
+
+		/// <summary>
+		/// Changes the currently active character without errors. 
+		/// </summary>
+		/// <param name="name"> The case-sensitive name of the character. </param>
+		/// <returns> If it has successfully switched characters. </returns>
+		public bool ChangeActiveCharacter(string name)
+		{
+			if (charactersInScene.ContainsKey(name))
+			{
+				ActiveCharacterName = name;
+				ActiveCharacterChanged?.Invoke(ActiveCharacter);
+				return true;
+			}
+			return false;
+		}
 
 		/// <summary>
 		/// Modifies a character name for <see cref="charactersInScene"/>.
