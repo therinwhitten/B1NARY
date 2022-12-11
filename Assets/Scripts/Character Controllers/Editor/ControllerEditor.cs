@@ -16,7 +16,7 @@
 		public override void OnInspectorGUI()
 		{
 			if (DialogueSystem.HasInstance)
-				EditorGUILayout.LabelField($"Is current speaker: {DialogueSystem.Instance.CurrentSpeaker == characterController.CharacterName}");
+				EditorGUILayout.LabelField($"Is current speaker: {CharacterController.Instance.ActiveCharacterName == characterController.CharacterName}");
 			if (characterController.VoiceData != null)
 				AudioControllerEditor.DisplayAudioData(characterController.VoiceData);
 		}

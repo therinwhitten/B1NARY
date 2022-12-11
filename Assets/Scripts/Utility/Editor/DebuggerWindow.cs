@@ -62,9 +62,9 @@
 				var onSpeaker = new StringBuilder("On Speaker: ");
 				if (!Application.isPlaying)
 					return onSpeaker.Append(notPlaying).ToString();
-				if (!DialogueSystem.HasInstance || string.IsNullOrEmpty(DialogueSystem.Instance.CurrentSpeaker))
+				if (!DialogueSystem.HasInstance || string.IsNullOrEmpty(DialogueSystem.Instance.SpeakerName))
 					return onSpeaker.Append(@null).ToString();
-				return onSpeaker.Append(DialogueSystem.Instance.CurrentSpeaker).ToString();
+				return onSpeaker.Append(DialogueSystem.Instance.SpeakerName).ToString();
 			}
 			string CurrentLine()
 			{
