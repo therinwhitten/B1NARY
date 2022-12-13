@@ -4,7 +4,15 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using UnityEngine;
-
+	
+	/// <summary>
+	/// A delegate that is related to the <see cref="ScriptNode.ScriptNode(ScriptDocument, ScriptPair[])"/>
+	/// constructor.
+	/// </summary>
+	/// <param name="document"> The reference of the document to tie to. </param>
+	/// <param name="subLines"> The contents of the <see cref="ScriptNode"/> </param>
+	/// <returns> A node, or a class that derived from it. </returns>
+	public delegate ScriptNode ScriptNodeParser(ScriptDocument document, ScriptPair[] subLines, int index);
 	/// <summary>
 	/// A block of <see cref="ScriptLine"/>s that is run over time via 
 	/// <see cref="Perform"/>
@@ -12,9 +20,16 @@
 	[Serializable]
 	public class ScriptNode
 	{
-		public static NodeConditionReader NodeConditionReader { get; }
-			= new NodeConditionReader(pairs => true, (document, subLines, index) 
-				=> new ScriptNode(document, subLines, index));
+		/// <summary>
+		/// Checks the input and decides if it should be able to create a 
+		/// node off of it. This is meant to be overridden by derived classes
+		/// via the new keyword.
+		/// </summary>
+		/// <param name="pairs"> The contents of the scriptNode </param>
+		public static bool Predicate(ScriptPair[] pairs)
+		{
+			return true;
+		}
 
 		/// <summary>
 		/// The line count of all the contents, and the <see cref="rootLine"/> and 

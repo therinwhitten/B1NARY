@@ -183,8 +183,8 @@
 			/// A collection of parsers that allows them make them more defined
 			/// and causes different behaviour as such.
 			/// </summary>
-			private readonly List<NodeConditionReader> scriptNodeParsers = 
-				new List<NodeConditionReader>();
+			private readonly List<(Func<ScriptPair[], bool> condition, ConstructorInfo constructor)> scriptNodeParsers = 
+				new List<(Func<ScriptPair[], bool> condition, ConstructorInfo constructor)>();
 			/// <summary>
 			/// A type-writer like way to read through the file while compiling
 			/// the document.
@@ -242,16 +242,26 @@
 			{
 				if (!node.IsSubclassOf(typeof(ScriptNode)))
 					throw new InvalidOperationException($"'{node.Name}' is not derived from '{nameof(ScriptNode)}'!");
-				if (node == typeof(ScriptNode))
+				MethodInfo info = node.GetMethod(nameof(ScriptNode.Predicate), BindingFlags.Static | BindingFlags.Public);
+				Func<ScriptPair[], bool> infoDel;
+				if (!(info is null))
 				{
-					scriptNodeParsers.Add(ScriptNode.NodeConditionReader);
-					return;
+					infoDel = (Func<ScriptPair[], bool>)info.CreateDelegate(typeof(Func<ScriptPair[], bool>));
 				}
-				Debug.Log($"Adding custom node: '{node.Name}'..");
-				NodeConditionReader reader = 
-					(NodeConditionReader)node.GetProperty(nameof(ScriptNode.NodeConditionReader), BindingFlags.Static | BindingFlags.Public)
-					.GetValue(null);
-				scriptNodeParsers.Add(reader);
+				else
+				{
+					Debug.LogWarning($"There is no '{nameof(ScriptNode.Predicate)}' " +
+						"despite it being a scriptNode. Perhaps compiling issues?");
+					infoDel = ScriptNode.Predicate;
+				}
+				ConstructorInfo conInfo = node.GetConstructor(new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(int) });
+				if (conInfo is null)
+				{
+					Debug.LogWarning($"There is no standard constructor despite" +
+						$" it being a scriptNode.");
+					infoDel = ScriptNode.Predicate;
+				}
+				scriptNodeParsers.Add((infoDel, conInfo));
 			}
 
 			/// <summary>
@@ -340,9 +350,9 @@
 			{
 				for (int i = 0; i < scriptNodeParsers.Count; i++)
 				{
-					if (!scriptNodeParsers[i].Predicate(subValues))
+					if (!scriptNodeParsers[i].condition.Invoke(subValues))
 						continue;
-					return scriptNodeParsers[i].Create(document, subValues, index);//.Invoke(new object[] { document, subValues, index });
+					return (ScriptNode)scriptNodeParsers[i].constructor.Invoke(new object[] { document, subValues, index });
 				}
 				return new ScriptNode(document, subValues, index);
 			}

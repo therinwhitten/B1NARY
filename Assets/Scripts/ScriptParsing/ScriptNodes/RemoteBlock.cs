@@ -5,12 +5,19 @@
 	using System.Linq;
 	using UnityEngine;
 
-
 	public class RemoteBlock : ScriptNode
 	{
-		public static new NodeConditionReader NodeConditionReader { get; }
-			= new NodeConditionReader(pairs => pairs[0].LineType == ScriptLine.Type.Command && ScriptLine.CastCommand(pairs[0].scriptLine).command == "remote",
-				(document, subLines, index) => new IfBlock(document, subLines, index));
+		public static new bool Predicate(ScriptPair[] pairs)
+		{
+			if (pairs[0].scriptLine.type != ScriptLine.Type.Command)
+				return false;
+			var command = ScriptLine.CastCommand(pairs[0].scriptLine);
+			if (command.arguments.Length != 1)
+				return false;
+			if (command.command != "remote")
+				return false;
+			return true;
+		}
 		public static Func<bool, IEnumerator<ScriptLine>> CallRemote(ScriptDocument document, string key)
 		{
 			Dictionary<string, RemoteBlock> blockDictionary = (
