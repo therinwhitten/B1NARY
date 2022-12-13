@@ -15,11 +15,9 @@
 	/// </summary>
 	public sealed class ChoiceBlock : ScriptNode
 	{
-		public static new bool Predicate(ScriptPair[] pairs)
-		{
-			return pairs[0].scriptLine.type == ScriptLine.Type.Command &&
-				ScriptLine.CastCommand(pairs[0].scriptLine).command == "choice";
-		}
+		public static new NodeConditionReader NodeConditionReader { get; }
+			= new NodeConditionReader(pairs => pairs[0].LineType == ScriptLine.Type.Command && ScriptLine.CastCommand(pairs[0].scriptLine).command == "choice",
+				(document, subLines, index) => new IfBlock(document, subLines, index));
 		/// <summary>
 		/// A Dictionary that keeps track of the choices and the scriptNode that
 		/// is linked up to it.
