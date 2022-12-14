@@ -250,7 +250,7 @@
 				Func<ScriptPair[], bool> func = pairs => true;
 				if (ConditionAttribute.TryGetAttribute(node, out ConditionAttribute attribute))
 					func = attribute.Predicate;
-				ConstructorInfo info = node.GetConstructor(new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(int) });
+				ConstructorInfo info = node.GetConstructor(BindingFlags.CreateInstance, Type.DefaultBinder, new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(int) }, new ParameterModifier[] { });
 				if (info == null)
 					throw new MissingMethodException($"class '{node.Name}' has " +
 						"a missing default constructor!");
