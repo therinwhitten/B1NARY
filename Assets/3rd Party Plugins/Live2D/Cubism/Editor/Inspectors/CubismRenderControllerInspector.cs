@@ -18,7 +18,7 @@ namespace Live2D.Cubism.Editor.Inspectors
     /// Inspector for <see cref="CubismRenderController"/>s.
     /// </summary>
     [CustomEditor(typeof(CubismRenderController))]
-    public class CubismRenderControllerInspector : UnityEditor.Editor
+    internal sealed class CubismRenderControllerInspector : UnityEditor.Editor
     {
         private bool ShowSorting { get; set; }
 

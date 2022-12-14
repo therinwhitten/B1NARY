@@ -71,7 +71,7 @@ namespace Live2D.Cubism.Framework.HarmonicMotion
         /// </summary>
         private void Initialize()
         {
-            // InitializeGame value fields.
+            // Initialize value fields.
             var parameter = GetComponent<CubismParameter>();
 
 

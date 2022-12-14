@@ -20,7 +20,7 @@ namespace Live2D.Cubism.Rendering
     /// Controls rendering of a <see cref="CubismModel"/>.
     /// </summary>
     [ExecuteInEditMode, CubismDontMoveOnReimport]
-    public class CubismRenderController : MonoBehaviour, ICubismUpdatable
+    public sealed class CubismRenderController : MonoBehaviour, ICubismUpdatable
     {
         /// <summary>
         /// Model opacity.
@@ -543,7 +543,7 @@ namespace Live2D.Cubism.Rendering
             }
 
 
-            // InitializeGame sorting layer.
+            // Initialize sorting layer.
             // We set the backing field here directly because we pull the sorting layer directly from the renderer.
             _sortingLayerId = renderers[0]
                 .MeshRenderer

@@ -87,7 +87,7 @@ namespace Live2D.Cubism.Framework.MouthMovement
             }
 
 
-            // InitializeGame samples buffer.
+            // Initialize samples buffer.
             switch (SamplingQuality)
             {
                 case (CubismAudioSamplingQuality.VeryHigh):

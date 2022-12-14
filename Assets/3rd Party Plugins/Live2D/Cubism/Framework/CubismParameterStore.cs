@@ -172,7 +172,7 @@ namespace Live2D.Cubism.Framework
         /// </summary>
         private void OnEnable()
         {
-            // InitializeGame cache.
+            // Initialize cache.
             Refresh();
         }
 

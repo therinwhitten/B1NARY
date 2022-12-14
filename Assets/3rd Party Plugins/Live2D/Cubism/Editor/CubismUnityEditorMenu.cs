@@ -147,7 +147,7 @@ namespace Live2D.Cubism.Editor
         }
 
         /// <summary>
-        /// InitializeGame cubism menu.
+        /// Initialize cubism menu.
         /// </summary>
         [InitializeOnLoadMethod]
         private static void Initialize()

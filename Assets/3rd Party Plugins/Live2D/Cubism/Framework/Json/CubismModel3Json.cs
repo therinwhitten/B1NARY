@@ -366,7 +366,7 @@ namespace Live2D.Cubism.Framework.Json
         /// <returns>The instantiated <see cref="CubismModel">model</see> on success; <see langword="null"/> otherwise.</returns>
         public CubismModel ToModel(MaterialPicker pickMaterial, TexturePicker pickTexture, bool shouldImportAsOriginalWorkflow = false)
         {
-            // InitializeGame model source and instantiate it.
+            // Initialize model source and instantiate it.
             var mocAsBytes = Moc3;
 
 
@@ -406,21 +406,21 @@ namespace Live2D.Cubism.Framework.Json
                 return null;
             }
 
-            // InitializeGame materials.
+            // Initialize materials.
             for (var i = 0; i < renderers.Length; ++i)
             {
                 renderers[i].Material = pickMaterial(this, drawables[i]);
             }
 
 
-            // InitializeGame textures.
+            // Initialize textures.
             for (var i = 0; i < renderers.Length; ++i)
             {
                 renderers[i].MainTexture = pickTexture(this, drawables[i]);
             }
 
 
-            // InitializeGame drawables.
+            // Initialize drawables.
             if(HitAreas != null)
             {
                 for (var i = 0; i < HitAreas.Length; i++)
@@ -444,7 +444,7 @@ namespace Live2D.Cubism.Framework.Json
             var DisplayInfo3JsonAsString = DisplayInfo3Json;
             var cdi3Json = CubismDisplayInfo3Json.LoadFrom(DisplayInfo3JsonAsString);
 
-            // InitializeGame groups.
+            // Initialize groups.
             var parameters = model.Parameters;
 
 
@@ -488,7 +488,7 @@ namespace Live2D.Cubism.Framework.Json
             // Setting up the part name for display.
             if (cdi3Json != null)
             {
-                // InitializeGame groups.
+                // Initialize groups.
                 var parts = model.Parts;
 
                 for (var i = 0; i < parts.Length; i++)
@@ -562,7 +562,7 @@ namespace Live2D.Cubism.Framework.Json
             }
 
 
-            // InitializeGame physics if JSON exists.
+            // Initialize physics if JSON exists.
             var physics3JsonAsString = Physics3Json;
 
 

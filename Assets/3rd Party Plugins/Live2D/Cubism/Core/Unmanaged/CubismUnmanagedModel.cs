@@ -119,7 +119,7 @@ namespace Live2D.Cubism.Core.Unmanaged
             }
 
 
-            // InitializeGame native model (cleaning up and returning on fail).
+            // Initialize native model (cleaning up and returning on fail).
             Ptr = CubismCoreDll.InitializeModelInPlace(moc.Ptr, memory, size);
 
 
@@ -132,7 +132,7 @@ namespace Live2D.Cubism.Core.Unmanaged
             }
 
 
-            // InitializeGame 'components'.
+            // Initialize 'components'.
             Parameters = new CubismUnmanagedParameters(Ptr);
             Parts = new CubismUnmanagedParts(Ptr);
             Drawables = new CubismUnmanagedDrawables(Ptr);

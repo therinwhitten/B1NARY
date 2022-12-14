@@ -131,7 +131,7 @@ namespace Live2D.Cubism.Rendering.Masking
             }
 
 
-            // InitializeGame junctions.
+            // Initialize junctions.
             Junctions = new CubismMaskMaskedJunction[pairs.Entries.Count];
 
 

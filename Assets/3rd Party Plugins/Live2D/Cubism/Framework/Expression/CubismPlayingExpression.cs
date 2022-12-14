@@ -76,7 +76,7 @@ namespace Live2D.Cubism.Framework.Expression
         #endregion
 
         /// <summary>
-        /// InitializeGame expression data from <see cref="CubismExpressionData"/>.
+        /// Initialize expression data from <see cref="CubismExpressionData"/>.
         /// </summary>
         /// <param name="model">model.</param>
         /// <param name="expressionData">Source.</param>

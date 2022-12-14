@@ -212,7 +212,7 @@ namespace Live2D.Cubism.Framework.LookAt
             }
 
 
-            // InitializeGame cache.
+            // Initialize cache.
             Refresh();
         }
 
