@@ -12,10 +12,6 @@
 	[Serializable]
 	public class ScriptNode
 	{
-		public static NodeConditionReader NodeConditionReader { get; }
-			= new NodeConditionReader(pairs => true, (document, subLines, index) 
-				=> new ScriptNode(document, subLines, index));
-
 		/// <summary>
 		/// The line count of all the contents, and the <see cref="rootLine"/> and 
 		/// brackets. 
