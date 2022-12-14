@@ -183,8 +183,8 @@
 			/// A collection of parsers that allows them make them more defined
 			/// and causes different behaviour as such.
 			/// </summary>
-			private readonly List<NodeConditionReader> scriptNodeParsers = 
-				new List<NodeConditionReader>();
+			private readonly List<NodeCondition> scriptNodeParsers = 
+				new List<NodeCondition>();
 			/// <summary>
 			/// A type-writer like way to read through the file while compiling
 			/// the document.
@@ -243,15 +243,20 @@
 				if (!node.IsSubclassOf(typeof(ScriptNode)))
 					throw new InvalidOperationException($"'{node.Name}' is not derived from '{nameof(ScriptNode)}'!");
 				if (node == typeof(ScriptNode))
-				{
-					scriptNodeParsers.Add(ScriptNode.NodeConditionReader);
 					return;
-				}
+				if (scriptNodeParsers.Any(nodeCon => nodeCon.type == node))
+					return;
 				Debug.Log($"Adding custom node: '{node.Name}'..");
-				NodeConditionReader reader = 
-					(NodeConditionReader)node.GetProperty(nameof(ScriptNode.NodeConditionReader), BindingFlags.Static | BindingFlags.Public)
-					.GetValue(null);
-				scriptNodeParsers.Add(reader);
+				Func<ScriptPair[], bool> func = pairs => true;
+				if (ConditionAttribute.TryGetAttribute(node, out ConditionAttribute attribute))
+					func = attribute.Predicate;
+				ConstructorInfo info = node.GetConstructor(new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(int) });
+				if (info == null)
+					throw new MissingMethodException($"class '{node.Name}' has " +
+						"a missing default constructor!");
+				ScriptNodeParser<ScriptNode> scriptNodeParser = (doc, sublines, index) =>
+					(ScriptNode)info.Invoke(new object[] { doc, sublines, index });
+				scriptNodeParsers.Add(new NodeCondition(node, func, scriptNodeParser));
 			}
 
 			/// <summary>

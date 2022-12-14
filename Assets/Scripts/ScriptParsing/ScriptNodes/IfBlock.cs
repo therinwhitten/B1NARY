@@ -7,11 +7,9 @@
 	using B1NARY.DataPersistence;
 	using UnityEngine;
 
+	[NodeCommandCondition("if")]
 	public sealed class IfBlock : ScriptNode
 	{
-		public static new NodeConditionReader NodeConditionReader { get; }
-			= new NodeConditionReader(pairs => pairs[0].LineType == ScriptLine.Type.Command && ScriptLine.CastCommand(pairs[0].scriptLine).command == "if", 
-				(document, subLines, index) => new IfBlock(document, subLines, index));
 		public IfBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
 		{
 
@@ -44,6 +42,8 @@
 			if (!CanPerform)
 			{
 				// The else block behaviour
+				if (document.nodes.Count >= nodeIndex + 1)
+					yield break;
 				if (document.nodes[nodeIndex + 1] is ElseBlock elseBlock)
 				{
 					using (var elseEnumerator = elseBlock.IfStatementPerform(pauseOnCommands)) 
@@ -57,11 +57,9 @@
 					yield return @base.Current;
 		}
 	}
+	[NodeCommandCondition("else")]
 	public sealed class ElseBlock : ScriptNode
 	{
-		public static new NodeConditionReader NodeConditionReader { get; }
-			= new NodeConditionReader(pairs => pairs[0].LineType == ScriptLine.Type.Command && ScriptLine.CastCommand(pairs[0].scriptLine).command == "else",
-				(document, subLines, index) => new IfBlock(document, subLines, index));
 		public ElseBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
 		{
 
