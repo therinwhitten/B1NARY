@@ -9,11 +9,9 @@
 
 	public sealed class IfBlock : ScriptNode
 	{
-		public static new bool Predicate(ScriptPair[] pairs)
-		{
-			return pairs[0].scriptLine.type == ScriptLine.Type.Command &&
-				ScriptLine.CastCommand(pairs[0].scriptLine).command == "if";
-		}
+		public static new NodeConditionReader NodeConditionReader { get; }
+			= new NodeConditionReader(pairs => pairs[0].LineType == ScriptLine.Type.Command && ScriptLine.CastCommand(pairs[0].scriptLine).command == "if", 
+				(document, subLines, index) => new IfBlock(document, subLines, index));
 		public IfBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
 		{
 
@@ -61,11 +59,9 @@
 	}
 	public sealed class ElseBlock : ScriptNode
 	{
-		public static new bool Predicate(ScriptPair[] pairs)
-		{
-			return pairs[0].scriptLine.type == ScriptLine.Type.Command &&
-				ScriptLine.CastCommand(pairs[0].scriptLine).command == "else";
-		}
+		public static new NodeConditionReader NodeConditionReader { get; }
+			= new NodeConditionReader(pairs => pairs[0].LineType == ScriptLine.Type.Command && ScriptLine.CastCommand(pairs[0].scriptLine).command == "else",
+				(document, subLines, index) => new IfBlock(document, subLines, index));
 		public ElseBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
 		{
 
