@@ -247,10 +247,11 @@
 				if (scriptNodeParsers.Any(nodeCon => nodeCon.type == node))
 					return;
 				Debug.Log($"Adding custom node: '{node.Name}'..");
+				Debug.Log($"Constructors: {node.GetConstructors().Length}\n{string.Join(";\n", node.GetConstructors().Select(constructor => string.Join(", ", constructor.GetParameters().Select(param => param.ToString()))))}");
 				Func<ScriptPair[], bool> func = pairs => true;
 				if (ConditionAttribute.TryGetAttribute(node, out ConditionAttribute attribute))
 					func = attribute.Predicate;
-				ConstructorInfo info = node.GetConstructor(BindingFlags.CreateInstance, Type.DefaultBinder, new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(int) }, new ParameterModifier[] { });
+				ConstructorInfo info = node.GetConstructor(new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(Int32) });
 				if (info == null)
 					throw new MissingMethodException($"class '{node.Name}' has " +
 						"a missing default constructor!");
