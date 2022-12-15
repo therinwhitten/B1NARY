@@ -5,7 +5,6 @@
 	using System.Linq;
 	using UnityEngine;
 	using B1NARY.DataPersistence;
-	using System.Runtime.Remoting;
 	using System.Threading;
 	using B1NARY.Scripting;
 
