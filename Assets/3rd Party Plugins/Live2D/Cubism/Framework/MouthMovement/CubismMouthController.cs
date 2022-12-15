@@ -119,7 +119,7 @@ namespace Live2D.Cubism.Framework.MouthMovement
         /// </summary>
         private void Start()
         {
-            // InitializeGame cache.
+            // Initialize cache.
             Refresh();
         }
 

@@ -67,7 +67,7 @@ namespace Live2D.Cubism.Core
                 .AddComponent<CubismModel>();
 
 
-            // InitializeGame it by resetting it.
+            // Initialize it by resetting it.
             model.Reset(moc);
 
 

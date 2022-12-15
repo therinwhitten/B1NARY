@@ -115,7 +115,7 @@ namespace Live2D.Cubism.Framework.Physics
             }
 
 
-            // InitializeGame rig.
+            // Initialize rig.
             Rig.Controller = this;
 
 
@@ -124,14 +124,8 @@ namespace Live2D.Cubism.Framework.Physics
                 Rig.SubRigs[i].Rig = Rig;
             }
 
-#warning This part has been modified, notify cubism!
-            // Retrieves the cubism model, roughly similar to
-            // - ComponentExtensionMethods.FindCubismModel, boolean set to false.
-            if (TryGetComponent<CubismModel>(out var model))
-                Parameters = model.Parameters;
-            else
-                throw new MissingComponentException($"'{name}' is missing a "
-                    + $"'{nameof(CubismModel)}'!");
+
+            Parameters = this.FindCubismModel().Parameters;
 
             Rig.Initialize();
         }

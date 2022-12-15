@@ -416,7 +416,7 @@ namespace Live2D.Cubism.Framework.MotionFade
         /// </summary>
         private void OnEnable()
         {
-            // InitializeGame cache.
+            // Initialize cache.
             Refresh();
         }
 

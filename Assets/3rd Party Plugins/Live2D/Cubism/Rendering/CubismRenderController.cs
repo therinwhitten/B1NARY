@@ -543,7 +543,7 @@ namespace Live2D.Cubism.Rendering
             }
 
 
-            // InitializeGame sorting layer.
+            // Initialize sorting layer.
             // We set the backing field here directly because we pull the sorting layer directly from the renderer.
             _sortingLayerId = renderers[0]
                 .MeshRenderer

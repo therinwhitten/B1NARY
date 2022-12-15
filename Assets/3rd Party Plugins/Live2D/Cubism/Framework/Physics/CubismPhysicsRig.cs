@@ -84,7 +84,7 @@ namespace Live2D.Cubism.Framework.Physics
                 return;
             }
 
-            // InitializeGame.
+            // Initialize.
             if (_parametersCache == null)
             {
                 _parametersCache = new float[Controller.Parameters.Length];
