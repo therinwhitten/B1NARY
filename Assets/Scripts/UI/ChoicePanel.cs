@@ -7,6 +7,7 @@
 	using B1NARY.DesignPatterns;
 	using CharacterController = B1NARY.CharacterManagement.CharacterController;
 	using System.Collections.Generic;
+	using B1NARY.DataPersistence;
 
 	/// <summary>
 	/// An interface in unity to allow the player to choose between options that
@@ -89,7 +90,9 @@
 			{
 				for (int i = 0; i < choiceButtons.Count; i++)
 					choiceButtons[i].gameObject.SetActive(false);
+#if DEBUG
 				Debug.Log($"Picked Choice: {key}", this);
+#endif
 			};
 			using (IEnumerator<ScriptLine> enumerator = choices.GetEnumerator())
 				for (int i = 0; enumerator.MoveNext(); i++)

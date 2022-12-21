@@ -1,6 +1,7 @@
 ﻿namespace B1NARY.DataPersistence
 {
 	using B1NARY.DesignPatterns;
+	using System;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
@@ -11,14 +12,24 @@
 	public class PersistentData : Singleton<PersistentData>
 	{
 		#region Game Slot Data
-		public GameSlotData GameSlotData { get; set; }
+		public GameSlotData GameSlotData 
+		{
+			get => m_slot;
+			set
+			{
+				m_slot = value;
+				NewSlotChanged?.Invoke(m_slot);
+			} 
+		}
+		private GameSlotData m_slot;
+		public Action<GameSlotData> NewSlotChanged;
 		public Dictionary<string, bool> Booleans => GameSlotData.bools;
 		public Dictionary<string, string> Strings => GameSlotData.strings;
 		public Dictionary<string, int> Integers => GameSlotData.ints;
 		public Dictionary<string, float> Singles => GameSlotData.floats;
+		public bool IsLoading { get; private set; } = false;
 
 
-		
 		/// <summary>
 		/// Saves data as a <see cref="GameSlotData"/> and writes it into the saves
 		/// folder.
@@ -38,7 +49,9 @@
 		public void LoadGame(int index = 0)
 		{
 			GameSlotData = GameSlotData.LoadExistingData(index);
+			IsLoading = true;
 			GameSlotData.LoadScene();
+			IsLoading = false;
 			Debug.Log("Game Loaded!");
 		}
 
