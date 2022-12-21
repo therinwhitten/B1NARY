@@ -11,7 +11,8 @@
                     "id": "7703c01e-db2e-4e62-931b-c9cc2b45010d",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Mouse Press",
@@ -19,7 +20,8 @@
                     "id": "346f61af-9100-427f-9a24-43f2de6262af",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Fast Skip",
@@ -27,7 +29,8 @@
                     "id": "23545c5b-e4ea-4fa4-9efb-d7daa718db0f",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Next Line",
@@ -35,7 +38,8 @@
                     "id": "64f2996d-6581-45c6-abde-42f258f67cb1",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Scroll Wheel",
@@ -43,7 +47,26 @@
                     "id": "65856ac4-aee0-4338-96ad-fdddb894c627",
                     "expectedControlType": "Vector2",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "QuickSave",
+                    "type": "Button",
+                    "id": "178b7884-1d74-4fd8-a2e3-4d9025fd2f9b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "LoadSave",
+                    "type": "Button",
+                    "id": "dcd871a8-ef99-472c-902d-419ef5d45132",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -99,6 +122,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Scroll Wheel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "50bf5877-e1f6-4272-ba0d-927c3aaba2cf",
+                    "path": "<Keyboard>/f6",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard + Mouse",
+                    "action": "QuickSave",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "221b3396-768e-4cd0-b4f7-2efed4c2afd9",
+                    "path": "<Keyboard>/f9",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LoadSave",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -40,7 +40,9 @@
 		public static void SaveGame(int index = 0)
 		{
 			Instance.Serialize($"Save{index}");
-			Debug.Log("Game Saved!");
+#if DEBUG
+			Debug.Log($"Game Saved!\nat path {FilePath($"Save{index}").FullName}");
+#endif
 		}
 
 		/// <summary>
