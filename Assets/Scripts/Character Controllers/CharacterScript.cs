@@ -1,6 +1,7 @@
 ﻿namespace B1NARY.CharacterManagement
 {
 	using B1NARY.Audio;
+	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
 	using B1NARY.UI;
@@ -75,6 +76,11 @@
 		}
 		public void SetPositionOverTime(float newXPosition, float time)
 		{
+			if (PersistentData.Instance.IsLoading)
+			{
+				HorizontalPosition = newXPosition;
+				return;
+			}
 			StartCoroutine(SmoothPosChanger());
 			IEnumerator SmoothPosChanger()
 			{
@@ -107,6 +113,8 @@
 		}
 		public void SayLine(ScriptLine line)
 		{
+			if (PersistentData.Instance.IsLoading)
+				return;
 			DialogueSystem.Instance.Say(line.lineData);
 			VoiceData.Play(line);
 		}

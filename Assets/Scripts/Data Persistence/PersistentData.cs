@@ -27,6 +27,7 @@
 		public Dictionary<string, string> Strings => GameSlotData.strings;
 		public Dictionary<string, int> Integers => GameSlotData.ints;
 		public Dictionary<string, float> Singles => GameSlotData.floats;
+		public bool IsLoading { get; private set; } = false;
 
 
 		/// <summary>
@@ -48,7 +49,9 @@
 		public void LoadGame(int index = 0)
 		{
 			GameSlotData = GameSlotData.LoadExistingData(index);
+			IsLoading = true;
 			GameSlotData.LoadScene();
+			IsLoading = false;
 			Debug.Log("Game Loaded!");
 		}
 
