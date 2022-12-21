@@ -19,7 +19,7 @@
 		/// </summary>
 		public bool CanPerform
 		{
-			get // {if: Name}
+			get
 			{
 				string argumentName = ScriptLine.CastCommand(rootLine).arguments.Single();
 				bool output = true;
@@ -29,7 +29,7 @@
 					argumentName = argumentName.Substring(1);
 				}
 
-				if (PersistentData.Instance.Booleans.TryGetValue(argumentName, out bool value))
+				if (PersistentData.Booleans.TryGetValue(argumentName, out bool value))
 					return output == value;
 				throw new MissingFieldException($"{argumentName} doesn't exist in the saves!");
 			}

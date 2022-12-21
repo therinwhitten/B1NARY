@@ -21,17 +21,11 @@
 					"play mode.", MessageType.Info);
 				return;
 			}
-			if (!PersistentData.HasInstance)
-			{
-				EditorGUILayout.HelpBox($"{nameof(PersistentData)} does not exist!" +
-					" Make sure to add it to your scene!", MessageType.Error);
-				return;
-			}
 			scroll = EditorGUILayout.BeginScrollView(scroll);
-			DisplayBlock("Booleans", PersistentData.Instance.Booleans);
-			DisplayBlock("Integers", PersistentData.Instance.Integers);
-			DisplayBlock("Singles/Single", PersistentData.Instance.Singles);
-			DisplayBlock("Strings", PersistentData.Instance.Strings);
+			DisplayBlock("Booleans", PersistentData.Booleans);
+			DisplayBlock("Integers", PersistentData.Integers);
+			DisplayBlock("Singles/Single", PersistentData.Singles);
+			DisplayBlock("Strings", PersistentData.Strings);
 			EditorGUILayout.EndScrollView();
 		}
 

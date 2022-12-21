@@ -144,7 +144,7 @@
 		/// </summary>
 		public void InitializeGame()
 		{
-			DataPersistence.PersistentData.Instance.CreateNewSlot();
+			DataPersistence.PersistentData.CreateNewSlot();
 			ScriptHandler.Instance.InitializeNewScript();
 		}
 		/// <summary>
@@ -153,7 +153,7 @@
 		/// </summary>
 		public void InitializeScript(string docPath)
 		{
-			DataPersistence.PersistentData.Instance.CreateNewSlot();
+			DataPersistence.PersistentData.CreateNewSlot();
 			ScriptHandler.Instance.InitializeNewScript(docPath);
 		}
 

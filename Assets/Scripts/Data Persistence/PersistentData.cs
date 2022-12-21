@@ -9,10 +9,10 @@
 	using System.Threading.Tasks;
 	using UnityEngine;
 
-	public class PersistentData : Singleton<PersistentData>
+	public static class PersistentData //: Singleton<PersistentData>
 	{
 		#region Game Slot Data
-		public GameSlotData GameSlotData 
+		public static GameSlotData GameSlotData 
 		{
 			get => m_slot;
 			set
@@ -21,13 +21,13 @@
 				NewSlotChanged?.Invoke(m_slot);
 			} 
 		}
-		private GameSlotData m_slot;
-		public Action<GameSlotData> NewSlotChanged;
-		public Dictionary<string, bool> Booleans => GameSlotData.bools;
-		public Dictionary<string, string> Strings => GameSlotData.strings;
-		public Dictionary<string, int> Integers => GameSlotData.ints;
-		public Dictionary<string, float> Singles => GameSlotData.floats;
-		public bool IsLoading { get; private set; } = false;
+		private static GameSlotData m_slot;
+		public static Action<GameSlotData> NewSlotChanged;
+		public static Dictionary<string, bool> Booleans => GameSlotData.bools;
+		public static Dictionary<string, string> Strings => GameSlotData.strings;
+		public static Dictionary<string, int> Integers => GameSlotData.ints;
+		public static Dictionary<string, float> Singles => GameSlotData.floats;
+		public static bool IsLoading { get; private set; } = false;
 
 
 		/// <summary>
@@ -35,7 +35,7 @@
 		/// folder.
 		/// </summary>
 		/// <param name="index"> The index for the save. </param>
-		public void SaveGame(int index = 0)
+		public static void SaveGame(int index = 0)
 		{
 			GameSlotData.Serialize(index);
 			Debug.Log("Game Saved!");
@@ -46,7 +46,7 @@
 		/// writes it back into <see cref="PersistentData"/>.
 		/// </summary>
 		/// <param name="index"> The index for the save. </param>
-		public void LoadGame(int index = 0)
+		public static void LoadGame(int index = 0)
 		{
 			GameSlotData = GameSlotData.LoadExistingData(index);
 			IsLoading = true;
@@ -58,7 +58,7 @@
 		/// <summary>
 		/// Starts a new gameslot to save the data as a binary format.
 		/// </summary>
-		public void CreateNewSlot()
+		public static void CreateNewSlot()
 		{
 			GameSlotData = new GameSlotData();
 		}

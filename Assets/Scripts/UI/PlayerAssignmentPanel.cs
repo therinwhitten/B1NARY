@@ -24,8 +24,8 @@
 
 		public void OnDisable()
 		{
-			PersistentData.Instance.GameSlotData.PlayerName = nameInput.text;
-			PersistentData.Instance.Booleans[MaleAssignmentKey] = !isFemale;
+			PersistentData.GameSlotData.PlayerName = nameInput.text;
+			PersistentData.Booleans[MaleAssignmentKey] = !isFemale;
 		}
 	}
 }
