@@ -246,8 +246,9 @@
 					return;
 				if (scriptNodeParsers.Any(nodeCon => nodeCon.type == node))
 					return;
+#if DEBUG
 				Debug.Log($"Adding custom node: '{node.Name}'..");
-				Debug.Log($"Constructors: {node.GetConstructors().Length}\n{string.Join(";\n", node.GetConstructors().Select(constructor => string.Join(", ", constructor.GetParameters().Select(param => param.ToString()))))}");
+#endif
 				Func<ScriptPair[], bool> func = pairs => true;
 				if (ConditionAttribute.TryGetAttribute(node, out ConditionAttribute attribute))
 					func = attribute.Predicate;
@@ -305,7 +306,7 @@
 				// Merging all dictionaries.
 				output.commands = commands;
 #if DEBUG
-				Debug.Log($"All commands:\n{string.Join("\n", output.commands.Select(pair => $"'{pair.Key}' lengths: {string.Join(", ", pair.Value.Select(del => del.Method.GetParameters().Length))}"))}");
+				Debug.Log($"VV --- All commands --- VV\n{string.Join("\n", output.commands.Select(pair => $"'{pair.Key}' lengths: {string.Join(", ", pair.Value.Select(del => del.Method.GetParameters().Length))}"))}");
 #endif
 				// Assigning nodes, highest first
 				IEnumerator<(int startIndex, int endIndex)> nodeQueue = 
@@ -348,6 +349,9 @@
 				{
 					if (!scriptNodeParsers[i].Predicate(subValues))
 						continue;
+#if DEBUG
+					Debug.Log($"Creating node '{scriptNodeParsers[i].type.Name}' at line {subValues[0].scriptLine.Index}");
+#endif
 					return scriptNodeParsers[i].Create(document, subValues, index);//.Invoke(new object[] { document, subValues, index });
 				}
 				return new ScriptNode(document, subValues, index);
