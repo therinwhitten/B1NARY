@@ -96,6 +96,9 @@
 		/// when <see cref="CurrentFormat"/> is modified in any way.
 		/// </summary>
 		public static event Action<ColorFormat> CurrentFormatChanged;
+		/// <summary>
+		/// The currently active format that is equipped for all objects to see.
+		/// </summary>
 		public static ColorFormat CurrentFormat
 		{
 			get

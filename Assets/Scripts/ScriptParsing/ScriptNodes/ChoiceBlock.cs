@@ -1,5 +1,6 @@
 ﻿namespace B1NARY.Scripting
 {
+	using B1NARY.DataPersistence;
 	using B1NARY.UI;
 	using System;
 	using System.Collections;
@@ -7,6 +8,7 @@
 	using System.Linq;
 	using System.Text;
 	using System.Threading.Tasks;
+	using UnityEditor.Experimental.GraphView;
 	using UnityEngine;
 
 	/// <summary>
@@ -43,15 +45,23 @@
 		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
 		{
 			document.ParseLine(new ScriptLine(string.Join(",", ScriptLine.CastCommand(rootLine).arguments), rootLine.resourcesFilePath, rootLine.ScriptDocument, rootLine.Index));
+			if (PersistentData.Instance.GameSlotData.choice.TryGetValue(rootLine.Index, out var line))
+			{
+				using (IEnumerator<ScriptLine> node = choices[line].Perform(pauseOnCommands))
+					while (node.MoveNext())
+						yield return node.Current;
+				yield break;
+			}
 			ChoicePanel panel = ChoicePanel.StartNew(choices.Keys);
 			panel.PickedChoice += str => document.NextLine();
 			while (!panel.HasPickedChoice)
 				yield return default;
-			IEnumerator<ScriptLine> node = choices[panel.CurrentlyPickedChoice.Value].Perform(pauseOnCommands);
-			panel.Dispose();
-			while (node.MoveNext())
-				yield return node.Current;
-			node.Dispose();
+			using (IEnumerator<ScriptLine> node = choices[panel.CurrentlyPickedChoice.Value].Perform(pauseOnCommands))
+			{
+				panel.Dispose();
+				while (node.MoveNext())
+					yield return node.Current;
+			}
 		}
 	}
 }

@@ -34,8 +34,6 @@
 				return EditorGUI.IntField(rect, @int);
 			else if (oldValue is Color color)
 				return EditorGUI.ColorField(rect, color);
-			else if (oldValue is ColorSerializable colorSer)
-				return (ColorSerializable)EditorGUI.ColorField(rect, (Color)colorSer);
 			throw new InvalidCastException(oldValue.GetType().Name);
 		}
 

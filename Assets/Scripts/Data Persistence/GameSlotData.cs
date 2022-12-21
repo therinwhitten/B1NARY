@@ -17,7 +17,7 @@ namespace B1NARY.DataPersistence
 	/// This stores data about the player specificially.
 	/// </summary>
 	[Serializable]
-	public class GameSlotData
+	public class GameSlotData : IDisposable
 	{
 		public static string FileSavePath(int index) => $"{Application.persistentDataPath}/Saves/Save{index}.amogus";
 		public static GameSlotData LoadExistingData(int index)
@@ -31,6 +31,7 @@ namespace B1NARY.DataPersistence
 		public DateTime lastSaved = default;
 		#endregion
 
+		public Dictionary<int, ScriptLine> choice;
 
 		public Dictionary<string, string> strings;
 		public Dictionary<string, bool> bools;
@@ -53,7 +54,14 @@ namespace B1NARY.DataPersistence
 			bools = new Dictionary<string, bool>();
 			ints = new Dictionary<string, int>();
 			floats = new Dictionary<string, float>();
+			choice = new Dictionary<int, ScriptLine>();
+			B1NARY.SceneManager.Instance.SwitchingScenes.AddPersistentListener(RefreshOnScene);
 		}
+		private void RefreshOnScene()
+		{
+			choice.Clear();
+		}
+
 		public void CaptureDocument()
 		{
 			documentPath = ScriptHandler.Instance.ScriptDocument.documentPath;
@@ -75,6 +83,10 @@ namespace B1NARY.DataPersistence
 			ScriptHandler.Instance.InitializeNewScript(documentPath);
 			while (ScriptHandler.Instance.CurrentLine != lastLine)
 				ScriptHandler.Instance.NextLine();
+		}
+		public void Dispose()
+		{
+			B1NARY.SceneManager.Instance.SwitchingScenes.RemovePersistentListener(RefreshOnScene);
 		}
 	}
 }
