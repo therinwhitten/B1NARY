@@ -4,11 +4,13 @@
 	using B1NARY.Scripting;
 	using System;
 	using System.Collections.Generic;
+	using System.Diagnostics;
 	using System.IO;
 	using System.Linq;
 	using System.Runtime.Serialization.Formatters.Binary;
 	using System.Threading.Tasks;
 	using UnityEngine;
+	using Debug = UnityEngine.Debug;
 
 	[Serializable]
 	public class PersistentData : IDisposable
@@ -40,6 +42,7 @@
 		public static void SaveGame(int index = 0)
 		{
 			Instance.Serialize($"Save{index}");
+			Instance.Image = ScreenCapture.CaptureScreenshotAsTexture();
 #if DEBUG
 			Debug.Log($"Game Saved!\nat path {FilePath($"Save{index}").FullName}");
 #endif
@@ -74,15 +77,40 @@
 			.CreateSubdirectory("Saves");
 		private static FileInfo FilePath(string saveName) => 
 			new FileInfo($"{SavesDirectory.FullName}/{saveName}.sv");
-		private static PersistentData LoadExistingData(string name)
+		public static PersistentData LoadExistingData(string name)
 		{
+			PersistentData output;
 			using (var stream = FilePath(name).Open(FileMode.Open))
-				return new BinaryFormatter().Deserialize(stream) as PersistentData;
+				output = new BinaryFormatter().Deserialize(stream) as PersistentData;
+			return output;
+		}
+		public static IEnumerable<PersistentData> GetAllFiles()
+		{
+			return SavesDirectory.EnumerateFiles()
+				.Where(info => info.Extension == ".sv")
+				.Select(info => LoadExistingData(info.Name));
 		}
 
 		#region About
+		public Texture2D Image
+		{
+			get
+			{
+				var texture = new Texture2D(m_image.size.width, m_image.size.height, TextureFormat.RGBA32, false);
+				texture.LoadRawTextureData(m_image.data);
+				texture.Apply();
+				return texture;
+			}
+			set
+			{
+				m_image = (value.EncodeToPNG(), (value.width, value.height));
+			}
+		}
+		private (byte[] data, (int width, int height) size) m_image;
 		public TimeSpan timePlayed = TimeSpan.Zero;
 		public DateTime lastSaved = default;
+		[NonSerialized]
+		public Stopwatch stopwatch;
 		#endregion
 
 		public Dictionary<int, ScriptLine> choice;
@@ -109,7 +137,9 @@
 			ints = new Dictionary<string, int>();
 			floats = new Dictionary<string, float>();
 			choice = new Dictionary<int, ScriptLine>();
-			B1NARY.SceneManager.Instance.SwitchingScenes.AddPersistentListener(RefreshOnScene);
+			SceneManager.Instance.SwitchingScenes.AddPersistentListener(RefreshOnScene);
+			stopwatch = Stopwatch.StartNew();
+			Debug.Log($"Amogus");
 		}
 		private void RefreshOnScene()
 		{
@@ -124,8 +154,14 @@
 		}
 		public void Serialize(string name)
 		{
+			lastSaved = DateTime.Now;
+			CaptureDocument();
+			stopwatch.Stop();
+			timePlayed += stopwatch.Elapsed;
+			stopwatch = null;
 			using (var stream = FilePath(name).Open(FileMode.Create))
 				new BinaryFormatter().Serialize(stream, this);
+			stopwatch = Stopwatch.StartNew();
 		}
 		public void LoadScene()
 		{
