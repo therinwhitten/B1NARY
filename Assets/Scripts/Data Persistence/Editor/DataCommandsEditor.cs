@@ -15,6 +15,7 @@
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.input)));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.loadButton)));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.saveButton)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.toggledGameObjectNames)));
 			serializedObject.ApplyModifiedProperties();
 			EditorGUILayout.Separator();
 			if (!Application.isPlaying)

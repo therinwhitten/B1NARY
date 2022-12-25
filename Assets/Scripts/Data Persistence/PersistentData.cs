@@ -39,12 +39,11 @@
 		/// folder.
 		/// </summary>
 		/// <param name="index"> The index for the save. </param>
-		public static void SaveGame(int index = 0)
+		public static void SaveGame()
 		{
-			Instance.Serialize($"Save{index}");
-			Instance.Image = ScreenCapture.CaptureScreenshotAsTexture();
-#if DEBUG
-			Debug.Log($"Game Saved!\nat path {FilePath($"Save{index}").FullName}");
+			FileInfo info = Instance.Serialize();
+#if UNITY_EDITOR
+			Debug.Log($"Game Saved!\nat path {info.FullName}");
 #endif
 		}
 
@@ -67,7 +66,7 @@
 		/// </summary>
 		public static void CreateNewSlot()
 		{
-			Instance = new PersistentData();
+			Instance = new PersistentData($"Save{GetAllFiles().Count()}");
 		}
 
 
@@ -84,29 +83,17 @@
 				output = new BinaryFormatter().Deserialize(stream) as PersistentData;
 			return output;
 		}
-		public static IEnumerable<PersistentData> GetAllFiles()
+		public static IOrderedEnumerable<PersistentData> GetAllFiles()
 		{
 			return SavesDirectory.EnumerateFiles()
 				.Where(info => info.Extension == ".sv")
-				.Select(info => LoadExistingData(info.Name));
+				.Select(info => LoadExistingData(info.Name.Replace(".sv", "")))
+				.OrderBy(info => int.Parse(info.fileName.Replace("Save", "")));
 		}
 
 		#region About
-		public Texture2D Image
-		{
-			get
-			{
-				var texture = new Texture2D(m_image.size.width, m_image.size.height, TextureFormat.RGBA32, false);
-				texture.LoadRawTextureData(m_image.data);
-				texture.Apply();
-				return texture;
-			}
-			set
-			{
-				m_image = (value.EncodeToPNG(), (value.width, value.height));
-			}
-		}
-		private (byte[] data, (int width, int height) size) m_image;
+		public string fileName;
+		public BytePNG image;
 		public TimeSpan timePlayed = TimeSpan.Zero;
 		public DateTime lastSaved = default;
 		[NonSerialized]
@@ -129,8 +116,9 @@
 		public string documentPath;
 		private ScriptLine lastLine;
 
-		public PersistentData()
+		public PersistentData(string fileName)
 		{
+			this.fileName = fileName;
 			strings = new Dictionary<string, string>();
 			PlayerName = string.Empty;
 			bools = new Dictionary<string, bool>();
@@ -139,7 +127,6 @@
 			choice = new Dictionary<int, ScriptLine>();
 			SceneManager.Instance.SwitchingScenes.AddPersistentListener(RefreshOnScene);
 			stopwatch = Stopwatch.StartNew();
-			Debug.Log($"Amogus");
 		}
 		private void RefreshOnScene()
 		{
@@ -152,16 +139,19 @@
 			sceneIndex = SceneManager.ActiveScene.buildIndex;
 			lastLine = ScriptHandler.Instance.CurrentLine;
 		}
-		public void Serialize(string name)
+		public FileInfo Serialize()
 		{
 			lastSaved = DateTime.Now;
 			CaptureDocument();
 			stopwatch.Stop();
 			timePlayed += stopwatch.Elapsed;
-			stopwatch = null;
-			using (var stream = FilePath(name).Open(FileMode.Create))
+			stopwatch = null; 
+			var texture = ScreenCapture.CaptureScreenshotAsTexture();
+			Instance.image = new BytePNG(texture);
+			using (var stream = FilePath(fileName).Open(FileMode.Create))
 				new BinaryFormatter().Serialize(stream, this);
 			stopwatch = Stopwatch.StartNew();
+			return FilePath(fileName);
 		}
 		public void LoadScene()
 		{
@@ -173,6 +163,36 @@
 		public void Dispose()
 		{
 			SceneManager.Instance.SwitchingScenes.RemovePersistentListener(RefreshOnScene);
+		}
+	}
+
+	[Serializable]
+	public struct BytePNG
+	{
+		public int width, height;
+		public Vector2Int Size => new Vector2Int(width, height);
+		public byte[] data;
+
+		public BytePNG(Texture2D texture2D) : this(texture2D.EncodeToPNG(), texture2D.width, texture2D.height)
+		{
+
+		}
+		public BytePNG(byte[] data, Vector2Int vector2) : this(data, vector2.x, vector2.y)
+		{
+
+		}
+		public BytePNG(byte[] data, int width, int height)
+		{
+			this.data = data;
+			this.width = width;
+			this.height = height;
+		}
+		public Texture2D ToTexture()
+		{
+			var texture = new Texture2D(width, height, TextureFormat.RGBA32, false, false);
+			texture.LoadImage(data);
+			//bruh.Apply();
+			return texture;
 		}
 	}
 }
