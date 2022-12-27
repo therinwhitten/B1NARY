@@ -425,7 +425,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
 {
     I answer her by pulling her to my chest, gently raising her chin. (H-Scene)
     [
-        {setbool: starbed,true}
+        {setbool: starbed}
         Asterella::
         {anim: Asterella, Smug}
         [Horny]
@@ -451,7 +451,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
     ]
     I very gently push her away, regret already sinking in.
     [
-        {setbool: starbed,false}
+        {setbool: !starbed}
         MC::
         She sits frozen, almost shocked. 
         Realization hits. She puts her hand to her mouth...
@@ -472,7 +472,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
         {
             I can't. I just can't.
             [
-                {setbool: starbed,false}
+                {setbool: !starbed}
                 MC::
                 We sit, frozen in time. 
                 I very gently put her hand in her lap.
@@ -482,7 +482,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
             ]
             Screw it! I can't deny those eyes! (H-Scene)
             [
-                {setbool: starbed,true}
+                {setbool: starbed}
                 I cup her face gently in my hands and pull her lips to mine.
                 Drinking deeply.
                 The digital world, the fears, they all fade. 
@@ -492,7 +492,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
         }
     ]
 }
-{if: starbed,true}
+{if: starbed}
 {
     {choice: Top or Bottom? (H-Scene)}
     {
