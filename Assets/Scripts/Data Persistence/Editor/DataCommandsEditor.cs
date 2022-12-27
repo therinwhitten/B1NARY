@@ -23,10 +23,10 @@
 				EditorGUILayout.HelpBox("Enter play mode to inspect data values!", MessageType.Error);
 				return;
 			}
-			UpdateTab("Strings", PersistentData.Strings.AsEnumerable());
-			UpdateTab("Integers", PersistentData.Integers.AsEnumerable());
-			UpdateTab("Booleans", PersistentData.Booleans.AsEnumerable());
-			UpdateTab("Singles", PersistentData.Singles.AsEnumerable());
+			UpdateTab("Strings", SaveSlot.Strings.AsEnumerable());
+			UpdateTab("Integers", SaveSlot.Integers.AsEnumerable());
+			UpdateTab("Booleans", SaveSlot.Booleans.AsEnumerable());
+			UpdateTab("Singles", SaveSlot.Singles.AsEnumerable());
 		
 			void UpdateTab<TKey, TValue>(string label, IEnumerable<KeyValuePair<TKey, TValue>> data)
 			{

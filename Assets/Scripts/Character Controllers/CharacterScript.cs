@@ -76,7 +76,7 @@
 		}
 		public void SetPositionOverTime(float newXPosition, float time)
 		{
-			if (PersistentData.IsLoading)
+			if (SaveSlot.LoadingSave)
 			{
 				HorizontalPosition = newXPosition;
 				return;
@@ -113,7 +113,7 @@
 		}
 		public void SayLine(ScriptLine line)
 		{
-			if (PersistentData.IsLoading)
+			if (SaveSlot.LoadingSave)
 				return;
 			DialogueSystem.Instance.Say(line.lineData);
 			VoiceData.Play(line);

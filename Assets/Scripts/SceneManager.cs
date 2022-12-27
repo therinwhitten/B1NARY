@@ -1,5 +1,6 @@
 ﻿namespace B1NARY
 {
+	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
 	using B1NARY.UI;
@@ -76,6 +77,10 @@
 			void SwitchedScenes() => IsSwitchingScenes = false;
 		}
 
+		public IEnumerator ChangeScene(int sceneIndex)
+		{
+			return ChangeScene(UnitySceneManager.GetSceneByBuildIndex(sceneIndex).name);
+		}
 		/// <summary>
 		/// A coroutine that changes the scene to a new scene via the name.
 		/// Waits for transitions from <see cref="FadeScene"/> and invokes 
@@ -144,7 +149,7 @@
 		/// </summary>
 		public void InitializeGame()
 		{
-			DataPersistence.PersistentData.CreateNewSlot();
+			SaveSlot.Instance = new SaveSlot();
 			ScriptHandler.Instance.InitializeNewScript();
 		}
 		/// <summary>
@@ -153,7 +158,7 @@
 		/// </summary>
 		public void InitializeScript(string docPath)
 		{
-			DataPersistence.PersistentData.CreateNewSlot();
+			SaveSlot.Instance = new SaveSlot();
 			ScriptHandler.Instance.InitializeNewScript(docPath);
 		}
 

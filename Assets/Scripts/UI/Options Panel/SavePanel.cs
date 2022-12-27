@@ -15,14 +15,17 @@
 		private List<BlockInfo> objects;
 		public IEnumerable<BlockInfo> GetSaves()
 		{
-			return PersistentData.GetAllFiles().Select(data => new BlockInfo(AddEntry())
+			return SaveSlot.AllFiles.Select(data => new BlockInfo(AddEntry())
 			{
 				PreserveAspect = true,
-				Sprite = Sprite.Create(data.image.ToTexture(), new Rect(Vector2.zero, new Vector2(data.image.width, data.image.height)), new Vector2(0.5f, 0.5f)),
-				Text = $"\"{ScriptHandler.ToVisual(data.documentPath)}\" : {data.PlayerName}\n{data.lastSaved}\n{data.timePlayed}",
+				Sprite = Create(data.about.ImageTexture),
+				Text = $"\"{ScriptHandler.ToVisual(data.scriptPosition.documentPath)}\" : {data.data.PlayerName}\n{data.about.lastSaved}\n{data.about.timePlayed}",
 			});
+			Sprite Create(Texture2D texture2D)
+			{
+				return Sprite.Create(texture2D, new Rect(Vector2.zero, new Vector2(texture2D.width, texture2D.height)), new Vector2(0.5f, 0.5f));
+			}
 		}
-		
 		public Texture2D plus;
 
 		private void OnEnable()
@@ -36,7 +39,7 @@
 				LastInfo().SetSprite(plus);
 				LastInfo().button.onClick.AddListener(() =>
 				{
-					PersistentData.SaveGame(objects.Count);
+					SaveSlot.SaveGame(objects.Count);
 					OnDisable();
 					OnEnable();
 				});

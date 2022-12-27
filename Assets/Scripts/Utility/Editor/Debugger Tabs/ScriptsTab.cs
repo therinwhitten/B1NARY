@@ -48,7 +48,7 @@
 			}
 			if (!ScriptHandler.HasInstance)
 			{
-				EditorGUILayout.HelpBox($"{nameof(PersistentData)} does not exist!" +
+				EditorGUILayout.HelpBox($"{nameof(SaveSlot)} does not exist!" +
 					" Make sure to add it to your scene!", MessageType.Error);
 				return;
 

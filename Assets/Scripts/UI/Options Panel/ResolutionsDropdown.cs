@@ -8,6 +8,7 @@
 	{
 		public override List<string> Visuals => Values
 			.Select(res => $"{res.width}x{res.height} {res.refreshRate}Hz")
+			.Reverse()
 			.ToList();
 		public override List<Resolution> DefinedValues =>
 			Screen.resolutions

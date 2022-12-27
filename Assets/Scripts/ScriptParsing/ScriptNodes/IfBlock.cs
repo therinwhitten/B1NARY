@@ -29,7 +29,7 @@
 					argumentName = argumentName.Substring(1);
 				}
 
-				if (PersistentData.Booleans.TryGetValue(argumentName, out bool value))
+				if (SaveSlot.Instance.data.bools.TryGetValue(argumentName, out bool value))
 					return output == value;
 				throw new MissingFieldException($"{argumentName} doesn't exist in the saves!");
 			}

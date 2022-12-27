@@ -22,10 +22,10 @@
 				return;
 			}
 			scroll = EditorGUILayout.BeginScrollView(scroll);
-			DisplayBlock("Booleans", PersistentData.Booleans);
-			DisplayBlock("Integers", PersistentData.Integers);
-			DisplayBlock("Singles/Single", PersistentData.Singles);
-			DisplayBlock("Strings", PersistentData.Strings);
+			DisplayBlock("Booleans", SaveSlot.Booleans);
+			DisplayBlock("Integers", SaveSlot.Integers);
+			DisplayBlock("Singles/Single", SaveSlot.Singles);
+			DisplayBlock("Strings", SaveSlot.Strings);
 			EditorGUILayout.EndScrollView();
 		}
 

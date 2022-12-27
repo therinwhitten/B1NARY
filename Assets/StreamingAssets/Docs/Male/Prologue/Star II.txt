@@ -165,7 +165,7 @@ Asterella Star, not a foot from my face.
 In the flesh. 
 {if: henable}
 {
-    {if: n-b}
+	{if: n-b}
  {
    Be a gentleperson.
  }
@@ -179,7 +179,7 @@ In the flesh.
 }
 {if: !henable}
 {
-    She is short, her head only coming up to my mid chest.
+	She is short, her head only coming up to my mid chest.
  {if: n-b}
  {
    Being a gentleperson, I lock eyes with her.
@@ -365,40 +365,40 @@ MC::
 The look on her face speaks volumes on what her true intentions were.
 {if: henable}
 {
-    {additive:on}
-    And, like a true virgin (it's been that long), 
-    my fickle pickle rises like the dark knight.
-    {additive:off}
-    At least I know it works now, right?
-    It isn't a priority, of course.
-    Good to know the little man can wake up.
-    I almost embarrass myself by choking on my wine. 
+	{additive:on}
+	And, like a true virgin (it's been that long), 
+	my fickle pickle rises like the dark knight.
+	{additive:off}
+	At least I know it works now, right?
+	It isn't a priority, of course.
+	Good to know the little man can wake up.
+	I almost embarrass myself by choking on my wine. 
 }
 {if: !henable}
 {
-    My heart leaps to my throat. The gentle feeling becomes more assertive.
-    This can't be happening... 
-    I almost embarrass myself by choking on my wine. 
-    "Wait, right now?"
-    I manage to keep my voice from squeaking. 
-    Quite proud of that one. 
-    Star gently begins caressing my leg.
+	My heart leaps to my throat. The gentle feeling becomes more assertive.
+	This can't be happening... 
+	I almost embarrass myself by choking on my wine. 
+	"Wait, right now?"
+	I manage to keep my voice from squeaking. 
+	Quite proud of that one. 
+	Star gently begins caressing my leg.
 }
 {if: henable}
 {
-    Getting incredibly close to my crotch.
-    I feel my little man twitch. 
-    Her movements become more assertive.
+	Getting incredibly close to my crotch.
+	I feel my little man twitch. 
+	Her movements become more assertive.
 }
 {if: !henable}
 {
-    This is getting serious fast.
-    Her motions become more assertive, and she looks into my eyes... 
-    {additive: on}
-    Those eyes:
-    so beautiful, 
-    gentle, yet aggressively hungry.
-    {additive:off} 
+	This is getting serious fast.
+	Her motions become more assertive, and she looks into my eyes... 
+	{additive: on}
+	Those eyes:
+	so beautiful, 
+	gentle, yet aggressively hungry.
+	{additive:off} 
 }
 A sure smile slowly envelopes her face: a smile of satisfaction.
 Asterella::
@@ -423,103 +423,103 @@ Am I hurting the realm if I hurt her feelings?
 Will Szycrotic be enraged if I go with Star's suggestion?
 {choice: What should I do?}
 {
-    I answer her by pulling her to my chest, gently raising her chin. (H-Scene)
-    [
-        {setbool: starbed,true}
-        Asterella::
-        {anim: Asterella, Smug}
-        [Horny]
-        {if: !n-b}
-        {
-         "Good boy..."
-         MC::
-         She murmurs quietly.
-         Asterella::
-         "Such a very good boy..."
-        }
-        {else}
-        {
-         "Such a good toy you are..."
-         MC::
-         She murmurs quietly.
-         Asterella::
-         "Yes, a very good toy..."
-        }
-        MC:: 
-        Truth escapes my lips.
-        "How can I say no?"
-    ]
-    I very gently push her away, regret already sinking in.
-    [
-        {setbool: starbed,false}
-        MC::
-        She sits frozen, almost shocked. 
-        Realization hits. She puts her hand to her mouth...
-        Asterella::
-        [Confusion]
-        "Oh no... Did I misread this?"
-        "Are you gay?"
-        "Do I need to call Szy back here?"
-        MC::
-        "Um, no?"
-        She chuckles, her attention back to my thigh, tracing circles playfully.
-        Asterella::
-        [Horny]
-        "If not, then maybe..."
-        [Happy]
-        MC::
-        {choice: I am not gay...but...}
-        {
-            I can't. I just can't.
-            [
-                {setbool: starbed,false}
-                MC::
-                We sit, frozen in time. 
-                I very gently put her hand in her lap.
-                "I'm sorry, Star."
-                "I don't know you. It just doesn't feel right to me."
-                {changeScript: Male/Prologue/Star II FriendZoned}
-            ]
-            Screw it! I can't deny those eyes! (H-Scene)
-            [
-                {setbool: starbed,true}
-                I cup her face gently in my hands and pull her lips to mine.
-                Drinking deeply.
-                The digital world, the fears, they all fade. 
-                I am lost in Star's presense.
-                Our lips part...
-            ]
-        }
-    ]
+	I answer her by pulling her to my chest, gently raising her chin. (H-Scene)
+	[
+		{setbool: starbed,true}
+		Asterella::
+		{anim: Asterella, Smug}
+		[Horny]
+		{if: !n-b}
+		{
+			"Good boy..."
+			MC::
+			She murmurs quietly.
+			Asterella::
+			"Such a very good boy..."
+		}
+		{else}
+		{
+			"Such a good toy you are..."
+			MC::
+			She murmurs quietly.
+			Asterella::
+			"Yes, a very good toy..."
+		}
+		MC::
+		Truth escapes my lips.
+		"How can I say no?"
+	]
+	I very gently push her away, regret already sinking in.
+	[
+		{setbool: starbed,false}
+		MC::
+		She sits frozen, almost shocked. 
+		Realization hits. She puts her hand to her mouth...
+		Asterella::
+		[Confusion]
+		"Oh no... Did I misread this?"
+		"Are you gay?"
+		"Do I need to call Szy back here?"
+		MC::
+		"Um, no?"
+		She chuckles, her attention back to my thigh, tracing circles playfully.
+		Asterella::
+		[Horny]
+		"If not, then maybe..."
+		[Happy]
+		MC::
+		{choice: I am not gay...but...}
+		{
+			I can't. I just can't.
+			[
+				{setbool: starbed,false}
+				MC::
+				We sit, frozen in time. 
+				I very gently put her hand in her lap.
+				"I'm sorry, Star."
+				"I don't know you. It just doesn't feel right to me."
+				{changeScript: Male/Prologue/Star II FriendZoned}
+			]
+			Screw it! I can't deny those eyes! (H-Scene)
+			[
+				{setbool: starbed,true}
+				I cup her face gently in my hands and pull her lips to mine.
+				Drinking deeply.
+				The digital world, the fears, they all fade. 
+				I am lost in Star's presense.
+				Our lips part...
+			]
+		}
+	]
 }
-{if: starbed,true}
+{if: starbed}
 {
-    {choice: Top or Bottom? (H-Scene)}
-    {
-        Top: You lead.
-        [
-            I pick her up, no hesitation in my actions. 
-            My mind is made up.  
-            She's as light as feather in my arms, soft in the right places. 
-            I feel my face going red just a little bit.
-            The night gown hides very little.
-            She grunts appreciatively.
-            Asterella::
-            "Show me a good time, MC. You don't have to be gentle if you don't want to."
-            MC::
-            Her head is resting on my chest. 
-            And I take her to bed.
-        ]
-        Bottom: Let her lead.
-        [
-            Asterella::
-            "Let's continue this 'conversation' in the bed, shall we?"
-            MC::
-            Star stands up in one fluid motion, gently taking my hand in hers. 
-            A hungry grip.
-            "As you wish."
-            I follow her lead, her steps leading both of us to the large bed.
-        ]
-    }
-    {changeScript: Male/Prologue/Star II Hentai}
+	{choice: Top or Bottom? (H-Scene)}
+	{
+		Top: You lead.
+		[
+			I pick her up, no hesitation in my actions. 
+			My mind is made up.  
+			She's as light as feather in my arms, soft in the right places. 
+			I feel my face going red just a little bit.
+			The night gown hides very little.
+			She grunts appreciatively.
+			Asterella::
+			"Show me a good time, MC. You don't have to be gentle if you don't want to."
+			MC::
+			Her head is resting on my chest. 
+			And I take her to bed.
+		]
+		Bottom: Let her lead.
+		[
+			Asterella::
+			"Let's continue this 'conversation' in the bed, shall we?"
+			MC::
+			Star stands up in one fluid motion, gently taking my hand in hers. 
+			A hungry grip.
+			"As you wish."
+			I follow her lead, her steps leading both of us to the large bed.
+		]
+	}
+	{changeScript: Male/Prologue/Star II Hentai}
 }

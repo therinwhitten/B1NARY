@@ -40,7 +40,7 @@
 			input.actions.FindAction(saveButton, true).performed -= SaveGame;
 			input.actions.FindAction(loadButton, true).performed -= LoadGame;
 		}
-		private void SaveGame(InputAction.CallbackContext context)
+		public void SaveGame(InputAction.CallbackContext context)
 		{
 			StartCoroutine(ScreenshotDelay(Objects));
 		}
@@ -48,12 +48,12 @@
 		{
 			objects.ForEach(obj => obj.SetActive(!obj.activeSelf));
 			yield return new WaitForEndOfFrame();
-			PersistentData.SaveGame();
+			SaveSlot.SaveGame();
 			objects.ForEach(obj => obj.SetActive(!obj.activeSelf));
 		}
-		private void LoadGame(InputAction.CallbackContext context)
+		public void LoadGame(InputAction.CallbackContext context)
 		{
-			PersistentData.LoadGame();
+			SaveSlot.QuickLoad();
 		}
 	}
 }

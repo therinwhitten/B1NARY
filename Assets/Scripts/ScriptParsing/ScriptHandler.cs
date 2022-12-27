@@ -120,7 +120,7 @@
 			["usegameobject"] = (Action<string>)(UseGameObject),
 			["setbool"] = (Action<string, string>)((name, value) =>
 			{
-				PersistentData.Booleans[name] = bool.Parse(value);
+				SaveSlot.Instance.data.bools[name] = bool.Parse(value);
 			}),
 			["callremote"] = ((Action<string>)((call) =>
 			{
@@ -224,17 +224,6 @@
 				playerInput.actions.FindAction(key, true).performed += context => NextLine();
 			DontDestroyOnLoad(gameObject);
 		}
-
-		/// <summary>
-		/// A non-static method for <see cref="PersistentData.LoadGame(int)"/>
-		/// </summary>
-		/// <param name="index"> The index for the save. </param>
-		public void LoadExistingSave(int index) => PersistentData.LoadGame(index);
-		/// <summary>
-		/// A non-static method for <see cref="PersistentData.SaveGame(int)"/>
-		/// </summary>
-		/// <param name="index"> The index for the save. </param>
-		public void SaveGame(int index) => PersistentData.SaveGame(index);
 		/// <summary>
 		/// Starts a new script from stratch.
 		/// </summary>

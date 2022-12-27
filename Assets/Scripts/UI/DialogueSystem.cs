@@ -114,8 +114,8 @@
 		}
 		private void ChangeSpeakerName(ICharacterController characterController)
 		{
-			if (characterController.CharacterName == "MC" && !string.IsNullOrEmpty(PersistentData.Instance.PlayerName))
-				SpeakerName = PersistentData.Instance.PlayerName;
+			if (characterController.CharacterName == "MC" && !string.IsNullOrEmpty(SaveSlot.Instance.data.PlayerName))
+				SpeakerName = SaveSlot.Instance.data.PlayerName;
 			else
 				SpeakerName = characterController.CharacterName;
 		}
@@ -282,8 +282,8 @@
 		{
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
-			if (FinalText.Contains("MC") && !string.IsNullOrEmpty(PersistentData.Instance.PlayerName))
-				FinalText = FinalText.Replace("MC", PersistentData.Instance.PlayerName);
+			if (FinalText.Contains("MC") && !string.IsNullOrEmpty(SaveSlot.Instance.data.PlayerName))
+				FinalText = FinalText.Replace("MC", SaveSlot.Instance.data.PlayerName);
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];
