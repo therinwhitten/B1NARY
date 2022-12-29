@@ -12,10 +12,10 @@
 	public class SavePanel : AutoPagePopulator
 	{
 		public const int saveSlotMax = 49;
-		private List<BlockInfo> objects;
+		protected List<BlockInfo> objects;
 		public IEnumerable<BlockInfo> GetSaves()
 		{
-			return SaveSlot.AllFiles.Select(data => new BlockInfo(AddEntry(), data.about)
+			return SaveSlot.AllFiles.Select(data => new BlockInfo(AddEntry(), data)
 			{
 				PreserveAspect = true,
 				Sprite = Create(data.about.ImageTexture),
@@ -26,16 +26,16 @@
 				return Sprite.Create(texture2D, new Rect(Vector2.zero, new Vector2(texture2D.width, texture2D.height)), new Vector2(0.5f, 0.5f));
 			}
 		}
-		public Texture2D plus;
+		private Texture2D plus;
 
-		private void OnEnable()
+		protected virtual void OnEnable()
 		{
 			base.Awake();
 			objects = GetSaves().ToList();
-			objects.ForEach(block => block.button.onClick.AddListener(() => ListenerCallbacker(block.fileData.fileName)));
+			objects.ForEach(block => block.button.onClick.AddListener(() => ListenerCallbacker(block.fileData.about.fileName)));
 			if (objects.Count < saveSlotMax)
 			{
-				objects.Add(new BlockInfo(AddEntry(), SaveSlot.Instance.about));
+				objects.Add(new BlockInfo(AddEntry(), SaveSlot.Instance));
 				BlockInfo LastInfo() => objects[objects.Count - 1];
 				LastInfo().SetSprite(plus);
 				LastInfo().button.onClick.AddListener(() =>
@@ -54,7 +54,7 @@
 				OnEnable();
 			}
 		}
-		private void OnDisable()
+		protected virtual void OnDisable()
 		{
 			Reset();
 			objects.Clear();
@@ -62,7 +62,7 @@
 	}
 	public readonly struct BlockInfo
 	{
-		public readonly SaveSlot.About fileData;
+		public readonly SaveSlot fileData;
 		public readonly GameObject obj;
 		public readonly Image foregroundImage;
 		public readonly TMP_Text tmpText;
@@ -70,7 +70,7 @@
 		public string Text { get => tmpText.text; set => tmpText.text = value; }
 		public bool PreserveAspect { get => foregroundImage.preserveAspect; set => foregroundImage.preserveAspect = value; }
 		public Sprite Sprite { get => foregroundImage.sprite; set => foregroundImage.sprite = value; }
-		public BlockInfo(GameObject obj, SaveSlot.About fileData)
+		public BlockInfo(GameObject obj, SaveSlot fileData)
 		{
 			this.fileData = fileData;
 			this.obj = obj;
