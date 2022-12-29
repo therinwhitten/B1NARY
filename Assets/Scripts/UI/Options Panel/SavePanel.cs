@@ -11,11 +11,11 @@
 
 	public class SavePanel : AutoPagePopulator
 	{
-		public const int saveSlotMax = int.MaxValue;
+		public const int saveSlotMax = 49;
 		private List<BlockInfo> objects;
 		public IEnumerable<BlockInfo> GetSaves()
 		{
-			return SaveSlot.AllFiles.Select(data => new BlockInfo(AddEntry())
+			return SaveSlot.AllFiles.Select(data => new BlockInfo(AddEntry(), data.about)
 			{
 				PreserveAspect = true,
 				Sprite = Create(data.about.ImageTexture),
@@ -32,9 +32,10 @@
 		{
 			base.Awake();
 			objects = GetSaves().ToList();
+			objects.ForEach(block => block.button.onClick.AddListener(() => ListenerCallbacker(block.fileData.fileName)));
 			if (objects.Count < saveSlotMax)
 			{
-				objects.Add(new BlockInfo(AddEntry()));
+				objects.Add(new BlockInfo(AddEntry(), SaveSlot.Instance.about));
 				BlockInfo LastInfo() => objects[objects.Count - 1];
 				LastInfo().SetSprite(plus);
 				LastInfo().button.onClick.AddListener(() =>
@@ -45,6 +46,13 @@
 				});
 			}
 			
+
+			void ListenerCallbacker(string name)
+			{
+				SaveSlot.SaveGame(name);
+				OnDisable();
+				OnEnable();
+			}
 		}
 		private void OnDisable()
 		{
@@ -54,6 +62,7 @@
 	}
 	public readonly struct BlockInfo
 	{
+		public readonly SaveSlot.About fileData;
 		public readonly GameObject obj;
 		public readonly Image foregroundImage;
 		public readonly TMP_Text tmpText;
@@ -61,8 +70,9 @@
 		public string Text { get => tmpText.text; set => tmpText.text = value; }
 		public bool PreserveAspect { get => foregroundImage.preserveAspect; set => foregroundImage.preserveAspect = value; }
 		public Sprite Sprite { get => foregroundImage.sprite; set => foregroundImage.sprite = value; }
-		public BlockInfo(GameObject obj)
+		public BlockInfo(GameObject obj, SaveSlot.About fileData)
 		{
+			this.fileData = fileData;
 			this.obj = obj;
 			foregroundImage = obj.transform.Find("Foreground").GetComponent<Image>();
 			tmpText = obj.GetComponentInChildren<TMP_Text>();

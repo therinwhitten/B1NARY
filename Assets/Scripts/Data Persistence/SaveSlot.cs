@@ -76,7 +76,8 @@
 		/// </summary>
 		public static void QuickLoad()
 		{
-
+			Instance = LoadExistingData(Instance.about.fileName);
+			Instance.Load();
 		}
 
 
@@ -90,7 +91,7 @@
 		/// Completes <see cref="SavesDirectory"/> by adding <see cref="extension"/>
 		/// and the <paramref name="saveName"/>.
 		/// </summary>
-		/// <param name="saveName"> The fileName. </param>
+		/// <param name="saveName"> The fileData. </param>
 		/// <returns> The file info about the save file. May be non-existant. </returns>
 		private static FileInfo FilePath(string saveName) =>
 			new FileInfo($"{SavesDirectory.FullName}/{saveName}{extension}");
@@ -98,7 +99,7 @@
 		/// Retrieves data without setting instance with <see cref="SavesDirectory"/>
 		/// and the <paramref name="name"/>.
 		/// </summary>
-		/// <param name="name"> The fileName. </param>=
+		/// <param name="name"> The fileData. </param>=
 		private static SaveSlot LoadExistingData(string name)
 		{
 			SaveSlot output;

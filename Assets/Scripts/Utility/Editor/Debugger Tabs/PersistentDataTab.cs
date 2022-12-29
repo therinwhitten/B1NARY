@@ -3,7 +3,6 @@
 	using System;
 	using System.Reflection;
 	using System.Collections.Generic;
-	using System.Linq;
 	using B1NARY.DataPersistence;
 	using UnityEditor;
 	using UnityEngine;
@@ -22,10 +21,10 @@
 				return;
 			}
 			scroll = EditorGUILayout.BeginScrollView(scroll);
-			DisplayBlock("Booleans", SaveSlot.Booleans);
-			DisplayBlock("Integers", SaveSlot.Integers);
-			DisplayBlock("Singles/Single", SaveSlot.Singles);
-			DisplayBlock("Strings", SaveSlot.Strings);
+			DisplayBlock("Booleans", SaveSlot.Instance.data.bools);
+			DisplayBlock("Integers", SaveSlot.Instance.data.ints);
+			DisplayBlock("Floats", SaveSlot.Instance.data.floats);
+			DisplayBlock("Strings", SaveSlot.Instance.data.strings);
 			EditorGUILayout.EndScrollView();
 		}
 

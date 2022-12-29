@@ -15,9 +15,9 @@
 
 		// Regex if a string is only numbers
 		public static readonly Regex numberRegex = new Regex("^[0-9]*$");
-		// Regex for getting the fileName only
+		// Regex for getting the fileData only
 		public static readonly Regex fileNameFilterRegex = new Regex(@"[ \w-]+?(?=\.)");
-		// Regex for getting the fileName and extension
+		// Regex for getting the fileData and extension
 		public static readonly Regex fileNameAndExtensionRegexFilter = new Regex(@"[^\\]+$");
 
 		public static MassRenameAudioExplorerWindow GetWindow(string[] fullFilePaths)

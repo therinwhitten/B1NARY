@@ -121,9 +121,9 @@
 	internal struct FontData
 	{
 		private const string structPath = "/Language Font Data/";
-		public static bool TryLoad(string fileName, out FontData? loadedData)
+		public static bool TryLoad(string fileData, out FontData? loadedData)
 		{
-			string path = Application.streamingAssetsPath + structPath + fileName;
+			string path = Application.streamingAssetsPath + structPath + fileData;
 			if (File.Exists(path))
 			{
 				using (var stream = new FileStream(path, FileMode.Open))
@@ -141,9 +141,9 @@
 			languageIndex = index;
 			this.languages = languages;
 		}
-		public void Save(string fileName)
+		public void Save(string fileData)
 		{
-			using (var stream = new FileStream(Application.streamingAssetsPath + structPath + fileName, FileMode.Create))
+			using (var stream = new FileStream(Application.streamingAssetsPath + structPath + fileData, FileMode.Create))
 				new BinaryFormatter().Serialize(stream, this);
 		}
 	}
