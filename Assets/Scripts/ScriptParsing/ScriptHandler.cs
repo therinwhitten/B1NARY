@@ -224,16 +224,12 @@
 				playerInput.actions.FindAction(key, true).performed += context => NextLine();
 			DontDestroyOnLoad(gameObject);
 		}
-		/// <summary>
-		/// Starts a new script from stratch.
-		/// </summary>
-		/// <param name="scriptPath"> The path of the document. </param>
-		public void InitializeNewScript(string streamingAssetsPath = "")
+
+		public void InitializeNewScript(FileInfo file)
 		{
-			string finalPath = FullScriptPath(streamingAssetsPath);
 			Clear();
 			m_pauseIterations = 0;
-			var scriptFactory = new ScriptDocument.Factory(finalPath);
+			var scriptFactory = new ScriptDocument.Factory(file.FullName);
 			scriptFactory.AddNodeParserFunctionality(
 				typeof(IfBlock),
 				typeof(ElseBlock),
@@ -248,6 +244,15 @@
 			playedTime = DateTime.Now;
 
 			NextLine();
+		}
+		/// <summary>
+		/// Starts a new script from stratch.
+		/// </summary>
+		/// <param name="scriptPath"> The path of the document. </param>
+		public void InitializeNewScript(string streamingAssetsPath = "")
+		{
+			string finalPath = FullScriptPath(streamingAssetsPath);
+			InitializeNewScript(new FileInfo(finalPath));
 		}
 		/// <summary>
 		/// Plays lines until it hits a normal dialogue or similar.

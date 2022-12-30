@@ -26,7 +26,7 @@
 				return Sprite.Create(texture2D, new Rect(Vector2.zero, new Vector2(texture2D.width, texture2D.height)), new Vector2(0.5f, 0.5f));
 			}
 		}
-		private Texture2D plus;
+		[SerializeField] private Texture2D plus;
 
 		protected virtual void OnEnable()
 		{
@@ -37,13 +37,13 @@
 			{
 				objects.Add(new BlockInfo(AddEntry(), SaveSlot.Instance));
 				BlockInfo LastInfo() => objects[objects.Count - 1];
-				LastInfo().SetSprite(plus);
 				LastInfo().button.onClick.AddListener(() =>
 				{
 					SaveSlot.SaveGame(objects.Count);
 					OnDisable();
 					OnEnable();
 				});
+				LastInfo().SetSprite(plus);
 			}
 			
 

@@ -177,7 +177,10 @@
 					yield return enumerator.Current;
 				ScriptHandler.Instance.InitializeNewScript(scriptPosition.documentPath);
 				while (ScriptHandler.Instance.CurrentLine != scriptPosition.lastLine)
+				{
 					ScriptHandler.Instance.NextLine();
+					yield return new WaitForEndOfFrame();
+				}
 			}
 		}
 
@@ -190,11 +193,11 @@
 		public sealed class ScriptPosition
 		{
 			public readonly int sceneIndex;
-			public readonly string documentPath;
+			public readonly FileInfo documentPath;
 			public readonly ScriptLine lastLine;
 			public ScriptPosition()
 			{
-				documentPath = ScriptHandler.Instance.ScriptDocument.documentPath;
+				documentPath = new FileInfo(ScriptHandler.Instance.ScriptDocument.documentPath);
 				sceneIndex = SceneManager.ActiveScene.buildIndex;
 				lastLine = ScriptHandler.Instance.CurrentLine;
 			}
