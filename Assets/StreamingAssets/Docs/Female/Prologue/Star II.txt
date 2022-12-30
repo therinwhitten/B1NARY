@@ -124,7 +124,7 @@ What am I doing?
 {
         It's my fault!
         [
-            {setbool: starbed, true}
+            {setbool: starbed}
             MC::
             "Please. it was my fault. I am to blame."
             The admission feels weird, this man scared the shit out of me. Well, at first anyway.
@@ -142,7 +142,7 @@ What am I doing?
         ]
         Say nothing more. 
         [
-            {setbool: starbed, false}
+            {setbool: !starbed}
             I can't. 
             He scared the shit out of me. 
             I'm technically a prisoner right now. 
@@ -150,7 +150,7 @@ What am I doing?
             Well. If there is such a thing.
         ]
     }
-{if: starbed, true}
+{if: starbed}
 {
     {choice: Will you take Star's offer?}
     {
@@ -400,7 +400,7 @@ I follow that up quickly.
 Maybe a bit too desperately.
 "I can assure you; it was not intentional for me to be here."
 She looks back at me with an unreadable expression.
-{fadeinsond: woodwine1, .1}
+{fadeinsound: woodwine1, .1}
 Asterella::
 "I surmised as much." 
 "But that doesn't clear you. Not yet."
