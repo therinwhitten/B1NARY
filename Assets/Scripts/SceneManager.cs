@@ -79,7 +79,11 @@
 
 		public IEnumerator ChangeScene(int sceneIndex)
 		{
-			return ChangeScene(UnitySceneManager.GetSceneByBuildIndex(sceneIndex).name);
+			Scene scene = UnitySceneManager.GetSceneByBuildIndex(sceneIndex);
+			if (!scene.IsValid())
+				throw new ArgumentNullException($"build index of '{sceneIndex}'"
+					+ " does not lead to anything!");
+			return ChangeScene(scene.name);
 		}
 		/// <summary>
 		/// A coroutine that changes the scene to a new scene via the name.

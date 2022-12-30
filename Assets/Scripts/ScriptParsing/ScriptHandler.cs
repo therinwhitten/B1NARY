@@ -96,8 +96,14 @@
 		/// start with <see cref="Application.streamingAssetsPath"/>.
 		/// </summary>
 		public static string ToVisual(string path) => path.Replace(BasePath, "").Replace(".txt", "");
+		/// <summary>
+		/// Converts a full path with drive mentioned, that will be replaced with
+		/// <see cref="BasePath"/> and .txt, leaving only the directories that 
+		/// start with <see cref="Application.streamingAssetsPath"/>.
+		/// </summary>
+		public static string ToVisual(FileInfo path) => path.FullName.Replace(BasePath, "").Replace(path.Extension, "");
 
-		public static string BasePath => $"{Application.streamingAssetsPath}/Docs/";
+		public static string BasePath => $"{Application.streamingAssetsPath.Replace('/', '\\')}\\Docs\\";
 		/// <summary>
 		/// All script-based commands for the script itself and the 
 		/// <see cref="DialogueSystem"/>
@@ -229,7 +235,7 @@
 		{
 			Clear();
 			m_pauseIterations = 0;
-			var scriptFactory = new ScriptDocument.Factory(file.FullName);
+			var scriptFactory = new ScriptDocument.Factory(file);
 			scriptFactory.AddNodeParserFunctionality(
 				typeof(IfBlock),
 				typeof(ElseBlock),

@@ -13,45 +13,46 @@
 	{
 		public const int saveSlotMax = 49;
 		protected List<BlockInfo> objects;
-		public IEnumerable<BlockInfo> GetSaves()
+		public List<BlockInfo> GetSaves()
 		{
-			return SaveSlot.AllFiles.Select(data => new BlockInfo(AddEntry(), data)
+			var block = new List<BlockInfo>(SaveSlot.AllFiles.Count);
+			for (int i = 0; i < SaveSlot.AllFiles.Count; i++)
 			{
-				PreserveAspect = true,
-				Sprite = Create(data.about.ImageTexture),
-				Text = $"\"{ScriptHandler.ToVisual(data.scriptPosition.documentPath)}\" : {data.data.PlayerName}\n{data.about.lastSaved}\n{data.about.timePlayed}",
-			});
-			Sprite Create(Texture2D texture2D)
-			{
-				return Sprite.Create(texture2D, new Rect(Vector2.zero, new Vector2(texture2D.width, texture2D.height)), new Vector2(0.5f, 0.5f));
+				var info = new BlockInfo(AddEntry(), SaveSlot.AllFiles[i]);
+				info.SetSprite(SaveSlot.AllFiles[i].about.ImageTexture);
+				info.foregroundImage.preserveAspect = true;
+				info.Text = $"\"{ScriptHandler.ToVisual(SaveSlot.AllFiles[i].scriptPosition.documentPath.FullName)}\" : {SaveSlot.AllFiles[i].data.PlayerName}\n{SaveSlot.AllFiles[i].about.lastSaved}\n{SaveSlot.AllFiles[i].about.timePlayed}";
+				block.Add(info);
 			}
+			return block;
 		}
 		[SerializeField] private Texture2D plus;
 
 		protected virtual void OnEnable()
 		{
-			base.Awake();
-			objects = GetSaves().ToList();
-			objects.ForEach(block => block.button.onClick.AddListener(() => ListenerCallbacker(block.fileData.about.fileName)));
+			objects = GetSaves();
+			for (int i = 0; i < objects.Count; i++)
+			{
+				int index = i;
+				objects[i].button.onClick.AddListener(() =>
+				{
+					SaveSlot.SaveGame(objects[index].fileData.about.fileName);
+					OnDisable();
+					OnEnable();
+				});
+			}
+
 			if (objects.Count < saveSlotMax)
 			{
 				objects.Add(new BlockInfo(AddEntry(), SaveSlot.Instance));
 				BlockInfo LastInfo() => objects[objects.Count - 1];
 				LastInfo().button.onClick.AddListener(() =>
 				{
-					SaveSlot.SaveGame(objects.Count);
+					SaveSlot.SaveGame(SaveSlot.AllFiles.Count);
 					OnDisable();
 					OnEnable();
 				});
 				LastInfo().SetSprite(plus);
-			}
-			
-
-			void ListenerCallbacker(string name)
-			{
-				SaveSlot.SaveGame(name);
-				OnDisable();
-				OnEnable();
 			}
 		}
 		protected virtual void OnDisable()
@@ -60,7 +61,7 @@
 			objects.Clear();
 		}
 	}
-	public readonly struct BlockInfo
+	public class BlockInfo
 	{
 		public readonly SaveSlot fileData;
 		public readonly GameObject obj;

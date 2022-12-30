@@ -55,11 +55,19 @@
 		public static readonly HashSet<string> disabledHashset = new HashSet<string>()
 		{ "off", "false", "disable" };
 
+
 		/// <summary>
-		/// The file name that the <see cref="ScriptDocument"/> is a part of.
+		/// The document's file name in the <see cref="documentPath"/>.
 		/// </summary>
-		public readonly string documentName;
-		public readonly string documentPath;
+		public string Name { get; private set; }
+		/// <summary>
+		/// The full document path that is located on the drive.
+		/// </summary>
+		public FileInfo DocumentPath { get; private set; }
+		/// <summary>
+		/// The path that takes to the general voicelines.
+		/// </summary>
+		public string VoiceResourcesPath { get; private set; }
 		/// <summary>
 		/// The current line it stopped at, usually at dialogue. You may be 
 		/// able to get a command via multiple threads.
@@ -88,10 +96,9 @@
 		/// </summary>
 		public bool AdditiveEnabled { get; set; } = false;
 
-		private ScriptDocument(string docName, string docPath)
+		private ScriptDocument()
 		{
-			documentName = docName;
-			documentPath = docPath;
+
 		}
 
 		/// <summary>
@@ -174,11 +181,15 @@
 			/// <summary>
 			/// The document's file name in the <see cref="documentPath"/>.
 			/// </summary>
-			public readonly string documentName;
+			public readonly string Name;
 			/// <summary>
 			/// The full document path that is located on the drive.
 			/// </summary>
-			public readonly string documentPath;
+			public readonly FileInfo documentPath;
+			/// <summary>
+			/// The path that takes to the general voicelines.
+			/// </summary>
+			public readonly string voiceResourcesPath;
 			/// <summary>
 			/// A collection of parsers that allows them make them more defined
 			/// and causes different behaviour as such.
@@ -189,7 +200,7 @@
 			/// A type-writer like way to read through the file while compiling
 			/// the document.
 			/// </summary>
-			private IEnumerator<ScriptLine> fileData;
+			private Func<ScriptDocument, IEnumerator<ScriptLine>> fileData;
 			/// <summary>
 			/// A collection of accumulated commands to convert them as a 
 			/// <see cref="Lookup{string, Delegate}"/> to invoke.
@@ -205,21 +216,20 @@
 			/// and <see cref="documentPath"/> and <see cref="documentName"/>.
 			/// </param>
 			/// <exception cref="ArgumentException"/>
-			public Factory(string fullFilePath)
+			public Factory(FileInfo filePath)
 			{
-				if (!File.Exists(fullFilePath))
-					throw new ArgumentException($"{fullFilePath} does not lead to a playable file!");
-				documentName = Path.GetFileNameWithoutExtension(fullFilePath);
-				string resourcesPath = ScriptHandler.ToVisual(fullFilePath);
-				resourcesPath = "Voice/" + resourcesPath;
-				documentPath = fullFilePath;
+				if (!filePath.Exists)
+					throw new ArgumentException($"{filePath.FullName} does not lead to a playable file!");
+				documentPath = filePath;
+				Name = filePath.Name.Remove(filePath.Name.LastIndexOf('.'));
+				voiceResourcesPath = "Voice\\" + ScriptHandler.ToVisual(filePath);
 				// TODO: add a way to parse it over time.
-				fileData = LineReader();
-				IEnumerator<ScriptLine> LineReader()
+				fileData = LineReader;
+				IEnumerator<ScriptLine> LineReader(ScriptDocument document)
 				{
-					using (var reader = new StreamReader(fullFilePath))
+					using (var reader = new StreamReader(filePath.Open(FileMode.Open, FileAccess.Read)))
 						for (int i = 1; !reader.EndOfStream; i++)
-							yield return new ScriptLine(reader.ReadLine(), resourcesPath, documentName, i);
+							yield return new ScriptLine(reader.ReadLine(), document, i);
 				}
 			}
 			/// <summary>
@@ -246,13 +256,10 @@
 					return;
 				if (scriptNodeParsers.Any(nodeCon => nodeCon.type == node))
 					return;
-#if DEBUG
-				Debug.Log($"Adding custom node: '{node.Name}'..");
-#endif
 				Func<ScriptPair[], bool> func = pairs => true;
 				if (ConditionAttribute.TryGetAttribute(node, out ConditionAttribute attribute))
 					func = attribute.Predicate;
-				ConstructorInfo info = node.GetConstructor(new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(Int32) });
+				ConstructorInfo info = node.GetConstructor(new Type[] { typeof(ScriptDocument), typeof(ScriptPair[]), typeof(int) });
 				if (info == null)
 					throw new MissingMethodException($"class '{node.Name}' has " +
 						"a missing default constructor!");
@@ -273,11 +280,17 @@
 			/// <exception cref="InvalidDataException"/>
 			public ScriptDocument Parse(bool pauseOnCommand)
 			{
-				var output = new ScriptDocument(documentName, documentPath);
+				var output = new ScriptDocument()
+				{
+					Name = Name,
+					DocumentPath = documentPath,
+					VoiceResourcesPath = voiceResourcesPath,
+				};
 				// Assigning lines
 				var list = new List<ScriptPair>();
 				var nodes = new List<(int startIndex, int endIndex, int indentation)>();
 				var incompletePairs = new Stack<int>();
+				IEnumerator<ScriptLine> fileData = this.fileData(output);
 				while (fileData.MoveNext())
 				{
 					if (fileData.Current.type == ScriptLine.Type.BeginIndent)
@@ -299,7 +312,7 @@
 				}
 				fileData.Dispose();
 				if (incompletePairs.Count > 0)
-					throw new InvalidDataException($"{documentName} has " +
+					throw new InvalidDataException($"{Name} has " +
 						$"incomplete indentations/brackets!");
 				output.documentData = Array.AsReadOnly(
 					list.Select(pair => pair.scriptLine).ToArray());
@@ -327,10 +340,10 @@
 				// Messing with the baseline entry scriptnode code.
 				list.InsertRange(0, new ScriptPair[]
 				{
-					(ScriptPair)new ScriptLine("::Start", list[0].scriptLine.resourcesFilePath, documentName, -1),
-					(ScriptPair)new ScriptLine("{", list[0].scriptLine.resourcesFilePath, documentName, 0)
+					(ScriptPair)new ScriptLine("::Start", output, -1),
+					(ScriptPair)new ScriptLine("{", output, 0)
 				});
-				list.Add((ScriptPair)new ScriptLine("::End", list[0].scriptLine.resourcesFilePath, documentName, list.Count));
+				list.Add((ScriptPair)new ScriptLine("::End", output, list.Count));
 				output.nodes = Array.AsReadOnly(nodeArray);
 				output.data = new ScriptNode(output, list.ToArray(), -1).Perform(pauseOnCommand);
 				return output;
@@ -349,9 +362,6 @@
 				{
 					if (!scriptNodeParsers[i].Predicate(subValues))
 						continue;
-#if DEBUG
-					Debug.Log($"Creating node '{scriptNodeParsers[i].type.Name}' at line {subValues[0].scriptLine.Index}");
-#endif
 					return scriptNodeParsers[i].Create(document, subValues, index);//.Invoke(new object[] { document, subValues, index });
 				}
 				return new ScriptNode(document, subValues, index);

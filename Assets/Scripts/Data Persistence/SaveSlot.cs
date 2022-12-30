@@ -4,7 +4,6 @@
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
-	using System.Collections.ObjectModel;
 	using System.Diagnostics;
 	using System.IO;
 	using System.Linq;
@@ -110,20 +109,24 @@
 		/// <summary>
 		/// Retrieves a collection that is found in the saves folder.
 		/// </summary>
-		public static ReadOnlyCollection<SaveSlot> AllFiles
+		public static IReadOnlyList<SaveSlot> AllFiles
 		{
 			get
 			{
 				if (m_files == null)
-					m_files = Array.AsReadOnly(SavesDirectory.EnumerateFiles()
-						.Where(info => info.Extension == extension)
-						.Select(info => LoadExistingData(info.Name.Replace(extension, "")))
-						.ToArray());
+				{
+					FileInfo[] files = SavesDirectory.GetFiles();
+					var slots = new List<SaveSlot>(files.Length);
+					for (int i = 0; i < files.Length; i++)
+						if (files[i].Extension == extension)
+							slots.Add(LoadExistingData(files[i].Name.Remove(files[i].Name.LastIndexOf(files[i].Extension))));
+					m_files = slots;
+				}
 				return m_files;
 			}
 			set => m_files = value;
 		}
-		private static ReadOnlyCollection<SaveSlot> m_files;
+		private static IReadOnlyList<SaveSlot> m_files;
 
 
 
@@ -197,7 +200,7 @@
 			public readonly ScriptLine lastLine;
 			public ScriptPosition()
 			{
-				documentPath = new FileInfo(ScriptHandler.Instance.ScriptDocument.documentPath);
+				documentPath = ScriptHandler.Instance.ScriptDocument.DocumentPath;
 				sceneIndex = SceneManager.ActiveScene.buildIndex;
 				lastLine = ScriptHandler.Instance.CurrentLine;
 			}

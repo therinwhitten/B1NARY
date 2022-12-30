@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
+	using System.IO;
 	using System.Linq;
 	using System.Reflection;
 	using System.Text.RegularExpressions;
@@ -17,8 +18,7 @@
 	public struct ScriptLine : IEquatable<ScriptLine>
 	{
 		public static bool operator ==(ScriptLine left, ScriptLine right)
-			=> left.lineData == right.lineData && left.ScriptDocument == right.ScriptDocument
-			&& left.Index == right.Index;
+			=> left.lineData == right.lineData && left.Index == right.Index;
 		public static bool operator !=(ScriptLine left, ScriptLine right)
 			=> !(left == right);
 
@@ -156,10 +156,10 @@
 		/// <summary> The raw string contents. </summary>
 		public readonly string lineData;
 
-		public readonly string resourcesFilePath;
+		[NonSerialized]
 		/// <summary> The current document name it is tied to. </summary>
-		public readonly string ScriptDocument;
-		/// <summary> The index where it appears in <see cref="ScriptDocument"/>. </summary>
+		public readonly ScriptDocument document;
+		/// <summary> The index where it appears in <see cref="document"/>. </summary>
 		public readonly int Index;
 		/// <summary> The type of line it detects which. </summary>
 		public readonly Type type;
@@ -169,32 +169,30 @@
 		{
 			lineData = source.lineData;
 			type = source.type;
-			resourcesFilePath = source.resourcesFilePath;
-			ScriptDocument = source.ScriptDocument;
+			document = source.document;
 			Index = source.Index;
 		}
 		/// <summary>
 		/// Stores data on a individual line based from <paramref name="scriptDocument"/>.
 		/// </summary>
 		/// <param name="lineData">The line data.</param>
-		/// <param name="scriptDocument">The scriptName document.</param>
+		/// <param name="document">The scriptName document.</param>
 		/// <param name="index">The index.</param>
-		public ScriptLine(string lineData, string resourcesFilePath, string scriptDocument, int index)
+		public ScriptLine(string lineData, ScriptDocument document, int index)
 		{
 			int commentIndex = lineData.IndexOf("//");
 			if (commentIndex != -1) // Comments
 				lineData = lineData.Remove(commentIndex);
 			lineData = lineData.Trim();
 			this.lineData = lineData;
-			ScriptDocument = scriptDocument;
+			this.document = document;
 			Index = index;
 			type = ParseLineAsType(lineData);
-			this.resourcesFilePath = resourcesFilePath;
 		}
 
 		public AudioClip GetVoiceActorLine()
 		{
-			string filePath = $"{resourcesFilePath}/{Index}";
+			string filePath = $"{document.VoiceResourcesPath}\\{Index}";
 			AudioClip clip = Resources.Load<AudioClip>(filePath);
 			if (clip == null)
 				Debug.LogWarning($"Voiceline in resources path '{filePath}' " +
