@@ -1,6 +1,6 @@
 ﻿namespace B1NARY
 {
-    using UnityEngine.InputSystem;
+    using System.Collections;
 	using UnityEngine;
 	using UI;
 
@@ -12,9 +12,9 @@
 
 		public void Update()
         {
-           Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-           mousePosition.z = Camera.main.transform.position.z + Camera.main.nearClipPlane;
-           transform.position = mousePosition;
-	    }
-	}	
+            pos = Input.mousePosition;
+			pos.z = speed;
+			transform.position = Camera.main.ScreenToWorldPoint(pos);
+        }
+	}
 }
