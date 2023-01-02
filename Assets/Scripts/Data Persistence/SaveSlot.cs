@@ -6,12 +6,12 @@
 	using System.Collections.Generic;
 	using System.Diagnostics;
 	using System.IO;
-	using System.Linq;
 	using System.Runtime.Serialization;
 	using System.Runtime.Serialization.Formatters.Binary;
-	using System.Threading.Tasks;
 	using UnityEngine;
 	using Debug = UnityEngine.Debug;
+	using Vector2 = UnityEngine.Vector2;
+	using System.Drawing;
 
 	[Serializable]
 	public class SaveSlot : IDisposable, IDeserializationCallback
@@ -218,7 +218,30 @@
 					texture.LoadImage(image);
 					return texture;
 				}
-				set => image = value.EncodeToPNG();
+				set
+				{
+					const float maxSize = 512f;
+					image = value.EncodeToJPG();
+					using (var stream = new MemoryStream(image))
+					{
+						Bitmap bitmap = new Bitmap(stream);
+						Vector2Int imageRatio = ImageUtility.Ratio(bitmap.Width, bitmap.Height);
+						var imageSize = new Vector2Int(bitmap.Width, bitmap.Height);
+						// making width to 512, and height as follows
+						imageSize.y = (int)(maxSize / imageRatio.x * imageRatio.y);
+						imageSize.x = (int)maxSize;
+						if (imageSize.y > maxSize)
+						{
+							imageRatio = ImageUtility.Ratio(imageSize.x, imageSize.y);
+							imageSize.x = (int)(maxSize / imageRatio.y * imageRatio.x);
+							imageSize.y = (int)maxSize;
+						}
+						Debug.Log($"{imageSize}");
+						Image subImage = bitmap.GetThumbnailImage(imageSize.x, imageSize.y, null, IntPtr.Zero);
+						image = (byte[])new ImageConverter().ConvertTo(subImage, typeof(byte[]));
+						bitmap.Dispose();
+					}
+				}
 			}
 			public byte[] image;
 
