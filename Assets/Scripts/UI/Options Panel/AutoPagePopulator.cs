@@ -8,6 +8,8 @@
 	{
 		public GameObject slot;
 		public GameObject row;
+
+
 		public int objectsPerRow = 3;
 
 		private int internalCounter = 0;
@@ -19,7 +21,7 @@
 			internalCounter = objectsPerRow;
 			rows = new List<GameObject>();
 		}
-		public void Reset()
+		public void Clear()
 		{
 			internalCounter = objectsPerRow;
 			rows.ForEach(row => Destroy(row));
@@ -36,4 +38,6 @@
 			return CurrentRow.AddChildObject(slot);
 		}
 	}
+
+	
 }

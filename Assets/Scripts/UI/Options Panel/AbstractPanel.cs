@@ -25,7 +25,7 @@
 		/// <summary>
 		/// When the value changes; Equivalent to <see cref="TMP_Dropdown.onValueChanged"/>
 		/// </summary>
-		public event Action<int> ChangedValue;
+		public event Action<T, int> ChangedValue;
 		/// <summary>
 		/// What is the value when it first starts up, so it wont start with a 0?
 		/// </summary>
@@ -66,8 +66,8 @@
 				Debug.LogError("The length of the values does not match the visuals array!");
 			DefineDropdown();
 			dropdown.value = InitialValue;
-			ChangedValue = PickedChoice;
-			dropdown.onValueChanged.AddListener(ChangedValue.Invoke);
+			
+			dropdown.onValueChanged.AddListener(PickedChoice);
 		}
 
 		/// <summary>
@@ -84,6 +84,10 @@
 		/// What to do when the dropdown changes value.
 		/// </summary>
 		/// <param name="index"></param>
-		protected abstract void PickedChoice(int index);
+		protected virtual void PickedChoice(int index)
+		{
+			CurrentSelection = index;
+			ChangedValue.Invoke(CurrentValue, index);
+		}
 	}
 }

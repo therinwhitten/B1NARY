@@ -12,6 +12,7 @@
 	using Debug = UnityEngine.Debug;
 	using Vector2 = UnityEngine.Vector2;
 	using System.Drawing;
+	using System.Text;
 
 	[Serializable]
 	public class SaveSlot : IDisposable, IDeserializationCallback
@@ -191,6 +192,25 @@
 		{
 			SceneManager.Instance.SwitchingScenes.RemovePersistentListener(RefreshOnScene);
 		}
+
+		/// <summary>
+		/// Shows the contents of the slot file to the user.
+		/// </summary>
+		/// <returns></returns>
+		public string UserContents =>
+				// Shows script path
+				$"\"{ScriptHandler.ToVisual(scriptPosition.documentPath.FullName)}\""
+				// Adds the player name to same line
+				+ $" : {data.PlayerName}"
+				// Shows the last saved on next line
+				+ $"\n{about.lastSaved}"
+				// Shows the time played on the next line
+				+ $"\n{about.timePlayed}";
+		public override string ToString()
+		{
+			return base.ToString();
+		}
+
 
 		[Serializable]
 		public sealed class ScriptPosition

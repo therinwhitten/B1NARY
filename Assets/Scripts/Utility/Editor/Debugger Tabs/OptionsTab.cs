@@ -149,7 +149,7 @@
 		//	}
 		//
 		//	EditorGUILayout.Space(20);
-		//	bool pressedDeleteAllButton = GUILayout.Button("Reset Settings");
+		//	bool pressedDeleteAllButton = GUILayout.Button("Clear Settings");
 		//	if (pressedDeleteAllButton)
 		//		foreach (string name in deleteAllKeysNames)
 		//			EditorPrefs.DeleteKey(name);

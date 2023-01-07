@@ -2,31 +2,42 @@
 {
 	using B1NARY.Scripting;
 	using DataPersistence;
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Text;
 	using TMPro;
 	using UnityEngine;
+	using UnityEngine.Events;
 	using UnityEngine.Rendering;
 	using UnityEngine.UI;
 
 	public class SavePanel : AutoPagePopulator
 	{
 		public const int saveSlotMax = 49;
+		public UnityEvent OnButtonClicked;
 		protected List<BlockInfo> objects;
 		public List<BlockInfo> GetSaves()
 		{
 			var block = new List<BlockInfo>(SaveSlot.AllFiles.Count);
 			for (int i = 0; i < SaveSlot.AllFiles.Count; i++)
 			{
-				var info = new BlockInfo(AddEntry(), SaveSlot.AllFiles[i]);
-				info.SetSprite(SaveSlot.AllFiles[i].about.ImageTexture);
-				info.foregroundImage.preserveAspect = true;
-				info.Text = $"\"{ScriptHandler.ToVisual(SaveSlot.AllFiles[i].scriptPosition.documentPath.FullName)}\" : {SaveSlot.AllFiles[i].data.PlayerName}\n{SaveSlot.AllFiles[i].about.lastSaved}\n{SaveSlot.AllFiles[i].about.timePlayed}";
-				block.Add(info);
+				try
+				{
+					var info = new BlockInfo(AddEntry(), SaveSlot.AllFiles[i]);
+					info.SetSprite(SaveSlot.AllFiles[i].about.ImageTexture);
+					info.foregroundImage.preserveAspect = true;
+					info.Text = SaveSlot.AllFiles[i].UserContents;
+					info.button.onClick.AddListener(() => OnButtonClicked.Invoke());
+					block.Add(info);
+				} catch (Exception ex)
+				{
+					Debug.LogException(ex);
+				}
 			}
 			return block;
 		}
-		[SerializeField] private Texture2D plus;
+		public Texture2D plus;
 
 		protected virtual void OnEnable()
 		{
@@ -57,7 +68,7 @@
 		}
 		protected virtual void OnDisable()
 		{
-			Reset();
+			Clear();
 			objects.Clear();
 		}
 	}
@@ -85,3 +96,29 @@
 		}
 	}
 }
+
+#if UNITY_EDITOR
+namespace B1NARY.UI.Editor
+{
+	using B1NARY.Editor;
+	using B1NARY.UI;
+	using UnityEditor;
+	using UnityEngine;
+
+	[CustomEditor(typeof(SavePanel), true)]
+	public class SavePanelEditor : Editor
+	{
+		public virtual bool UsePlus => true;
+		protected SavePanel panel;
+		private void Awake() => panel = (SavePanel)target;
+		public override void OnInspectorGUI()
+		{
+			panel.slot = DirtyAuto.Field(target, new GUIContent("Slot"), panel.slot, true);
+			panel.row = DirtyAuto.Field(target, new GUIContent("Row"), panel.row, true);
+			if (UsePlus)
+				DirtyAuto.Property(serializedObject, nameof(SavePanel.plus));
+			panel.objectsPerRow = DirtyAuto.Slider(target, new GUIContent("Columns"), panel.objectsPerRow, 1, 6);
+		}
+	}
+}
+#endif
