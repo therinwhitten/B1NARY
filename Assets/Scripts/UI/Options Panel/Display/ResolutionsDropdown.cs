@@ -11,6 +11,7 @@
 			get
 			{
 				return Screen.resolutions
+					.Where(resolution => resolution.refreshRate == Screen.currentResolution.refreshRate)
 					.OrderByDescending(resolution => (resolution.width * 100) + resolution.height)
 					.Select(resolution => new KeyValuePair<string, Resolution>($"{resolution.width}x{resolution.height}", resolution))
 					.ToList();
