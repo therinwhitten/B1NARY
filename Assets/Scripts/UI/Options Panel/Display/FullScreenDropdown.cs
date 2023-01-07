@@ -2,23 +2,18 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 	using UnityEngine;
 
 	public sealed class FullScreenDropdown : DropdownPanel<FullScreenMode>
 	{
-		public override List<string> Visuals { get; } = new List<string>(3)
+		public override List<KeyValuePair<string, FullScreenMode>> DefinedPairs => new List<KeyValuePair<string, FullScreenMode>>(3)
 		{
-			"Fullscreen",
-			"Borderless",
-			"Windowed"
+			new KeyValuePair<string, FullScreenMode>("Fullscreen", FullScreenMode.ExclusiveFullScreen),
+			new KeyValuePair<string, FullScreenMode>("Borderless", FullScreenMode.FullScreenWindow),
+			new KeyValuePair<string, FullScreenMode>("Windowed", FullScreenMode.Windowed)
 		};
-		public override List<FullScreenMode> DefinedValues => new List<FullScreenMode>(3)
-		{
-			FullScreenMode.ExclusiveFullScreen,
-			FullScreenMode.FullScreenWindow,
-			FullScreenMode.Windowed
-		};
-		public override int InitialValue => Values.IndexOf(Screen.fullScreenMode);
+		public override int InitialValue => Values.ToList().IndexOf(Screen.fullScreenMode);
 
 		protected override void PickedChoice(int index)
 		{
@@ -27,3 +22,16 @@
 		}
 	}
 }
+#if UNITY_EDITOR
+namespace B1NARY.UI.Editor
+{
+	using UnityEngine;
+	using UnityEditor;
+
+	[CustomEditor(typeof(FullScreenDropdown))]
+	public sealed class FullScreenDropdownEditor : DropDownEditor<FullScreenMode>
+	{
+
+	}
+}
+#endif

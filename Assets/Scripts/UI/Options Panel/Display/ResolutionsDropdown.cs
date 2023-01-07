@@ -6,37 +6,43 @@
 
 	public sealed class ResolutionsDropdown : DropdownPanel<Resolution>
 	{
-		public override List<string> Visuals
+		public override List<KeyValuePair<string, Resolution>> DefinedPairs
 		{
 			get
 			{
-				var output = new List<string>(Values.Count);
-				for (int i = 0; i < Values.Count; i++)
-					output.Add($"{Values[i].width}x{Values[i].height} {Values[i].refreshRate}Hz");
-				return output;
+				return Screen.resolutions
+					.OrderBy(resolution => resolution.width + resolution.height)
+					.Select(resolution => new KeyValuePair<string, Resolution>($"{resolution.width}x{resolution.height}", resolution))
+					.ToList();
 			}
 		}
 
-		public override List<Resolution> DefinedValues
+		protected override void Awake()
 		{
-			get
-			{
-				Resolution[] resolutionArray = Screen.resolutions;
-				var resolutions = new LinkedList<Resolution>();
-				for (int i = 0; i < resolutionArray.Length; i++)
-					if (resolutionArray[i].refreshRate == Screen.currentResolution.refreshRate)
-						resolutions.AddFirst(resolutionArray[i]);
-				return new List<Resolution>(resolutions);
-			}
+			base.Awake();
+			
 		}
-
-		public override int InitialValue => Values.IndexOf(Screen.currentResolution);
+		public override int InitialValue => Values.ToList().IndexOf(Screen.currentResolution);
 
 		protected override void PickedChoice(int index)
 		{
+			base.PickedChoice(index);
 			Resolution resolution = CurrentValue;
 			Screen.SetResolution(resolution.width, resolution.height,
 				Screen.fullScreenMode, resolution.refreshRate);
 		}
 	}
 }
+#if UNITY_EDITOR
+namespace B1NARY.UI.Editor
+{
+	using UnityEngine;
+	using UnityEditor;
+
+	[CustomEditor(typeof(ResolutionsDropdown))]
+	public sealed class ResolutionsDropdownEditor : DropDownEditor<Resolution>
+	{
+
+	}
+}
+#endif

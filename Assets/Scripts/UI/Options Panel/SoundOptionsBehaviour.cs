@@ -79,7 +79,7 @@
 
 
         }
-         // Logrithmic Volume Values. Need these set up like this. Slider Values in inspector need to be around .1 for lowest with 1 the highest. If 0, will break channel.
+         // Logrithmic Volume Pairs. Need these set up like this. Slider Pairs in inspector need to be around .1 for lowest with 1 the highest. If 0, will break channel.
         void SetMasterVolume(float value)
         {
             mixer.SetFloat(MIXER_MASTER, Mathf.Log10(value) * 100);
