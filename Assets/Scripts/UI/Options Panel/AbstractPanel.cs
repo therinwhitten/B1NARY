@@ -47,13 +47,8 @@
 		/// The Currently stored values.
 		/// </summary>
 		public List<KeyValuePair<string, TValue>> Pairs
-		{ 
-			get
-			{
-				if (m_pairs is null)
-					return new List<KeyValuePair<string, TValue>>();
-				return m_pairs;
-			}
+		{
+			get => m_pairs;
 			set => m_pairs = value;
 		}
 		protected List<KeyValuePair<string, TValue>> m_pairs;
@@ -62,11 +57,9 @@
 
 		protected virtual void Awake()
 		{
-			if (m_pairs is null)
-				m_pairs = DefinedPairs;
+			m_pairs = DefinedPairs;
 			DefineDropdown();
 			dropdown.value = InitialValue;
-			
 			dropdown.onValueChanged.AddListener(PickedChoice);
 		}
 
