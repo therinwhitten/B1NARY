@@ -87,7 +87,7 @@
 		protected virtual void PickedChoice(int index)
 		{
 			CurrentSelection = index;
-			ChangedValue.Invoke(CurrentValue, index);
+			ChangedValue?.Invoke(CurrentValue, index);
 		}
 	}
 }
