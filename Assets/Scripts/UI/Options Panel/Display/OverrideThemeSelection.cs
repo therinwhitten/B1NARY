@@ -21,6 +21,7 @@
 			.Select(format => new KeyValuePair<string, string>(format.name, format.name)).ToList();
 		protected override void PickedChoice(int index)
 		{
+			base.PickedChoice(index);
 			if (ColorFormat.defaultKey == Pairs[index].Value)
 			{
 				ColorFormat.HasOverridedTheme = false;

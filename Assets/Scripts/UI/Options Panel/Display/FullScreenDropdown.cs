@@ -17,6 +17,7 @@
 
 		protected override void PickedChoice(int index)
 		{
+			base.PickedChoice(index);
 			Resolution currentResolution = Screen.currentResolution;
 			Screen.SetResolution(currentResolution.width, currentResolution.height, CurrentValue, currentResolution.refreshRate);
 		}

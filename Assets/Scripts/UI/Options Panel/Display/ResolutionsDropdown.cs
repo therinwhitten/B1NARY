@@ -11,7 +11,7 @@
 			get
 			{
 				return Screen.resolutions
-					.OrderBy(resolution => resolution.width + resolution.height)
+					.OrderByDescending(resolution => (resolution.width * 100) + resolution.height)
 					.Select(resolution => new KeyValuePair<string, Resolution>($"{resolution.width}x{resolution.height}", resolution))
 					.ToList();
 			}
@@ -20,7 +20,6 @@
 		protected override void Awake()
 		{
 			base.Awake();
-			
 		}
 		public override int InitialValue => Values.ToList().IndexOf(Screen.currentResolution);
 
