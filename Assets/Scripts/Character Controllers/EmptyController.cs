@@ -4,6 +4,7 @@
 	using B1NARY.Scripting;
 	using B1NARY.UI;
 	using System;
+	using UnityEditor;
 	using UnityEngine;
 
 	public class EmptyController : MonoBehaviour, ICharacterController
@@ -53,3 +54,16 @@
 		}
 	}
 }
+
+#if UNITY_EDITOR
+namespace B1NARY.CharacterManagement.Editor
+{
+	using UnityEditor;
+
+	[CustomEditor(typeof(EmptyController))]
+	public class EmptyControllerEditor : ControllerEditor
+	{
+
+	}
+}
+#endif

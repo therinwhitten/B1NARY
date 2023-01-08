@@ -1,6 +1,5 @@
 ﻿namespace B1NARY.CharacterManagement
 {
-	using B1NARY.Audio;
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
@@ -120,3 +119,16 @@
 		}
 	}
 }
+
+#if UNITY_EDITOR
+namespace B1NARY.CharacterManagement.Editor
+{
+	using UnityEditor;
+
+	[CustomEditor(typeof(CharacterScript))]
+	public class CharacterScriptEditor : ControllerEditor
+	{
+
+	}
+}
+#endif
