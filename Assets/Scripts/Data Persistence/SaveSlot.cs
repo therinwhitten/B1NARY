@@ -1,5 +1,6 @@
 ﻿namespace B1NARY.DataPersistence
 {
+	using HideousDestructor.DataPersistence;
 	using B1NARY.Scripting;
 	using System;
 	using System.Collections;
@@ -15,7 +16,7 @@
 	using System.Text;
 
 	[Serializable]
-	public class SaveSlot : IDisposable, IDeserializationCallback
+	public class SaveSlot : SerializableSlot, IDisposable, IDeserializationCallback
 	{
 		public const string StartingName = "Slot_",
 			extension = ".sv";
@@ -47,12 +48,12 @@
 		}
 		public static void SaveGame(int index)
 		{
-			Instance.about.fileName = StartingName + index;
+			Instance.fileInfo = FilePath(StartingName + index);
 			SaveGame();
 		}
 		public static void SaveGame(string name)
 		{
-			Instance.about.fileName = name;
+			Instance.fileInfo = FilePath(name);
 			SaveGame();
 		}
 		/// <summary>
@@ -60,23 +61,19 @@
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static void LoadGame(int index)
-		{
-			Instance = LoadExistingData(StartingName + index);
-			Instance.Load();
-		}
-		public static void LoadGame(string name)
-		{
-			Instance = LoadExistingData(name);
-			Instance.Load();
-		}
+		public static void LoadGame(int index) => 
+			LoadGame(Deserialize<SaveSlot>(FilePath(StartingName + index)));
+		public static void LoadGame(string name) => 
+			LoadGame(Deserialize<SaveSlot>(FilePath(name)));
 		/// <summary>
 		/// Loads the previous state of the current <see cref="SaveSlot"/> in the
 		/// game files.
 		/// </summary>
-		public static void QuickLoad()
+		public static void QuickLoad() => 
+			LoadGame(Deserialize<SaveSlot>(Instance.fileInfo));
+		public static void LoadGame(SaveSlot slot)
 		{
-			Instance = LoadExistingData(Instance.about.fileName);
+			Instance = slot;
 			Instance.Load();
 		}
 
@@ -85,28 +82,15 @@
 		/// The save file directory.
 		/// </summary>
 		private static DirectoryInfo SavesDirectory { get; } =
-			new DirectoryInfo(Application.persistentDataPath)
-			.CreateSubdirectory("Saves");
+			new DirectoryInfo(Application.persistentDataPath);
 		/// <summary>
 		/// Completes <see cref="SavesDirectory"/> by adding <see cref="extension"/>
 		/// and the <paramref name="saveName"/>.
 		/// </summary>
 		/// <param name="saveName"> The fileData. </param>
-		/// <returns> The file info about the save file. May be non-existant. </returns>
-		private static FileInfo FilePath(string saveName) =>
-			new FileInfo($"{SavesDirectory.FullName}/{saveName}{extension}");
-		/// <summary>
-		/// Retrieves data without setting instance with <see cref="SavesDirectory"/>
-		/// and the <paramref name="name"/>.
-		/// </summary>
-		/// <param name="name"> The fileData. </param>=
-		private static SaveSlot LoadExistingData(string name)
-		{
-			SaveSlot output;
-			using (var stream = FilePath(name).Open(FileMode.Open))
-				output = new BinaryFormatter().Deserialize(stream) as SaveSlot;
-			return output;
-		}
+		/// <returns> The file fileInfo about the save file. May be non-existant. </returns>
+		private static FileInfo FilePath(object saveName) =>
+			SavesDirectory.GetFile($"{saveName}{extension}");
 		/// <summary>
 		/// Retrieves a collection that is found in the saves folder.
 		/// </summary>
@@ -120,7 +104,7 @@
 					var slots = new List<SaveSlot>(files.Length);
 					for (int i = 0; i < files.Length; i++)
 						if (files[i].Extension == extension)
-							slots.Add(LoadExistingData(files[i].Name.Remove(files[i].Name.LastIndexOf(files[i].Extension))));
+							slots.Add(Deserialize<SaveSlot>(files[i]));
 					m_files = slots;
 				}
 				return m_files;
@@ -130,8 +114,6 @@
 		private static IReadOnlyList<SaveSlot> m_files;
 
 
-
-		public About about;
 		public Data data;
 		public ScriptPosition scriptPosition;
 
@@ -142,10 +124,8 @@
 		}
 
 
-		public SaveSlot()
+		public SaveSlot() : base(FilePath($"{StartingName}{AllFiles.Count}"))
 		{
-			about = new About();
-			about.OnDeserialization(this);
 			data = new Data();
 			OnDeserialization(this);
 		}
@@ -154,18 +134,11 @@
 			SceneManager.Instance.SwitchingScenes.AddPersistentListener(RefreshOnScene);
 		}
 
-		/// <summary>
-		/// Saves file to <see cref="SavesDirectory"/>.
-		/// </summary>
-		public void Serialize()
+		public override void Serialize()
 		{
-			about.SetSavedToToday();
-			about.UpdateTime();
 			scriptPosition = new ScriptPosition();
-			about.ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
 			m_files = null;
-			using (var stream = FilePath(about.fileName).Open(FileMode.Create))
-				new BinaryFormatter().Serialize(stream, this);
+			base.Serialize();
 		}
 
 		/// <summary>
@@ -203,9 +176,9 @@
 				// Adds the player name to same line
 				+ $" : {data.PlayerName}"
 				// Shows the last saved on next line
-				+ $"\n{about.lastSaved}"
+				+ $"\n{LastSaved}"
 				// Shows the time played on the next line
-				+ $"\n{about.timePlayed}";
+				+ $"\n{TimeUsed}";
 		public override string ToString()
 		{
 			return base.ToString();
@@ -223,66 +196,6 @@
 				documentPath = ScriptHandler.Instance.ScriptDocument.DocumentPath;
 				sceneIndex = SceneManager.ActiveScene.buildIndex;
 				lastLine = ScriptHandler.Instance.CurrentLine;
-			}
-		}
-		[Serializable]
-		public sealed class About : IDeserializationCallback
-		{
-			public string fileName = $"{StartingName}{AllFiles.Count}";
-			public FileInfo SaveLocation => FilePath(fileName);
-			public Texture2D ImageTexture
-			{
-				get
-				{
-					var texture = new Texture2D(8, 8, TextureFormat.RGBA32, false, false);
-					texture.LoadImage(image);
-					return texture;
-				}
-				set
-				{
-					const float maxSize = 512f;
-					image = value.EncodeToJPG();
-					using (var stream = new MemoryStream(image))
-					{
-						Bitmap bitmap = new Bitmap(stream);
-						Vector2Int imageRatio = ImageUtility.Ratio(bitmap.Width, bitmap.Height);
-						var imageSize = new Vector2Int(bitmap.Width, bitmap.Height);
-						// making width to 512, and height as follows
-						imageSize.y = (int)(maxSize / imageRatio.x * imageRatio.y);
-						imageSize.x = (int)maxSize;
-						if (imageSize.y > maxSize)
-						{
-							imageRatio = ImageUtility.Ratio(imageSize.x, imageSize.y);
-							imageSize.x = (int)(maxSize / imageRatio.y * imageRatio.x);
-							imageSize.y = (int)maxSize;
-						}
-						Debug.Log($"{imageSize}");
-						Image subImage = bitmap.GetThumbnailImage(imageSize.x, imageSize.y, null, IntPtr.Zero);
-						image = (byte[])new ImageConverter().ConvertTo(subImage, typeof(byte[]));
-						bitmap.Dispose();
-					}
-				}
-			}
-			public byte[] image;
-
-			public void UpdateTime()
-			{
-				if (stopwatch == null)
-					return;
-				stopwatch.Stop();
-				timePlayed += stopwatch.Elapsed;
-				stopwatch.Restart();
-			}
-			public TimeSpan timePlayed = TimeSpan.Zero;
-			public void SetSavedToToday() => lastSaved = DateTime.Now;
-			public DateTime lastSaved = default;
-			[NonSerialized]
-			public Stopwatch stopwatch;
-
-
-			public void OnDeserialization(object sender)
-			{
-				stopwatch = Stopwatch.StartNew();
 			}
 		}
 		[Serializable]

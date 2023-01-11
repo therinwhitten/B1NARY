@@ -13,9 +13,8 @@
 			base.Awake();
 			objects = GetSaves().ToList();
 			for (int i = 0; i < objects.Count; i++)
-				objects[i].button.onClick.AddListener(() => LoadGame(objects[i].fileData.about.fileName));
+				objects[i].button.onClick.AddListener(() => SaveSlot.LoadGame(objects[i].fileData));
 		}
-		public void LoadGame(string fileName) => SaveSlot.LoadGame(fileName);
 	}
 }
 #if UNITY_EDITOR

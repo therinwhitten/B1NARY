@@ -14,8 +14,38 @@
 
 	public class SavePanel : AutoPagePopulator
 	{
+		protected bool CreatePanelBehaviour(GameObject confirmPanel)
+		{
+			if (confirmPanel == null)
+				return false;
+			GameObject instance = Instantiate(confirmPanel, transform);
+			Button[] buttons = instance.GetComponentsInChildren<Button>();
+			Button confirmButton = buttons.FirstOrDefault(button => button.name == confirmButtonName);
+			if (confirmButton == null)
+			{
+				Debug.LogException(new NullReferenceException($"{instance} does not contain a button sub-gameobject named '{confirmButtonName}'!"));
+				Destroy(instance);
+				return false;
+			}
+			Button cancelButton = buttons.FirstOrDefault(button => button.name == cancelButtonName);
+			if (cancelButton == null)
+			{
+				Debug.LogException(new NullReferenceException($"{instance} does not contain a button sub-gameobject named '{cancelButtonName}'!"));
+				Destroy(instance);
+				return false;
+			}
+			confirmButton.onClick.AddListener(() => OnButtonClicked.Invoke(true));
+			cancelButton.onClick.AddListener(() => OnButtonClicked.Invoke(false));
+			return true;
+		}
+
 		public const int saveSlotMax = 49;
-		public UnityEvent OnButtonClicked;
+		public const string cancelButtonName = "Cancel",
+			confirmButtonName = "Confirm";
+		[Tooltip("Should contain a button named '" + cancelButtonName + "' and '" + confirmButtonName + "'")]
+		public GameObject confirmPanel;
+		public UnityEvent<bool> OnButtonClicked;
+		public Action<BlockInfo, bool> buttonClicked;
 		protected List<BlockInfo> objects;
 		public List<BlockInfo> GetSaves()
 		{
@@ -25,10 +55,11 @@
 				try
 				{
 					var info = new BlockInfo(AddEntry(), SaveSlot.AllFiles[i]);
-					info.SetSprite(SaveSlot.AllFiles[i].about.ImageTexture);
+					info.SetSprite(SaveSlot.AllFiles[i].ImageTexture);
 					info.foregroundImage.preserveAspect = true;
 					info.Text = SaveSlot.AllFiles[i].UserContents;
-					info.button.onClick.AddListener(() => OnButtonClicked.Invoke());
+					if (!CreatePanelBehaviour(confirmPanel))
+						info.button.onClick.AddListener(() => buttonClicked.Invoke(info, true));
 					block.Add(info);
 				} catch (Exception ex)
 				{
@@ -39,19 +70,22 @@
 		}
 		public Texture2D plus;
 
+		protected override void Awake()
+		{
+			base.Awake();
+			buttonClicked = (info, active) => OnButtonClicked.Invoke(active);
+		}
 		protected virtual void OnEnable()
 		{
 			objects = GetSaves();
-			for (int i = 0; i < objects.Count; i++)
+			buttonClicked += (blockInfo, confirm) =>
 			{
-				int index = i;
-				objects[i].button.onClick.AddListener(() =>
-				{
-					SaveSlot.SaveGame(objects[index].fileData.about.fileName);
-					OnDisable();
-					OnEnable();
-				});
-			}
+				if (!confirm)
+					return;
+				blockInfo.fileData.Serialize();
+				OnDisable();
+				OnEnable();
+			};
 
 			if (objects.Count < saveSlotMax)
 			{
@@ -115,6 +149,7 @@ namespace B1NARY.UI.Editor
 		{
 			panel.slot = DirtyAuto.Field(target, new GUIContent("Slot"), panel.slot, true);
 			panel.row = DirtyAuto.Field(target, new GUIContent("Row"), panel.row, true);
+			panel.confirmPanel = DirtyAuto.Field(target, new GUIContent("Confirm Panel"), panel.confirmPanel, true);
 			if (UsePlus)
 				DirtyAuto.Property(serializedObject, nameof(SavePanel.plus));
 			panel.objectsPerRow = DirtyAuto.Slider(target, new GUIContent("Columns"), panel.objectsPerRow, 1, 6);

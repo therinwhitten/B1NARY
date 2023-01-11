@@ -121,7 +121,7 @@
 						clip = enumerator.Current.Value.CustomAudioClip;
 					else if (!CurrentSoundLibrary.TryGetCustomAudioClip(enumerator.Current.Value.ClipName, out clip))
 					{
-						Debug.LogError($"Cannot find info about {enumerator.Current.Key.name}!");
+						Debug.LogError($"Cannot find fileInfo about {enumerator.Current.Key.name}!");
 						continue;
 					}
 
