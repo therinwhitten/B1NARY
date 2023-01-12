@@ -9,5 +9,14 @@
 		{
 			return new FileInfo(directoryInfo.FullName + $"\\{fileName}");
 		}
+		public static FileInfo Rename(this FileInfo fileInfo, string newName)
+		{
+			if (fileInfo.Exists)
+			{
+				fileInfo.MoveTo(fileInfo.FullName.Replace(fileInfo.Name.Remove(fileInfo.Name.LastIndexOf(fileInfo.Extension)), newName));
+				return fileInfo;
+			}
+			return new FileInfo(fileInfo.FullName.Replace(fileInfo.Name.Remove(fileInfo.Name.LastIndexOf(fileInfo.Extension)), newName));
+		}
 	}
 }

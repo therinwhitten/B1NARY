@@ -8,6 +8,7 @@
 	using UnityEditor.Graphs;
 	using System.Drawing;
 	using System.Diagnostics;
+	using Debug = UnityEngine.Debug;
 	using System.Runtime.Serialization;
 	using System.Collections;
 
@@ -22,7 +23,9 @@
 				return (T)new BinaryFormatter().Deserialize(stream);
 		}
 
-		public static DirectoryInfo PersistentData { get; } = new DirectoryInfo(Application.persistentDataPath);
+		public static DirectoryInfo PersistentData { get; } = 
+			new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData))
+			.CreateSubdirectory(Application.productName);
 		public static DirectoryInfo StreamingAssets { get; } = new DirectoryInfo(Application.streamingAssetsPath);
 
 		#region Thumbnails
@@ -42,6 +45,11 @@
 		#endregion
 
 		public FileInfo fileInfo;
+		public string Name
+		{
+			get => fileInfo.Name;
+			set => fileInfo = fileInfo.Rename(value);
+		}
 		public SerializableSlot(FileInfo fileInfo)
 		{
 			this.fileInfo = fileInfo;
@@ -53,14 +61,9 @@
 			LastSaved = DateTime.Now;
 			TimeUsed += stopwatch.Elapsed;
 			stopwatch = Stopwatch.StartNew();
-			UnityEngine.Object.FindObjectOfType<MonoBehaviour>().StartCoroutine(TextureCapture());
-			IEnumerator TextureCapture()
-			{
-				yield return new WaitForEndOfFrame();
-				ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
-				using (var stream = new FileStream(fileInfo.FullName, FileMode.Create, FileAccess.Write))
-					new BinaryFormatter().Serialize(stream, this);
-			}
+			ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
+			using (var stream = new FileStream(fileInfo.FullName, FileMode.Create, FileAccess.Write))
+				new BinaryFormatter().Serialize(stream, this);
 		}
 
 		void IDisposable.Dispose()

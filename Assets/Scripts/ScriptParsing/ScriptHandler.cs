@@ -13,6 +13,7 @@
 	using B1NARY.DesignPatterns;
 	using B1NARY.DataPersistence;
 	using CharacterController = CharacterManagement.CharacterController;
+	using HideousDestructor.DataPersistence;
 
 	/// <summary>
 	/// A controller of the <see cref="Scripting.ScriptDocument"/> in B1NARY.

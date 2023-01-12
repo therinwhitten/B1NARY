@@ -14,11 +14,13 @@
 
 	public class SavePanel : AutoPagePopulator
 	{
-		protected bool CreatePanelBehaviour(GameObject confirmPanel)
+		protected bool CreatePanelBehaviour(GameObject confirmPanel, out GameObject instance)
 		{
+			instance = null;
 			if (confirmPanel == null)
 				return false;
-			GameObject instance = Instantiate(confirmPanel, transform);
+			instance = Instantiate(confirmPanel, transform);
+			instance.SetActive(true);
 			Button[] buttons = instance.GetComponentsInChildren<Button>();
 			Button confirmButton = buttons.FirstOrDefault(button => button.name == confirmButtonName);
 			if (confirmButton == null)
@@ -34,21 +36,21 @@
 				Destroy(instance);
 				return false;
 			}
-			confirmButton.onClick.AddListener(() => OnButtonClicked.Invoke(true));
-			cancelButton.onClick.AddListener(() => OnButtonClicked.Invoke(false));
 			return true;
 		}
 
-		public const int saveSlotMax = 49;
+		public const int saveSlotMax = 69; // nice
 		public const string cancelButtonName = "Cancel",
 			confirmButtonName = "Confirm";
 		[Tooltip("Should contain a button named '" + cancelButtonName + "' and '" + confirmButtonName + "'")]
 		public GameObject confirmPanel;
-		public UnityEvent<bool> OnButtonClicked;
 		public Action<BlockInfo, bool> buttonClicked;
 		protected List<BlockInfo> objects;
 		public List<BlockInfo> GetSaves()
 		{
+			bool createPanel = CreatePanelBehaviour(confirmPanel, out var instance);
+			if (createPanel)
+				Destroy(instance);
 			var block = new List<BlockInfo>(SaveSlot.AllFiles.Count);
 			for (int i = 0; i < SaveSlot.AllFiles.Count; i++)
 			{
@@ -58,8 +60,7 @@
 					info.SetSprite(SaveSlot.AllFiles[i].ImageTexture);
 					info.foregroundImage.preserveAspect = true;
 					info.Text = SaveSlot.AllFiles[i].UserContents;
-					if (!CreatePanelBehaviour(confirmPanel))
-						info.button.onClick.AddListener(() => buttonClicked.Invoke(info, true));
+					info.button.onClick.AddListener(() => buttonClicked.Invoke(info, !createPanel));
 					block.Add(info);
 				} catch (Exception ex)
 				{
@@ -73,15 +74,19 @@
 		protected override void Awake()
 		{
 			base.Awake();
-			buttonClicked = (info, active) => OnButtonClicked.Invoke(active);
 		}
 		protected virtual void OnEnable()
 		{
 			objects = GetSaves();
 			buttonClicked += (blockInfo, confirm) =>
 			{
+				Debug.Log("BRuh");
 				if (!confirm)
+				{
+					CreatePanelBehaviour(confirmPanel, out var instance);
 					return;
+				}
+
 				blockInfo.fileData.Serialize();
 				OnDisable();
 				OnEnable();
@@ -90,14 +95,15 @@
 			if (objects.Count < saveSlotMax)
 			{
 				objects.Add(new BlockInfo(AddEntry(), SaveSlot.Instance));
-				BlockInfo LastInfo() => objects[objects.Count - 1];
-				LastInfo().button.onClick.AddListener(() =>
+				BlockInfo lastInfo = objects[objects.Count - 1];
+				lastInfo.button.onClick.AddListener(() =>
 				{
+					Debug.Log("BRuh");
 					SaveSlot.SaveGame(SaveSlot.AllFiles.Count);
 					OnDisable();
 					OnEnable();
 				});
-				LastInfo().SetSprite(plus);
+				lastInfo.SetSprite(plus);
 			}
 		}
 		protected virtual void OnDisable()

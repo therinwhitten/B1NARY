@@ -50,12 +50,12 @@
 		}
 		public static void SaveGame(int index)
 		{
-			Instance.fileInfo = FilePath(StartingName + index);
+			Instance.Name = StartingName + index;
 			SaveGame();
 		}
 		public static void SaveGame(string name)
 		{
-			Instance.fileInfo = FilePath(name);
+			Instance.Name = name;
 			SaveGame();
 		}
 		/// <summary>
