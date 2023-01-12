@@ -81,19 +81,13 @@
 
 
 		/// <summary>
-		/// The save file directory.
-		/// </summary>
-		private static DirectoryInfo SavesDirectory { get; }
-			= new DirectoryInfo(Application.persistentDataPath);
-
-		/// <summary>
 		/// Completes <see cref="SavesDirectory"/> by adding <see cref="extension"/>
 		/// and the <paramref name="saveName"/>.
 		/// </summary>
 		/// <param name="saveName"> The fileData. </param>
 		/// <returns> The file fileInfo about the save file. May be non-existant. </returns>
 		private static FileInfo FilePath(object saveName) =>
-			SavesDirectory.GetFile($"{saveName}{extension}");
+			PersistentData.GetFile($"{saveName}{extension}");
 		/// <summary>
 		/// Retrieves a collection that is found in the saves folder.
 		/// </summary>
@@ -103,7 +97,7 @@
 			{
 				if (m_files == null)
 				{
-					FileInfo[] files = SavesDirectory.GetFiles();
+					FileInfo[] files = PersistentData.GetFiles();
 					var slots = new List<SaveSlot>(files.Length);
 					for (int i = 0; i < files.Length; i++)
 						if (files[i].Extension == extension)

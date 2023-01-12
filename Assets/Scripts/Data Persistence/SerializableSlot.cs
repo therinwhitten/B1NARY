@@ -9,6 +9,7 @@
 	using System.Drawing;
 	using System.Diagnostics;
 	using System.Runtime.Serialization;
+	using System.Collections;
 
 	[Serializable]
 	public abstract class SerializableSlot : IDisposable, IDeserializationCallback
@@ -52,9 +53,14 @@
 			LastSaved = DateTime.Now;
 			TimeUsed += stopwatch.Elapsed;
 			stopwatch = Stopwatch.StartNew();
-			ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
-			using (var stream = new FileStream(fileInfo.FullName, FileMode.Create, FileAccess.Write))
-				new BinaryFormatter().Serialize(stream, this);
+			UnityEngine.Object.FindObjectOfType<MonoBehaviour>().StartCoroutine(TextureCapture());
+			IEnumerator TextureCapture()
+			{
+				yield return new WaitForEndOfFrame();
+				ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
+				using (var stream = new FileStream(fileInfo.FullName, FileMode.Create, FileAccess.Write))
+					new BinaryFormatter().Serialize(stream, this);
+			}
 		}
 
 		void IDisposable.Dispose()

@@ -103,7 +103,7 @@
 		protected virtual void OnDisable()
 		{
 			Clear();
-			objects.Clear();
+			objects?.Clear();
 		}
 	}
 	public class BlockInfo

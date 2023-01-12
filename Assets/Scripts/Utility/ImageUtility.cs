@@ -12,7 +12,7 @@
 			using (var stream = new MemoryStream(source))
 			{
 				Bitmap bitmap = new Bitmap(stream);
-				Vector2Int imageRatio = ImageUtility.Ratio(bitmap.Width, bitmap.Height);
+				Vector2Int imageRatio = Ratio(bitmap.Width, bitmap.Height);
 				var imageSize = new Vector2Int(bitmap.Width, bitmap.Height);
 				// making width to 512, and height as follows
 				imageSize.y = (int)((float)maxWidth / imageRatio.x * imageRatio.y);
