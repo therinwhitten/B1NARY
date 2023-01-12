@@ -20,6 +20,7 @@
 	{
 		public const string StartingName = "Slot_",
 			extension = ".sv";
+
 		// STATIC INTERFACE ----------------------
 		/// <summary>
 		/// The current save slot loaded. Use helper methods such as <see cref="LoadGame(string)"/>.
@@ -35,7 +36,8 @@
 				m_instance = value;
 				NewSlotChanged?.Invoke(m_instance);
 			}
-		} private static SaveSlot m_instance;
+		}
+		private static SaveSlot m_instance;
 		public static Action<SaveSlot> NewSlotChanged;
 		public static bool LoadingSave { get; private set; } = false;
 
@@ -61,15 +63,15 @@
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public static void LoadGame(int index) => 
+		public static void LoadGame(int index) =>
 			LoadGame(Deserialize<SaveSlot>(FilePath(StartingName + index)));
-		public static void LoadGame(string name) => 
+		public static void LoadGame(string name) =>
 			LoadGame(Deserialize<SaveSlot>(FilePath(name)));
 		/// <summary>
 		/// Loads the previous state of the current <see cref="SaveSlot"/> in the
 		/// game files.
 		/// </summary>
-		public static void QuickLoad() => 
+		public static void QuickLoad() =>
 			LoadGame(Deserialize<SaveSlot>(Instance.fileInfo));
 		public static void LoadGame(SaveSlot slot)
 		{
@@ -81,8 +83,9 @@
 		/// <summary>
 		/// The save file directory.
 		/// </summary>
-		private static DirectoryInfo SavesDirectory { get; } =
-			new DirectoryInfo(Application.persistentDataPath);
+		private static DirectoryInfo SavesDirectory { get; }
+			= new DirectoryInfo(Application.persistentDataPath);
+
 		/// <summary>
 		/// Completes <see cref="SavesDirectory"/> by adding <see cref="extension"/>
 		/// and the <paramref name="saveName"/>.

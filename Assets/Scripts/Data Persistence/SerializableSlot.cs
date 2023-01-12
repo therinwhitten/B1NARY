@@ -13,7 +13,6 @@
 	[Serializable]
 	public abstract class SerializableSlot : IDisposable, IDeserializationCallback
 	{
-
 		protected static T Deserialize<T>(FileInfo info) where T : SerializableSlot
 		{
 			if (!info.Exists)
@@ -26,7 +25,6 @@
 		public static DirectoryInfo StreamingAssets { get; } = new DirectoryInfo(Application.streamingAssetsPath);
 
 		#region Thumbnails
-		public const int maxPixelThumbnail = 512;
 		public Texture2D ImageTexture
 		{
 			get => ImageUtility.LoadImage(image);
