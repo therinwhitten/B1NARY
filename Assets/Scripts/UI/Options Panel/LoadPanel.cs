@@ -13,7 +13,10 @@
 			base.Awake();
 			objects = GetSaves().ToList();
 			for (int i = 0; i < objects.Count; i++)
-				objects[i].button.onClick.AddListener(() => SaveSlot.LoadGame(objects[i].fileData));
+			{
+				BlockInfo block = objects[i];
+				block.button.onClick.AddListener(() => SaveSlot.LoadGame(block.fileData));
+			}
 		}
 	}
 }

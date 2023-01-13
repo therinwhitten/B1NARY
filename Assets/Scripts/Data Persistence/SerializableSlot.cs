@@ -59,9 +59,16 @@
 		public virtual void Serialize()
 		{
 			LastSaved = DateTime.Now;
-			TimeUsed += stopwatch.Elapsed;
+			TimeUsed += stopwatch is null ? TimeSpan.Zero : stopwatch.Elapsed;
 			stopwatch = Stopwatch.StartNew();
-			ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
+			try
+			{
+				ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
+			}
+			catch (Exception ex)
+			{
+				Debug.LogException(ex);
+			}
 			using (var stream = new FileStream(fileInfo.FullName, FileMode.Create, FileAccess.Write))
 				new BinaryFormatter().Serialize(stream, this);
 		}

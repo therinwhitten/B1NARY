@@ -305,6 +305,15 @@
 			}
 			CurrentText = FinalText;
 		}
+
+		public void QuickSave()
+		{
+			SaveSlot.Instance.Serialize();
+		}
+		public void QuickLoad()
+		{
+			SaveSlot.QuickLoad();
+		}
 	} 
 }
 #if UNITY_EDITOR

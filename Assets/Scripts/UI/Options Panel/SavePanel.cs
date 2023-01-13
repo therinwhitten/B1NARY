@@ -1,6 +1,7 @@
 ﻿namespace B1NARY.UI
 {
 	using B1NARY.Scripting;
+	using Codice.CM.Common;
 	using DataPersistence;
 	using System;
 	using System.Collections.Generic;
@@ -14,43 +15,14 @@
 
 	public class SavePanel : AutoPagePopulator
 	{
-		protected bool CreatePanelBehaviour(GameObject confirmPanel, out GameObject instance)
-		{
-			instance = null;
-			if (confirmPanel == null)
-				return false;
-			instance = Instantiate(confirmPanel, transform);
-			instance.SetActive(true);
-			Button[] buttons = instance.GetComponentsInChildren<Button>();
-			Button confirmButton = buttons.FirstOrDefault(button => button.name == confirmButtonName);
-			if (confirmButton == null)
-			{
-				Debug.LogException(new NullReferenceException($"{instance} does not contain a button sub-gameobject named '{confirmButtonName}'!"));
-				Destroy(instance);
-				return false;
-			}
-			Button cancelButton = buttons.FirstOrDefault(button => button.name == cancelButtonName);
-			if (cancelButton == null)
-			{
-				Debug.LogException(new NullReferenceException($"{instance} does not contain a button sub-gameobject named '{cancelButtonName}'!"));
-				Destroy(instance);
-				return false;
-			}
-			return true;
-		}
-
 		public const int saveSlotMax = 69; // nice
-		public const string cancelButtonName = "Cancel",
-			confirmButtonName = "Confirm";
-		[Tooltip("Should contain a button named '" + cancelButtonName + "' and '" + confirmButtonName + "'")]
-		public GameObject confirmPanel;
-		public Action<BlockInfo, bool> buttonClicked;
+		[Tooltip("Should contain a button named '" + BoxInterface.confirmButtonName + "'")]
+		public GameObject overwritePanel,
+			deletePanel;
+		public GameObject savePanel;
 		protected List<BlockInfo> objects;
 		public List<BlockInfo> GetSaves()
 		{
-			bool createPanel = CreatePanelBehaviour(confirmPanel, out var instance);
-			if (createPanel)
-				Destroy(instance);
 			var block = new List<BlockInfo>(SaveSlot.AllFiles.Count);
 			for (int i = 0; i < SaveSlot.AllFiles.Count; i++)
 			{
@@ -60,7 +32,6 @@
 					info.SetSprite(SaveSlot.AllFiles[i].ImageTexture);
 					info.foregroundImage.preserveAspect = true;
 					info.Text = SaveSlot.AllFiles[i].UserContents;
-					info.button.onClick.AddListener(() => buttonClicked.Invoke(info, !createPanel));
 					block.Add(info);
 				} catch (Exception ex)
 				{
@@ -78,19 +49,23 @@
 		protected virtual void OnEnable()
 		{
 			objects = GetSaves();
-			buttonClicked += (blockInfo, confirm) =>
+			for (int i = 0; i < objects.Count; i++)
 			{
-				Debug.Log("BRuh");
-				if (!confirm)
+				BlockInfo info = objects[i];
+				info.button.onClick.AddListener(() =>
 				{
-					CreatePanelBehaviour(confirmPanel, out var instance);
-					return;
-				}
-
-				blockInfo.fileData.Serialize();
-				OnDisable();
-				OnEnable();
-			};
+					var @interface = new BoxInterface(overwritePanel);
+					@interface.PressedButton += (@bool) =>
+					{
+						@interface.Dispose();
+						if (@bool == false)
+							return;
+						info.fileData.Serialize();
+						OnDisable();
+						OnEnable();
+					};
+				});
+			}
 
 			if (objects.Count < saveSlotMax)
 			{
@@ -98,12 +73,19 @@
 				BlockInfo lastInfo = objects[objects.Count - 1];
 				lastInfo.button.onClick.AddListener(() =>
 				{
-					Debug.Log("BRuh");
-					SaveSlot.SaveGame(SaveSlot.AllFiles.Count);
-					OnDisable();
-					OnEnable();
+					var @interface = new BoxInterface(savePanel); 
+					@interface.PressedButton += (@bool) =>
+					{
+						@interface.Dispose();
+						if (@bool == false)
+							return;
+						SaveSlot.SaveGame(SaveSlot.AllFiles.Count);
+						OnDisable();
+						OnEnable();
+					};
 				});
 				lastInfo.SetSprite(plus);
+				lastInfo.foregroundImage.preserveAspect = true;
 			}
 		}
 		protected virtual void OnDisable()
@@ -135,6 +117,40 @@
 			return foregroundImage.sprite = Sprite.Create(texture, new Rect(Vector2.zero, new Vector2(texture.width, texture.height)), new Vector2(0.5f, 0.5f));
 		}
 	}
+	public sealed class BoxInterface : IDisposable
+	{
+		public const string confirmButtonName = "Confirm",
+			cancelButtonName = "Cancel";
+		public readonly GameObject instance;
+		public event Action<bool> PressedButton;
+		public BoxInterface(GameObject obj)
+		{
+			instance = obj;
+			instance.SetActive(true);
+			Button[] buttons = instance.GetComponentsInChildren<Button>();
+			Button confirmButton = buttons.FirstOrDefault(button => button.name == confirmButtonName);
+			if (confirmButton == null)
+			{
+				UnityEngine.Object.Destroy(instance);
+				throw new NullReferenceException($"{instance} does not contain a button sub-gameobject named '{confirmButtonName}'!");
+			}
+			Button cancelButton = buttons.FirstOrDefault(button => button.name == cancelButtonName);
+			if (cancelButton == null)
+			{
+				UnityEngine.Object.Destroy(instance);
+				throw new NullReferenceException($"{instance} does not contain a button sub-gameobject named '{cancelButtonName}'!");
+			}
+			confirmButton.onClick.AddListener(() => PressedButton?.Invoke(true));
+			cancelButton.onClick.AddListener(() => PressedButton?.Invoke(false));
+			instance.SetActive(true);
+		}
+
+		public void Dispose()
+		{
+			PressedButton = null;
+			instance.SetActive(false);
+		}
+	}
 }
 
 #if UNITY_EDITOR
@@ -155,7 +171,8 @@ namespace B1NARY.UI.Editor
 		{
 			panel.slot = DirtyAuto.Field(target, new GUIContent("Slot"), panel.slot, true);
 			panel.row = DirtyAuto.Field(target, new GUIContent("Row"), panel.row, true);
-			panel.confirmPanel = DirtyAuto.Field(target, new GUIContent("Confirm Panel"), panel.confirmPanel, true);
+			panel.overwritePanel = DirtyAuto.Field(target, new GUIContent("Confirm Panel"), panel.overwritePanel, true);
+			panel.savePanel = DirtyAuto.Field(target, new GUIContent("Overwrite Panel"), panel.savePanel, true);
 			if (UsePlus)
 				DirtyAuto.Property(serializedObject, nameof(SavePanel.plus));
 			panel.objectsPerRow = DirtyAuto.Slider(target, new GUIContent("Columns"), panel.objectsPerRow, 1, 6);

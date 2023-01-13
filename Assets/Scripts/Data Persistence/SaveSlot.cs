@@ -14,6 +14,7 @@
 	using Vector2 = UnityEngine.Vector2;
 	using System.Drawing;
 	using System.Text;
+	using UnityEngine.Assertions.Must;
 
 	[Serializable]
 	public class SaveSlot : SerializableSlot, IDisposable, IDeserializationCallback
@@ -146,7 +147,7 @@
 			SceneManager.InstanceOrDefault.StartCoroutine(LoadEnumerator());
 			IEnumerator LoadEnumerator()
 			{
-				var enumerator = SceneManager.InstanceOrDefault.ChangeScene(scriptPosition.sceneIndex);
+				var enumerator = SceneManager.InstanceOrDefault.ChangeScene(scriptPosition.sceneName);
 				while (enumerator.MoveNext())
 					yield return enumerator.Current;
 				ScriptHandler.Instance.InitializeNewScript(scriptPosition.documentPath);
@@ -185,13 +186,13 @@
 		[Serializable]
 		public sealed class ScriptPosition
 		{
-			public readonly int sceneIndex;
+			public readonly string sceneName;
 			public readonly FileInfo documentPath;
 			public readonly ScriptLine lastLine;
 			public ScriptPosition()
 			{
 				documentPath = ScriptHandler.Instance.ScriptDocument.DocumentPath;
-				sceneIndex = SceneManager.ActiveScene.buildIndex;
+				sceneName = SceneManager.ActiveScene.name;
 				lastLine = ScriptHandler.Instance.CurrentLine;
 			}
 		}
