@@ -48,7 +48,7 @@
 		public string Name
 		{
 			get => fileInfo.Name;
-			set => fileInfo = fileInfo.Rename(value);
+			set => fileInfo.Rename(value, false);
 		}
 		public SerializableSlot(FileInfo fileInfo)
 		{

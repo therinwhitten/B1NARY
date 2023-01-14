@@ -15,7 +15,17 @@
 			for (int i = 0; i < objects.Count; i++)
 			{
 				BlockInfo block = objects[i];
-				block.button.onClick.AddListener(() => SaveSlot.LoadGame(block.fileData));
+				block.button.onClick.AddListener(() =>
+				{
+					var @interface = new BoxInterface(savePanel);
+					@interface.PressedButton += (@bool) =>
+					{
+						@interface.Dispose();
+						if (@bool == false)
+							return;
+						SaveSlot.LoadGame(block.fileData);
+					};
+				});
 			}
 		}
 	}

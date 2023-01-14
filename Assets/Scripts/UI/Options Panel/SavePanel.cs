@@ -79,7 +79,8 @@
 						@interface.Dispose();
 						if (@bool == false)
 							return;
-						SaveSlot.SaveGame(SaveSlot.AllFiles.Count);
+						SaveSlot.Instance.fileInfo.Rename(SaveSlot.StartingName + SaveSlot.AllFiles.Count, true);
+						SaveSlot.Instance.Serialize();
 						OnDisable();
 						OnEnable();
 					};
@@ -171,8 +172,8 @@ namespace B1NARY.UI.Editor
 		{
 			panel.slot = DirtyAuto.Field(target, new GUIContent("Slot"), panel.slot, true);
 			panel.row = DirtyAuto.Field(target, new GUIContent("Row"), panel.row, true);
-			panel.overwritePanel = DirtyAuto.Field(target, new GUIContent("Confirm Panel"), panel.overwritePanel, true);
-			panel.savePanel = DirtyAuto.Field(target, new GUIContent("Overwrite Panel"), panel.savePanel, true);
+			panel.savePanel = DirtyAuto.Field(target, new GUIContent("Confirm Panel"), panel.savePanel, true);
+			panel.overwritePanel = DirtyAuto.Field(target, new GUIContent("Overwrite Panel"), panel.overwritePanel, true);
 			if (UsePlus)
 				DirtyAuto.Property(serializedObject, nameof(SavePanel.plus));
 			panel.objectsPerRow = DirtyAuto.Slider(target, new GUIContent("Columns"), panel.objectsPerRow, 1, 6);

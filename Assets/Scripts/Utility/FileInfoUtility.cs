@@ -9,14 +9,12 @@
 		{
 			return new FileInfo(directoryInfo.FullName + $"\\{fileName}");
 		}
-		public static FileInfo Rename(this FileInfo fileInfo, string newName)
+		public static void Rename(this FileInfo fileInfo, string newName, bool copy = false)
 		{
-			if (fileInfo.Exists)
-			{
+			if (fileInfo.Exists && !copy)
 				fileInfo.MoveTo(fileInfo.FullName.Replace(fileInfo.Name.Remove(fileInfo.Name.LastIndexOf(fileInfo.Extension)), newName));
-				return fileInfo;
-			}
-			return new FileInfo(fileInfo.FullName.Replace(fileInfo.Name.Remove(fileInfo.Name.LastIndexOf(fileInfo.Extension)), newName));
+			else
+				fileInfo.CopyTo(fileInfo.FullName.Replace(fileInfo.Name.Remove(fileInfo.Name.LastIndexOf(fileInfo.Extension)), newName));
 		}
 	}
 }
