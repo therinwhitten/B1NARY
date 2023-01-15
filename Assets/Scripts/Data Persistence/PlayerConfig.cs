@@ -7,7 +7,7 @@
 	[Serializable]
 	public sealed class PlayerConfig : SerializableSlot
 	{
-		public static FileInfo ConfigLocation { get; } = new FileInfo($"{PersistentData.FullName}/playerConfig.xml");
+		public static FileInfo ConfigLocation { get; } = PersistentData.GetFile("PlayerConfig.cfg");//new FileInfo($"{PersistentData.FullName}/playerConfig.xml");
 		public static PlayerConfig Instance
 		{
 			get

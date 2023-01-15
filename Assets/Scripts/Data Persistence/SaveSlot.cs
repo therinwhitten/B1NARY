@@ -5,16 +5,9 @@
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
-	using System.Diagnostics;
 	using System.IO;
 	using System.Runtime.Serialization;
-	using System.Runtime.Serialization.Formatters.Binary;
 	using UnityEngine;
-	using Debug = UnityEngine.Debug;
-	using Vector2 = UnityEngine.Vector2;
-	using System.Drawing;
-	using System.Text;
-	using UnityEngine.Assertions.Must;
 
 	[Serializable]
 	public class SaveSlot : SerializableSlot, IDisposable, IDeserializationCallback
@@ -42,30 +35,20 @@
 		public static Action<SaveSlot> NewSlotChanged;
 		public static bool LoadingSave { get; private set; } = false;
 
-		/// <summary>
-		/// Saves the game using <see cref="Instance"/>'s <see cref="About.fileName"/>
-		/// </summary>
 		public static void SaveGame()
 		{
 			Instance.Serialize();
 		}
-		public static void SaveGame(int index)
-		{
-			Instance.Name = StartingName + index;
-			SaveGame();
-		}
-		public static void SaveGame(string name)
-		{
-			Instance.Name = name;
-			SaveGame();
-		}
 		/// <summary>
-		/// Loads a game through
+		/// Loads a game through a index
 		/// </summary>
-		/// <param name="index"></param>
-		/// <returns></returns>
+		/// <param name="index">the index number, should start at 0. </param>
 		public static void LoadGame(int index) =>
 			LoadGame(Deserialize<SaveSlot>(FilePath(StartingName + index)));
+		/// <summary>
+		/// Loads the game with the name.
+		/// </summary>
+		/// <param name="name"> The name of the file. </param>
 		public static void LoadGame(string name) =>
 			LoadGame(Deserialize<SaveSlot>(FilePath(name)));
 		/// <summary>
@@ -74,6 +57,9 @@
 		/// </summary>
 		public static void QuickLoad() =>
 			LoadGame(Deserialize<SaveSlot>(Instance.fileInfo));
+		/// <summary>
+		/// Sets <see cref="Instance"/> with <paramref name="slot"/> and loads it.
+		/// </summary>
 		public static void LoadGame(SaveSlot slot)
 		{
 			Instance = slot;
@@ -81,6 +67,9 @@
 		}
 
 
+
+		public static DirectoryInfo SavedData { get; } =
+			PersistentData.CreateSubdirectory("Saved");
 		/// <summary>
 		/// Completes <see cref="SavesDirectory"/> by adding <see cref="extension"/>
 		/// and the <paramref name="saveName"/>.
@@ -88,7 +77,7 @@
 		/// <param name="saveName"> The fileData. </param>
 		/// <returns> The file fileInfo about the save file. May be non-existant. </returns>
 		private static FileInfo FilePath(object saveName) =>
-			PersistentData.GetFile($"{saveName}{extension}");
+			SavedData.GetFile($"{saveName}{extension}");
 		/// <summary>
 		/// Retrieves a collection that is found in the saves folder.
 		/// </summary>
@@ -125,10 +114,10 @@
 		public SaveSlot() : base(FilePath($"{StartingName}{AllFiles.Count}"))
 		{
 			data = new Data();
-			OnDeserialization(this);
 		}
-		public void OnDeserialization(object sender)
+		public override void OnDeserialization(object sender)
 		{
+			base.OnDeserialization(sender);
 			SceneManager.Instance.SwitchingScenes.AddPersistentListener(RefreshOnScene);
 		}
 
@@ -182,7 +171,9 @@
 			return base.ToString();
 		}
 
-
+		/// <summary>
+		/// Where it was saved at.
+		/// </summary>
 		[Serializable]
 		public sealed class ScriptPosition
 		{
@@ -196,6 +187,9 @@
 				lastLine = ScriptHandler.Instance.CurrentLine;
 			}
 		}
+		/// <summary>
+		/// Data about B1NARY.
+		/// </summary>
 		[Serializable]
 		public sealed class Data
 		{

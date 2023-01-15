@@ -1,7 +1,6 @@
 ﻿namespace B1NARY.UI
 {
 	using B1NARY.Scripting;
-	using Codice.CM.Common;
 	using DataPersistence;
 	using System;
 	using System.Collections.Generic;
@@ -16,10 +15,7 @@
 	public class SavePanel : AutoPagePopulator
 	{
 		public const int saveSlotMax = 69; // nice
-		[Tooltip("Should contain a button named '" + BoxInterface.confirmButtonName + "'")]
-		public GameObject overwritePanel,
-			deletePanel;
-		public GameObject savePanel;
+		public List<GameObject> panels = new List<GameObject>(3) { null, null, null };
 		protected List<BlockInfo> objects;
 		public List<BlockInfo> GetSaves()
 		{
@@ -51,29 +47,48 @@
 			objects = GetSaves();
 			for (int i = 0; i < objects.Count; i++)
 			{
+				// Override
 				BlockInfo info = objects[i];
 				info.button.onClick.AddListener(() =>
 				{
-					var @interface = new BoxInterface(overwritePanel);
+					var @interface = new BoxInterface(panels[1]);
 					@interface.PressedButton += (@bool) =>
 					{
 						@interface.Dispose();
 						if (@bool == false)
 							return;
 						info.fileData.Serialize();
+						SaveSlot.AllFiles = null;
 						OnDisable();
 						OnEnable();
 					};
 				});
+				// Delete
+				if (info.deleteButton != null)
+					info.deleteButton.onClick.AddListener(() =>
+					{
+						var @interface = new BoxInterface(panels[2]);
+						@interface.PressedButton += (@bool) =>
+						{
+							@interface.Dispose();
+							if (@bool == false)
+								return;
+							info.fileData.fileInfo.Delete();
+							SaveSlot.AllFiles = null;
+							OnDisable();
+							OnEnable();
+						};
+					});
 			}
 
+			// New slot
 			if (objects.Count < saveSlotMax)
 			{
 				objects.Add(new BlockInfo(AddEntry(), SaveSlot.Instance));
 				BlockInfo lastInfo = objects[objects.Count - 1];
 				lastInfo.button.onClick.AddListener(() =>
 				{
-					var @interface = new BoxInterface(savePanel); 
+					var @interface = new BoxInterface(panels[0]); 
 					@interface.PressedButton += (@bool) =>
 					{
 						@interface.Dispose();
@@ -81,6 +96,7 @@
 							return;
 						SaveSlot.Instance.fileInfo.Rename(SaveSlot.StartingName + SaveSlot.AllFiles.Count, true);
 						SaveSlot.Instance.Serialize();
+						SaveSlot.AllFiles = null;
 						OnDisable();
 						OnEnable();
 					};
@@ -102,9 +118,14 @@
 		public readonly Image foregroundImage;
 		public readonly TMP_Text tmpText;
 		public readonly Button button;
+		/// <summary>
+		/// Possibly null if not present.
+		/// </summary>
+		public readonly Button deleteButton;
 		public string Text { get => tmpText.text; set => tmpText.text = value; }
 		public bool PreserveAspect { get => foregroundImage.preserveAspect; set => foregroundImage.preserveAspect = value; }
 		public Sprite Sprite { get => foregroundImage.sprite; set => foregroundImage.sprite = value; }
+		public Lazy<BoxInterface> boxInterface;
 		public BlockInfo(GameObject obj, SaveSlot fileData)
 		{
 			this.fileData = fileData;
@@ -112,6 +133,8 @@
 			foregroundImage = obj.transform.Find("Foreground").GetComponent<Image>();
 			tmpText = obj.GetComponentInChildren<TMP_Text>();
 			button = obj.GetComponentInChildren<Button>();
+			boxInterface = new Lazy<BoxInterface>(() => new BoxInterface(obj));
+			deleteButton = obj.transform.Find("Delete").GetComponentInChildren<Button>();
 		}
 		public Sprite SetSprite(Texture2D texture)
 		{
@@ -127,7 +150,8 @@
 		public BoxInterface(GameObject obj)
 		{
 			instance = obj;
-			instance.SetActive(true);
+			if (obj == null)
+				throw new MissingReferenceException($"gameObject is null!");
 			Button[] buttons = instance.GetComponentsInChildren<Button>();
 			Button confirmButton = buttons.FirstOrDefault(button => button.name == confirmButtonName);
 			if (confirmButton == null)
@@ -149,7 +173,6 @@
 		public void Dispose()
 		{
 			PressedButton = null;
-			instance.SetActive(false);
 		}
 	}
 }
@@ -165,17 +188,16 @@ namespace B1NARY.UI.Editor
 	[CustomEditor(typeof(SavePanel), true)]
 	public class SavePanelEditor : Editor
 	{
-		public virtual bool UsePlus => true;
 		protected SavePanel panel;
 		private void Awake() => panel = (SavePanel)target;
 		public override void OnInspectorGUI()
 		{
 			panel.slot = DirtyAuto.Field(target, new GUIContent("Slot"), panel.slot, true);
 			panel.row = DirtyAuto.Field(target, new GUIContent("Row"), panel.row, true);
-			panel.savePanel = DirtyAuto.Field(target, new GUIContent("Confirm Panel"), panel.savePanel, true);
-			panel.overwritePanel = DirtyAuto.Field(target, new GUIContent("Overwrite Panel"), panel.overwritePanel, true);
-			if (UsePlus)
-				DirtyAuto.Property(serializedObject, nameof(SavePanel.plus));
+			panel.panels[0] = DirtyAuto.Field(target, new GUIContent("Confirm Panel"), panel.panels[0], true);
+			panel.panels[1] = DirtyAuto.Field(target, new GUIContent("Overwrite Panel"), panel.panels[1], true);
+			panel.panels[2] = DirtyAuto.Field(target, new GUIContent("Delete Panel"), panel.panels[2], true);
+			DirtyAuto.Property(serializedObject, nameof(SavePanel.plus));
 			panel.objectsPerRow = DirtyAuto.Slider(target, new GUIContent("Columns"), panel.objectsPerRow, 1, 6);
 		}
 	}
