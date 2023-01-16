@@ -15,6 +15,8 @@
 			{
 				string newFullName = fileInfo.FullName.Replace(fileInfo.Name.Remove(fileInfo.Name.LastIndexOf(fileInfo.Extension)), newName);
 				string oldName = fileInfo.FullName;
+				if (oldName == newFullName)
+					return;
 				fileInfo.CopyTo(newFullName);
 				if (!copy && File.Exists(oldName))
 					File.Delete(oldName);
