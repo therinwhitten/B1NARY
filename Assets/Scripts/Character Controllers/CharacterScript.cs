@@ -15,6 +15,7 @@
 	{
 		private Animator animator;
 		private RectTransform m_transform;
+		private string[] expressions;
 		public VoiceActorHandler VoiceData { get; private set; }
 		public CubismExpressionController expressionController;
 		public string CurrentAnimation
@@ -40,12 +41,10 @@
 
 		public string CurrentExpression
 		{
-			get => expressionController.ExpressionsList.CubismExpressionObjects[expressionController.CurrentExpressionIndex].name;
+			get => expressions[expressionController.CurrentExpressionIndex];
 			set
 			{
-				string[] cubismExpressions = expressionController.ExpressionsList
-					.CubismExpressionObjects.Select(data => data.Type).ToArray();
-				int expressionIndex = Array.IndexOf(cubismExpressions, value);
+				int expressionIndex = Array.IndexOf(expressions, value);
 				if (expressionIndex == -1)
 				{
 					Debug.LogException(new IndexOutOfRangeException($"'{value}' " +
@@ -100,6 +99,7 @@
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
+			expressions = animator.parameters.Select(param => param.name).ToArray();
 		}
 
 		private void OnEnable()
