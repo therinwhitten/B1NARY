@@ -102,7 +102,7 @@
 		{
 			LastSaved = DateTime.Now;
 			TimeUsed += stopwatch is null ? TimeSpan.Zero : stopwatch.Elapsed;
-			stopwatch.Stop();
+			stopwatch?.Stop();
 			stopwatch = Stopwatch.StartNew();
 			try
 			{
@@ -110,9 +110,19 @@
 			}
 			catch (Exception ex)
 			{
-				Debug.LogException(ex);
+				Debug.LogException(new Exception("This may have to do how " +
+					"quickly the computer handles frames. Starting coroutine to save..", ex));
+				UnityEngine.Object.FindObjectOfType<MonoBehaviour>().StartCoroutine(Await());
+				return;
+				IEnumerator Await()
+				{
+					yield return new WaitForEndOfFrame();
+					ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
+					using (var stream = fileInfo.Open(FileMode.Create, FileAccess.Write))
+						new BinaryFormatter().Serialize(stream, this);
+				}
 			}
-			using (var stream = new FileStream(fileInfo.FullName, FileMode.Create, FileAccess.Write))
+			using (var stream = fileInfo.Open(FileMode.Create, FileAccess.Write))
 				new BinaryFormatter().Serialize(stream, this);
 		}
 

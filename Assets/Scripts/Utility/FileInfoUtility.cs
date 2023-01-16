@@ -14,15 +14,15 @@
 			if (fileInfo.Exists)
 			{
 				string newFullName = fileInfo.FullName.Replace(fileInfo.Name.Remove(fileInfo.Name.LastIndexOf(fileInfo.Extension)), newName);
-				if (!copy || File.Exists(newFullName))
-					fileInfo.MoveTo(newFullName);
-				else
-					fileInfo.CopyTo(newFullName);
+				string oldName = fileInfo.FullName;
+				fileInfo.CopyTo(newFullName);
+				if (!copy && File.Exists(oldName))
+					File.Delete(oldName);
 				return;
 			}
-			using (var stream = fileInfo.OpenWrite())
+			using (var stream = new StreamWriter(fileInfo.Open(FileMode.CreateNew)))
 			{
-				stream.Write(new byte[0], 0, 0);
+				stream.Write("sex");
 				stream.Flush();
 			}
 			Rename(fileInfo, newName, copy);
