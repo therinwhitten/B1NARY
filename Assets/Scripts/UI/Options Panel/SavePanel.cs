@@ -36,7 +36,7 @@
 			}
 			return block;
 		}
-		public Texture2D plus;
+		public GameObject addPrefab;
 
 		protected override void Awake()
 		{
@@ -84,8 +84,8 @@
 			// New slot
 			if (objects.Count < saveSlotMax)
 			{
-				objects.Add(new BlockInfo(AddEntry(), SaveSlot.Instance));
-				BlockInfo lastInfo = objects[objects.Count - 1];
+				BlockInfo lastInfo = new BlockInfo(AddEntry(addPrefab), SaveSlot.Instance);
+				objects.Add(lastInfo);
 				lastInfo.button.onClick.AddListener(() =>
 				{
 					var @interface = new BoxInterface(panels[0]); 
@@ -101,8 +101,6 @@
 						OnEnable();
 					};
 				});
-				lastInfo.SetSprite(plus);
-				lastInfo.foregroundImage.preserveAspect = true;
 			}
 		}
 		protected virtual void OnDisable()
@@ -134,7 +132,9 @@
 			tmpText = obj.GetComponentInChildren<TMP_Text>();
 			button = obj.GetComponentInChildren<Button>();
 			boxInterface = new Lazy<BoxInterface>(() => new BoxInterface(obj));
-			deleteButton = obj.transform.Find("Delete").GetComponentInChildren<Button>();
+			var del = obj.transform.Find("Delete");
+			if (del != null)
+				deleteButton = del.GetComponentInChildren<Button>();
 		}
 		public Sprite SetSprite(Texture2D texture)
 		{
@@ -197,7 +197,7 @@ namespace B1NARY.UI.Editor
 			panel.panels[0] = DirtyAuto.Field(target, new GUIContent("Confirm Panel"), panel.panels[0], true);
 			panel.panels[1] = DirtyAuto.Field(target, new GUIContent("Overwrite Panel"), panel.panels[1], true);
 			panel.panels[2] = DirtyAuto.Field(target, new GUIContent("Delete Panel"), panel.panels[2], true);
-			DirtyAuto.Property(serializedObject, nameof(SavePanel.plus));
+			panel.addPrefab = DirtyAuto.Field(target, new GUIContent("Adding Prefab"), panel.addPrefab, true);
 			panel.objectsPerRow = DirtyAuto.Slider(target, new GUIContent("Columns"), panel.objectsPerRow, 1, 6);
 		}
 	}

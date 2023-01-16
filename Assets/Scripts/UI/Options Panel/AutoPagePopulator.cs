@@ -27,7 +27,7 @@
 			rows.ForEach(row => Destroy(row));
 			rows.Clear();
 		}
-		public virtual GameObject AddEntry()
+		public virtual GameObject AddEntry(GameObject copy = null)
 		{
 			if (internalCounter >= objectsPerRow)
 			{
@@ -35,7 +35,7 @@
 				rows.Add(gameObject.AddChildObject(row));
 			}
 			internalCounter++;
-			return CurrentRow.AddChildObject(slot);
+			return CurrentRow.AddChildObject(copy != null ? copy : slot);
 		}
 	}
 
