@@ -8,6 +8,7 @@
 	using System.IO;
 	using System.Runtime.Serialization;
 	using UnityEngine;
+	using System.Linq;
 
 	[Serializable]
 	public class SaveSlot : SerializableSlot, IDisposable, IDeserializationCallback
@@ -87,11 +88,12 @@
 			{
 				if (m_files == null)
 				{
-					FileInfo[] files = PersistentData.GetFiles();
+					FileInfo[] files = SavedData.GetFiles();
 					var slots = new List<SaveSlot>(files.Length);
 					for (int i = 0; i < files.Length; i++)
 						if (files[i].Extension == extension)
 							slots.Add(Deserialize<SaveSlot>(files[i]));
+					Debug.Log($"Slots: {slots.Count}\n" + string.Join(",\n", files.Select(info => $"{info.Name}: {info.Extension == extension}")));
 					m_files = slots;
 				}
 				return m_files;
@@ -99,7 +101,7 @@
 			set => m_files = value;
 		}
 		private static IReadOnlyList<SaveSlot> m_files;
-
+		public static FileInfo AvailableSlot => SavedData.GetFile($"{DateTime.Now.ToString().Replace('/', '-').Replace(':', '-')}{extension}");
 
 		public Data data;
 		public ScriptPosition scriptPosition;
@@ -111,7 +113,7 @@
 		}
 
 
-		public SaveSlot() : base(FilePath($"{StartingName}{AllFiles.Count}"))
+		public SaveSlot() : base(AvailableSlot)
 		{
 			data = new Data();
 		}
@@ -158,12 +160,10 @@
 		/// </summary>
 		/// <returns></returns>
 		public string UserContents =>
-				// Shows script path
-				$"\"{ScriptHandler.ToVisual(scriptPosition.documentPath.FullName)}\""
+				// Shows fileName
+				$"\"{fileInfo.NameWithoutExtension()}\""
 				// Adds the player name to same line
-				+ $" : {data.PlayerName}"
-				// Shows the last saved on next line
-				+ $"\n{LastSaved}"
+				+ $"\n{data.PlayerName}"
 				// Shows the time played on the next line
 				+ $"\n{TimeUsed}";
 		public override string ToString()
@@ -210,7 +210,11 @@
 			{
 				strings = new Dictionary<string, string>();
 				PlayerName = string.Empty;
-				bools = new Dictionary<string, bool>();
+				bools = new Dictionary<string, bool>()
+				{
+					["True"] = true,
+					["False"] = false, 
+				};
 				ints = new Dictionary<string, int>();
 				floats = new Dictionary<string, float>();
 				choice = new Dictionary<int, ScriptLine>();

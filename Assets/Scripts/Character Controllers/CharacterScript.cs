@@ -48,7 +48,8 @@
 				if (expressionIndex == -1)
 				{
 					Debug.LogException(new IndexOutOfRangeException($"'{value}' " +
-						$"is not an expression listed in the expressions of {name}!"), gameObject);
+						$"is not an expression listed in the expressions of {name}!\n"
+						+ $"All options: {string.Join(",\n", expressions)}"), gameObject);
 					return;
 				}
 				expressionController.CurrentExpressionIndex = expressionIndex;
@@ -99,7 +100,7 @@
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
-			expressions = animator.parameters.Select(param => param.name).ToArray();
+			expressions = expressionController.ExpressionsList.CubismExpressionObjects.Select(param => param.name).ToArray();
 		}
 
 		private void OnEnable()

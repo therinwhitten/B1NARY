@@ -17,7 +17,7 @@
 	/// using Binary Formatting.
 	/// </summary>
 	[Serializable]
-	public abstract class SerializableSlot : IDisposable, IDeserializationCallback
+	public abstract class SerializableSlot : IDisposable, IDeserializationCallback, IMovableFile
 	{
 		/// <summary>
 		/// Deserializes a 
@@ -86,11 +86,40 @@
 		private Stopwatch stopwatch;
 		#endregion
 
-		public FileInfo fileInfo;
-		public string Name
+		protected internal FileInfo fileInfo;
+
+
+		string IMovableFile.Name 
 		{
-			get => fileInfo.Name;
-			set => fileInfo.Rename(value, false);
+			get => fileInfo.NameWithoutExtension(); 
+			set
+			{
+				if (!fileInfo.Exists)
+				{
+					fileInfo = new FileInfo(fileInfo.FullName.Replace(fileInfo.NameWithoutExtension(), value));
+					fileInfo.Delete();
+					return;
+				}
+				byte[] data = File.ReadAllBytes(fileInfo.FullName);
+				fileInfo.Delete();
+				fileInfo = new FileInfo(fileInfo.FullName.Replace(fileInfo.NameWithoutExtension(), value));
+				using (var stream = fileInfo.Open(FileMode.Create, FileAccess.Write))
+					stream.Write(data, 0, data.Length);
+			} 
+		}
+		string IMovableFile.Extension
+		{
+			get => fileInfo.Extension;
+			set => throw new NotSupportedException();
+		}
+		string IMovableFile.NameWithExtension => 
+			((IMovableFile)this).Name + ((IMovableFile)this).Extension;
+		bool IMovableFile.Delete()
+		{
+			bool output = fileInfo.Exists;
+			fileInfo.Delete();
+			fileInfo.Refresh();
+			return output;
 		}
 		public SerializableSlot(FileInfo fileInfo)
 		{
@@ -120,10 +149,12 @@
 					ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
 					using (var stream = fileInfo.Open(FileMode.Create, FileAccess.Write))
 						new BinaryFormatter().Serialize(stream, this);
+					fileInfo.Refresh();
 				}
 			}
 			using (var stream = fileInfo.Open(FileMode.Create, FileAccess.Write))
 				new BinaryFormatter().Serialize(stream, this);
+			fileInfo.Refresh();
 		}
 
 		void IDisposable.Dispose()
@@ -135,5 +166,25 @@
 		{
 			stopwatch = Stopwatch.StartNew();
 		}
+	}
+	public interface IMovableFile
+	{
+		/// <summary>
+		/// Gets or sets the name of the file w/o the extension.
+		/// </summary>
+		string Name { get; set; }
+		/// <summary>
+		/// Gets or sets the extension of the file.
+		/// </summary>
+		string Extension { get; set; }
+		/// <summary>
+		/// Gets the name of the file with the extension.
+		/// </summary>
+		string NameWithExtension { get; }
+		/// <summary>
+		/// Deletes the selected file.
+		/// </summary>
+		/// <returns> If the file originally existed or not. </returns>
+		bool Delete();
 	}
 }

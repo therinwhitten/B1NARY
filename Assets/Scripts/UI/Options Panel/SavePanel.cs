@@ -2,6 +2,7 @@
 {
 	using B1NARY.Scripting;
 	using DataPersistence;
+	using HideousDestructor.DataPersistence;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
@@ -17,6 +18,8 @@
 		public const int saveSlotMax = 69; // nice
 		public List<GameObject> panels = new List<GameObject>(3) { null, null, null };
 		protected List<BlockInfo> objects;
+		public GameObject slot;
+
 		public List<BlockInfo> GetSaves()
 		{
 			var block = new List<BlockInfo>(SaveSlot.AllFiles.Count);
@@ -24,7 +27,7 @@
 			{
 				try
 				{
-					var info = new BlockInfo(AddEntry(), SaveSlot.AllFiles[i]);
+					var info = new BlockInfo(AddEntry(slot), SaveSlot.AllFiles[i]);
 					info.SetSprite(SaveSlot.AllFiles[i].ImageTexture);
 					info.foregroundImage.preserveAspect = true;
 					info.Text = SaveSlot.AllFiles[i].UserContents;
@@ -84,9 +87,9 @@
 			// New slot
 			if (objects.Count < saveSlotMax)
 			{
-				BlockInfo lastInfo = new BlockInfo(AddEntry(addPrefab), SaveSlot.Instance);
-				objects.Add(lastInfo);
-				lastInfo.button.onClick.AddListener(() =>
+				BlockInfo activeInfo = new BlockInfo(AddEntry(addPrefab), SaveSlot.Instance);
+				objects.Add(activeInfo);
+				activeInfo.button.onClick.AddListener(() =>
 				{
 					var @interface = new BoxInterface(panels[0]); 
 					@interface.PressedButton += (@bool) =>
@@ -94,8 +97,8 @@
 						@interface.Dispose();
 						if (@bool == false)
 							return;
-						SaveSlot.Instance.fileInfo.Rename(SaveSlot.StartingName + SaveSlot.AllFiles.Count, true);
-						SaveSlot.Instance.Serialize();
+						activeInfo.fileData.fileInfo = SaveSlot.AvailableSlot;
+						activeInfo.fileData.Serialize();
 						SaveSlot.AllFiles = null;
 						OnDisable();
 						OnEnable();
@@ -112,6 +115,7 @@
 	public class BlockInfo
 	{
 		public readonly SaveSlot fileData;
+		public readonly IMovableFile fileInfo;
 		public readonly GameObject obj;
 		public readonly Image foregroundImage;
 		public readonly TMP_Text tmpText;
@@ -127,6 +131,7 @@
 		public BlockInfo(GameObject obj, SaveSlot fileData)
 		{
 			this.fileData = fileData;
+			fileInfo = fileData;
 			this.obj = obj;
 			foregroundImage = obj.transform.Find("Foreground").GetComponent<Image>();
 			tmpText = obj.GetComponentInChildren<TMP_Text>();

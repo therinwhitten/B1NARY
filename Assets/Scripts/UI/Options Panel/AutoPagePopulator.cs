@@ -6,7 +6,6 @@
 
 	public class AutoPagePopulator : MonoBehaviour
 	{
-		public GameObject slot;
 		public GameObject row;
 
 
@@ -27,7 +26,7 @@
 			rows.ForEach(row => Destroy(row));
 			rows.Clear();
 		}
-		public virtual GameObject AddEntry(GameObject copy = null)
+		public virtual GameObject AddEntry(GameObject copy)
 		{
 			if (internalCounter >= objectsPerRow)
 			{
@@ -35,7 +34,7 @@
 				rows.Add(gameObject.AddChildObject(row));
 			}
 			internalCounter++;
-			return CurrentRow.AddChildObject(copy != null ? copy : slot);
+			return CurrentRow.AddChildObject(copy);
 		}
 	}
 
