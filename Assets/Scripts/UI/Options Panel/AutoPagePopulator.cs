@@ -12,29 +12,31 @@
 		public int objectsPerRow = 3;
 
 		private int internalCounter = 0;
-		private GameObject CurrentRow => rows[rows.Count - 1];
-		private List<GameObject> rows;
+
+		private List<(GameObject row, List<GameObject> columns)> m_rows;
 
 		protected virtual void Awake()
 		{
 			internalCounter = objectsPerRow;
-			rows = new List<GameObject>();
+			m_rows = new List<(GameObject row, List<GameObject> columns)>();
 		}
 		public void Clear()
 		{
 			internalCounter = objectsPerRow;
-			rows.ForEach(row => Destroy(row));
-			rows.Clear();
+			m_rows.ForEach(row => Destroy(row.row));
+			m_rows.Clear();
 		}
 		public virtual GameObject AddEntry(GameObject copy)
 		{
 			if (internalCounter >= objectsPerRow)
 			{
 				internalCounter = 0;
-				rows.Add(gameObject.AddChildObject(row));
+				m_rows.Add((gameObject.InstantiateChildObject(row), new List<GameObject>()));
 			}
 			internalCounter++;
-			return CurrentRow.AddChildObject(copy);
+			GameObject slot = m_rows[m_rows.Count - 1].row.InstantiateChildObject(copy);
+			m_rows[m_rows.Count - 1].columns.Add(slot);
+			return slot;
 		}
 	}
 

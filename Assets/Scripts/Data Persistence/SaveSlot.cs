@@ -10,6 +10,10 @@
 	using UnityEngine;
 	using System.Linq;
 
+	/// <summary>
+	/// An instance of data about a current spot in a story, storing various 
+	/// dictionaries and choices
+	/// </summary>
 	[Serializable]
 	public class SaveSlot : SerializableSlot, IDisposable, IDeserializationCallback
 	{
@@ -160,12 +164,12 @@
 		/// </summary>
 		/// <returns></returns>
 		public string UserContents =>
-				// Shows fileName
-				$"\"{fileInfo.NameWithoutExtension()}\""
-				// Adds the player name to same line
-				+ $"\n{data.PlayerName}"
-				// Shows the time played on the next line
-				+ $"\n{TimeUsed}";
+			// Shows fileName
+			$"\"{fileInfo.NameWithoutExtension()}\""
+			// Adds the player name to same line
+			+ $"\n{data.PlayerName}"
+			// Shows the time played on the next line
+			+ $"\n{TimeUsed}";
 		public override string ToString()
 		{
 			return base.ToString();

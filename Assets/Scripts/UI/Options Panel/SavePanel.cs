@@ -60,6 +60,8 @@
 						@interface.Dispose();
 						if (@bool == false)
 							return;
+						if (@interface.inputField != null)
+							info.fileData.fileInfo.Rename(@interface.inputField.text);
 						info.fileData.Serialize();
 						SaveSlot.AllFiles = null;
 						OnDisable();
@@ -92,12 +94,19 @@
 				activeInfo.button.onClick.AddListener(() =>
 				{
 					var @interface = new BoxInterface(panels[0]); 
+					if (@interface.inputField != null)
+					{
+						@interface.inputField.text = SaveSlot.AvailableSlot.NameWithoutExtension();
+					}
 					@interface.PressedButton += (@bool) =>
 					{
 						@interface.Dispose();
 						if (@bool == false)
 							return;
-						activeInfo.fileData.fileInfo = SaveSlot.AvailableSlot;
+						if (@interface.inputField != null)
+							activeInfo.fileData.fileInfo.Rename(@interface.inputField.text);
+						else
+							activeInfo.fileData.fileInfo = SaveSlot.AvailableSlot;
 						activeInfo.fileData.Serialize();
 						SaveSlot.AllFiles = null;
 						OnDisable();
@@ -115,7 +124,6 @@
 	public class BlockInfo
 	{
 		public readonly SaveSlot fileData;
-		public readonly IMovableFile fileInfo;
 		public readonly GameObject obj;
 		public readonly Image foregroundImage;
 		public readonly TMP_Text tmpText;
@@ -127,16 +135,13 @@
 		public string Text { get => tmpText.text; set => tmpText.text = value; }
 		public bool PreserveAspect { get => foregroundImage.preserveAspect; set => foregroundImage.preserveAspect = value; }
 		public Sprite Sprite { get => foregroundImage.sprite; set => foregroundImage.sprite = value; }
-		public Lazy<BoxInterface> boxInterface;
 		public BlockInfo(GameObject obj, SaveSlot fileData)
 		{
 			this.fileData = fileData;
-			fileInfo = fileData;
 			this.obj = obj;
 			foregroundImage = obj.transform.Find("Foreground").GetComponent<Image>();
 			tmpText = obj.GetComponentInChildren<TMP_Text>();
 			button = obj.GetComponentInChildren<Button>();
-			boxInterface = new Lazy<BoxInterface>(() => new BoxInterface(obj));
 			var del = obj.transform.Find("Delete");
 			if (del != null)
 				deleteButton = del.GetComponentInChildren<Button>();
@@ -152,6 +157,10 @@
 			cancelButtonName = "Cancel";
 		public readonly GameObject instance;
 		public event Action<bool> PressedButton;
+		/// <summary>
+		/// Possibly null if not present.
+		/// </summary>
+		public readonly TMP_InputField inputField;
 		public BoxInterface(GameObject obj)
 		{
 			instance = obj;
@@ -173,6 +182,7 @@
 			confirmButton.onClick.AddListener(() => PressedButton?.Invoke(true));
 			cancelButton.onClick.AddListener(() => PressedButton?.Invoke(false));
 			instance.SetActive(true);
+			inputField = instance.GetComponentInChildren<TMP_InputField>();
 		}
 
 		public void Dispose()

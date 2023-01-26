@@ -5,7 +5,7 @@
 
 	public static class Utility
 	{
-		public static GameObject AddChildObject(this GameObject parent, GameObject copy)
+		public static GameObject InstantiateChildObject(this GameObject parent, GameObject copy)
 		{
 			var obj = UnityEngine.Object.Instantiate(copy, parent.transform);
 			return obj;

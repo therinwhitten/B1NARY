@@ -2,8 +2,8 @@
 {
 	using System;
 	
-	public abstract class SavePackage
+	public interface ISavePackage
 	{
-		public abstract void Load();
+		void Load();
 	}
 }

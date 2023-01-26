@@ -17,7 +17,7 @@
 	/// using Binary Formatting.
 	/// </summary>
 	[Serializable]
-	public abstract class SerializableSlot : IDisposable, IDeserializationCallback, IMovableFile
+	public abstract class SerializableSlot : IDisposable, IDeserializationCallback
 	{
 		/// <summary>
 		/// Deserializes a 
@@ -88,39 +88,6 @@
 
 		protected internal FileInfo fileInfo;
 
-
-		string IMovableFile.Name 
-		{
-			get => fileInfo.NameWithoutExtension(); 
-			set
-			{
-				if (!fileInfo.Exists)
-				{
-					fileInfo = new FileInfo(fileInfo.FullName.Replace(fileInfo.NameWithoutExtension(), value));
-					fileInfo.Delete();
-					return;
-				}
-				byte[] data = File.ReadAllBytes(fileInfo.FullName);
-				fileInfo.Delete();
-				fileInfo = new FileInfo(fileInfo.FullName.Replace(fileInfo.NameWithoutExtension(), value));
-				using (var stream = fileInfo.Open(FileMode.Create, FileAccess.Write))
-					stream.Write(data, 0, data.Length);
-			} 
-		}
-		string IMovableFile.Extension
-		{
-			get => fileInfo.Extension;
-			set => throw new NotSupportedException();
-		}
-		string IMovableFile.NameWithExtension => 
-			((IMovableFile)this).Name + ((IMovableFile)this).Extension;
-		bool IMovableFile.Delete()
-		{
-			bool output = fileInfo.Exists;
-			fileInfo.Delete();
-			fileInfo.Refresh();
-			return output;
-		}
 		public SerializableSlot(FileInfo fileInfo)
 		{
 			this.fileInfo = fileInfo;
@@ -166,25 +133,5 @@
 		{
 			stopwatch = Stopwatch.StartNew();
 		}
-	}
-	public interface IMovableFile
-	{
-		/// <summary>
-		/// Gets or sets the name of the file w/o the extension.
-		/// </summary>
-		string Name { get; set; }
-		/// <summary>
-		/// Gets or sets the extension of the file.
-		/// </summary>
-		string Extension { get; set; }
-		/// <summary>
-		/// Gets the name of the file with the extension.
-		/// </summary>
-		string NameWithExtension { get; }
-		/// <summary>
-		/// Deletes the selected file.
-		/// </summary>
-		/// <returns> If the file originally existed or not. </returns>
-		bool Delete();
 	}
 }
