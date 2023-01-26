@@ -55,13 +55,19 @@
 				info.button.onClick.AddListener(() =>
 				{
 					var @interface = new BoxInterface(panels[1]);
+					if (@interface.inputField != null)
+					{
+						@interface.inputField.text = info.fileData.fileInfo.NameWithoutExtension();
+					}
 					@interface.PressedButton += (@bool) =>
 					{
 						@interface.Dispose();
 						if (@bool == false)
 							return;
 						if (@interface.inputField != null)
-							info.fileData.fileInfo.Rename(@interface.inputField.text);
+							info.fileData.fileInfo
+							.MoveTo(info.fileData.fileInfo.FullName
+								.Replace(info.fileData.fileInfo.NameWithoutExtension(), @interface.inputField.text));
 						info.fileData.Serialize();
 						SaveSlot.AllFiles = null;
 						OnDisable();
@@ -96,7 +102,7 @@
 					var @interface = new BoxInterface(panels[0]); 
 					if (@interface.inputField != null)
 					{
-						@interface.inputField.text = SaveSlot.AvailableSlot.NameWithoutExtension();
+						@interface.inputField.text = activeInfo.fileData.fileInfo.NameWithoutExtension();
 					}
 					@interface.PressedButton += (@bool) =>
 					{
