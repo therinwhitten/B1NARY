@@ -5,7 +5,6 @@
 	using UnityEngine;
 	using B1NARY;
 	using System.Runtime.Serialization.Formatters.Binary;
-	using UnityEditor.Graphs;
 	using System.Drawing;
 	using System.Diagnostics;
 	using Debug = UnityEngine.Debug;

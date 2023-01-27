@@ -1,4 +1,5 @@
-﻿namespace B1NARY.Editor
+﻿#if UNITY_EDITOR
+namespace B1NARY.Editor
 {
 	using UnityEditor;
 	using UnityEngine;
@@ -24,3 +25,4 @@
 		}
 	}
 }
+#endif
