@@ -100,7 +100,8 @@
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
-			expressions = expressionController.ExpressionsList.CubismExpressionObjects.Select(param => param.name).ToArray();
+			expressions = expressionController.ExpressionsList.CubismExpressionObjects
+				.Select(param => param.name.Replace(".exp3", string.Empty)).ToArray();
 		}
 
 		private void OnEnable()
