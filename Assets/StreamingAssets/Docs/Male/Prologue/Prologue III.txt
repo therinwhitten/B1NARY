@@ -24,7 +24,7 @@ Shirobi::
 {
  "I promised him, Sir. That he would be ok.... I told him it would just be four days. And..."
 }
-{else}
+{if: n-b}
 {
  "I promised them, Sir. That they would be ok... I told them it would only be four days. And..."
 }
@@ -37,7 +37,7 @@ Shirobi::
 {
  "I can't find him in any of the servers...
 }
-{else}
+{if: n-b}
 {
  "I can't find them on any of the servers...
 }
@@ -46,7 +46,7 @@ Is it possible just for the DIHI to just...
 {
  scramble him?"
 }
-{else}
+{if: n-b}
 {
  scramble them?"
 }
@@ -67,7 +67,7 @@ Cliff::
 {
  "He's just a kid dammit!!"
 }
-{else}
+{if: n-b}
 {
  They're just a kid dammit!!"
 }
@@ -91,7 +91,7 @@ Cliff::
 {
  We've got four days to find him."
 }
-{else}
+{if: n-b}
 {
  We've got four days to find them."
 }
@@ -186,7 +186,7 @@ Shirobi::
 {
  "Sir, do we even have a chance to find him? I mean, he is the <i>only</i> human in the internet, but..."
 }
-{else}
+{if: n-b}
 {
  "Sir, do we even have a chance to find them? I mean, they are the <i>only</i> human in the internet, but..."
 }
@@ -203,7 +203,7 @@ Cliff::
  "I pray he lands somewhere semi-safe."
  "Will ransomware or malware hurt him? There are so many unknown dangers that we are clueless on..."
 }
-{else}
+{if: n-b}
 {
  "It's possible, 
  but we would have to send AI into the code to search for their brain patterns, and <i>hope</i> they don't alter too much.
@@ -235,7 +235,7 @@ Cliff::
  The only human in the digital world. 
  I <i>hope</i> that is enough to find him."
 }
-{else}
+{if: n-b}
 {
  "They will be clueless. 
  More alone than any person has ever been. 
@@ -250,7 +250,7 @@ Cliff::
 {
  "Get his thought-pattern impressions inputted into the mainframe and start training the AI."
 }
-{else}
+{if: n-b}
 {
  "Get their thought-pattern impressions inputted into the mainframe and start training the AI."
 }
@@ -272,7 +272,7 @@ Cliff::
 {
  "If we can't find him by then, there will be some serious backlash on this."
 }
-{else}
+{if: n-b}
 {
  "If we can't find them by then, there will be some serious backlash on this."
 }
@@ -295,7 +295,7 @@ The kid is fresh out of college.
  From his profile, he is a resourceful lad.
  He hopes that wherever he is, he will be smart enough to pace himself and make careful considerations...
 }
-{else}
+{if: n-b}
 {
  Cliff knows about the kid's parents, and they really wouldn't care if MC vanishes.
  From Cliff's meeting with them, the parents seemed annoyed they were involved in the project.

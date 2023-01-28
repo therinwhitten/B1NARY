@@ -16,7 +16,7 @@ after what seems like an eternity,
 {
  his face goes completely flaccid.
 }
-{else}
+{if: n-b}
 {
  their face relaxes.   
 }
@@ -24,7 +24,7 @@ after what seems like an eternity,
 { 
  For the onlookers, it was hell watching the boy's face.
 }
-{else}
+{if: n-b}
 {
  For the onlookers, it was hell watching the person's face.
 }
@@ -33,7 +33,7 @@ after what seems like an eternity,
 {
  His eyes slowly close, peaceful now, devoid of any expression. 
 }
-{else}
+{if: n-b}
 {
  Their eyes slowly close, peaceful now, devoid of any expression.
 } 
@@ -58,7 +58,7 @@ Fluorescent lights in the lab crackle and come to life...
 {
   Medics grab MC, carefully placing him into the cyrotube and applying sensors to the different sections of his body.
 }
-{else}
+{if: n-b}
 {
  Medics grab MC, carefully placing them into the cryotube and applying sensors to the different sections of their body.
 }
@@ -74,7 +74,7 @@ John looks around.
 {
  At least for the boy, Digital Horizons has spared no expense.
 } 
-{else}
+{if: n-b}
 {
  At least for this employee, Digital Horizons has spared no expense.
 }
@@ -136,7 +136,7 @@ Cliff::
  {additive: off}
  "Tests are still being conducted to ensure he is aware of his location and fully cognizant." 
 }
-{else}
+{if: n-b}
 {
  {additive: on}
  "We have confirmed their thought patterns in server 10.
@@ -181,7 +181,7 @@ The pressure of dealing with a whole new frontier will keep MC most likely distr
 {
  It is <i>crucial</i> we keep him calm and safe. 
 } 
-{else}
+{if: n-b}
 {
  It is <i>crucial</i> we keep them calm and safe.
 }
@@ -210,7 +210,7 @@ We've already warned you prior to the conference that this is a very high risk e
  and after Mr. MC has been cleared of quarantine, we will allow him to speak to the press."
  {additive: off}
 }
-{else}
+{if: n-b}
 {
  {additive: on}
  "However,

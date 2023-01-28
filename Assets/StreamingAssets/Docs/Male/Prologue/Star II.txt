@@ -50,7 +50,7 @@ Asterella::
  not beat him up and drag him!" 
  {additive:off}
 }
-{else}
+{if: n-b}
 {
  {additive:on}
  "I told you to <i>bring</i> them in,
@@ -67,7 +67,7 @@ Szycrotic::
  "So, naturally. I tied him up."
  "Don't blame me! I think it's his kink."
 }
-{else}
+{if: n-b}
 {
  "Star, they literally tried to book it."
  "So, naturally. I tied MC up."
@@ -88,7 +88,7 @@ Asterella::
 {
  "Even if they seem to be intruders! What if he was a Demon Lord in disguise?"
 } 
-{else}
+{if: n-b}
 {
  "Even if they seem to be intruders! What if the were a Demon Lord in disguise?"
 } 
@@ -121,7 +121,7 @@ Szycrotic::
 {
  "If he becomes hostile don't blame me, alright?"
 }
-{else}
+{if: n-b}
 {
  "If they become hostile don't blame me, alright?"
 }
@@ -169,7 +169,7 @@ In the flesh.
  {
    Be a gentleperson.
  }
- {else}
+ {if: !n-b}
  {
    Be a gentleman. 
  }
@@ -184,7 +184,7 @@ In the flesh.
  {
    Being a gentleperson, I lock eyes with her.
  }
- {else}
+ {if: !n-b}
  {
   Being a gentleman, I lock eyes with her. 
  }
@@ -356,7 +356,7 @@ Asterella::
 {
  "Don't play dumb with me, MC. You seem to be a very kind, attractive elf boy, and I am a bit 'thirsty'..."
 }
-{else}
+{if: n-b}
 {
  "Don't play dumb with me, MC. You seem to be a very kind, attractive elf, and I am a bit 'thirsty'..."
 }
@@ -437,7 +437,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
 			Asterella::
 			"Such a very good boy..."
 		}
-		{else}
+		{if: n-b}
 		{
 			"Such a good toy you are..."
 			MC::
