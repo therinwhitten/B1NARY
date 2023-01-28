@@ -90,11 +90,6 @@
 		/// an example.
 		/// </summary>
 		public Func<bool, IEnumerator<ScriptLine>> returnValue;
-		/// <summary>
-		/// If the current dialogue should be added instead of skipping to a new
-		/// line.
-		/// </summary>
-		public bool AdditiveEnabled { get; set; } = false;
 
 		private ScriptDocument()
 		{

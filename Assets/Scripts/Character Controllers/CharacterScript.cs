@@ -13,6 +13,12 @@
 	[RequireComponent(typeof(Animator))]
 	public sealed class CharacterScript : Multiton<CharacterScript>, ICharacterController
 	{
+		public static string[] ToNameArray(CubismExpressionList list)
+		{
+			return list.CubismExpressionObjects
+				.Select(param => param.name.Replace(".exp3", string.Empty)).ToArray();
+		}
+
 		private Animator animator;
 		private RectTransform m_transform;
 		private string[] expressions;
@@ -73,6 +79,9 @@
 				m_transform.anchorMax = new Vector2(value, m_transform.anchorMax.y);
 			}
 		}
+
+		bool ICharacterController.Selected { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
 		public void SetPositionOverTime(float newXPosition, float time)
 		{
 			if (SaveSlot.LoadingSave)
@@ -100,8 +109,8 @@
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
-			expressions = expressionController.ExpressionsList.CubismExpressionObjects
-				.Select(param => param.name.Replace(".exp3", string.Empty)).ToArray();
+			if (expressionController.ExpressionsList != null)
+			expressions = ToNameArray(expressionController.ExpressionsList);
 		}
 
 		private void OnEnable()

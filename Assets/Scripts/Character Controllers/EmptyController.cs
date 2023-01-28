@@ -52,6 +52,18 @@
 			get => string.Empty;
 			set => throw new NotSupportedException();
 		}
+		public bool Selected 
+		{ 
+			get => m_selected; 
+			set 
+			{
+				if (m_selected == value)
+					return;
+				m_selected = value;
+
+			}
+		}
+		private bool m_selected = false;
 	}
 }
 

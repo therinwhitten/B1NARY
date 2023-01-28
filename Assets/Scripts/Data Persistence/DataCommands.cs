@@ -83,6 +83,8 @@ namespace B1NARY.DataPersistence.Editor
 				EditorGUILayout.HelpBox("Enter play mode to inspect data values!", MessageType.Error);
 				return;
 			}
+			if (SaveSlot.Instance.data.strings is null)
+				return;
 			UpdateTab("Strings", SaveSlot.Instance.data.strings.AsEnumerable());
 			UpdateTab("Integers", SaveSlot.Instance.data.ints.AsEnumerable());
 			UpdateTab("Booleans", SaveSlot.Instance.data.bools.AsEnumerable());

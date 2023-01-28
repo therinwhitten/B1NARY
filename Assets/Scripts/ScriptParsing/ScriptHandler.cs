@@ -32,6 +32,7 @@
 			new CommandArray[]
 			{
 				Commands,
+				DialogueSystem.Commands,
 				AudioController.Commands,
 				SceneManager.Commands,
 				CharacterController.Commands,
@@ -111,18 +112,7 @@
 		/// </summary>
 		public static readonly CommandArray Commands = new CommandArray()
 		{
-			["additive"] = (Action<string>)(boolRaw =>
-			{
-				bool setting;
-				boolRaw = boolRaw.ToLower().Trim();
-				if (ScriptDocument.enabledHashset.Contains(boolRaw))
-					setting = true;
-				else if (ScriptDocument.disabledHashset.Contains(boolRaw))
-					setting = false;
-				else
-					throw new InvalidCastException(boolRaw);
-				Instance.scriptDocument.AdditiveEnabled = setting;
-			}),
+			
 			["changescript"] = (Action<string>)(ChangeScript),
 			["usegameobject"] = (Action<string>)(UseGameObject),
 			["setbool"] = (Action<string, string>)((name, value) =>

@@ -47,7 +47,7 @@ namespace B1NARY.Editor
 			int newIndex = EditorGUILayout.Popup(content, index, enumNames);
 			if (index != newIndex)
 				EditorUtility.SetDirty(target);
-			// Enum.Parse<T> doesn't like me
+			// Enum.Parse<TComponent> doesn't like me
 			return (TEnum)Enum.Parse(typeof(TEnum), enumNames[newIndex]);
 		}
 		public static float DelayedField(in Object target, in GUIContent content, in float input)
