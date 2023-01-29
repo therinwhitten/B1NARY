@@ -1,13 +1,15 @@
 ﻿namespace B1NARY
 {
+	using B1NARY.DataPersistence;
 	using HideousDestructor.DataPersistence;
 	using System;
+	using System.Collections.Generic;
 	using System.IO;
 
 	[Serializable]
 	public sealed class PlayerConfig : SerializableSlot
 	{
-		public static FileInfo ConfigLocation { get; } = PersistentData.GetFile("PlayerConfig.cfg");//new FileInfo($"{PersistentData.FullName}/playerConfig.xml");
+		public static FileInfo ConfigLocation { get; } = PersistentData.GetFile("config.cfg");//new FileInfo($"{PersistentData.FullName}/playerConfig.xml");
 		public static PlayerConfig Instance
 		{
 			get
@@ -33,11 +35,24 @@
 		}
 
 		public Audio audio = new Audio();
+		public bool HentaiEnabled
+		{
+			get => m_hentaiEnabled;
+			set
+			{
+				if (m_hentaiEnabled == value)
+					return;
+				m_hentaiEnabled = value;
+			}
+		}
+		private bool m_hentaiEnabled = false;
 
 		[Serializable]
 		public sealed class Audio
 		{
 			public float master = 1f;
+			public float voices = 1f;
+			public Dictionary<string, float> characterVoices = new Dictionary<string, float>();
 		}
 	}
 }

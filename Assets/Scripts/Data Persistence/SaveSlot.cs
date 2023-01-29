@@ -199,28 +199,53 @@
 		{
 			public Dictionary<int, ScriptLine> choice;
 
-			public Dictionary<string, string> strings;
-			public Dictionary<string, bool> bools;
-			public Dictionary<string, int> ints;
-			public Dictionary<string, float> floats;
+			public Dictionary<string, Func<string>> strings;
+			public string GetString(string key) => strings[key].Invoke();
+			public string SetConstantString(string key, string value)
+			{
+				strings[key] = () => value;
+				return value;
+			}
+			public Dictionary<string, Func<bool>> bools;
+			public bool GetBool(string key) => bools[key].Invoke(); 
+			public bool SetConstantBool(string key, bool value)
+			{
+				bools[key] = () => value;
+				return value;
+			}
+			public Dictionary<string, Func<int>> ints;
+			public int GetInt(string key) => ints[key].Invoke(); 
+			public int SetConstantInt(string key, int value)
+			{
+				ints[key] = () => value;
+				return value;
+			}
+			public Dictionary<string, Func<float>> floats;
+			public float GetFloat(string key) => floats[key].Invoke();
+			public float SetConstantFloat(string key, float value)
+			{
+				floats[key] = () => value;
+				return value;
+			}
 
 			public string PlayerName
 			{
-				get => strings["Player Name"];
-				set => strings["Player Name"] = value;
+				get => GetString("Player Name");
+				set => strings["Player Name"] = () => value;
 			}
 
 			public Data()
 			{
-				strings = new Dictionary<string, string>();
+				strings = new Dictionary<string, Func<string>>();
 				PlayerName = string.Empty;
-				bools = new Dictionary<string, bool>()
+				bools = new Dictionary<string, Func<bool>>()
 				{
-					["True"] = true,
-					["False"] = false, 
+					["True"] = () => true,
+					["False"] = () => false,
+					["henable"] = () => PlayerConfig.Instance.HentaiEnabled
 				};
-				ints = new Dictionary<string, int>();
-				floats = new Dictionary<string, float>();
+				ints = new Dictionary<string, Func<int>>();
+				floats = new Dictionary<string, Func<float>>();
 				choice = new Dictionary<int, ScriptLine>();
 			}
 		}

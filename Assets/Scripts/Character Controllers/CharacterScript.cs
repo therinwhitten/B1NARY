@@ -21,6 +21,15 @@
 
 		private Animator animator;
 		private RectTransform m_transform;
+		public RectTransform Transform
+		{
+			get
+			{
+				if (m_transform == null)
+					m_transform = GetComponent<RectTransform>();
+				return m_transform;
+			}
+		}
 		private string[] expressions;
 		public VoiceActorHandler VoiceData { get; private set; }
 		public CubismExpressionController expressionController;
@@ -67,20 +76,24 @@
 
 		public Vector2 Position 
 		{ 
-			get => m_transform.position;
-			set => m_transform.position = value; 
+			get => Transform.position;
+			set => Transform.position = value; 
 		}
 		public float HorizontalPosition
 		{
-			get => m_transform.anchorMin.x;
+			get => Transform.anchorMin.x;
 			set
 			{
-				m_transform.anchorMin = new Vector2(value, m_transform.anchorMin.y);
-				m_transform.anchorMax = new Vector2(value, m_transform.anchorMax.y);
+				Transform.anchorMin = new Vector2(value, Transform.anchorMin.y);
+				Transform.anchorMax = new Vector2(value, Transform.anchorMax.y);
 			}
 		}
 
-		bool ICharacterController.Selected { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+		bool ICharacterController.Selected 
+		{ 
+			get => throw new NotImplementedException(); 
+			set => throw new NotImplementedException(); 
+		}
 
 		public void SetPositionOverTime(float newXPosition, float time)
 		{
@@ -104,7 +117,7 @@
 
 		protected override void MultitonAwake()
 		{
-			m_transform = GetComponent<RectTransform>();
+			
 			animator = GetComponent<Animator>();
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))

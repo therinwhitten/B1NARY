@@ -6,6 +6,7 @@
 	using System.Reflection;
 	using System;
 	using System.Text;
+	using System.Data;
 
 	public sealed class OverloadableCommand : IGrouping<string, Delegate>, IEquatable<OverloadableCommand>
 	{
@@ -170,7 +171,7 @@
 				throw new InvalidCastException();
 			int length = info.Length;
 			if (lengthShortcut.ContainsKey(length))
-				throw new Exception();
+				throw new DuplicateCommandException();
 			delegates.Add(command);
 			lengthShortcut.Add(length, delegates.Count - 1);
 		}
@@ -224,5 +225,29 @@
 		IEnumerator IEnumerable.GetEnumerator() => delegates.GetEnumerator();
 
 		bool IEquatable<OverloadableCommand>.Equals(OverloadableCommand other) => this == other;
+	}
+
+
+	[Serializable]
+	public class DuplicateCommandException : Exception
+	{
+		public DuplicateCommandException() : base("There is a command with the same parameters being combined as one.")
+		{
+			HResult = 52962061;
+		}
+		public DuplicateCommandException(string message) : base(message)
+		{
+			HResult = 52962061;
+		}
+		public DuplicateCommandException(string message, Exception inner) : base(message, inner)
+		{
+			HResult = 52962061;
+		}
+		protected DuplicateCommandException(
+		  System.Runtime.Serialization.SerializationInfo info,
+		  System.Runtime.Serialization.StreamingContext context) : base(info, context)
+		{
+			HResult = 52962061;
+		}
 	}
 }

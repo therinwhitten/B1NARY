@@ -61,6 +61,7 @@
 namespace B1NARY.DataPersistence.Editor
 {
 	using B1NARY.Scripting;
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using UnityEditor;
@@ -99,7 +100,10 @@ namespace B1NARY.DataPersistence.Editor
 					{
 						Rect fullRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f));
 						EditorGUI.LabelField(new Rect(fullRect) { width = (fullRect.width / 2f) - 1f }, enumerator.Current.Key.ToString());
-						EditorGUI.LabelField(new Rect(fullRect) { xMin = (fullRect.width / 2f) + 1f }, enumerator.Current.Value.ToString());
+						string value = enumerator.Current.Value is Delegate del 
+							? del.DynamicInvoke().ToString() 
+							: enumerator.Current.Value.ToString();
+						EditorGUI.LabelField(new Rect(fullRect) { xMin = (fullRect.width / 2f) + 1f }, value);
 					}
 				EditorGUI.indentLevel--;
 			}

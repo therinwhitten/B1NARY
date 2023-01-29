@@ -25,7 +25,7 @@
 		public void OnDisable()
 		{
 			SaveSlot.Instance.data.PlayerName = nameInput.text;
-			SaveSlot.Instance.data.bools[MaleAssignmentKey] = !isFemale;
+			SaveSlot.Instance.data.SetConstantBool(MaleAssignmentKey, !isFemale);
 		}
 	}
 }

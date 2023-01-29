@@ -222,11 +222,8 @@
 
 		private string NewLine()
 		{
-			Debug.Log(Additive);
 			if (Additive)
-				return CurrentText + (string.IsNullOrEmpty(CurrentText) || CurrentText.EndsWith(" ") 
-					? "" 
-					: " ");
+				return CurrentText + (string.IsNullOrEmpty(CurrentText) || CurrentText.EndsWith(" ") ? "" : " ");
 			return string.Empty;
 		}
 
