@@ -1,7 +1,7 @@
 {changeScene: Times Square}
 {fadeinsound: Times Square Crowd, 1}
 {colorformat: Default}
-{spawnEmpty: Narrator}
+{spawnEmpty: Narrator, NPC}
 Narrator::
 New York City in Times Square: the year is 2040. Midday on a blistering Summer Day.
 On any normal day, most people can be seen milling about, heading to work, the cacophony of vehicles, pedestrians, and advertisements matching beat in perfect harmony.
@@ -110,11 +110,11 @@ Let's find out together. LIVE!"
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {spawnChar: malesilo, -1, John}
-{spawnEmpty: Cindy}
-{spawnEmpty: Male Bystander}
-{spawnEmpty: Male Bystander 2} 
-{spawnEmpty: Female Bystander}
-{spawnEmpty: Narrator}
+{spawnEmpty: Cindy, NPC}
+{spawnEmpty: Male Bystander, NPC}
+{spawnEmpty: Male Bystander 2, NPC} 
+{spawnEmpty: Female Bystander, NPC}
+{spawnEmpty: Narrator, NPC}
 {anim: John, kime2}
 {moveChar: John, .30}
 Narrator::

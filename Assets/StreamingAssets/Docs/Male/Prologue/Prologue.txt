@@ -6,7 +6,7 @@
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {spawnChar: malesilo3, 2, Shirobi}
-{spawnEmpty: MC}
+{spawnEmpty: MC, Player}
 {fadeinsound: Fast Heartbeat, 1}
 Shirobi::
 {if: !n-b}
@@ -209,8 +209,8 @@ I walk to the center of the room, looking straight at the chair.
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {fadeoutsound: Lab Ambience Music Light, 2} 
-{spawnEmpty: MC}
-{spawnEmpty: Shirobi}
+{spawnEmpty: MC, Player}
+{spawnEmpty: Shirobi, NPC}
 MC::
 It vibrates my bones as I get closer.
 The DIHI fills my whole vision.
