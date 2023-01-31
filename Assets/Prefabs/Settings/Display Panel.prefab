@@ -4943,6 +4943,7 @@ GameObject:
   - component: {fileID: 1610249543556910521}
   - component: {fileID: 1610249543556910502}
   - component: {fileID: 1610249543556910503}
+  - component: {fileID: 1755746264120664163}
   m_Layer: 5
   m_Name: Mode Drop Down
   m_TagString: UI
@@ -5064,18 +5065,7 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1610249544399019253}
-        m_MethodName: ChangedHentaiValue
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1610249543556910520
 MonoBehaviour:
@@ -5369,6 +5359,19 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1755746264120664163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249543556910496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 191b597e37e906c4b9485179eddc9e07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 0}
 --- !u!1 &1610249543561675936
 GameObject:
   m_ObjectHideFlags: 0

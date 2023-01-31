@@ -5,9 +5,10 @@
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
+	using UnityEngine;
 
 	[Serializable]
-	public sealed class PlayerConfig : SerializableSlot
+	public sealed class PlayerConfig : SerializableSlot, IDisposable
 	{
 		public static FileInfo ConfigLocation { get; } = PersistentData.GetFile("config.cfg");//new FileInfo($"{PersistentData.FullName}/playerConfig.xml");
 		public static PlayerConfig Instance
@@ -31,10 +32,16 @@
 
 		private PlayerConfig() : base(ConfigLocation)
 		{
+			Application.quitting += () => Dispose();
+		}
 
+		public void Dispose()
+		{
+			Instance.Serialize();
 		}
 
 		public Audio audio = new Audio();
+		public Graphics graphics = new Graphics();
 		public bool HentaiEnabled
 		{
 			get => m_hentaiEnabled;
@@ -53,6 +60,11 @@
 			public float master = 1f;
 			public float voices = 1f;
 			public Dictionary<string, float> characterVoices = new Dictionary<string, float>();
+		}
+		[Serializable]
+		public sealed class Graphics
+		{
+			public B1NARYResolution resolution = (B1NARYResolution)Screen.currentResolution;
 		}
 	}
 }

@@ -44,7 +44,7 @@
 		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
 		{
 			document.ParseLine(new ScriptLine(string.Join(",", ScriptLine.CastCommand(rootLine).arguments), rootLine.document, rootLine.Index));
-			if (SaveSlot.Instance.data.choice.TryGetValue(rootLine.Index, out var line))
+			if (SaveSlot.Instance.scriptDocumentInterface.choice.TryGetValue(rootLine.Index, out var line))
 			{
 				using (IEnumerator<ScriptLine> node = choices[line].Perform(pauseOnCommands))
 					while (node.MoveNext())

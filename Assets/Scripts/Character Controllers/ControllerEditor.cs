@@ -17,7 +17,7 @@ namespace B1NARY.CharacterManagement.Editor
 		public override void OnInspectorGUI()
 		{
 			if (DialogueSystem.HasInstance)
-				EditorGUILayout.LabelField($"Is current speaker: {CharacterController.Instance.ActiveCharacterName == characterController.CharacterName}");
+				EditorGUILayout.LabelField($"Is current speaker: {CharacterController.Instance.ActiveCharacter.CharacterName == characterController.CharacterName}");
 			if (characterController.VoiceData != null)
 				AudioControllerEditor.DisplayAudioData(characterController.VoiceData);
 		}

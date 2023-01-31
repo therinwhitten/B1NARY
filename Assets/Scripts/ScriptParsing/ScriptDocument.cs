@@ -128,7 +128,8 @@
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
-					CharacterController.Instance.ActiveCharacter.SayLine(line);
+					if (CharacterController.Instance.ActiveCharacter != null)
+						CharacterController.Instance.ActiveCharacter.SayLine(line);
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);

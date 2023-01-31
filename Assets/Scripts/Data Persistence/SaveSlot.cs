@@ -107,19 +107,19 @@
 		private static IReadOnlyList<SaveSlot> m_files;
 		public static FileInfo AvailableSlot => SavedData.GetFile($"{DateTime.Now.ToString().Replace('/', '-').Replace(':', '-')}{extension}");
 
-		public Data data;
+		public ScriptDocumentInterface scriptDocumentInterface;
 		public ScriptPosition scriptPosition;
 
 
 		private void RefreshOnScene()
 		{
-			data.choice.Clear();
+			scriptDocumentInterface.choice.Clear();
 		}
 
 
 		public SaveSlot() : base(AvailableSlot)
 		{
-			data = new Data();
+			scriptDocumentInterface = new ScriptDocumentInterface();
 		}
 		public override void OnDeserialization(object sender)
 		{
@@ -167,7 +167,7 @@
 			// Shows fileName
 			$"\"{fileInfo.NameWithoutExtension()}\""
 			// Adds the player name to same line
-			+ $"\n{data.PlayerName}"
+			+ $"\n{scriptDocumentInterface.PlayerName}"
 			// Shows the time played on the next line
 			+ $"\n{TimeUsed}";
 		public override string ToString()
@@ -191,63 +191,6 @@
 				lastLine = ScriptHandler.Instance.CurrentLine;
 			}
 		}
-		/// <summary>
-		/// Data about B1NARY.
-		/// </summary>
-		[Serializable]
-		public sealed class Data
-		{
-			public Dictionary<int, ScriptLine> choice;
-
-			public Dictionary<string, Func<string>> strings;
-			public string GetString(string key) => strings[key].Invoke();
-			public string SetConstantString(string key, string value)
-			{
-				strings[key] = () => value;
-				return value;
-			}
-			public Dictionary<string, Func<bool>> bools;
-			public bool GetBool(string key) => bools[key].Invoke(); 
-			public bool SetConstantBool(string key, bool value)
-			{
-				bools[key] = () => value;
-				return value;
-			}
-			public Dictionary<string, Func<int>> ints;
-			public int GetInt(string key) => ints[key].Invoke(); 
-			public int SetConstantInt(string key, int value)
-			{
-				ints[key] = () => value;
-				return value;
-			}
-			public Dictionary<string, Func<float>> floats;
-			public float GetFloat(string key) => floats[key].Invoke();
-			public float SetConstantFloat(string key, float value)
-			{
-				floats[key] = () => value;
-				return value;
-			}
-
-			public string PlayerName
-			{
-				get => GetString("Player Name");
-				set => strings["Player Name"] = () => value;
-			}
-
-			public Data()
-			{
-				strings = new Dictionary<string, Func<string>>();
-				PlayerName = string.Empty;
-				bools = new Dictionary<string, Func<bool>>()
-				{
-					["True"] = () => true,
-					["False"] = () => false,
-					["henable"] = () => PlayerConfig.Instance.HentaiEnabled
-				};
-				ints = new Dictionary<string, Func<int>>();
-				floats = new Dictionary<string, Func<float>>();
-				choice = new Dictionary<int, ScriptLine>();
-			}
-		}
+		
 	}
 }

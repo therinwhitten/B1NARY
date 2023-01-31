@@ -117,8 +117,7 @@
 			["usegameobject"] = (Action<string>)(UseGameObject),
 			["setbool"] = (Action<string, string>)((name, value) =>
 			{
-				bool set = bool.Parse(value);
-				SaveSlot.Instance.data.bools[name] = () => set;
+				SaveSlot.Instance.scriptDocumentInterface.bools[name] = bool.Parse(value);
 			}),
 			["callremote"] = ((Action<string>)((call) =>
 			{

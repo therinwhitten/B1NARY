@@ -33,11 +33,6 @@
 
 		[HideInInspector]
 		public TMP_Dropdown dropdown;
-		///// <summary>
-		///// What is shown directly to the dropdown. Keep in mind, this should have
-		///// the same count as <see cref="Pairs"/>!
-		///// </summary>
-		//public virtual List<string> Visuals => Pairs.Select(val => val.ToString()).ToList();
 		/// <summary>
 		/// When the object is first initialized, and doesn't have any data to
 		/// start with.

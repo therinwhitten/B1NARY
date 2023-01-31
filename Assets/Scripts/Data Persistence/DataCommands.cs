@@ -84,12 +84,12 @@ namespace B1NARY.DataPersistence.Editor
 				EditorGUILayout.HelpBox("Enter play mode to inspect data values!", MessageType.Error);
 				return;
 			}
-			if (SaveSlot.Instance.data.strings is null)
+			if (SaveSlot.Instance.scriptDocumentInterface.strings is null)
 				return;
-			UpdateTab("Strings", SaveSlot.Instance.data.strings.AsEnumerable());
-			UpdateTab("Integers", SaveSlot.Instance.data.ints.AsEnumerable());
-			UpdateTab("Booleans", SaveSlot.Instance.data.bools.AsEnumerable());
-			UpdateTab("Singles", SaveSlot.Instance.data.floats.AsEnumerable());
+			UpdateTab("Strings", SaveSlot.Instance.scriptDocumentInterface.strings.AsEnumerable());
+			UpdateTab("Integers", SaveSlot.Instance.scriptDocumentInterface.ints.AsEnumerable());
+			UpdateTab("Booleans", SaveSlot.Instance.scriptDocumentInterface.bools.AsEnumerable());
+			UpdateTab("Singles", SaveSlot.Instance.scriptDocumentInterface.floats.AsEnumerable());
 
 			void UpdateTab<TKey, TValue>(string label, IEnumerable<KeyValuePair<TKey, TValue>> data)
 			{

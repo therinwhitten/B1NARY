@@ -134,8 +134,8 @@
 		public AudioMixerGroup voiceGroup;
 
 
-		public string ActiveCharacterName { get; private set; }
-		public ICharacterController ActiveCharacter => charactersInScene[ActiveCharacterName].characterScript;
+		public ICharacterController ActiveCharacter { get; private set; }
+
 		public event Action<ICharacterController> ActiveCharacterChanged;
 		public Dictionary<string, (GameObject gameObject, ICharacterController characterScript)> charactersInScene =
 			new Dictionary<string, (GameObject gameObject, ICharacterController characterScript)>(10);
@@ -147,15 +147,14 @@
 		/// <returns> If it has successfully switched characters. </returns>
 		public bool ChangeActiveCharacter(string name)
 		{
-			if (charactersInScene.ContainsKey(name))
-			{
-				charactersInScene[name].characterScript.Selected = false;
-				ActiveCharacterName = name;
-				charactersInScene[name].characterScript.Selected = true;
-				ActiveCharacterChanged?.Invoke(ActiveCharacter);
-				return true;
-			}
-			return false;
+			if (!charactersInScene.ContainsKey(name))
+				return false;
+			if (ActiveCharacter != null)
+				ActiveCharacter.Selected = false;
+			ActiveCharacter = charactersInScene[name].characterScript;
+			ActiveCharacter.Selected = true;
+			ActiveCharacterChanged?.Invoke(ActiveCharacter);
+			return true;
 		}
 
 		/// <summary>
