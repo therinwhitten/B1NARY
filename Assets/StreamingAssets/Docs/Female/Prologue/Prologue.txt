@@ -7,7 +7,7 @@
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {fadeinsound: Fast Heartbeat, 1}
-{spawnEmpty: MC}
+{spawnEmpty: MC, Player}
 {spawnChar: malesilo3, 1.5, Shirobi}
 Shirobi::
 {if: !n-b}
@@ -197,8 +197,8 @@ Shirobi::
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {fadeoutsound: Lab Ambience Music Light, 2} 
-{spawnEmpty: MC}
-{spawnEmpty: Shirobi}
+{spawnEmpty: MC, Player}
+{spawnEmpty: Shirobi, NPC}
 MC::
 I center myself in front of the portal to the Digital Realm.
 It feels so surreal.
