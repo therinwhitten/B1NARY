@@ -3,13 +3,12 @@
 	using System.IO;
 	using System;
 	using UnityEngine;
-	using B1NARY;
 	using System.Runtime.Serialization.Formatters.Binary;
-	using System.Drawing;
 	using System.Diagnostics;
 	using Debug = UnityEngine.Debug;
 	using System.Runtime.Serialization;
 	using System.Collections;
+	using B1NARY.DataPersistence;
 
 	/// <summary>
 	/// A file for unity intended to be saved in <see cref="PersistentData"/>,
@@ -56,20 +55,15 @@
 		/// </summary>
 		public static DirectoryInfo StreamingAssets { get; } = new DirectoryInfo(Application.streamingAssetsPath);
 
-		#region Thumbnails
+		#region Thumbnail
 		/// <summary>
-		/// Converts the base of <see cref="image"/> to a texture for Unity.
-		/// Compressed.
+		/// The thumbnail of the save slot. Dependent on <see cref="UsesThumbnail"/>.
 		/// </summary>
-		public Texture2D ImageTexture
-		{
-			get => ImageUtility.LoadImage(image);
-			set => image = ImageUtility.Compress(value.EncodeToJPG(), 512, 512);
-		}
+		public Thumbnail Thumbnail { get; private set; }
 		/// <summary>
-		/// an array of bytes, saved as an image.
+		/// On serialization, you can save the thumbnail. Enabled by default.
 		/// </summary>
-		public byte[] image;
+		public virtual bool UsesThumbnail { get; } = true;
 		#endregion
 
 		#region DateTime
@@ -99,25 +93,28 @@
 			TimeUsed += stopwatch is null ? TimeSpan.Zero : stopwatch.Elapsed;
 			stopwatch?.Stop();
 			stopwatch = Stopwatch.StartNew();
-			try
-			{
-				ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
-			}
-			catch (Exception ex)
-			{
-				Debug.LogException(new Exception("This may have to do how " +
-					"quickly the computer handles frames. Starting coroutine to save..", ex));
-				UnityEngine.Object.FindObjectOfType<MonoBehaviour>().StartCoroutine(Await());
-				return;
-				IEnumerator Await()
+			if (UsesThumbnail)
+				try
 				{
-					yield return new WaitForEndOfFrame();
-					ImageTexture = ScreenCapture.CaptureScreenshotAsTexture();
-					using (var stream = fileInfo.Open(FileMode.Create, FileAccess.Write))
-						new BinaryFormatter().Serialize(stream, this);
-					fileInfo.Refresh();
+					Thumbnail = Thumbnail.CreateWithScreenshot();
 				}
-			}
+				catch (Exception ex)
+				{
+					Debug.LogException(new Exception("This may have to do how " +
+						"quickly the computer handles frames. Starting coroutine to save..", ex));
+					UnityEngine.Object.FindObjectOfType<MonoBehaviour>().StartCoroutine(Await());
+					return;
+					IEnumerator Await()
+					{
+						yield return new WaitForEndOfFrame(); 
+						Thumbnail = Thumbnail.CreateWithScreenshot();
+						using (var stream = fileInfo.Open(FileMode.Create, FileAccess.Write))
+							new BinaryFormatter().Serialize(stream, this);
+						fileInfo.Refresh();
+					}
+				}
+			else
+				Thumbnail = null;
 			using (var stream = fileInfo.Open(FileMode.Create, FileAccess.Write))
 				new BinaryFormatter().Serialize(stream, this);
 			fileInfo.Refresh();

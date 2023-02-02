@@ -9,6 +9,8 @@
 	{
 		public static byte[] Compress(byte[] source, int maxWidth, int maxHeight)
 		{
+			if (source is null || source.Length <= 0)
+				return Array.Empty<byte>();
 			using (var stream = new MemoryStream(source))
 			{
 				Bitmap bitmap = new Bitmap(stream);

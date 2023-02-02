@@ -28,7 +28,7 @@
 				try
 				{
 					var info = new BlockInfo(AddEntry(slot), SaveSlot.AllFiles[i]);
-					info.SetSprite(SaveSlot.AllFiles[i].ImageTexture);
+					info.SetSprite(SaveSlot.AllFiles[i].Thumbnail.Texture);
 					info.foregroundImage.preserveAspect = true;
 					info.Text = SaveSlot.AllFiles[i].UserContents;
 					block.Add(info);
