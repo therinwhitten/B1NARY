@@ -22,6 +22,7 @@
 		private void Awake()
 		{
 			BloomIntensity = PlayerConfig.Instance.graphics.glow;
+			SceneManager.Instance.SwitchedScenes.AddPersistentListener(() => BloomIntensity = PlayerConfig.Instance.graphics.glow);
 		}
 	}
 }
