@@ -7,6 +7,12 @@
 	using B1NARY.Scripting;
 
 	/// <summary>
+	/// A delegate that is treated as an event, sending out the new value and 
+	/// its source.
+	/// </summary>
+	public delegate void UpdatedConstantValue<T>(string key, T oldValue, T newValue, ScriptDocumentInterface.Collection<T> source);
+
+	/// <summary>
 	/// This is what the script writers interact with the game, beside setting
 	/// the actual script themselves.
 	/// </summary>
@@ -16,6 +22,10 @@
 		[Serializable]
 		public sealed class Collection<T> : IDictionary<string, T>
 		{
+			/// <summary>
+			/// Sends out an event that happens when a value is changed.
+			/// </summary>
+			public event UpdatedConstantValue<T> UpdatedValue;
 			private readonly Dictionary<string, T> constants = new Dictionary<string, T>();
 			private readonly Dictionary<string, Func<T>> pointers = new Dictionary<string, Func<T>>();
 			public T this[string key]
@@ -30,13 +40,17 @@
 				}
 				set
 				{
-					if (pointers.ContainsKey(key))
+					if (pointers.TryGetValue(key, out Func<T> func))
 					{
+						T funcOldValue = func.Invoke();
 						pointers.Remove(key);
 						constants.Add(key, value);
+						UpdatedValue?.Invoke(key, funcOldValue, constants[key], this);
 						return;
 					}
+					constants.TryGetValue(key, out T oldValue);
 					constants[key] = value;
+					UpdatedValue?.Invoke(key, oldValue, constants[key], this);
 				}
 			}
 
@@ -148,10 +162,11 @@
 		}
 
 		public Collection<string> strings;
+		public const string playerNameKey = "Player Name";
 		public string PlayerName
 		{
-			get => strings["Player Name"];
-			set => strings["Player Name"] = value;
+			get => strings[playerNameKey];
+			set => strings[playerNameKey] = value;
 		}
 		public Collection<bool> bools;
 		public Collection<int> ints;
@@ -161,7 +176,7 @@
 		public ScriptDocumentInterface()
 		{
 			strings = new Collection<string>();
-			PlayerName = string.Empty;
+			PlayerName = "MC";
 			bools = new Collection<bool>()
 			{
 				["True"] = true,

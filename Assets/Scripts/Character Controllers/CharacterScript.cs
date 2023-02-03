@@ -117,13 +117,12 @@
 
 		protected override void MultitonAwake()
 		{
-			
 			animator = GetComponent<Animator>();
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
-			if (expressionController.ExpressionsList != null)
-			expressions = ToNameArray(expressionController.ExpressionsList);
+			if (expressionController != null && expressionController.ExpressionsList != null)
+				expressions = ToNameArray(expressionController.ExpressionsList);
 		}
 
 		private void OnEnable()

@@ -164,7 +164,8 @@
 		/// <param name="newKey"> The new name. </param>
 		public void ChangeName(string oldKey, string newKey)
 		{
-			var pair = charactersInScene[oldKey];
+			if (!charactersInScene.TryGetValue(oldKey, out var pair))
+				throw new KeyNotFoundException($"character '{oldKey}' not found in data!");
 			charactersInScene.Remove(oldKey);
 			pair.gameObject.name = newKey;
 			charactersInScene.Add(newKey, pair);
