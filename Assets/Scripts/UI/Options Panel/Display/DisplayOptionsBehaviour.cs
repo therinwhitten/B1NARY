@@ -18,12 +18,7 @@
 		public TMP_Dropdown themeDropdown;
 		public TMP_Dropdown languageDropdown;
 		[SerializeField] Slider glow;
-		[SerializeField] Volume volumeProfile;
-		public float BloomIntensity
-		{
-			get => volumeProfile.profile.components.Single().parameters[1].GetValue<float>();
-			set => ((VolumeParameter<float>)volumeProfile.profile.components.Single().parameters[1]).value = value;
-		}
+		private GlowVolumeInterface glowVolumeInterface;
 		
 		
 		private void Awake()
@@ -31,9 +26,10 @@
 			hentaiDropdown.value = HentaiMode ? 1 : 0;
 			hentaiDropdown.onValueChanged.AddListener(ChangedHentaiValue);
 			qualityDropdown.value = QualitySettings.GetQualityLevel();
-			glow.value = BloomIntensity;
+			glowVolumeInterface = FindObjectOfType<GlowVolumeInterface>();
+			glow.value = glowVolumeInterface.BloomIntensity;
 		}
-		public void ChangeIntensity(float value) => BloomIntensity = value;
+		public void ChangeIntensity(float value) => glowVolumeInterface.BloomIntensity = value;
 		public void ChangeLevel(int value) // Graphics Quality
 		{
 			QualitySettings.SetQualityLevel(value);

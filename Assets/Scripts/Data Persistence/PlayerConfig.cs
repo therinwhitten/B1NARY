@@ -61,6 +61,7 @@
 		public new void OnDeserialization(object sender)
 		{
 			base.OnDeserialization(sender);
+
 			// It effectively has the same ability to save either in the editor, 
 			// - or quitting the game.
 #if UNITY_EDITOR
@@ -110,6 +111,7 @@
 		public sealed class Graphics
 		{
 			public B1NARYResolution resolution = (B1NARYResolution)Screen.currentResolution;
+			public float glow = 1f;//new StoredRange(1f, new Range(0f, 10f));
 		}
 	}
 }

@@ -91,7 +91,7 @@
 			{
 				if (m_currentTarget != null)
 					return m_currentTarget;
-				Component[] components = GetComponents(typeof(Component));
+				Component[] components = GetComponents<Component>();
 				for (int i = 0; i < components.Length; i++)
 				{
 					// Get any color properties in the component that has any color parameter.
@@ -134,12 +134,12 @@
 		{
 			if (ColorEdit.Value is Color)
 				ColorEdit.Value = GetColor(imageThemeName);
-			else if (ColorEdit.Value is ColorBlock)
+			else if (ColorEdit.Value is ColorBlock block)
 				ColorEdit.Value = new ColorBlock()
 				{
-					colorMultiplier = ((ColorBlock)ColorEdit.Value).colorMultiplier,
+					colorMultiplier = block.colorMultiplier,
 					disabledColor = GetColor(buttonDisabledName),
-					fadeDuration = ((ColorBlock)ColorEdit.Value).fadeDuration,
+					fadeDuration = block.fadeDuration,
 					highlightedColor = GetColor(buttonHighlightedName),
 					normalColor = GetColor(imageThemeName),
 					pressedColor = GetColor(buttonPressedName),
@@ -254,7 +254,7 @@ namespace B1NARY.Editor
 			//var menu = new GenericMenu();
 			////menu.AddDisabledItem(new GUIContent($"Current Selection: {ColorFormat..name}"));
 			//menu.AddSeparator("");
-			//for (int i = 0; i < UIThemeHandler.CurrentlyEquippedFormat.SavedPairs.Count; i++)
+			//for (int i = 0; i < UIThemeHandler.CurrentlyEquippedFormat.SavedPairs.Amount; i++)
 			//{
 			//	int currentIterative = i;
 			//	string capturedKey = UIThemeHandler.CurrentlyEquippedFormat.SavedPairs[i].Key;

@@ -84,8 +84,11 @@ namespace B1NARY.DataPersistence.Editor
 				EditorGUILayout.HelpBox("Enter play mode to inspect data values!", MessageType.Error);
 				return;
 			}
-			if (SaveSlot.Instance.scriptDocumentInterface.strings is null)
+			if (SaveSlot.Instance is null)
+			{
+				EditorGUILayout.HelpBox("Save slot not created yet!", MessageType.Error);
 				return;
+			}
 			UpdateTab("Strings", SaveSlot.Instance.scriptDocumentInterface.strings.AsEnumerable());
 			UpdateTab("Integers", SaveSlot.Instance.scriptDocumentInterface.ints.AsEnumerable());
 			UpdateTab("Booleans", SaveSlot.Instance.scriptDocumentInterface.bools.AsEnumerable());

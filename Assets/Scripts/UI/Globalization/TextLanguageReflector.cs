@@ -78,7 +78,7 @@
 			/*
 			IEnumerator<FontLanguageChanger> enumerator = GetEnumerator();
 			while (enumerator.MoveNext())
-				for (int i = 0; i < languages.Count; i++)
+				for (int i = 0; i < languages.Amount; i++)
 					if (enumerator.Current.languageCollection.Contains(languages[i]))
 						enumerator.Current.languageCollection.AddLanguage(languages[i]);
 		}

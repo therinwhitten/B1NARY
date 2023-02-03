@@ -16,11 +16,6 @@
 		public void ChangedSliderValue(string namePath)
 		{
 			AudioMixer audioMixer = fullMixerGroup.audioMixer.FindMatchingGroups(namePath).Single().audioMixer;
-			//var paths = new Queue<string>(fullPathData.Take(fullPathData.Count - 1));
-			//AudioMixer currentMixer = fullMixerGroup.audioMixer;
-			//while (paths.Count > 0)
-			//	currentMixer = currentMixer.FindMatchingGroups(paths.Dequeue()).Single().audioMixer;
-			//audioMixer.
 			audioMixer.SetFloat("Volume", SliderArgument);
 		}
 	}
