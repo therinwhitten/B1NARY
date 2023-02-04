@@ -5,6 +5,7 @@
 	using System.Collections.Generic;
 	using System;
 	using B1NARY.Scripting;
+	using System.Runtime.Serialization;
 
 	/// <summary>
 	/// A delegate that is treated as an event, sending out the new value and 
@@ -25,6 +26,7 @@
 			/// <summary>
 			/// Sends out an event that happens when a value is changed.
 			/// </summary>
+			[field: NonSerialized]
 			public event UpdatedConstantValue<T> UpdatedValue;
 			private readonly Dictionary<string, T> constants = new Dictionary<string, T>();
 			private readonly Dictionary<string, Func<T>> pointers = new Dictionary<string, Func<T>>();
@@ -54,14 +56,40 @@
 				}
 			}
 
-			public ICollection<string> Keys => constants.Keys.Concat(pointers.Keys).ToArray();
+			/// <summary>
+			/// Determines if the key has a point or not.
+			/// </summary>
+			/// <returns> 
+			/// <see langword="true"/> if it is a pointer, <see langword="false"/> 
+			/// if its a constant, <see langword="null"/> if it is not located 
+			/// in the collection.
+			/// </returns>
+			public bool? IsPointer(string key)
+			{
+				if (constants.ContainsKey(key))
+					return false;
+				if (pointers.ContainsKey(key))
+					return true;
+				return null;
+			}
+
+			public ICollection<string> Keys
+			{
+				get
+				{
+					List<string> keys = new List<string>(constants.Keys);
+					keys.AddRange(pointers.Keys);
+					return keys;
+				}
+			}
+
 			public ICollection<T> Values
 			{
 				get
 				{
-					List<T> whyCantIJustDoItForTheSameAsKeys = new List<T>(constants.Values);
-					whyCantIJustDoItForTheSameAsKeys.AddRange(pointers.Values.Select(item => item.Invoke()));
-					return whyCantIJustDoItForTheSameAsKeys;
+					List<T> values = new List<T>(constants.Values);
+					values.AddRange(pointers.Values.Select(item => item.Invoke()));
+					return values;
 				}
 			}
 			public int Count => constants.Count + pointers.Count;

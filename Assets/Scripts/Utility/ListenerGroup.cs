@@ -26,7 +26,14 @@
 		{
 			for (int i = 0; i < actions.Length; i++)
 			{
-				actions[i]?.Invoke();
+				try
+				{
+					actions[i]?.Invoke();
+				}
+				catch (Exception ex)
+				{
+					Debug.LogException(ex);
+				}
 			}
 		};
 

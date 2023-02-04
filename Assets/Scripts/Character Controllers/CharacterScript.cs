@@ -90,9 +90,9 @@
 		}
 
 		bool ICharacterController.Selected 
-		{ 
-			get => throw new NotImplementedException(); 
-			set => throw new NotImplementedException(); 
+		{
+			get;
+			set;
 		}
 
 		public void SetPositionOverTime(float newXPosition, float time)
