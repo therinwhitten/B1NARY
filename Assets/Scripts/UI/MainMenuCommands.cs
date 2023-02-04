@@ -14,10 +14,14 @@
 		}
 		public void  QuitGame ()
 		{
-			Debug.Log("Quitting!");
+
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.ExitPlaymode();
+#else
 			Application.Quit();
+#endif
 		}
-		
+
 	}
 }
 #if UNITY_EDITOR
