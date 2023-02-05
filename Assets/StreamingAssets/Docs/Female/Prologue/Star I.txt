@@ -98,7 +98,7 @@ MC::
 {additive:off}
 {choice: Do I kick him in the nuts?}
  {
-    Assert your dominance! Kick him in the nuts!
+    Assert your dominance! Kick him in the nuts! (Causes a loop, will be fixed in Phase 1)
     [
        "EEEEEEKKKKK!!!!"
        MC::
@@ -122,7 +122,7 @@ MC::
        "That kick is making me think twice."
        MC::
        "What's that supposed to mean?!"
-       {changeScript: Female/Prologue/Star I, 131}
+       {changeScript: Female/Prologue/Star I, 153}
     ]
     Fuck that! Scream!!
     [
@@ -149,7 +149,7 @@ Masked Punk::
 "I thought that was a greeting from your domain!!!"
 "What in the hell do you want me to do?!"
 [Default]
-"Actually. What is your <i>name</i>?"
+"Anyway. What is your <i>name</i>?"
 MC::
 He points to his chest, like explaining to a child, slow and deliberate.
 Masked Punk::

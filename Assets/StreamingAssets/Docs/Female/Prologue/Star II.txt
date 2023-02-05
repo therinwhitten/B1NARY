@@ -122,7 +122,7 @@ He's been kind to me!"
 What am I doing?
 {choice: Take the blame?}
 {
-        It's my fault!
+        It's my fault! (Fix Planned for Phase 1: May Loop)
         [
             {setbool: starbed, true}
             MC::
@@ -154,7 +154,7 @@ What am I doing?
 {
     {choice: Will you take Star's offer?}
     {
-        Yes, I'm ready for whatever she has planned. 
+        Yes, I'm ready for whatever she has planned. (Phase 1 Fix Planned: Loop) 
         [
            MC::
            "Yes, if it eases his punishment. I will take whatever comes."
@@ -179,7 +179,7 @@ What am I doing?
            then close your eyes."
            {additive:off}
            MC::
-           **TODO: Close Eyes Tranisition**
+           **TODO: Close Eyes Tranisition Will be in Phase II**
            {changeBG: Black Trans}
            I close my eyes shut, suddenly nervous.
            What is going to happen to me?
@@ -285,7 +285,7 @@ What am I doing?
            "It wasn't the finger flick..."
            Asterella::
            "Well, MC. We do have some things to talk about."
-           {changeScript: Female/Prologue/Star II, 326}
+           {changeScript: Female/Prologue/Star II, 331}
         ]
         Never mind, I can't do this!
         [
@@ -567,7 +567,7 @@ She looks up at me, with the question in her eyes.
             So please, fill out the feedback form I send you, and we will add the bug reports to the trello.
             If you want, check out other decisions using the Branch Map given to testers! 
         ]
-        Nope. This is going too fast!
+        Nope. This is going too fast!  (THE FRIENDZONE)
         [
             {changeScript: Female/Prologue/Star II FriendZoned}
         ]
