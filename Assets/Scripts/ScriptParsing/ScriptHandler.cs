@@ -140,9 +140,8 @@
 			handler.StartCoroutine(MoveFowardEnumerator());
 			IEnumerator MoveFowardEnumerator()
 			{
-				while (handler.CurrentLine.Index != line)
+				while (handler.NextLine().Index < line)
 				{
-					handler.NextLine();
 					yield return new WaitForEndOfFrame();
 				}
 			}
