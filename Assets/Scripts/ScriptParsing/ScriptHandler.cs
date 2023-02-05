@@ -14,6 +14,7 @@
 	using B1NARY.DataPersistence;
 	using CharacterController = CharacterManagement.CharacterController;
 	using HideousDestructor.DataPersistence;
+	using Codice.CM.Client.Differences;
 
 	/// <summary>
 	/// A controller of the <see cref="Scripting.ScriptDocument"/> in B1NARY.
@@ -114,6 +115,7 @@
 		{
 			
 			["changescript"] = (Action<string>)(ChangeScript),
+			["changescript"] = (Action<string, string>)((path, line) => ChangeScript(path, int.Parse(line))),
 			["usegameobject"] = (Action<string>)(UseGameObject),
 			["setbool"] = (Action<string, string>)((name, value) =>
 			{
@@ -129,6 +131,21 @@
 		internal static void ChangeScript(string scriptPath)
 		{
 			Instance.InitializeNewScript(scriptPath);
+		}
+		[ForcePause]
+		internal static void ChangeScript(string scriptPath, int line)
+		{
+			ScriptHandler handler = Instance;
+			handler.InitializeNewScript(scriptPath);
+			handler.StartCoroutine(MoveFowardEnumerator());
+			IEnumerator MoveFowardEnumerator()
+			{
+				while (handler.CurrentLine.Index != line)
+				{
+					handler.NextLine();
+					yield return new WaitForEndOfFrame();
+				}
+			}
 		}
 		[ForcePause]
 		internal static void UseGameObject(string objectName)

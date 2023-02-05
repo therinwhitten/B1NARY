@@ -5,7 +5,7 @@
 	using System.Threading.Tasks;
 	using System.Collections;
 
-	public  class MainMenuCommands : MonoBehaviour 
+	public class MainMenuCommands : MonoBehaviour
 	{
 		// Buttons
 		public void NewGame()

@@ -139,19 +139,7 @@
 		/// </summary>
 		public void Load()
 		{
-			SceneManager.InstanceOrDefault.StartCoroutine(LoadEnumerator());
-			IEnumerator LoadEnumerator()
-			{
-				var enumerator = SceneManager.InstanceOrDefault.ChangeScene(scriptPosition.sceneName);
-				while (enumerator.MoveNext())
-					yield return enumerator.Current;
-				ScriptHandler.Instance.InitializeNewScript(scriptPosition.documentPath);
-				while (ScriptHandler.Instance.CurrentLine != scriptPosition.lastLine)
-				{
-					ScriptHandler.Instance.NextLine();
-					yield return new WaitForEndOfFrame();
-				}
-			}
+			SceneManager.InstanceOrDefault.StartCoroutine(scriptPosition.LoadEnumerator());
 		}
 
 		public void Dispose()
@@ -189,6 +177,18 @@
 				documentPath = ScriptHandler.Instance.ScriptDocument.DocumentPath;
 				sceneName = SceneManager.ActiveScene.name;
 				lastLine = ScriptHandler.Instance.CurrentLine;
+			}
+			public IEnumerator LoadEnumerator()
+			{
+				var enumerator = SceneManager.InstanceOrDefault.ChangeScene(sceneName);
+				while (enumerator.MoveNext())
+					yield return enumerator.Current;
+				ScriptHandler.Instance.InitializeNewScript(documentPath);
+				while (ScriptHandler.Instance.CurrentLine != lastLine)
+				{
+					ScriptHandler.Instance.NextLine();
+					yield return new WaitForEndOfFrame();
+				}
 			}
 		}
 		
