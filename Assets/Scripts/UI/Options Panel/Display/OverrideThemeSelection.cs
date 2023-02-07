@@ -9,24 +9,25 @@
 
 	public class OverrideThemeSelection : DropdownPanel<string>
 	{
-		public override int InitialValue => Values.IndexOf(ColorFormat.CurrentFormat.name);
+		public override int InitialValue => Values.ToList().IndexOf(ColorFormat.CurrentFormat.name);
 		
 		protected override void Awake()
 		{
 			base.Awake();
 		}
 
-		public override List<string> DefinedValues =>
+		public override List<KeyValuePair<string, string>> DefinedPairs =>
 			Resources.LoadAll<ColorFormat>(ColorFormat.resourcesColorThemePath)
-			.Select(format => format.name).ToList();
+			.Select(format => new KeyValuePair<string, string>(format.name, format.name)).ToList();
 		protected override void PickedChoice(int index)
 		{
-			if (ColorFormat.defaultKey == Values[index])
+			base.PickedChoice(index);
+			if (ColorFormat.defaultKey == Pairs[index].Value)
 			{
 				ColorFormat.HasOverridedTheme = false;
 				return;
 			}
-			ColorFormat.OverridedTheme = Values[index];
+			ColorFormat.OverridedTheme = Pairs[index].Value;
 		}
 	}
 }

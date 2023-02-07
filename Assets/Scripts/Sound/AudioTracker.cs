@@ -127,7 +127,6 @@
 		}
 		public void Stop(float fadeOut)
 		{
-			Debug.Log("H");
 			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume,
 				volume => audioSource.volume = volume), 0, fadeOut, () => { if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector)) garbageCollector.Stop(); });
 			StopOneShots();

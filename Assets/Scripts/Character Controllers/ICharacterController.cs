@@ -19,5 +19,6 @@
 		/// no current expression or unable to display any as it is invisible.
 		/// </summary>
 		string CurrentExpression { get; set; }
+		bool Selected { get; set; }
 	}
 }

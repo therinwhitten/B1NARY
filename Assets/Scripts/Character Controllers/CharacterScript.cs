@@ -1,6 +1,5 @@
 ﻿namespace B1NARY.CharacterManagement
 {
-	using B1NARY.Audio;
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
@@ -14,8 +13,24 @@
 	[RequireComponent(typeof(Animator))]
 	public sealed class CharacterScript : Multiton<CharacterScript>, ICharacterController
 	{
+		public static string[] ToNameArray(CubismExpressionList list)
+		{
+			return list.CubismExpressionObjects
+				.Select(param => param.name.Replace(".exp3", string.Empty)).ToArray();
+		}
+
 		private Animator animator;
 		private RectTransform m_transform;
+		public RectTransform Transform
+		{
+			get
+			{
+				if (m_transform == null)
+					m_transform = GetComponent<RectTransform>();
+				return m_transform;
+			}
+		}
+		private string[] expressions;
 		public VoiceActorHandler VoiceData { get; private set; }
 		public CubismExpressionController expressionController;
 		public string CurrentAnimation
@@ -41,16 +56,15 @@
 
 		public string CurrentExpression
 		{
-			get => expressionController.ExpressionsList.CubismExpressionObjects[expressionController.CurrentExpressionIndex].name;
+			get => expressions[expressionController.CurrentExpressionIndex];
 			set
 			{
-				string[] cubismExpressions = expressionController.ExpressionsList
-					.CubismExpressionObjects.Select(data => data.Type).ToArray();
-				int expressionIndex = Array.IndexOf(cubismExpressions, value);
+				int expressionIndex = Array.IndexOf(expressions, value);
 				if (expressionIndex == -1)
 				{
 					Debug.LogException(new IndexOutOfRangeException($"'{value}' " +
-						$"is not an expression listed in the expressions of {name}!"), gameObject);
+						$"is not an expression listed in the expressions of {name}!\n"
+						+ $"All options: {string.Join(",\n", expressions)}"), gameObject);
 					return;
 				}
 				expressionController.CurrentExpressionIndex = expressionIndex;
@@ -62,18 +76,25 @@
 
 		public Vector2 Position 
 		{ 
-			get => m_transform.position;
-			set => m_transform.position = value; 
+			get => Transform.position;
+			set => Transform.position = value; 
 		}
 		public float HorizontalPosition
 		{
-			get => m_transform.anchorMin.x;
+			get => Transform.anchorMin.x;
 			set
 			{
-				m_transform.anchorMin = new Vector2(value, m_transform.anchorMin.y);
-				m_transform.anchorMax = new Vector2(value, m_transform.anchorMax.y);
+				Transform.anchorMin = new Vector2(value, Transform.anchorMin.y);
+				Transform.anchorMax = new Vector2(value, Transform.anchorMax.y);
 			}
 		}
+
+		bool ICharacterController.Selected 
+		{
+			get;
+			set;
+		}
+
 		public void SetPositionOverTime(float newXPosition, float time)
 		{
 			if (SaveSlot.LoadingSave)
@@ -96,11 +117,12 @@
 
 		protected override void MultitonAwake()
 		{
-			m_transform = GetComponent<RectTransform>();
 			animator = GetComponent<Animator>();
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
+			if (expressionController != null && expressionController.ExpressionsList != null)
+				expressions = ToNameArray(expressionController.ExpressionsList);
 		}
 
 		private void OnEnable()
@@ -120,3 +142,16 @@
 		}
 	}
 }
+
+#if UNITY_EDITOR
+namespace B1NARY.CharacterManagement.Editor
+{
+	using UnityEditor;
+
+	[CustomEditor(typeof(CharacterScript))]
+	public class CharacterScriptEditor : ControllerEditor
+	{
+
+	}
+}
+#endif

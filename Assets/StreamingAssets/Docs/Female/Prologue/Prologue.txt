@@ -7,14 +7,14 @@
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {fadeinsound: Fast Heartbeat, 1}
-{spawnEmpty: MC}
+{spawnEmpty: MC, Player}
 {spawnChar: malesilo3, 1.5, Shirobi}
 Shirobi::
 {if: !n-b}
 { 
  "MC! She has been an intern with the company for over a year now..."
 }
-{else}
+{if: n-b}
 {
  "They have been an intern with the company for over a year now..."
 }
@@ -59,7 +59,7 @@ Old Reporter::
 {
  "There she is! MC?"
 }
-{else}
+{if: n-b}
 {
  "There they are! MC?"
 }
@@ -168,7 +168,6 @@ I obliquely notice the press being escorted out of the DIHI room.
 {fadeinsound: LabCrewLeavingFootsteps, .3}
 {fadeinsound: openclosedoor, .5}
 {fadeoutsound: LabAmbience, 5}
-{fadeoutsound: Lab Ambience Music Light, 2}
 The sound of the DIHI suddenly changes, and the feel of ionizing in the air increases.
 The whole room <i>vibrates</i>.
 There is no other word for it.
@@ -198,8 +197,8 @@ Shirobi::
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {fadeoutsound: Lab Ambience Music Light, 2} 
-{spawnEmpty: MC}
-{spawnEmpty: Shirobi}
+{spawnEmpty: MC, Player}
+{spawnEmpty: Shirobi, NPC}
 MC::
 I center myself in front of the portal to the Digital Realm.
 It feels so surreal.

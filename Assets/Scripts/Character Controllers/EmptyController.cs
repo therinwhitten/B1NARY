@@ -4,6 +4,7 @@
 	using B1NARY.Scripting;
 	using B1NARY.UI;
 	using System;
+	using UnityEditor;
 	using UnityEngine;
 
 	public class EmptyController : MonoBehaviour, ICharacterController
@@ -51,5 +52,30 @@
 			get => string.Empty;
 			set => throw new NotSupportedException();
 		}
+		public bool Selected 
+		{ 
+			get => m_selected; 
+			set 
+			{
+				if (m_selected == value)
+					return;
+				m_selected = value;
+
+			}
+		}
+		private bool m_selected = false;
 	}
 }
+
+#if UNITY_EDITOR
+namespace B1NARY.CharacterManagement.Editor
+{
+	using UnityEditor;
+
+	[CustomEditor(typeof(EmptyController))]
+	public class EmptyControllerEditor : ControllerEditor
+	{
+
+	}
+}
+#endif

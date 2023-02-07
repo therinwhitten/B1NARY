@@ -90,11 +90,6 @@
 		/// an example.
 		/// </summary>
 		public Func<bool, IEnumerator<ScriptLine>> returnValue;
-		/// <summary>
-		/// If the current dialogue should be added instead of skipping to a new
-		/// line.
-		/// </summary>
-		public bool AdditiveEnabled { get; set; } = false;
 
 		private ScriptDocument()
 		{
@@ -133,7 +128,8 @@
 			switch (line.type)
 			{
 				case ScriptLine.Type.Normal:
-					CharacterController.Instance.ActiveCharacter.SayLine(line);
+					if (CharacterController.Instance.ActiveCharacter != null)
+						CharacterController.Instance.ActiveCharacter.SayLine(line);
 					return false;
 				case ScriptLine.Type.Emotion:
 					string expression = ScriptLine.CastEmotion(line);

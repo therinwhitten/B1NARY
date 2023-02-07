@@ -4,10 +4,10 @@
 {fadeinsound: DIHI Power Down, .2}
 {fadeinsound: Laptop Lab Scene, 2}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
-{spawnEmpty: Narrator}
-{spawnEmpty: John}
-{spawnEmpty: Cindy}
-{spawnEmpty: Female Reporter}
+{spawnEmpty: Narrator, NPC}
+{spawnEmpty: John, NPC}
+{spawnEmpty: Cindy, NPC}
+{spawnEmpty: Female Reporter, NPC}
 Narrator::
 {if: !n-b}
 {
@@ -19,7 +19,7 @@ Narrator::
  {additive: off}
  Her eyes slowly close, peaceful now, devoid of any expression. 
 }
-{else}
+{if: n-b}
 {
  {additive: on}
  Finally,
@@ -49,7 +49,7 @@ It only takes a few minutes. Then, the lights in the lab comes back on.
 {
   Medics grab MC, carefully placing her into the cryotube and applying sensors to the different sections of her body.
 }
-{else}
+{if: n-b}
 {
  Medics grab MC, carefully placing them into the cryotube and applying sensors to the different sections of their body.
 }
@@ -59,7 +59,7 @@ John wipes a bit of sweat off his head.
 { 
  With a pneumatic swoosh, the stasis chamber closes with her inside.
 }
-{else}
+{if: n-b}
 { 
  With a pneumatic swoosh, the stasis chamber closes with them inside.
 }
@@ -73,7 +73,7 @@ John looks around.
 {
  At least for the young lady, Digital Horizons has spared no expense.
 } 
-{else}
+{if: n-b}
 {
  At least for this employee, Digital Horizons has spared no expense.
 }
@@ -134,7 +134,7 @@ Cliff::
  {additive: off}
  "Tests are still being conducted to ensure she is aware of her location and fully cognizant." 
 }
-{else}
+{if: n-b}
 {
  {additive: on}
  "We have confirmed their thought patterns in server 10.
@@ -180,7 +180,7 @@ and the pressure of dealing with a whole new frontier,
  will keep her most likely disorientated.
  It is crucial we keep her calm and safe. 
 }
-{else}
+{if: n-b}
 {
  will keep them most likely disorientated.
  It is crucial we keep them calm and safe. 
@@ -204,7 +204,7 @@ Cliff::
  and after Ms MC has been cleared from quarantine, we will allow her to speak to the press."
  {additive: off}
 }
-{else}
+{if: n-b}
 {
  {additive: on}
  "However,

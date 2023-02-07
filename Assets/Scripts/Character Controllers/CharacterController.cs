@@ -8,6 +8,7 @@
 	using System.Linq;
 	using B1NARY.UI;
 	using B1NARY.Scripting;
+	using UnityEngine.Audio;
 
 	public sealed class CharacterController : Singleton<CharacterController>
 	{
@@ -24,7 +25,7 @@
 		{
 			["spawnchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
-				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName))
+				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName, out _))
 					return;
 				if (Instance.SummonCharacter(gameObjectName, positionRaw, characterName))
 				{
@@ -42,7 +43,7 @@
 			}),
 			["spawnchar"] = (Action<string, string>)((gameObjectName, positionRaw) =>
 			{
-				if (Instance.InitiateCharacter(gameObjectName, positionRaw, gameObjectName))
+				if (Instance.InitiateCharacter(gameObjectName, positionRaw, gameObjectName, out _))
 					return;
 				if (Instance.SummonCharacter(gameObjectName, positionRaw, gameObjectName))
 				{
@@ -60,7 +61,7 @@
 			}),
 			["initiatechar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
-				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName))
+				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName, out _))
 					return;
 				throw new MissingReferenceException("GameObject or Character " +
 					$"named '{gameObjectName}' is not found in the scene!");
@@ -77,6 +78,13 @@
 			{
 				var pair = EmptyController.Instantiate(Instance.transform, characterName);
 				Instance.charactersInScene.Add(characterName, pair);
+			}),
+			["spawnempty"] = (Action<string, string>)((characterName, voiceName) =>
+			{
+				var pair = EmptyController.Instantiate(Instance.transform, characterName);
+				Instance.charactersInScene.Add(characterName, pair);
+				pair.emptyController.VoiceData.CurrentGroup = 
+					Instance.voiceGroup.audioMixer.FindMatchingGroups(voiceName).Single();
 			}),
 			["anim"] = (Action<string, string>)((characterName, animationName) =>
 			{
@@ -123,10 +131,11 @@
 
 		[SerializeField] private Canvas characterLayer;
 		private Transform charLayerTransform;
+		public AudioMixerGroup voiceGroup;
 
 
-		public string ActiveCharacterName { get; private set; }
-		public ICharacterController ActiveCharacter => charactersInScene[ActiveCharacterName].characterScript;
+		public ICharacterController ActiveCharacter { get; private set; }
+
 		public event Action<ICharacterController> ActiveCharacterChanged;
 		public Dictionary<string, (GameObject gameObject, ICharacterController characterScript)> charactersInScene =
 			new Dictionary<string, (GameObject gameObject, ICharacterController characterScript)>(10);
@@ -138,13 +147,14 @@
 		/// <returns> If it has successfully switched characters. </returns>
 		public bool ChangeActiveCharacter(string name)
 		{
-			if (charactersInScene.ContainsKey(name))
-			{
-				ActiveCharacterName = name;
-				ActiveCharacterChanged?.Invoke(ActiveCharacter);
-				return true;
-			}
-			return false;
+			if (!charactersInScene.ContainsKey(name))
+				return false;
+			if (ActiveCharacter != null)
+				ActiveCharacter.Selected = false;
+			ActiveCharacter = charactersInScene[name].characterScript;
+			ActiveCharacter.Selected = true;
+			ActiveCharacterChanged?.Invoke(ActiveCharacter);
+			return true;
 		}
 
 		/// <summary>
@@ -154,7 +164,8 @@
 		/// <param name="newKey"> The new name. </param>
 		public void ChangeName(string oldKey, string newKey)
 		{
-			var pair = charactersInScene[oldKey];
+			if (!charactersInScene.TryGetValue(oldKey, out var pair))
+				throw new KeyNotFoundException($"character '{oldKey}' not found in data!");
 			charactersInScene.Remove(oldKey);
 			pair.gameObject.name = newKey;
 			charactersInScene.Add(newKey, pair);
@@ -178,8 +189,10 @@
 		/// <param name="positionRaw"> The new position to assign on the X axis. Text only, will be parsed as <see cref="float"/> </param>
 		/// <param name="characterName"> The value to modify the character's name. </param>
 		/// <returns> If the <see cref="GameObject"/> is found under <paramref name="gameObjectName"/>. </returns>
-		public bool InitiateCharacter(string gameObjectName, string positionRaw, string characterName)
-			=> InitiateCharacter(gameObjectName, float.Parse(positionRaw), characterName);
+		public bool InitiateCharacter(string gameObjectName, string positionRaw, string characterName, out ICharacterController characterController)
+		{
+			return InitiateCharacter(gameObjectName, float.Parse(positionRaw), out characterController, characterName);
+		}
 
 		/// <summary>
 		/// Explicitly takes a character from disabled memory onto the scene.
@@ -188,13 +201,16 @@
 		/// <param name="xPosition"> The new position to assign on the X axis. </param>
 		/// <param name="characterName"> The value to modify the character's name. </param>
 		/// <returns> If the <see cref="GameObject"/> is found under <paramref name="gameObjectName"/>. </returns>
-		public bool InitiateCharacter(string gameObjectName, float xPosition, string characterName = "")
+		public bool InitiateCharacter(string gameObjectName, float xPosition, out ICharacterController characterController, string characterName = "")
 		{
 			Transform charTransform = charLayerTransform.Find(gameObjectName);
 			if (charTransform == null)
+			{
+				characterController = null;
 				return false;
+			}
 			CharacterScript script = charTransform.GetComponent<CharacterScript>();
-			InitiateCharacter(script.gameObject, script, xPosition, characterName);
+			characterController = InitiateCharacter(script.gameObject, script, xPosition, characterName);
 			return true;
 		}
 
@@ -205,12 +221,13 @@
 		/// <param name="object"> The character's <see cref="GameObject"/>. </param>
 		/// <param name="xPosition"> The new position to assign on the X axis. </param>
 		/// <param name="characterName"> The value to modify the character's name. </param>
-		private void InitiateCharacter(GameObject @object, CharacterScript script, float xPosition, string characterName)
+		private ICharacterController InitiateCharacter(GameObject @object, ICharacterController script, float xPosition, string characterName)
 		{
-			@object.SetActive(true);
 			ModifyGameObjectName(@object, characterName);
 			script.HorizontalPosition = xPosition;
+			@object.SetActive(true);
 			charactersInScene.Add(script.CharacterName, (@object, script));
+			return script;
 		}
 
 		/// <summary>

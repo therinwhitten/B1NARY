@@ -7,7 +7,7 @@
 	using UnityEngine;
 
 	[RequireComponent(typeof(TMP_Dropdown))]
-	public abstract class DropdownPanel<T> : MonoBehaviour
+	public abstract class DropdownPanel<TValue> : MonoBehaviour
 	{
 		/// <summary>
 		/// The <see cref="dropdown"/>'s value.
@@ -19,13 +19,13 @@
 		}
 		/// <summary>
 		/// Uses <see cref="CurrentSelection"/> to get the current value of 
-		/// <see cref="Values"/>
+		/// <see cref="Pairs"/>
 		/// </summary>
-		public T CurrentValue => Values[CurrentSelection];
+		public TValue CurrentValue => Pairs[CurrentSelection].Value;
 		/// <summary>
 		/// When the value changes; Equivalent to <see cref="TMP_Dropdown.onValueChanged"/>
 		/// </summary>
-		public event Action<int> ChangedValue;
+		public event Action<TValue, int> ChangedValue;
 		/// <summary>
 		/// What is the value when it first starts up, so it wont start with a 0?
 		/// </summary>
@@ -34,40 +34,28 @@
 		[HideInInspector]
 		public TMP_Dropdown dropdown;
 		/// <summary>
-		/// What is shown directly to the dropdown. Keep in mind, this should have
-		/// the same count as <see cref="Values"/>!
-		/// </summary>
-		public virtual List<string> Visuals => Values.Select(val => val.ToString()).ToList();
-		/// <summary>
 		/// When the object is first initialized, and doesn't have any data to
 		/// start with.
 		/// </summary>
-		public virtual List<T> DefinedValues => new List<T>();
+		public virtual List<KeyValuePair<string, TValue>> DefinedPairs => new List<KeyValuePair<string, TValue>>();
 		/// <summary>
 		/// The Currently stored values.
 		/// </summary>
-		public List<T> Values
-		{ 
-			get
-			{
-				if (m_values is null)
-					return new List<T>();
-				return m_values;
-			}
-			set => m_values = value;
+		public List<KeyValuePair<string, TValue>> Pairs
+		{
+			get => m_pairs;
+			set => m_pairs = value;
 		}
-		protected List<T> m_values;
+		protected List<KeyValuePair<string, TValue>> m_pairs;
+		public IEnumerable<string> Keys => Pairs.Select(pair => pair.Key);
+		public IEnumerable<TValue> Values => Pairs.Select(pair => pair.Value);
 
 		protected virtual void Awake()
 		{
-			if (m_values is null)
-				m_values = DefinedValues;
-			if (Values.Count != Visuals.Count)
-				Debug.LogError("The length of the values does not match the visuals array!");
+			m_pairs = DefinedPairs;
 			DefineDropdown();
 			dropdown.value = InitialValue;
-			ChangedValue = PickedChoice;
-			dropdown.onValueChanged.AddListener(ChangedValue.Invoke);
+			dropdown.onValueChanged.AddListener(PickedChoice);
 		}
 
 		/// <summary>
@@ -77,13 +65,39 @@
 		{
 			dropdown = GetComponent<TMP_Dropdown>();
 			dropdown.ClearOptions();
-			dropdown.AddOptions(Visuals);
+			dropdown.AddOptions(Pairs.Select(pair => pair.Key).ToList());
 		}
 
 		/// <summary>
 		/// What to do when the dropdown changes value.
 		/// </summary>
 		/// <param name="index"></param>
-		protected abstract void PickedChoice(int index);
+		protected virtual void PickedChoice(int index)
+		{
+			CurrentSelection = index;
+			ChangedValue?.Invoke(CurrentValue, index);
+		}
 	}
 }
+#if UNITY_EDITOR
+namespace B1NARY.UI.Editor
+{
+	using UnityEditor;
+	using UnityEngine;
+
+	public abstract class DropDownEditor<T> : Editor
+	{
+		private DropdownPanel<T> panel;
+		public override void OnInspectorGUI()
+		{
+			panel = (DropdownPanel<T>)target;
+			for (int i = 0; i < panel.Pairs.Count; i++)
+			{
+				Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20f);
+				EditorGUI.LabelField(new Rect(fullRect) { width = (fullRect.width / 2f) - 1f }, panel.Pairs[i].Key);
+				EditorGUI.LabelField(new Rect(fullRect) { xMin = (fullRect.width / 2f) + 1f }, panel.Pairs[i].Value.ToString());
+			}
+		}
+	}
+}
+#endif

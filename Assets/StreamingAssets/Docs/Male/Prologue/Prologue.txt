@@ -6,14 +6,14 @@
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {spawnChar: malesilo3, 2, Shirobi}
-{spawnEmpty: MC}
+{spawnEmpty: MC, Player}
 {fadeinsound: Fast Heartbeat, 1}
 Shirobi::
 {if: !n-b}
 {
 	"He has been an intern with the company for over a year now..."
 }
-{else}
+{if: n-b}
 {
  "They have been an intern with the company for over a year now..."
 }
@@ -65,7 +65,7 @@ My eyes get a full blast of white light from those high tech cameras.
 The light erases my distractions, and I attempt to blink away the brightness.
 {spawnChar: malesilo, 2, Smug Reporter}
 {anim: Smug Reporter, kime1}
-{moveChar: Smug Reporter, 75}
+{moveChar: Smug Reporter, .75}
 Smug Reporter::
 "MC! 
 Are you ok? You look unsteady."
@@ -115,14 +115,14 @@ I hear a chuckle somewhere... The voice sounds familiar.
 Damn lights!
 {moveChar: Cliff, -1}
 {moveChar: Smug Reporter, 2}
-{moveChar: Shirobi, .65}
+{moveChar: Shirobi, .55}
 Shirobi::
 {anim: Shirobi, Glasses} 
 {if: !n-b}
 {
  "Well, at least he seems to have calmed down a bit. I was starting to worry, to be frank."
 }
-{else}
+{if: n-b}
 {
  "Well, at least they seem to have calmed down. I was starting to worry, to be frank." 
 }
@@ -209,8 +209,8 @@ I walk to the center of the room, looking straight at the chair.
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {fadeoutsound: Lab Ambience Music Light, 2} 
-{spawnEmpty: MC}
-{spawnEmpty: Shirobi}
+{spawnEmpty: MC, Player}
+{spawnEmpty: Shirobi, NPC}
 MC::
 It vibrates my bones as I get closer.
 The DIHI fills my whole vision.
@@ -218,7 +218,7 @@ The DIHI fills my whole vision.
 It really feels like a portal to another world,
 like I really am getting isekaied. 
 {additive: off}
-And just that fast, the reality of my situation hit's home. 
+And just that fast, the reality of my situation hits home. 
 I take the last few steps, staring down at the DIHI. 
 It's just four days... Four days of being in a server.
 Right now, I am looking at the culmination of a decade of research in front of me.

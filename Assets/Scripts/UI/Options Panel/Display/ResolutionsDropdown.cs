@@ -6,21 +6,41 @@
 
 	public sealed class ResolutionsDropdown : DropdownPanel<Resolution>
 	{
-		public override List<string> Visuals => Values
-			.Select(res => $"{res.width}x{res.height} {res.refreshRate}Hz")
-			.Reverse()
-			.ToList();
-		public override List<Resolution> DefinedValues =>
-			Screen.resolutions
-			.Where(resolution => resolution.refreshRate == Screen.currentResolution.refreshRate)
-			.Reverse().ToList();
-		public override int InitialValue => Values.IndexOf(Screen.currentResolution);
+		public override List<KeyValuePair<string, Resolution>> DefinedPairs
+		{
+			get
+			{
+				return B1NARYResolution.MonitorResolutions
+					.Where(resolution => resolution.RefreshRate == Screen.currentResolution.refreshRate)
+					.OrderByDescending(resolution => (resolution.Width * 100) + resolution.Height)
+					.Select(resolution => new KeyValuePair<string, Resolution>(resolution.ToString(), resolution))
+					.ToList();
+			}
+		}
+
+		protected override void Awake()
+		{
+			base.Awake();
+		}
+		public override int InitialValue => Values.ToList().IndexOf(Screen.currentResolution);
 
 		protected override void PickedChoice(int index)
 		{
-			Resolution resolution = CurrentValue;
-			Screen.SetResolution(resolution.width, resolution.height,
-				Screen.fullScreenMode, resolution.refreshRate);
+			base.PickedChoice(index);
+			B1NARYResolution.ActiveResolution = (B1NARYResolution)CurrentValue;
 		}
 	}
 }
+#if UNITY_EDITOR
+namespace B1NARY.UI.Editor
+{
+	using UnityEngine;
+	using UnityEditor;
+
+	[CustomEditor(typeof(ResolutionsDropdown))]
+	public sealed class ResolutionsDropdownEditor : DropDownEditor<Resolution>
+	{
+
+	}
+}
+#endif

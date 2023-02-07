@@ -91,7 +91,7 @@
 		/// <summary>
 		/// Stores the data on the harddrive. Doesn't affect memory.
 		/// </summary>
-		/// <param name="type">The type of info, aka <see cref="bool"/>, <see cref="float"/>, etc.</param>
+		/// <param name="type">The type of fileInfo, aka <see cref="bool"/>, <see cref="float"/>, etc.</param>
 		/// <param name="name">The of the data. No spaces. </param>
 		/// <param name="input">The value of the data type. </param>
 		private static void SaveData(int type, string name, object input)

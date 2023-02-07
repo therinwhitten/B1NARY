@@ -5,7 +5,7 @@
 {spawnChar: malesilo3, 2, Shirobi}
 {spawnChar: malesilo, -1, Cliff}
 {spawnChar: femalesilo, -1.5, Becks}
-{spawnEmpty: Narrator}
+{spawnEmpty: Narrator, NPC}
 Narrator::
 The window changes, becoming dark as midnight.
 No one dares make a sound.
@@ -21,7 +21,7 @@ Shirobi::
 {
  "I promised her, Sir. That she would be ok.... I told her it would just be four days. And..."
 }
-{else}
+{if: n-b}
 {
  "I promised them, Sir. That they would be ok... I told them it would only be four days. And..."
 }
@@ -33,7 +33,7 @@ Shirobi::
 {
  <i>Crying won't bring her back safely...</i>
 }
-{else}
+{if: n-b}
 {
  <i>Crying won't bring them back safely...</i>
 }
@@ -44,7 +44,7 @@ Is it possible just for the DIHI to just...
 {
  scramble her?"
 }
-{else}
+{if: n-b}
 {
  scramble them?"
 }
@@ -65,7 +65,7 @@ Cliff::
 {
  "She's just a kid dammit!!"
 }
-{else}
+{if: n-b}
 {
  They're just a kid dammit!!"
 }
@@ -88,7 +88,7 @@ Cliff::
 {
  We've got four days to find her.
 }
-{else}
+{if: n-b}
 {
  We've got four days to find them.
 }
@@ -176,7 +176,7 @@ Shirobi::
 {
  "Sir, do we even have a chance to find her in there? I mean she is the <i>only</i> human in the internet but..."
 }
-{else}
+{if: n-b}
 {
  "Sir, do we even have a chance to find them? I mean they are the <i>only</i> human in the internet but..."
 }
@@ -193,7 +193,7 @@ Cliff::
  "I pray she lands somewhere semi-safe."
  "Will ransomware or malware hurt her? There are so many unknown dangers that we have no clue on..."
 }
-{else}
+{if: n-b}
 {
  {additive: on}
  "It's possible, 
@@ -227,7 +227,7 @@ Cliff::
  I hope that's enough to find her."
  {additive: off} 
 }
-{else}
+{if: n-b}
 {
  "MC, they need us."  
  {additive: on}
@@ -259,7 +259,7 @@ Cliff::
 {
  "If we can't find her by then, there will be some serious backlash on this."
 }
-{else}
+{if: n-b}
 {
  "If we can't find them by then, there will be some serious backlash on this."
 }
@@ -281,7 +281,7 @@ Narrator::
  From her profile, she is pretty competent.
  He hopes that whereever she is, she will be smart enough to pace herself and make careful decisions...
 }
-{else}
+{if: n-b}
 {
  As Cliff continues to push out instructions to his team, he couldn't help but feel a pang of incredible sadness. 
  The kid is fresh out of college.
@@ -294,6 +294,10 @@ Narrator::
  From their profile, they are competent.
  He hopes that whereever MC is, they will be smart enough to pace herself and make careful decisions...
 }
+Narrator::
+WARNING! 
+NEXT SCENE CONTAINS FLASHING LIGHTS AND CAN INDUCE NAUSEA OR AN EPILEPTIC SEIZURE. 
+TRANSITION STARTS NOW.
 {fadeoutsound: Discovery Music, 5}
 {fadeoutsound: Laptop Lab Scene, 5}
 {changeScript: Female/Prologue/Denizen}

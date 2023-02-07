@@ -4,7 +4,7 @@
 {fadeinsound: fireplace, 1}
 {spawnChar: szycrotic default, -.5, Szycrotic}
 {spawnChar: star nightgown, 1.3, Asterella}
-{spawnEmpty: MC}
+{spawnEmpty: MC, Player}
 {anim: Szycrotic, idle}
 {moveChar: Szycrotic, .3}
 MC::
@@ -62,7 +62,7 @@ Szycrotic casually retorts.
  {additive:off} 
  [Default]
 }
-{else}
+{if: !n-b}
 {
  Szycrotic::
  "Look woman, she wanted to see the garden. Don't blame me."
@@ -88,7 +88,7 @@ Asterella makes eye contact with me. I feel the red rushing to my cheeks.
  "She <i>is</i> cute."
  "So cute, I could just <i>eat</i> her up!"
 }
-{else}
+{if: n-b}
 {
  Asterella::
  [Happy]
@@ -122,7 +122,7 @@ He's been kind to me!"
 What am I doing?
 {choice: Take the blame?}
 {
-        It's my fault!
+        It's my fault! (Fix Planned for Phase 1: May Loop)
         [
             {setbool: starbed, true}
             MC::
@@ -150,11 +150,11 @@ What am I doing?
             Well. If there is such a thing.
         ]
     }
-{if: starbed, true}
+{if: starbed}
 {
     {choice: Will you take Star's offer?}
     {
-        Yes, I'm ready for whatever she has planned. 
+        Yes, I'm ready for whatever she has planned. (Phase 1 Fix Planned: Loop) 
         [
            MC::
            "Yes, if it eases his punishment. I will take whatever comes."
@@ -179,7 +179,7 @@ What am I doing?
            then close your eyes."
            {additive:off}
            MC::
-           **TODO: Close Eyes Tranisition**
+           **TODO: Close Eyes Tranisition Will be in Phase II**
            {changeBG: Black Trans}
            I close my eyes shut, suddenly nervous.
            What is going to happen to me?
@@ -237,7 +237,7 @@ What am I doing?
              [Angry]
              "Star, if she does <i>anything.</i>"
            }
-           {else}
+           {if: n-b}
            {
              Szycrotic::
              [Angry]
@@ -285,7 +285,7 @@ What am I doing?
            "It wasn't the finger flick..."
            Asterella::
            "Well, MC. We do have some things to talk about."
-           {changeScript: Female/Prologue/Star II, 326}
+           {changeScript: Female/Prologue/Star II, 331}
         ]
         Never mind, I can't do this!
         [
@@ -308,7 +308,7 @@ Asterella raises her eyebrows, standing up.
  Asterella::
  "She seems pretty protective of you. Do I need to increase the punishment?"
 }
-{else}
+{if: n-b}
 {
  Asterella::
  "They seem pretty protective of you, Szy. Should I increase the punishment?"
@@ -561,9 +561,13 @@ She looks up at me, with the question in her eyes.
             She looks at me with soft eyes. 
             "It will be my first time with a woman."
             "Be Gentle."
-            {changeScript: Female/Prologue/Star II Hentai}
+            MC:: 
+            Phase 1 is complete. 
+            I appreciate you guys testing this for me. 
+            So please, fill out the feedback form I send you, and we will add the bug reports to the trello.
+            If you want, check out other decisions using the Branch Map given to testers! 
         ]
-        Nope. This is going too fast!
+        Nope. This is going too fast!  (THE FRIENDZONE)
         [
             {changeScript: Female/Prologue/Star II FriendZoned}
         ]

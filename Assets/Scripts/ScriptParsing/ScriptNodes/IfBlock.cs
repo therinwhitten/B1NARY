@@ -21,17 +21,19 @@
 		{
 			get
 			{
-				string argumentName = ScriptLine.CastCommand(rootLine).arguments.Single();
+				string[] argumentName = ScriptLine.CastCommand(rootLine).arguments;
+				if (argumentName.Length > 1 || argumentName.Length <= 0)
+					throw new IndexOutOfRangeException($"This should have only one parameter, and it is for the name of the parameter!");
 				bool output = true;
-				while (argumentName[0] == '!') // Inverter
+				while (argumentName[0][0] == '!') // Inverter
 				{
 					output = !output;
-					argumentName = argumentName.Substring(1);
+					argumentName[0] = argumentName[0].Substring(1);
 				}
 
-				if (SaveSlot.Instance.data.bools.TryGetValue(argumentName, out bool value))
+				if (SaveSlot.Instance.scriptDocumentInterface.bools.TryGetValue(argumentName[0], out bool value))
 					return output == value;
-				throw new MissingFieldException($"{argumentName} doesn't exist in the saves!");
+				throw new MissingFieldException($"{argumentName[0]} doesn't exist in the saves!");
 			}
 		}
 

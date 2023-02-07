@@ -376,6 +376,8 @@ Transform:
   m_Children:
   - {fileID: 759374844177271337}
   - {fileID: 759374845123968905}
+  - {fileID: 759374845073071467}
+  - {fileID: 759374844597107451}
   m_Father: {fileID: 759374844374296154}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1349,6 +1351,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 759374844374296154}
+  - component: {fileID: 2199669439950191023}
   m_Layer: 5
   m_Name: Load Game Panel
   m_TagString: UI
@@ -1379,6 +1382,103 @@ RectTransform:
   m_AnchoredPosition: {x: 70.84, y: 41.451}
   m_SizeDelta: {x: 1291.8427, y: 886.99915}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!82 &2199669439950191023
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759374844374296155}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 704485296697243133, guid: e149b04e0d2c2174a925c5eaaf359315,
+    type: 2}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &759374844597107448
 GameObject:
   m_ObjectHideFlags: 0
@@ -1397,7 +1497,7 @@ GameObject:
   - component: {fileID: 759374844597107440}
   - component: {fileID: 759374844597107443}
   m_Layer: 5
-  m_Name: No Button
+  m_Name: Cancel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1415,12 +1515,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 759374844831116974}
-  m_Father: {fileID: 759374845123968905}
+  m_Father: {fileID: 759374843588079491}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -103.2, y: 204.2}
+  m_AnchoredPosition: {x: -103.2, y: -59.500015}
   m_SizeDelta: {x: 101.614746, y: 35.137634}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &759374844597107446
@@ -1480,6 +1580,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2199669439950191023}
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: deb62b88140f4d34295987cf97f56521,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1551,7 +1663,7 @@ MonoBehaviour:
   hasOnStepComplete: 0
   hasOnComplete: 1
   hasOnTweenCreated: 0
-  hasOnRewind: 1
+  hasOnRewind: 0
   onStart:
     m_PersistentCalls:
       m_Calls: []
@@ -1584,18 +1696,6 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 759374843588079516}
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: deb62b88140f4d34295987cf97f56521,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2136,6 +2236,10 @@ MonoBehaviour:
   slot: {fileID: 8949942337260085066, guid: d9ef429cc954bca4590a6e9d7c786822, type: 3}
   row: {fileID: 4305803851846325299, guid: f49037a5a3066b941b735b356ed345cb, type: 3}
   objectsPerRow: 3
+  panels:
+  - {fileID: 759374843588079488}
+  - {fileID: 0}
+  - {fileID: 0}
   plus: {fileID: 2800000, guid: 7fa4ff0364fbb95499cf510b95ff67fb, type: 3}
 --- !u!1 &759374844831116975
 GameObject:
@@ -2459,7 +2563,7 @@ GameObject:
   - component: {fileID: 759374845073071456}
   - component: {fileID: 759374845073071459}
   m_Layer: 5
-  m_Name: Yes Button
+  m_Name: Confirm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2477,12 +2581,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 759374844920211834}
-  m_Father: {fileID: 759374845123968905}
+  m_Father: {fileID: 759374843588079491}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 104.4, y: 204.2}
+  m_AnchoredPosition: {x: 104.4, y: -59.500015}
   m_SizeDelta: {x: 101.614746, y: 35.137634}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &759374845073071462
@@ -2542,6 +2646,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2199669439950191023}
+        m_MethodName: PlayOneShot
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: deb62b88140f4d34295987cf97f56521,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -2613,7 +2729,7 @@ MonoBehaviour:
   hasOnStepComplete: 0
   hasOnComplete: 1
   hasOnTweenCreated: 0
-  hasOnRewind: 1
+  hasOnRewind: 0
   onStart:
     m_PersistentCalls:
       m_Calls: []
@@ -2651,18 +2767,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 759374843588079516}
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 8300000, guid: deb62b88140f4d34295987cf97f56521,
-            type: 3}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   onTweenCreated:
     m_PersistentCalls:
       m_Calls: []
@@ -2678,7 +2782,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
         m_CallState: 2
   targetIsSelf: 1
   targetGO: {fileID: 0}
@@ -2935,8 +3039,6 @@ RectTransform:
   m_Children:
   - {fileID: 759374843478907367}
   - {fileID: 759374844883987729}
-  - {fileID: 759374845073071467}
-  - {fileID: 759374844597107451}
   m_Father: {fileID: 759374843588079491}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

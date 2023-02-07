@@ -1,7 +1,7 @@
 {changeScene: Times Square}
 {fadeinsound: Times Square Crowd, 1}
 {colorformat: Default}
-{spawnEmpty: Narrator}
+{spawnEmpty: Narrator, NPC}
 Narrator::
 New York City in Times Square: the year is 2040. Midday on a blistering Summer Day.
 On any normal day, most people can be seen milling about, heading to work, the cacophony of vehicles, pedestrians, and advertisements matching beat in perfect harmony.
@@ -33,7 +33,7 @@ Isn't VR good enough for people?"
 Narrator::
 She shakes her head and sighs.
 {anim: Female Bystander, Noarmscrossed}
-{spawnChar: malesilo2, 2,Male Bystander 2}
+{spawnChar: malesilo2, 2, Male Bystander 2}
 {moveChar: Male Bystander 2, 0.75}
 {anim: Male Bystander 2, kime1}
 Male Bystander 2::
@@ -110,11 +110,11 @@ Let's find out together. LIVE!"
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
 {spawnChar: malesilo, -1, John}
-{spawnEmpty: Cindy}
-{spawnEmpty: Male Bystander}
-{spawnEmpty: Male Bystander 2} 
-{spawnEmpty: Female Bystander}
-{spawnEmpty: Narrator}
+{spawnEmpty: Cindy, NPC}
+{spawnEmpty: Male Bystander, NPC}
+{spawnEmpty: Male Bystander 2, NPC} 
+{spawnEmpty: Female Bystander, NPC}
+{spawnEmpty: Narrator, NPC}
 {anim: John, kime2}
 {moveChar: John, .30}
 Narrator::
@@ -170,7 +170,7 @@ John::
 Narrator::
 John sidesteps awkwardly as a few lab techs push past him in front of the camera.
 {spawnChar: malesilo2, 1.4, LabTech0}
-{spawnChar: malesilo3, 1.4, LabTech1}
+{spawnChar: malesilo1, 1.4, LabTech1}
 {moveChar: LabTech0, .5}
 {moveChar: LabTech1, .75}
 John::

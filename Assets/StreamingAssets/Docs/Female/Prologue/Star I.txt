@@ -5,7 +5,10 @@
 {fadeoutsound: Ears Ringing, 15}
 {fadeoutsound: Normal Heartbeat Prologue, 5}
 {spawnChar: szycrotic default, 2, Masked Punk}
-{spawnEmpty: MC}
+{spawnEmpty: Narrator, NPC}
+{spawnEmpty: MC, Player}
+Narrator::
+FLASHING LIGHTS SCENE IS COMPLETE. 
 MC::
 With desperation, I shove all that is me back into my head. 
 {additive: on}
@@ -87,7 +90,7 @@ MC::
 I am speechless. Who is this?!
 {anim: Masked Punk, wind idle}
 Masked Punk::
-[annoyed]
+[Angry]
 {additive: on}
 "Anyway.
 Who the <i>fuck</i> are you?"
@@ -95,7 +98,7 @@ MC::
 {additive:off}
 {choice: Do I kick him in the nuts?}
  {
-    Assert your dominance! Kick him in the nuts!
+    Assert your dominance! Kick him in the nuts! (Causes a loop, will be fixed in Phase 1)
     [
        "EEEEEEKKKKK!!!!"
        MC::
@@ -119,7 +122,7 @@ MC::
        "That kick is making me think twice."
        MC::
        "What's that supposed to mean?!"
-       {changeScript: Female/Prologue/Star I, 131}
+       {changeScript: Female/Prologue/Star I, 153}
     ]
     Fuck that! Scream!!
     [
@@ -146,7 +149,7 @@ Masked Punk::
 "I thought that was a greeting from your domain!!!"
 "What in the hell do you want me to do?!"
 [Default]
-"Actually. What is your <i>name</i>?"
+"Anyway. What is your <i>name</i>?"
 MC::
 He points to his chest, like explaining to a child, slow and deliberate.
 Masked Punk::
@@ -208,7 +211,7 @@ Szycrotic::
  MC::
  "You don't go around scaring people like that! Ok?"
 }
-{else}
+{if: !n-b}
 {
  MC::
  "You don't go about scaring women walking around at night!"
@@ -241,7 +244,7 @@ He motions to the manor, down the path not far off.
 Szycrotic::
 "Come. I will take you to Star, and we will figure this all out."
 {moveChar: Szycrotic, .3}
-{fadeinsound: Walking On Gravel, 1}
+{fadeinsound: Walking on Gravel, 1}
 MC::
 He starts off at a leisurely pace, enough for a short woman to follow.
 (<i>Sigh</i>)

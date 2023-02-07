@@ -35,7 +35,7 @@
 		/// </returns>
 		public static List<(string value, bool isTag)> SplitDialogue(string original, string newString)
 		{
-			var parsableText = string.IsNullOrEmpty(original) 
+			var parsableText = string.IsNullOrEmpty(original)
 				? new List<(string value, bool isTag)>()
 				: new List<(string value, bool isTag)>() { (original, true) };
 			var activeSlot = new StringBuilder();
@@ -57,22 +57,24 @@
 				parsableText.Add((activeSlot.ToString(), false));
 			return parsableText;
 		}
-		public static IEnumerable<KeyValuePair<string, Delegate>> Commands = new Dictionary<string, Delegate>()
+		public static CommandArray Commands = new CommandArray
 		{
 			["textspeed"] = (Action<string>)(speedRaw =>
 			{
 				Instance.TicksPerCharacter = int.Parse(speedRaw);
 			}),
-			/* There is already a system in ScriptHandler that handles more of it.
-			["additive"] = (Action<string>)(str =>
+			["additive"] = (Action<string>)(boolRaw =>
 			{
-				if (ScriptDocument.enabledHashset.Contains(str))
-					Instance.additiveTextEnabled = true;
-				else if (ScriptDocument.disabledHashset.Contains(str))
-					Instance.additiveTextEnabled = false;
-				else 
-					throw newString Exception();
-			}),*/
+				bool setting;
+				boolRaw = boolRaw.ToLower().Trim();
+				if (ScriptDocument.enabledHashset.Contains(boolRaw))
+					setting = true;
+				else if (ScriptDocument.disabledHashset.Contains(boolRaw))
+					setting = false;
+				else
+					throw new InvalidCastException(boolRaw);
+				Instance.Additive = setting;
+			}),
 		};
 
 		public int TicksPerCharacter
@@ -94,11 +96,21 @@
 		/// line. Uses <see cref="ScriptHandler.ScriptDocument"/> in order to store
 		/// the field.
 		/// </summary>
-		public bool AdditiveTextEnabled
+		public bool Additive
 		{
-			get => ScriptHandler.Instance.ScriptDocument.AdditiveEnabled;
-			set => ScriptHandler.Instance.ScriptDocument.AdditiveEnabled = value;
+			get => m_additive;
+			set
+			{
+				if (m_additive == value)
+					return;
+				m_additive = value;
+				if (value)
+				{
+					CurrentText = string.Empty;
+				}
+			}
 		}
+		private bool m_additive = false;
 		public TMP_Text speakerBox, textBox;
 
 
@@ -114,8 +126,8 @@
 		}
 		private void ChangeSpeakerName(ICharacterController characterController)
 		{
-			if (characterController.CharacterName == "MC" && !string.IsNullOrEmpty(SaveSlot.Instance.data.PlayerName))
-				SpeakerName = SaveSlot.Instance.data.PlayerName;
+			if (characterController.CharacterName == "MC")
+				SpeakerName = SaveSlot.Instance.scriptDocumentInterface.PlayerName;
 			else
 				SpeakerName = characterController.CharacterName;
 		}
@@ -136,8 +148,8 @@
 		/// If both speaker and line are both finished playing and it should
 		/// automatically move to the next line.
 		/// </summary>
-		public bool AutoSkip 
-		{ 
+		public bool AutoSkip
+		{
 			get => m_autoSkip;
 			set
 			{
@@ -210,8 +222,8 @@
 
 		private string NewLine()
 		{
-			if (AdditiveTextEnabled)
-				return CurrentText + ' ';
+			if (Additive)
+				return CurrentText + (string.IsNullOrEmpty(CurrentText) || CurrentText.EndsWith(" ") ? "" : " ");
 			return string.Empty;
 		}
 
@@ -231,7 +243,7 @@
 		public void Say(string message)
 		{
 			if (!DateTimeTracker.IsAprilFools)
-				StopSpeaking(!AdditiveTextEnabled);
+				StopSpeaking(null);
 			speakCoroutine = new CoroutineWrapper(this, Speaking(message)).Start();
 		}
 
@@ -273,7 +285,7 @@
 
 		/// <summary>
 		/// A coroutine that slowly type-writes the current text, with 
-		/// <see cref="AdditiveTextEnabled"/>. kept in mind, as it can add over
+		/// <see cref="Additive"/>. kept in mind, as it can add over
 		/// previous text.
 		/// </summary>
 		/// <param name="speech"> The newString text to add to. </param>
@@ -282,8 +294,7 @@
 		{
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
-			if (FinalText.Contains("MC") && !string.IsNullOrEmpty(SaveSlot.Instance.data.PlayerName))
-				FinalText = FinalText.Replace("MC", SaveSlot.Instance.data.PlayerName);
+			FinalText = FinalText.Replace("MC", SaveSlot.Instance.scriptDocumentInterface.PlayerName);
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];
@@ -305,5 +316,42 @@
 			}
 			CurrentText = FinalText;
 		}
+
+		public void QuickSave()
+		{
+			SaveSlot.Instance.Serialize();
+		}
+		public void QuickLoad()
+		{
+			SaveSlot.QuickLoad();
+		}
 	} 
 }
+#if UNITY_EDITOR
+namespace B1NARY.Editor
+{
+	using B1NARY.UI;
+	using System.Threading.Tasks;
+	using UnityEditor;
+	using UnityEngine;
+
+	[CustomEditor(typeof(DialogueSystem))]
+	public class DialogueSystemEditor : Editor
+	{
+		private DialogueSystem dialogueSystem;
+		private void Awake()
+		{
+			dialogueSystem = (DialogueSystem)target;
+		}
+		public override void OnInspectorGUI()
+		{
+			//EditorGUILayout.LabelField("Current Font: " + dialogueSystem.CurrentFontAsset.name);
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.speakerBox)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.textBox)));
+			dialogueSystem.TicksPerCharacter = DirtyAuto.Slider(target, new GUIContent("Ticks Waited Per Character", "How long the text box will wait per character within milliseconds, with 0 being instantaneous. 30 by default."), dialogueSystem.TicksPerCharacter, 0, 200);
+			serializedObject.ApplyModifiedProperties();
+		}
+
+	}
+}
+#endif
