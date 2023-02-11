@@ -140,10 +140,12 @@
 			handler.StartCoroutine(MoveFowardEnumerator());
 			IEnumerator MoveFowardEnumerator()
 			{
-				while (handler.NextLine().Index < line)
+				do
 				{
+					handler.NextLine();
 					yield return new WaitForEndOfFrame();
 				}
+				while (handler.CurrentLine.Index < line);
 			}
 		}
 		[ForcePause]
@@ -271,18 +273,18 @@
 		/// Plays lines until it hits a normal dialogue or similar.
 		/// </summary>
 		/// <returns> The <see cref="ScriptLine"/> it stopped at. </returns>
-		public ScriptLine NextLine()
+		public void NextLine()
 		{
 			if (ShouldPause)
 			{
 				Debug.Log($"Cannot progress to next line due to {nameof(ShouldPause)} is active\n{m_pauseIterations} Instance(s)");
-				return default;
+				return;// default;
 			}
 			if (scriptDocument == null)
-				return default;
+				return;// default;
 			try
 			{
-				return scriptDocument.NextLine();
+				scriptDocument.NextLine();
 			}
 			catch (IndexOutOfRangeException)
 			{
