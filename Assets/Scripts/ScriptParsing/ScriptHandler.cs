@@ -14,7 +14,6 @@
 	using B1NARY.DataPersistence;
 	using CharacterController = CharacterManagement.CharacterController;
 	using HideousDestructor.DataPersistence;
-	using Codice.CM.Client.Differences;
 
 	/// <summary>
 	/// A controller of the <see cref="Scripting.ScriptDocument"/> in B1NARY.

@@ -82,79 +82,79 @@
 		 // Logrithmic Volume Pairs. Need these set up like this. Slider Pairs in inspector need to be around .1 for lowest with 1 the highest. If 0, will break channel.
 		void SetMasterVolume(float value)
 		{
-			mixer.SetFloat(MIXER_MASTER, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_MASTER, Mathf.Log10(value) * 20);
 		}
 		 void SetMusicVolume(float value)
 		{
-			mixer.SetFloat(MIXER_MUSIC, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_MUSIC, Mathf.Log10(value) * 20);
 		}
 		 void SetSFXVolume(float value)
 		{
-			mixer.SetFloat(MIXER_SFX, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_SFX, Mathf.Log10(value) * 20);
 		}
 		void SetUIVolume(float value)
 		{
-			mixer.SetFloat(MIXER_UI, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_UI, Mathf.Log10(value) * 20);
 		}
 		void SetPlayerVolume(float value)
 		{
-			mixer.SetFloat(MIXER_PLAYER, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_PLAYER, Mathf.Log10(value) * 20);
 		}
 		 void SetNPCVolume(float value)
 		{
-			mixer.SetFloat(MIXER_NPC, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_NPC, Mathf.Log10(value) * 20);
 		}
 		 void SetCameosVolume(float value)
 		{
-			mixer.SetFloat(MIXER_CAMEOS, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_CAMEOS, Mathf.Log10(value) * 20);
 		}
 		void SetCandiiVolume(float value)
 		{
-			mixer.SetFloat(MIXER_CANDII, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_CANDII, Mathf.Log10(value) * 20);
 		}
 		 void SetAsterellaVolume(float value)
 		{
-			mixer.SetFloat(MIXER_ASTERELLA, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_ASTERELLA, Mathf.Log10(value) * 20);
 		}
 		 void SetBenosphereVolume(float value)
 		{
-			mixer.SetFloat(MIXER_BENOSPHERE, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_BENOSPHERE, Mathf.Log10(value) * 20);
 		}
 		 void SetDelVolume(float value)
 		{
-			mixer.SetFloat(MIXER_DEL, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_DEL, Mathf.Log10(value) * 20);
 		}
 		void SetFefeVolume(float value)
 		{
-			mixer.SetFloat(MIXER_FEFE, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_FEFE, Mathf.Log10(value) * 20);
 		}
 		 void SetVLVolume(float value)
 		{
-			mixer.SetFloat(MIXER_VL, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_VL, Mathf.Log10(value) * 20);
 		}
 		void SetKittyVolume(float value)
 		{
-			mixer.SetFloat(MIXER_KITTY, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_KITTY, Mathf.Log10(value) * 20);
 		}
 		void SetMoeVolume(float value)
 		{
-			mixer.SetFloat(MIXER_MOE, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_MOE, Mathf.Log10(value) * 20);
 		}
 		void SetMelodyVolume(float value)
 		{
-			mixer.SetFloat(MIXER_MELODY, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_MELODY, Mathf.Log10(value) * 20);
 		}
 		void SetSzycroticVolume(float value)
 		{
-			mixer.SetFloat(MIXER_SZYCROTIC, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_SZYCROTIC, Mathf.Log10(value) * 20);
 		}
 		 void SetSilvervaleVolume(float value)
 		{
-			mixer.SetFloat(MIXER_SILVERVALE, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_SILVERVALE, Mathf.Log10(value) * 20);
 		}
 		void SetLizzyVolume(float value)
 		{
-			mixer.SetFloat(MIXER_LIZZY, Mathf.Log10(value) * 100);
+			mixer.SetFloat(MIXER_LIZZY, Mathf.Log10(value) * 20);
 		}
 		
 		
