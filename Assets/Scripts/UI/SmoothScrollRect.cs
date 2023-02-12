@@ -9,7 +9,7 @@
    public class SmoothScrollRect : ScrollRect
    {
         public bool SmoothScrolling { get; set; } = true;
-        public float SmoothScrollTime { get; set; } = 0.5f;
+        public float SmoothScrollTime { get; set; } = 0.002f;
         new void Awake()
         {
             base.Awake();
