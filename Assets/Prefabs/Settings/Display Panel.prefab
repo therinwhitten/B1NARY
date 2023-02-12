@@ -1720,7 +1720,7 @@ MonoBehaviour:
   m_Direction: 0
   m_MinValue: 0
   m_MaxValue: 10
-  m_WholeNumbers: 0
+  m_WholeNumbers: 1
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8343,7 +8343,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: High
+  m_text: UwU
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9476861b6a9cdca409e8769907d1a9d0, type: 2}
   m_sharedMaterial: {fileID: 9137770337806101678, guid: 9476861b6a9cdca409e8769907d1a9d0,
@@ -11193,6 +11193,10 @@ MonoBehaviour:
   themeDropdown: {fileID: 1610249544925200639}
   languageDropdown: {fileID: 1610249543367426969}
   glow: {fileID: 1610249543129918882}
+  glowSliderText: {fileID: 1610249543129918882}
+  glowText: {fileID: 6820592326100945257}
+  fpsSlider: {fileID: 4989902564256874361}
+  fpsText: {fileID: 373789136}
 --- !u!1 &1610249544434042789
 GameObject:
   m_ObjectHideFlags: 0
@@ -15570,7 +15574,7 @@ GameObject:
   - component: {fileID: 8835035605813830596}
   - component: {fileID: 4989902564256874361}
   m_Layer: 5
-  m_Name: UI Glow Slider
+  m_Name: FPS Slider
   m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15642,8 +15646,8 @@ MonoBehaviour:
   m_HandleRect: {fileID: 7734100606405630046}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 10
-  m_WholeNumbers: 0
+  m_MaxValue: 300
+  m_WholeNumbers: 1
   m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
@@ -15765,8 +15769,8 @@ RectTransform:
   m_Father: {fileID: 469899618719661431}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.1, y: 0}
-  m_AnchorMax: {x: 0.1, y: 1}
+  m_AnchorMin: {x: 0.0033333334, y: 0}
+  m_AnchorMax: {x: 0.0033333334, y: 1}
   m_AnchoredPosition: {x: 0.29000854, y: 0}
   m_SizeDelta: {x: 20, y: 3.194889}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -16460,7 +16464,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.1, y: 1}
+  m_AnchorMax: {x: 0.0033333334, y: 1}
   m_AnchoredPosition: {x: -1.8390045, y: 0.0000038146973}
   m_SizeDelta: {x: 4.644043, y: -2.8580503}
   m_Pivot: {x: 0.5, y: 0.5}
