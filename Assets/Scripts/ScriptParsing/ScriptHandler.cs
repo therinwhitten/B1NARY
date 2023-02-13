@@ -13,7 +13,6 @@
 	using B1NARY.DesignPatterns;
 	using B1NARY.DataPersistence;
 	using CharacterController = CharacterManagement.CharacterController;
-	using HideousDestructor.DataPersistence;
 
 	/// <summary>
 	/// A controller of the <see cref="Scripting.ScriptDocument"/> in B1NARY.
@@ -118,7 +117,7 @@
 			["usegameobject"] = (Action<string>)(UseGameObject),
 			["setbool"] = (Action<string, string>)((name, value) =>
 			{
-				SaveSlot.Instance.scriptDocumentInterface.bools[name] = bool.Parse(value);
+				SaveSlot.ActiveSlot.ScriptDocumentInterface.bools[name] = bool.Parse(value);
 			}),
 			["callremote"] = ((Action<string>)((call) =>
 			{
@@ -234,8 +233,9 @@
 			: default;
 		protected override void SingletonAwake()
 		{
-			foreach (string key in nextLineButtons)
-				playerInput.actions.FindAction(key, true).performed += context => NextLine();
+			using (var enumerator = nextLineButtons.AsEnumerable().GetEnumerator())
+				while (enumerator.MoveNext())
+					playerInput.actions.FindAction(enumerator.Current, true).performed += context => NextLine();
 			DontDestroyOnLoad(gameObject);
 		}
 

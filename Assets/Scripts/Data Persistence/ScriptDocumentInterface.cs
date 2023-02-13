@@ -6,6 +6,7 @@
 	using System;
 	using B1NARY.Scripting;
 	using System.Runtime.Serialization;
+	using System.Xml.Serialization;
 
 	/// <summary>
 	/// A delegate that is treated as an event, sending out the new value and 
@@ -26,10 +27,12 @@
 			/// <summary>
 			/// Sends out an event that happens when a value is changed.
 			/// </summary>
-			[field: NonSerialized]
+			[field: NonSerialized, XmlIgnore]
 			public event UpdatedConstantValue<T> UpdatedValue;
-			private readonly Dictionary<string, T> constants = new Dictionary<string, T>();
-			private readonly Dictionary<string, Func<T>> pointers = new Dictionary<string, Func<T>>();
+			private Dictionary<string, T> constants = new Dictionary<string, T>();
+			[XmlIgnore]
+			private Dictionary<string, Func<T>> pointers = new Dictionary<string, Func<T>>();
+
 			public T this[string key]
 			{
 				get
@@ -189,6 +192,31 @@
 			}
 		}
 
+		/// <summary>
+		/// This is used due to <see cref="XmlSerializer"/> is often used for this.
+		/// Create a new interface from here.
+		/// </summary>
+		/// <returns></returns>
+		public static ScriptDocumentInterface New()
+		{
+			var @interface = new ScriptDocumentInterface
+			{
+				strings = new Collection<string>(),
+				PlayerName = "MC",
+				bools = new Collection<bool>()
+				{
+					["True"] = true,
+					["False"] = false,
+					[additiveNameKey] = false,
+				},
+				ints = new Collection<int>(),
+				floats = new Collection<float>()
+			};
+			@interface.bools.Add("henable", HentaiEnabled);
+			bool HentaiEnabled() => B1NARYConfig.HEnable;
+			return @interface;
+		}
+
 		public Collection<string> strings;
 		public const string playerNameKey = "Player Name";
 		public string PlayerName
@@ -197,9 +225,14 @@
 			set => strings[playerNameKey] = value;
 		}
 		public Collection<bool> bools;
+		public const string additiveNameKey = "Additive";
+		public bool Additive
+		{
+			get => bools[additiveNameKey];
+			set => bools[additiveNameKey] = value;
+		}
 		public Collection<int> ints;
 		public Collection<float> floats;
-		public Dictionary<int, ScriptLine> choice;
 
 		public ScriptDocumentInterface()
 		{
@@ -213,8 +246,7 @@
 			bools.Add("henable", HentaiEnabled);
 			ints = new Collection<int>();
 			floats = new Collection<float>();
-			choice = new Dictionary<int, ScriptLine>();
-			bool HentaiEnabled() => PlayerConfig.Instance.HentaiEnabled;
+			bool HentaiEnabled() => B1NARYConfig.HEnable;
 		}
 	}
 }

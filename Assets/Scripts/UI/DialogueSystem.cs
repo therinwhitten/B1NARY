@@ -98,19 +98,16 @@
 		/// </summary>
 		public bool Additive
 		{
-			get => m_additive;
+			get => SaveSlot.ActiveSlot.ScriptDocumentInterface.Additive;
 			set
 			{
-				if (m_additive == value)
+				if (Additive == value)
 					return;
-				m_additive = value;
+				SaveSlot.ActiveSlot.ScriptDocumentInterface.Additive = value;
 				if (value)
-				{
 					CurrentText = string.Empty;
-				}
 			}
 		}
-		private bool m_additive = false;
 		public TMP_Text speakerBox, textBox;
 
 
@@ -127,7 +124,7 @@
 		private void ChangeSpeakerName(ICharacterController characterController)
 		{
 			if (characterController.CharacterName == "MC")
-				SpeakerName = SaveSlot.Instance.scriptDocumentInterface.PlayerName;
+				SpeakerName = SaveSlot.ActiveSlot.ScriptDocumentInterface.PlayerName;
 			else
 				SpeakerName = characterController.CharacterName;
 		}
@@ -294,7 +291,7 @@
 		{
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
-			FinalText = FinalText.Replace("MC", SaveSlot.Instance.scriptDocumentInterface.PlayerName);
+			FinalText = FinalText.Replace("MC", SaveSlot.ActiveSlot.ScriptDocumentInterface.PlayerName);
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];
@@ -319,11 +316,11 @@
 
 		public void QuickSave()
 		{
-			SaveSlot.Instance.Serialize();
+			SaveSlot.ActiveSlot.Save();
 		}
 		public void QuickLoad()
 		{
-			SaveSlot.QuickLoad();
+			SaveSlot.ActiveSlot.Load();
 		}
 	} 
 }

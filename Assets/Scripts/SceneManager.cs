@@ -153,7 +153,7 @@
 		/// </summary>
 		public void InitializeGame()
 		{
-			SaveSlot.Instance = new SaveSlot();
+			SaveSlot.PassivelyLoadSlot(new SaveSlot());
 			ScriptHandler.Instance.InitializeNewScript();
 		}
 		/// <summary>
@@ -162,7 +162,7 @@
 		/// </summary>
 		public void InitializeScript(string docPath)
 		{
-			SaveSlot.Instance = new SaveSlot();
+			SaveSlot.PassivelyLoadSlot(new SaveSlot());
 			ScriptHandler.Instance.InitializeNewScript(docPath);
 		}
 

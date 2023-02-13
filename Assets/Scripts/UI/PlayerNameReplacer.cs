@@ -10,8 +10,8 @@
 		private void OnEnable()
 		{
 			TMP_Text text = GetComponent<TMP_Text>();
-			text.text = text.text.Replace("MC", SaveSlot.Instance.scriptDocumentInterface.PlayerName);
-			SaveSlot.Instance.scriptDocumentInterface.strings.UpdatedValue += UpdateName;
+			text.text = text.text.Replace("MC", SaveSlot.ActiveSlot.ScriptDocumentInterface.PlayerName);
+			SaveSlot.ActiveSlot.ScriptDocumentInterface.strings.UpdatedValue += UpdateName;
 		}
 		private void UpdateName(string key, string oldValue, string newValue, ScriptDocumentInterface.Collection<string> source)
 		{
@@ -22,7 +22,7 @@
 		}
 		private void OnDisable()
 		{
-			SaveSlot.Instance.scriptDocumentInterface.strings.UpdatedValue -= UpdateName;
+			SaveSlot.ActiveSlot.ScriptDocumentInterface.strings.UpdatedValue -= UpdateName;
 		}
 	}
 }

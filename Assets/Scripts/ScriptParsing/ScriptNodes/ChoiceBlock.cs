@@ -44,13 +44,6 @@
 		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
 		{
 			document.ParseLine(new ScriptLine(string.Join(",", ScriptLine.CastCommand(rootLine).arguments), rootLine.document, rootLine.Index));
-			if (SaveSlot.Instance.scriptDocumentInterface.choice.TryGetValue(rootLine.Index, out var line))
-			{
-				using (IEnumerator<ScriptLine> node = choices[line].Perform(pauseOnCommands))
-					while (node.MoveNext())
-						yield return node.Current;
-				yield break;
-			}
 			ChoicePanel panel = ChoicePanel.StartNew(choices.Keys);
 			panel.PickedChoice += str => document.NextLine();
 			while (!panel.HasPickedChoice)

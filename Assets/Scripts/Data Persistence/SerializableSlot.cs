@@ -47,9 +47,12 @@
 		/// from the appdata; causing it to not display any directory location 
 		/// at all.
 		/// </remarks>
-		public static DirectoryInfo PersistentData { get; } =
-			new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData))
-			.CreateSubdirectory(Application.productName);
+		public static DirectoryInfo PersistentData { get; } = ((Func<DirectoryInfo>)(() => 
+		{
+			return new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData))
+				.CreateSubdirectory(Application.productName.Trim());
+		})).Invoke();
+			
 		/// <summary>
 		/// Gets the streaming assets folder with a <see cref="DirectoryInfo"/>.
 		/// </summary>
@@ -70,13 +73,13 @@
 		/// <summary>
 		/// When the <see cref="Serialize"/> command is last used.
 		/// </summary>
-		public DateTime LastSaved { get; private set; } = DateTime.Now;
+		public DateTime LastSaved { get; protected set; } = DateTime.Now;
 		/// <summary>
 		/// How long the save slot was used in a session.
 		/// </summary>
-		public TimeSpan TimeUsed { get; private set; } = TimeSpan.Zero;
+		public TimeSpan TimeUsed { get; protected set; } = TimeSpan.Zero;
 		[NonSerialized]
-		private Stopwatch stopwatch;
+		protected Stopwatch stopwatch;
 		#endregion
 
 		protected internal FileInfo fileInfo;

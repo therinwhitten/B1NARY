@@ -30,7 +30,8 @@
 		[RuntimeInitializeOnLoadMethod]
 		private static void Init()
 		{
-			ActiveResolution = PlayerConfig.Instance.graphics.resolution;
+			return;
+			ActiveResolution = B1NARYConfig.Graphics.Resolution;
 		}
 
 

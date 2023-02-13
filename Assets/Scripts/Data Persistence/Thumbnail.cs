@@ -3,15 +3,19 @@
 	using System;
 	using System.Drawing;
 	using System.IO;
+	using System.Xml;
 	using UnityEngine;
 	using HideousDestructor.DataPersistence;
+	using System.Xml.Serialization;
+	using System.Xml.Schema;
+	using System.Linq;
 
 	/// <summary>
 	/// A serializable image, typically for <see cref="SerializableSlot"/> to
 	/// handle textures and images.
 	/// </summary>
 	[Serializable]
-	public sealed class Thumbnail
+	public sealed class Thumbnail : IXmlSerializable
 	{
 		/// <summary>
 		/// The size of a typical 1:1 thumbnail, can be nicely seen by most monitors,
@@ -31,7 +35,8 @@
 			return new Thumbnail(new Vector2Int(maxWidth, maxHeight), ScreenCapture.CaptureScreenshotAsTexture());
 		}
 
-		private readonly byte[] data;
+
+		private byte[] data;
 		/// <summary>
 		/// The texture of the image. This is typically a JPG image if taken from
 		/// a screenshot.
@@ -50,6 +55,23 @@
 			}
 		}
 
+		// Private constructor for xml serialization
+		private Thumbnail()
+		{
+
+		}
+		XmlSchema IXmlSerializable.GetSchema() => null;
+
+		void IXmlSerializable.ReadXml(XmlReader reader)
+		{
+			data = reader.ReadElementContentAsString().Split('.')
+				.Select(str => byte.Parse(str)).ToArray();
+		}
+
+		void IXmlSerializable.WriteXml(XmlWriter writer)
+		{
+			writer.WriteString(string.Join(".", data));
+		}
 		public Thumbnail(Vector2Int thumbnailMaxSize, Texture2D texture)
 			: this(thumbnailMaxSize, texture.EncodeToJPG())
 		{

@@ -5,12 +5,12 @@
 	using UnityEngine.UI; 
 	using UnityEngine.Audio;
 	using B1NARY.Audio;
+	using System.Collections.Generic;
 
-   
 	public class SoundOptionsBehaviour : MonoBehaviour 
 	{
 		//  Sliders for Inspector
-		[SerializeField]  AudioMixer mixer ;
+		[SerializeField] AudioMixer mixer;
 		[SerializeField] Slider masterSlider;
 		[SerializeField] Slider musicSlider;
 		[SerializeField] Slider sfxSlider;
@@ -20,39 +20,46 @@
 		[SerializeField] Slider cameosSlider;
 		//  Adding the slider components for inspector for VA. Sub Group of the Voice Channel 
 		//  Each Cast Member has their own Audio Source
-		 [SerializeField] Slider candiiSlider;
-		 [SerializeField] Slider asterellaSlider;
-		 [SerializeField] Slider benosphereSlider;
-		 [SerializeField] Slider comradeDelSlider;
-		 [SerializeField] Slider fefeSlider;
-		 [SerializeField] Slider virtuallyLewdSlider;
-		 [SerializeField] Slider kittyMcpancakesSlider;
-		 [SerializeField] Slider natsumiMoeSlider;
-		 [SerializeField] Slider projektMelodySlider;
-		 [SerializeField] Slider szycroticSlider;
-		 [SerializeField] Slider silvervaleSlider;
-		 [SerializeField] Slider watchingLizardSlider;
+		[SerializeField] Slider candiiSlider;
+		[SerializeField] Slider asterellaSlider;
+		[SerializeField] Slider benosphereSlider;
+		[SerializeField] Slider comradeDelSlider;
+		[SerializeField] Slider fefeSlider;
+		[SerializeField] Slider virtuallyLewdSlider;
+		[SerializeField] Slider kittyMcpancakesSlider;
+		[SerializeField] Slider natsumiMoeSlider;
+		[SerializeField] Slider projektMelodySlider;
+		[SerializeField] Slider szycroticSlider;
+		[SerializeField] Slider silvervaleSlider;
+		[SerializeField] Slider watchingLizardSlider;
 
 		//  Strings Might need to be public to transfer Scenes and Save to Audio Manager. Video Source https://www.youtube.com/watch?v=pbuJUaO-wpY&t=383s
-		const string MIXER_MASTER = "Master";
-		const string MIXER_MUSIC = "Music";
-		const string MIXER_SFX = "SFX";
-		const string MIXER_UI = "UI";
-		const string MIXER_PLAYER = "Player";
-		const string MIXER_NPC = "NPC";
-		const string MIXER_CAMEOS = "Cameos"; 
-		const string MIXER_CANDII = "Candii"; 
-		const string MIXER_ASTERELLA = "Asterella";
-		const string MIXER_BENOSPHERE = "Benosphere";
-		const string MIXER_DEL = "Del";
-		const string MIXER_FEFE = "Fefe";
-		const string MIXER_VL = "VL";
-		const string MIXER_KITTY = "Kitty";
-		const string MIXER_MOE = "Moe";
-		const string MIXER_MELODY = "Melody";
-		const string MIXER_SZYCROTIC = "Szycrotic";
-		const string MIXER_SILVERVALE = "Silvervale";
-		const string MIXER_LIZZY = "Lizzy";
+		public const string MIXER_MASTER = "Master";
+		public const string MIXER_MUSIC = "Music";
+		public const string MIXER_SFX = "SFX";
+		public const string MIXER_UI = "UI";
+		static readonly HashSet<string> constantMixers = new HashSet<string>()
+		{
+			MIXER_MASTER,
+			MIXER_MUSIC,
+			MIXER_SFX,
+			MIXER_UI
+		};
+		public const string MIXER_PLAYER = "Player";
+		public const string MIXER_NPC = "NPC";
+		public const string MIXER_CAMEOS = "Cameos"; 
+		public const string MIXER_CANDII = "Candii"; 
+		public const string MIXER_ASTERELLA = "Asterella";
+		public const string MIXER_BENOSPHERE = "Benosphere";
+		public const string MIXER_DEL = "Del";
+		public const string MIXER_FEFE = "Fefe";
+		public const string MIXER_VL = "VL";
+		public const string MIXER_KITTY = "Kitty";
+		public const string MIXER_MOE = "Moe";
+		public const string MIXER_MELODY = "Melody";
+		public const string MIXER_SZYCROTIC = "Szycrotic";
+		public const string MIXER_SILVERVALE = "Silvervale";
+		public const string MIXER_LIZZY = "Lizzy";
 		//  Sliders Assignment to Mixer
 		void Awake()
 		{
@@ -79,85 +86,109 @@
 
 
 		}
-		 // Logrithmic Volume Pairs. Need these set up like this. Slider Pairs in inspector need to be around .1 for lowest with 1 the highest. If 0, will break channel.
-		void SetMasterVolume(float value)
-		{
-			mixer.SetFloat(MIXER_MASTER, Mathf.Log10(value) * 20);
-		}
-		 void SetMusicVolume(float value)
-		{
-			mixer.SetFloat(MIXER_MUSIC, Mathf.Log10(value) * 20);
-		}
-		 void SetSFXVolume(float value)
-		{
-			mixer.SetFloat(MIXER_SFX, Mathf.Log10(value) * 20);
-		}
-		void SetUIVolume(float value)
-		{
-			mixer.SetFloat(MIXER_UI, Mathf.Log10(value) * 20);
-		}
-		void SetPlayerVolume(float value)
-		{
-			mixer.SetFloat(MIXER_PLAYER, Mathf.Log10(value) * 20);
-		}
-		 void SetNPCVolume(float value)
-		{
-			mixer.SetFloat(MIXER_NPC, Mathf.Log10(value) * 20);
-		}
-		 void SetCameosVolume(float value)
-		{
-			mixer.SetFloat(MIXER_CAMEOS, Mathf.Log10(value) * 20);
-		}
-		void SetCandiiVolume(float value)
-		{
-			mixer.SetFloat(MIXER_CANDII, Mathf.Log10(value) * 20);
-		}
-		 void SetAsterellaVolume(float value)
-		{
-			mixer.SetFloat(MIXER_ASTERELLA, Mathf.Log10(value) * 20);
-		}
-		 void SetBenosphereVolume(float value)
-		{
-			mixer.SetFloat(MIXER_BENOSPHERE, Mathf.Log10(value) * 20);
-		}
-		 void SetDelVolume(float value)
-		{
-			mixer.SetFloat(MIXER_DEL, Mathf.Log10(value) * 20);
-		}
-		void SetFefeVolume(float value)
-		{
-			mixer.SetFloat(MIXER_FEFE, Mathf.Log10(value) * 20);
-		}
-		 void SetVLVolume(float value)
-		{
-			mixer.SetFloat(MIXER_VL, Mathf.Log10(value) * 20);
-		}
-		void SetKittyVolume(float value)
-		{
-			mixer.SetFloat(MIXER_KITTY, Mathf.Log10(value) * 20);
-		}
-		void SetMoeVolume(float value)
-		{
-			mixer.SetFloat(MIXER_MOE, Mathf.Log10(value) * 20);
-		}
-		void SetMelodyVolume(float value)
-		{
-			mixer.SetFloat(MIXER_MELODY, Mathf.Log10(value) * 20);
-		}
-		void SetSzycroticVolume(float value)
-		{
-			mixer.SetFloat(MIXER_SZYCROTIC, Mathf.Log10(value) * 20);
-		}
-		 void SetSilvervaleVolume(float value)
-		{
-			mixer.SetFloat(MIXER_SILVERVALE, Mathf.Log10(value) * 20);
-		}
-		void SetLizzyVolume(float value)
-		{
-			mixer.SetFloat(MIXER_LIZZY, Mathf.Log10(value) * 20);
-		}
 		
-		
+		/// <summary>
+		/// Sets both the volume ingame and in the data persistence.
+		/// </summary>
+		/// <param name="key"> The name of the volume. </param>
+		/// <param name="value"> The Logarithmic(?) value. </param>
+		public void SetVolume(string key, float value)
+		{
+			float output;
+			if (!constantMixers.Contains(key))
+			{
+				Dictionary<string, float> newDict = (Dictionary<string, float>)B1NARYConfig.Sound.Characters;
+				if (newDict is null)
+					newDict = new Dictionary<string, float>();
+				newDict[key] = value;
+				output = Mathf.Log10(value) * 20;
+				B1NARYConfig.Sound.Characters = newDict;
+			}
+			else
+			{
+				PlayerConfig.SetValue(PlayerConfig.PRE_SOUND + key, value);
+				output = Mathf.Log10(value) * 20;
+			}
+			mixer.SetFloat(key, output);
+		}
+
+		// Logrithmic Volume Pairs. Need these set up like this. Slider Pairs in inspector need to be around .1 for lowest with 1 the highest. If 0, will break channel.
+		public void SetMasterVolume(float value)
+		{
+			SetVolume(MIXER_MASTER, value);
+		}
+		public void SetMusicVolume(float value)
+		{
+			SetVolume(MIXER_MUSIC, value);
+		}
+		public void SetSFXVolume(float value)
+		{
+			SetVolume(MIXER_SFX, value);
+		}
+		public void SetUIVolume(float value)
+		{
+			SetVolume(MIXER_UI, value);
+		}
+		public void SetPlayerVolume(float value)
+		{
+			SetVolume(MIXER_PLAYER, value);
+		}
+		public void SetNPCVolume(float value)
+		{
+			SetVolume(MIXER_NPC, value);
+		}
+		public void SetCameosVolume(float value)
+		{
+			SetVolume(MIXER_CAMEOS, value);
+		}
+		public void SetCandiiVolume(float value)
+		{
+			SetVolume(MIXER_CANDII, value);
+		}
+		public void SetAsterellaVolume(float value)
+		{
+			SetVolume(MIXER_ASTERELLA, value);
+		}
+		public void SetBenosphereVolume(float value)
+		{
+			SetVolume(MIXER_BENOSPHERE, value);
+		}
+		public void SetDelVolume(float value)
+		{
+			SetVolume(MIXER_DEL, value);
+		}
+		public void SetFefeVolume(float value)
+		{
+			SetVolume(MIXER_FEFE, value);
+		}
+		public void SetVLVolume(float value)
+		{
+			SetVolume(MIXER_VL, value);
+		}
+		public void SetKittyVolume(float value)
+		{
+			SetVolume(MIXER_KITTY, value);
+		}
+		public void SetMoeVolume(float value)
+		{
+			SetVolume(MIXER_MOE, value);
+		}
+		public void SetMelodyVolume(float value)
+		{
+			SetVolume(MIXER_MELODY, value);
+		}
+		public void SetSzycroticVolume(float value)
+		{
+			SetVolume(MIXER_SZYCROTIC, value);
+		}
+		public void SetSilvervaleVolume(float value)
+		{
+			SetVolume(MIXER_SILVERVALE, value);
+		}
+		public void SetLizzyVolume(float value)
+		{
+			SetVolume(MIXER_LIZZY, value);
+		}
 	}
 	
 

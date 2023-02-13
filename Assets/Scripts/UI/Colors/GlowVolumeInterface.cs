@@ -4,6 +4,7 @@
 	using System.Linq;
 	using UnityEngine;
 	using UnityEngine.Rendering;
+	using static UnityEngine.InputSystem.Controls.AxisControl;
 
 	public sealed class GlowVolumeInterface : MonoBehaviour
 	{
@@ -14,20 +15,21 @@
 			get => volume.profile.components.Single().parameters[1].GetValue<float>();
 			set
 			{
-				float clamped = PlayerConfig.Instance.graphics.glow = value;
-				((VolumeParameter<float>)volume.profile.components.Single().parameters[1]).value = clamped;
+				float clamped = B1NARYConfig.Graphics.Glow = value;
+				UpdateProfile(clamped);
 			}
 		}
+		private void UpdateProfile(float clamped) => ((VolumeParameter<float>)volume.profile.components.Single().parameters[1]).value = clamped;
 
 		private void Awake()
 		{
 			nameToSearch = volume.name;
-			BloomIntensity = PlayerConfig.Instance.graphics.glow;
+			UpdateProfile(B1NARYConfig.Graphics.Glow);
 			SceneManager.Instance.SwitchedScenes.AddPersistentListener(() =>
 			{
 				if (volume == null)
 					volume = GameObject.Find(nameToSearch).GetComponent<Volume>();
-				BloomIntensity = PlayerConfig.Instance.graphics.glow;
+				UpdateProfile(B1NARYConfig.Graphics.Glow);
 			});
 		}
 	}

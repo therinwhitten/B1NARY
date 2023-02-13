@@ -152,6 +152,31 @@
 				while (enumerator.MoveNext())
 					Add(enumerator.Current);
 		}
+		/// <summary>
+		/// Specialized command for invoking a command keeping in mind with 
+		/// <see cref="ForcePauseAttribute"/>
+		/// </summary>
+		public bool B1NARY_Invoke(ScriptLine line)
+		{
+			var pair = ScriptLine.CastCommand(line);
+			return B1NARY_Invoke(pair.command, pair.arguments);
+		}
+		/// <summary>
+		/// Specialized command for invoking a command keeping in mind with 
+		/// <see cref="ForcePauseAttribute"/>
+		/// </summary>
+		/// <param name="key"> Command name. </param>
+		/// <param name="params"> the string parameters provided. </param>
+		/// <returns> If it has <see cref="ForcePauseAttribute"/> attached in the overloaded command. </returns>
+		/// <exception cref="MissingMemberException"></exception>
+		public bool B1NARY_Invoke(string key, params string[] @params)
+		{
+			if (@params is null)
+				@params = Array.Empty<string>();
+			if (!TryGetValue(key, out OverloadableCommand activeCommand))
+				throw new MissingMemberException($"Inputted commands does not contain a command in the keys with '{key}'!");
+			return OverloadableCommand.Invoke(activeCommand, @params);
+		}
 
 		public void Clear()
 		{

@@ -17,8 +17,11 @@
 				Vector2Int imageRatio = Ratio(bitmap.Width, bitmap.Height);
 				var imageSize = new Vector2Int(bitmap.Width, bitmap.Height);
 				// making width to 512, and height as follows
-				imageSize.y = (int)((float)maxWidth / imageRatio.x * imageRatio.y);
-				imageSize.x = maxWidth;
+				if (imageSize.x > maxWidth)
+				{
+					imageSize.y = (int)((float)maxWidth / imageRatio.x * imageRatio.y);
+					imageSize.x = maxWidth;
+				}
 				if (imageSize.y > maxHeight)
 				{
 					imageRatio = ImageUtility.Ratio(imageSize.x, imageSize.y);

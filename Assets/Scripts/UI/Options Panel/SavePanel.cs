@@ -22,21 +22,22 @@
 
 		public List<BlockInfo> GetSaves()
 		{
-			var block = new List<BlockInfo>(SaveSlot.AllFiles.Count);
-			for (int i = 0; i < SaveSlot.AllFiles.Count; i++)
-			{
-				try
+			var block = new List<BlockInfo>();
+			using (var enumerator = SaveSlot.AllSlots.GetEnumerator())
+				for (int i = 0; enumerator.MoveNext(); i++)
 				{
-					var info = new BlockInfo(AddEntry(slot), SaveSlot.AllFiles[i]);
-					info.SetSprite(SaveSlot.AllFiles[i].Thumbnail.Texture);
-					info.foregroundImage.preserveAspect = true;
-					info.Text = SaveSlot.AllFiles[i].UserContents;
-					block.Add(info);
-				} catch (Exception ex)
-				{
-					Debug.LogException(ex);
+					try
+					{
+						var info = new BlockInfo(AddEntry(slot), enumerator.Current.slot.Value);//SaveSlot.AllFiles[i]);
+						info.SetSprite(enumerator.Current.slot.Value.thumbnail.Texture);
+						info.foregroundImage.preserveAspect = true;
+						info.Text = enumerator.Current.slot.Value.ToString();
+						block.Add(info);
+					} catch (Exception ex)
+					{
+						Debug.LogException(ex);
+					}
 				}
-			}
 			return block;
 		}
 		public GameObject addPrefab;
@@ -57,7 +58,7 @@
 					var @interface = new BoxInterface(panels[1]);
 					if (@interface.inputField != null)
 					{
-						@interface.inputField.text = info.fileData.fileInfo.NameWithoutExtension();
+						@interface.inputField.text = info.fileData.FileLocation.NameWithoutExtension();
 					}
 					@interface.PressedButton += (@bool) =>
 					{
@@ -65,11 +66,11 @@
 						if (@bool == false)
 							return;
 						if (@interface.inputField != null)
-							info.fileData.fileInfo
-							.MoveTo(info.fileData.fileInfo.FullName
-								.Replace(info.fileData.fileInfo.NameWithoutExtension(), @interface.inputField.text));
-						info.fileData.Serialize();
-						SaveSlot.AllFiles = null;
+							info.fileData.FileLocation
+							.MoveTo(info.fileData.FileLocation.FullName
+								.Replace(info.fileData.FileLocation.NameWithoutExtension(), @interface.inputField.text));
+						info.fileData.Save();
+						SaveSlot.Refresh();
 						OnDisable();
 						OnEnable();
 					};
@@ -84,8 +85,8 @@
 							@interface.Dispose();
 							if (@bool == false)
 								return;
-							info.fileData.fileInfo.Delete();
-							SaveSlot.AllFiles = null;
+							info.fileData.FileLocation.Delete();
+							SaveSlot.Refresh();
 							OnDisable();
 							OnEnable();
 						};
@@ -95,14 +96,14 @@
 			// New slot
 			if (objects.Count < saveSlotMax)
 			{
-				BlockInfo activeInfo = new BlockInfo(AddEntry(addPrefab), SaveSlot.Instance);
+				BlockInfo activeInfo = new BlockInfo(AddEntry(addPrefab), SaveSlot.ActiveSlot);
 				objects.Add(activeInfo);
 				activeInfo.button.onClick.AddListener(() =>
 				{
 					var @interface = new BoxInterface(panels[0]); 
 					if (@interface.inputField != null)
 					{
-						@interface.inputField.text = activeInfo.fileData.fileInfo.NameWithoutExtension();
+						@interface.inputField.text = activeInfo.fileData.FileLocation.NameWithoutExtension();
 					}
 					@interface.PressedButton += (@bool) =>
 					{
@@ -110,11 +111,11 @@
 						if (@bool == false)
 							return;
 						if (@interface.inputField != null)
-							activeInfo.fileData.fileInfo.Rename(@interface.inputField.text);
+							activeInfo.fileData.FileLocation.Rename(@interface.inputField.text);
 						else
-							activeInfo.fileData.fileInfo = SaveSlot.AvailableSlot;
-						activeInfo.fileData.Serialize();
-						SaveSlot.AllFiles = null;
+							activeInfo.fileData.FileLocation = SaveSlot.ActiveSlot.FileLocation;
+						activeInfo.fileData.Save();
+						SaveSlot.Refresh();
 						OnDisable();
 						OnEnable();
 					};

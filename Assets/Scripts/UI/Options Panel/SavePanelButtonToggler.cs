@@ -15,7 +15,7 @@
 		}
 		private void OnEnable()
 		{
-			button.interactable = SaveSlot.Instance != null;
+			button.interactable = SaveSlot.ActiveSlot != null;
 		}
 	}
 }

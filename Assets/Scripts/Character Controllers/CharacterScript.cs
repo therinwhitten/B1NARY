@@ -97,11 +97,6 @@
 
 		public void SetPositionOverTime(float newXPosition, float time)
 		{
-			if (SaveSlot.LoadingSave)
-			{
-				HorizontalPosition = newXPosition;
-				return;
-			}
 			StartCoroutine(SmoothPosChanger());
 			IEnumerator SmoothPosChanger()
 			{
@@ -135,8 +130,6 @@
 		}
 		public void SayLine(ScriptLine line)
 		{
-			if (SaveSlot.LoadingSave)
-				return;
 			DialogueSystem.Instance.Say(line.lineData);
 			VoiceData.Play(line);
 		}

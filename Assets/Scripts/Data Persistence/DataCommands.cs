@@ -48,12 +48,12 @@
 		{
 			objects.ForEach(obj => obj.SetActive(!obj.activeSelf));
 			yield return new WaitForEndOfFrame();
-			SaveSlot.SaveGame();
+			SaveSlot.ActiveSlot.Save();
 			objects.ForEach(obj => obj.SetActive(!obj.activeSelf));
 		}
 		public void LoadGame(InputAction.CallbackContext context)
 		{
-			SaveSlot.QuickLoad();
+			SaveSlot.ActiveSlot.Load();
 		}
 	}
 }
@@ -86,15 +86,15 @@ namespace B1NARY.DataPersistence.Editor
 				EditorGUILayout.HelpBox("Enter play mode to inspect data values!", MessageType.Error);
 				return;
 			}
-			if (SaveSlot.Instance is null)
+			if (SaveSlot.ActiveSlot is null)
 			{
 				EditorGUILayout.HelpBox("Save slot not created yet!", MessageType.Error);
 				return;
 			}
-			UpdateTab("Strings", SaveSlot.Instance.scriptDocumentInterface.strings);
-			UpdateTab("Integers", SaveSlot.Instance.scriptDocumentInterface.ints);
-			UpdateTab("Booleans", SaveSlot.Instance.scriptDocumentInterface.bools);
-			UpdateTab("Singles", SaveSlot.Instance.scriptDocumentInterface.floats);
+			UpdateTab("Strings", SaveSlot.ActiveSlot.ScriptDocumentInterface.strings);
+			UpdateTab("Integers", SaveSlot.ActiveSlot.ScriptDocumentInterface.ints);
+			UpdateTab("Booleans", SaveSlot.ActiveSlot.ScriptDocumentInterface.bools);
+			UpdateTab("Singles", SaveSlot.ActiveSlot.ScriptDocumentInterface.floats);
 
 			void UpdateTab<T>(string label, ScriptDocumentInterface.Collection<T> data)
 			{

@@ -24,7 +24,7 @@
 						@interface.Dispose();
 						if (@bool == false)
 							return;
-						SaveSlot.LoadGame(block.fileData);
+						SaveSlot.LoadSlot(block.fileData);
 					};
 				});
 			}
