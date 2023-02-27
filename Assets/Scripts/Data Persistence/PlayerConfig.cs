@@ -4,11 +4,13 @@
 	using B1NARY.UI;
 	using HideousDestructor.DataPersistence;
 	using System;
+	using System.Collections;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
-	using System.Xml;
+	using System.Xml.Serialization;
 	using UnityEngine;
+	using OVSXmlSerializer;
 
 	public static class PlayerConfig
 	{
@@ -16,14 +18,19 @@
 		public const string PRE_SOUND = "snd_";
 
 		public static FileInfo ConfigLocation { get; } = SerializableSlot.PersistentData.GetFile("config.xml");
+		private static XmlSerializer<Dictionary<string, object>> XmlSerializer { get; }
+			= new XmlSerializer<Dictionary<string, object>>(new XmlSerializerConfig()
+			{
+				TypeHandling = IncludeTypes.SmartTypes,
+				indent = true,
+				indentChars = "\t"
+			});
 
 		static PlayerConfig()
 		{
 			if (ConfigLocation.Exists)
 				using (var fileStream = ConfigLocation.OpenRead())
-					m_values = XmlSerializer.DeserializeDictionary(fileStream);
-			else
-				m_values = new Dictionary<string, object>();
+					m_values = XmlSerializer.Deserialize(fileStream);//XmlSerializerOld.DeserializeDictionary(fileStream);
 			Debug.Log("Player Config Active!");
 #if UNITY_EDITOR
 			UnityEditor.EditorApplication.playModeStateChanged += EditorQuit;
@@ -45,9 +52,21 @@
 		}
 
 
-		private static Dictionary<string, object> m_values;
+		internal static Dictionary<string, object> m_values = new Dictionary<string, object>();
 
 		public static T GetValue<T>(string key) => (T)m_values[key];
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <remarks> 
+		/// Keep in mind that some classes cannot be properly serialized: Cant
+		/// really find any workarounds, so watch out for things like lists and
+		/// arrays as they contain generics
+		/// </remarks>
+		/// <typeparam name="T"></typeparam>
+		/// <param name="key"></param>
+		/// <param name="default"></param>
+		/// <returns></returns>
 		public static T GetValue<T>(string key, T @default)
 		{
 			if (m_values.TryGetValue(key, out var value))
@@ -63,7 +82,7 @@
 		public static void Save()
 		{
 			Debug.Log("Saved!");
-			using (var stream = XmlSerializer.SerializeDictionary(nameof(PlayerConfig), m_values))
+			using (var stream = XmlSerializer.Serialize(m_values, "PlayerConfig"))//XmlSerializerOld.SerializeDictionary(nameof(PlayerConfig), m_values))
 				using (var fileStream = ConfigLocation.Create())
 				{
 					stream.CopyTo(fileStream);
@@ -173,7 +192,26 @@
 			{
 				get
 				{
-					List<(string key, float value)> list = PlayerConfig.GetValue(MIXER_CHARACTERS, new SerializedCharacters());
+					return PlayerConfig.GetValue(MIXER_CHARACTERS, new Dictionary<string, float>());
+				}
+				set
+				{
+					Dictionary<string, float> dictionary;
+					if (value is Dictionary<string, float> dictionaryValue)
+						dictionary = dictionaryValue;
+					else
+					{
+						dictionary = new Dictionary<string, float>();
+						using (var enumerator = value.GetEnumerator())
+							while (enumerator.MoveNext())
+								dictionary.Add(enumerator.Current.Key, enumerator.Current.Value);
+					}
+					PlayerConfig.SetValue(MIXER_CHARACTERS, dictionary);
+				}
+				/*
+				get
+				{
+					List<(string key, float value)> list = PlayerConfig.GetValue(MIXER_CHARACTERS, new List<(string key, float value)>());
 					Dictionary<string, float> dictionary = new Dictionary<string, float>();
 					for (int i = 0; i < list.Count; i++)
 						dictionary.Add(list[i].key, list[i].value);
@@ -182,14 +220,15 @@
 				set
 				{
 					// Xml Serializer doesn't like interfaces.
-					List<(string key, float value)> newValue = new SerializedCharacters();
-					newValue.AddRange(value.Select(pair => (pair.Key, pair.Value)));
+					ArrayList newValue = new ArrayList();
+					using (var enumerator = Characters.GetEnumerator())
+						while (enumerator.MoveNext())
+							newValue.Add(enumerator.Current);//((enumerator.Current.Key, enumerator.Current.Value));
 					PlayerConfig.SetValue(MIXER_CHARACTERS, newValue);
 				}
+				*/
 			}
 
 		}
 	}
-
-	public sealed class SerializedCharacters : List<(string key, float value)> { }
 }

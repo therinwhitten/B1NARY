@@ -6,9 +6,8 @@
 	using System.Xml;
 	using UnityEngine;
 	using HideousDestructor.DataPersistence;
-	using System.Xml.Serialization;
-	using System.Xml.Schema;
 	using System.Linq;
+	using OVSXmlSerializer;
 
 	/// <summary>
 	/// A serializable image, typically for <see cref="SerializableSlot"/> to
@@ -35,6 +34,15 @@
 			return new Thumbnail(new Vector2Int(maxWidth, maxHeight), ScreenCapture.CaptureScreenshotAsTexture());
 		}
 
+		void IXmlSerializable.Read(XmlNode value)
+		{
+			data = value.InnerText.Split('.').Select(str => byte.Parse(str)).ToArray();
+		}
+
+		void IXmlSerializable.Write(XmlWriter writer)
+		{
+			writer.WriteString(string.Join(".", data));
+		}
 
 		private byte[] data;
 		/// <summary>
@@ -55,23 +63,27 @@
 			}
 		}
 
+		bool IXmlSerializable.ShouldWrite => true;
+
 		// Private constructor for xml serialization
 		private Thumbnail()
 		{
 
 		}
-		XmlSchema IXmlSerializable.GetSchema() => null;
+		//XmlSchema IXmlSerializable.GetSchema() => null;
+		//
+		//void IXmlSerializable.ReadXml(XmlReader reader)
+		//{
+		//	data = reader.ReadElementContentAsString().Split('.')
+		//		.Select(str => byte.Parse(str)).ToArray();
+		//}
+		//
+		//void IXmlSerializable.WriteXml(XmlWriter writer)
+		//{
+		//	writer.WriteString(string.Join(".", data));
+		//}
 
-		void IXmlSerializable.ReadXml(XmlReader reader)
-		{
-			data = reader.ReadElementContentAsString().Split('.')
-				.Select(str => byte.Parse(str)).ToArray();
-		}
 
-		void IXmlSerializable.WriteXml(XmlWriter writer)
-		{
-			writer.WriteString(string.Join(".", data));
-		}
 		public Thumbnail(Vector2Int thumbnailMaxSize, Texture2D texture)
 			: this(thumbnailMaxSize, texture.EncodeToJPG())
 		{

@@ -1,6 +1,9 @@
 ﻿namespace B1NARY
 {
 	using System;
+	using System.Xml;
+	using System.Xml.Schema;
+	using System.Xml.Serialization;
 	using UnityEngine;
 
 	/// <summary>
@@ -55,7 +58,7 @@
 	/// A serializable range that is both inclusive for integers.
 	/// </summary>
 	[Serializable]
-	public struct RangeInt : IEquatable<RangeInt>
+	public struct RangeInt : IEquatable<RangeInt>, IXmlSerializable
 	{
 		/// <summary>
 		/// Effectively what <see cref="Count"/> does: Makes sure if it is 0
@@ -125,13 +128,32 @@
 			return Start == other.Start &&
 				End == other.End;
 		}
+
+		XmlSchema IXmlSerializable.GetSchema()
+		{
+			return null;
+		}
+
+		void IXmlSerializable.ReadXml(XmlReader reader)
+		{
+			reader.ReadToFollowing(nameof(Start));
+			Start = reader.ReadElementContentAsInt();
+			reader.ReadToFollowing(nameof(End));
+			End = reader.ReadElementContentAsInt();
+		}
+
+		void IXmlSerializable.WriteXml(XmlWriter writer)
+		{
+			writer.WriteElementString(nameof(Start), Start.ToString());
+			writer.WriteElementString(nameof(End), End.ToString());
+		}
 	}
 
 	/// <summary>
 	/// A serializable range that is both inclusive for integers.
 	/// </summary>
 	[Serializable]
-	public struct Range : IEquatable<Range>
+	public struct Range : IEquatable<Range>, IXmlSerializable
 	{
 		/// <summary>
 		/// Effectively what <see cref="Amount"/> does: Makes sure if it is 0
@@ -197,6 +219,25 @@
 		{
 			return Start == other.Start &&
 				End == other.End;
+		}
+
+		XmlSchema IXmlSerializable.GetSchema()
+		{
+			return null;
+		}
+
+		void IXmlSerializable.ReadXml(XmlReader reader)
+		{
+			reader.ReadToFollowing(nameof(Start));
+			Start = reader.ReadElementContentAsFloat();
+			reader.ReadToFollowing(nameof(End));
+			End = reader.ReadElementContentAsFloat();
+		}
+
+		void IXmlSerializable.WriteXml(XmlWriter writer)
+		{
+			writer.WriteElementString(nameof(Start), Start.ToString());
+			writer.WriteElementString(nameof(End), End.ToString());
 		}
 	}
 }

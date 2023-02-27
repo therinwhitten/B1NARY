@@ -30,7 +30,7 @@
 			[field: NonSerialized, XmlIgnore]
 			public event UpdatedConstantValue<T> UpdatedValue;
 			private Dictionary<string, T> constants = new Dictionary<string, T>();
-			[XmlIgnore]
+			[field: NonSerialized, XmlIgnore]
 			private Dictionary<string, Func<T>> pointers = new Dictionary<string, Func<T>>();
 
 			public T this[string key]
