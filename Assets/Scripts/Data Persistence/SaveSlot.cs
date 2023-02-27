@@ -50,7 +50,7 @@
 					return m_allSlots;
 				IEnumerable<FileInfo> info = SavesDirectory.EnumerateFiles()
 					.Where(file => file.Extension == Extension);
-				return null;//return m_allSlots = info.Select(file => (file, new Lazy<SaveSlot>(() => XmlSerializer.Deserialize<SaveSlot>(file))));
+				return m_allSlots = info.Select(file => (file, new Lazy<SaveSlot>(() => SlotSerializer.Deserialize(file))));
 			}
 		}
 		private static IEnumerable<(FileInfo location, Lazy<SaveSlot> slot)> m_allSlots;
@@ -145,13 +145,10 @@
 		{
 			return new ScriptPosition()
 			{
-				m_sceneName = SceneManager.ActiveScene.name,
-
+				SceneName = SceneManager.ActiveScene.name,
 			};
 		}
-		// Current version of OVSXmlSerializer doesn't like auto-implemented properties
-		public string SceneName => m_sceneName;
-		private string m_sceneName;
+		public string SceneName { get; private set; }
 
 		public ScriptPosition()
 		{
