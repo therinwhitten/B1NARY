@@ -19,6 +19,11 @@
 		public TMP_Dropdown languageDropdown;
 		[SerializeField] Slider glow;
 		private GlowVolumeInterface glowVolumeInterface;
+		[SerializeField] private Slider glowSliderText;
+		[SerializeField] private TextMeshProUGUI glowText;
+		[SerializeField] private Slider fpsSlider;
+		[SerializeField] private TextMeshProUGUI fpsText;
+		
 		
 		
 		private void Awake()
@@ -29,6 +34,15 @@
 			glowVolumeInterface = FindObjectOfType<GlowVolumeInterface>();
 			glow.value = glowVolumeInterface.BloomIntensity;
 		}
+		 void Start() //Glow Text Value
+		{
+			glowSliderText.onValueChanged.AddListener((v) => {glowText.text = v.ToString("0");
+			});
+
+			fpsSlider.onValueChanged.AddListener((v) => {fpsText.text = v.ToString("0");
+			});	 	 
+		}
+   
 		public void ChangeIntensity(float value) => glowVolumeInterface.BloomIntensity = value;
 		public void ChangeLevel(int value) // Graphics Quality
 		{
