@@ -6,28 +6,30 @@
 	using static UIThemeHandler;
 	using System.Collections.Generic;
 	using System.Linq;
+	using OVSXmlSerializer;
 
-	public class OverrideThemeSelection : DropdownPanel<string>
+	public class OverrideThemeSelection : DropdownPanel<ColorFormat>
 	{
-		public override int InitialValue => Values.ToList().IndexOf(ColorFormat.CurrentFormat.name);
+		public override int InitialValue => Values.ToList().IndexOf(ColorFormat.CurrentTheme);
 		
 		protected override void Awake()
 		{
 			base.Awake();
 		}
 
-		public override List<KeyValuePair<string, string>> DefinedPairs =>
-			Resources.LoadAll<ColorFormat>(ColorFormat.resourcesColorThemePath)
-			.Select(format => new KeyValuePair<string, string>(format.name, format.name)).ToList();
+		public override List<KeyValuePair<string, ColorFormat>> DefinedPairs =>
+			ColorFormat.PlayerFormats
+			.Select(format => new KeyValuePair<string, ColorFormat>(format.FormatName, format)).ToList();
 		protected override void PickedChoice(int index)
 		{
 			base.PickedChoice(index);
-			if (ColorFormat.defaultKey == Pairs[index].Value)
+			ColorFormat currentFormat = Pairs[index].Value;
+			if (ReferenceEquals(ColorFormat.DefaultTheme, currentFormat))
 			{
-				ColorFormat.HasOverridedTheme = false;
+				ColorFormat.RemoveOverride();
 				return;
 			}
-			ColorFormat.OverridedTheme = Pairs[index].Value;
+			ColorFormat.Override(currentFormat);
 		}
 	}
 }

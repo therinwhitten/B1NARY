@@ -10,7 +10,6 @@
 	using UnityEngine;
 	using System.Linq;
 	using OVSXmlSerializer;
-	using System.Xml.Serialization;
 
 	public class SaveSlot
 	{

@@ -4,132 +4,175 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using UnityEngine;
-	using B1NARY.DataPersistence;
-	using System.Runtime.Remoting;
-	using System.Threading;
 	using B1NARY.Scripting;
+	using OVSXmlSerializer;
+	using System.Xml;
+	using HideousDestructor.DataPersistence;
+	using System.IO;
+	using System.Xml.XPath;
+	using Codice.Client.Common;
 
 
 	// Have it change formats per scene if it exists.
 	[Serializable]
-	[CreateAssetMenu(fileName = "New UI Color Format", menuName = "B1NARY/Color UI Format", order = 1)]
-	public class ColorFormat : ScriptableObject, IEquatable<ColorFormat>
+	public class ColorFormat
 	{
-		// Add command array for selection.
+		public const string DEFAULT_THEME_NAME = "Default";
+		public static DirectoryInfo RootPath => SerializableSlot.StreamingAssets.CreateSubdirectory("Color Themes");
+		public static DirectoryInfo CustomThemePath => RootPath.CreateSubdirectory("Custom");
+		public static FileInfo DefaultThemePath => RootPath.GetFile("Default.xml");
+		internal readonly static IndexFile indexFile = IndexFile.LoadNew();
 		public static CommandArray Commands = new CommandArray()
 		{
 			["colorformat"] = (Action<string>)(newColorFormat =>
 			{
-				SoftOverride(newColorFormat);
+				Set(newColorFormat);
 			}),
 		};
 
-		/// <summary>
-		/// Adds <see cref="resourcesColorThemePath"/> and the added path into
-		/// it's own directory. Using <see cref="Resources.Load(string)"/> with
-		/// this is compatible and intended.
-		/// </summary>
-		/// <param name="path">The file name that is expected to be <see cref="ColorFormat"/>. </param>
-		/// <returns> A resources path to use. </returns>
-		public static string ResourcesPath(string path) => $"{resourcesColorThemePath}/{path}";
-		/// <summary>
-		/// A path in the resources folder as reference for color themes.
-		/// </summary>
-		public const string resourcesColorThemePath = "UI/Color Themes";
 
-		/// <summary>
-		/// The key for saving <see cref="PlayerPrefs"/>.
-		/// </summary>
-		private const string persistenceKey = "B1NARYColorFormat";
-		/// <summary>
-		/// The name of the <see cref="ColorFormat"/> to default to if there is 
-		/// none overrided.
-		/// </summary>
-		public const string defaultKey = "Default";
-		/// <summary>
-		/// Gets the currently saved overrided theme name, expected for use in 
-		/// <see cref="ResourcesPath(string)"/>. Returns <see cref="defaultKey"/>
-		/// if there is no key present, or <see cref="HasOverridedTheme"/> is 
-		/// false.
-		/// </summary>
-		public static string OverridedTheme
+		internal static XmlSerializer<ColorFormat> FormatSerializer = new XmlSerializer<ColorFormat>();
+
+
+		static ColorFormat()
 		{
-			get => PlayerPrefs.GetString(persistenceKey, defaultKey);
-			set
+			if (!DefaultThemePath.Exists)
 			{
-				if (m_currentFormat != null)
-					CurrentFormat = Resources.Load<ColorFormat>(ResourcesPath(value));
-				PlayerPrefs.SetString(persistenceKey, value);
+				m_defaultTheme = new ColorFormat()
+				{
+					FormatName = DEFAULT_THEME_NAME
+				};
+				m_defaultTheme.Save(DefaultThemePath.Name, true);
 			}
-		}
-		/// <summary>
-		/// Modifies the current theme to the specified <paramref name="themeName"/>
-		/// and saved as a player preference.
-		/// </summary>
-		/// <param name="themeName"> The new theme to change to and persist. </param>
-		public static void HardOverride(string themeName)
-		{
-			OverridedTheme = themeName;
-		}
-		/// <summary>
-		/// Checks if it has a theme in store. Setting it to <see langword="true"/>
-		/// will cause to create a new key with <see cref="defaultKey"/>, or
-		/// <see cref="CurrentFormat"/> if it is currently active.
-		/// </summary>
-		public static bool HasOverridedTheme
-		{
-			get => PlayerPrefs.HasKey(persistenceKey);
-			set
-			{
-				if (value == HasOverridedTheme)
-					return;
-				if (value)
-					PlayerPrefs.SetString(persistenceKey, m_currentFormat == null ? defaultKey : m_currentFormat.name);
-				else
-					PlayerPrefs.DeleteKey(persistenceKey);
-				CurrentFormat = Resources.Load<ColorFormat>(ResourcesPath(OverridedTheme));
-			}
+			else
+				m_defaultTheme = FormatSerializer.Deserialize(DefaultThemePath);
 		}
 
-		private static ColorFormat m_currentFormat;
-		/// <summary>
-		/// when <see cref="CurrentFormat"/> is modified in any way.
-		/// </summary>
-		public static event Action<ColorFormat> CurrentFormatChanged;
-		/// <summary>
-		/// The currently active format that is equipped for all objects to see.
-		/// </summary>
-		public static ColorFormat CurrentFormat
+		public static ColorFormat DefaultTheme
+		{
+			get => m_defaultTheme;
+			set
+			{
+				m_defaultTheme = value;
+				m_defaultTheme.Save(DefaultThemePath.Name, true);
+			}
+		}
+		private static ColorFormat m_defaultTheme;
+		public static event Action<ColorFormat> ChangedTheme;
+		public static ColorFormat CurrentTheme
 		{
 			get
 			{
-				if (!Application.isPlaying)
-					throw new InvalidOperationException();
-				if (m_currentFormat == null)
-					m_currentFormat = Resources.Load<ColorFormat>(ResourcesPath(defaultKey));
-				return m_currentFormat;
+				if (m_currentTheme is null)
+				{
+					string themeName = B1NARYConfig.Graphics.Theme;
+					if (string.IsNullOrWhiteSpace(themeName))
+						m_currentTheme = DefaultTheme;
+					else if (!Set(themeName))
+						m_currentTheme = DefaultTheme;
+				}
+				return m_currentTheme;
 			}
-			private set
-			{
-				m_currentFormat = value;
-				CurrentFormatChanged?.Invoke(m_currentFormat);
-			}
+			set => Set(value);
 		}
-
-		/// <summary>
-		/// This modifies the currently used format, if it does not hold a theme
-		/// such as the <see cref="OverridedTheme"/>, then it will set to that
-		/// active theme.
-		/// </summary>
-		/// <returns><see cref="HasOverridedTheme"/></returns>
-		public static bool SoftOverride(string themeName)
+		private static ColorFormat m_currentTheme;
+		public static void Override(string themeName)
 		{
-			if (HasOverridedTheme)
-				return false;
-			CurrentFormat = Resources.Load<ColorFormat>(ResourcesPath(themeName));
-			return true;
+			if (Set(themeName))
+				B1NARYConfig.Graphics.Theme = themeName;
+		}
+		public static void Override(ColorFormat theme)
+		{
+			Set(theme);
+			B1NARYConfig.Graphics.Theme = theme.FormatName;
+		}
+		public static bool Set(string themeName)
+		{
+			for (int i = 0; i < AvailableFormats.Count; i++)
+				if (AvailableFormats[i].format.FormatName == themeName)
+				{
+					Set(AvailableFormats[i].format);
+					return true;
+				}
+			return false;
+		}
+		public static void Set(ColorFormat theme)
+		{
+			m_currentTheme = theme;
+			ChangedTheme?.Invoke(theme);
+		}
+		public static bool HasOverride => !string.IsNullOrEmpty(B1NARYConfig.Graphics.Theme);
+		public static void RemoveOverride()
+		{
+			B1NARYConfig.Graphics.Theme = null;
+			Set(DefaultTheme);
 		}
 
+
+		internal static List<(FileInfo fileInfo, ColorFormat format)> AllFormats =>
+			new List<(FileInfo fileInfo, ColorFormat format)>(AvailableFormats)
+			{
+				(DefaultThemePath, DefaultTheme)
+			};
+		/// <summary>
+		/// All formats that the system that can access
+		/// </summary>
+		public static IReadOnlyList<(FileInfo fileInfo, ColorFormat format)> AvailableFormats
+		{
+			get
+			{
+				if (m_availableFormats is null)
+				{
+					var enumerable = CustomThemePath.GetFiles().Where(file => file.Extension == ".xml");
+					m_availableFormats = new List<(FileInfo fileInfo, ColorFormat format)>();
+					using (var enumerator = enumerable.GetEnumerator())
+						while (enumerator.MoveNext())
+						{
+							FileInfo fileInfo = enumerator.Current;
+							try
+							{
+								ColorFormat format = FormatSerializer.Deserialize(fileInfo);
+								m_availableFormats.Add((fileInfo, format));
+							}
+							catch (Exception ex)
+							{
+								Debug.LogException(ex);
+							}
+						}
+				}
+				return m_availableFormats;
+			}
+		}
+		internal static List<(FileInfo fileInfo, ColorFormat format)> m_availableFormats;
+		/// <summary>
+		/// All formats that can be added by the options menu w/ overrides
+		/// </summary>
+		public static IReadOnlyList<ColorFormat> PlayerFormats
+		{
+			get
+			{
+				if (m_playerFormats is null)
+				{
+					m_playerFormats = new List<ColorFormat>();
+					HashSet<string> names = new HashSet<string>(indexFile.files);
+					var allFormats = AllFormats;
+					for (int i = 0; i < allFormats.Count; i++)
+					{
+						ColorFormat format = allFormats[i].format;
+						if (names.Contains(format.FormatName))
+							m_playerFormats.Add(format);
+					}
+				}
+				return m_playerFormats;
+			}
+			set
+			{
+				m_playerFormats = new List<ColorFormat>(value);
+				indexFile.files = value.Select(format => format.FormatName).ToList();
+				indexFile.Save();
+			}
+		}
+		internal static List<ColorFormat> m_playerFormats;
 
 		/// <summary>
 		/// Converts a byte to a float ranging from 0 to 1 into 0 to 255.
@@ -146,78 +189,91 @@
 			return Convert.ToByte(percent * byte.MaxValue);
 		}
 
+		// INSTANCE ---------------------------
+
+		/// <summary>
+		/// 
+		/// </summary>
+#warning TODO: Assign it later on build 1.1.2!
+		//[XmlAttribute("name")]
+		public string FormatName;
+		/// <summary>
+		/// The color format version of the color format.
+		/// </summary>
+		[XmlAttribute("ver")]
+		public int Version = 1;
 		/// <summary>
 		/// The primary color to be used by all UI. Defaulted to this color by
 		/// default if something happens.
 		/// </summary>
+		[XmlNamedAs("Primary")]
 		public Color primaryUI = new Color(ToPercent(47), ToPercent(161), ToPercent(206));
 		/// <summary>
 		/// The secondary color to be used by all UI. The yang to the 
 		/// <see cref="primaryUI"/> ying.
 		/// </summary>
+		[XmlNamedAs("Secondary")]
 		public Color SecondaryUI = new Color(ToPercent(47), ToPercent(206), ToPercent(172));
+		/// <summary>
+		/// 
+		/// </summary>
+		[XmlNamedAs("Extras")]
+		public Dictionary<string, Color> ExtraUIColors = new Dictionary<string, Color>();
 
 		/// <summary>
-		/// uses the setter/getter to modify values and notify the color format
-		/// to change states.
+		/// 
 		/// </summary>
-		public IReadOnlyDictionary<string, Color> ExtraUIValues 
-		{ 
-			get => m_extraUIValues; set
-			{
-				savedKeys = value.Keys.ToArray();
-				savedValues = value.Values.ToArray();
-				m_extraUIValues = value;
-			}
-		}
-		private IReadOnlyDictionary<string, Color> m_extraUIValues;
-
-		/// <summary>
-		/// The keys of the keyValuePair list. Separated due to the serialization 
-		/// gods being angry at us for making our lives easier. Use 
-		/// <see cref="SavedPairs"/> for the pairs.
-		/// </summary>
-		public string[] savedKeys = Array.Empty<string>();
-		/// <summary>
-		/// The values of the keyValuePair list. Separated due to the serialization 
-		/// gods being angry at us for making our lives easier. Use 
-		/// <see cref="SavedPairs"/> for the pairs.
-		/// </summary>
-		public Color[] savedValues = Array.Empty<Color>();
-		/// <summary>
-		/// The KeyValuePairs to modify. Its set as read only due to property 
-		/// magic.
-		/// </summary>
-		public IReadOnlyList<KeyValuePair<string, Color>> SavedPairs
+		public ColorFormat()
 		{
-			get => savedKeys.Zip(savedValues, (left, right) => new KeyValuePair<string, Color>(left, right)).ToList();
-			set
+
+		}
+
+		// OTHER STRUCTS -------------------
+
+		public class IndexFile : IXmlSerializable
+		{
+			public static FileInfo IndexPath => RootPath.GetFile("PlayerThemeIndex.xml");
+			private static XmlSerializer<IndexFile> indexerFormatter = new XmlSerializer<IndexFile>();
+			public static IndexFile LoadNew()
 			{
-				savedKeys = new string[value.Count];
-				savedValues = new Color[value.Count];
-				for (int i = 0; i < value.Count; i++)
+				if (IndexPath.Exists)
+					return indexerFormatter.Deserialize(IndexPath);
+				else
+					return new IndexFile();
+			}
+			public List<string> files = new List<string>();
+
+			bool IXmlSerializable.ShouldWrite => true;
+			void IXmlSerializable.Read(XmlNode value)
+			{
+				files = new List<string>(value.ChildNodes.Count);
+				for (int i = 0; i < files.Capacity; i++)
+					files.Add(value.ChildNodes[i].InnerText);
+			}
+			void IXmlSerializable.Write(XmlWriter writer)
+			{
+				for (int i = 0; i < files.Count; i++)
 				{
-					savedKeys[i] = value[i].Key;
-					savedValues[i] = value[i].Value;
+					writer.WriteElementString("File", files[i]);
 				}
-				m_extraUIValues = SavedPairs.ToDictionary(pair => pair.Key, pair => pair.Value);
+			}
+			public void Save()
+			{
+				using (var stream = IndexPath.Open(FileMode.Create, FileAccess.Write))
+					indexerFormatter.Serialize(stream, this);
 			}
 		}
 
-		/// <summary>
-		/// On Deserialization/use.
-		/// </summary>
-		private void OnEnable()
+		public void Save(string fileName, bool isDefault = false)
 		{
-			m_extraUIValues = SavedPairs.ToDictionary(pair => pair.Key, pair => pair.Value);
-		}
-
-		public bool Equals(ColorFormat other)
-		{
-			return primaryUI == other.primaryUI &&
-				SecondaryUI == other.SecondaryUI &&
-				name == other.name &&
-				ExtraUIValues == other.ExtraUIValues;
+			if (isDefault)
+			{
+				using (var stream = DefaultThemePath.Open(FileMode.Create, FileAccess.Write))
+					FormatSerializer.Serialize(stream, this, "DefaultFormat");
+				return;
+			}
+			using (var stream = CustomThemePath.GetFile(fileName).Open(FileMode.Create, FileAccess.Write))
+				FormatSerializer.Serialize(stream, this, "ColorFormat");
 		}
 	}
 }
@@ -227,10 +283,91 @@ namespace B1NARY.Editor
 	using UnityEngine;
 	using UnityEditor;
 	using B1NARY.UI;
+	using B1NARY.Editor.Debugger;
+	using System.Linq;
+	using System.Collections.Generic;
+	using System.IO;
 
-	[CustomEditor(typeof(ColorFormat))]
-	public class ColorFormatEditor : Editor
+	public class ColorFormatWindow : EditorWindow
 	{
+		private static readonly Vector2Int defaultMinSize = new Vector2Int(300, 350);
+		[MenuItem("B1NARY/Color Format Editor", priority = 1)]
+		public static void ShowWindow()
+		{
+			// Get existing open window or if none, make a new one:
+			ColorFormatWindow window = GetWindow<ColorFormatWindow>();
+			window.titleContent = new GUIContent("Color Format Editor");
+			window.minSize = defaultMinSize;
+			window.Show();
+		}
+
+		private bool bruh = false;
+		private int selection = 0;
+		private string newItemName = "";
+
+		private void OnGUI()
+		{
+			Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20f);
+			Rect leftRect = new Rect(fullRect) { width = fullRect.width / 3 };
+			Rect rightRect = new Rect(fullRect) { xMin = leftRect.xMax + 2 };
+			List<(FileInfo fileInfo, ColorFormat format)> allFormats = ColorFormat.AllFormats;
+			newItemName = EditorGUI.TextField(rightRect, newItemName);
+			if (GUILayout.Button("Reset Metadata"))
+			{
+				ColorFormat.m_availableFormats = null;
+				ColorFormat.m_playerFormats = null;
+			}
+			if (GUI.Button(leftRect, "New"))
+			{
+				new ColorFormat() { FormatName = newItemName, }.Save($"{newItemName}.xml");
+				ColorFormat.m_availableFormats = null;
+				ColorFormat.m_playerFormats = null;
+			}
+			if (bruh = EditorGUILayout.BeginFoldoutHeaderGroup(bruh, "Player-Defined Themes"))
+			{
+				EditorGUI.indentLevel++;
+				ColorFormat.IndexFile file = ColorFormat.indexFile;
+				for (int i = 0; i < allFormats.Count; i++)
+				{
+					ColorFormat format = allFormats[i].format;
+					bool oldValue = file.files.Contains(format.FormatName);
+					if (EditorGUILayout.Toggle(format.FormatName, oldValue) != oldValue)
+					{
+						bool newValue = !oldValue;
+						if (newValue)
+							file.files.Add(format.FormatName);
+						else
+							file.files.Remove(format.FormatName);
+						file.Save();
+					}
+				}
+				EditorGUI.indentLevel--;
+			}
+			EditorGUILayout.EndFoldoutHeaderGroup();
+			selection = EditorGUILayout.Popup(selection, allFormats.Select(pair => pair.format.FormatName).ToArray());
+			ColorFormat currentFormat = allFormats[selection].format;
+			FileInfo fileInfo = allFormats[selection].fileInfo;
+			if (!ReferenceEquals(currentFormat, ColorFormat.DefaultTheme))
+				currentFormat.FormatName = EditorGUILayout.TextField("Name", currentFormat.FormatName);
+			EditorGUI.indentLevel++;
+			currentFormat.primaryUI = EditorGUILayout.ColorField("Primary Color", currentFormat.primaryUI);
+			currentFormat.SecondaryUI = EditorGUILayout.ColorField("Secondary Color", currentFormat.SecondaryUI);
+			var editable = new DictionaryEditor<string, Color>(currentFormat.ExtraUIColors)
+			{
+				defaultValue = Color.black,
+				defaultKey = ""
+			};
+			if (editable.Repaint())
+				currentFormat.ExtraUIColors = editable.Flush();
+			if (GUILayout.Button("Save"))
+			{
+				currentFormat.Save(fileInfo.Name, ReferenceEquals(currentFormat, ColorFormat.DefaultTheme));
+				ColorFormat.m_availableFormats = null;
+				ColorFormat.m_playerFormats = null;
+			}
+			EditorGUI.indentLevel--;
+		}
+		/*
 		ColorFormat _colorFormat;
 		private ColorFormat ColorFormat
 		{
@@ -266,6 +403,7 @@ namespace B1NARY.Editor
 			}
 			EditorGUILayout.EndFoldoutHeaderGroup();
 		}
+		*/
 	}
 }
 #endif

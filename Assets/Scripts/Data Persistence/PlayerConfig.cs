@@ -55,18 +55,6 @@
 		internal static Dictionary<string, object> m_values = new Dictionary<string, object>();
 
 		public static T GetValue<T>(string key) => (T)m_values[key];
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <remarks> 
-		/// Keep in mind that some classes cannot be properly serialized: Cant
-		/// really find any workarounds, so watch out for things like lists and
-		/// arrays as they contain generics
-		/// </remarks>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="key"></param>
-		/// <param name="default"></param>
-		/// <returns></returns>
 		public static T GetValue<T>(string key, T @default)
 		{
 			if (m_values.TryGetValue(key, out var value))
@@ -81,13 +69,13 @@
 
 		public static void Save()
 		{
-			Debug.Log("Saved!");
-			using (var stream = XmlSerializer.Serialize(m_values, "PlayerConfig"))//XmlSerializerOld.SerializeDictionary(nameof(PlayerConfig), m_values))
+			using (var stream = XmlSerializer.Serialize(m_values, "PlayerConfig"))
 				using (var fileStream = ConfigLocation.Create())
 				{
 					stream.CopyTo(fileStream);
 					fileStream.Flush();
 				}
+			Debug.Log("Saved Player Config!");
 		}
 
 
@@ -134,6 +122,13 @@
 			set => PlayerConfig.SetValue(B1NARY_HENABLE, value);
 		}
 
+
+		private static void Init()
+		{
+
+		}
+
+
 		public static class Graphics
 		{
 			private const string GRAPHICS_GLOW = PlayerConfig.PRE_GRAPHICS + "bloom";
@@ -159,6 +154,12 @@
 			{
 				get => PlayerConfig.GetValue(GRAPHICS_FRAME_RATE, 69);
 				set => PlayerConfig.SetValue(GRAPHICS_FRAME_RATE, value);
+			}
+			private const string GRAPHICS_THEME = PlayerConfig.PRE_GRAPHICS + "theme";
+			public static string Theme
+			{
+				get => PlayerConfig.GetValue(GRAPHICS_THEME, "Default");
+				set => PlayerConfig.SetValue(GRAPHICS_THEME, value);
 			}
 		}
 		public static class Sound
@@ -208,27 +209,7 @@
 					}
 					PlayerConfig.SetValue(MIXER_CHARACTERS, dictionary);
 				}
-				/*
-				get
-				{
-					List<(string key, float value)> list = PlayerConfig.GetValue(MIXER_CHARACTERS, new List<(string key, float value)>());
-					Dictionary<string, float> dictionary = new Dictionary<string, float>();
-					for (int i = 0; i < list.Count; i++)
-						dictionary.Add(list[i].key, list[i].value);
-					return dictionary;
-				}
-				set
-				{
-					// Xml Serializer doesn't like interfaces.
-					ArrayList newValue = new ArrayList();
-					using (var enumerator = Characters.GetEnumerator())
-						while (enumerator.MoveNext())
-							newValue.Add(enumerator.Current);//((enumerator.Current.Key, enumerator.Current.Value));
-					PlayerConfig.SetValue(MIXER_CHARACTERS, newValue);
-				}
-				*/
 			}
-
 		}
 	}
 }

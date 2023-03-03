@@ -35,9 +35,9 @@
 			switch (option)
 			{
 				case Option.Primary:
-					return ColorFormat.CurrentFormat.primaryUI;
+					return ColorFormat.CurrentTheme.primaryUI;
 				case Option.Secondary:
-					return ColorFormat.CurrentFormat.SecondaryUI;
+					return ColorFormat.CurrentTheme.SecondaryUI;
 				case Option.Custom:
 					throw new ArgumentException($"although {option} is a enum, you need" +
 						$"another argument or name to differentiate other settings!");
@@ -49,10 +49,10 @@
 		{
 			if (Enum.TryParse(name, out Option option))
 				return GetColor(option);
-			if (ColorFormat.CurrentFormat.ExtraUIValues.TryGetValue(name, out Color color))
+			if (ColorFormat.CurrentTheme.ExtraUIColors.TryGetValue(name, out Color color))
 				return color;
 			throw new NullReferenceException($"'{name}' is not located within the currently " +
-				$"equipped format: {ColorFormat.CurrentFormat.name}.");
+				$"equipped format: {ColorFormat.CurrentTheme.FormatName}.");
 		}
 
 
@@ -124,11 +124,11 @@
 		}
 		private void OnEnable()
 		{
-			ColorFormat.CurrentFormatChanged += UpdateColors;
+			ColorFormat.ChangedTheme += UpdateColors;
 		}
 		private void OnDisable()
 		{
-			ColorFormat.CurrentFormatChanged -= UpdateColors;
+			ColorFormat.ChangedTheme -= UpdateColors;
 		}
 		public void UpdateColors(ColorFormat format = null)
 		{
