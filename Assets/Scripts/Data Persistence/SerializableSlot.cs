@@ -47,12 +47,10 @@
 		/// from the appdata; causing it to not display any directory location 
 		/// at all.
 		/// </remarks>
-		public static DirectoryInfo PersistentData { get; } = ((Func<DirectoryInfo>)(() => 
-		{
-			return new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData))
-				.CreateSubdirectory(Application.productName.Trim());
-		})).Invoke();
-			
+		public static DirectoryInfo PersistentData => persistentData.Value;
+		// Set as lazy since trying to get the persistent data path is not looked
+		// - up upon on static class creation.
+		private static readonly Lazy<DirectoryInfo> persistentData = new Lazy<DirectoryInfo>(() => new DirectoryInfo(Application.persistentDataPath));
 		/// <summary>
 		/// Gets the streaming assets folder with a <see cref="DirectoryInfo"/>.
 		/// </summary>
@@ -109,7 +107,7 @@
 					return;
 					IEnumerator Await()
 					{
-						yield return new WaitForEndOfFrame(); 
+						yield return new WaitForEndOfFrame();
 						Thumbnail = Thumbnail.CreateWithScreenshot();
 						using (var stream = fileInfo.Open(FileMode.Create, FileAccess.Write))
 							new BinaryFormatter().Serialize(stream, this);

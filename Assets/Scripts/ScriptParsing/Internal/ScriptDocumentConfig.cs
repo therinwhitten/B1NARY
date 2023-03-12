@@ -1,4 +1,4 @@
-﻿namespace B1NARY.Scripting.Experimental
+﻿namespace B1NARY.Scripting
 {
 	using System;
 	using System.Collections.Generic;
@@ -6,6 +6,7 @@
 
 	public sealed class ScriptDocumentConfig
 	{
+		public bool stopOnAllLines = false;
 		/// <summary>
 		/// Any listeners listening for <c>[AttributeName]</c> where attributeName
 		/// is the parameter.
@@ -13,7 +14,7 @@
 		public event Action<string> AttributeListeners;
 		internal void InvokeAttribute(string attribute) => AttributeListeners?.Invoke(attribute);
 		internal void InvokeAttribute(ScriptLine attribute) => InvokeAttribute(ScriptLine.CastAttribute(attribute));
-		public CommandArray Commands { get; } = new CommandArray();
+		public CommandArray Commands { get; }
 		public event Action NormalLine;
 		internal void InvokeNormal() => NormalLine?.Invoke();
 		// temp change
@@ -31,8 +32,6 @@
 				m_derivedElements.Add(newConstructor);
 		}
 
-		public IReadOnlyList<ScriptElementConstructorInfo> DerivedElements => m_derivedElements;
-
 		public ScriptElement GetDefinedElement(List<ScriptLine> lines)
 		{
 			for (int ii = 0; ii < DerivedElements.Count; ii++)
@@ -42,9 +41,21 @@
 			}
 			return new ScriptElement(this, lines);
 		}
+		public IReadOnlyList<ScriptElementConstructorInfo> DerivedElements => m_derivedElements;
+		private readonly List<ScriptElementConstructorInfo> m_derivedElements;
 
-		private readonly List<ScriptElementConstructorInfo> m_derivedElements
-			= new List<ScriptElementConstructorInfo>();
+		public ScriptDocumentConfig()
+		{
+			Commands = new CommandArray();
+			m_derivedElements = new List<ScriptElementConstructorInfo>();
+		}
+		public ScriptDocumentConfig(ScriptDocumentConfig config)
+		{
+			AttributeListeners = config.AttributeListeners;
+			Commands = new CommandArray();
+			Commands.AddRange(config.Commands.Commands);
+			m_derivedElements = new List<ScriptElementConstructorInfo>();
+		}
 	}
 
 	// Generated from C# engine

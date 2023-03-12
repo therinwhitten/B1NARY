@@ -1,4 +1,4 @@
-﻿namespace B1NARY.Scripting.Experimental
+﻿namespace B1NARY.Scripting
 {
 	using System;
 	using System.Collections.Generic;
@@ -15,12 +15,13 @@
 		/// this is the root line that appears before the bracket.
 		/// </summary>
 		public ScriptLine PrimaryLine { get; }
+		public int GlobalIndex => PrimaryLine.Index;
 		/// <summary>
 		/// The total length of the node.
 		/// </summary>
 		public virtual int Length => 1;
 
-		internal ScriptNode(ScriptLine rootLine)
+		internal protected ScriptNode(ScriptLine rootLine)
 		{
 			PrimaryLine = rootLine;
 		}

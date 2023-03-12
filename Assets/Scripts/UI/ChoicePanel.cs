@@ -84,7 +84,7 @@
 					" been used to make a choice panel. Did you forget to dispose?");
 			hasBeenInitialized = true;
 			enabled = true;
-			ScriptHandler.Instance.ShouldPause = true;
+			ScriptHandler.Instance.pauser.Pause();
 			gameObject.SetActive(true);
 			PickedChoice = key =>
 			{
@@ -100,7 +100,7 @@
 					GameObject obj = Instantiate(choiceButtonPrefab, transform);
 					choiceButtons.Add(obj.GetComponent<ChoiceButton>());
 					obj.SetActive(true);
-					choiceButtons[i].Text = enumerator.Current.lineData;
+					choiceButtons[i].Text = enumerator.Current.RawLine;
 					choiceButtons[i].tiedPanel = this;
 					choiceButtons[i].VoiceActor = CharacterController.Instance.ActiveCharacter.VoiceData;
 					choiceButtons[i].currentLine = enumerator.Current;
@@ -125,7 +125,7 @@
 				return;
 			hasBeenInitialized = false;
 			CurrentlyPickedChoice = null;
-			ScriptHandler.Instance.ShouldPause = false;
+			ScriptHandler.Instance.pauser.Play();
 			gameObject.SetActive(false);
 			enabled = false;
 			for (int i = 0; i < choiceButtons.Count; i++)

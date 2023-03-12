@@ -94,7 +94,7 @@
 		/// <returns> The Coroutine. </returns>
 		public IEnumerator ChangeScene(string sceneName)
 		{
-			ScriptHandler.Instance.ShouldPause = true;
+			ScriptHandler.Instance.pauser.Pause();
 			IEnumerator fadeEnum = FadeScene();
 			while (fadeEnum.MoveNext())
 				yield return fadeEnum.Current;
@@ -110,7 +110,7 @@
 				if (Application.isEditor)
 				{
 					Debug.LogException(new MissingReferenceException($"'{sceneName}' does not exist as a scene, fix this before production! IT WILL BREAK YOUR SHIT!"));
-					ScriptHandler.Instance.ShouldPause = true;
+					ScriptHandler.Instance.pauser.Pause();
 				}
 				else
 					Utils.ForceCrash(ForcedCrashCategory.FatalError);
@@ -121,12 +121,12 @@
 
 			do yield return new WaitForFixedUpdate();
 			while (cannotPerformNext);
-			ScriptHandler.Instance.ShouldPause = false;
+			ScriptHandler.Instance.pauser.Play();
 			ScriptHandler.Instance.NextLine(); 
 		}
 		public IEnumerator ReturnToMainMenu()
 		{
-			ScriptHandler.Instance.ShouldPause = true;
+			ScriptHandler.Instance.pauser.Pause();
 			IEnumerator fadeEnum = FadeScene();
 			while (fadeEnum.MoveNext())
 				yield return fadeEnum.Current;
@@ -139,12 +139,12 @@
 				if (Application.isEditor)
 				{
 					Debug.LogException(new MissingReferenceException($"'{MainMenuSceneIndex}' does not exist as a scene index, fix this before production! IT WILL BREAK YOUR SHIT!"));
-					ScriptHandler.Instance.ShouldPause = true;
+					ScriptHandler.Instance.pauser.ManuallyForceState(true);
 				}
 				else
 					Utils.ForceCrash(ForcedCrashCategory.FatalError);
 			}
-			ScriptHandler.Instance.ShouldPause = false;
+			ScriptHandler.Instance.pauser.Play();
 			ScriptHandler.Instance.Clear();
 		}
 		/// <summary>
@@ -154,7 +154,8 @@
 		public void InitializeGame()
 		{
 			SaveSlot.PassivelyLoadSlot(new SaveSlot());
-			ScriptHandler.Instance.InitializeNewScript();
+			ScriptHandler.Instance.NewDocument();
+			ScriptHandler.Instance.NextLine();
 		}
 		/// <summary>
 		/// Initializes the <see cref="ScriptHandler"/>, the system expects the
@@ -163,7 +164,8 @@
 		public void InitializeScript(string docPath)
 		{
 			SaveSlot.PassivelyLoadSlot(new SaveSlot());
-			ScriptHandler.Instance.InitializeNewScript(docPath);
+			ScriptHandler.Instance.NewDocument(docPath);
+			ScriptHandler.Instance.NextLine();
 		}
 
 		/// <summary>

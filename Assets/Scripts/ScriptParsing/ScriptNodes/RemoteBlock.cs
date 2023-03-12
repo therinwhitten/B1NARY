@@ -4,39 +4,36 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using UnityEngine;
-
-	[NodeCommandCondition("remote")]
-	public class RemoteBlock : ScriptNode
+	
+	public class RemoteBlock : ScriptElement
 	{
-		public static Func<bool, IEnumerator<ScriptLine>> CallRemote(ScriptDocument document, string key)
+		public static IEnumerator<ScriptNode> CallRemote(ScriptDocument document, string key)
 		{
 			Dictionary<string, RemoteBlock> blockDictionary = (
-				from node in document.nodes
+				from node in document.AllElements
 				where node is RemoteBlock
 				select (RemoteBlock)node).ToDictionary(node => node.Key);
 			if (blockDictionary.TryGetValue(key, out var defaultNode))
-				return (pauseOnCommands) => defaultNode.RemoteCall(pauseOnCommands);
+				return defaultNode.RemoteCall();
 			Debug.LogWarning($"'{key}' remote node is not found in the document!\nAvailible Node Names: {string.Join(", ", blockDictionary.Keys)}");
 			return null;
 		}
 
 		public readonly string Key;
 
-		public RemoteBlock(ScriptDocument document, ScriptPair[] subLines, int index) : base(document, subLines, index)
+		public RemoteBlock(ScriptDocumentConfig config, List<ScriptLine> blockNodeData) : base(config, blockNodeData)
 		{
-			Key = ScriptLine.CastCommand(rootLine).arguments.Single();
+			Key = ScriptLine.CastCommand(PrimaryLine).arguments.Single();
 		}
 
-		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
+		public override IEnumerator<ScriptNode> EnumerateThrough(int localIndex)
 		{
 			yield break;
 		}
 
-		public IEnumerator<ScriptLine> RemoteCall(bool pauseOnCommands)
+		public IEnumerator<ScriptNode> RemoteCall()
 		{
-			using (var enumerator = base.Perform(pauseOnCommands))
-				while (enumerator.MoveNext())
-					yield return enumerator.Current;
+			return base.EnumerateThrough(0);
 		}
 	}
 }

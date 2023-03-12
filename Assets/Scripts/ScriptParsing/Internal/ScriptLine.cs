@@ -1,4 +1,4 @@
-﻿namespace B1NARY.Scripting.Experimental
+﻿namespace B1NARY.Scripting
 {
 	using System;
 	using System.Collections.Generic;
@@ -157,6 +157,10 @@
 		public int Index { get; }
 		/// <summary> The type of line it detects which. </summary>
 		public LineType Type { get; }
+		/// <summary>
+		/// The index that is meant to be used for arrays and indexing.
+		/// </summary>
+		public int ArrayIndex => Index - 1;
 
 		public ScriptLine(string rawLine, int index)
 		{
@@ -174,6 +178,10 @@
 		public bool Equals(string other)
 		{
 			return RawLine == other;
+		}
+		public override string ToString()
+		{
+			return $"{Index}:\t{RawLine} ({Type})";
 		}
 	}
 }

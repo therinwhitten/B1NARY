@@ -1,150 +1,63 @@
 ﻿namespace B1NARY.Scripting
 {
+	using B1NARY.Audio;
+	using B1NARY.DataPersistence;
+	using B1NARY.DesignPatterns;
+	using B1NARY.UI;
+	using HideousDestructor.DataPersistence;
 	using System;
-	using System.IO;
-	using System.Linq;
 	using System.Collections;
 	using System.Collections.Generic;
+	using System.IO;
+	using System.Linq;
 	using UnityEngine;
-	using UnityEngine.Diagnostics;
 	using UnityEngine.InputSystem;
-	using B1NARY.UI;
-	using B1NARY.Audio;
-	using B1NARY.DesignPatterns;
-	using B1NARY.DataPersistence;
+	using UnityEngine.InputSystem.UI;
 	using CharacterController = CharacterManagement.CharacterController;
 
-	/// <summary>
-	/// A controller of the <see cref="Scripting.ScriptDocument"/> in B1NARY.
-	/// This handles most of the behaviour of commands and initialization for
-	/// ease of use in the standard game, as it can be separated with 
-	/// <see cref="ScriptNode"/> to perhaps work on something else.
-	/// </summary>
 	[AddComponentMenu("B1NARY/Script Handler")]
-	public class ScriptHandler : Singleton<ScriptHandler>
+	public sealed class ScriptHandler : Singleton<ScriptHandler>
 	{
-		/// <summary>
-		/// All the commands that it will use for each document created. Separated
-		/// as a regular array due to some script editors wanting to see it.
-		/// </summary>
-		public static CommandArray[] AllCommands => 
-			new CommandArray[]
-			{
-				Commands,
-				DialogueSystem.Commands,
-				AudioController.Commands,
-				SceneManager.Commands,
-				CharacterController.Commands,
-				TransitionManager.Commands,
-				ColorFormat.Commands
-			};
-		/// <summary>
-		/// Uses recursion to get all the documents as a full path, including
-		/// the drive and such.
-		/// </summary>
-		/// <param name="currentPath"> The directory to interact with. </param>
-		/// <returns> 
-		/// All the file paths that start with .txt within the directory.
-		/// </returns>
-		public static List<string> GetFullDocumentsPaths(string currentPath)
+		internal static readonly ScriptDocumentConfig config;
+		static ScriptHandler()
 		{
-			var output = new List<string>(Directory.GetFiles(currentPath).Where(path => path.EndsWith(".txt")));
-			IEnumerable<string> directories = Directory.GetDirectories(currentPath);
-			if (directories.Any())
-			{
-				IEnumerator<string> enumerator = directories.GetEnumerator();
-				while (enumerator.MoveNext())
-					output.AddRange(GetFullDocumentsPaths(enumerator.Current));
-			}
-			return output;
-		}
-		/// <summary>
-		/// Uses recursion to get all the documents as a full path, including
-		/// the drive and such. This starts with <see cref="BasePath"/> as the
-		/// default parameter.
-		/// </summary>
-		/// <param name="currentPath"> The directory to interact with. </param>
-		/// <returns> 
-		/// All the file paths that start with .txt within the directory.
-		/// </returns>
-		public static List<string> GetFullDocumentsPaths()
-		{
-			return GetFullDocumentsPaths(BasePath);
-		}
-		/// <summary>
-		/// Converts all the paths, expecting coming from 
-		/// <see cref="GetFullDocumentsPaths"/>, to convert them to be more visual
-		/// and compatible with <see cref="Application.streamingAssetsPath"/>.
-		/// This creates a separate list instead of modifying the inputted list
-		/// as reference.
-		/// </summary>
-		/// <param name="fullPaths"> <see cref="GetFullDocumentsPaths"/> </param>
-		/// <returns> Gets all the inputted paths as <see cref="ToVisual(string)"/>. </returns>
-		public static List<string> GetVisualDocumentsPaths(in List<string> fullPaths)
-		{
-			var newList = new List<string>(fullPaths.Count);
-			for (int i = 0; i < newList.Capacity; i++)
-				newList.Add(ToVisual(fullPaths[i]));
-			return newList;
-		}
-		public static List<string> GetVisualDocumentsPaths()
-		{
-			return GetVisualDocumentsPaths(GetFullDocumentsPaths(BasePath));
-		}
-		/// <summary>
-		/// Converts a full path with drive mentioned, that will be replaced with
-		/// <see cref="BasePath"/> and .txt, leaving only the directories that 
-		/// start with <see cref="Application.streamingAssetsPath"/>.
-		/// </summary>
-		public static string ToVisual(string path) => path.Replace(BasePath, "").Replace(".txt", "");
-		/// <summary>
-		/// Converts a full path with drive mentioned, that will be replaced with
-		/// <see cref="BasePath"/> and .txt, leaving only the directories that 
-		/// start with <see cref="Application.streamingAssetsPath"/>.
-		/// </summary>
-		public static string ToVisual(FileInfo path) => path.FullName.Replace(BasePath, "").Replace(path.Extension, "");
+			config = new ScriptDocumentConfig();
 
-		public static string BasePath => $"{Application.streamingAssetsPath.Replace('/', '\\')}\\Docs\\";
-		/// <summary>
-		/// All script-based commands for the script itself and the 
-		/// <see cref="DialogueSystem"/>
-		/// </summary>
-		public static readonly CommandArray Commands = new CommandArray()
-		{
-			
-			["changescript"] = (Action<string>)(ChangeScript),
-			["changescript"] = (Action<string, string>)((path, line) => ChangeScript(path, int.Parse(line))),
-			["usegameobject"] = (Action<string>)(UseGameObject),
-			["setbool"] = (Action<string, string>)((name, value) =>
-			{
-				SaveSlot.ActiveSlot.ScriptDocumentInterface.bools[name] = bool.Parse(value);
-			}),
-			["callremote"] = ((Action<string>)((call) =>
-			{
-				Instance.ScriptDocument.returnValue = RemoteBlock.CallRemote(Instance.ScriptDocument, call);
-			})),
-		};
-
+			config.Commands.AddRange(
+				new List<CommandArray>()
+				{
+					new CommandArray()
+					{
+						["changescript"] = (Action<string>)(ChangeScript),
+						["changescript"] = (Action<string, string>)(ChangeScript),
+						["usegameobject"] = (Action<string>)(UseGameObject),
+						["setbool"] = (Action<string, string>)((name, value) =>
+						{
+							SaveSlot.ActiveSlot.ScriptDocumentInterface.bools[name] = bool.Parse(value);
+						}),
+						["callremote"] = (Action<string>)((call) =>
+						{
+							RemoteBlock.CallRemote(Instance.document, call);
+						}),
+					},
+					DialogueSystem.Commands,
+					AudioController.Commands,
+					SceneManager.Commands,
+					CharacterController.Commands,
+					TransitionManager.Commands,
+					ColorFormat.Commands 
+				}.SelectMany<CommandArray, OverloadableCommand>(commands => commands));
+		}
 		[ForcePause]
 		internal static void ChangeScript(string scriptPath)
 		{
-			Instance.InitializeNewScript(scriptPath);
+			Instance.NewDocument(scriptPath);
 		}
 		[ForcePause]
-		internal static void ChangeScript(string scriptPath, int line)
+		internal static void ChangeScript(string scriptPath, string line)
 		{
 			ScriptHandler handler = Instance;
-			handler.InitializeNewScript(scriptPath);
-			handler.StartCoroutine(MoveFowardEnumerator());
-			IEnumerator MoveFowardEnumerator()
-			{
-				do
-				{
-					handler.NextLine();
-					yield return new WaitForEndOfFrame();
-				}
-				while (handler.CurrentLine.Index < line);
-			}
+			handler.NewDocument(scriptPath, int.Parse(line));
 		}
 		[ForcePause]
 		internal static void UseGameObject(string objectName)
@@ -153,30 +66,29 @@
 			if (@object == null)
 				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
 			@object.SetActive(true);
-			Instance.ShouldPause = true;
+			Instance.pauser.Pause();
 			Instance.StartCoroutine(Wait());
 			IEnumerator Wait()
 			{
 				yield return new WaitUntil(() => !@object.activeSelf);
-				Instance.ShouldPause = false;
+				Instance.pauser.Play();
 				Instance.NextLine();
 			}
 		}
+		public static DirectoryInfo DocumentFolder { get; } = SerializableSlot.StreamingAssets.CreateSubdirectory("Docs");
+		public static DocumentList AllDocuments { get; } = new DocumentList();
 
-		public string FullScriptPath(string docName) =>
-			BasePath + (string.IsNullOrWhiteSpace(docName)
-				? StartupScriptPath
-				: docName) + ".txt";
-		/// <summary> Gets the name of the script loaded. </summary>
-		public string ScriptName { get; private set; } = string.Empty;
-		/// <summary> 
-		/// A read-only version of the currently stored 
-		/// <see cref="Experimental.ScriptDocument"/>. 
-		/// </summary>
-		public ScriptDocument ScriptDocument => scriptDocument;
-		private ScriptDocument scriptDocument;
-		[Tooltip("Where the script starts when it initializes a new script.")]
-		public string StartupScriptPath;
+
+
+		public Pauser pauser = new Pauser();
+		internal ScriptDocument document;
+		public bool HasDocument => document != null;
+		public bool IsActive { get; private set; } = false;
+		[SerializeField]
+		internal string defaultStreamingAssetsDocumentPath;
+		public IDocumentWatcher documentWatcher;
+		public InputSystemUIInputModule input;
+
 		/// <summary>
 		/// The player's input.
 		/// </summary>
@@ -192,114 +104,99 @@
 		/// </summary>
 		public DateTime playedTime;
 
-		/// <summary>
-		/// If the game should pause input. Modifying the variable 
-		/// can be stacked with other scripts to allow compatibility. This comes 
-		/// into play if you a script allows it to continue, but another says it
-		/// shouldn't. In this case, it will read <see langword="true"/>.
-		/// </summary>
-		public bool ShouldPause 
-		{ 
-			get => m_pauseIterations > 0;
-			set 
-			{
-				const sbyte maxIterations = 12, 
-					halfIterations = maxIterations / 2,
-					negativeIterations = -maxIterations;
-				if (value)
-					m_pauseIterations++;
-				else
-					m_pauseIterations--; 
-				if (m_pauseIterations > maxIterations || m_pauseIterations < negativeIterations)
-					Utils.ForceCrash(ForcedCrashCategory.Abort);
-				if (m_pauseIterations < 0)
-					Debug.LogWarning($"The {nameof(ShouldPause)} count is found to be negative, make" +
-						" sure to avoid negative values as this will impact other" +
-						$" systems! Currently at {m_pauseIterations}");
-				else if (m_pauseIterations > halfIterations)
-					Debug.LogWarning($"The {nameof(ShouldPause)} is reaching it's" +
-						$" limit on the amount iterations it can have, currently" +
-						$"at {m_pauseIterations}");
-			}
-		}
-		private sbyte m_pauseIterations = 0;
-		/// <summary>
-		/// A value that determines if it is running a script and ready to use.
-		/// </summary>
-		public bool IsActive { get; private set; } = false;
-		/// <summary> Gets the current line. </summary>
-		public ScriptLine CurrentLine => ScriptDocument != null 
-			? scriptDocument.CurrentLine
-			: default;
-		protected override void SingletonAwake()
+		public void NewDocument()
 		{
-			using (var enumerator = nextLineButtons.AsEnumerable().GetEnumerator())
-				while (enumerator.MoveNext())
-					playerInput.actions.FindAction(enumerator.Current, true).performed += context => NextLine();
-			DontDestroyOnLoad(gameObject);
+			NewDocument(defaultStreamingAssetsDocumentPath);
 		}
-
-		public void InitializeNewScript(FileInfo file)
+		public void NewDocument(string streamingAssetsDocument)
 		{
-			Clear();
-			m_pauseIterations = 0;
-			var scriptFactory = new ScriptDocument.Factory(file);
-			scriptFactory.AddNodeParserFunctionality(
-				typeof(IfBlock),
-				typeof(ElseBlock),
-				typeof(ChoiceBlock),
-				typeof(RemoteBlock));
-			var allCommands = AllCommands;
-			for (int i = 0; i < allCommands.Length; i++)
-				scriptFactory.commands.AddRange(allCommands[i]);
-			scriptDocument = scriptFactory.Parse(false);
-			IsActive = true;
-
+			document = new ScriptDocument(config, new FileInfo($"{SerializableSlot.StreamingAssets.FullName}/{streamingAssetsDocument}"));
+			documentWatcher = document.Start();
+		}
+		public void NewDocument(int index)
+		{
+			NewDocument(defaultStreamingAssetsDocumentPath, index);
+		}
+		public void NewDocument(string streamingAssetsDocument, int index)
+		{
+			document = new ScriptDocument(config, new FileInfo($"{SerializableSlot.StreamingAssets.FullName}/{streamingAssetsDocument}"));
 			playedTime = DateTime.Now;
+			documentWatcher = document.StartAtLine(index);
+		}
 
-			NextLine();
-		}
-		/// <summary>
-		/// Starts a new script from stratch.
-		/// </summary>
-		/// <param name="scriptPath"> The path of the document. </param>
-		public void InitializeNewScript(string streamingAssetsPath = "")
-		{
-			string finalPath = FullScriptPath(streamingAssetsPath);
-			InitializeNewScript(new FileInfo(finalPath));
-		}
-		/// <summary>
-		/// Plays lines until it hits a normal dialogue or similar.
-		/// </summary>
-		/// <returns> The <see cref="ScriptLine"/> it stopped at. </returns>
 		public void NextLine()
 		{
-			if (ShouldPause)
+			if (document == null || documentWatcher == null)
 			{
-				Debug.Log($"Cannot progress to next line due to {nameof(ShouldPause)} is active\n{m_pauseIterations} Instance(s)");
-				return;// default;
+				Debug.LogError("There is no document created in the system!");
+				return;
 			}
-			if (scriptDocument == null)
-				return;// default;
-			try
+			IsActive = true;
+			if (documentWatcher.EndOfDocument)
 			{
-				scriptDocument.NextLine();
+				Clear();
+				Debug.LogWarning("Reached to end of document!");
+				return;
 			}
-			catch (IndexOutOfRangeException)
-			{
-				IsActive = false;
-				throw;
-			}
+			documentWatcher.NextNode(out _);
 		}
 
-		public bool Clear()
+
+		public void Clear()
 		{
-			if (scriptDocument == null)
-				return false;
-			scriptDocument.Dispose();
-			scriptDocument = null;
-			IsActive = false;
-			return true;
+			if (!IsActive)
+				return;
+			document = null;
+			documentWatcher = null;
+		}
+
+
+
+		
+		
+		public sealed class DocumentList : List<FileInfo>
+		{
+			public static string ToVisual(string fullPath) =>
+				fullPath.Replace(BasePath, "").Replace(".txt", "");
+
+			public static DirectoryInfo DocumentFolder { get; } = SerializableSlot.StreamingAssets.CreateSubdirectory("Docs");
+			private WeakReference visualNames;
+			public DocumentList() : base()
+			{
+				RecursivelyGetFiles(DocumentFolder);
+			}
+			/// <summary>
+			/// Uses recursion to get all the documents as a full path, including
+			/// the drive and such.
+			/// </summary>
+			/// <param name="currentPath"> The directory to interact with. </param>
+			/// <returns> 
+			/// All the file paths that start with .txt within the directory.
+			/// </returns>
+			private void RecursivelyGetFiles(DirectoryInfo currentPath)
+			{
+				AddRange(currentPath.EnumerateFiles().Where(path => path.Extension == ".txt"));
+				IEnumerable<DirectoryInfo> directories = currentPath.EnumerateDirectories();
+				if (directories.Any())
+				{
+					using (IEnumerator<DirectoryInfo> enumerator = directories.GetEnumerator())
+						while (enumerator.MoveNext())
+							RecursivelyGetFiles(enumerator.Current);
+				}
+			}
+			public static string BasePath => $"{Application.streamingAssetsPath.Replace('/', '\\')}\\Docs\\";
+			public string[] AsVisual()
+			{
+				if (visualNames != null && visualNames.IsAlive)
+					return (string[])visualNames.Target;
+				string[] output = new string[Count];
+				for (int i = 0; i < output.Length; i++)
+				{
+					output[i] = ToVisual(this[i].FullName);
+				}
+				visualNames = new WeakReference(output);
+				return output;
+			}
 		}
 	}
 }
@@ -321,24 +218,24 @@ namespace B1NARY.Editor
 		public override void OnInspectorGUI()
 		{
 			var scriptHandler = (ScriptHandler)target;
-			List<string> allFullPaths = ScriptHandler.GetVisualDocumentsPaths();
-			if (allFullPaths.Count > 0)
+			string[] allFullPaths = ScriptHandler.AllDocuments.AsVisual();
+			if (allFullPaths.Length > 0)
 			{
-				int oldIndex = allFullPaths.IndexOf(scriptHandler.StartupScriptPath);
+				int oldIndex = Array.IndexOf(allFullPaths, scriptHandler.defaultStreamingAssetsDocumentPath);
 				if (oldIndex < 0)
 				{
 					oldIndex = 0;
-					scriptHandler.StartupScriptPath = allFullPaths[0];
+					scriptHandler.defaultStreamingAssetsDocumentPath = allFullPaths[0];
 					EditorUtility.SetDirty(scriptHandler);
 				}
-				int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, allFullPaths.ToArray());
+				int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, allFullPaths);
 				if (oldIndex != newIndex)
 				{
-					scriptHandler.StartupScriptPath = allFullPaths[newIndex];
+					scriptHandler.defaultStreamingAssetsDocumentPath = allFullPaths[newIndex];
 					EditorUtility.SetDirty(scriptHandler);
 				}
 				if (GUILayout.Button("Open File"))
-					Process.Start(scriptHandler.FullScriptPath(scriptHandler.StartupScriptPath));
+					Process.Start(ScriptHandler.AllDocuments[newIndex].FullName);
 			}
 			else
 			{
@@ -347,7 +244,7 @@ namespace B1NARY.Editor
 			}
 			InputActions(scriptHandler);
 			if (scriptHandler.IsActive)
-				EditorGUILayout.LabelField($"Current Line: {scriptHandler.ScriptDocument.CurrentLine}");
+				EditorGUILayout.LabelField($"Current Line: {scriptHandler.documentWatcher.CurrentNode.PrimaryLine}");
 		}
 		private void InputActions(in ScriptHandler scriptHandler)
 		{

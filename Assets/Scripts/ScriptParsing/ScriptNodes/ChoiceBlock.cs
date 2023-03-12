@@ -14,46 +14,40 @@
 	/// A node that keeps track of multiple <see cref="ScriptNode"/> and uses it's
 	/// <see cref="ScriptNode.rootLine"/> as the choice.
 	/// </summary>
-	[NodeCommandCondition("choice")]
-	public sealed class ChoiceBlock : ScriptNode
+	public sealed class ChoiceBlock : ScriptElement
 	{
+		public static Predicate<List<ScriptLine>> Predicate => (lines) => lines[0].Type == ScriptLine.LineType.Command && lines[0].RawLine.Contains("choice");
 		/// <summary>
 		/// A Dictionary that keeps track of the choices and the scriptNode that
 		/// is linked up to it.
 		/// </summary>
-		private readonly IReadOnlyDictionary<ScriptLine, ScriptNode> choices;
+		private readonly IReadOnlyDictionary<ScriptLine, ScriptElement> choices;
 
-		public ChoiceBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
+
+		
+		public ChoiceBlock(ScriptDocumentConfig config, List<ScriptLine> blockNodeData) : base(config, blockNodeData)
 		{
-			var choices = new Dictionary<ScriptLine, ScriptNode>();
-			var linesEnum = base.subLines.AsEnumerable().GetEnumerator();
-			while (linesEnum.MoveNext())
+			var choices = new Dictionary<ScriptLine, ScriptElement>();
+			for (int i = 0; i < Lines.Count; i++)
 			{
-				if (!linesEnum.Current.HasScriptNode)
-					continue;
-				choices.Add(linesEnum.Current.scriptLine, linesEnum.Current.scriptNode);
-				linesEnum = ScriptDocument.SkipNode(linesEnum, linesEnum.Current.scriptNode);
+				if (Lines[i] is ScriptElement element)
+					choices.Add(element.PrimaryLine, element);
+				else
+					throw new InvalidCastException($"line {Lines[i].PrimaryLine.Index} is not an element!");
 			}
-			linesEnum.Dispose();
-			this.choices = choices;
 			if (choices.Count < 1)
-				Debug.LogWarning($"Choice block of line '{rootLine.Index}' has one or less choices!");
-			//Debug.Log($"Choice Block of line {subLines[0].scriptLine.Index}: \n{string.Join(",\n", this.choices.Keys)}");
+				Debug.LogWarning($"Choice block of line '{PrimaryLine.Index}' has one or less choices!");
+			this.choices = choices;
 		}
 
-		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
+		public override IEnumerator<ScriptNode> EnumerateThrough(int localIndex)
 		{
-			document.ParseLine(new ScriptLine(string.Join(",", ScriptLine.CastCommand(rootLine).arguments), rootLine.document, rootLine.Index));
-			ChoicePanel panel = ChoicePanel.StartNew(choices.Keys);
-			panel.PickedChoice += str => document.NextLine();
-			while (!panel.HasPickedChoice)
-				yield return default;
-			using (IEnumerator<ScriptLine> node = choices[panel.CurrentlyPickedChoice.Value].Perform(pauseOnCommands))
+			ScriptLine currentLine = LinesWithElements[localIndex].PrimaryLine;
+			if (choices.TryGetValue(currentLine, out ScriptElement element))
 			{
-				panel.Dispose();
-				while (node.MoveNext())
-					yield return node.Current;
+				return element.EnumerateThrough(0);
 			}
+			return base.EnumerateThrough(localIndex);
 		}
 	}
 }

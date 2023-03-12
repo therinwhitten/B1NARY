@@ -1,21 +1,46 @@
-﻿namespace B1NARY.Scripting.Experimental
+﻿namespace B1NARY.Scripting
 {
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
+	using System.Diagnostics;
 	using System.IO;
 	using System.Linq;
-	using UnityEngine;
 
 	[Serializable]
-	public sealed class ScriptDocument : ScriptElement, IEnumerable<ScriptNode>
+	public sealed class ScriptDocument : ScriptElement
 	{
+		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
+		{ "on", "true", "enable" };
+		public static readonly HashSet<string> disabledHashset = new HashSet<string>()
+		{ "off", "false", "disable" };
+
 		/// <summary>
 		/// The file location it was read off of. May be <see langword="null"/>.
 		/// </summary>
 		public FileInfo ReadFile { get; }
 		private readonly ScriptDocumentConfig documentConfig;
+		public IReadOnlyList<ScriptElement> AllElements
+		{
+			get
+			{
+				if (m_allElements is null)
+				{
+					List<ScriptElement> allElements = new List<ScriptElement>();
+					Recursive(this);
+					m_allElements = allElements;
+					void Recursive(ScriptElement subElement)
+					{
+						allElements.AddRange(subElement.Elements);
+						for (int i = 0; i < subElement.Elements.Count; i++)
+							Recursive(subElement.Elements[i]);
+					}
+				}
+				return m_allElements;
+			}
+		}
+		private IReadOnlyList<ScriptElement> m_allElements;
 
 		public ScriptDocument(ScriptDocumentConfig config, FileInfo file) : this(config, File.ReadAllText(file.FullName))
 		{
@@ -35,6 +60,15 @@
 				allLines.Add(new ScriptLine(contentsArray[i], i + 1));
 			allLines.Add(new ScriptLine("::end", 0));
 			return allLines;
+		}
+
+		public override int ToLocal(int globalPoint)
+		{
+			return globalPoint;
+		}
+		public override int ToGlobal(int localPoint)
+		{
+			return localPoint;
 		}
 
 		internal bool InvokeLine(ScriptLine line)
@@ -59,34 +93,51 @@
 				case ScriptLine.LineType.BeginIndent:
 					throw new InvalidCastException($"Line is an indent!: {line}");
 				default:
-					Debug.LogError($"There seems to be an enum as '{line.Type}'" +
+					Debug.Fail($"There seems to be an enum as '{line.Type}'" +
 						" that is not part of the switch command case. Skipping.");
 					return true;
 			}
 		}
 
-		public IEnumerator<ScriptNode> StartAtLine(int line)
+		public IDocumentWatcher StartAtLine(int line) => new Watcher(EnumerateThrough(line));
+		public override IEnumerator<ScriptNode> EnumerateThrough(int localIndex)
 		{
-			// Initialize values
-			ScriptNode currentNode = Lines[line];
-			while (currentNode is ScriptElementPointer pointer)
-			{
-				currentNode = pointer.target.Lines[pointer.localPoint];
-			}
-
-			ScriptElement currentElement = currentNode.Parent;
-			for (int i = currentElement.ToLocal(line); i < currentElement.LinesWithElements.Count; i++)
-			{
-				while (InvokeLine(currentElement.LinesWithElements[i].PrimaryLine))
-					continue;
-				yield return currentElement.LinesWithElements[i];
-			}
+			using (var enumerator = base.EnumerateThrough(localIndex))
+				while (enumerator.MoveNext())
+				{
+					if (InvokeLine(enumerator.Current.PrimaryLine) && !documentConfig.stopOnAllLines)
+						continue;
+					yield return enumerator.Current;
+				}
 		}
 
-		public new IEnumerator<ScriptNode> GetEnumerator() => StartAtLine(0);
+		public IDocumentWatcher Start() => StartAtLine(0);
 
-		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
+		public class Watcher : IDocumentWatcher
+		{
+			private IEnumerator<ScriptNode> enumerator;
+			public Watcher(IEnumerator<ScriptNode> enumerator)
+			{
+				this.enumerator = enumerator;
+			}
+
+			public bool NextNode(out ScriptNode node)
+			{
+				if (EndOfDocument)
+				{
+					node = null;
+					return false;
+				}	
+				bool output = enumerator.MoveNext();
+				if (output)
+					EndOfDocument = true;
+				node = enumerator.Current;
+				return output;
+			}
+
+			public ScriptNode CurrentNode => enumerator.Current;
+			public bool EndOfDocument { get; private set; } = false;
+		}
 	}
-
 }

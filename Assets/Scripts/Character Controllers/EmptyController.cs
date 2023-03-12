@@ -32,7 +32,7 @@
 		string ICharacterController.OldCharacterName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 		public void SayLine(ScriptLine line)
 		{
-			DialogueSystem.Instance.Say(line.lineData);
+			DialogueSystem.Instance.Say(line.RawLine);
 			VoiceData.Play(line);
 		}
 

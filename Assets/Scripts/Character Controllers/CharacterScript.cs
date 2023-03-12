@@ -130,7 +130,7 @@
 		}
 		public void SayLine(ScriptLine line)
 		{
-			DialogueSystem.Instance.Say(line.lineData);
+			DialogueSystem.Instance.Say(line.RawLine);
 			VoiceData.Play(line);
 		}
 	}

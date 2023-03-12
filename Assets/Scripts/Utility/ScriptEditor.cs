@@ -24,17 +24,17 @@ namespace B1NARY.Editor
 		}
 
 		public string fullPath = string.Empty;
-		public string VisualPath { get => ScriptHandler.ToVisual(fullPath); }
+		public string VisualPath { get => ScriptHandler.DocumentList.ToVisual(fullPath); }
 		private void Awake()
 		{
 			fullPath = ScriptHandler.HasInstance
-				? ScriptHandler.Instance.StartupScriptPath
-				: ScriptHandler.GetFullDocumentsPaths()[0];
+				? ScriptHandler.Instance.defaultStreamingAssetsDocumentPath
+				: ScriptHandler.AllDocuments[0].FullName;
 		}
 		private void OnGUI()
 		{
 			Rect fullRect = new Rect(0f, 0f, position.width, position.height);
-			TopInfoBar(new Rect(fullRect) { yMax = 40f });
+			//TopInfoBar(new Rect(fullRect) { yMax = 40f });
 
 			
 			void LeftShortcutTab(Rect rect)
@@ -47,12 +47,13 @@ namespace B1NARY.Editor
 			}
 		}
 
+		/*
 		private void TopInfoBar(Rect rect)
 		{
 			if (EditorGUI.DropdownButton(new Rect(rect) { width = (rect.width / 2) - 20f }, new GUIContent(VisualPath), FocusType.Passive))
 			{
 				var menu = new GenericMenu();
-				List<string> visualItems = ScriptHandler.GetVisualDocumentsPaths(),
+				List<visua> visualItems = ScriptHandler.AllDocuments,
 					previousLists = visualItems[0].Split('/', '\\').ToList();
 				previousLists.RemoveAt(previousLists.Count - 1);
 				for (int i = 0; i < visualItems.Count; i++)
@@ -78,6 +79,7 @@ namespace B1NARY.Editor
 			}
 
 		}
+		*/
 	}
 }
 #endif

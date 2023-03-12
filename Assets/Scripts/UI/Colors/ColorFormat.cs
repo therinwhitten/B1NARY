@@ -10,7 +10,6 @@
 	using HideousDestructor.DataPersistence;
 	using System.IO;
 	using System.Xml.XPath;
-	using Codice.Client.Common;
 
 
 	// Have it change formats per scene if it exists.

@@ -106,7 +106,7 @@
 			if (command == null || arguments == null)
 				throw new ArgumentNullException();
 			Delegate @delegate = command.Invoke(arguments);
-			return @delegate.Method.GetCustomAttributes<ForcePauseAttribute>().Any();
+			return @delegate.Method.GetCustomAttributes().Any(attribute => attribute.GetType() == typeof(ForcePauseAttribute));
 		}
 
 		/// <summary>
@@ -164,16 +164,18 @@
 
 
 
-		public void AddOverload(Delegate command)
+		public OverloadableCommand AddOverload(Delegate command)
 		{
 			ParameterInfo[] info = command.Method.GetParameters();
 			if (info.Any(param => param.ParameterType != typeof(string)))
-				throw new InvalidCastException();
+				throw new InvalidCastException("Command is not a string!");
+#warning TODO: I have an idea, why not include Convert.FromType() or with XML Deparsing to pass parameters?
 			int length = info.Length;
 			if (lengthShortcut.ContainsKey(length))
 				throw new DuplicateCommandException();
 			delegates.Add(command);
 			lengthShortcut.Add(length, delegates.Count - 1);
+			return this;
 		}
 		public bool Contains(Delegate @delegate)
 		{

@@ -72,9 +72,9 @@ namespace B1NARY.Editor.Debugger
 				var onLine = new StringBuilder("On Line: ");
 				if (!Application.isPlaying)
 					return onLine.Append(notPlaying).ToString();
-				if (!ScriptHandler.HasInstance || ScriptHandler.Instance.CurrentLine.Equals(default))
+				if (!ScriptHandler.HasInstance || ScriptHandler.Instance.documentWatcher.CurrentNode.Equals(default))
 					return onLine.Append(@null).ToString();
-				return onLine.Append(ScriptHandler.Instance.CurrentLine).ToString();
+				return onLine.Append(ScriptHandler.Instance.documentWatcher.CurrentNode.PrimaryLine).ToString();
 			}
 			void DisplayTabs()
 			{

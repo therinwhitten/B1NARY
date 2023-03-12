@@ -7,9 +7,22 @@
 	using B1NARY.Audio;
 	using Live2D.Cubism.Framework.MouthMovement;
 	using UnityEngine.Audio;
+	using System.Xml.Linq;
+	using System.IO;
 
 	public class VoiceActorHandler : Multiton<VoiceActorHandler>, IAudioInfo
 	{
+		public static string GetResourceVoicePath(int index, ScriptHandler handler)
+			=> $"Voice//{ScriptHandler.DocumentList.ToVisual(handler.document.ReadFile.FullName)}//{index}";
+		public static AudioClip GetVoiceLine(int index, ScriptHandler handler)
+		{
+			string filePath = GetResourceVoicePath(index, handler);
+			AudioClip clip = Resources.Load<AudioClip>(filePath);
+			if (clip == null)
+				throw new IOException($"Voiceline in resources path '{filePath}' " +
+					"could not be retrieved.");
+			return clip;
+		}
 		public static bool BlockPreviousSpeakersOnNextLine { get; set; } = true;
 
 		private AudioSource audioSource;
@@ -75,8 +88,8 @@
 		}
 		public void Play(ScriptLine line)
 		{
-			currentVoiceLine = line.GetVoiceActorLine();
-			if (BlockPreviousSpeakersOnNextLine)
+			currentVoiceLine = GetVoiceLine(line.Index, ScriptHandler.Instance);
+			if (BlockPreviousSpeakersOnNextLine && CharacterController.HasInstance)
 				using (var enumerator = CharacterController.Instance.charactersInScene.Values.GetEnumerator())
 					while (enumerator.MoveNext())
 						enumerator.Current.characterScript.VoiceData.Stop();
