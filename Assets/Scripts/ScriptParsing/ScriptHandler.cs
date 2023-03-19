@@ -10,6 +10,7 @@
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
+	using System.Xml.Linq;
 	using UnityEngine;
 	using UnityEngine.InputSystem;
 	using UnityEngine.InputSystem.UI;
@@ -18,7 +19,7 @@
 	[AddComponentMenu("B1NARY/Script Handler")]
 	public sealed class ScriptHandler : Singleton<ScriptHandler>
 	{
-		internal static readonly ScriptDocumentConfig config;
+		internal static readonly ScriptDocumentConfig config = new ScriptDocumentConfig();
 		static ScriptHandler()
 		{
 			config = new ScriptDocumentConfig();
@@ -33,7 +34,7 @@
 						["usegameobject"] = (Action<string>)(UseGameObject),
 						["setbool"] = (Action<string, string>)((name, value) =>
 						{
-							SaveSlot.ActiveSlot.ScriptDocumentInterface.bools[name] = bool.Parse(value);
+							SaveSlot.ActiveSlot.booleans[name] = bool.Parse(value);
 						}),
 						["callremote"] = (Action<string>)((call) =>
 						{
@@ -104,13 +105,34 @@
 		/// </summary>
 		public DateTime playedTime;
 
+		private void Awake()
+		{
+			DontDestroyOnLoad(transform.root);
+			for (int i = 0; i < nextLineButtons.Length; i++)
+				playerInput.actions.FindAction(nextLineButtons[i], true).performed += (context) => NextLine();
+			config.NormalLine += (line) =>
+			{
+				CharacterController.Instance.ActiveCharacter.SayLine(line);
+			};
+			config.AttributeListeners += (attribute) =>
+			{
+				CharacterController.Instance.ActiveCharacter.CurrentExpression = attribute;
+			};
+			config.EntryListeners += (name) =>
+			{
+				if (!CharacterController.Instance.ChangeActiveCharacter(name))
+					throw new MissingMemberException($"{name} is not found in the internal character list!");
+			};
+		}
+
 		public void NewDocument()
 		{
 			NewDocument(defaultStreamingAssetsDocumentPath);
 		}
 		public void NewDocument(string streamingAssetsDocument)
 		{
-			document = new ScriptDocument(config, new FileInfo($"{SerializableSlot.StreamingAssets.FullName}/{streamingAssetsDocument}"));
+			document = new ScriptDocument(config, DocumentList.FromVisual(streamingAssetsDocument));
+			playedTime = DateTime.Now;
 			documentWatcher = document.Start();
 		}
 		public void NewDocument(int index)
@@ -119,14 +141,14 @@
 		}
 		public void NewDocument(string streamingAssetsDocument, int index)
 		{
-			document = new ScriptDocument(config, new FileInfo($"{SerializableSlot.StreamingAssets.FullName}/{streamingAssetsDocument}"));
+			document = new ScriptDocument(config, DocumentList.FromVisual(streamingAssetsDocument));
 			playedTime = DateTime.Now;
 			documentWatcher = document.StartAtLine(index);
 		}
 
 		public void NextLine()
 		{
-			if (document == null || documentWatcher == null)
+			if (document is null || documentWatcher is null)
 			{
 				Debug.LogError("There is no document created in the system!");
 				return;
@@ -134,8 +156,11 @@
 			IsActive = true;
 			if (documentWatcher.EndOfDocument)
 			{
+				if (document.ReadFile != null)
+					Debug.LogWarning($"Reached to end of document, '{document.ReadFile}'!");
+				else
+					Debug.LogWarning($"Reached to end of document!");
 				Clear();
-				Debug.LogWarning("Reached to end of document!");
 				return;
 			}
 			documentWatcher.NextNode(out _);
@@ -146,6 +171,7 @@
 		{
 			if (!IsActive)
 				return;
+			IsActive = false;
 			document = null;
 			documentWatcher = null;
 		}
@@ -158,6 +184,8 @@
 		{
 			public static string ToVisual(string fullPath) =>
 				fullPath.Replace(BasePath, "").Replace(".txt", "");
+			public static FileInfo FromVisual(string visualPath) =>
+				new FileInfo($"{SerializableSlot.StreamingAssets.FullName}/Docs/{visualPath}.txt");
 
 			public static DirectoryInfo DocumentFolder { get; } = SerializableSlot.StreamingAssets.CreateSubdirectory("Docs");
 			private WeakReference visualNames;

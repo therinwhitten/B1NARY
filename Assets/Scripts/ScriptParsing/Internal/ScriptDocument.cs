@@ -8,7 +8,6 @@
 	using System.IO;
 	using System.Linq;
 
-	[Serializable]
 	public sealed class ScriptDocument : ScriptElement
 	{
 		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
@@ -19,7 +18,7 @@
 		/// <summary>
 		/// The file location it was read off of. May be <see langword="null"/>.
 		/// </summary>
-		public FileInfo ReadFile { get; }
+		public FileInfo ReadFile { get; set; }
 		private readonly ScriptDocumentConfig documentConfig;
 		public IReadOnlyList<ScriptElement> AllElements
 		{
@@ -76,7 +75,7 @@
 			switch (line.Type)
 			{
 				case ScriptLine.LineType.Normal:
-					documentConfig.InvokeNormal();
+					documentConfig.InvokeNormal(line);
 					return false;
 				case ScriptLine.LineType.Command:
 					var (command, @params) = ScriptLine.CastCommand(line);
@@ -87,6 +86,9 @@
 					//	Debug.LogError($"There is no character named '{speaker}'!");
 					return true;
 				case ScriptLine.LineType.Empty:
+					return true;
+				case ScriptLine.LineType.Entry:
+					documentConfig.InvokeEntry(ScriptLine.CastEntry(line));
 					return true;
 				case ScriptLine.LineType.DocumentFlag:
 				case ScriptLine.LineType.EndIndent:
@@ -130,7 +132,7 @@
 					return false;
 				}	
 				bool output = enumerator.MoveNext();
-				if (output)
+				if (!output)
 					EndOfDocument = true;
 				node = enumerator.Current;
 				return output;

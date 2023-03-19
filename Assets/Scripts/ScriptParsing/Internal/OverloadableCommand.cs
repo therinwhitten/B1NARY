@@ -169,7 +169,6 @@
 			ParameterInfo[] info = command.Method.GetParameters();
 			if (info.Any(param => param.ParameterType != typeof(string)))
 				throw new InvalidCastException("Command is not a string!");
-#warning TODO: I have an idea, why not include Convert.FromType() or with XML Deparsing to pass parameters?
 			int length = info.Length;
 			if (lengthShortcut.ContainsKey(length))
 				throw new DuplicateCommandException();

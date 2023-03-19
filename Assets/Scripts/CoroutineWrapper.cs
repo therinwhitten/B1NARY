@@ -179,7 +179,7 @@
 		/// <returns> <paramref name="enumerator"/>'s value. </returns>
 		private IEnumerator Wrapper(IEnumerator enumerator)
 		{
-			bool hasMovedNext = true;
+			bool hasMovedNext;
 			object yieldInstruction;
 			while (true)
 			{

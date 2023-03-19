@@ -6,7 +6,6 @@
 	using System.Linq;
 	using System.Xml.Linq;
 
-	[Serializable]
 	public class ScriptElement : ScriptNode, IPointerConverter
 	{
 		/// <summary>

@@ -20,12 +20,12 @@
 		}
 		private void OnBinaryClick()
 		{
-			SaveSlot.ActiveSlot.ScriptDocumentInterface.bools[BinaryKeyName] = true;
+			SaveSlot.ActiveSlot.booleans[BinaryKeyName] = true;
 			gameObject.SetActive(false);
 		}
 		private void OnNonBinaryClick()
 		{
-			SaveSlot.ActiveSlot.ScriptDocumentInterface.bools[BinaryKeyName] = false;
+			SaveSlot.ActiveSlot.booleans[BinaryKeyName] = false;
 			gameObject.SetActive(false);
 		}
 	}

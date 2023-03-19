@@ -22,10 +22,8 @@ namespace B1NARY.Editor.Debugger
 				return;
 			}
 			scroll = EditorGUILayout.BeginScrollView(scroll);
-			DisplayBlock("Booleans", SaveSlot.ActiveSlot.ScriptDocumentInterface.bools);
-			DisplayBlock("Integers", SaveSlot.ActiveSlot.ScriptDocumentInterface.ints);
-			DisplayBlock("Floats", SaveSlot.ActiveSlot.ScriptDocumentInterface.floats);
-			DisplayBlock("Strings", SaveSlot.ActiveSlot.ScriptDocumentInterface.strings);
+			DisplayBlock("Booleans", SaveSlot.ActiveSlot.booleans);
+			DisplayBlock("Strings", SaveSlot.ActiveSlot.strings);
 			EditorGUILayout.EndScrollView();
 		}
 

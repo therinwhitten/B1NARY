@@ -20,7 +20,7 @@
 			internalCounter = objectsPerRow;
 			m_rows = new List<(GameObject row, List<GameObject> columns)>();
 		}
-		public void Clear()
+		public virtual void Clear()
 		{
 			internalCounter = objectsPerRow;
 			m_rows.ForEach(row => Destroy(row.row));

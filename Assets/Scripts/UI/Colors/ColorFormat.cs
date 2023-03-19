@@ -9,7 +9,6 @@
 	using System.Xml;
 	using HideousDestructor.DataPersistence;
 	using System.IO;
-	using System.Xml.XPath;
 
 
 	// Have it change formats per scene if it exists.

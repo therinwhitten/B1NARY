@@ -1,12 +1,8 @@
 ﻿namespace B1NARY.Scripting
 {
-	using System;
-	using System.Collections.Generic;
-
 	/// <summary>
 	/// 
 	/// </summary>
-	[Serializable]
 	public class ScriptNode
 	{
 		public ScriptElement Parent { get; internal set; }

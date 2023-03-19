@@ -98,12 +98,12 @@
 		/// </summary>
 		public bool Additive
 		{
-			get => SaveSlot.ActiveSlot.ScriptDocumentInterface.Additive;
+			get => SaveSlot.ActiveSlot.Additive;
 			set
 			{
 				if (Additive == value)
 					return;
-				SaveSlot.ActiveSlot.ScriptDocumentInterface.Additive = value;
+				SaveSlot.ActiveSlot.Additive = value;
 				if (value)
 					CurrentText = string.Empty;
 			}
@@ -124,7 +124,7 @@
 		private void ChangeSpeakerName(ICharacterController characterController)
 		{
 			if (characterController.CharacterName == "MC")
-				SpeakerName = SaveSlot.ActiveSlot.ScriptDocumentInterface.PlayerName;
+				SpeakerName = SaveSlot.ActiveSlot.PlayerName;
 			else
 				SpeakerName = characterController.CharacterName;
 		}
@@ -291,7 +291,7 @@
 		{
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
-			FinalText = FinalText.Replace("MC", SaveSlot.ActiveSlot.ScriptDocumentInterface.PlayerName);
+			FinalText = FinalText.Replace("MC", SaveSlot.ActiveSlot.PlayerName);
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];

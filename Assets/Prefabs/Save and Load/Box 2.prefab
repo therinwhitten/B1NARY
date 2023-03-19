@@ -1,5 +1,21 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &2006467095280674347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7851084954040861678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f56788668f7dd9d4d90613a91e2555ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foregroundImage: {fileID: 6679864019938453792}
+  tmpText: {fileID: 8376392520066659603}
+  button: {fileID: 7021603085247933516}
+  deleteButton: {fileID: 3337529201605841502}
 --- !u!1 &1233790131096716160
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,11 +646,54 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -3927755138506981049, guid: d9ef429cc954bca4590a6e9d7c786822, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: d9ef429cc954bca4590a6e9d7c786822, type: 3}
+--- !u!1 &7851084954040861678 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8949942337260085066, guid: d9ef429cc954bca4590a6e9d7c786822,
+    type: 3}
+  m_PrefabInstance: {fileID: 1207031805637090468}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &7851084954040861679 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8949942337260085067, guid: d9ef429cc954bca4590a6e9d7c786822,
     type: 3}
   m_PrefabInstance: {fileID: 1207031805637090468}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8376392520066659603 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7277484489085233591, guid: d9ef429cc954bca4590a6e9d7c786822,
+    type: 3}
+  m_PrefabInstance: {fileID: 1207031805637090468}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7021603085247933516 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8192474083160862952, guid: d9ef429cc954bca4590a6e9d7c786822,
+    type: 3}
+  m_PrefabInstance: {fileID: 1207031805637090468}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6679864019938453792 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5508915988764095876, guid: d9ef429cc954bca4590a6e9d7c786822,
+    type: 3}
+  m_PrefabInstance: {fileID: 1207031805637090468}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -28,7 +28,7 @@
 					argumentName[0] = argumentName[0].Substring(1);
 				}
 
-				if (SaveSlot.ActiveSlot.ScriptDocumentInterface.bools.TryGetValue(argumentName[0], out bool value))
+				if (SaveSlot.ActiveSlot.booleans.TryGetValue(argumentName[0], out bool value))
 					return output == value;
 				throw new MissingFieldException($"{argumentName[0]} doesn't exist in the saves!");
 			}

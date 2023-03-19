@@ -7,6 +7,7 @@
 	public sealed class ScriptDocumentConfig
 	{
 		public bool stopOnAllLines = false;
+		#region Attributes
 		/// <summary>
 		/// Any listeners listening for <c>[AttributeName]</c> where attributeName
 		/// is the parameter.
@@ -14,9 +15,22 @@
 		public event Action<string> AttributeListeners;
 		internal void InvokeAttribute(string attribute) => AttributeListeners?.Invoke(attribute);
 		internal void InvokeAttribute(ScriptLine attribute) => InvokeAttribute(ScriptLine.CastAttribute(attribute));
+		#endregion
+		#region Entry
+		/// <summary>
+		/// Any listeners listening for <c>[AttributeName]</c> where attributeName
+		/// is the parameter.
+		/// </summary>
+		public event Action<string> EntryListeners;
+		internal void InvokeEntry(string attribute) => EntryListeners?.Invoke(attribute);
+		internal void InvokeEntry(ScriptLine attribute) => InvokeAttribute(ScriptLine.CastEntry(attribute));
+		#endregion
+
 		public CommandArray Commands { get; }
-		public event Action NormalLine;
-		internal void InvokeNormal() => NormalLine?.Invoke();
+		#region Normal
+		public event Action<ScriptLine> NormalLine;
+		internal void InvokeNormal(ScriptLine line) => NormalLine?.Invoke(line);
+		#endregion
 		// temp change
 		public void AddConstructor<TElement>(Func<List<ScriptLine>, bool> predicate) 
 			where TElement : ScriptElement

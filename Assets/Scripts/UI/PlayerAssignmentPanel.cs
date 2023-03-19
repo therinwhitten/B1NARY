@@ -24,8 +24,8 @@
 
 		public void OnDisable()
 		{
-			SaveSlot.ActiveSlot.ScriptDocumentInterface.PlayerName = nameInput.text;
-			SaveSlot.ActiveSlot.ScriptDocumentInterface.bools[MaleAssignmentKey] = !isFemale;
+			SaveSlot.ActiveSlot.PlayerName = nameInput.text;
+			SaveSlot.ActiveSlot.booleans[MaleAssignmentKey] = !isFemale;
 		}
 	}
 }

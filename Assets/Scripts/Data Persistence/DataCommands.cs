@@ -91,16 +91,13 @@ namespace B1NARY.DataPersistence.Editor
 				EditorGUILayout.HelpBox("Save slot not created yet!", MessageType.Error);
 				return;
 			}
-			UpdateTab("Strings", SaveSlot.ActiveSlot.ScriptDocumentInterface.strings);
-			UpdateTab("Integers", SaveSlot.ActiveSlot.ScriptDocumentInterface.ints);
-			UpdateTab("Booleans", SaveSlot.ActiveSlot.ScriptDocumentInterface.bools);
-			UpdateTab("Singles", SaveSlot.ActiveSlot.ScriptDocumentInterface.floats);
+			UpdateTab("Strings", SaveSlot.ActiveSlot.strings);
+			UpdateTab("Booleans", SaveSlot.ActiveSlot.booleans);
 
-			void UpdateTab<T>(string label, ScriptDocumentInterface.Collection<T> data)
+			void UpdateTab<T>(string label, DataPersistence.Collection<T> data)
 			{
 				EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;
-				
 				using (var keys = data.Keys.GetEnumerator())
 					while (keys.MoveNext())
 					{

@@ -13,7 +13,7 @@
 	public class VoiceActorHandler : Multiton<VoiceActorHandler>, IAudioInfo
 	{
 		public static string GetResourceVoicePath(int index, ScriptHandler handler)
-			=> $"Voice//{ScriptHandler.DocumentList.ToVisual(handler.document.ReadFile.FullName)}//{index}";
+			=> $"Voice/{ScriptHandler.DocumentList.ToVisual(handler.document.ReadFile.FullName)}/{index}";
 		public static AudioClip GetVoiceLine(int index, ScriptHandler handler)
 		{
 			string filePath = GetResourceVoicePath(index, handler);

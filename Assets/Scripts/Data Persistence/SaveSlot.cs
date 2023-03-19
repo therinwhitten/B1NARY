@@ -10,148 +10,166 @@
 	using UnityEngine;
 	using System.Linq;
 	using OVSXmlSerializer;
+	using System.Collections.ObjectModel;
 
 	public class SaveSlot
 	{
-		public const string StartingName = "Slot" + Extension,
-			Extension = ".xml";
-
+		public const string NAME_START = "SaveSlot_",
+			NAME_EXT = ".xml";
+		public const string KEY_PLAYER_NAME = "Player Name";
+		public const string KEY_ADDITIVE = "Additive";
+		public const int MAX_SAVES = 69;
 		public static DirectoryInfo SavesDirectory { get; } =
 			SerializableSlot.PersistentData.CreateSubdirectory("Saves");
 		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
-			new XmlSerializer<SaveSlot>(new XmlSerializerConfig()
-			{
-				TypeHandling = IncludeTypes.SmartTypes,
-				indentChars = "\t",
-				indent = true
-			});
+		new XmlSerializer<SaveSlot>(new XmlSerializerConfig()
+		{
+			TypeHandling = IncludeTypes.SmartTypes,
+			indentChars = "\t",
+			indent = true
+		});
 
-		public static SaveSlot ActiveSlot { get; private set; }
-		public static SaveSlot PassivelyLoadSlot(SaveSlot saveSlot)
+		public static SaveSlot ActiveSlot { get; set; }
+
+		public static SaveSlot LoadIntoMemory(FileInfo loadSlot)
 		{
-			if (ActiveSlot != null)
-				ActiveSlot.Save();
-			ActiveSlot = saveSlot;
-			return saveSlot;
-		}
-		public static SaveSlot LoadSlot(SaveSlot saveSlot)
-		{
-			PassivelyLoadSlot(saveSlot);
-			saveSlot.Load();
-			return saveSlot;
+			SaveSlot slot = SlotSerializer.Deserialize(loadSlot);
+			slot.metadata.DirectoryInfo = loadSlot;
+			return slot;
 		}
 
-		public static IEnumerable<(FileInfo location, Lazy<SaveSlot> slot)> AllSlots
+		public static IReadOnlyList<KeyValuePair<FileInfo, Lazy<SaveSlot>>> AllSaves
 		{
 			get
 			{
-				if (!(m_allSlots is null)) 
-					return m_allSlots;
-				IEnumerable<FileInfo> info = SavesDirectory.EnumerateFiles()
-					.Where(file => file.Extension == Extension);
-				return m_allSlots = info.Select(file => (file, new Lazy<SaveSlot>(() => SlotSerializer.Deserialize(file))));
-			}
-		}
-		private static IEnumerable<(FileInfo location, Lazy<SaveSlot> slot)> m_allSlots;
-		public static bool Refresh()
-		{
-			if (m_allSlots is null)
-				return false;
-			m_allSlots = null;
-			return true;
-		}
-
-		[RuntimeInitializeOnLoadMethod]
-		private static void Init()
-		{
-			GameObject obj = new GameObject("yes yes");
-			var behaviour = obj.AddComponent<Marker>();
-			behaviour.StartCoroutine(suff());
-			IEnumerator suff()
-			{
-				yield return new WaitForEndOfFrame();
-				ActiveSlot = new SaveSlot();
-				ActiveSlot.Save();
-			}
-		}
-
-		// Basic Fileinfo
-		public FileInfo FileLocation
-		{
-			get
-			{
-				if (m_fileLocationInfo is null)
+				if (m_saves == null)
 				{
-					if (string.IsNullOrEmpty(m_fileLocation))
-						return null;
-					return FileLocation = new FileInfo(m_fileLocation);
+					FileInfo[] array = SavesDirectory.GetFiles();
+					var files = new List<KeyValuePair<FileInfo, Lazy<SaveSlot>>>(array.Length);
+					for (int i = 0; i < array.Length; i++)
+					{
+						FileInfo currentFile = array[i];
+						Lazy<SaveSlot> lazy = new Lazy<SaveSlot>(() => LoadIntoMemory(currentFile));
+						if (currentFile.Name.Contains(NAME_START) && currentFile.Extension.Contains(NAME_EXT))
+							files.Add(new KeyValuePair<FileInfo, Lazy<SaveSlot>>(currentFile, lazy));
+					}
+					m_saves = files;
 				}
-				return m_fileLocationInfo;
-			}
-			set
-			{
-				m_fileLocationInfo = value;
-				m_fileLocation = value.FullName;
+				return m_saves;
 			}
 		}
-		[XmlIgnore]
-		private FileInfo m_fileLocationInfo;
-		private string m_fileLocation;
+		private static IReadOnlyList<KeyValuePair<FileInfo, Lazy<SaveSlot>>> m_saves;
+		public static void ClearSaves() => m_saves = null;
 
-		public Thumbnail thumbnail;
-		public ScriptPosition scriptPosition;
-		public ScriptDocumentInterface ScriptDocumentInterface
+
+		public string DisplaySaveContents =>
+			$"{PlayerName} : {scriptPosition.SceneName}\n" +
+			$"{metadata.lastSaved}\n{metadata.playedAmount}";
+
+		public Metadata metadata;
+		public Collection<bool> booleans;
+		public string PlayerName
 		{
-			get
-			{
-				if (m_scriptDocumentInterface is null)
-					m_scriptDocumentInterface = ScriptDocumentInterface.New();
-				return m_scriptDocumentInterface;
-			}
+			get => strings.TryGetValue(KEY_PLAYER_NAME, out var str)
+				? str
+				: "MC";
+			set => strings[KEY_PLAYER_NAME] = value;
 		}
-		private ScriptDocumentInterface m_scriptDocumentInterface;
+		public bool Additive
+		{
+			get => booleans.TryGetValue(KEY_ADDITIVE, out var additive)
+				? additive
+				: false;
+			set => booleans[KEY_ADDITIVE] = value;
+		}
+		public Collection<string> strings;
+		public ScriptPosition scriptPosition;
+		[XmlIgnore]
+		private DateTime startPlay;
 
 		public SaveSlot()
 		{
-			
+			startPlay = DateTime.Now;
+			metadata = new Metadata()
+			{
+				playedAmount = new TimeSpan(),
+			};
+			booleans = new Collection<bool>();
+			strings = new Collection<string>();
 		}
 
-		public virtual void Save()
+		public void Save()
 		{
-			if (FileLocation == null)
-				FileLocation = SavesDirectory.GetFileIncremental(StartingName, true);
-			try
-			{
-				thumbnail = Thumbnail.CreateWithScreenshot();
-			} catch (Exception ex)
-			{
-				Debug.LogException(ex);
-			}
+			metadata.lastSaved = DateTime.Now;
+			metadata.playedAmount += metadata.lastSaved - startPlay;
+			startPlay = metadata.lastSaved;
 			scriptPosition = ScriptPosition.Define();
-			using (var stream = FileLocation.Open(FileMode.Create, FileAccess.Write))
-				SlotSerializer.Serialize(stream, this, "SaveSlot");
-			Debug.Log("Saved Slot");
+			metadata.thumbnail = Thumbnail.CreateWithScreenshot();
+			using (var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write))
+				SlotSerializer.Serialize(stream, this);
+			ClearSaves();
 		}
-		public virtual void Load()
-		{
 
+		public void Load()
+		{
+			ActiveSlot = this;
+			ScriptHandler.Instance.StartCoroutine(scriptPosition.LoadToPosition());
+		}
+		/// <summary>
+		/// Data that mainly concerns around the file itself and B1NARY.
+		/// </summary>
+		public class Metadata
+		{
+			public FileInfo DirectoryInfo
+			{
+				get => string.IsNullOrEmpty(m_directoryInfo)
+					? SavesDirectory.GetFileIncremental(NAME_START + NAME_EXT, true)
+					: new FileInfo(m_directoryInfo);
+				set
+				{
+					if (File.Exists(m_directoryInfo))
+						File.Delete(m_directoryInfo);
+					if (value is null)
+						m_directoryInfo = value.FullName;
+				}
+			}
+			//public void Rename(in string newName)
+			//{
+			//	FileInfo dir = DirectoryInfo;
+			//	m_directoryInfo = dir.FullName.Replace(dir.NameWithoutExtension(), newName);
+			//}
+			[XmlIgnore]
+			private string m_directoryInfo;
+			[XmlIgnore]
+			public DateTime lastSaved;
+			public TimeSpan playedAmount;
+			public Thumbnail thumbnail;
 		}
 	}
+
 	[Serializable]
-	public sealed class ScriptPosition
+	public struct ScriptPosition
 	{
 		public static ScriptPosition Define()
 		{
 			return new ScriptPosition()
 			{
 				SceneName = SceneManager.ActiveScene.name,
+				Line = ScriptHandler.Instance.documentWatcher.CurrentNode.GlobalIndex,
+				StreamingAssetsPath = ScriptHandler.DocumentList.ToVisual(ScriptHandler.Instance.document.ReadFile.FullName),
 			};
 		}
-		public string SceneName { get; private set; }
+		public string SceneName { get; set; }
+		public string StreamingAssetsPath { get; set; }
+		public int Line { get; set; }
 
-		public ScriptPosition()
+		public IEnumerator LoadToPosition()
 		{
-			
+			var changeSceneEnumerator = SceneManager.Instance.ChangeScene(SceneName);
+			while (changeSceneEnumerator.MoveNext())
+				yield return changeSceneEnumerator.Current;
+			ScriptHandler.Instance.NewDocument(StreamingAssetsPath, Line - 1);
+			ScriptHandler.Instance.NextLine();
 		}
 	}
 }

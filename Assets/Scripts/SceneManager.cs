@@ -122,7 +122,6 @@
 			do yield return new WaitForFixedUpdate();
 			while (cannotPerformNext);
 			ScriptHandler.Instance.pauser.Play();
-			ScriptHandler.Instance.NextLine(); 
 		}
 		public IEnumerator ReturnToMainMenu()
 		{
@@ -153,7 +152,7 @@
 		/// </summary>
 		public void InitializeGame()
 		{
-			SaveSlot.PassivelyLoadSlot(new SaveSlot());
+			SaveSlot.ActiveSlot = new SaveSlot();
 			ScriptHandler.Instance.NewDocument();
 			ScriptHandler.Instance.NextLine();
 		}
@@ -163,7 +162,7 @@
 		/// </summary>
 		public void InitializeScript(string docPath)
 		{
-			SaveSlot.PassivelyLoadSlot(new SaveSlot());
+			SaveSlot.ActiveSlot = new SaveSlot();
 			ScriptHandler.Instance.NewDocument(docPath);
 			ScriptHandler.Instance.NextLine();
 		}
