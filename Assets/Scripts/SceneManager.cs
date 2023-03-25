@@ -122,6 +122,7 @@
 			do yield return new WaitForFixedUpdate();
 			while (cannotPerformNext);
 			ScriptHandler.Instance.pauser.Play();
+			ScriptHandler.Instance.NextLine();
 		}
 		public IEnumerator ReturnToMainMenu()
 		{

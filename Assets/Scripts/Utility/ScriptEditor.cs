@@ -9,6 +9,7 @@ namespace B1NARY.Editor
 	using System.Collections.Generic;
 	using System.Linq;
 
+	/*
 	public class ScriptEditor : EditorWindow
 	{
 		private static readonly Vector2 defaultMinSize = new Vector2(400f, 350f);
@@ -79,7 +80,7 @@ namespace B1NARY.Editor
 			}
 
 		}
-		*/
 	}
+		*/
 }
 #endif

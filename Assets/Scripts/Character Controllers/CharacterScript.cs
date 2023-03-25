@@ -71,8 +71,8 @@
 			}
 		}
 
-		public string CharacterName { get => gameObject.name; set => gameObject.name = value; }
-		string ICharacterController.OldCharacterName { get; set; }
+		public string CharacterName { get; set; }
+		string ICharacterController.GameObjectName { get; set; }
 
 		public Vector2 Position 
 		{ 
@@ -122,16 +122,27 @@
 
 		private void OnEnable()
 		{
-			((ICharacterController)this).OldCharacterName = CharacterName;
-		}
-		private void OnDisable()
-		{
-			CharacterName = ((ICharacterController)this).OldCharacterName;
+			((ICharacterController)this).GameObjectName = gameObject.name;
 		}
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.RawLine);
 			VoiceData.Play(line);
+		}
+
+		CharacterSnapshot ICharacterController.Serialize()
+		{
+			CharacterSnapshot snapshot = new CharacterSnapshot(this);
+			return snapshot;
+		}
+		void ICharacterController.Deserialize(CharacterSnapshot snapshot)
+		{
+			ICharacterController thisInterface = this;
+			thisInterface.CurrentExpression = snapshot.expression;
+			thisInterface.CharacterName = snapshot.name;
+			thisInterface.Selected = snapshot.selected;
+			thisInterface.CurrentAnimation = snapshot.animation;
+			thisInterface.HorizontalPosition = snapshot.horizontalPosition;
 		}
 	}
 }

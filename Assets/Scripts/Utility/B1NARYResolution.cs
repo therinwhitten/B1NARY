@@ -23,16 +23,6 @@
 		/// A enumerated resolutions that is supported via fullscreen by the monitor
 		/// </summary>
 		public static IEnumerable<B1NARYResolution> MonitorResolutions { get; } = Screen.resolutions.Select(resolution => (B1NARYResolution)resolution);
-		
-		/// <summary>
-		/// Initializes the game to use the active resolution on startup
-		/// </summary>
-		[RuntimeInitializeOnLoadMethod]
-		private static void Init()
-		{
-			return;
-			ActiveResolution = B1NARYConfig.Graphics.Resolution;
-		}
 
 
 		/// <summary>

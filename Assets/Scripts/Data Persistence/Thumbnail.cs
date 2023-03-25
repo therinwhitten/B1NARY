@@ -50,6 +50,15 @@
 		/// a screenshot.
 		/// </summary>
 		public Texture2D Texture => ImageUtility.LoadImage(data);
+		public Sprite Sprite
+		{
+			get
+			{
+				Texture2D texture = Texture;
+				return Sprite.Create(texture, new Rect(Vector2.zero, new Vector2(texture.width, texture.height)), Vector2.one / 2);
+			}
+		}
+
 		/// <summary>
 		/// Retrieves the image from the byte array internally for the system to
 		/// use.

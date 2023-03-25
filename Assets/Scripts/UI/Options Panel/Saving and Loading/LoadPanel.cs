@@ -13,36 +13,42 @@
 		public GameObject slotTemplate;
 
 		public InterfaceHandler actionPanel;
-
+		
 		private List<LoadSlotInstance> m_allObjects;
 		protected List<LoadSlotInstance> AllObjects
 		{
 			get
 			{
 				if (m_allObjects is null)
-				{
-					var newList = new List<LoadSlotInstance>();
-					for (int i = 0; i < SaveSlot.AllSaves.Count; i++)
-					{
-						KeyValuePair<FileInfo, Lazy<SaveSlot>> slotPair = SaveSlot.AllSaves[i];
-						GameObject instance = AddEntry(slotTemplate);
-						var pair = new LoadSlotInstance()
-						{
-							source = slotPair.Value.Value,
-							target = instance.GetComponent<LoadPanelBehaviour>(),
-						};
-						pair.target.button.onClick.AddListener(() =>
-						{
-							actionPanel.gameObject.SetActive(true);
-							actionPanel.OnPress += shouldLoad => { if (shouldLoad) pair.source.Load(); };
-						});
-						newList.Add(pair);
-					}
-					m_allObjects = newList;
-				}
+					UpdateGameObjectSaves();
 				return m_allObjects;
 			}
 			set => m_allObjects = value;
+		}
+		public void UpdateGameObjectSaves()
+		{
+			if (m_allObjects != null)
+				m_allObjects = null;
+			var newList = new List<LoadSlotInstance>();
+			for (int i = 0; i < SaveSlot.AllSaves.Count; i++)
+			{
+				KeyValuePair<FileInfo, Lazy<SaveSlot>> slotPair = SaveSlot.AllSaves[i];
+				GameObject instance = AddEntry(slotTemplate);
+				var pair = new LoadSlotInstance()
+				{
+					source = slotPair.Value.Value,
+					target = instance.GetComponent<LoadPanelBehaviour>(),
+				};
+				pair.target.button.onClick.AddListener(() =>
+				{
+					actionPanel.gameObject.SetActive(true);
+					actionPanel.OnPress += shouldLoad => { if (shouldLoad) pair.source.Load(); };
+				});
+				pair.target.foregroundImage.sprite = slotPair.Value.Value.metadata.thumbnail.Sprite;
+				pair.target.tmpText.text = slotPair.Value.Value.DisplaySaveContents;
+				newList.Add(pair);
+			}
+			m_allObjects = newList;
 		}
 
 		protected virtual void OnEnable()

@@ -20,16 +20,13 @@
 		private void Awake()
 		{
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
+			((ICharacterController)this).GameObjectName = gameObject.name;
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
 		}
 		public VoiceActorHandler VoiceData { get; private set; }
-		public string CharacterName
-		{
-			get => gameObject.name;
-			set => gameObject.name = value;
-		}
-		string ICharacterController.OldCharacterName { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+		public string CharacterName { get; set; }
+		string ICharacterController.GameObjectName { get; set; }
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.RawLine);
@@ -41,6 +38,22 @@
 		{
 			
 		}
+
+		CharacterSnapshot ICharacterController.Serialize()
+		{
+			CharacterSnapshot snapshot = new CharacterSnapshot(this);
+			return snapshot;
+		}
+		void ICharacterController.Deserialize(CharacterSnapshot snapshot)
+		{
+			ICharacterController thisInterface = this;
+			thisInterface.CurrentExpression = snapshot.expression;
+			thisInterface.CharacterName = snapshot.name;
+			thisInterface.Selected = snapshot.selected;
+			thisInterface.CurrentAnimation = snapshot.animation;
+			thisInterface.HorizontalPosition = snapshot.horizontalPosition;
+		}
+
 		string ICharacterController.CurrentAnimation
 		{
 			get => string.Empty;

@@ -192,8 +192,7 @@
 		/// <summary>
 		/// 
 		/// </summary>
-#warning TODO: Assign it later on build 1.1.2!
-		//[XmlAttribute("name")]
+		[XmlAttribute("name")]
 		public string FormatName;
 		/// <summary>
 		/// The color format version of the color format.

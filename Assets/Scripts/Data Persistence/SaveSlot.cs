@@ -11,6 +11,8 @@
 	using System.Linq;
 	using OVSXmlSerializer;
 	using System.Collections.ObjectModel;
+	using B1NARY.CharacterManagement;
+	using CharacterController = B1NARY.CharacterManagement.CharacterController;
 
 	public class SaveSlot
 	{
@@ -35,6 +37,7 @@
 		{
 			SaveSlot slot = SlotSerializer.Deserialize(loadSlot);
 			slot.metadata.DirectoryInfo = loadSlot;
+			slot.metadata.lastSaved = loadSlot.LastWriteTime;
 			return slot;
 		}
 
@@ -59,7 +62,7 @@
 			}
 		}
 		private static IReadOnlyList<KeyValuePair<FileInfo, Lazy<SaveSlot>>> m_saves;
-		public static void ClearSaves() => m_saves = null;
+		public static void EmptySaveCache() => m_saves = null;
 
 
 		public string DisplaySaveContents =>
@@ -84,6 +87,7 @@
 		}
 		public Collection<string> strings;
 		public ScriptPosition scriptPosition;
+		public CharacterSnapshot[] characterSnapshots;
 		[XmlIgnore]
 		private DateTime startPlay;
 
@@ -104,16 +108,26 @@
 			metadata.playedAmount += metadata.lastSaved - startPlay;
 			startPlay = metadata.lastSaved;
 			scriptPosition = ScriptPosition.Define();
-			metadata.thumbnail = Thumbnail.CreateWithScreenshot();
+			characterSnapshots = CharacterController.Instance.charactersInScene
+				.Select(pair => pair.Value.characterScript.Serialize()).ToArray();
+			metadata.thumbnail = Thumbnail.CreateWithScreenshot(128, 128);
 			using (var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write))
 				SlotSerializer.Serialize(stream, this);
-			ClearSaves();
+			characterSnapshots = CharacterSnapshot.GetCurrentSnapshots();
+			EmptySaveCache();
 		}
 
 		public void Load()
 		{
 			ActiveSlot = this;
-			ScriptHandler.Instance.StartCoroutine(scriptPosition.LoadToPosition());
+			CoroutineWrapper wrapper = new CoroutineWrapper(ScriptHandler.Instance, scriptPosition.LoadToPosition());
+			wrapper.AfterActions += (mono) =>
+			{
+				for (int i = 0; i < characterSnapshots.Length; i++)
+					characterSnapshots[i].Load();
+			};
+			wrapper.Start();
+			ScriptHandler.Instance.NextLine();
 		}
 		/// <summary>
 		/// Data that mainly concerns around the file itself and B1NARY.
@@ -169,7 +183,7 @@
 			while (changeSceneEnumerator.MoveNext())
 				yield return changeSceneEnumerator.Current;
 			ScriptHandler.Instance.NewDocument(StreamingAssetsPath, Line - 1);
-			ScriptHandler.Instance.NextLine();
 		}
 	}
+	
 }

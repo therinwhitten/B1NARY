@@ -22,33 +22,51 @@
 		/// </summary>
 		[field: NonSerialized, XmlIgnore]
 		public event UpdatedConstantValue<T> UpdatedValue;
-		private Dictionary<string, T> constants = new Dictionary<string, T>();
+		private Dictionary<string, T> m_constants = new Dictionary<string, T>();
+		public Dictionary<string, T> Constants
+		{
+			get
+			{
+				if (m_constants is null)
+					return m_constants = new Dictionary<string, T>();
+				return m_constants;
+			}
+		}
 		[field: NonSerialized, XmlIgnore]
-		private Dictionary<string, Func<T>> pointers = new Dictionary<string, Func<T>>();
+		private Dictionary<string, Func<T>> m_pointers = new Dictionary<string, Func<T>>();
+		public Dictionary<string, Func<T>> Pointers
+		{
+			get
+			{
+				if (m_pointers is null)
+					return m_pointers = new Dictionary<string, Func<T>>();
+				return m_pointers;
+			}
+		}
 
 		public T this[string key]
 		{
 			get
 			{
-				if (constants.TryGetValue(key, out T value))
+				if (Constants.TryGetValue(key, out T value))
 					return value;
-				if (pointers.TryGetValue(key, out Func<T> dele))
+				if (Pointers.TryGetValue(key, out Func<T> dele))
 					return dele.Invoke();
 				throw new KeyNotFoundException(key);
 			}
 			set
 			{
-				if (pointers.TryGetValue(key, out Func<T> func))
+				if (Pointers.TryGetValue(key, out Func<T> func))
 				{
 					T funcOldValue = func.Invoke();
-					pointers.Remove(key);
-					constants.Add(key, value);
-					UpdatedValue?.Invoke(key, funcOldValue, constants[key], this);
+					Pointers.Remove(key);
+					Constants.Add(key, value);
+					UpdatedValue?.Invoke(key, funcOldValue, Constants[key], this);
 					return;
 				}
-				constants.TryGetValue(key, out T oldValue);
-				constants[key] = value;
-				UpdatedValue?.Invoke(key, oldValue, constants[key], this);
+				Constants.TryGetValue(key, out T oldValue);
+				Constants[key] = value;
+				UpdatedValue?.Invoke(key, oldValue, Constants[key], this);
 			}
 		}
 
@@ -62,9 +80,9 @@
 		/// </returns>
 		public bool? IsPointer(string key)
 		{
-			if (constants.ContainsKey(key))
+			if (Constants.ContainsKey(key))
 				return false;
-			if (pointers.ContainsKey(key))
+			if (Pointers.ContainsKey(key))
 				return true;
 			return null;
 		}
@@ -73,8 +91,8 @@
 		{
 			get
 			{
-				List<string> keys = new List<string>(constants.Keys);
-				keys.AddRange(pointers.Keys);
+				List<string> keys = new List<string>(Constants.Keys);
+				keys.AddRange(Pointers.Keys);
 				return keys;
 			}
 		}
@@ -83,46 +101,46 @@
 		{
 			get
 			{
-				List<T> values = new List<T>(constants.Values);
-				values.AddRange(pointers.Values.Select(item => item.Invoke()));
+				List<T> values = new List<T>(Constants.Values);
+				values.AddRange(Pointers.Values.Select(item => item.Invoke()));
 				return values;
 			}
 		}
-		public int Count => constants.Count + pointers.Count;
+		public int Count => Constants.Count + Pointers.Count;
 
 		bool ICollection<KeyValuePair<string, T>>.IsReadOnly => false;
 
 		public void Add(string key, T value)
 		{
-			if (pointers.ContainsKey(key))
+			if (Pointers.ContainsKey(key))
 				throw new InvalidOperationException(nameof(key));
-			constants.Add(key, value);
+			Constants.Add(key, value);
 		}
 
 		public void Add(KeyValuePair<string, T> item)
 		{
-			if (pointers.ContainsKey(item.Key))
+			if (Pointers.ContainsKey(item.Key))
 				throw new InvalidOperationException(nameof(item.Key));
-			constants.Add(item.Key, item.Value);
+			Constants.Add(item.Key, item.Value);
 		}
 
 		public void Add(string key, Func<T> value)
 		{
-			if (constants.ContainsKey(key))
+			if (Constants.ContainsKey(key))
 				throw new InvalidOperationException(nameof(key));
-			pointers.Add(key, value);
+			Pointers.Add(key, value);
 		}
 
 
 		public void Clear()
 		{
-			pointers.Clear();
-			constants.Clear();
+			Pointers.Clear();
+			Constants.Clear();
 		}
 
 		public bool Contains(KeyValuePair<string, T> item)
 		{
-			if (constants.TryGetValue(item.Key, out T value))
+			if (Constants.TryGetValue(item.Key, out T value))
 				if (value.Equals(item.Value))
 					return true;
 			return false;
@@ -130,7 +148,7 @@
 
 		public bool ContainsKey(string key)
 		{
-			return constants.ContainsKey(key) || pointers.ContainsKey(key);
+			return Constants.ContainsKey(key) || Pointers.ContainsKey(key);
 		}
 
 		void ICollection<KeyValuePair<string, T>>.CopyTo(KeyValuePair<string, T>[] array, int arrayIndex)
@@ -140,7 +158,7 @@
 
 		public IEnumerator<KeyValuePair<string, T>> GetEnumerator()
 		{
-			using (var enumerator = constants.AsEnumerable().GetEnumerator())
+			using (var enumerator = Constants.AsEnumerable().GetEnumerator())
 				while (enumerator.MoveNext())
 					yield return enumerator.Current;
 			// XML parser doesn't like it
@@ -151,7 +169,7 @@
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			using (var enumerator = constants.AsEnumerable().GetEnumerator())
+			using (var enumerator = Constants.AsEnumerable().GetEnumerator())
 				while (enumerator.MoveNext())
 					yield return enumerator.Current;
 			// XML parser doesn't like it
@@ -162,10 +180,10 @@
 
 		public bool Remove(string key)
 		{
-			if (constants.ContainsKey(key))
-				return constants.Remove(key);
-			if (pointers.ContainsKey(key))
-				return pointers.Remove(key);
+			if (Constants.ContainsKey(key))
+				return Constants.Remove(key);
+			if (Pointers.ContainsKey(key))
+				return Pointers.Remove(key);
 			return false;
 		}
 
@@ -176,9 +194,9 @@
 
 		public bool TryGetValue(string key, out T value)
 		{
-			if (constants.TryGetValue(key, out value))
+			if (Constants.TryGetValue(key, out value))
 				return true;
-			if (pointers.TryGetValue(key, out Func<T> pointer))
+			if (Pointers.TryGetValue(key, out Func<T> pointer))
 			{
 				value = pointer.Invoke();
 				return true;

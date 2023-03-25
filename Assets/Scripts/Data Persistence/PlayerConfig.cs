@@ -94,15 +94,6 @@
 			public float voices = 1f;
 			public Dictionary<string, float> characterVoices = new Dictionary<string, float>();
 		}
-		/// <summary>
-		/// Any graphics settings that is found for the player. Contains serialized
-		/// resolutions and visual settings.
-		/// </summary>
-		[Serializable]
-		public sealed class Graphics
-		{
-			public B1NARYResolution resolution = (B1NARYResolution)Screen.currentResolution;
-		}
 	}
 
 	/// <summary>
@@ -136,12 +127,6 @@
 			{
 				get => PlayerConfig.GetValue(GRAPHICS_GLOW, 1f);
 				set => PlayerConfig.SetValue(GRAPHICS_GLOW, value);
-			}
-			private const string GRAPHICS_RESOLUTION = PlayerConfig.PRE_GRAPHICS + "resolution";
-			public static B1NARYResolution Resolution
-			{
-				get => PlayerConfig.GetValue(GRAPHICS_RESOLUTION, B1NARYResolution.ActiveResolution);
-				set => PlayerConfig.SetValue(GRAPHICS_RESOLUTION, value);
 			}
 			private const string GRAPHICS_INDEX = PlayerConfig.PRE_GRAPHICS + "graphicConfig";
 			public static int GraphicSettingIndex

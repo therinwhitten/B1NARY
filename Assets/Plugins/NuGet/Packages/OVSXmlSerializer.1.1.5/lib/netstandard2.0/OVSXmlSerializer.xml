@@ -1,0 +1,589 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OVSXmlSerializer</name>
+    </assembly>
+    <members>
+        <member name="T:OVSXmlSerializer.XmlAttributeAttribute">
+            <summary>
+            Writes an attribute to the containing class or struct instead of making
+            its own element. Only primitive types can apply, and field must be not 
+            an object to apply.
+            <para>
+            If <see cref="T:OVSXmlSerializer.XmlNamedAsAttribute"/> is on the same field, it will be 
+            overrided by <see cref="P:OVSXmlSerializer.XmlAttributeAttribute.CustomName"/>
+            </para>
+            </summary>
+            <remarks>
+            In the code, these are parsed first instead of the elements later listed
+            in the object.
+            </remarks>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlAttributeAttribute.op_Explicit(System.Xml.Serialization.XmlAttributeAttribute)~OVSXmlSerializer.XmlAttributeAttribute">
+            <summary>
+            Converts The normal xml attribute into the OVSXml Attribute;
+            </summary>
+            <param name="castie"> The victim to cast into with extreme amounts of bytes. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlAttributeAttribute.IsAttribute(System.Reflection.FieldInfo,OVSXmlSerializer.XmlAttributeAttribute@)">
+            <summary>
+            Ensures that the field or type has the <see cref="T:OVSXmlSerializer.XmlAttributeAttribute"/>,
+            The regular <see cref="T:System.Xml.Serialization.XmlAttributeAttribute"/>
+            is applied as well.
+            </summary>
+            <param name="field"> The field to check. </param>
+            <param name="contents"> 
+            If <see langword="true"/>, then it will return the attribute contents.
+            </param>
+        </member>
+        <member name="P:OVSXmlSerializer.XmlAttributeAttribute.CustomName">
+            <summary>
+            The name to override the attribute name with. Note that it will override
+            the value from <see cref="P:OVSXmlSerializer.XmlNamedAsAttribute.Name"/>.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlAttributeAttribute.#ctor">
+            <summary>
+            Creates a new <see cref="T:OVSXmlSerializer.XmlAttributeAttribute"/> that utilizes the
+            attribute's field name to assign to.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlAttributeAttribute.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:OVSXmlSerializer.XmlAttributeAttribute"/> with a customized
+            name that will override <see cref="T:OVSXmlSerializer.XmlNamedAsAttribute"/>'s name.
+            </summary>
+            <param name="customName"> A custom name for the attribute. </param>
+        </member>
+        <member name="T:OVSXmlSerializer.XmlIgnoreAttribute">
+            <summary>
+            When being serialized by <see cref="T:OVSXmlSerializer.XmlSerializer"/>, it will write the
+            name listed here instead of the field name.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlIgnoreAttribute.#ctor">
+            <summary>
+            Constructs a new ignore attribute used to completely not assign the
+            values in the XML file.
+            </summary>
+        </member>
+        <member name="T:OVSXmlSerializer.XMLIgnoreEnumerableAttribute">
+            <summary>
+            Since serializing as enumerable is prioritized, this will block the priority
+            system to serialize it as a regular object instead.
+            </summary>
+        </member>
+        <member name="T:OVSXmlSerializer.XmlNamedAsAttribute">
+            <summary>
+            When being serialized by <see cref="T:OVSXmlSerializer.XmlSerializer"/>, it will write the
+            name listed here instead of the field name. 
+            
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.XmlNamedAsAttribute.Name">
+            <summary>
+            Renames the specified element with this name. Make sure to not have
+            any spaces in the name.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlNamedAsAttribute.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:OVSXmlSerializer.XmlNamedAsAttribute"/> for naming elements
+            and attributes.
+            </summary>
+            <param name="name"> The name to rename the object in the XML file. </param>
+        </member>
+        <member name="T:OVSXmlSerializer.XmlTextAttribute">
+            <summary>
+            Writes the value as a primitive type, with some additional elements left over.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlTextAttribute.#ctor">
+            <summary>
+            Creates a new instance of <see cref="T:OVSXmlSerializer.XmlTextAttribute"/>
+            </summary>
+        </member>
+        <member name="T:OVSXmlSerializer.XmlSerializerConfig">
+            <summary>
+            A single class that stores all the configuration settings. Things like
+            <see cref="T:System.Xml.XmlWriterSettings"/> is included.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializerConfig.op_Implicit(OVSXmlSerializer.XmlSerializerConfig)~System.Xml.XmlWriterSettings">
+            <summary>
+            Using the <see cref="M:OVSXmlSerializer.XmlSerializerConfig.AsWriterSettings"/>, converts
+            the data stored inside as writer settings.
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializerConfig.op_Implicit(System.Xml.XmlWriterSettings)~OVSXmlSerializer.XmlSerializerConfig">
+            <summary>
+            Converts the parameters within the settings as a config. implicitly
+            due to seamless compatibility to the original XML serializer.
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.Default">
+            <summary>
+            Default variation of the config.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.XmlSerializerConfig.Version">
+            <summary>
+            The current version of the XML file. Null if you don't want any
+            attributes assigned to the root element
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.XmlSerializerConfig.newLineOnAttributes">
+            <summary>
+            Whenever it should add a new line when declaring attributes.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.XmlSerializerConfig.omitXmlDelcaration">
+            <summary>
+            Gets or sets a value indicating whether to omit an XML declaration.
+            The declaration mentions the beginning element, that typically mentions
+            the encoding type and the version of the XML.
+            </summary>
+            <returns>
+            <see langword="true"/> to omit the XML declaration; otherwise, <see langword="false"/>. 
+            Default is <see langword="false"/>.
+            </returns>
+        </member>
+        <member name="F:OVSXmlSerializer.XmlSerializerConfig.indentChars">
+            <summary>
+            The single indentation that should occur. This will be repeated as 
+            layers are added further.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.XmlSerializerConfig.indent">
+            <summary>
+            When writing onto a file, if it should have indentation such as '\n'.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.XmlSerializerConfig.TypeHandling">
+            <summary>
+            how the XML file from <see cref="T:OVSXmlSerializer.XmlSerializer"/> should handle types. 
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.XmlSerializerConfig.encoding">
+            <summary>
+            The encoding of the result of the file.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializerConfig.AsWriterSettings">
+            <summary>
+            Converts all data from the config to the relevant writer settings.
+            </summary>
+        </member>
+        <member name="T:OVSXmlSerializer.IncludeTypes">
+            <summary>
+            The condition of how the <see cref="T:OVSXmlSerializer.XmlSerializer"/> should handle types
+            of objects.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.IncludeTypes.IgnoreTypes">
+            <summary>
+            It will ignore the derived type entirely.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.IncludeTypes.SmartTypes">
+            <summary>
+            When the object is derived off the field, then it will write the
+            object type.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.IncludeTypes.AlwaysIncludeTypes">
+            <summary>
+            The XML file will always write the type of the object. 
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.FieldObject.Parent">
+            <summary>
+            The parent of the <see cref="P:OVSXmlSerializer.StructuredObject.Value"/>. <see langword="null"/> if 
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.FieldObject.Field">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.FieldObject.ParentType">
+            <summary>
+            The <see cref="P:OVSXmlSerializer.FieldObject.Parent"/>'s type.
+            </summary>
+            <exception cref="T:System.NullReferenceException"/>
+        </member>
+        <member name="P:OVSXmlSerializer.FieldObject.IsAutoImplementedProperty">
+            <summary>
+            If the object is an auto-implemented property. Determined by if the
+            field name contains the requirements.
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.FieldObject.IsDerivedFromBase">
+            <summary>
+            If the object from a field, then it will determine if it has a derived
+            class from the field. If it does, then <see langword="true"/>. Otherwise,
+            <see langword="false"/>.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.StructuredObject.HasAttribute``1">
+            <summary>
+            If the field or object contains the attribute.
+            </summary>
+            <typeparam name="T"> The attribute. </typeparam>
+        </member>
+        <member name="M:OVSXmlSerializer.StructuredObject.HasAttribute``1(``0@)">
+            <summary>
+            If the field or object contains the attribute.
+            </summary>
+            <typeparam name="T"> The attribute. </typeparam>
+        </member>
+        <member name="T:OVSXmlSerializer.Extras.ChangableValue`1">
+            <summary>
+            A value that alerts other classes and fields when modified.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.ChangableValue`1.op_Implicit(OVSXmlSerializer.Extras.ChangableValue{`0})~`0">
+            <summary>
+            Allows to seamlessly get the values inside of the value.
+            </summary>
+            <param name="input"></param>
+        </member>
+        <member name="E:OVSXmlSerializer.Extras.ChangableValue`1.ValueChanged">
+            <summary>
+            All delegates are invoked when the value is changed.
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.Extras.ChangableValue`1.Value">
+            <summary>
+            Gets or sets the current Value.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.ChangableValue`1.#ctor(`0)">
+            <summary>
+            Creates a new value.
+            </summary>
+            <param name="default"> The starting value. Usually as initial value. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.ChangableValue`1.AttachValue(System.Action{`0})">
+            <summary>
+            Setting the expected field and alerts future changes to the delegate.
+            </summary>
+            <param name="input"> The delegate that targets the field. </param>
+        </member>
+        <member name="T:OVSXmlSerializer.Extras.XmlDocumentExtras">
+            <summary>
+            Extra helper methods to make making XML Documents easier.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.XmlDocumentExtras.LoadNew(System.IO.Stream)">
+            <summary>
+            Creates a new <see cref="T:System.Xml.XmlDocument"/> along with loading a xml file.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.XmlDocumentExtras.LoadNew(System.IO.FileInfo)">
+            <summary>
+            Creates a new <see cref="T:System.Xml.XmlDocument"/> along with loading a xml file.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.XmlDocumentExtras.LoadNew(System.String)">
+            <summary>
+            Creates a new <see cref="T:System.Xml.XmlDocument"/> along with loading a xml file.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.XmlDocumentExtras.LoadNew(System.Xml.XmlReader)">
+            <summary>
+            Creates a new <see cref="T:System.Xml.XmlDocument"/> along with loading a xml file.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.XmlDocumentExtras.LoadNew(System.IO.TextReader)">
+            <summary>
+            Creates a new <see cref="T:System.Xml.XmlDocument"/> along with loading a xml file.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.XmlDocumentExtras.Load(System.Xml.XmlDocument,System.IO.Stream)">
+            <summary>
+            Loads an existing <see cref="T:System.Xml.XmlDocument"/> and allows it to be
+            chainable.
+            </summary>
+            <param name="document"> The document to write to. </param>
+            <param name="stream"> The stream to load from. Set position to 0 if having issues. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.XmlDocumentExtras.Load(System.Xml.XmlDocument,System.IO.FileInfo)">
+            <summary>
+            Loads an existing <see cref="T:System.Xml.XmlDocument"/> and allows it to be
+            chainable.
+            </summary>
+            <param name="document"> The document to write to. </param>
+            <param name="file"> The file to load from. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.XmlDocumentExtras.Load(System.Xml.XmlDocument,System.String)">
+            <summary>
+            Loads an existing <see cref="T:System.Xml.XmlDocument"/> and allows it to be
+            chainable.
+            </summary>
+            <param name="document"> The document to write to. </param>
+            <param name="fileName"> The full fileName to copy the file from. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.XmlDocumentExtras.Load(System.Xml.XmlDocument,System.Xml.XmlReader)">
+            <summary>
+            Loads an existing <see cref="T:System.Xml.XmlDocument"/> and allows it to be
+            chainable.
+            </summary>
+            <param name="document"> The document to write to. </param>
+            <param name="reader"> The reader to load from. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.Extras.XmlDocumentExtras.Load(System.Xml.XmlDocument,System.IO.TextReader)">
+            <summary>
+            Loads an existing <see cref="T:System.Xml.XmlDocument"/> and allows it to be
+            chainable.
+            </summary>
+            <param name="document"> The document to write to. </param>
+            <param name="reader"> The Xml Reader to copy from. </param>
+        </member>
+        <member name="T:OVSXmlSerializer.IXmlSerializable">
+            <summary>
+            Instead of writing automatically, this allows you to have more control
+            over saving the object.
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.IXmlSerializable.ShouldWrite">
+            <summary>
+            If the value should be serialized at all. Roughly similar to 
+            <see cref="T:System.Xml.Serialization.XmlIgnoreAttribute"/>
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.IXmlSerializable.Read(System.Xml.XmlNode)">
+            <summary>
+            Reads the data of the existing node.
+            </summary>
+            <param name="value"> Nullable. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.IXmlSerializable.Write(System.Xml.XmlWriter)">
+            <summary>
+            Writes the content of class or struct.
+            </summary>
+            <remarks>
+            The element is already generated for you, so no need to start or end an element.
+            </remarks>
+            <param name="writer"></param>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlReaderSerializer.ByName(System.String)">
+            <summary>
+            Gets the type by the full name in every existing assembly.
+            </summary>
+            <param name="name"> The full type name. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlReaderSerializer.AddAutoImplementedTag(System.String)">
+            <summary>
+            Adds the auto-implementation tag to an existing name.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlReaderSerializer.TryReadEnumerable(System.Type,System.Xml.XmlNode,System.Object@)">
+            <summary>
+            Parses the enumerable if it implements <see cref="T:System.Collections.ICollection"/>.
+            </summary>
+            <param name="type"> The type. </param>
+            <param name="node"> The data. </param>
+            <param name="output"> The resulting item. </param>
+            <returns>If it has successfully parsed. </returns>
+            <exception cref="T:System.NotImplementedException"> 
+            If there is no implementation for the collection. 
+            </exception>
+        </member>
+        <member name="T:OVSXmlSerializer.XmlSerializer">
+            <summary>
+            Xml Serializer that converts values into XML files and such. Effectively
+            <see cref="T:OVSXmlSerializer.XmlSerializer`1"/> which has a generic of <see cref="T:System.Object"/>
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.XmlSerializer.ActiveType">
+            <summary>
+            The type to reference to. Can be manually changed after creation.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer.#ctor">
+            <summary>
+            Creates a new instance of a non-generic XML Serializer. Uses default
+            config. References to default <see cref="T:System.Object"/> as default type.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer.#ctor(System.Type)">
+            <summary>
+            Creates a new instance of a non-generic XML Serializer. Uses default
+            config.
+            </summary>
+            <param name="type"> The type to reference to. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer.#ctor(OVSXmlSerializer.XmlSerializerConfig)">
+            <summary>
+            Creates a new instance of a non-generic XML Serializer. Uses default
+            config. References to default <see cref="T:System.Object"/> as default type.
+            Uses a config that changes behaviour.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer.#ctor(System.Type,OVSXmlSerializer.XmlSerializerConfig)">
+            <summary>
+            Creates a new instance of a non-generic XML Serializer. Uses default
+            config. Uses a config that changes behaviour.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer.Deserialize(System.IO.Stream)">
+            <inheritdoc/>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer.Deserialize(System.IO.Stream,System.String@)">
+            <inheritdoc/>
+        </member>
+        <member name="T:OVSXmlSerializer.XmlSerializer`1">
+            <summary>
+            Serializer that converts classes into XML Files and such.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.XmlSerializer`1.config">
+            <summary>
+            The configuration that changes the behaviour of the serializer.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.#ctor">
+            <summary>
+            Constructs a generic of XmlSerializer. Uses default config.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.#ctor(OVSXmlSerializer.XmlSerializerConfig)">
+            <summary>
+            Constructs a generic of XmlSerializer. Uses the specified config.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Deserialize(System.IO.Stream)">
+            <summary>
+            Converts a xml file into an object. 
+            </summary>
+            <param name="input"> The stream that contains the XML file. </param>
+            <returns> 
+            The object, default or <see langword="null"/> if the xml file or stream is empty. 
+            </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Deserialize(System.IO.FileInfo)">
+            <summary>
+            Converts a xml file into an object.
+            </summary>
+            <param name="fileLocation">The file location that contains the XML contents. </param>
+            <returns> 
+            The object, default or <see langword="null"/> if the xml file or stream is empty. 
+            </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Deserialize(System.String)">
+            <summary>
+            Converts a xml file into an object.
+            </summary>
+            <param name="fileLocation">The file location that contains the XML contents. </param>
+            <returns> 
+            The object, default or <see langword="null"/> if the xml file or stream is empty. 
+            </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Deserialize(System.IO.Stream,System.String@)">
+            <summary>
+            Converts a xml file into an object. 
+            </summary>
+            <param name="input"> The stream that contains the XML file. </param>
+            <param name="rootElementName"> The name of the root element. </param>
+            <returns> 
+            The object, default or <see langword="null"/> if the xml file or stream is empty. 
+            </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Deserialize(System.String,System.String@)">
+            <summary>
+            Converts a xml file into an object.
+            </summary>
+            <param name="fileLocation">The file location that contains the XML contents. </param>
+            <param name="rootElementName"> The name of the root element. </param>
+            <returns> 
+            The object, default or <see langword="null"/> if the xml file or stream is empty. 
+            </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Deserialize(System.IO.FileInfo,System.String@)">
+            <summary>
+            Converts a xml file into an object.
+            </summary>
+            <param name="fileLocation">The file location that contains the XML contents. </param>
+            <param name="rootElementName"> The name of the root element. </param>
+            <returns> 
+            The object, default or <see langword="null"/> if the xml file or stream is empty. 
+            </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Serialize(`0)">
+            <summary>
+            Serializes the specified <paramref name="item"/> as a XML file in a
+            stream.
+            </summary>
+            <param name="item"> The item to serialize. </param>
+            <returns> A serialized object with the XML format. </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Serialize(System.IO.Stream,`0)">
+            <summary>
+            Serializes the specified <paramref name="item"/> as a XML file in a
+            stream by copying it into the stream.
+            </summary>
+            <param name="item"> The item to serialize. </param>
+            <param name="stream"> The stream to serialize to. </param>
+            <returns> A serialized object with the XML format. </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Serialize(System.IO.Stream,`0,System.String)">
+            <summary>
+            Serializes the specified <paramref name="item"/> as a XML file in a
+            stream by copying it into the stream.
+            </summary>
+            <param name="item"> The item to serialize. </param>
+            <param name="rootElementName">The root element within the xml file. </param>
+            <param name="stream"> The stream to serialize to. </param>
+            <returns> A serialized object with the XML format. </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Serialize(`0,System.String)">
+            <summary>
+            Serializes the specified <paramref name="item"/> as a XML file in a
+            stream.
+            </summary>
+            <param name="item"> The item to serialize. </param>
+            <param name="rootElementName">The root element within the xml file. </param>
+            <returns> A serialized object with the XML format. </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Serialize(System.Xml.XmlWriter,`0)">
+            <summary>
+            Serializes the specified <paramref name="item"/> as a XML file in a
+            stream.
+            </summary>
+            <param name="item"> The item to serialize. </param>
+            <param name="writer"> The writer to write to. </param>
+            <returns> A serialized object with the XML format. </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Serialize(System.Xml.XmlWriter,`0,System.String)">
+            <summary>
+            Serializes the specified <paramref name="item"/> as a XML file in a
+            stream.
+            </summary>
+            <param name="item"> The item to serialize. </param>
+            <param name="writer"> The writer to write to. </param>
+            <param name="rootElementName"> The custom name to store the root value to. </param>
+            <returns> A serialized object with the XML format. </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlWriterSerializer.EnsureParameterlessConstructor(System.Type)">
+            <summary>
+            Throws an exception if the specified type does not have a parameterless
+            constructor. Otherwise does nothing.
+            </summary>
+            <param name="type"> The type to check if it has one. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlWriterSerializer.WriteStartElement(System.String,OVSXmlSerializer.StructuredObject)">
+            <summary>
+            Writes the starting element.
+            </summary>
+            <remarks>
+            This fixes issues when considering auto-implemented properties.
+            </remarks>
+            <param name="name"> The name of the element. </param>
+            <param name="obj"> The object to write about. </param>
+        </member>
+    </members>
+</doc>

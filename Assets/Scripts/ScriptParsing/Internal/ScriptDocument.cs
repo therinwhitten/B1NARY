@@ -8,7 +8,7 @@
 	using System.IO;
 	using System.Linq;
 
-	public sealed class ScriptDocument : ScriptElement
+	public class ScriptDocument : ScriptElement
 	{
 		public static readonly HashSet<string> enabledHashset = new HashSet<string>()
 		{ "on", "true", "enable" };
@@ -18,7 +18,7 @@
 		/// <summary>
 		/// The file location it was read off of. May be <see langword="null"/>.
 		/// </summary>
-		public FileInfo ReadFile { get; set; }
+		public virtual FileInfo ReadFile { get; set; }
 		private readonly ScriptDocumentConfig documentConfig;
 		public IReadOnlyList<ScriptElement> AllElements
 		{
@@ -82,8 +82,6 @@
 					return !documentConfig.Commands.B1NARY_Invoke(command, @params);
 				case ScriptLine.LineType.Attribute:
 					documentConfig.InvokeAttribute(ScriptLine.CastAttribute(line));
-					//if (!CharacterController.Instance.ChangeActiveCharacter(speaker))
-					//	Debug.LogError($"There is no character named '{speaker}'!");
 					return true;
 				case ScriptLine.LineType.Empty:
 					return true;
