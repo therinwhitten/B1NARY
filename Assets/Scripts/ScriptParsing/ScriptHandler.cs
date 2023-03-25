@@ -110,20 +110,20 @@
 			DontDestroyOnLoad(transform.root);
 			for (int i = 0; i < nextLineButtons.Length; i++)
 				playerInput.actions.FindAction(nextLineButtons[i], true).performed += (context) => NextLine();
-			config.NormalLine += (line) =>
-			{
-				CharacterController.Instance.ActiveCharacter.SayLine(line);
-			};
-			config.AttributeListeners += (attribute) =>
-			{
-				CharacterController.Instance.ActiveCharacter.CurrentExpression = attribute;
-			};
-			config.EntryListeners += (name) =>
-			{
-				if (!CharacterController.Instance.ChangeActiveCharacter(name))
-					throw new MissingMemberException($"{name} is not found in the internal character list!");
-			};
+			config.NormalLine += SayLine;
+			config.AttributeListeners += ChangeExpression;
+			config.EntryListeners += ChangeCharacter;
 		}
+		private void SayLine(ScriptLine line) => 
+			CharacterController.Instance.ActiveCharacter.SayLine(line);
+		private void ChangeExpression(string expressionName) => 
+			CharacterController.Instance.ActiveCharacter.CurrentExpression = expressionName;
+		private void ChangeCharacter(string newCharacter)
+		{
+			if (!CharacterController.Instance.ChangeActiveCharacter(newCharacter))
+				throw new MissingMemberException($"'{newCharacter}' is not found in the internal character list!");
+		}
+
 
 		public void NewDocument()
 		{

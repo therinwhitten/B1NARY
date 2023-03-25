@@ -124,10 +124,15 @@
 			wrapper.AfterActions += (mono) =>
 			{
 				for (int i = 0; i < characterSnapshots.Length; i++)
-					characterSnapshots[i].Load();
+				{
+					CharacterSnapshot currentSnapshot = characterSnapshots[i];
+					currentSnapshot.Load();
+					if (currentSnapshot.selected)
+						CharacterController.Instance.ChangeActiveCharacter(currentSnapshot.gameObjectName);
+				}
 			};
+			wrapper.AfterActions += (mono) => ScriptHandler.Instance.NextLine();
 			wrapper.Start();
-			ScriptHandler.Instance.NextLine();
 		}
 		/// <summary>
 		/// Data that mainly concerns around the file itself and B1NARY.
@@ -179,7 +184,7 @@
 
 		public IEnumerator LoadToPosition()
 		{
-			var changeSceneEnumerator = SceneManager.Instance.ChangeScene(SceneName);
+			var changeSceneEnumerator = SceneManager.Instance.ChangeScene(SceneName, false);
 			while (changeSceneEnumerator.MoveNext())
 				yield return changeSceneEnumerator.Current;
 			ScriptHandler.Instance.NewDocument(StreamingAssetsPath, Line - 1);

@@ -9,6 +9,7 @@
 
 	public class EmptyController : MonoBehaviour, ICharacterController
 	{
+		bool ICharacterController.EmptyCharacter => true;
 		public static (GameObject @object, EmptyController emptyController) Instantiate(Transform parent, string name)
 		{
 			var gameObject = new GameObject(name);
@@ -57,13 +58,13 @@
 		string ICharacterController.CurrentAnimation
 		{
 			get => string.Empty;
-			set => throw new NotSupportedException();
+			set { }
 		}
 
 		string ICharacterController.CurrentExpression
 		{
 			get => string.Empty;
-			set => throw new NotSupportedException();
+			set { }
 		}
 		public bool Selected 
 		{ 

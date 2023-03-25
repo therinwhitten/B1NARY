@@ -39,7 +39,7 @@
 		[ForcePause]
 		private static void ChangeSceneCommand(string newScene)
 		{
-			InstanceOrDefault.StartCoroutine(InstanceOrDefault.ChangeScene(newScene));
+			InstanceOrDefault.StartCoroutine(InstanceOrDefault.ChangeScene(newScene, true));
 		}
 		[ForcePause]
 		internal static void ReturnToMainMenuCommand()
@@ -83,7 +83,7 @@
 			if (!scene.IsValid())
 				throw new ArgumentNullException($"build index of '{sceneIndex}'"
 					+ " does not lead to anything!");
-			return ChangeScene(scene.name);
+			return ChangeScene(scene.name, true);
 		}
 		/// <summary>
 		/// A coroutine that changes the scene to a new scene via the name.
@@ -92,9 +92,10 @@
 		/// </summary>
 		/// <param name="sceneName"> The scene to transition to. </param>
 		/// <returns> The Coroutine. </returns>
-		public IEnumerator ChangeScene(string sceneName)
+		public IEnumerator ChangeScene(string sceneName, bool handleScripts)
 		{
-			ScriptHandler.Instance.pauser.Pause();
+			if (handleScripts)
+				ScriptHandler.Instance.pauser.Pause();
 			IEnumerator fadeEnum = FadeScene();
 			while (fadeEnum.MoveNext())
 				yield return fadeEnum.Current;
@@ -121,8 +122,11 @@
 
 			do yield return new WaitForFixedUpdate();
 			while (cannotPerformNext);
-			ScriptHandler.Instance.pauser.Play();
-			ScriptHandler.Instance.NextLine();
+			if (handleScripts)
+			{
+				ScriptHandler.Instance.pauser.Play();
+				ScriptHandler.Instance.NextLine();
+			}
 		}
 		public IEnumerator ReturnToMainMenu()
 		{

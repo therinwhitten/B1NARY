@@ -55,7 +55,8 @@
 					overrideActionPanel.text.text = "Override Save?";
 					overrideActionPanel.OnPress += (@override) => { if (@override) Override(pair.source, SaveSlot.ActiveSlot); };
 				});
-				pair.target.foregroundImage.sprite = slotPair.Value.Value.metadata.thumbnail.Sprite;
+				if (slotPair.Value.Value.metadata.thumbnail != null)
+					pair.target.foregroundImage.sprite = slotPair.Value.Value.metadata.thumbnail.Sprite;
 				pair.target.tmpText.text = slotPair.Value.Value.DisplaySaveContents;
 				newList.Add(pair);
 			}
@@ -64,6 +65,11 @@
 
 		protected virtual void OnEnable()
 		{
+			if (SceneManager.ActiveScene.buildIndex == 0)
+			{
+				gameObject.SetActive(false);
+				return;
+			}
 			UpdateGameObjectSaves();
 			GameObject addNewInstance = AddEntry(newSaveSlotTemplate);
 			SavePanelBehaviour behaviour = addNewInstance.GetComponent<SavePanelBehaviour>();

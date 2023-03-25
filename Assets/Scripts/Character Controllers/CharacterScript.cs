@@ -13,6 +13,7 @@
 	[RequireComponent(typeof(Animator))]
 	public sealed class CharacterScript : Multiton<CharacterScript>, ICharacterController
 	{
+		bool ICharacterController.EmptyCharacter => false;
 		public static string[] ToNameArray(CubismExpressionList list)
 		{
 			return list.CubismExpressionObjects

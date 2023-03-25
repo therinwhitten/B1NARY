@@ -7,6 +7,7 @@
 
 	public interface ICharacterController
 	{
+		bool EmptyCharacter { get; }
 		string CharacterName { get; set; }
 		string GameObjectName { get; set; }
 		VoiceActorHandler VoiceData { get; }
@@ -48,6 +49,7 @@
 		public string animation;
 		public float horizontalPosition;
 		public bool selected;
+		public bool asEmpty;
 
 		public CharacterSnapshot(ICharacterController controller)
 		{
@@ -57,10 +59,16 @@
 			animation = controller.CurrentAnimation;
 			horizontalPosition = controller.HorizontalPosition;
 			selected = controller.Selected;
+			asEmpty = controller.EmptyCharacter;
 		}
 		public void Load()
 		{
-			if (!CharacterController.Instance.SummonCharacter(gameObjectName, horizontalPosition))
+			if (asEmpty)
+			{
+				var pair = EmptyController.Instantiate(CharacterController.Instance.transform, gameObjectName);
+				CharacterController.Instance.charactersInScene.Add(gameObjectName, pair);
+			}
+			else if (!CharacterController.Instance.SummonCharacter(gameObjectName, horizontalPosition))
 			{
 				Debug.LogError($"Failure to load {gameObjectName} from data.");
 				return;

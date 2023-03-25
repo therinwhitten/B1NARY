@@ -44,7 +44,8 @@
 					actionPanel.gameObject.SetActive(true);
 					actionPanel.OnPress += shouldLoad => { if (shouldLoad) pair.source.Load(); };
 				});
-				pair.target.foregroundImage.sprite = slotPair.Value.Value.metadata.thumbnail.Sprite;
+				if (slotPair.Value.Value.metadata.thumbnail != null)
+					pair.target.foregroundImage.sprite = slotPair.Value.Value.metadata.thumbnail.Sprite;
 				pair.target.tmpText.text = slotPair.Value.Value.DisplaySaveContents;
 				newList.Add(pair);
 			}
