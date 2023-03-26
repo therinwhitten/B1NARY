@@ -13,6 +13,7 @@
 	using System.Collections.ObjectModel;
 	using B1NARY.CharacterManagement;
 	using CharacterController = B1NARY.CharacterManagement.CharacterController;
+	using B1NARY.Audio;
 
 	public class SaveSlot
 	{
@@ -69,6 +70,8 @@
 			$"{PlayerName} : {scriptPosition.SceneName}\n" +
 			$"{metadata.lastSaved}\n{metadata.playedAmount}";
 
+		[XmlAttribute("name")]
+		public string saveName = "save";
 		public Metadata metadata;
 		public Collection<bool> booleans;
 		public string PlayerName
@@ -88,6 +91,7 @@
 		public Collection<string> strings;
 		public ScriptPosition scriptPosition;
 		public CharacterSnapshot[] characterSnapshots;
+		public SerializedAudio[] audio;
 		[XmlIgnore]
 		private DateTime startPlay;
 
@@ -114,6 +118,7 @@
 			using (var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write))
 				SlotSerializer.Serialize(stream, this);
 			characterSnapshots = CharacterSnapshot.GetCurrentSnapshots();
+			audio = SerializedAudio.SerializeAudio();
 			EmptySaveCache();
 		}
 
@@ -130,6 +135,11 @@
 					if (currentSnapshot.selected)
 						CharacterController.Instance.ChangeActiveCharacter(currentSnapshot.gameObjectName);
 				}
+			};
+			wrapper.AfterActions += (mono) =>
+			{
+				for (int i = 0; i < audio.Length; i++)
+					audio[i].Play();
 			};
 			wrapper.AfterActions += (mono) => ScriptHandler.Instance.NextLine();
 			wrapper.Start();

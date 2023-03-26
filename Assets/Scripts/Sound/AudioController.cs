@@ -12,7 +12,6 @@
 
 	public sealed class AudioController : Singleton<AudioController>
 	{
-		
 		public const string baseResourcesPath = "Sounds/Sound Libraries";
 		
 		public static readonly CommandArray Commands = new CommandArray()
@@ -144,19 +143,21 @@
 			}
 		}
 
-		public void PlaySound(string soundName)
+		public AudioTracker PlaySound(string soundName)
 		{
-			if (!CurrentSoundLibrary.TryGetCustomAudioClip(soundName, out var audioClip))
+			if (!CurrentSoundLibrary.TryGetCustomAudioClip(soundName, out CustomAudioClip audioClip))
 			{
 				Debug.LogError($"Sound Name'{soundName}' is not found in '{CurrentSoundLibrary.name}'!");
-				return;
+				return null;
 			}
-			PlaySound(audioClip);
+			return PlaySound(audioClip);
 		}
-		public void PlaySound(CustomAudioClip audioClip)
+		public AudioTracker PlaySound(CustomAudioClip audioClip)
 		{
-			var pairKey = AddAudioClipToDictionary(audioClip);
-			ActiveAudioTrackers[pairKey].PlaySingle(audioClip);
+			(string name, int index) pairKey = AddAudioClipToDictionary(audioClip);
+			AudioTracker tracker = ActiveAudioTrackers[pairKey];
+			tracker.PlaySingle(audioClip);
+			return tracker;
 		}
 		public void PlaySound(string soundName, float fadeIn)
 		{

@@ -67,7 +67,11 @@
 		}
 
 		public bool CreateAutoDisposableCoroutine { get; private set; }
-		public TimeSpan PlayedSeconds => TimeSpan.FromSeconds(audioSource.time);
+		public TimeSpan PlayedSeconds
+		{
+			get => TimeSpan.FromSeconds(audioSource.time);
+			set => audioSource.time = (float)value.TotalSeconds;
+		}
 		public TimeSpan TotalSeconds => TimeSpan.FromSeconds(audioSource.clip.length);
 		public float CompletionPercent => audioSource.time / audioSource.clip.length;
 		public string TimeInfo => $"{audioSource.time:N2} : {audioSource.clip.length:N2}";

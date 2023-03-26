@@ -117,9 +117,13 @@
 		{
 			if (line.Type != LineType.Command)
 				throw new InvalidCastException($"'{line.Type}' is not a command!");
-			string[] dataArray = line.RawLine.Trim('{', '}').Split(':', ',');
-			return (dataArray.First().Trim().ToLower(),
-				dataArray.Skip(1).Select(str => str.Trim()).ToArray());
+			string outputLine = line.RawLine;
+			outputLine = outputLine.Substring(outputLine.IndexOf('{') + 1);
+			outputLine = outputLine.Remove(outputLine.LastIndexOf('}'));
+			string[] dataArray = outputLine.Split(':', ',');
+			string command = dataArray[0].Trim().ToLower();
+			string[] arguments = dataArray.Skip(1).Select(str => str.Trim()).ToArray();
+			return (command, arguments);
 		}
 		/// <summary>
 		/// Casts the current <see cref="ScriptLine"/> as an emotion value, trimmed.
@@ -132,7 +136,10 @@
 		{
 			if (line.Type != LineType.Attribute)
 				throw new InvalidCastException($"'{line}' is not a emotion!");
-			return line.RawLine.Trim('[', ']', ' ', '\t');
+			string outputLine = line.RawLine;
+			outputLine = outputLine.Substring(outputLine.IndexOf('[') + 1);
+			outputLine = outputLine.Remove(outputLine.LastIndexOf(']'));
+			return outputLine.Trim();
 		}
 
 		/// <summary>
@@ -144,7 +151,6 @@
 		/// <exception cref="InvalidCastException">'{line}' is not a speaker!</exception>
 		public static string CastEntry(ScriptLine line)
 		{
-
 			if (line.Type != LineType.Entry)
 				throw new InvalidCastException($"'{line}' is not a speaker command!");
 			return line.RawLine.Remove(line.RawLine.IndexOf("::")).Trim();
