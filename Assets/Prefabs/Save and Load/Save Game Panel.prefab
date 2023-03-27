@@ -1650,7 +1650,7 @@ GameObject:
   - component: {fileID: 739224383531354041}
   - component: {fileID: 739224383531354046}
   - component: {fileID: 739224383531354047}
-  - component: {fileID: 2316116594909687110}
+  - component: {fileID: 2989093031678709739}
   m_Layer: 5
   m_Name: Panel
   m_TagString: UI
@@ -1783,7 +1783,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2316116594909687110
+--- !u!114 &2989093031678709739
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1792,18 +1792,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 739224383531354045}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c28370c4370bcf04c9c4ba41564cc397, type: 3}
+  m_Script: {fileID: 11500000, guid: ece896d3feae5fb40a03849a7a70484e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   row: {fileID: 4305803851846325299, guid: f49037a5a3066b941b735b356ed345cb, type: 3}
   objectsPerRow: 3
-  panels:
-  - {fileID: 739224385083685307}
-  - {fileID: 1772472123039727351}
-  - {fileID: 346263533746751526}
-  slot: {fileID: 7851084954040861678, guid: 8e9485e57486588469c0d8da1ed1869e, type: 3}
-  addPrefab: {fileID: 4150712736886401989, guid: 6868b85a0e7294447b44bf5bd76e51aa,
+  slotTemplate: {fileID: 7851084954040861678, guid: 8e9485e57486588469c0d8da1ed1869e,
     type: 3}
+  newSaveSlotTemplate: {fileID: 4150712736886401989, guid: 6868b85a0e7294447b44bf5bd76e51aa,
+    type: 3}
+  actionPanel: {fileID: 2989093031678709738}
+  overrideActionPanel: {fileID: 2989093031678709737}
 --- !u!1 &739224383539237811
 GameObject:
   m_ObjectHideFlags: 0
@@ -3829,6 +3828,7 @@ GameObject:
   - component: {fileID: 739224385083685300}
   - component: {fileID: 739224385083685301}
   - component: {fileID: 739224385083685303}
+  - component: {fileID: 2989093031678709738}
   m_Layer: 5
   m_Name: Save Game?
   m_TagString: Untagged
@@ -4086,6 +4086,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2989093031678709738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 739224385083685307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2f4813bd2de554ba7fe2b926d4eb0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  confirm: {fileID: 739224383995748726}
+  cancel: {fileID: 739224384361000158}
+  text: {fileID: 739224383476265117}
 --- !u!1 &739224385205925209
 GameObject:
   m_ObjectHideFlags: 0
@@ -4578,6 +4593,7 @@ GameObject:
   - component: {fileID: 5976541810562308787}
   - component: {fileID: 7124855857239028607}
   - component: {fileID: 8879585128483521014}
+  - component: {fileID: 2989093031678709737}
   m_Layer: 5
   m_Name: Overwrite Save?
   m_TagString: Untagged
@@ -4834,6 +4850,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &2989093031678709737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772472123039727351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a921f75c3953e504fa21609111d4df2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  confirm: {fileID: 4664413611212152539}
+  cancel: {fileID: 7124716468570466255}
+  text: {fileID: 2175069562447915012}
+  inputField: {fileID: 1475231296}
 --- !u!1 &1903907156249182830
 GameObject:
   m_ObjectHideFlags: 0

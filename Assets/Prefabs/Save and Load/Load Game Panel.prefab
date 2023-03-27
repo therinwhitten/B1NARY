@@ -356,6 +356,7 @@ GameObject:
   - component: {fileID: 759374843588079517}
   - component: {fileID: 759374843588079490}
   - component: {fileID: 759374843588079516}
+  - component: {fileID: 3004168725499115829}
   m_Layer: 5
   m_Name: Load Game?
   m_TagString: Untagged
@@ -612,6 +613,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3004168725499115829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759374843588079488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2f4813bd2de554ba7fe2b926d4eb0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  confirm: {fileID: 759374845073071463}
+  cancel: {fileID: 759374844597107447}
+  text: {fileID: 759374844800233033}
 --- !u!1 &759374843668291747
 GameObject:
   m_ObjectHideFlags: 0
@@ -739,7 +755,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 33.33023}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -2088,7 +2104,7 @@ GameObject:
   - component: {fileID: 759374844811592142}
   - component: {fileID: 759374844811592143}
   - component: {fileID: 759374844811592140}
-  - component: {fileID: 472564186340987943}
+  - component: {fileID: 3004168725499115830}
   m_Layer: 5
   m_Name: Panel
   m_TagString: UI
@@ -2113,7 +2129,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 28.853027, y: -0.00012207031}
-  m_SizeDelta: {x: 57.784424, y: 885.02606}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &759374844811592136
 MonoBehaviour:
@@ -2221,7 +2237,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &472564186340987943
+--- !u!114 &3004168725499115830
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2230,17 +2246,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 759374844811592114}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2aa9b96ef3355714d9634cd38798ee44, type: 3}
+  m_Script: {fileID: 11500000, guid: 43382fa2a748b7345be1bbfd899e9451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slot: {fileID: 8949942337260085066, guid: d9ef429cc954bca4590a6e9d7c786822, type: 3}
   row: {fileID: 4305803851846325299, guid: f49037a5a3066b941b735b356ed345cb, type: 3}
   objectsPerRow: 3
-  panels:
-  - {fileID: 759374843588079488}
-  - {fileID: 0}
-  - {fileID: 0}
-  plus: {fileID: 2800000, guid: 7fa4ff0364fbb95499cf510b95ff67fb, type: 3}
+  slotTemplate: {fileID: 8949942337260085066, guid: d9ef429cc954bca4590a6e9d7c786822,
+    type: 3}
+  actionPanel: {fileID: 3004168725499115829}
 --- !u!1 &759374844831116975
 GameObject:
   m_ObjectHideFlags: 0
