@@ -2,6 +2,8 @@
 {
 	using OVSXmlSerializer;
 	using System;
+	using System.Linq;
+	using UnityEngine;
 	using UnityEngine.Audio;
 
 	public struct SerializedAudio : IAudioInfo
@@ -16,6 +18,7 @@
 			using (var enumerator = AudioController.Instance.ActiveAudioTrackers.GetEnumerator())
 				for (int i = 0; enumerator.MoveNext(); i++)
 					audio[i] = new SerializedAudio(enumerator.Current.Value);
+			Debug.Log($"array length {audio.Length}:, \n\t{string.Join("\n\t", audio.Select(aud => aud.ClipName))}");
 			return audio;
 		}
 

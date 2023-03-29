@@ -24,13 +24,16 @@
 		public const int MAX_SAVES = 69;
 		public static DirectoryInfo SavesDirectory { get; } =
 			SerializableSlot.PersistentData.CreateSubdirectory("Saves");
-		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
-		new XmlSerializer<SaveSlot>(new XmlSerializerConfig()
+
+		private static XmlSerializerConfig config = new XmlSerializerConfig()
 		{
 			TypeHandling = IncludeTypes.SmartTypes,
 			indentChars = "\t",
-			indent = true
-		});
+			indent = true,
+			logger = new OVSXmlLogger(),
+		};
+		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
+		new XmlSerializer<SaveSlot>(config);
 
 		public static SaveSlot ActiveSlot { get; set; }
 
@@ -64,6 +67,11 @@
 		}
 		private static IReadOnlyList<KeyValuePair<FileInfo, Lazy<SaveSlot>>> m_saves;
 		public static void EmptySaveCache() => m_saves = null;
+
+		static SaveSlot()
+		{
+
+		}
 
 
 		public string DisplaySaveContents =>
@@ -115,10 +123,10 @@
 			characterSnapshots = CharacterController.Instance.charactersInScene
 				.Select(pair => pair.Value.characterScript.Serialize()).ToArray();
 			metadata.thumbnail = Thumbnail.CreateWithScreenshot(128, 128);
-			using (var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write))
-				SlotSerializer.Serialize(stream, this);
 			characterSnapshots = CharacterSnapshot.GetCurrentSnapshots();
 			audio = SerializedAudio.SerializeAudio();
+			using (var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write))
+				SlotSerializer.Serialize(stream, this);
 			EmptySaveCache();
 		}
 

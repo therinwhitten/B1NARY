@@ -239,6 +239,9 @@
             </summary>
             <typeparam name="T"> The attribute. </typeparam>
         </member>
+        <member name="M:OVSXmlSerializer.OVSXmlDebugLine.ToString">
+            <inheritdoc/>
+        </member>
         <member name="T:OVSXmlSerializer.Extras.ChangableValue`1">
             <summary>
             A value that alerts other classes and fields when modified.
@@ -441,7 +444,7 @@
             Serializer that converts classes into XML Files and such.
             </summary>
         </member>
-        <member name="F:OVSXmlSerializer.XmlSerializer`1.config">
+        <member name="P:OVSXmlSerializer.XmlSerializer`1.Config">
             <summary>
             The configuration that changes the behaviour of the serializer.
             </summary>
