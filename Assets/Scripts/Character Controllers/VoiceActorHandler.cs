@@ -89,10 +89,10 @@
 		public void Play(ScriptLine line)
 		{
 			currentVoiceLine = GetVoiceLine(line.Index, ScriptHandler.Instance);
-			if (BlockPreviousSpeakersOnNextLine && CharacterController.HasInstance)
-				using (var enumerator = CharacterController.Instance.charactersInScene.Values.GetEnumerator())
+			if (BlockPreviousSpeakersOnNextLine && CharacterManager.HasInstance)
+				using (var enumerator = CharacterManager.Instance.CharactersInScene.Values.GetEnumerator())
 					while (enumerator.MoveNext())
-						enumerator.Current.characterScript.VoiceData.Stop();
+						enumerator.Current.controller.VoiceData.Stop();
 			audioSource.clip = currentVoiceLine;
 			audioSource.Play();
 		}

@@ -10,7 +10,7 @@
 	using B1NARY.Scripting;
 	using UnityEngine.Audio;
 
-	public sealed class CharacterController : Singleton<CharacterController>
+	public sealed class CharacterManager : Singleton<CharacterManager>
 	{
 		/// <summary>
 		/// The preset path for using <see cref="Resources.Load(string)"/> to 
@@ -25,90 +25,66 @@
 		{
 			["spawnchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
-				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName, out _))
-					return;
-				if (Instance.SummonCharacter(gameObjectName, positionRaw, characterName))
-				{
-					Debug.LogWarning($"GameObject or Character named '{gameObjectName}'" +
-						" is not found in the scene, trying to summmon in Resources Folder " +
-						$"'{prefabsPath}{gameObjectName}'.\nKeep in mind summoning a " +
-						"character takes alot of processing power! use command " +
-						"'summonchar' to explicitly say to get it from a prefab!");
-					return;
-				}
-				throw new MissingReferenceException("GameObject or Character " +
-					$"named '{gameObjectName}' is not found as prefab in " +
-					$"Resources Folder '{prefabsPath}{gameObjectName}', nor found" +
-					" in the scene!");
+				Character? character = Instance.SummonCharacter(gameObjectName);
+				if (!character.HasValue)
+					throw new MissingReferenceException("GameObject or Character " +
+						$"named '{gameObjectName}' is not found as prefab in " +
+						$"Resources Folder '{prefabsPath}{gameObjectName}', nor found" +
+						" in the scene!");
+				character.Value.controller.HorizontalPosition = float.Parse(positionRaw);
+				character.Value.controller.CharacterName = characterName;
 			}),
 			["spawnchar"] = (Action<string, string>)((gameObjectName, positionRaw) =>
 			{
-				if (Instance.InitiateCharacter(gameObjectName, positionRaw, gameObjectName, out _))
-					return;
-				if (Instance.SummonCharacter(gameObjectName, positionRaw, gameObjectName))
-				{
-					Debug.LogWarning($"GameObject or Character named '{gameObjectName}'" +
-						" is not found in the scene, trying to summmon in Resources Folder " +
-						$"'{prefabsPath}{gameObjectName}'.\nKeep in mind summoning a " +
-						"character takes alot of processing power! use command " +
-						"'summonchar' to explicitly say to get it from a prefab!");
-					return;
-				}
-				throw new MissingReferenceException("GameObject or Character " +
-					$"named '{gameObjectName}' is not found as prefab in " +
-					$"Resources Folder '{prefabsPath}{gameObjectName}', nor found" +
-					" in the scene!");
-			}),
-			["initiatechar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
-			{
-				if (Instance.InitiateCharacter(gameObjectName, positionRaw, characterName, out _))
-					return;
-				throw new MissingReferenceException("GameObject or Character " +
-					$"named '{gameObjectName}' is not found in the scene!");
-			}),
-			["summonchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
-			{
-				if (Instance.SummonCharacter(gameObjectName, positionRaw, characterName))
-					return;
-				throw new MissingReferenceException("GameObject or Character " +
-					$"named '{gameObjectName}' is not found as prefab in " +
-					$"Resources Folder '{prefabsPath}{gameObjectName}'!");
+				Character? character = Instance.SummonCharacter(gameObjectName);
+				if (!character.HasValue)
+					throw new MissingReferenceException("GameObject or Character " +
+						$"named '{gameObjectName}' is not found as prefab in " +
+						$"Resources Folder '{prefabsPath}{gameObjectName}', nor found" +
+						" in the scene!");
+				character.Value.controller.HorizontalPosition = float.Parse(positionRaw);
 			}),
 			["spawnempty"] = (Action<string>)(characterName =>
 			{
-				var pair = EmptyController.Instantiate(Instance.transform, characterName);
-				Instance.charactersInScene.Add(characterName, pair);
+				EmptyController.AddTo(Instance, characterName);
 			}),
 			["spawnempty"] = (Action<string, string>)((characterName, voiceName) =>
 			{
-				var pair = EmptyController.Instantiate(Instance.transform, characterName);
-				Instance.charactersInScene.Add(characterName, pair);
-				pair.emptyController.VoiceData.CurrentGroup = 
+				Character emptyCharacter = EmptyController.AddTo(Instance, characterName);
+				emptyCharacter.controller.VoiceData.CurrentGroup =
 					Instance.voiceGroup.audioMixer.FindMatchingGroups(voiceName).Single();
 			}),
 			["anim"] = (Action<string, string>)((characterName, animationName) =>
 			{
-				if (Instance.charactersInScene.TryGetValue(characterName, out var pair))
-					pair.characterScript.CurrentAnimation = animationName;
+				if (Instance.CharactersInScene.TryGetValue(characterName, out Character character))
+					character.controller.CurrentAnimation = animationName;
 				else
 					Debug.LogError($"{characterName} does not exist!", Instance);
+			}),
+			["anim"] = (Action<string>)((animationName) =>
+			{
+				Instance.ActiveCharacter.controller.CurrentAnimation = animationName;
 			}),
 			["movechar"] = (Action<string, string>)((characterName, positionRaw) =>
 			{
-				if (Instance.charactersInScene.TryGetValue(characterName, out var pair))
-					pair.characterScript.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
+				if (Instance.CharactersInScene.TryGetValue(characterName, out Character character))
+					character.controller.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
 				else
 					Debug.LogError($"{characterName} does not exist!", Instance);
 			}),
+			["movechar"] = (Action<string>)((positionRaw) =>
+			{
+				Instance.ActiveCharacter.controller.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
+			}),
 			["movechar"] = (Action<string, string, string>)((characterName, positionRaw, time) =>
 			{
-				if (Instance.charactersInScene.TryGetValue(characterName, out var pair))
+				if (Instance.CharactersInScene.TryGetValue(characterName, out Character character))
 				{
 					float timeParsed = float.Parse(time);
 					if (timeParsed == 0f)
-						pair.characterScript.HorizontalPosition = float.Parse(positionRaw);
+						character.controller.HorizontalPosition = float.Parse(positionRaw);
 					else
-						pair.characterScript.SetPositionOverTime(float.Parse(positionRaw), timeParsed);
+						character.controller.SetPositionOverTime(float.Parse(positionRaw), timeParsed);
 				}
 				else
 					Debug.LogError($"{characterName} does not exist!", Instance);
@@ -121,41 +97,125 @@
 			{
 				Instance.DisableCharacter(charName);
 			}),
+			["disablechar"] = (Action)(() =>
+			{
+				Instance.DisableCharacter(Instance.ActiveCharacter.controller.CharacterName);
+			}),
 			["changename"] = (Action<string, string>)((oldName, newName) =>
 			{
-				Instance.ChangeName(oldName, newName);
+				Instance.RenameCharacter(oldName, newName);
+			}),
+			["changename"] = (Action<string>)((newName) =>
+			{
+				Instance.RenameCharacter(Instance.ActiveCharacter.controller.CharacterName, newName);
 			}),
 		};
 
 
-
-		[SerializeField] private Canvas characterLayer;
-		private Transform charLayerTransform;
+		public Transform Transform { get; private set; }
 		public AudioMixerGroup voiceGroup;
 
-
-		public ICharacterController ActiveCharacter { get; private set; }
-
-		public event Action<ICharacterController> ActiveCharacterChanged;
-		public Dictionary<string, (GameObject gameObject, ICharacterController characterScript)> charactersInScene =
-			new Dictionary<string, (GameObject gameObject, ICharacterController characterScript)>(10);
-
-		/// <summary>
-		/// Changes the currently active character without errors. 
-		/// </summary>
-		/// <param name="name"> The case-sensitive name of the character. </param>
-		/// <returns> If it has successfully switched characters. </returns>
-		public bool ChangeActiveCharacter(string name)
+		protected override void SingletonAwake()
 		{
-			if (!charactersInScene.ContainsKey(name))
+			Transform = GetComponent<Transform>();
+		}
+
+		public Character ActiveCharacter
+		{
+			get => m_active;
+			private set
+			{
+				value.controller.Selected = true;
+				m_active.controller.Selected = false;
+				m_active = value;
+				ActiveCharacterChanged?.Invoke(value);
+			}
+		}
+		private Character m_active;
+		public event Action<Character> ActiveCharacterChanged;
+
+		public IReadOnlyDictionary<string, Character> CharactersInScene
+			=> m_charactersInScene;
+		private readonly Dictionary<string, Character> m_charactersInScene = new Dictionary<string, Character>(); 
+
+		public bool ChangeActiveCharacterViaName(string name)
+		{
+			if (!CharactersInScene.TryGetValue(name, out Character character))
 				return false;
-			if (ActiveCharacter != null)
-				ActiveCharacter.Selected = false;
-			ActiveCharacter = charactersInScene[name].characterScript;
-			ActiveCharacter.Selected = true;
-			ActiveCharacterChanged?.Invoke(ActiveCharacter);
+			ActiveCharacter = character;
 			return true;
 		}
+		public Character? SummonCharacter(string gameObjectName)
+		{
+			Transform charTransform = Transform.Find(gameObjectName);
+			if (charTransform == null)
+			{
+				GameObject gameObject = Resources.Load<GameObject>(prefabsPath + gameObjectName);
+				if (gameObject == null)
+					return null;
+				if (AddCharacterToDictionary(Instantiate(gameObject, Transform), out var character))
+				{
+					Debug.LogWarning($"GameObject or Character named '{gameObjectName}'" +
+						" is not found in the scene, trying to summmon in Resources Folder " +
+						$"'{prefabsPath}{gameObjectName}'.\nKeep in mind summoning a " +
+						"character takes alot of processing power! use command " +
+						"'summonchar' to explicitly say to get it from a prefab!");
+					return character;
+				}
+			}
+			GameObject childObject = charTransform.gameObject;
+			childObject.SetActive(true);
+			if (AddCharacterToDictionary(childObject, out var character1))
+				return character1;
+			return null;
+		}
+		public bool AddCharacterToDictionary(GameObject gameObject, out Character character)
+		{
+			MonoBehaviour[] components = gameObject.GetComponents<MonoBehaviour>();
+			for (int i = 0; i < components.Length; i++)
+			{
+				if (components[i] is ICharacterController controller)
+				{
+					character = new Character
+					{
+						controller = controller,
+						characterObject = gameObject
+					};
+					gameObject.transform.SetParent(Transform);
+					m_charactersInScene.Add(controller.CharacterName, character);
+					return true;
+				}
+			}
+			character = default;
+			return false;
+		}
+		public bool RenameCharacter(string oldName, string newName)
+		{
+			if (!m_charactersInScene.TryGetValue(oldName, out Character character))
+				return false;
+			m_charactersInScene.Remove(oldName);
+			m_charactersInScene.Add(newName, character);
+			return true;
+		}
+		public bool DisableCharacter(string name)
+		{
+			if (m_charactersInScene.ContainsKey(name))
+			{
+				m_charactersInScene.Remove(name);
+				return true;
+			}
+			return false;
+		}
+		/// <summary>
+		/// Clears all characters from the scene.
+		/// </summary>
+		public void ClearAllCharacters()
+		{
+			string[] keys = m_charactersInScene.Keys.ToArray();
+			for (int i = 0; i < m_charactersInScene.Count; i++)
+				DisableCharacter(keys[i]);
+		}
+		/*
 
 		/// <summary>
 		/// Modifies a character name for <see cref="charactersInScene"/>.
@@ -296,6 +356,18 @@
 		{
 			charactersInScene[character].gameObject.SetActive(false);
 			charactersInScene.Remove(character);
+		}
+		*/
+	}
+
+	public struct Character
+	{
+		public GameObject characterObject;
+		public ICharacterController controller;
+		public Character(GameObject characterObj, ICharacterController controller)
+		{
+			this.characterObject = characterObj;
+			this.controller = controller;
 		}
 	}
 }

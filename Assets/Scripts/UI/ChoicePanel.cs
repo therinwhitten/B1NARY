@@ -5,7 +5,7 @@
 	using System;
 	using B1NARY.Scripting;
 	using B1NARY.DesignPatterns;
-	using CharacterController = B1NARY.CharacterManagement.CharacterController;
+	using CharacterManager = B1NARY.CharacterManagement.CharacterManager;
 	using System.Collections.Generic;
 	using B1NARY.DataPersistence;
 
@@ -102,7 +102,7 @@
 					obj.SetActive(true);
 					choiceButtons[i].Text = enumerator.Current.RawLine;
 					choiceButtons[i].tiedPanel = this;
-					choiceButtons[i].VoiceActor = CharacterController.Instance.ActiveCharacter.VoiceData;
+					choiceButtons[i].VoiceActor = CharacterManager.Instance.ActiveCharacter.controller.VoiceData;
 					choiceButtons[i].currentLine = enumerator.Current;
 				}
 		}

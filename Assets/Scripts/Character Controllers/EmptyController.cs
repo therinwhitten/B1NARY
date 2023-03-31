@@ -10,6 +10,14 @@
 	public class EmptyController : MonoBehaviour, ICharacterController
 	{
 		bool ICharacterController.EmptyCharacter => true;
+		public static Character AddTo(CharacterManager characterManager, string name)
+		{
+			var gameObject = new GameObject(name);
+			gameObject.transform.SetParent(characterManager.Transform);
+			EmptyController controller = gameObject.AddComponent<EmptyController>();
+			characterManager.AddCharacterToDictionary(gameObject, out Character character);
+			return character;
+		}
 		public static (GameObject @object, EmptyController emptyController) Instantiate(Transform parent, string name)
 		{
 			var gameObject = new GameObject(name);

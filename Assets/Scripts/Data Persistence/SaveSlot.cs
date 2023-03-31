@@ -12,7 +12,7 @@
 	using OVSXmlSerializer;
 	using System.Collections.ObjectModel;
 	using B1NARY.CharacterManagement;
-	using CharacterController = B1NARY.CharacterManagement.CharacterController;
+	using CharacterManager = B1NARY.CharacterManagement.CharacterManager;
 	using B1NARY.Audio;
 
 	public class SaveSlot
@@ -120,8 +120,8 @@
 			metadata.playedAmount += metadata.lastSaved - startPlay;
 			startPlay = metadata.lastSaved;
 			scriptPosition = ScriptPosition.Define();
-			characterSnapshots = CharacterController.Instance.charactersInScene
-				.Select(pair => pair.Value.characterScript.Serialize()).ToArray();
+			characterSnapshots = CharacterManager.Instance.CharactersInScene
+				.Select(pair => pair.Value.controller.Serialize()).ToArray();
 			metadata.thumbnail = Thumbnail.CreateWithScreenshot(128, 128);
 			characterSnapshots = CharacterSnapshot.GetCurrentSnapshots();
 			audio = SerializedAudio.SerializeAudio();
@@ -141,7 +141,7 @@
 					CharacterSnapshot currentSnapshot = characterSnapshots[i];
 					currentSnapshot.Load();
 					if (currentSnapshot.selected)
-						CharacterController.Instance.ChangeActiveCharacter(currentSnapshot.gameObjectName);
+						CharacterManager.Instance.ChangeActiveCharacterViaName(currentSnapshot.gameObjectName);
 				}
 			};
 			wrapper.AfterActions += (mono) =>

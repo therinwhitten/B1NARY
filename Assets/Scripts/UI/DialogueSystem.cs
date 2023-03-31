@@ -9,7 +9,7 @@
 	using System.Text;
 	using System;
 	using TMPro;
-	using CharacterController = B1NARY.CharacterManagement.CharacterController;
+	using CharacterManager = B1NARY.CharacterManagement.CharacterManager;
 	using B1NARY.Scripting;
 	using B1NARY.DataPersistence;
 	using B1NARY.CharacterManagement;
@@ -113,7 +113,7 @@
 
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>.
-		/// Use <see cref="CharacterController.ActiveCharacterName"/> instead 
+		/// Use <see cref="CharacterManager.ActiveCharacterName"/> instead 
 		/// for a more accurate name, as this can change visually within the game.
 		/// </summary>
 		public string SpeakerName
@@ -121,12 +121,12 @@
 			get => speakerBox.text;
 			set => speakerBox.text = value;
 		}
-		private void ChangeSpeakerName(ICharacterController characterController)
+		private void ChangeSpeakerName(Character characterController)
 		{
-			if (characterController.CharacterName == "MC")
+			if (characterController.controller.CharacterName == "MC")
 				SpeakerName = SaveSlot.ActiveSlot.PlayerName;
 			else
-				SpeakerName = characterController.CharacterName;
+				SpeakerName = characterController.controller.CharacterName;
 		}
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
@@ -166,7 +166,7 @@
 						yield return new WaitForEndOfFrame();
 						if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
 							continue;
-						if (CharacterController.Instance.charactersInScene.Values.Any(pair => pair.characterScript.VoiceData.IsPlaying))
+						if (CharacterManager.Instance.CharactersInScene.Values.Any(pair => pair.controller.VoiceData.IsPlaying))
 							continue;
 						ScriptHandler.Instance.NextLine();
 					}
@@ -230,7 +230,7 @@
 		private void Awake()
 		{
 			m_secondsChar = m_ticksPerChar / 1000f;
-			CharacterController.Instance.ActiveCharacterChanged += ChangeSpeakerName;
+			CharacterManager.Instance.ActiveCharacterChanged += ChangeSpeakerName;
 		}
 
 		/// <summary>
@@ -246,7 +246,7 @@
 
 		public void Say(string message, string speaker)
 		{
-			CharacterController.Instance.ChangeActiveCharacter(speaker);
+			CharacterManager.Instance.ChangeActiveCharacterViaName(speaker);
 			Say(message);
 		}
 

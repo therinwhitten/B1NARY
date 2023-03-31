@@ -14,7 +14,7 @@
 	using UnityEngine;
 	using UnityEngine.InputSystem;
 	using UnityEngine.InputSystem.UI;
-	using CharacterController = CharacterManagement.CharacterController;
+	using CharacterManager = CharacterManagement.CharacterManager;
 
 	[AddComponentMenu("B1NARY/Script Handler")]
 	public sealed class ScriptHandler : Singleton<ScriptHandler>
@@ -44,7 +44,7 @@
 					DialogueSystem.Commands,
 					AudioController.Commands,
 					SceneManager.Commands,
-					CharacterController.Commands,
+					CharacterManager.Commands,
 					TransitionManager.Commands,
 					ColorFormat.Commands 
 				}.SelectMany<CommandArray, OverloadableCommand>(commands => commands));
@@ -115,12 +115,12 @@
 			config.EntryListeners += ChangeCharacter;
 		}
 		private void SayLine(ScriptLine line) => 
-			CharacterController.Instance.ActiveCharacter.SayLine(line);
+			CharacterManager.Instance.ActiveCharacter.controller.SayLine(line);
 		private void ChangeExpression(string expressionName) => 
-			CharacterController.Instance.ActiveCharacter.CurrentExpression = expressionName;
+			CharacterManager.Instance.ActiveCharacter.controller.CurrentExpression = expressionName;
 		private void ChangeCharacter(string newCharacter)
 		{
-			if (!CharacterController.Instance.ChangeActiveCharacter(newCharacter))
+			if (!CharacterManager.Instance.ChangeActiveCharacterViaName(newCharacter))
 				throw new MissingMemberException($"'{newCharacter}' is not found in the internal character list!");
 		}
 

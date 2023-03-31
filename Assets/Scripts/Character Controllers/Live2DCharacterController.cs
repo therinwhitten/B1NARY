@@ -11,13 +11,18 @@
 	using UnityEngine;
 
 	[RequireComponent(typeof(Animator))]
-	public sealed class CharacterScript : Multiton<CharacterScript>, ICharacterController
+	public class Live2DCharacterController : MonoBehaviour, ICharacterController
 	{
 		bool ICharacterController.EmptyCharacter => false;
 		public static string[] ToNameArray(CubismExpressionList list)
 		{
-			return list.CubismExpressionObjects
-				.Select(param => param.name.Replace(".exp3", string.Empty)).ToArray();
+			var expressions = new string[list.CubismExpressionObjects.Length];
+			for (int i = 0; i < expressions.Length; i++)
+			{
+				string expression = list.CubismExpressionObjects[i].name;
+				expressions[i] = expression.Remove(expression.LastIndexOf('.'));
+			}
+			return expressions;
 		}
 
 		private Animator animator;
@@ -111,7 +116,7 @@
 			}
 		}
 
-		protected override void MultitonAwake()
+		protected virtual void Awake()
 		{
 			animator = GetComponent<Animator>();
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
@@ -121,7 +126,7 @@
 				expressions = ToNameArray(expressionController.ExpressionsList);
 		}
 
-		private void OnEnable()
+		protected virtual void OnEnable()
 		{
 			((ICharacterController)this).GameObjectName = gameObject.name;
 		}
@@ -153,7 +158,7 @@ namespace B1NARY.CharacterManagement.Editor
 {
 	using UnityEditor;
 
-	[CustomEditor(typeof(CharacterScript))]
+	[CustomEditor(typeof(Live2DCharacterController))]
 	public class CharacterScriptEditor : ControllerEditor
 	{
 

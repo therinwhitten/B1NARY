@@ -32,12 +32,12 @@
 	{
 		public static CharacterSnapshot[] GetCurrentSnapshots()
 		{
-			CharacterSnapshot[] characterSnapshots = new CharacterSnapshot[CharacterController.Instance.charactersInScene.Count];
+			CharacterSnapshot[] characterSnapshots = new CharacterSnapshot[CharacterManager.Instance.CharactersInScene.Count];
 			int i = 0;
-			using (var enumerator = CharacterController.Instance.charactersInScene.GetEnumerator())
+			using (var enumerator = CharacterManager.Instance.CharactersInScene.GetEnumerator())
 				while (enumerator.MoveNext())
 				{
-					characterSnapshots[i] = enumerator.Current.Value.characterScript.Serialize();
+					characterSnapshots[i] = enumerator.Current.Value.controller.Serialize();
 					i += 1;
 				}
 			return characterSnapshots;
@@ -65,16 +65,17 @@
 		{
 			if (asEmpty)
 			{
-				var pair = EmptyController.Instantiate(CharacterController.Instance.transform, gameObjectName);
-				CharacterController.Instance.charactersInScene.Add(gameObjectName, pair);
+				EmptyController.AddTo(CharacterManager.Instance, name).controller.Deserialize(this);
+				return;
 			}
-			else if (!CharacterController.Instance.SummonCharacter(gameObjectName, horizontalPosition))
+			Character? @char = CharacterManager.Instance.SummonCharacter(gameObjectName);
+			if (@char == null)
 			{
 				Debug.LogError($"Failure to load {gameObjectName} from data.");
 				return;
 			}
-			CharacterController.Instance.charactersInScene[gameObjectName]
-				.characterScript.Deserialize(this);
+			@char.Value.controller.HorizontalPosition = horizontalPosition;
+			@char.Value.controller.Deserialize(this);
 		}
 	}
 }
