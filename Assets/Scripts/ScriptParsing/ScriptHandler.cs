@@ -115,9 +115,9 @@
 			config.EntryListeners += ChangeCharacter;
 		}
 		private void SayLine(ScriptLine line) => 
-			CharacterManager.Instance.ActiveCharacter.controller.SayLine(line);
+			CharacterManager.Instance.ActiveCharacter.Value.controller.SayLine(line);
 		private void ChangeExpression(string expressionName) => 
-			CharacterManager.Instance.ActiveCharacter.controller.CurrentExpression = expressionName;
+			CharacterManager.Instance.ActiveCharacter.Value.controller.CurrentExpression = expressionName;
 		private void ChangeCharacter(string newCharacter)
 		{
 			if (!CharacterManager.Instance.ChangeActiveCharacterViaName(newCharacter))
@@ -148,6 +148,11 @@
 
 		public void NextLine()
 		{
+			if (pauser.ShouldPause)
+			{
+				Debug.Log("Pausing is enabled.");
+				return;
+			}
 			if (document is null || documentWatcher is null)
 			{
 				Debug.LogError("There is no document created in the system!");

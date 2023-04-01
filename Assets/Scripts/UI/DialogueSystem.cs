@@ -121,12 +121,14 @@
 			get => speakerBox.text;
 			set => speakerBox.text = value;
 		}
-		private void ChangeSpeakerName(Character characterController)
+		private void ChangeSpeakerName(Character? characterController)
 		{
-			if (characterController.controller.CharacterName == "MC")
+			if (!characterController.HasValue)
+				return;
+			if (characterController.Value.controller.CharacterName == "MC")
 				SpeakerName = SaveSlot.ActiveSlot.PlayerName;
 			else
-				SpeakerName = characterController.controller.CharacterName;
+				SpeakerName = characterController.Value.controller.CharacterName;
 		}
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>

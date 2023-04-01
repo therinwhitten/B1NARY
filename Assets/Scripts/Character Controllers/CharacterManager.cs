@@ -27,21 +27,15 @@
 			{
 				Character? character = Instance.SummonCharacter(gameObjectName);
 				if (!character.HasValue)
-					throw new MissingReferenceException("GameObject or Character " +
-						$"named '{gameObjectName}' is not found as prefab in " +
-						$"Resources Folder '{prefabsPath}{gameObjectName}', nor found" +
-						" in the scene!");
+					return;
 				character.Value.controller.HorizontalPosition = float.Parse(positionRaw);
-				character.Value.controller.CharacterName = characterName;
+				character.Value.ChangeCharacterName(characterName);
 			}),
 			["spawnchar"] = (Action<string, string>)((gameObjectName, positionRaw) =>
 			{
 				Character? character = Instance.SummonCharacter(gameObjectName);
 				if (!character.HasValue)
-					throw new MissingReferenceException("GameObject or Character " +
-						$"named '{gameObjectName}' is not found as prefab in " +
-						$"Resources Folder '{prefabsPath}{gameObjectName}', nor found" +
-						" in the scene!");
+					return;
 				character.Value.controller.HorizontalPosition = float.Parse(positionRaw);
 			}),
 			["spawnempty"] = (Action<string>)(characterName =>
@@ -63,7 +57,7 @@
 			}),
 			["anim"] = (Action<string>)((animationName) =>
 			{
-				Instance.ActiveCharacter.controller.CurrentAnimation = animationName;
+				Instance.ActiveCharacter.Value.controller.CurrentAnimation = animationName;
 			}),
 			["movechar"] = (Action<string, string>)((characterName, positionRaw) =>
 			{
@@ -74,7 +68,7 @@
 			}),
 			["movechar"] = (Action<string>)((positionRaw) =>
 			{
-				Instance.ActiveCharacter.controller.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
+				Instance.ActiveCharacter.Value.controller.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
 			}),
 			["movechar"] = (Action<string, string, string>)((characterName, positionRaw, time) =>
 			{
@@ -99,7 +93,7 @@
 			}),
 			["disablechar"] = (Action)(() =>
 			{
-				Instance.DisableCharacter(Instance.ActiveCharacter.controller.CharacterName);
+				Instance.DisableCharacter(Instance.ActiveCharacter.Value.controller.CharacterName);
 			}),
 			["changename"] = (Action<string, string>)((oldName, newName) =>
 			{
@@ -107,7 +101,7 @@
 			}),
 			["changename"] = (Action<string>)((newName) =>
 			{
-				Instance.RenameCharacter(Instance.ActiveCharacter.controller.CharacterName, newName);
+				Instance.RenameCharacter(Instance.ActiveCharacter.Value.controller.CharacterName, newName);
 			}),
 		};
 
@@ -120,19 +114,21 @@
 			Transform = GetComponent<Transform>();
 		}
 
-		public Character ActiveCharacter
+		public Character? ActiveCharacter
 		{
 			get => m_active;
-			private set
+			set
 			{
-				value.controller.Selected = true;
-				m_active.controller.Selected = false;
+				if (value.HasValue)
+					value.Value.controller.Selected = true;
+				if (m_active.HasValue)
+					m_active.Value.controller.Selected = false;
 				m_active = value;
 				ActiveCharacterChanged?.Invoke(value);
 			}
 		}
-		private Character m_active;
-		public event Action<Character> ActiveCharacterChanged;
+		private Character? m_active;
+		public event Action<Character?> ActiveCharacterChanged;
 
 		public IReadOnlyDictionary<string, Character> CharactersInScene
 			=> m_charactersInScene;
@@ -152,7 +148,13 @@
 			{
 				GameObject gameObject = Resources.Load<GameObject>(prefabsPath + gameObjectName);
 				if (gameObject == null)
+				{
+					Debug.LogError($"GameObject or Character named '{gameObjectName}'" +
+						" is not found in the scene, and unable to summmon in Resources Folder " +
+						$"'{prefabsPath}{gameObjectName}, most likely missing.");
 					return null;
+				}
+
 				if (AddCharacterToDictionary(Instantiate(gameObject, Transform), out var character))
 				{
 					Debug.LogWarning($"GameObject or Character named '{gameObjectName}'" +
@@ -176,11 +178,7 @@
 			{
 				if (components[i] is ICharacterController controller)
 				{
-					character = new Character
-					{
-						controller = controller,
-						characterObject = gameObject
-					};
+					character = new Character(this, gameObject, controller);
 					gameObject.transform.SetParent(Transform);
 					m_charactersInScene.Add(controller.CharacterName, character);
 					return true;
@@ -193,6 +191,7 @@
 		{
 			if (!m_charactersInScene.TryGetValue(oldName, out Character character))
 				return false;
+			character.controller.CharacterName = newName;
 			m_charactersInScene.Remove(oldName);
 			m_charactersInScene.Add(newName, character);
 			return true;
@@ -364,10 +363,17 @@
 	{
 		public GameObject characterObject;
 		public ICharacterController controller;
-		public Character(GameObject characterObj, ICharacterController controller)
+
+		private CharacterManager manager;
+		public Character(CharacterManager manager, GameObject characterObj, ICharacterController controller)
 		{
 			this.characterObject = characterObj;
 			this.controller = controller;
+			this.manager = manager;
+		}
+		public void ChangeCharacterName(string newName)
+		{
+			manager.RenameCharacter(controller.CharacterName, newName);
 		}
 	}
 }
