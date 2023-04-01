@@ -29,13 +29,12 @@
 		private void Awake()
 		{
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
-			((ICharacterController)this).GameObjectName = gameObject.name;
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
 		}
 		public VoiceActorHandler VoiceData { get; private set; }
 		public string CharacterName { get; set; }
-		string ICharacterController.GameObjectName { get; set; }
+		string ICharacterController.GameObjectName => gameObject.name;
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.RawLine);

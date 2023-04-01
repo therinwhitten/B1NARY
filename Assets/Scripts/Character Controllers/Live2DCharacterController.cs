@@ -78,7 +78,7 @@
 		}
 
 		public string CharacterName { get; set; }
-		string ICharacterController.GameObjectName { get; set; }
+		string ICharacterController.GameObjectName => gameObject.name;
 
 		public Vector2 Position 
 		{ 
@@ -126,10 +126,6 @@
 				expressions = ToNameArray(expressionController.ExpressionsList);
 		}
 
-		protected virtual void OnEnable()
-		{
-			((ICharacterController)this).GameObjectName = gameObject.name;
-		}
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.RawLine);

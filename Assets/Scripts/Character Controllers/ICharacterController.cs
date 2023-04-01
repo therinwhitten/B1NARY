@@ -9,7 +9,7 @@
 	{
 		bool EmptyCharacter { get; }
 		string CharacterName { get; set; }
-		string GameObjectName { get; set; }
+		string GameObjectName { get; }
 		VoiceActorHandler VoiceData { get; }
 		void SayLine(ScriptLine line);
 
