@@ -170,9 +170,12 @@
 
 		public ScriptLine(string rawLine, int index)
 		{
-			RawLine = rawLine;
+			if (rawLine.Contains("//"))
+				RawLine = rawLine.Remove(rawLine.IndexOf("//"));
+			else
+				RawLine = rawLine;
 			Index = index;
-			Type = ParseLineAsType(rawLine);
+			Type = ParseLineAsType(RawLine);
 		}
 
 		public bool Equals(ScriptLine other)
