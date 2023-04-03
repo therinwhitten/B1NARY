@@ -34,7 +34,8 @@
 		public AudioTracker Play()
 		{
 			AudioTracker tracker = AudioController.Instance.PlaySound(ClipName);
-			tracker.PlayedSeconds = PlayedSeconds;
+			if (tracker != null)
+				tracker.PlayedSeconds = PlayedSeconds;
 			return tracker;
 		}
 

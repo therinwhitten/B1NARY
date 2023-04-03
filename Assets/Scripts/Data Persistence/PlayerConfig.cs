@@ -11,6 +11,7 @@
 	using System.Xml.Serialization;
 	using UnityEngine;
 	using OVSXmlSerializer;
+	using OVSXmlSerializer.Extras;
 
 	public static class PlayerConfig
 	{
@@ -123,9 +124,9 @@
 		public static class Graphics
 		{
 			private const string GRAPHICS_GLOW = PlayerConfig.PRE_GRAPHICS + "bloom";
-			public static float Glow
+			public static ChangableValue<float> Glow
 			{
-				get => PlayerConfig.GetValue(GRAPHICS_GLOW, 1f);
+				get => PlayerConfig.GetValue(GRAPHICS_GLOW, new ChangableValue<float>(1f));
 				set => PlayerConfig.SetValue(GRAPHICS_GLOW, value);
 			}
 			private const string GRAPHICS_INDEX = PlayerConfig.PRE_GRAPHICS + "graphicConfig";
@@ -135,9 +136,9 @@
 				set => PlayerConfig.SetValue(GRAPHICS_INDEX, value);
 			}
 			private const string GRAPHICS_FRAME_RATE = PlayerConfig.PRE_GRAPHICS + "frameRate";
-			public static int FrameRate
+			public static ChangableValue<int> FrameRate
 			{
-				get => PlayerConfig.GetValue(GRAPHICS_FRAME_RATE, 69);
+				get => PlayerConfig.GetValue(GRAPHICS_FRAME_RATE, new ChangableValue<int>(69));
 				set => PlayerConfig.SetValue(GRAPHICS_FRAME_RATE, value);
 			}
 			private const string GRAPHICS_THEME = PlayerConfig.PRE_GRAPHICS + "theme";

@@ -35,7 +35,17 @@
 		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
 		new XmlSerializer<SaveSlot>(config);
 
-		public static SaveSlot ActiveSlot { get; set; }
+		public static SaveSlot ActiveSlot
+		{
+			get => m_activeSlot;
+			set
+			{
+				m_activeSlot = value;
+				if (m_activeSlot != null)
+					m_activeSlot.startPlay = DateTime.Now;
+			}
+		}
+		private static SaveSlot m_activeSlot;
 
 		public static SaveSlot LoadIntoMemory(FileInfo loadSlot)
 		{
@@ -76,7 +86,7 @@
 
 		public string DisplaySaveContents =>
 			$"{PlayerName} : {scriptPosition.SceneName}\n" +
-			$"{metadata.lastSaved}\n{metadata.playedAmount}";
+			$"{metadata.lastSaved.ToShortDateString()} : {(metadata.playedAmount.TotalMinutes < 120d ? $"{metadata.playedAmount.TotalMinutes:N1} min" : $"{metadata.playedAmount.TotalHours:N1} hrs")}";
 
 		[XmlAttribute("name")]
 		public string saveName = "save";

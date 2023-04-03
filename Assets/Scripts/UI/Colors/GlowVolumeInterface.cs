@@ -15,7 +15,7 @@
 			get => volume.profile.components.Single().parameters[1].GetValue<float>();
 			set
 			{
-				float clamped = B1NARYConfig.Graphics.Glow = value;
+				float clamped = B1NARYConfig.Graphics.Glow.Value = value;
 				UpdateProfile(clamped);
 			}
 		}
