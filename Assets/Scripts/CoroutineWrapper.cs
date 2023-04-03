@@ -131,7 +131,6 @@
 			if (invokedBefore)
 				throw new InvalidOperationException("Actions has already been invoked!");
 			invokedBefore = true;
-			invokedAfter = false;
 			IsRunning = true;
 			BeforeActions?.Invoke(tiedMonoBehaviour);
 		}
@@ -144,7 +143,6 @@
 			if (invokedAfter)
 				throw new InvalidOperationException("Actions has already been invoked!");
 			invokedAfter = true;
-			invokedBefore = false;
 			IsRunning = false;
 			AfterActions?.Invoke(tiedMonoBehaviour);
 		}

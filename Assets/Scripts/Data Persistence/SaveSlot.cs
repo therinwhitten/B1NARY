@@ -75,11 +75,12 @@
 
 
 		public string DisplaySaveContents =>
+			$"<b><size=125%>{saveName}</size></b>\n" +
 			$"{PlayerName} : {scriptPosition.SceneName}\n" +
-			$"{metadata.lastSaved}\n{metadata.playedAmount}";
+			$"{metadata.lastSaved.ToShortDateString()} : {(metadata.playedAmount.TotalMinutes < 60d ? $"{metadata.playedAmount.TotalMinutes:N1} min" : $"{metadata.playedAmount.TotalHours:N1} hrs")}";
 
 		[XmlAttribute("name")]
-		public string saveName = "save";
+		public string saveName = "quicksave";
 		public Metadata metadata;
 		public Collection<bool> booleans;
 		public string PlayerName
@@ -166,8 +167,7 @@
 				{
 					if (File.Exists(m_directoryInfo))
 						File.Delete(m_directoryInfo);
-					if (value is null)
-						m_directoryInfo = value.FullName;
+					m_directoryInfo = value?.FullName ?? string.Empty;
 				}
 			}
 			//public void Rename(in string newName)
@@ -206,6 +206,8 @@
 			while (changeSceneEnumerator.MoveNext())
 				yield return changeSceneEnumerator.Current;
 			ScriptHandler.Instance.NewDocument(StreamingAssetsPath, Line - 1);
+			while (!CharacterManager.HasInstance)
+				yield return new WaitForEndOfFrame(); // Waiting for awake methods to buffer
 		}
 	}
 	

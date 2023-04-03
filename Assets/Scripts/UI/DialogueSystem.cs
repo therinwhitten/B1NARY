@@ -207,6 +207,7 @@
 					while (FastSkip)
 					{
 						yield return new WaitForSeconds(0.15f);
+						StopSpeaking(true);
 						ScriptHandler.Instance.NextLine();
 					}
 				}
@@ -219,6 +220,16 @@
 		/// </summary>
 		public void ToggleFastSkip() => FastSkip = !FastSkip;
 
+		public bool IsRunning
+		{
+			get
+			{
+				if (DateTimeTracker.IsAprilFools)
+					return false;
+				return !CoroutineWrapper.IsNotRunningOrNull(speakCoroutine);
+			}
+		}
+
 		private string NewLine()
 		{
 			if (Additive)
@@ -227,7 +238,7 @@
 		}
 
 		private CoroutineWrapper eventCoroutine;
-		private CoroutineWrapper speakCoroutine;
+		public CoroutineWrapper speakCoroutine;
 
 		private void Awake()
 		{
@@ -244,12 +255,6 @@
 			if (!DateTimeTracker.IsAprilFools)
 				StopSpeaking(null);
 			speakCoroutine = new CoroutineWrapper(this, Speaking(message)).Start();
-		}
-
-		public void Say(string message, string speaker)
-		{
-			CharacterManager.Instance.ChangeActiveCharacterViaName(speaker);
-			Say(message);
 		}
 
 		/// <summary>
@@ -291,6 +296,8 @@
 		/// <returns> <see cref="WaitForSeconds"/> with <see cref="WaitSecondsPerChar"/>. </returns>
 		private IEnumerator Speaking(string speech)
 		{
+			bool aprilFools = DateTimeTracker.IsAprilFools;
+			string speakerName = aprilFools ? CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterName : null;
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
 			FinalText = FinalText.Replace("MC", SaveSlot.ActiveSlot.PlayerName);
@@ -310,6 +317,8 @@
 				{
 					splitText[i] += parsableText[i].value[ii];
 					CurrentText = string.Join("", splitText);
+					if (aprilFools)
+						SpeakerName = speakerName;
 					yield return WaitSecondsPerChar;
 				}
 			}
