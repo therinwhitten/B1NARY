@@ -6,7 +6,6 @@
 	using System.Collections.Generic;
 	using System.IO;
 	using UnityEngine;
-	using UnityEngine.UI;
 
 	public class SavePanel : AutoPagePopulator
 	{
@@ -14,7 +13,7 @@
 		public GameObject newSaveSlotTemplate;
 
 		public InterfaceHandler actionPanel;
-		public SavePanelActionPanel modifyPanel;
+		public SavePanelActionPanel overrideActionPanel;
 
 		private List<SaveSlotInstance> m_allObjects;
 		protected List<SaveSlotInstance> AllObjects
@@ -52,10 +51,9 @@
 				// Adding override function
 				pair.target.button.onClick.AddListener(() =>
 				{
-					modifyPanel.gameObject.SetActive(true);
-					modifyPanel.text.text = "Override Save?";
-					modifyPanel.inputField.text = pair.source.saveName;
-					modifyPanel.OnPress += (@override) => { if (@override) Override(pair.source, SaveSlot.ActiveSlot, modifyPanel.inputField.text); };
+					overrideActionPanel.gameObject.SetActive(true);
+					overrideActionPanel.text.text = "Override Save?";
+					overrideActionPanel.OnPress += (@override) => { if (@override) Override(pair.source, SaveSlot.ActiveSlot); };
 				});
 				if (slotPair.Value.Value.metadata.thumbnail != null)
 					pair.target.foregroundImage.sprite = slotPair.Value.Value.metadata.thumbnail.Sprite;
@@ -74,54 +72,42 @@
 			}
 			UpdateGameObjectSaves();
 			GameObject addNewInstance = AddEntry(newSaveSlotTemplate);
-			Button button = addNewInstance.GetComponentInChildren<Button>();
-			button.onClick.AddListener(() =>
+			SavePanelBehaviour behaviour = addNewInstance.GetComponent<SavePanelBehaviour>();
+			behaviour.button.onClick.AddListener(() =>
 			{
-				modifyPanel.gameObject.SetActive(true);
-				modifyPanel.text.text = "New Save?";
-				modifyPanel.inputField.text = SaveSlot.ActiveSlot.saveName;
-				modifyPanel.OnPress += (@override) => 
+				actionPanel.gameObject.SetActive(true);
+				actionPanel.text.text = "New Save?";
+				actionPanel.OnPress += (@override) => 
 				{
 					SaveSlot.ActiveSlot.metadata.DirectoryInfo = null;
 					if (@override)
-						CreateNew(SaveSlot.ActiveSlot, modifyPanel.inputField.text); 
+						CreateNew(SaveSlot.ActiveSlot); 
 				};
 			});
 		}
-		public void CreateNew(SaveSlot slot, string newSaveName)
+		public void CreateNew(SaveSlot slot)
 		{
 			slot.metadata.DirectoryInfo = null;
-			slot.saveName = newSaveName;
 			slot.Save();
 			SaveSlot.EmptySaveCache();
-			OnDisable();
-			OnEnable();
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="source">The source file to override to. </param>
 		/// <param name="active">The file to override with as a replacement. </param>
-		public void Override(SaveSlot source, SaveSlot active, string newSaveName)
+		public void Override(SaveSlot source, SaveSlot active)
 		{
 			FileInfo fileInfo = source.metadata.DirectoryInfo;
 			source.metadata.DirectoryInfo = null;
 			active.metadata.DirectoryInfo = fileInfo;
-			active.saveName = newSaveName;
 			active.Save();
 			SaveSlot.EmptySaveCache();
-			OnDisable();
-			OnEnable();
 		}
 		public void Delete(SaveSlot slot)
 		{
-			FileInfo fileInfo = slot.metadata.DirectoryInfo;
-			if (fileInfo.Exists)
-				fileInfo.Delete();
 			slot.metadata.DirectoryInfo = null;
 			SaveSlot.EmptySaveCache();
-			OnDisable();
-			OnEnable();
 		}
 		protected virtual void OnDisable()
 		{
@@ -154,7 +140,7 @@ namespace B1NARY.UI.Editor
 			panel.newSaveSlotTemplate = DirtyAuto.Field(target, new GUIContent("Add Slot"), panel.newSaveSlotTemplate, true);
 			panel.row = DirtyAuto.Field(target, new GUIContent("Row"), panel.row, true);
 			panel.actionPanel = DirtyAuto.Field(target, new GUIContent("Action Panel"), panel.actionPanel, true);
-			panel.modifyPanel = DirtyAuto.Field(target, new GUIContent("Modify Action Panel"), panel.modifyPanel, true);
+			panel.overrideActionPanel = DirtyAuto.Field(target, new GUIContent("Overwrite Panel"), panel.overrideActionPanel, true);
 			panel.objectsPerRow = DirtyAuto.Slider(target, new GUIContent("Columns"), panel.objectsPerRow, 1, 6);
 		}
 	}

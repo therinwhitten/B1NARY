@@ -5,11 +5,9 @@
 	using B1NARY.DesignPatterns;
 	using B1NARY.UI;
 	using HideousDestructor.DataPersistence;
-	using OVSXmlSerializer;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
-	using System.Drawing.Printing;
 	using System.IO;
 	using System.Linq;
 	using System.Xml.Linq;
@@ -87,29 +85,8 @@
 		internal ScriptDocument document;
 		public bool HasDocument => document != null;
 		public bool IsActive { get; private set; } = false;
-		public string StartingDocumentPath
-		{
-			get
-			{
-				if (m_documentPath is null)
-				{
-					var parser = new XmlSerializer<string>();
-					FileInfo info = SerializableSlot.StreamingAssets.GetFile(START_SCRIPT_NAME);
-					m_documentPath = info.Exists ? parser.Deserialize(info) : "";
-				}
-				return m_documentPath;
-			}
-			set
-			{
-				FileInfo info = SerializableSlot.StreamingAssets.GetFile(START_SCRIPT_NAME);
-				var parser = new XmlSerializer<string>();
-				m_documentPath = value;
-				using (FileStream stream = info.Open(FileMode.Create))
-					parser.Serialize(stream, m_documentPath, "StartingScript");
-			}
-		} private string m_documentPath;
-		
-		private const string START_SCRIPT_NAME = "Starting Script.xml";
+		[SerializeField]
+		internal string defaultStreamingAssetsDocumentPath;
 		public IDocumentWatcher documentWatcher;
 		public InputSystemUIInputModule input;
 
@@ -137,11 +114,8 @@
 			config.AttributeListeners += ChangeExpression;
 			config.EntryListeners += ChangeCharacter;
 		}
-		private void SayLine(ScriptLine line)
-		{
+		private void SayLine(ScriptLine line) => 
 			CharacterManager.Instance.ActiveCharacter.Value.controller.SayLine(line);
-		}
-
 		private void ChangeExpression(string expressionName) => 
 			CharacterManager.Instance.ActiveCharacter.Value.controller.CurrentExpression = expressionName;
 		private void ChangeCharacter(string newCharacter)
@@ -153,7 +127,7 @@
 
 		public void NewDocument()
 		{
-			NewDocument(StartingDocumentPath);
+			NewDocument(defaultStreamingAssetsDocumentPath);
 		}
 		public void NewDocument(string streamingAssetsDocument)
 		{
@@ -163,7 +137,7 @@
 		}
 		public void NewDocument(int index)
 		{
-			NewDocument(StartingDocumentPath, index);
+			NewDocument(defaultStreamingAssetsDocumentPath, index);
 		}
 		public void NewDocument(string streamingAssetsDocument, int index)
 		{
@@ -179,12 +153,6 @@
 				Debug.Log("Pausing is enabled.");
 				return;
 			}
-			if (DialogueSystem.HasInstance)
-				if (DialogueSystem.Instance.IsRunning)
-				{
-					DialogueSystem.Instance.StopSpeaking(true);
-					return;
-				}
 			if (document is null || documentWatcher is null)
 			{
 				Debug.LogError("There is no document created in the system!");
@@ -286,17 +254,17 @@ namespace B1NARY.Editor
 			string[] allFullPaths = ScriptHandler.AllDocuments.AsVisual();
 			if (allFullPaths.Length > 0)
 			{
-				int oldIndex = Array.IndexOf(allFullPaths, scriptHandler.StartingDocumentPath);
+				int oldIndex = Array.IndexOf(allFullPaths, scriptHandler.defaultStreamingAssetsDocumentPath);
 				if (oldIndex < 0)
 				{
 					oldIndex = 0;
-					scriptHandler.StartingDocumentPath = allFullPaths[0];
+					scriptHandler.defaultStreamingAssetsDocumentPath = allFullPaths[0];
 					EditorUtility.SetDirty(scriptHandler);
 				}
 				int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, allFullPaths);
 				if (oldIndex != newIndex)
 				{
-					scriptHandler.StartingDocumentPath = allFullPaths[newIndex];
+					scriptHandler.defaultStreamingAssetsDocumentPath = allFullPaths[newIndex];
 					EditorUtility.SetDirty(scriptHandler);
 				}
 				if (GUILayout.Button("Open File"))

@@ -90,13 +90,10 @@
 			get => Transform.anchorMin.x;
 			set
 			{
-				if (!CoroutineWrapper.IsNotRunningOrNull(HorizontalMovementWrapper))
-					HorizontalMovementWrapper.Stop();
 				Transform.anchorMin = new Vector2(value, Transform.anchorMin.y);
 				Transform.anchorMax = new Vector2(value, Transform.anchorMax.y);
 			}
 		}
-		private CoroutineWrapper HorizontalMovementWrapper;
 
 		bool ICharacterController.Selected 
 		{
@@ -106,11 +103,7 @@
 
 		public void SetPositionOverTime(float newXPosition, float time)
 		{
-			if (!CoroutineWrapper.IsNotRunningOrNull(HorizontalMovementWrapper))
-				HorizontalMovementWrapper.Stop();
-			HorizontalMovementWrapper = new CoroutineWrapper(this, SmoothPosChanger());
-			HorizontalMovementWrapper.AfterActions += (mono) => HorizontalPosition = newXPosition;
-			HorizontalMovementWrapper.Start();
+			StartCoroutine(SmoothPosChanger());
 			IEnumerator SmoothPosChanger()
 			{
 				float acceptablePoint = 0.005f;

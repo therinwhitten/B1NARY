@@ -5490,9 +5490,9 @@ GameObject:
   - component: {fileID: 1751119289492434294}
   - component: {fileID: 1751119289492434281}
   - component: {fileID: 1751119289492434280}
-  - component: {fileID: 1751119289492434285}
   - component: {fileID: 1751119289492434283}
   - component: {fileID: 1751119289492434282}
+  - component: {fileID: 1751119289492434285}
   - component: {fileID: 1751119289492434284}
   - component: {fileID: 1751119289492434287}
   - component: {fileID: 1751119289492434286}
@@ -5575,33 +5575,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c5b7f06ff29d743b309cb5d27cf48e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1751119289492434285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1751119289492434271}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f718ba9eaf9cd9a48923922e5df94070, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Opacity: 1
-  _lastOpacity: 0
-  _isOverwrittenModelMultiplyColors: 0
-  _isOverwrittenModelScreenColors: 0
-  _modelMultiplyColor: {r: 0, g: 0, b: 0, a: 0}
-  _modelScreenColor: {r: 0, g: 0, b: 0, a: 0}
-  _sortingLayerId: 0
-  _sortingMode: 0
-  _sortingOrder: 0
-  CameraToFace: {fileID: 0}
-  _drawOrderHandler: {fileID: 0}
-  _opacityHandler: {fileID: 0}
-  _multiplyColorHandler: {fileID: 0}
-  _screenColorHandler: {fileID: 0}
-  _depthOffset: 0.00001
 --- !u!114 &1751119289492434283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5629,6 +5602,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maskTexture: {fileID: 11400000, guid: 16bf142754640ab4487bb625c30931fd, type: 2}
+--- !u!114 &1751119289492434285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1751119289492434271}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f718ba9eaf9cd9a48923922e5df94070, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Opacity: 1
+  _lastOpacity: 0
+  _isOverwrittenModelMultiplyColors: 0
+  _isOverwrittenModelScreenColors: 0
+  _modelMultiplyColor: {r: 0, g: 0, b: 0, a: 0}
+  _modelScreenColor: {r: 0, g: 0, b: 0, a: 0}
+  _sortingLayerId: 0
+  _sortingMode: 0
+  _sortingOrder: 0
+  CameraToFace: {fileID: 0}
+  _drawOrderHandler: {fileID: 0}
+  _opacityHandler: {fileID: 0}
+  _multiplyColorHandler: {fileID: 0}
+  _screenColorHandler: {fileID: 0}
+  _depthOffset: 0.00001
 --- !u!114 &1751119289492434284
 MonoBehaviour:
   m_ObjectHideFlags: 0
