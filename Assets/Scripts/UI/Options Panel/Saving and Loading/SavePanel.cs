@@ -2,9 +2,11 @@
 {
 	using B1NARY.DataPersistence;
 	using B1NARY.Scripting;
+	using OVSXmlSerializer;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.Runtime.Serialization.Formatters.Binary;
 	using UnityEngine;
 
 	public class SavePanel : AutoPagePopulator
@@ -53,7 +55,7 @@
 				{
 					modifyActionPanel.gameObject.SetActive(true);
 					modifyActionPanel.text.text = "Override Save?";
-					modifyActionPanel.inputField.text = pair.source.saveName;
+					modifyActionPanel.inputField.text = pair.source.SaveName;
 					modifyActionPanel.OnPress += (@override) => { if (@override) Override(pair.source, SaveSlot.ActiveSlot, modifyActionPanel.inputField.text); };
 				});
 				if (slotPair.Value.Value.metadata.thumbnail != null)
@@ -78,15 +80,24 @@
 			{
 				modifyActionPanel.gameObject.SetActive(true);
 				modifyActionPanel.text.text = "New Save?";
-				modifyActionPanel.inputField.text = SaveSlot.ActiveSlot.saveName;
-				modifyActionPanel.OnPress += (@override) => { if (@override) CreateNew(SaveSlot.ActiveSlot, SaveSlot.ActiveSlot.saveName); };
+				modifyActionPanel.inputField.text = "Quicksave";
+				modifyActionPanel.OnPress += (@override) => { if (@override) CreateNew(SaveSlot.ActiveSlot, modifyActionPanel.inputField.text); };
 			});
 		}
 		public void CreateNew(SaveSlot slot, string saveName)
 		{
-			slot.metadata.DirectoryInfo = null;
-			slot.saveName = saveName;
-			slot.Save();
+			SaveSlot newSlot;
+			using (var stream = new MemoryStream())
+			{
+				XmlSerializer<SaveSlot> serializer = new XmlSerializer<SaveSlot>();
+				serializer.Serialize(stream, slot);
+				stream.Position = 0;
+				newSlot = serializer.Deserialize(stream);
+			}
+			newSlot.metadata.ChangeFileTo(null);
+			newSlot.metadata.lastSaved = slot.metadata.lastSaved;
+			newSlot.SaveName = saveName;
+			newSlot.Save();
 			SaveSlot.EmptySaveCache();
 			OnDisable();
 			OnEnable();
@@ -99,9 +110,9 @@
 		public void Override(SaveSlot source, SaveSlot active, string saveName)
 		{
 			FileInfo fileInfo = source.metadata.DirectoryInfo;
-			source.metadata.DirectoryInfo = null;
-			active.metadata.DirectoryInfo = fileInfo;
-			active.saveName = saveName;
+			source.metadata.ChangeFileTo(null, true);
+			active.metadata.ChangeFileTo(fileInfo);
+			active.SaveName = saveName;
 			active.Save();
 			SaveSlot.EmptySaveCache();
 			OnDisable();
@@ -109,7 +120,7 @@
 		}
 		public void Delete(SaveSlot slot)
 		{
-			slot.metadata.DirectoryInfo = null;
+			slot.metadata.ChangeFileTo(null, true);
 			SaveSlot.EmptySaveCache();
 			OnDisable();
 			OnEnable();

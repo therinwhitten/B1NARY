@@ -28,8 +28,11 @@
 		{
 			get
 			{
+				bool oldValue = ThrowErrorIfEmpty;
 				ThrowErrorIfEmpty = false;
-				return Instance;
+				T instance = Instance;
+				ThrowErrorIfEmpty = oldValue;
+				return instance;
 			}
 		}
 		/// <summary> A Single instance. </summary>
@@ -59,6 +62,17 @@
 				}
 			}
 			set => instance = value;
+		}
+
+		public static bool TryGetInstance(out T instance)
+		{
+			if (!HasInstance)
+			{
+				instance = null;
+				return false;
+			}
+			instance = Instance;
+			return true;
 		}
 
 		/// <summary>

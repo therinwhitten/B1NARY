@@ -158,11 +158,12 @@
 				Debug.LogError("There is no document created in the system!");
 				return;
 			}
-			if (DialogueSystem.Instance.IsSpeaking && !DateTimeTracker.IsAprilFools)
-			{ 
-				DialogueSystem.Instance.StopSpeaking(true);
-				return;
-			}
+			if (DialogueSystem.TryGetInstance(out var system))
+				if (system.IsSpeaking && !DateTimeTracker.IsAprilFools)
+				{ 
+					DialogueSystem.Instance.StopSpeaking(true);
+					return;
+				}
 			IsActive = true;
 			if (documentWatcher.EndOfDocument)
 			{

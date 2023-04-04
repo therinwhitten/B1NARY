@@ -50,7 +50,7 @@
 		public static SaveSlot LoadIntoMemory(FileInfo loadSlot)
 		{
 			SaveSlot slot = SlotSerializer.Deserialize(loadSlot);
-			slot.metadata.DirectoryInfo = loadSlot;
+			slot.metadata.ChangeFileTo(loadSlot);
 			slot.metadata.lastSaved = loadSlot.LastWriteTime;
 			return slot;
 		}
@@ -85,12 +85,12 @@
 
 
 		public string DisplaySaveContents =>
-			$"<size=125%><b>{saveName}</b></size>\n" +
+			$"<size=125%><b>{SaveName}</b></size>\n" +
 			$"{PlayerName} : {scriptPosition.SceneName}\n" +
 			$"{metadata.lastSaved.ToShortDateString()} : {(metadata.playedAmount.TotalMinutes < 120d ? $"{metadata.playedAmount.TotalMinutes:N1} min" : $"{metadata.playedAmount.TotalHours:N1} hrs")}";
 
-		[XmlAttribute("name")]
-		public string saveName = "quickSave";
+		[field: XmlAttribute("name")]
+		public string SaveName { get; set; } = "QuickSave";
 		public Metadata metadata;
 		public Collection<bool> booleans;
 		public string PlayerName
@@ -173,13 +173,12 @@
 				get => string.IsNullOrEmpty(m_directoryInfo)
 					? SavesDirectory.GetFileIncremental(NAME_START + NAME_EXT, true)
 					: new FileInfo(m_directoryInfo);
-				set
-				{
-					if (File.Exists(m_directoryInfo))
-						File.Delete(m_directoryInfo);
-					if (!(value is null))
-						m_directoryInfo = value.FullName;
-				}
+			}
+			public void ChangeFileTo(FileInfo fileInfo, bool deleteOnMove = false)
+			{
+				if (deleteOnMove && File.Exists(m_directoryInfo))
+					File.Delete(m_directoryInfo);
+				m_directoryInfo = fileInfo?.FullName;
 			}
 			//public void Rename(in string newName)
 			//{

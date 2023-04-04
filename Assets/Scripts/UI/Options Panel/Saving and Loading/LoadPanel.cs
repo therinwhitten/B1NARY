@@ -70,7 +70,7 @@
 		}
 		public void Delete(SaveSlot slot)
 		{
-			slot.metadata.DirectoryInfo = null;
+			slot.metadata.ChangeFileTo(null, true);
 			SaveSlot.EmptySaveCache();
 			OnDisable();
 			OnEnable();
