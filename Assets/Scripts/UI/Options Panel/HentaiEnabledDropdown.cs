@@ -6,7 +6,7 @@
 
 	public sealed class HentaiEnabledDropdown : DropdownPanel<bool>
 	{
-		private static int HentaiEnabledToInt => Convert.ToInt32(B1NARYConfig.HEnable);
+		private static int HentaiEnabledToInt => Convert.ToInt32(B1NARYConfig.HEnable.Value);
 		public override int InitialValue => HentaiEnabledToInt;
 		public override List<KeyValuePair<string, bool>> DefinedPairs => new List<KeyValuePair<string, bool>>()
 		{
@@ -16,7 +16,7 @@
 		protected override void Awake()
 		{
 			base.Awake();
-			ChangedValue += (boolean, index) => B1NARYConfig.HEnable = boolean;
+			ChangedValue += (boolean, index) => B1NARYConfig.HEnable.Value = boolean;
 		}
 	}
 }

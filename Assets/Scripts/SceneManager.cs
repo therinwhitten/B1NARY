@@ -117,11 +117,12 @@
 					Utils.ForceCrash(ForcedCrashCategory.FatalError);
 			}
 
+			yield return new WaitUntil(() => async.isDone);
+			do yield return new WaitForFixedUpdate();
+			while (cannotPerformNext);
+
 			if (handleScripts)
 			{
-				yield return new WaitUntil(() => async.isDone);
-				do yield return new WaitForFixedUpdate();
-				while (cannotPerformNext);
 				ScriptHandler.Instance.pauser.Play();
 				ScriptHandler.Instance.NextLine();
 			}

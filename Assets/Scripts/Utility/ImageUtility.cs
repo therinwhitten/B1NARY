@@ -47,5 +47,10 @@
 		}
 		private static int GreatestCommonDivider(int a, int b) => 
 			b == 0 ? Math.Abs(a) : GreatestCommonDivider(b, a % b);
+		private static readonly Vector2 defaultAnchor = Vector2.one / 2f;
+		public static Sprite CreateDefaultSprite(Texture2D texture2D)
+		{
+			return Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), defaultAnchor);
+		}
 	}
 }

@@ -85,11 +85,12 @@
 
 
 		public string DisplaySaveContents =>
+			$"<size=125%><b>{saveName}</b></size>\n" +
 			$"{PlayerName} : {scriptPosition.SceneName}\n" +
 			$"{metadata.lastSaved.ToShortDateString()} : {(metadata.playedAmount.TotalMinutes < 120d ? $"{metadata.playedAmount.TotalMinutes:N1} min" : $"{metadata.playedAmount.TotalHours:N1} hrs")}";
 
 		[XmlAttribute("name")]
-		public string saveName = "save";
+		public string saveName = "quickSave";
 		public Metadata metadata;
 		public Collection<bool> booleans;
 		public string PlayerName
@@ -176,7 +177,7 @@
 				{
 					if (File.Exists(m_directoryInfo))
 						File.Delete(m_directoryInfo);
-					if (value is null)
+					if (!(value is null))
 						m_directoryInfo = value.FullName;
 				}
 			}

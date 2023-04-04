@@ -15,21 +15,19 @@
 			get => volume.profile.components.Single().parameters[1].GetValue<float>();
 			set
 			{
-				float clamped = B1NARYConfig.Graphics.Glow.Value = value;
-				UpdateProfile(clamped);
+				((VolumeParameter<float>)volume.profile.components.Single().parameters[1]).value = value;
 			}
 		}
-		private void UpdateProfile(float clamped) => ((VolumeParameter<float>)volume.profile.components.Single().parameters[1]).value = clamped;
 
 		private void Awake()
 		{
 			nameToSearch = volume.name;
-			UpdateProfile(B1NARYConfig.Graphics.Glow);
+			B1NARYConfig.Graphics.Glow.AttachValue((value) => BloomIntensity = value);
 			SceneManager.Instance.SwitchedScenes.AddPersistentListener(() =>
 			{
 				if (volume == null)
 					volume = GameObject.Find(nameToSearch).GetComponent<Volume>();
-				UpdateProfile(B1NARYConfig.Graphics.Glow);
+				BloomIntensity = B1NARYConfig.Graphics.Glow.Value;
 			});
 		}
 	}

@@ -12,8 +12,8 @@
 		public GameObject slotTemplate;
 		public GameObject newSaveSlotTemplate;
 
-		public InterfaceHandler actionPanel;
-		public SavePanelActionPanel overrideActionPanel;
+		public InterfaceHandler deletionActionPanel;
+		public SavePanelActionPanel modifyActionPanel;
 
 		private List<SaveSlotInstance> m_allObjects;
 		protected List<SaveSlotInstance> AllObjects
@@ -44,16 +44,17 @@
 				if (pair.target.deleteButton != null)
 					pair.target.deleteButton.onClick.AddListener(() =>
 					{
-						actionPanel.gameObject.SetActive(true);
-						actionPanel.text.text = "Delete Save?";
-						actionPanel.OnPress += (delete) => { if (delete) Delete(pair.source); };
+						deletionActionPanel.gameObject.SetActive(true);
+						deletionActionPanel.text.text = "Delete Save?";
+						deletionActionPanel.OnPress += (delete) => { if (delete) Delete(pair.source); };
 					});
 				// Adding override function
 				pair.target.button.onClick.AddListener(() =>
 				{
-					overrideActionPanel.gameObject.SetActive(true);
-					overrideActionPanel.text.text = "Override Save?";
-					overrideActionPanel.OnPress += (@override) => { if (@override) Override(pair.source, SaveSlot.ActiveSlot); };
+					modifyActionPanel.gameObject.SetActive(true);
+					modifyActionPanel.text.text = "Override Save?";
+					modifyActionPanel.inputField.text = pair.source.saveName;
+					modifyActionPanel.OnPress += (@override) => { if (@override) Override(pair.source, SaveSlot.ActiveSlot, modifyActionPanel.inputField.text); };
 				});
 				if (slotPair.Value.Value.metadata.thumbnail != null)
 					pair.target.foregroundImage.sprite = slotPair.Value.Value.metadata.thumbnail.Sprite;
@@ -72,42 +73,46 @@
 			}
 			UpdateGameObjectSaves();
 			GameObject addNewInstance = AddEntry(newSaveSlotTemplate);
-			SavePanelBehaviour behaviour = addNewInstance.GetComponent<SavePanelBehaviour>();
+			LoadPanelBehaviour behaviour = addNewInstance.GetComponent<LoadPanelBehaviour>();
 			behaviour.button.onClick.AddListener(() =>
 			{
-				actionPanel.gameObject.SetActive(true);
-				actionPanel.text.text = "New Save?";
-				actionPanel.OnPress += (@override) => 
-				{
-					SaveSlot.ActiveSlot.metadata.DirectoryInfo = null;
-					if (@override)
-						CreateNew(SaveSlot.ActiveSlot); 
-				};
+				modifyActionPanel.gameObject.SetActive(true);
+				modifyActionPanel.text.text = "New Save?";
+				modifyActionPanel.inputField.text = SaveSlot.ActiveSlot.saveName;
+				modifyActionPanel.OnPress += (@override) => { if (@override) CreateNew(SaveSlot.ActiveSlot, SaveSlot.ActiveSlot.saveName); };
 			});
 		}
-		public void CreateNew(SaveSlot slot)
+		public void CreateNew(SaveSlot slot, string saveName)
 		{
 			slot.metadata.DirectoryInfo = null;
+			slot.saveName = saveName;
 			slot.Save();
 			SaveSlot.EmptySaveCache();
+			OnDisable();
+			OnEnable();
 		}
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="source">The source file to override to. </param>
 		/// <param name="active">The file to override with as a replacement. </param>
-		public void Override(SaveSlot source, SaveSlot active)
+		public void Override(SaveSlot source, SaveSlot active, string saveName)
 		{
 			FileInfo fileInfo = source.metadata.DirectoryInfo;
 			source.metadata.DirectoryInfo = null;
 			active.metadata.DirectoryInfo = fileInfo;
+			active.saveName = saveName;
 			active.Save();
 			SaveSlot.EmptySaveCache();
+			OnDisable();
+			OnEnable();
 		}
 		public void Delete(SaveSlot slot)
 		{
 			slot.metadata.DirectoryInfo = null;
 			SaveSlot.EmptySaveCache();
+			OnDisable();
+			OnEnable();
 		}
 		protected virtual void OnDisable()
 		{
@@ -139,8 +144,8 @@ namespace B1NARY.UI.Editor
 			panel.slotTemplate = DirtyAuto.Field(target, new GUIContent("Slot"), panel.slotTemplate, true);
 			panel.newSaveSlotTemplate = DirtyAuto.Field(target, new GUIContent("Add Slot"), panel.newSaveSlotTemplate, true);
 			panel.row = DirtyAuto.Field(target, new GUIContent("Row"), panel.row, true);
-			panel.actionPanel = DirtyAuto.Field(target, new GUIContent("Action Panel"), panel.actionPanel, true);
-			panel.overrideActionPanel = DirtyAuto.Field(target, new GUIContent("Overwrite Panel"), panel.overrideActionPanel, true);
+			panel.deletionActionPanel = DirtyAuto.Field(target, new GUIContent("Action Panel"), panel.deletionActionPanel, true);
+			panel.modifyActionPanel = DirtyAuto.Field(target, new GUIContent("Overwrite Panel"), panel.modifyActionPanel, true);
 			panel.objectsPerRow = DirtyAuto.Slider(target, new GUIContent("Columns"), panel.objectsPerRow, 1, 6);
 		}
 	}

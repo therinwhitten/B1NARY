@@ -1112,6 +1112,7 @@ GameObject:
   - component: {fileID: 1383074529027744780}
   - component: {fileID: 3696423029592663438}
   - component: {fileID: 3173295278926657591}
+  - component: {fileID: 8292499232064370912}
   m_Layer: 5
   m_Name: Delete Save? (Right Click)
   m_TagString: Untagged
@@ -1368,6 +1369,21 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8292499232064370912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 346263533746751526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b2f4813bd2de554ba7fe2b926d4eb0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  confirm: {fileID: 1846497694468813055}
+  cancel: {fileID: 7824191833230086059}
+  text: {fileID: 6784324012050934746}
 --- !u!1 &739224383476265187
 GameObject:
   m_ObjectHideFlags: 0
@@ -1801,8 +1817,8 @@ MonoBehaviour:
     type: 3}
   newSaveSlotTemplate: {fileID: 4150712736886401989, guid: 6868b85a0e7294447b44bf5bd76e51aa,
     type: 3}
-  actionPanel: {fileID: 2989093031678709738}
-  overrideActionPanel: {fileID: 2989093031678709737}
+  deletionActionPanel: {fileID: 8292499232064370912}
+  modifyActionPanel: {fileID: 2989093031678709737}
 --- !u!1 &739224383539237811
 GameObject:
   m_ObjectHideFlags: 0

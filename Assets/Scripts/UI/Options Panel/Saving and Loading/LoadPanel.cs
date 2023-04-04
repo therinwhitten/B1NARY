@@ -14,8 +14,8 @@
 
 		public InterfaceHandler actionPanel;
 		
-		private List<LoadSlotInstance> m_allObjects;
-		protected List<LoadSlotInstance> AllObjects
+		private List<SaveSlotInstance> m_allObjects;
+		protected List<SaveSlotInstance> AllObjects
 		{
 			get
 			{
@@ -29,21 +29,29 @@
 		{
 			if (m_allObjects != null)
 				m_allObjects = null;
-			var newList = new List<LoadSlotInstance>();
+			var newList = new List<SaveSlotInstance>();
 			for (int i = 0; i < SaveSlot.AllSaves.Count; i++)
 			{
 				KeyValuePair<FileInfo, Lazy<SaveSlot>> slotPair = SaveSlot.AllSaves[i];
 				GameObject instance = AddEntry(slotTemplate);
-				var pair = new LoadSlotInstance()
+				var pair = new SaveSlotInstance()
 				{
 					source = slotPair.Value.Value,
-					target = instance.GetComponent<LoadPanelBehaviour>(),
+					target = instance.GetComponent<SavePanelBehaviour>(),
 				};
 				pair.target.button.onClick.AddListener(() =>
 				{
 					actionPanel.gameObject.SetActive(true);
+					actionPanel.text.text = "Load Game?";
 					actionPanel.OnPress += shouldLoad => { if (shouldLoad) pair.source.Load(); };
 				});
+				if (pair.target.deleteButton != null)
+					pair.target.deleteButton.onClick.AddListener(() =>
+					{
+						actionPanel.gameObject.SetActive(true);
+						actionPanel.text.text = "Delete Save?";
+						actionPanel.OnPress += (delete) => { if (delete) Delete(pair.source); };
+					});
 				if (slotPair.Value.Value.metadata.thumbnail != null)
 					pair.target.foregroundImage.sprite = slotPair.Value.Value.metadata.thumbnail.Sprite;
 				pair.target.tmpText.text = slotPair.Value.Value.DisplaySaveContents;
@@ -59,6 +67,13 @@
 		protected virtual void OnDisable()
 		{
 			Clear();
+		}
+		public void Delete(SaveSlot slot)
+		{
+			slot.metadata.DirectoryInfo = null;
+			SaveSlot.EmptySaveCache();
+			OnDisable();
+			OnEnable();
 		}
 		public override void Clear()
 		{

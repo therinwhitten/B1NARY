@@ -60,6 +60,7 @@
 		{
 			if (m_values.TryGetValue(key, out var value))
 				return (T)value;
+			m_values[key] = @default;
 			return @default;
 		}
 		public static T SetValue<T>(string key, T value)
@@ -108,9 +109,9 @@
 	{
 		public const string PRE_B1NARY = "b1n_";
 		private const string B1NARY_HENABLE = PRE_B1NARY + "hEnable";
-		public static bool HEnable
+		public static ChangableValue<bool> HEnable
 		{
-			get => PlayerConfig.GetValue(B1NARY_HENABLE, false);
+			get => PlayerConfig.GetValue(B1NARY_HENABLE, new ChangableValue<bool>(false));
 			set => PlayerConfig.SetValue(B1NARY_HENABLE, value);
 		}
 
