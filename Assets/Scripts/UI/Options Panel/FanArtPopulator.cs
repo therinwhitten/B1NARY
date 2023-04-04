@@ -40,7 +40,7 @@
 					FileInfo image = enumerator.Current;
 					byte[] bytes;
 					using (FileStream stream = image.OpenRead())
-						using (MemoryStream memoryStream = (MemoryStream)Stream.Null)
+						using (MemoryStream memoryStream = new MemoryStream())
 						{
 							stream.CopyTo(memoryStream);
 							bytes = memoryStream.ToArray();

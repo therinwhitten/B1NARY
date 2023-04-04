@@ -228,6 +228,7 @@
 
 		private CoroutineWrapper eventCoroutine;
 		private CoroutineWrapper speakCoroutine;
+		public bool IsSpeaking => !CoroutineWrapper.IsNotRunningOrNull(speakCoroutine);
 
 		private void Awake()
 		{
@@ -294,6 +295,7 @@
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
 			FinalText = FinalText.Replace("MC", SaveSlot.ActiveSlot.PlayerName);
+			string speakerName = CharacterManager.Instance.ActiveCharacter?.controller.CharacterName;
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];
@@ -310,6 +312,8 @@
 				{
 					splitText[i] += parsableText[i].value[ii];
 					CurrentText = string.Join("", splitText);
+					if (!(speakerName is null))
+						SpeakerName = speakerName;
 					yield return WaitSecondsPerChar;
 				}
 			}
