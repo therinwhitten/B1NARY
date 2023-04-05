@@ -94,6 +94,7 @@
 				Transform.anchorMax = new Vector2(value, Transform.anchorMax.y);
 			}
 		}
+		private CoroutineWrapper PositionChanger;
 
 		bool ICharacterController.Selected 
 		{
@@ -103,7 +104,9 @@
 
 		public void SetPositionOverTime(float newXPosition, float time)
 		{
-			StartCoroutine(SmoothPosChanger());
+			PositionChanger = new CoroutineWrapper(this, SmoothPosChanger());
+			PositionChanger.AfterActions += (mono) => HorizontalPosition = newXPosition;
+			PositionChanger.Start();
 			IEnumerator SmoothPosChanger()
 			{
 				float acceptablePoint = 0.005f;
