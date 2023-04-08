@@ -107,6 +107,15 @@
 				: false;
 			set => booleans[KEY_ADDITIVE] = value;
 		}
+
+		public const string BINARY_KEY = "n-b";
+		public bool IsBinary
+		{
+			get => booleans.TryGetValue(BINARY_KEY, out var binary)
+				? binary
+				: true;
+			set => booleans[BINARY_KEY] = value;
+		}
 		public Collection<string> strings;
 		public ScriptPosition scriptPosition;
 		public CharacterSnapshot[] characterSnapshots;

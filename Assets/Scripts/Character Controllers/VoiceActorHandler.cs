@@ -19,8 +19,8 @@
 			string filePath = GetResourceVoicePath(index, handler);
 			AudioClip clip = Resources.Load<AudioClip>(filePath);
 			if (clip == null)
-				throw new IOException($"Voiceline in resources path '{filePath}' " +
-					"could not be retrieved.");
+				Debug.LogWarning(new IOException($"Voiceline in resources path '{filePath}' " +
+					"could not be retrieved.").ToString());
 			return clip;
 		}
 		public static bool BlockPreviousSpeakersOnNextLine { get; set; } = true;

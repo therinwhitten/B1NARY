@@ -35,8 +35,8 @@
 				else
 					throw new InvalidCastException($"line {Lines[i].PrimaryLine.Index} is not an element!");
 			}
-			if (choices.Count < 1)
-				Debug.LogWarning($"Choice block of line '{PrimaryLine.Index}' has one or less choices!");
+			if (choices.Count < 0)
+				Debug.LogWarning($"Choice block of line '{PrimaryLine.Index}' has no choices!");
 			this.choices = choices;
 		}
 

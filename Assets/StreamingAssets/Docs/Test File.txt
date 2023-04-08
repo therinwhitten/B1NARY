@@ -1,143 +1,18 @@
 ﻿{changeScene: Times Square}
-{spawnEmpty: Gabriel Ultrakill}
-Gabriel Ultrakill::
-Starting Test Sequence. // Yes
-{choice: Test what?}
+{spawnEmpty: 1887 Lever-Action Double Barrel Shotgun}
+1887 Lever-Action Double Barrel Shotgun::
+Starting Test Sequence. // This is a comment
+Getting binary panel..
+{usegameobject: Binary Selection Panel}
+getting name panel..
+{usegameobject: Character Selection Panel}
+testing choices..
+{choice: Choices, what will you do? }
 {
-	Backgrounds
+	[eat ur mom]
 	{
-		Looking at Background Changes
-		{playBG: Prologue/Times Square Pan Up}
-		{loopbg: false}
-		{queuebg: Prologue/Times Square Animated}
-		{queueloopbg: true }
-	}
-	Character
-	{
-		Starting Move Char
-		{spawnChar: femalesilo, 0.5, Cindy}
-		Moving To Right
-		{moveChar: Cindy, .75}
-		Moving To Left
-		{moveChar: Cindy, .25}
-		Disabling Char...
-		{disablechar: Cindy}
-		Re-enabling Char...
-		{spawnChar: Cindy, 0.5}
-	}
-	Gameobject Initialization
-	{
-		{changeScene: Brain Sucking Chair Side}
-		{spawnEmpty: Gabriel Ultrakill}
-		Gabriel Ultrakill::
-		binary selection panel.
-		{usegameobject: Binary Selection Panel}
-		Char selection panel.
-		{usegameobject: Character Selection Panel}
-	}
-	Page 2
-	{
-		{choice: Page 2}
-		{
-			Exception Throwing
-			{
-				no
-			}
-			If Statements
-			{
-				Setting value named 'giga chad' as boolean.
-				{choice: set true or false?}
-				{
-					True
-					{
-						{setbool: giga chad, true}
-					}
-					False
-					{
-						{setbool: giga chad, false}
-					}
-					None
-					{
-					
-					}
-				}
-				{choice: 'giga chad' is now set, false as default. what path should we take?}
-				{
-					True
-					{
-						{if: giga chad}
-						{
-							Hit true
-						}
-						{else}
-						{
-							Hit false, as the 'else'
-						}
-					}
-					False
-					{
-						{if: !giga chad}
-						{
-							Hit false
-						}
-						{else}
-						{
-							Hit true, as the 'else'
-						}
-					}
-				}
-			}
-			Remote Nodes
-			{
-				Calling Remote node with name 'Bruh'..
-				{setbool: remoteTest, false}
-				{callremote: Bruh}
-				{if: !remoteTest}
-				{
-					Call remote failed to call!
-				}
-			}
-			Sound Library
-			{
-				Starting Nearly Instantly..
-				{fadeinsound: Modern News, .1}
-				Fading to full in 2 seconds..
-				{fadeinsound: Modern News, 2}
-				Starting loopable sound; Full in 5.
-				{fadeinsound: Times Square Crowd, 5}
-				Stopping sound via code with Fadeout manual.
-				{fadeoutsound: Times Square Crowd, 1}
-				Restarting sound and switching scenes for testing.
-				{fadeinsound: Times Square Crowd, .1}
-				Testing now.
-				{changeScene: Times Square}
-				{spawnEmpty: Gabriel Ultrakill}
-				Gabriel Ultrakill::
-				Swapped Scenes.
-			}
-			Page 3
-			{
-				{choice: page 3}
-				{
-					Return to main menu
-					{
-						{returnToMainMenu}
-					}
-				}
-			}
-		}
-	}
-	Skip
-	{
-	
+		Oh damn, savage.
 	}
 }
-
 Test Finished! Repeating.
 {changeScript: Test File}
-
-{remote: Bruh}
-{
-	Remote Line Tested and accessed!
-	{setbool: remoteTest, true}
-}

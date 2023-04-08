@@ -35,7 +35,11 @@
 				if (m_defaultFormat is null)
 				{
 					if (DefaultThemePath.Exists)
-						return m_defaultFormat = FormatSerializer.Deserialize(DefaultThemePath);
+					{
+						ColorFormat format = FormatSerializer.Deserialize(DefaultThemePath);
+						if (format != null)
+							return m_defaultFormat = format;
+					}
 					m_defaultFormat = new ColorFormat()
 					{
 						FormatName = DEFAULT_THEME_NAME
@@ -52,8 +56,12 @@
 		} private static ColorFormat m_defaultFormat;
 
 
-		internal static XmlSerializer<ColorFormat> FormatSerializer = new XmlSerializer<ColorFormat>();
-
+		internal static XmlSerializer<ColorFormat> FormatSerializer;
+		static ColorFormat()
+		{
+			FormatSerializer = new XmlSerializer<ColorFormat>();
+			//FormatSerializer.Config.Logger = new OVSXmlLogger();
+		}
 
 		public static ColorFormat CurrentFormat
 		{
@@ -61,12 +69,12 @@
 			{
 				if (m_currentFormat is null)
 				{
-					if (!PlayerConfig.Instance.graphics.HasOverride)
-						goto @default;
-					string format = PlayerConfig.Instance.graphics.currentFormat;
-					if (Set(format))
-						return m_currentFormat;
-					@default:
+					if (PlayerConfig.Instance.graphics.HasOverride)
+					{
+						string format = PlayerConfig.Instance.graphics.currentFormat;
+						if (Set(format))
+							return m_currentFormat;
+					}
 					// Getting default..
 					return SetToDefault();
 				}
@@ -80,8 +88,8 @@
 
 		public static ColorFormat SetToDefault()
 		{
-			m_defaultFormat = DefaultFormat;
 			PlayerConfig.Instance.graphics.currentFormat.Value = "";
+			m_currentFormat = DefaultFormat;
 			return m_currentFormat;
 		}
 		public static bool Set(ColorFormat format, bool @override = false)

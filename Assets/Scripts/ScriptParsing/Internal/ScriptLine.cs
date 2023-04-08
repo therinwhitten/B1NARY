@@ -170,6 +170,9 @@
 
 		public ScriptLine(string rawLine, int index)
 		{
+			int commentIndex = rawLine.IndexOf("//");
+			if (commentIndex != -1)
+				rawLine = rawLine.Remove(commentIndex);
 			RawLine = rawLine;
 			Index = index;
 			Type = ParseLineAsType(rawLine);
