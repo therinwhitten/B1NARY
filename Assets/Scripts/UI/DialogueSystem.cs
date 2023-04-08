@@ -295,7 +295,7 @@
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
 			FinalText = FinalText.Replace("MC", SaveSlot.ActiveSlot.PlayerName);
-			string speakerName = CharacterManager.Instance.ActiveCharacter?.controller.CharacterName;
+			string speakerName = DateTimeTracker.IsAprilFools ? CharacterManager.Instance.ActiveCharacter?.controller.CharacterName : null;
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];

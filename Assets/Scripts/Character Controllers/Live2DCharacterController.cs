@@ -36,7 +36,21 @@
 				return m_transform;
 			}
 		}
-		private string[] expressions;
+		public string[] Expressions
+		{
+			get
+			{
+				if (m_expressions is null)
+				{
+					if (expressionController != null && expressionController.ExpressionsList != null)
+						m_expressions = ToNameArray(expressionController.ExpressionsList);
+					else
+						m_expressions = Array.Empty<string>();
+				}
+				return m_expressions;
+			}
+		}
+		private string[] m_expressions;
 		public VoiceActorHandler VoiceData { get; private set; }
 		public CubismExpressionController expressionController;
 		public string CurrentAnimation
@@ -62,15 +76,15 @@
 
 		public string CurrentExpression
 		{
-			get => expressions[expressionController.CurrentExpressionIndex];
+			get => Expressions[expressionController.CurrentExpressionIndex];
 			set
 			{
-				int expressionIndex = Array.IndexOf(expressions, value);
+				int expressionIndex = Array.IndexOf(Expressions, value);
 				if (expressionIndex == -1)
 				{
 					Debug.LogException(new IndexOutOfRangeException($"'{value}' " +
 						$"is not an expression listed in the expressions of {name}!\n"
-						+ $"All options: {string.Join(",\n", expressions)}"), gameObject);
+						+ $"All options: {string.Join(",\n", Expressions)}"), gameObject);
 					return;
 				}
 				expressionController.CurrentExpressionIndex = expressionIndex;
@@ -125,8 +139,6 @@
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
-			if (expressionController != null && expressionController.ExpressionsList != null)
-				expressions = ToNameArray(expressionController.ExpressionsList);
 		}
 
 		public void SayLine(ScriptLine line)
