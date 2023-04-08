@@ -13,13 +13,15 @@
 	using UnityEngine.Rendering;
 	using B1NARY.Scripting;
 
+#warning This seems a bit inefficient. Feel free to optimize this one!
 	/// <summary>
 	/// Allows you to easily change a single gameObject with the <see cref="Image"/>
 	/// component to a color. By enabling, you change it via the parameters the
 	/// component stores. Disabling reverts to it's previous known color.
 	/// </summary>
 	/// <seealso cref="MonoBehaviour"/>
-	public class UIThemeHandler : Multiton<UIThemeHandler>
+	[RequireComponent(typeof(Graphic))]
+	public class UIThemeHandler : MonoBehaviour
 	{
 		public enum Option
 		{
@@ -27,8 +29,6 @@
 			Secondary,
 			Custom
 		}
-
-
 
 		public static Color GetColor(Option option)
 		{
@@ -55,7 +55,7 @@
 				$"equipped format: {ColorFormat.CurrentFormat.FormatName}.");
 		}
 
-
+#warning TODO: make this ctor thing more efficient!
 		public string imageThemeName = Option.Secondary.ToString(),
 			buttonHighlightedName = Option.Primary.ToString(),
 			buttonPressedName = Option.Primary.ToString(),
@@ -94,22 +94,27 @@
 				Component[] components = GetComponents<Component>();
 				for (int i = 0; i < components.Length; i++)
 				{
+					Component currentComponent = components[i];
+					Type componentType = currentComponent.GetType();
+					PropertyInfo[] properties = componentType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 					// Get any color properties in the component that has any color parameter.
-					var colorEnum = components[i].GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(info => info.PropertyType == typeof(Color));
-					if (colorEnum.Any())
+					for (int ii = 0; ii < properties.Length; ii++)
 					{
-						m_colorEdit = new Ref<object>(() => colorEnum.Single().GetValue(components[i]), set => colorEnum.Single().SetValue(components[i], set));
-						m_currentTarget = components[i];
-						return m_currentTarget;
+						PropertyInfo currentProperty = properties[ii];
+						if (properties[ii].PropertyType == typeof(Color))
+						{
+							m_colorEdit = new Ref<object>(() => currentProperty.GetValue(currentComponent), set => currentProperty.SetValue(currentComponent, set));
+							m_currentTarget = currentComponent;
+							return m_currentTarget;
+						}
+						if (properties[ii].PropertyType == typeof(ColorBlock))
+						{
+							m_colorEdit = new Ref<object>(() => currentProperty.GetValue(currentComponent), set => currentProperty.SetValue(currentComponent, set));
+							m_currentTarget = currentComponent;
+							return m_currentTarget;
+						}
 					}
 					// Get any color block properties in the component that has any color block parameter.
-					var colorBlockEnum = components[i].GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(info => info.PropertyType == typeof(ColorBlock));
-					if (colorBlockEnum.Any())
-					{
-						m_colorEdit = new Ref<object>(() => colorBlockEnum.Single().GetValue(components[i]), set => colorBlockEnum.Single().SetValue(components[i], set));
-						m_currentTarget = components[i];
-						return m_currentTarget;
-					}
 				}
 				throw new MissingComponentException("There is no components " +
 					$"to hold onto that has a {nameof(UnityEngine.Color)} or {nameof(ColorBlock)}");
@@ -118,15 +123,15 @@
 		private Component m_currentTarget;
 
 
-		protected override void MultitonAwake()
+		protected virtual void Start()
 		{
 			UpdateColors();
 		}
-		private void OnEnable()
+		protected virtual void OnEnable()
 		{
 			ColorFormat.ChangedFormat += UpdateColors;
 		}
-		private void OnDisable()
+		protected virtual void OnDisable()
 		{
 			ColorFormat.ChangedFormat -= UpdateColors;
 		}

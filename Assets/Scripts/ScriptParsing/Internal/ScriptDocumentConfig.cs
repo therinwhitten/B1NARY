@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Reflection;
+	using UnityEngine;
 
 	public sealed class ScriptDocumentConfig
 	{
@@ -32,15 +33,17 @@
 		internal void InvokeNormal(ScriptLine line) => NormalLine?.Invoke(line);
 		#endregion
 		// temp change
-		public void AddConstructor<TElement>(Func<List<ScriptLine>, bool> predicate) 
+		public void AddConstructor<TElement>(Predicate<List<ScriptLine>> predicate) 
 			where TElement : ScriptElement
 			=> AddConstructor(typeof(TElement), predicate);
 
-		public void AddConstructor(Type elementType, Func<List<ScriptLine>, bool> predicate)
+		public void AddConstructor(Type elementType, Predicate<List<ScriptLine>> predicate)
 		{
 			if (!elementType.IsSubclassOf(typeof(ScriptElement)))
 				throw new InvalidOperationException();
 			ConstructorInfo info = elementType.GetConstructor(new Type[] { typeof(ScriptDocumentConfig), typeof(List<ScriptLine>) });
+			if (info == null)
+				throw new InvalidProgramException($"{elementType.Name} doesn't have a constructor with {nameof(ScriptDocumentConfig)} and {nameof(List<ScriptLine>)}!");
 			var newConstructor = new ScriptElementConstructorInfo(predicate, info);
 			if (!m_derivedElements.Contains(newConstructor))
 				m_derivedElements.Add(newConstructor);
@@ -48,10 +51,14 @@
 
 		public ScriptElement GetDefinedElement(List<ScriptLine> lines)
 		{
+			object[] GetValues() => new object[] { this, lines };
 			for (int ii = 0; ii < DerivedElements.Count; ii++)
 			{
 				if (DerivedElements[ii].predicate.Invoke(lines))
-					return (ScriptElement)DerivedElements[ii].constructor.Invoke(new object[] { this, lines });
+				{
+					try { return (ScriptElement)DerivedElements[ii].constructor.Invoke(GetValues()); }
+					catch (Exception ex) { Debug.LogException(ex); }
+				}
 			}
 			return new ScriptElement(this, lines);
 		}
@@ -75,10 +82,10 @@
 	// Generated from C# engine
 	public readonly struct ScriptElementConstructorInfo
 	{
-		public readonly Func<List<ScriptLine>, bool> predicate;
+		public readonly Predicate<List<ScriptLine>> predicate;
 		public readonly ConstructorInfo constructor;
 
-		public ScriptElementConstructorInfo(Func<List<ScriptLine>, bool> predicate, ConstructorInfo constructor)
+		public ScriptElementConstructorInfo(Predicate<List<ScriptLine>> predicate, ConstructorInfo constructor)
 		{
 			this.predicate = predicate;
 			this.constructor = constructor;
@@ -87,30 +94,30 @@
 		public override bool Equals(object obj)
 		{
 			return obj is ScriptElementConstructorInfo other &&
-				   EqualityComparer<Func<List<ScriptLine>, bool>>.Default.Equals(predicate, other.predicate) &&
+				   EqualityComparer<Predicate<List<ScriptLine>>>.Default.Equals(predicate, other.predicate) &&
 				   EqualityComparer<ConstructorInfo>.Default.Equals(constructor, other.constructor);
 		}
 
 		public override int GetHashCode()
 		{
 			int hashCode = 991353629;
-			hashCode = hashCode * -1521134295 + EqualityComparer<Func<List<ScriptLine>, bool>>.Default.GetHashCode(predicate);
+			hashCode = hashCode * -1521134295 + EqualityComparer<Predicate<List<ScriptLine>>>.Default.GetHashCode(predicate);
 			hashCode = hashCode * -1521134295 + EqualityComparer<ConstructorInfo>.Default.GetHashCode(constructor);
 			return hashCode;
 		}
 
-		public void Deconstruct(out Func<List<ScriptLine>, bool> predicate, out ConstructorInfo constructor)
+		public void Deconstruct(out Predicate<List<ScriptLine>> predicate, out ConstructorInfo constructor)
 		{
 			predicate = this.predicate;
 			constructor = this.constructor;
 		}
 
-		public static implicit operator (Func<List<ScriptLine>, bool> predicate, ConstructorInfo constructor)(ScriptElementConstructorInfo value)
+		public static implicit operator (Predicate<List<ScriptLine>> predicate, ConstructorInfo constructor)(ScriptElementConstructorInfo value)
 		{
 			return (value.predicate, value.constructor);
 		}
 
-		public static implicit operator ScriptElementConstructorInfo((Func<List<ScriptLine>, bool> predicate, ConstructorInfo constructor) value)
+		public static implicit operator ScriptElementConstructorInfo((Predicate<List<ScriptLine>> predicate, ConstructorInfo constructor) value)
 		{
 			return new ScriptElementConstructorInfo(value.predicate, value.constructor);
 		}

@@ -7,6 +7,7 @@
 	
 	public class RemoteBlock : ScriptElement
 	{
+		public static Predicate<List<ScriptLine>> Predicate => (lines) => lines[0].Type == ScriptLine.LineType.Command && lines[0].RawLine.Contains("remote");
 		public static IEnumerator<ScriptNode> CallRemote(ScriptDocument document, string key)
 		{
 			Dictionary<string, RemoteBlock> blockDictionary = (

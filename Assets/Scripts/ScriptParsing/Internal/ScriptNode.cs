@@ -17,7 +17,7 @@
 		/// </summary>
 		public virtual int Length => 1;
 
-		internal protected ScriptNode(ScriptLine rootLine)
+		public ScriptNode(ScriptLine rootLine)
 		{
 			PrimaryLine = rootLine;
 		}

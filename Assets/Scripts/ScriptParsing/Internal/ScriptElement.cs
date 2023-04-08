@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
+	using System.IO;
 	using System.Linq;
 	using System.Xml.Linq;
 
@@ -127,6 +128,10 @@
 			}
 			for (int i = localIndex; i < LinesWithElements.Count; i++)
 			{
+				if (LinesWithElements[i] is null)
+				{
+					throw new InvalidDataException($"Line {ToGlobal(i)} is null.");
+				}
 				if (LinesWithElements[i] is ScriptElement element)
 				{
 					using (var enumerator = element.EnumerateThrough(0))

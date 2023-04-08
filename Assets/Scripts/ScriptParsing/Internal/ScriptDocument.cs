@@ -4,7 +4,7 @@
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
-	using System.Diagnostics;
+	using UnityEngine;
 	using System.IO;
 	using System.Linq;
 
@@ -93,7 +93,7 @@
 				case ScriptLine.LineType.BeginIndent:
 					throw new InvalidCastException($"Line is an indent!: {line}");
 				default:
-					Debug.Fail($"There seems to be an enum as '{line.Type}'" +
+					Debug.LogError($"There seems to be an enum as '{line.Type}'" +
 						" that is not part of the switch command case. Skipping.");
 					return true;
 			}
@@ -105,9 +105,12 @@
 			using (var enumerator = base.EnumerateThrough(localIndex))
 				while (enumerator.MoveNext())
 				{
-					if (InvokeLine(enumerator.Current.PrimaryLine) && !documentConfig.stopOnAllLines)
+					ScriptNode currentNode = enumerator.Current;
+					if (currentNode is null)
+						yield return null;
+					if (InvokeLine(currentNode.PrimaryLine) && !documentConfig.stopOnAllLines)
 						continue;
-					yield return enumerator.Current;
+					yield return currentNode;
 				}
 		}
 

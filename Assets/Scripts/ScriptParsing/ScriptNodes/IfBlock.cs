@@ -53,6 +53,7 @@
 	}
 	public sealed class ElseBlock : ScriptElement
 	{
+		public static Predicate<List<ScriptLine>> Predicate => (lines) => lines[0].Type == ScriptLine.LineType.Command && lines[0].RawLine.Contains("else");
 		public ElseBlock(ScriptDocumentConfig config, List<ScriptLine> blockNodeData) : base(config, blockNodeData)
 		{
 

@@ -43,7 +43,7 @@
 		/// If the <see cref="MonoBehaviour"/> has been initialized, important
 		/// for using <see cref="IDisposable"/>.
 		/// </summary>
-		private bool hasBeenInitialized = false;
+		public bool HasBeenInitialized { get; private set; } = false;
 		/// <summary>
 		/// All the buttons attached to the choice panel. Usually they can also
 		/// be achieved via <see cref="Transform.GetChild(int)"/> with count
@@ -79,10 +79,10 @@
 		/// </exception>
 		public void Initialize(IEnumerable<ScriptLine> choices)
 		{
-			if (hasBeenInitialized)
+			if (HasBeenInitialized)
 				throw new InvalidOperationException($"{nameof(ChoicePanel)} is already" +
 					" been used to make a choice panel. Did you forget to dispose?");
-			hasBeenInitialized = true;
+			HasBeenInitialized = true;
 			enabled = true;
 			ScriptHandler.Instance.pauser.Pause();
 			gameObject.SetActive(true);
@@ -90,9 +90,6 @@
 			{
 				for (int i = 0; i < choiceButtons.Count; i++)
 					choiceButtons[i].gameObject.SetActive(false);
-#if DEBUG
-				Debug.Log($"Picked Choice: {key}", this);
-#endif
 			};
 			using (IEnumerator<ScriptLine> enumerator = choices.GetEnumerator())
 				for (int i = 0; enumerator.MoveNext(); i++)
@@ -113,7 +110,7 @@
 		/// <param name="value"> The key to send out when pressed. </param>
 		public void HandlePress(ScriptLine value)
 		{
-			if (!hasBeenInitialized)
+			if (!HasBeenInitialized)
 				return;
 			CurrentlyPickedChoice = value;
 			PickedChoice.Invoke(value);
@@ -121,9 +118,9 @@
 
 		public void Dispose()
 		{
-			if (!hasBeenInitialized)
+			if (!HasBeenInitialized)
 				return;
-			hasBeenInitialized = false;
+			HasBeenInitialized = false;
 			CurrentlyPickedChoice = null;
 			ScriptHandler.Instance.pauser.Play();
 			gameObject.SetActive(false);

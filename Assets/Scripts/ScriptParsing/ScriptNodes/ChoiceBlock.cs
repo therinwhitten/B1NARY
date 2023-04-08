@@ -28,12 +28,12 @@
 		public ChoiceBlock(ScriptDocumentConfig config, List<ScriptLine> blockNodeData) : base(config, blockNodeData)
 		{
 			var choices = new Dictionary<ScriptLine, ScriptElement>();
-			for (int i = 0; i < Lines.Count; i++)
+			for (int i = 0; i < LinesWithElements.Count; i++)
 			{
-				if (Lines[i] is ScriptElement element)
+				if (LinesWithElements[i] is ScriptElement element)
 					choices.Add(element.PrimaryLine, element);
 				else
-					throw new InvalidCastException($"line {Lines[i].PrimaryLine.Index} is not an element!");
+					throw new InvalidCastException($"line {LinesWithElements[i].PrimaryLine.Index} is not an element!");
 			}
 			if (choices.Count < 0)
 				Debug.LogWarning($"Choice block of line '{PrimaryLine.Index}' has no choices!");
@@ -42,12 +42,24 @@
 
 		public override IEnumerator<ScriptNode> EnumerateThrough(int localIndex)
 		{
-			ScriptLine currentLine = LinesWithElements[localIndex].PrimaryLine;
-			if (choices.TryGetValue(currentLine, out ScriptElement element))
+			ScriptLine currentLine = default;
+			ChoicePanel panel = ChoicePanel.StartNew(choices.Keys);
+			panel.PickedChoice += (pickedChoice) =>
 			{
-				return element.EnumerateThrough(0);
+				currentLine = pickedChoice;
+				panel.Dispose();
+				ScriptHandler.Instance.NextLine();
+			};
+			while (panel.HasBeenInitialized)
+			{
+				ScriptLine phonyLine = StartBracketSkip[0].PrimaryLine;
+				phonyLine = new ScriptLine(string.Join(", ", ScriptLine.CastCommand(phonyLine).arguments), phonyLine.Index);
+				yield return new ScriptNode(phonyLine);
 			}
-			return base.EnumerateThrough(localIndex);
+			if (choices.TryGetValue(currentLine, out ScriptElement element))
+				using (var enumerator = element.EnumerateThrough(0))
+					while (enumerator.MoveNext())
+						yield return enumerator.Current;
 		}
 	}
 }

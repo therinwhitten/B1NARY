@@ -6,6 +6,7 @@
 	using System.Text;
 	using System.Text.RegularExpressions;
 	using System.Threading.Tasks;
+	using UnityEngine;
 
 	[Serializable]
 	public readonly struct ScriptLine : IEquatable<ScriptLine>, IEquatable<string>
@@ -79,7 +80,11 @@
 		{
 			lineData = lineData.Trim();
 			if (string.IsNullOrWhiteSpace(lineData))
+			{
+				Debug.Log("Empty Line!");
 				return LineType.Empty;
+			}
+
 			if (lineData.Length == 1)
 			{
 				if (startIndents.Contains(lineData[0]))

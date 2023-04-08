@@ -101,6 +101,12 @@
 			using (IEnumerator<KeyValuePair<(string name, int index), AudioTracker>> enumerator = ActiveAudioTrackers.GetEnumerator())
 				for (int i = 0; enumerator.MoveNext(); i++)
 				{
+					if (enumerator.Current.Value is null)
+					{
+						m_activeAudioTrackers.Remove(enumerator.Current.Key);
+						LateUpdate(); // Use a IEnumerator again to clear others
+						return;
+					}
 					if (enumerator.Current.Value.IsPlaying)
 						continue;
 					enumerator.Current.Value.Dispose();

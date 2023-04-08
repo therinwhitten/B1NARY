@@ -20,11 +20,14 @@
 	[AddComponentMenu("B1NARY/Script Handler")]
 	public sealed class ScriptHandler : Singleton<ScriptHandler>
 	{
-		internal static readonly ScriptDocumentConfig config = new ScriptDocumentConfig();
+		internal static readonly ScriptDocumentConfig config;
 		static ScriptHandler()
 		{
 			config = new ScriptDocumentConfig();
-
+			config.AddConstructor(typeof(IfBlock), IfBlock.Predicate);
+			config.AddConstructor(typeof(ElseBlock), ElseBlock.Predicate);
+			config.AddConstructor(typeof(ChoiceBlock), ChoiceBlock.Predicate);
+			config.AddConstructor(typeof(RemoteBlock), RemoteBlock.Predicate);
 			config.Commands.AddRange(
 				new List<CommandArray>()
 				{
