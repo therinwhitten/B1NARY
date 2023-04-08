@@ -11,6 +11,7 @@ namespace B1NARY.Editor.Debugger
 	using B1NARY.DesignPatterns;
 	using System.Collections.Generic;
 	using System.Text;
+	using B1NARY.CharacterManagement;
 
 	public sealed class DebuggerWindow : EditorWindow
 	{
@@ -63,9 +64,9 @@ namespace B1NARY.Editor.Debugger
 				var onSpeaker = new StringBuilder("On Speaker: ");
 				if (!Application.isPlaying)
 					return onSpeaker.Append(notPlaying).ToString();
-				if (!DialogueSystem.HasInstance || string.IsNullOrEmpty(DialogueSystem.Instance.SpeakerName))
+				if (!DialogueSystem.HasInstance || string.IsNullOrEmpty(CharacterManager.Instance.ActiveCharacter?.controller.CharacterName))
 					return onSpeaker.Append(@null).ToString();
-				return onSpeaker.Append(DialogueSystem.Instance.SpeakerName).ToString();
+				return onSpeaker.Append(CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterName).ToString();
 			}
 			string CurrentLine()
 			{

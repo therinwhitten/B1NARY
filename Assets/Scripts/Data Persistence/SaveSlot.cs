@@ -98,11 +98,12 @@
 		public string SaveName { get; set; } = "QuickSave";
 		public Metadata metadata;
 		public Collection<bool> booleans;
+		public const string DEFAULT_NAME = "MC";
 		public string PlayerName
 		{
 			get => strings.TryGetValue(KEY_PLAYER_NAME, out var str)
 				? str
-				: "MC";
+				: DEFAULT_NAME;
 			set => strings[KEY_PLAYER_NAME] = value;
 		}
 		public bool Additive

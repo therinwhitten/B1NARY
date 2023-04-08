@@ -116,20 +116,14 @@
 		/// Use <see cref="CharacterManager.ActiveCharacterName"/> instead 
 		/// for a more accurate name, as this can change visually within the game.
 		/// </summary>
-		public string SpeakerName
-		{
-			get => speakerBox.text;
-			set => speakerBox.text = value;
-		}
-		private void ChangeSpeakerName(Character? characterController)
-		{
-			if (!characterController.HasValue)
-				return;
-			if (characterController.Value.controller.CharacterName == "MC")
-				SpeakerName = SaveSlot.ActiveSlot.PlayerName;
-			else
-				SpeakerName = characterController.Value.controller.CharacterName;
-		}
+		//public string SpeakerName
+		//{
+		//	get => speakerBox.text;
+		//	set
+		//	{
+		//		speakerBox.text = value.Replace(SaveSlot.DEFAULT_NAME, SaveSlot.ActiveSlot.PlayerName);
+		//	}
+		//}
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
 		/// </summary>
@@ -233,7 +227,17 @@
 		private void Awake()
 		{
 			m_secondsChar = m_ticksPerChar / 1000f;
-			CharacterManager.Instance.ActiveCharacterChanged += ChangeSpeakerName;
+			//CharacterManager.Instance.ActiveCharacterChanged += (character) =>
+			//{
+			//	if (character.HasValue)
+			//		SpeakerName = character.Value.controller.CharacterName;
+			//};
+			//SaveSlot.ActiveSlot.strings.UpdatedValue += (key, oldValue, newValue, source) =>
+			//{
+			//	if (key != SaveSlot.KEY_PLAYER_NAME)
+			//		return;
+			//	SpeakerName = SpeakerName.Replace(oldValue ?? SaveSlot.DEFAULT_NAME, newValue);
+			//};
 		}
 
 		/// <summary>
@@ -294,8 +298,7 @@
 		{
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
-			FinalText = FinalText.Replace("MC", SaveSlot.ActiveSlot.PlayerName);
-			string speakerName = DateTimeTracker.IsAprilFools ? CharacterManager.Instance.ActiveCharacter?.controller.CharacterName : null;
+			FinalText = FinalText.Replace(SaveSlot.DEFAULT_NAME, SaveSlot.ActiveSlot.PlayerName);
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];
@@ -312,8 +315,6 @@
 				{
 					splitText[i] += parsableText[i].value[ii];
 					CurrentText = string.Join("", splitText);
-					if (!(speakerName is null))
-						SpeakerName = speakerName;
 					yield return WaitSecondsPerChar;
 				}
 			}
