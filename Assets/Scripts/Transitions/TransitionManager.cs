@@ -21,7 +21,7 @@
 			["changebg"] = (Action<string>)(backgroundName =>
 			{
 				InstanceOrDefault.SetNewStaticBackground(backgroundName);
-				InstanceOrDefault.SetNewAnimatedBackground(backgroundName);
+				InstanceOrDefault.SetNewAnimatedBackground("Backgrounds/" + backgroundName);
 			}),
 			["loopbg"] = (Action<string>)(str =>
 			{
