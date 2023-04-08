@@ -15,6 +15,11 @@
 	using CharacterManager = B1NARY.CharacterManagement.CharacterManager;
 	using B1NARY.Audio;
 
+	public enum Gender : byte
+	{
+		Male = 0,
+		Female = 1,
+	}
 	public class SaveSlot
 	{
 		public const string NAME_START = "SaveSlot_",
@@ -115,6 +120,14 @@
 				? binary
 				: true;
 			set => booleans[BINARY_KEY] = value;
+		}
+		public const string GENDER_KEY = "MalePath";
+		public Gender Gender
+		{
+			get => booleans.TryGetValue(GENDER_KEY, out var isMale)
+				? (isMale ? Gender.Male : Gender.Female)
+				: Gender.Male;
+			set => booleans[GENDER_KEY] = value == Gender.Male;
 		}
 		public Collection<string> strings;
 		public ScriptPosition scriptPosition;
