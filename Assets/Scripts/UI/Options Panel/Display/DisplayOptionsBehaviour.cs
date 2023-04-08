@@ -37,13 +37,13 @@
 				QualitySettings.renderPipeline = qualityLevels[value];
 			});
 			// Glow
-			B1NARYConfig.Graphics.Glow.AttachValue((value) => glowText.text = value.ToString("N0"));
-			glowSlider.value = B1NARYConfig.Graphics.Glow.Value;
-			glowSlider.onValueChanged.AddListener((value) => B1NARYConfig.Graphics.Glow.Value = value);
+			PlayerConfig.Instance.graphics.glow.AttachValue((value) => glowText.text = value.ToString("N0"));
+			glowSlider.value = PlayerConfig.Instance.graphics.glow.Value;
+			glowSlider.onValueChanged.AddListener((value) => PlayerConfig.Instance.graphics.glow.Value = value);
 			// FPS
-			B1NARYConfig.Graphics.FrameRate.AttachValue((value) => fpsText.text = value.ToString("N0"));
-			fpsSlider.value = B1NARYConfig.Graphics.FrameRate.Value;
-			fpsSlider.onValueChanged.AddListener((value) => B1NARYConfig.Graphics.FrameRate.Value = (int)value);
+			PlayerConfig.Instance.graphics.frameRate.AttachValue((value) => fpsText.text = value.ToString("N0"));
+			fpsSlider.value = PlayerConfig.Instance.graphics.frameRate.Value;
+			fpsSlider.onValueChanged.AddListener((value) => PlayerConfig.Instance.graphics.frameRate.Value = (int)value);
 		}
 	}
 }

@@ -3,14 +3,14 @@
 	using UnityEngine;
 	using System;
 	using TMPro;
-	using static UIThemeHandler;
 	using System.Collections.Generic;
 	using System.Linq;
 	using OVSXmlSerializer;
+	using B1NARY.UI.Colors;
 
 	public class OverrideThemeSelection : DropdownPanel<ColorFormat>
 	{
-		public override int InitialValue => Values.ToList().IndexOf(ColorFormat.CurrentTheme);
+		public override int InitialValue => Values.ToList().IndexOf(ColorFormat.CurrentFormat);
 		
 		protected override void Awake()
 		{
@@ -24,12 +24,12 @@
 		{
 			base.PickedChoice(index);
 			ColorFormat currentFormat = Pairs[index].Value;
-			if (ReferenceEquals(ColorFormat.DefaultTheme, currentFormat))
+			if (ReferenceEquals(ColorFormat.CurrentFormat, currentFormat))
 			{
-				ColorFormat.RemoveOverride();
+				ColorFormat.SetToDefault();
 				return;
 			}
-			ColorFormat.Override(currentFormat);
+			ColorFormat.Set(currentFormat, true);
 		}
 	}
 }

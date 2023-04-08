@@ -103,6 +103,86 @@
             Creates a new instance of <see cref="T:OVSXmlSerializer.XmlTextAttribute"/>
             </summary>
         </member>
+        <member name="T:OVSXmlSerializer.Versioning">
+            <summary>
+            Measures Xml files to check if they are a specific version or not.
+            </summary>
+        </member>
+        <member name="T:OVSXmlSerializer.Versioning.Leniency">
+            <summary>
+            Measurement on how <see cref="T:OVSXmlSerializer.Versioning"/> should handle variation changes
+            
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.Versioning.Leniency.Strict">
+            <summary>
+            If the values are not exactly the same, then it will return false
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.Versioning.Leniency.Revisions">
+            <summary>
+            Only revisions are allowed, which is typically considered as security
+            updates.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.Versioning.Leniency.Builds">
+            <summary>
+            Only revisions and builds are allowed, which would be changes such 
+            as bug fixes
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.Versioning.Leniency.Minor">
+            <summary>
+            Only things that consider backwards compatibility are allowed,
+            which are simple feature addons.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.Versioning.Leniency.All">
+            <summary>
+            Even majors are acceptable, so this is a 'use-all' case with the 
+            rare exception of null Versions.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.Versioning.IsVersion(System.String,System.Version,OVSXmlSerializer.Versioning.Leniency)">
+            <summary>
+            Checks the version of the XML file.
+            </summary>
+            <param name="fileLocation"> The full file location. </param>
+            <param name="version"> Comparing to/expected value </param>
+            <param name="leniency">The leinency of the check</param>
+        </member>
+        <member name="M:OVSXmlSerializer.Versioning.IsVersion(System.IO.FileInfo,System.Version,OVSXmlSerializer.Versioning.Leniency)">
+            <summary>
+            Checks the version of the XML file.
+            </summary>
+            <param name="fileLocation"> The file location. </param>
+            <param name="version"> Comparing to/expected value </param>
+            <param name="leniency">The leinency of the check</param>
+        </member>
+        <member name="M:OVSXmlSerializer.Versioning.IsVersion(System.IO.Stream,System.Version,OVSXmlSerializer.Versioning.Leniency)">
+            <summary>
+            Checks the version of the XML file.
+            </summary>
+            <param name="input"> The document as a stream. </param>
+            <param name="version"> Comparing to/expected value </param>
+            <param name="leniency">The leinency of the check</param>
+        </member>
+        <member name="M:OVSXmlSerializer.Versioning.IsVersion(System.Xml.XmlDocument,System.Version,OVSXmlSerializer.Versioning.Leniency)">
+            <summary>
+            Checks the version of the XML file.
+            </summary>
+            <param name="document"> The document. </param>
+            <param name="version"> Comparing to/expected value </param>
+            <param name="leniency">The leinency of the check</param>
+        </member>
+        <member name="M:OVSXmlSerializer.Versioning.IsVersion(System.Version,System.Version,OVSXmlSerializer.Versioning.Leniency)">
+            <summary>
+            Checks the version of the XML file.
+            </summary>
+            <param name="altVersion"> The comparator of one version </param>
+            <param name="version"> Comparing to/expected value </param>
+            <param name="leniency">The leinency of the check</param>
+        </member>
         <member name="T:OVSXmlSerializer.XmlSerializerConfig">
             <summary>
             A single class that stores all the configuration settings. Things like
@@ -128,18 +208,42 @@
             Default variation of the config.
             </summary>
         </member>
-        <member name="F:OVSXmlSerializer.XmlSerializerConfig.Version">
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.UseSingleInstanceInsteadOfMultiple">
+            <summary>
+            Whenever a reference type is made, and multiple things use the same
+            instance of the reference type, then it will simply use an ID system
+            to refer to said instance. Disabling this removes this feature.
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.OmitAutoGenerationComment">
+            <summary>
+            Disables the use of the comment about being auto-generated by
+            OVSXmlSerializer
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.Logger">
+            <summary>
+            When non-null, then it will report its steps to detect any issues.
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.Version">
             <summary>
             The current version of the XML file. Null if you don't want any
             attributes assigned to the root element
             </summary>
         </member>
-        <member name="F:OVSXmlSerializer.XmlSerializerConfig.newLineOnAttributes">
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.VersionLeniency">
+            <summary>
+            When reading a file, it will check the version. This setting will determine
+            the leniancy that it has to allow parsing it.
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.NewLineOnAttributes">
             <summary>
             Whenever it should add a new line when declaring attributes.
             </summary>
         </member>
-        <member name="F:OVSXmlSerializer.XmlSerializerConfig.omitXmlDelcaration">
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.OmitXmlDelcaration">
             <summary>
             Gets or sets a value indicating whether to omit an XML declaration.
             The declaration mentions the beginning element, that typically mentions
@@ -150,23 +254,23 @@
             Default is <see langword="false"/>.
             </returns>
         </member>
-        <member name="F:OVSXmlSerializer.XmlSerializerConfig.indentChars">
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.IndentChars">
             <summary>
             The single indentation that should occur. This will be repeated as 
             layers are added further.
             </summary>
         </member>
-        <member name="F:OVSXmlSerializer.XmlSerializerConfig.indent">
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.Indent">
             <summary>
             When writing onto a file, if it should have indentation such as '\n'.
             </summary>
         </member>
-        <member name="F:OVSXmlSerializer.XmlSerializerConfig.TypeHandling">
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.TypeHandling">
             <summary>
             how the XML file from <see cref="T:OVSXmlSerializer.XmlSerializer"/> should handle types. 
             </summary>
         </member>
-        <member name="F:OVSXmlSerializer.XmlSerializerConfig.encoding">
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.Encoding">
             <summary>
             The encoding of the result of the file.
             </summary>
@@ -364,27 +468,28 @@
             </summary>
             <param name="value"> Nullable. </param>
         </member>
-        <member name="M:OVSXmlSerializer.IXmlSerializable.Write(System.Xml.XmlWriter)">
+        <member name="M:OVSXmlSerializer.IXmlSerializable.Write(System.Xml.XmlDocument,System.Xml.XmlNode)">
             <summary>
             Writes the content of class or struct.
             </summary>
             <remarks>
             The element is already generated for you, so no need to start or end an element.
             </remarks>
-            <param name="writer"></param>
+            <param name="sourceDocument"> Using this parameter, you can create elements and attributes. </param>
+            <param name="currentNode">A non-parent node to store the custom data.</param>
         </member>
-        <member name="M:OVSXmlSerializer.XmlReaderSerializer.ByName(System.String)">
+        <member name="M:OVSXmlSerializer.XmlReaderSerializer`1.ByName(System.String)">
             <summary>
             Gets the type by the full name in every existing assembly.
             </summary>
             <param name="name"> The full type name. </param>
         </member>
-        <member name="M:OVSXmlSerializer.XmlReaderSerializer.AddAutoImplementedTag(System.String)">
+        <member name="M:OVSXmlSerializer.XmlReaderSerializer`1.AddAutoImplementedTag(System.String)">
             <summary>
             Adds the auto-implementation tag to an existing name.
             </summary>
         </member>
-        <member name="M:OVSXmlSerializer.XmlReaderSerializer.TryReadEnumerable(System.Type,System.Xml.XmlNode,System.Object@)">
+        <member name="M:OVSXmlSerializer.XmlReaderSerializer`1.TryReadEnumerable(System.Type,System.Xml.XmlNode,System.Object@)">
             <summary>
             Parses the enumerable if it implements <see cref="T:System.Collections.ICollection"/>.
             </summary>
@@ -400,6 +505,11 @@
             <summary>
             Xml Serializer that converts values into XML files and such. Effectively
             <see cref="T:OVSXmlSerializer.XmlSerializer`1"/> which has a generic of <see cref="T:System.Object"/>
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.XmlSerializer.Default">
+            <summary>
+            Default Xml Serializer. Effectively creating a new blank instance.
             </summary>
         </member>
         <member name="P:OVSXmlSerializer.XmlSerializer.ActiveType">
@@ -442,6 +552,11 @@
         <member name="T:OVSXmlSerializer.XmlSerializer`1">
             <summary>
             Serializer that converts classes into XML Files and such.
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.XmlSerializer`1.Default">
+            <summary>
+            Default Xml Serializer. Effectively creating a new blank instance.
             </summary>
         </member>
         <member name="P:OVSXmlSerializer.XmlSerializer`1.Config">
@@ -571,22 +686,26 @@
             <param name="rootElementName"> The custom name to store the root value to. </param>
             <returns> A serialized object with the XML format. </returns>
         </member>
-        <member name="M:OVSXmlSerializer.XmlWriterSerializer.EnsureParameterlessConstructor(System.Type)">
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.DeepCopy(`0)">
+            <summary>
+            Deeply copies all the data down into primitives into a separate created 
+            object via XML serializing and deserializing the object.
+            </summary>
+            <param name="input"> The object to copy. </param>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.ShallowCopy(`0)">
+            <summary>
+            Uses <see cref="M:System.Object.MemberwiseClone"/> to create a new object,
+            ignoring accessibility methods. Uses reflection instead of using the
+            serializer.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlWriterSerializer`1.EnsureParameterlessConstructor(System.Type)">
             <summary>
             Throws an exception if the specified type does not have a parameterless
             constructor. Otherwise does nothing.
             </summary>
             <param name="type"> The type to check if it has one. </param>
-        </member>
-        <member name="M:OVSXmlSerializer.XmlWriterSerializer.WriteStartElement(System.String,OVSXmlSerializer.StructuredObject)">
-            <summary>
-            Writes the starting element.
-            </summary>
-            <remarks>
-            This fixes issues when considering auto-implemented properties.
-            </remarks>
-            <param name="name"> The name of the element. </param>
-            <param name="obj"> The object to write about. </param>
         </member>
     </members>
 </doc>

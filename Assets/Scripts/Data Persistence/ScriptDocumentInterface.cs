@@ -235,7 +235,7 @@
 				floats = new Collection<float>()
 			};
 			@interface.bools.Add("henable", HentaiEnabled);
-			bool HentaiEnabled() => B1NARYConfig.HEnable;
+			bool HentaiEnabled() => PlayerConfig.Instance.hEnable;
 			return @interface;
 		}
 
@@ -268,7 +268,7 @@
 			bools.Add("henable", HentaiEnabled);
 			ints = new Collection<int>();
 			floats = new Collection<float>();
-			bool HentaiEnabled() => B1NARYConfig.HEnable;
+			bool HentaiEnabled() => PlayerConfig.Instance.hEnable;
 		}
 	}
 }

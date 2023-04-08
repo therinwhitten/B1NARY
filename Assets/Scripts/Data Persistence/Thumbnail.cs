@@ -39,9 +39,9 @@
 			data = value.InnerText.Split('.').Select(str => byte.Parse(str)).ToArray();
 		}
 
-		void IXmlSerializable.Write(XmlWriter writer)
+		void IXmlSerializable.Write(XmlDocument document, XmlNode node)
 		{
-			writer.WriteString(string.Join(".", data));
+			node.InnerText = string.Join(".", data);
 		}
 
 		private byte[] data;

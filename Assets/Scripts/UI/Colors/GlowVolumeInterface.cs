@@ -22,12 +22,12 @@
 		private void Awake()
 		{
 			nameToSearch = volume.name;
-			B1NARYConfig.Graphics.Glow.AttachValue((value) => BloomIntensity = value);
+			PlayerConfig.Instance.graphics.glow.AttachValue((value) => BloomIntensity = value);
 			SceneManager.Instance.SwitchedScenes.AddPersistentListener(() =>
 			{
 				if (volume == null)
 					volume = GameObject.Find(nameToSearch).GetComponent<Volume>();
-				BloomIntensity = B1NARYConfig.Graphics.Glow.Value;
+				BloomIntensity = PlayerConfig.Instance.graphics.glow.Value;
 			});
 		}
 	}

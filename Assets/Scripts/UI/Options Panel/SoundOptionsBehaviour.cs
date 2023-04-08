@@ -6,6 +6,7 @@
 	using UnityEngine.Audio;
 	using B1NARY.Audio;
 	using System.Collections.Generic;
+	using OVSXmlSerializer.Extras;
 
 	public class SoundOptionsBehaviour : MonoBehaviour 
 	{
@@ -38,13 +39,15 @@
 		public const string MIXER_MUSIC = "Music";
 		public const string MIXER_SFX = "SFX";
 		public const string MIXER_UI = "UI";
-		static readonly HashSet<string> constantMixers = new HashSet<string>()
+		public static Dictionary<string, ChangableValue<float>> GetConstantMixers() 
+			=> new Dictionary<string, ChangableValue<float>>()
 		{
-			MIXER_MASTER,
-			MIXER_MUSIC,
-			MIXER_SFX,
-			MIXER_UI
+			[MIXER_MASTER] = PlayerConfig.Instance.audio.master,
+			[MIXER_MUSIC] = PlayerConfig.Instance.audio.music,
+			[MIXER_SFX] = PlayerConfig.Instance.audio.SFX,
+			[MIXER_UI] = PlayerConfig.Instance.audio.UI
 		};
+
 		public const string MIXER_PLAYER = "Player";
 		public const string MIXER_NPC = "NPC";
 		public const string MIXER_CAMEOS = "Cameos"; 
@@ -82,9 +85,6 @@
 			szycroticSlider.onValueChanged.AddListener(SetSzycroticVolume);
 			silvervaleSlider.onValueChanged.AddListener(SetSilvervaleVolume);
 			watchingLizardSlider.onValueChanged.AddListener(SetLizzyVolume);
-
-
-
 		}
 		
 		/// <summary>
@@ -95,18 +95,14 @@
 		public void SetVolume(string key, float value)
 		{
 			float output;
-			if (!constantMixers.Contains(key))
+			if (GetConstantMixers().TryGetValue(key, out var changableValue))
 			{
-				Dictionary<string, float> newDict = (Dictionary<string, float>)B1NARYConfig.Sound.Characters;
-				if (newDict is null)
-					newDict = new Dictionary<string, float>();
-				newDict[key] = value;
+				changableValue.Value = value;
 				output = Mathf.Log10(value) * 20;
-				B1NARYConfig.Sound.Characters = newDict;
 			}
 			else
 			{
-				PlayerConfig.SetValue(PlayerConfig.PRE_SOUND + key, value);
+				PlayerConfig.Instance.audio.characterVoices[key] = value;
 				output = Mathf.Log10(value) * 20;
 			}
 			mixer.SetFloat(key, output);

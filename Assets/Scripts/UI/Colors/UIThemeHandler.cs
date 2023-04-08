@@ -1,4 +1,4 @@
-﻿namespace B1NARY
+﻿namespace B1NARY.UI.Colors
 {
 	using System;
 	using UnityEngine;
@@ -35,9 +35,9 @@
 			switch (option)
 			{
 				case Option.Primary:
-					return ColorFormat.CurrentTheme.primaryUI;
+					return ColorFormat.CurrentFormat.primaryUI;
 				case Option.Secondary:
-					return ColorFormat.CurrentTheme.SecondaryUI;
+					return ColorFormat.CurrentFormat.SecondaryUI;
 				case Option.Custom:
 					throw new ArgumentException($"although {option} is a enum, you need" +
 						$"another argument or name to differentiate other settings!");
@@ -49,10 +49,10 @@
 		{
 			if (Enum.TryParse(name, out Option option))
 				return GetColor(option);
-			if (ColorFormat.CurrentTheme.ExtraUIColors.TryGetValue(name, out Color color))
+			if (ColorFormat.CurrentFormat.ExtraUIColors.TryGetValue(name, out Color color))
 				return color;
 			throw new NullReferenceException($"'{name}' is not located within the currently " +
-				$"equipped format: {ColorFormat.CurrentTheme.FormatName}.");
+				$"equipped format: {ColorFormat.CurrentFormat.FormatName}.");
 		}
 
 
@@ -124,11 +124,11 @@
 		}
 		private void OnEnable()
 		{
-			ColorFormat.ChangedTheme += UpdateColors;
+			ColorFormat.ChangedFormat += UpdateColors;
 		}
 		private void OnDisable()
 		{
-			ColorFormat.ChangedTheme -= UpdateColors;
+			ColorFormat.ChangedFormat -= UpdateColors;
 		}
 		public void UpdateColors(ColorFormat format = null)
 		{
@@ -151,7 +151,7 @@
 	}
 }
 #if UNITY_EDITOR
-namespace B1NARY.Editor
+namespace B1NARY.UI.Colors.Editor
 {
 	using B1NARY.UI;
 	using System;

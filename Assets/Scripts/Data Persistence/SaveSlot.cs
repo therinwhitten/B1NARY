@@ -24,16 +24,16 @@
 		public const int MAX_SAVES = 69;
 		public static DirectoryInfo SavesDirectory { get; } =
 			SerializableSlot.PersistentData.CreateSubdirectory("Saves");
-
-		private static XmlSerializerConfig config = new XmlSerializerConfig()
+		
+		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
+		new XmlSerializer<SaveSlot>(new XmlSerializerConfig()
 		{
 			TypeHandling = IncludeTypes.SmartTypes,
-			indentChars = "\t",
-			indent = true,
-			logger = new OVSXmlLogger(),
-		};
-		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
-		new XmlSerializer<SaveSlot>(config);
+			VersionLeniency = Versioning.Leniency.Minor,
+			Version = new Version(1, 0, 0),
+			IndentChars = "\t",
+			Indent = true,
+		});
 
 		public static SaveSlot ActiveSlot
 		{
