@@ -81,7 +81,6 @@
 			lineData = lineData.Trim();
 			if (string.IsNullOrWhiteSpace(lineData))
 			{
-				Debug.Log("Empty Line!");
 				return LineType.Empty;
 			}
 
@@ -178,9 +177,9 @@
 			int commentIndex = rawLine.IndexOf("//");
 			if (commentIndex != -1)
 				rawLine = rawLine.Remove(commentIndex);
-			RawLine = rawLine.Trim();
+			RawLine = string.IsNullOrWhiteSpace(rawLine) ? "" : rawLine.Trim();
 			Index = index;
-			Type = ParseLineAsType(rawLine);
+			Type = ParseLineAsType(RawLine);
 		}
 
 		public bool Equals(ScriptLine other)

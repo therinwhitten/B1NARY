@@ -130,20 +130,25 @@
 				while (Lines.Count > localIndex && !ReferenceEquals(Lines[localIndex].Parent, this))
 					localIndex++;
 			}
-			for (int i = localIndex; i < LinesWithElements.Count; i++)
+			for (int i = localIndex; i < Lines.Count; i++)
 			{
-				if (LinesWithElements[i] is null)
+				if (Lines[i] is null)
 				{
 					throw new InvalidDataException($"Line {ToGlobal(i)} is null.");
 				}
-				if (LinesWithElements[i] is ScriptElement element)
+				if (Lines[i] is ScriptElementPointer)
+				{
+					throw new InvalidOperationException("Tried to invoke a pointer!");
+				}
+				if (Lines[i] is ScriptElement element)
 				{
 					using (var enumerator = element.EnumerateThrough(0))
 						while (enumerator.MoveNext())
 							yield return enumerator.Current;
+					i += element.Length;
 					continue;
 				}
-				yield return LinesWithElements[i];
+				yield return Lines[i];
 			}
 		}
 		/*

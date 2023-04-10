@@ -1,25 +1,10 @@
-﻿{changeScene: Times Square}
-{spawnEmpty: MC}
-MC::
-Starting Test Sequence.
-{usegameobject: Binary Selection Panel}
-{if: n-b}
-{
-	non-binary.
-}
-{else}
-{
-	binary.
-}
-{usegameobject: Character Selection Panel}
-{if: MalePath}
-{
-	Male Path.
-}
-{if: !MalePath}
-{
-	Female Path.
-}
-Text.
-Test Finished! Looping.
-{changeScript: Test File}
+﻿{changeScene: Scenes/Star/Star Outside Night}
+{colorformat: Asterella}
+{fadeinsound: Star Piano, 1}
+{fadeinsound: Wind Heavy, 1}
+{fadeoutsound: Ears Ringing, 15}
+{fadeoutsound: Normal Heartbeat Prologue, 5}
+{spawnChar: szycrotic default, 2, Masked Punk}
+{spawnEmpty: Narrator, NPC}
+{spawnEmpty: MC, Player}
+{changeScript: Female/Prologue/Star I, 74}
