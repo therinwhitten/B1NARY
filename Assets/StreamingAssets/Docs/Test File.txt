@@ -1,17 +1,25 @@
 ﻿{changeScene: Times Square}
 {spawnEmpty: MC}
 MC::
-Starting Test Sequence. 
-{choice: Choices, what will you do? }
+Starting Test Sequence.
+{usegameobject: Binary Selection Panel}
+{if: n-b}
 {
-	[eat ur mom]
-	{
-		Oh damn, savage.
-	}
-	[dont eat ur mom]
-	{
-		f.
-	}
+	non-binary.
 }
-Test Finished! Repeating.
+{else}
+{
+	binary.
+}
+{usegameobject: Character Selection Panel}
+{if: MalePath}
+{
+	Male Path.
+}
+{if: !MalePath}
+{
+	Female Path.
+}
+Text.
+Test Finished! Looping.
 {changeScript: Test File}

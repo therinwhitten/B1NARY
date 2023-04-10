@@ -178,7 +178,7 @@
 			int commentIndex = rawLine.IndexOf("//");
 			if (commentIndex != -1)
 				rawLine = rawLine.Remove(commentIndex);
-			RawLine = rawLine;
+			RawLine = rawLine.Trim();
 			Index = index;
 			Type = ParseLineAsType(rawLine);
 		}

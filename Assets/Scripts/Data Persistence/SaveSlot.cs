@@ -117,10 +117,10 @@
 		public const string BINARY_KEY = "n-b";
 		public bool IsBinary
 		{
-			get => booleans.TryGetValue(BINARY_KEY, out var binary)
-				? binary
+			get => booleans.TryGetValue(BINARY_KEY, out var nonbinary)
+				? !nonbinary
 				: true;
-			set => booleans[BINARY_KEY] = value;
+			set => booleans[BINARY_KEY] = !value;
 		}
 		public const string GENDER_KEY = "MalePath";
 		public Gender Gender

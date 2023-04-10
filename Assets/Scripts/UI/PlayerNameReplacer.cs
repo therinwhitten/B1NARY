@@ -8,6 +8,8 @@
 
 	public sealed class PlayerNameReplacer : CachedMonobehaviour
 	{
+		public bool showOnlyPlayer = true;
+
 		public static string ReplaceText(in string text)
 		{
 			if (text == SaveSlot.DEFAULT_NAME) 
@@ -16,12 +18,22 @@
 				return "Indescribable Horror";
 			return text;
 		}
+		public bool ShouldChangeName(Character? character)
+		{
+			if (!character.HasValue)
+				return false;
+			if (!showOnlyPlayer)
+				return true;
+			if (CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterName == "MC")
+				return true;
+			return false;
+		}
 		private void OnEnable()
 		{
 			TMP_Text text = GetComponent<TMP_Text>();
 			CharacterManager.Instance.ActiveCharacterChanged += (character) =>
 			{
-				if (character.HasValue)
+				if (ShouldChangeName(character))
 					text.text = ReplaceText(character.Value.controller.CharacterName);
 			};
 			SaveSlot.ActiveSlot.strings.UpdatedValue += UpdateName;

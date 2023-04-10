@@ -56,13 +56,16 @@
 		[ForcePause]
 		internal static void ChangeScript(string scriptPath)
 		{
-			Instance.NewDocument(scriptPath);
+			ScriptHandler handler = Instance;
+			handler.NewDocument(scriptPath);
+			Debug.Log($"Next document to line: {handler.NextLine()}");
 		}
 		[ForcePause]
 		internal static void ChangeScript(string scriptPath, string line)
 		{
 			ScriptHandler handler = Instance;
-			handler.NewDocument(scriptPath, int.Parse(line));
+			handler.NewDocument(scriptPath, int.Parse(line) - 1);
+			Debug.Log($"Next document to line: {handler.NextLine()}");
 		}
 		[ForcePause]
 		internal static void UseGameObject(string objectName)
@@ -103,11 +106,6 @@
 		/// go to the <see cref="NextLine"/> on press.
 		/// </summary>
 		public string[] nextLineButtons;
-		/// <summary>
-		/// From where the game session starts, or when 
-		/// <see cref="InitializeNewScript(string)"/> is called.
-		/// </summary>
-		public DateTime playedTime;
 
 		private void Awake()
 		{
@@ -129,44 +127,32 @@
 		}
 
 
-		public void NewDocument()
-		{
-			NewDocument(defaultStreamingAssetsDocumentPath);
-		}
-		public void NewDocument(string streamingAssetsDocument)
-		{
-			document = new ScriptDocument(config, DocumentList.FromVisual(streamingAssetsDocument));
-			playedTime = DateTime.Now;
-			documentWatcher = document.Start();
-		}
-		public void NewDocument(int index)
+		public void NewDocument(int index = 0)
 		{
 			NewDocument(defaultStreamingAssetsDocumentPath, index);
 		}
-		public void NewDocument(string streamingAssetsDocument, int index)
+		public void NewDocument(string streamingAssetsDocument, int index = 0)
 		{
 			document = new ScriptDocument(config, DocumentList.FromVisual(streamingAssetsDocument));
-			playedTime = DateTime.Now;
 			documentWatcher = document.StartAtLine(index);
 		}
 
-		public void NextLine()
+		public ScriptNode NextLine(bool forceContinue = false)
 		{
 			if (pauser.ShouldPause)
 			{
 				Debug.Log("Pausing is enabled.");
-				return;
+				return documentWatcher.CurrentNode;
 			}
 			if (document is null || documentWatcher is null)
 			{
-				Debug.LogError("There is no document created in the system!");
-				return;
+				throw new MissingReferenceException("There is no document created in the system!");
 			}
-			if (DialogueSystem.TryGetInstance(out var system))
+			if (!forceContinue && DialogueSystem.TryGetInstance(out var system))
 				if (system.IsSpeaking && !DateTimeTracker.IsAprilFools)
 				{ 
 					DialogueSystem.Instance.StopSpeaking(true);
-					return;
+					return documentWatcher.CurrentNode;
 				}
 			IsActive = true;
 			if (documentWatcher.EndOfDocument)
@@ -176,9 +162,10 @@
 				else
 					Debug.LogWarning($"Reached to end of document!");
 				Clear();
-				return;
+				return null;
 			}
-			documentWatcher.NextNode(out _);
+			documentWatcher.NextNode(out var node);
+			return node;
 		}
 
 

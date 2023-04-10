@@ -6,6 +6,7 @@
 	using System.IO;
 	using System.Linq;
 	using System.Xml.Linq;
+	using UnityEngine;
 
 	public class ScriptElement : ScriptNode, IPointerConverter
 	{
@@ -78,14 +79,17 @@
 							layers--;
 					}
 					ScriptElement subElement = config.GetDefinedElement(subLines);
-					List<ScriptNode> lineCollection = new List<ScriptNode>();
-					lineCollection.Add(subElement);
+					subElement.Parent = this;
+					List<ScriptNode> lineCollection = new List<ScriptNode>{subElement};
 					if (subElement.StartBracketSkip.Count > 1)
 						lineCollection.AddRange(subElement.StartBracketSkip.Skip(1));
 					// Adds pointers to the element stored in the lines.
 					for (int ii = 0; ii < subElement.Lines.Count; ii++)
 					{
-						var pointer = new ScriptElementPointer(subElement, ii, subElement.Lines[ii].PrimaryLine);
+						var pointer = new ScriptElementPointer(subElement, ii, subElement.Lines[ii].PrimaryLine)
+						{
+							Parent = this
+						};
 						lineCollection.Add(pointer);
 					}
 					lineCollection.AddRange(subElement.EndBracketSkip);

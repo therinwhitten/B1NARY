@@ -60,12 +60,13 @@
 		}
 		public override IEnumerator<ScriptNode> EnumerateThrough(int localIndex)
 		{
-			if (localIndex <= 0)
-				yield break;
-			using (var enumerator = base.EnumerateThrough(localIndex))
+			yield break;
+		}
+		internal IEnumerator<ScriptNode> ElseEnumerate()
+		{
+			using (var enumerator = base.EnumerateThrough(0))
 				while (enumerator.MoveNext())
 					yield return enumerator.Current;
 		}
-		internal IEnumerator<ScriptNode> ElseEnumerate() => base.EnumerateThrough(0); 
 	}
 }

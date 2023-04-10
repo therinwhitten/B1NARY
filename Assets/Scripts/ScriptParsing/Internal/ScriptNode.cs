@@ -22,6 +22,7 @@
 			PrimaryLine = rootLine;
 		}
 
+		/// <inheritdoc/>
 		public override string ToString()
 		{
 			return PrimaryLine.ToString();
