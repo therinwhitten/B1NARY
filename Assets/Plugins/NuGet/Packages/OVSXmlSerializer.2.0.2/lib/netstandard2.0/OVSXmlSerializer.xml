@@ -208,6 +208,13 @@
             Default variation of the config.
             </summary>
         </member>
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.IgnoreUndefinedValues">
+            <summary>
+            If the object is set to <see langword="null"/> on the reader, or missing entirely,
+            it will instead allow the default to be set instead on enabled. Where
+            leaving it disabled to set it to <see langword="null"/> instead.
+            </summary>
+        </member>
         <member name="P:OVSXmlSerializer.XmlSerializerConfig.UseSingleInstanceInsteadOfMultiple">
             <summary>
             Whenever a reference type is made, and multiple things use the same
@@ -342,6 +349,64 @@
             If the field or object contains the attribute.
             </summary>
             <typeparam name="T"> The attribute. </typeparam>
+        </member>
+        <member name="T:OVSXmlSerializer.OVSXmlLogger">
+            <summary>
+            A class thats stores and handles debug messages like <see cref="T:OVSXmlSerializer.OVSXmlDebugLine"/>.
+            </summary>
+        </member>
+        <member name="P:OVSXmlSerializer.OVSXmlLogger.DebugLines">
+            <summary>
+            All the lines that has been logged on creation of the class.
+            </summary>
+        </member>
+        <member name="E:OVSXmlSerializer.OVSXmlLogger.Log">
+            <summary>
+            An event that is called every time a new message is made.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.OVSXmlLogger.#ctor">
+            <summary>
+            Creates a new instance to use for writers and readers.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.OVSXmlLogger.PrintToConsole">
+            <summary>
+            Prints all lines to console.
+            </summary>
+        </member>
+        <member name="T:OVSXmlSerializer.OVSXmlDebugLine">
+            <summary>
+            Data about a specific debug line.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.OVSXmlDebugLine.message">
+            <summary>
+            The raw message.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.OVSXmlDebugLine.source">
+            <summary>
+            The source of the message; Usually reader or writer.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.OVSXmlDebugLine.created">
+            <summary>
+            When the message was created.
+            </summary>
+        </member>
+        <member name="M:OVSXmlSerializer.OVSXmlDebugLine.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new instance of <see cref="T:OVSXmlSerializer.OVSXmlDebugLine"/>
+            </summary>
+            <param name="source">The source of the message.</param>
+            <param name="message">The message itself</param>
+        </member>
+        <member name="M:OVSXmlSerializer.OVSXmlDebugLine.#ctor(System.String)">
+            <summary>
+            Creates a new instance of <see cref="T:OVSXmlSerializer.OVSXmlDebugLine"/>
+            </summary>
+            <param name="message">The message itself</param>
         </member>
         <member name="M:OVSXmlSerializer.OVSXmlDebugLine.ToString">
             <inheritdoc/>

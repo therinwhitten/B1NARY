@@ -43,8 +43,16 @@
 		/// </summary>
 		public List<KeyValuePair<string, TValue>> Pairs
 		{
-			get => m_pairs;
-			set => m_pairs = value;
+			get
+			{
+				if (m_pairs is null && Application.isPlaying)
+					m_pairs = DefinedPairs;
+				return m_pairs;
+			}
+			set
+			{
+				m_pairs = value;
+			}
 		}
 		protected List<KeyValuePair<string, TValue>> m_pairs;
 		public IEnumerable<string> Keys => Pairs.Select(pair => pair.Key);
@@ -52,7 +60,6 @@
 
 		protected virtual void Awake()
 		{
-			m_pairs = DefinedPairs;
 			DefineDropdown();
 			dropdown.value = InitialValue;
 			dropdown.onValueChanged.AddListener(PickedChoice);

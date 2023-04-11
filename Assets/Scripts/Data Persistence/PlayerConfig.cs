@@ -28,6 +28,7 @@
 				IndentChars = "\t",
 				Version = new Version(1, 0),
 				VersionLeniency = Versioning.Leniency.Minor,
+				IgnoreUndefinedValues = true,
 			});
 
 
@@ -79,6 +80,7 @@
 		}
 
 		public ChangableValue<bool> hEnable = new ChangableValue<bool>(false);
+		public ChangableValue<int> dialogueSpeedTicks = new ChangableValue<int>(30);
 		public Audio audio = new Audio();
 		public Graphics graphics = new Graphics();
 

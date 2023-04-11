@@ -59,9 +59,10 @@
 		}
 		public static CommandArray Commands = new CommandArray
 		{
-			["textspeed"] = (Action<string>)(speedRaw =>
+			["textspeed"] = (Action<string>)(speedMultRaw =>
 			{
-				Instance.TicksPerCharacter = int.Parse(speedRaw);
+				float multiplier = float.Parse(speedMultRaw);
+				Instance.TickMultiplier = multiplier;
 			}),
 			["additive"] = (Action<string>)(boolRaw =>
 			{
@@ -77,18 +78,17 @@
 			}),
 		};
 
+		public float TickMultiplier = 1f;
 		public int TicksPerCharacter
 		{
-			get => m_ticksPerChar;
+			get => PlayerConfig.Instance.dialogueSpeedTicks.Value;
 			set
 			{
-				m_ticksPerChar = Math.Max(0, value);
-				m_secondsChar = m_ticksPerChar / 1000f;
+				PlayerConfig.Instance.dialogueSpeedTicks.Value = Math.Max(0, value);
+				m_secondsChar = TicksPerCharacter * TickMultiplier / 1000f;
 			}
 		}
-		[Tooltip("How many ticks or milliseconds should the game wait per character?")]
-		private int m_ticksPerChar = 30;
-		private float m_secondsChar = 30f / 1000f;
+		private float m_secondsChar;
 		public WaitForSeconds WaitSecondsPerChar => new WaitForSeconds(m_secondsChar);
 
 		/// <summary>
@@ -226,18 +226,7 @@
 
 		private void Awake()
 		{
-			m_secondsChar = m_ticksPerChar / 1000f;
-			//CharacterManager.Instance.ActiveCharacterChanged += (character) =>
-			//{
-			//	if (character.HasValue)
-			//		SpeakerName = character.Value.controller.CharacterName;
-			//};
-			//SaveSlot.ActiveSlot.strings.UpdatedValue += (key, oldValue, newValue, source) =>
-			//{
-			//	if (key != SaveSlot.KEY_PLAYER_NAME)
-			//		return;
-			//	SpeakerName = SpeakerName.Replace(oldValue ?? SaveSlot.DEFAULT_NAME, newValue);
-			//};
+			PlayerConfig.Instance.dialogueSpeedTicks.AttachValue((integer) => TicksPerCharacter = integer);
 		}
 
 		/// <summary>
