@@ -163,12 +163,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5128104009069987236}
+  - component: {fileID: 9183731583755558812}
   - component: {fileID: 1156601245126608702}
   - component: {fileID: 4033556903408927741}
   - component: {fileID: 7960023945817529747}
   - component: {fileID: 6490287348167053013}
   - component: {fileID: 4577397779291765449}
-  - component: {fileID: 186818381293119004}
   m_Layer: 0
   m_Name: Cross Scene
   m_TagString: Untagged
@@ -184,7 +184,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4227418926354388459}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 33.25743, y: 52.544724, z: -4056.875}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1266231919}
@@ -193,6 +193,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9183731583755558812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4227418926354388459}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed836847a17fe9b4f9d0d2287842e52c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_duplicateBehaviour: 0
+  m_crossSceneBehaviour: 0
 --- !u!114 &1156601245126608702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,20 +279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f4fff0ec7da52429ad306c2fd70942, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  volume: {fileID: 2499485404004387810, guid: d915580206b4cd94d82eabf64532d565, type: 3}
---- !u!114 &186818381293119004
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4227418926354388459}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 41eacb2fb0903974494557ba24cf72bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  duplicateBehaviour: 1
+  volume: {fileID: 0}
 --- !u!1 &6689982567584470584
 GameObject:
   m_ObjectHideFlags: 0

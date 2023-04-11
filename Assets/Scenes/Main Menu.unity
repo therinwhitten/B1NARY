@@ -3872,18 +3872,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &1132733918 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7960023945817529747, guid: 135af6989c2cd3546943edd0d2842d66,
-    type: 3}
-  m_PrefabInstance: {fileID: 1934965871}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d49895e4456e5394b8bb4986f39f625d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1150055370
 GameObject:
   m_ObjectHideFlags: 0
@@ -5457,90 +5445,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1417764882}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1934965871
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1156601245126608702, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: defaultStreamingAssetsDocumentPath
-      value: PrologueStory
-      objectReference: {fileID: 0}
-    - target: {fileID: 2844464862536508722, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4227418926354388459, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_Name
-      value: Cross Scene
-      objectReference: {fileID: 0}
-    - target: {fileID: 4577397779291765449, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: volume
-      value: 
-      objectReference: {fileID: 2538100476208255327}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 33.25743
-      objectReference: {fileID: 0}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 52.544724
-      objectReference: {fileID: 0}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -4056.875
-      objectReference: {fileID: 0}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5128104009069987236, guid: 135af6989c2cd3546943edd0d2842d66,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 135af6989c2cd3546943edd0d2842d66, type: 3}
 --- !u!1 &2049353297
 GameObject:
   m_ObjectHideFlags: 0
@@ -6493,7 +6397,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1132733918}
+      - m_Target: {fileID: 0}
         m_MethodName: InitializeScript
         m_Mode: 5
         m_Arguments:
@@ -6717,6 +6621,17 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2102386576}
+        m_MethodName: NewGame
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Test File
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!222 &2102386583
@@ -8956,6 +8871,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2538100476422792832}
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2538100476422792837}
+        m_MethodName: NewGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &2538100476422792833
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9010,17 +8947,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1132733918}
-        m_MethodName: InitializeGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: PrologueStory
-          m_BoolArgument: 1
         m_CallState: 2
   onTweenCreated:
     m_PersistentCalls:
@@ -11403,7 +11329,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -656.3296, y: -341.91003}
+  m_AnchoredPosition: {x: -656.329, y: -341.91003}
   m_SizeDelta: {x: 235.13591, y: 224.88943}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2538100476634713316

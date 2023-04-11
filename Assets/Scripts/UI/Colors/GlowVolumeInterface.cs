@@ -21,6 +21,9 @@
 
 		private void Awake()
 		{
+			if (volume == null)
+#warning TODO: Temporary fix, be sure to screw it in!
+				volume = GameObject.Find("UI Bloom").GetComponent<Volume>();
 			nameToSearch = volume.name;
 			PlayerConfig.Instance.graphics.glow.AttachValue((value) => BloomIntensity = value);
 			SceneManager.Instance.SwitchedScenes.AddPersistentListener(() =>

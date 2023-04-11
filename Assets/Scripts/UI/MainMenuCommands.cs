@@ -12,9 +12,12 @@
 		{
 			SceneManager.Instance.InitializeGame();
 		}
-		public void  QuitGame ()
+		public void NewGame(string streamingAssetsFilePath)
 		{
-
+			SceneManager.Instance.InitializeScript(streamingAssetsFilePath);
+		}
+		public void QuitGame()
+		{
 #if UNITY_EDITOR
 			UnityEditor.EditorApplication.ExitPlaymode();
 #else
