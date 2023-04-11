@@ -8,6 +8,8 @@
 
 	public partial class ColorFormat
 	{
+		public const string ROOT_NAME_CUSTOM = "ColorFormat",
+			ROOT_NAME_DEFAULT = "DefaultFormat";
 		/// <summary>
 		/// 
 		/// </summary>
@@ -40,11 +42,11 @@
 			if (isDefault)
 			{
 				using (var stream = DefaultThemePath.Open(FileMode.Create, FileAccess.Write))
-					FormatSerializer.Serialize(stream, this, "DefaultFormat");
+					FormatSerializer.Serialize(stream, this, ROOT_NAME_DEFAULT);
 				return;
 			}
 			using (var stream = CustomThemePath.GetFile(fileName).Open(FileMode.Create, FileAccess.Write))
-				FormatSerializer.Serialize(stream, this, "ColorFormat");
+				FormatSerializer.Serialize(stream, this, ROOT_NAME_CUSTOM);
 		}
 	}
 }

@@ -4,6 +4,7 @@
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
 	using B1NARY.UI;
+	using Codice.Client.Common;
 	using Live2D.Cubism.Framework.Expression;
 	using System;
 	using System.Collections;
@@ -52,6 +53,7 @@
 		}
 		private string[] m_expressions;
 		public VoiceActorHandler VoiceData { get; private set; }
+		public float selectedSizeIncreaseMultiplier = 1.1f;
 		public CubismExpressionController expressionController;
 		public string CurrentAnimation
 		{
@@ -94,10 +96,10 @@
 		public string CharacterName { get; set; }
 		string ICharacterController.GameObjectName => gameObject.name;
 
-		public Vector2 Position 
-		{ 
+		public Vector2 Position
+		{
 			get => Transform.position;
-			set => Transform.position = value; 
+			set => Transform.position = value;
 		}
 		public float HorizontalPosition
 		{
@@ -110,14 +112,54 @@
 		}
 		private CoroutineWrapper PositionChanger;
 
-		bool ICharacterController.Selected 
+		public bool Selected
 		{
-			get;
-			set;
+			get => Selected;
+			set
+			{
+				if (m_selected == value)
+					return;
+				m_selected = value;
+				// Custom epsilon
+				if (Math.Abs(selectedSizeIncreaseMultiplier - 1f) < 0.005f)
+					return;
+				Transform transform = this.transform;
+				Vector3 currentScale = transform.localScale;
+				float CurrentScaleMag() => currentScale.magnitude;
+				Vector3 toScale = m_selected ? currentScale * selectedSizeIncreaseMultiplier : currentScale / selectedSizeIncreaseMultiplier;
+				float toScaleMag = toScale.magnitude;
+				if (!CoroutineWrapper.IsNotRunningOrNull(SizerSelection))
+					SizerSelection.Stop();
+				SizerSelection = new CoroutineWrapper(this, SmoothSizeChanger());
+				SizerSelection.AfterActions += (mono) =>
+				{
+					Vector3 totalDiff = currentScale - toScale;
+					transform.localScale += totalDiff;
+				};
+				SizerSelection.Start();
+				IEnumerator SmoothSizeChanger()
+				{
+					float acceptablePoint = 0.005f;
+					float velocity = 0f;
+					while (Math.Abs(CurrentScaleMag() - toScaleMag) > acceptablePoint)
+					{
+						float newMag = Mathf.SmoothDamp(CurrentScaleMag(), toScaleMag, ref velocity, 0.25f);
+						Vector3 newScale = currentScale.normalized * newMag;
+						Vector3 scaleMagDiff = currentScale - newScale;
+						currentScale = newScale;
+						transform.localScale = currentScale + scaleMagDiff;
+						yield return new WaitForEndOfFrame();
+					}
+				}
+			}
 		}
+		private bool m_selected = false;
+		private CoroutineWrapper SizerSelection;
 
 		public void SetPositionOverTime(float newXPosition, float time)
 		{
+			if (!CoroutineWrapper.IsNotRunningOrNull(PositionChanger))
+				PositionChanger.Stop();
 			PositionChanger = new CoroutineWrapper(this, SmoothPosChanger());
 			PositionChanger.AfterActions += (mono) => HorizontalPosition = newXPosition;
 			PositionChanger.Start();

@@ -4,6 +4,7 @@
 	using UI;
 	using System.Threading.Tasks;
 	using System.Collections;
+	using B1NARY.Scripting;
 
 	public class MainMenuCommands : MonoBehaviour
 	{
@@ -15,6 +16,18 @@
 		public void NewGame(string streamingAssetsFilePath)
 		{
 			SceneManager.Instance.InitializeScript(streamingAssetsFilePath);
+		}
+		public void QuitToMainMenu()
+		{
+			CoroutineWrapper wrapper = new CoroutineWrapper(SceneManager.InstanceOrDefault, SceneManager.InstanceOrDefault.ReturnToMainMenu());
+			wrapper.AfterActions += (mono) =>
+			{
+				if (!ScriptHandler.TryGetInstance(out var handler))
+					return;
+				handler.document = null;
+				handler.documentWatcher = null;
+			};
+			wrapper.Start();
 		}
 		public void QuitGame()
 		{
@@ -42,6 +55,8 @@ namespace B1NARY.UI.Editor
 		{
 			if (AddButton("New Game") && Application.isPlaying)
 				commands.NewGame();
+			if (AddButton("Quit To Main Menu") && Application.isPlaying)
+				commands.QuitToMainMenu();
 			if (AddButton("Quit Game") && Application.isPlaying)
 				commands.QuitGame();
 		}
