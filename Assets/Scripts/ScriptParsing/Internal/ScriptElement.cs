@@ -145,7 +145,7 @@
 					using (var enumerator = element.EnumerateThrough(0))
 						while (enumerator.MoveNext())
 							yield return enumerator.Current;
-					i += element.Length;
+					i += element.Length - 1;
 					continue;
 				}
 				yield return Lines[i];

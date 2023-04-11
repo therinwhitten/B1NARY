@@ -79,15 +79,6 @@
 		};
 
 		public float TickMultiplier = 1f;
-		public int TicksPerCharacter
-		{
-			get => PlayerConfig.Instance.dialogueSpeedTicks.Value;
-			set
-			{
-				PlayerConfig.Instance.dialogueSpeedTicks.Value = Math.Max(0, value);
-				m_secondsChar = TicksPerCharacter * TickMultiplier / 1000f;
-			}
-		}
 		private float m_secondsChar;
 		public WaitForSeconds WaitSecondsPerChar => new WaitForSeconds(m_secondsChar);
 
@@ -226,7 +217,10 @@
 
 		private void Awake()
 		{
-			PlayerConfig.Instance.dialogueSpeedTicks.AttachValue((integer) => TicksPerCharacter = integer);
+			PlayerConfig.Instance.dialogueSpeedTicks.AttachValue((integer) =>
+			{
+				m_secondsChar = (integer * TickMultiplier) / 1000f;
+			});
 		}
 
 		/// <summary>
@@ -341,7 +335,6 @@ namespace B1NARY.Editor
 			//EditorGUILayout.LabelField("Current Font: " + dialogueSystem.CurrentFontAsset.name);
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.speakerBox)));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.textBox)));
-			dialogueSystem.TicksPerCharacter = DirtyAuto.Slider(target, new GUIContent("Ticks Waited Per Character", "How long the text box will wait per character within milliseconds, with 0 being instantaneous. 30 by default."), dialogueSystem.TicksPerCharacter, 0, 200);
 			serializedObject.ApplyModifiedProperties();
 		}
 

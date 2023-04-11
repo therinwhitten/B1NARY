@@ -44,7 +44,15 @@
 		[ForcePause]
 		internal static void ReturnToMainMenuCommand()
 		{
-			InstanceOrDefault.StartCoroutine(InstanceOrDefault.ReturnToMainMenu());
+			CoroutineWrapper wrapper = new CoroutineWrapper(InstanceOrDefault, InstanceOrDefault.ReturnToMainMenu());
+			wrapper.AfterActions += (mono) =>
+			{
+				if (!ScriptHandler.TryGetInstance(out var handler))
+					return;
+				handler.document = null;
+				handler.documentWatcher = null;
+			};
+			wrapper.Start();
 		}
 		/// <summary> Gets the currently active/main scene. </summary>
 		public static Scene ActiveScene => UnitySceneManager.GetActiveScene();
