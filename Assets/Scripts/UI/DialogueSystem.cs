@@ -307,7 +307,8 @@
 				{
 					splitText[i] += parsableText[i].value[ii];
 					CurrentText = string.Join("", splitText);
-					yield return WaitSecondsPerChar;
+					if (PlayerConfig.Instance.dialogueSpeedTicks.Value > 0)
+						yield return WaitSecondsPerChar;
 				}
 			}
 			CurrentText = FinalText;

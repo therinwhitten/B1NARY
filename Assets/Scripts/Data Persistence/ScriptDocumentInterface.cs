@@ -6,7 +6,7 @@
 	using System;
 	using B1NARY.Scripting;
 	using System.Runtime.Serialization;
-	using System.Xml.Serialization;
+	using OVSXmlSerializer;
 
 	/// <summary>
 	/// A delegate that is treated as an event, sending out the new value and 
@@ -14,7 +14,7 @@
 	/// </summary>
 	public delegate void UpdatedConstantValue<T>(string key, T oldValue, T newValue, Collection<T> source);
 
-	[Serializable]
+	[Serializable, XMLIgnoreEnumerable]
 	public sealed class Collection<T> : IDictionary<string, T>
 	{
 		/// <summary>

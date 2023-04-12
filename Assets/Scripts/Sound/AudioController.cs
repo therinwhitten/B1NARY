@@ -79,7 +79,7 @@
 		public IReadOnlyDictionary<(string name, int index), AudioTracker> ActiveAudioTrackers => m_activeAudioTrackers;
 
 		private Dictionary<(string name, int index), AudioTracker> m_activeAudioTrackers;
-		private (string name, int index) AddAudioClipToDictionary(CustomAudioClip customAudioClip)
+		public (string name, int index) AddAudioClipToDictionary(CustomAudioClip customAudioClip)
 		{
 			int index = 0;
 			while (m_activeAudioTrackers.ContainsKey((customAudioClip.Name, index)))

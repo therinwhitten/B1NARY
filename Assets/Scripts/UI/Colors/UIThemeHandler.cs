@@ -13,7 +13,6 @@
 	using UnityEngine.Rendering;
 	using B1NARY.Scripting;
 
-#warning This seems a bit inefficient. Feel free to optimize this one!
 	/// <summary>
 	/// Allows you to easily change a single gameObject with the <see cref="Image"/>
 	/// component to a color. By enabling, you change it via the parameters the
@@ -55,7 +54,6 @@
 				$"equipped format: {ColorFormat.CurrentFormat.FormatName}.");
 		}
 
-#warning TODO: make this ctor thing more efficient!
 		public string imageThemeName = Option.Secondary.ToString(),
 			buttonHighlightedName = Option.Primary.ToString(),
 			buttonPressedName = Option.Primary.ToString(),

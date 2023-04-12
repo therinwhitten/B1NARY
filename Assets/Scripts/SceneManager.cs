@@ -1,5 +1,6 @@
 ﻿namespace B1NARY
 {
+	using B1NARY.Audio;
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
@@ -157,6 +158,9 @@
 			}
 			ScriptHandler.Instance.pauser.Play();
 			ScriptHandler.Instance.Clear();
+			using (var enumerator = AudioController.Instance.ActiveAudioTrackers.Values.GetEnumerator())
+				while (enumerator.MoveNext())
+					enumerator.Current.Stop();
 		}
 		/// <summary>
 		/// Initializes the <see cref="ScriptHandler"/>, the system expects the

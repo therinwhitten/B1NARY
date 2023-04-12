@@ -4,7 +4,6 @@
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
 	using B1NARY.UI;
-	using Codice.Client.Common;
 	using Live2D.Cubism.Framework.Expression;
 	using System;
 	using System.Collections;
