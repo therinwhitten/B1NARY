@@ -74,7 +74,7 @@
 					setting = false;
 				else
 					throw new InvalidCastException(boolRaw);
-				Instance.Additive = setting;
+				Additive = setting;
 			}),
 		};
 
@@ -87,7 +87,7 @@
 		/// line. Uses <see cref="ScriptHandler.ScriptDocument"/> in order to store
 		/// the field.
 		/// </summary>
-		public bool Additive
+		public static bool Additive
 		{
 			get => SaveSlot.ActiveSlot.Additive;
 			set
@@ -96,7 +96,7 @@
 					return;
 				SaveSlot.ActiveSlot.Additive = value;
 				if (value)
-					CurrentText = string.Empty;
+					Instance.CurrentText = string.Empty;
 			}
 		}
 		public TMP_Text speakerBox, textBox;
@@ -132,7 +132,7 @@
 		/// If both speaker and line are both finished playing and it should
 		/// automatically move to the next line.
 		/// </summary>
-		public bool AutoSkip
+		public static bool AutoSkip
 		{
 			get => m_autoSkip;
 			set
@@ -141,17 +141,17 @@
 					return;
 				FastSkip = false;
 				m_autoSkip = value;
-				if (!CoroutineWrapper.IsNotRunningOrNull(eventCoroutine))
-					eventCoroutine.Stop();
+				if (!CoroutineWrapper.IsNotRunningOrNull(Instance.eventCoroutine))
+					Instance.eventCoroutine.Stop();
 				if (value)
-					eventCoroutine = new CoroutineWrapper(this, AutoSkipCoroutine()).Start();
+					Instance.eventCoroutine = new CoroutineWrapper(Instance, AutoSkipCoroutine()).Start();
 
 				IEnumerator AutoSkipCoroutine()
 				{
 					while (AutoSkip)
 					{
 						yield return new WaitForEndOfFrame();
-						if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
+						if (!CoroutineWrapper.IsNotRunningOrNull(Instance.speakCoroutine))
 							continue;
 						if (CharacterManager.Instance.CharactersInScene.Values.Any(pair => pair.controller.VoiceData.IsPlaying))
 							continue;
@@ -161,19 +161,19 @@
 			}
 
 		}
-		private bool m_autoSkip = false;
+		private static bool m_autoSkip = false;
 		/// <summary>
 		/// Helper method that inverts <see cref="AutoSkip"/>, used by 
 		/// <see cref="UnityEngine.Events.UnityEvent"/>
 		/// </summary>
-		public void ToggleAutoSkip() => AutoSkip = !AutoSkip;
+		public void SetAutoSkip(bool autoSkip) => AutoSkip = autoSkip;
 
 		/// <summary>
 		/// A toggle between if it should move foward within a fast, fixed 
 		/// timeframe. Regardless of what is the current status of the text and 
 		/// audio speech.
 		/// </summary>
-		public bool FastSkip
+		public static bool FastSkip
 		{
 			get => m_fastSkip;
 			set
@@ -182,11 +182,10 @@
 					return;
 				AutoSkip = false;
 				m_fastSkip = value;
-				if (!CoroutineWrapper.IsNotRunningOrNull(eventCoroutine))
-					eventCoroutine.Stop();
+				if (!CoroutineWrapper.IsNotRunningOrNull(Instance.eventCoroutine))
+					Instance.eventCoroutine.Stop();
 				if (value)
-					eventCoroutine = new CoroutineWrapper(this, FastSkipCoroutine()).Start();
-
+					Instance.eventCoroutine = new CoroutineWrapper(Instance, FastSkipCoroutine()).Start();
 				IEnumerator FastSkipCoroutine()
 				{
 					while (FastSkip)
@@ -197,12 +196,12 @@
 				}
 			}
 		}
-		private bool m_fastSkip = false;
+		private static bool m_fastSkip = false;
 		/// <summary>
 		/// Helper method that inverts <see cref="FastSkip"/>, used by 
 		/// <see cref="UnityEngine.Events.UnityEvent"/>
 		/// </summary>
-		public void ToggleFastSkip() => FastSkip = !FastSkip;
+		public void SetFastSkip(bool value) => FastSkip = value;
 
 		private string NewLine()
 		{
@@ -221,6 +220,16 @@
 			{
 				m_secondsChar = (integer * TickMultiplier) / 1000f;
 			});
+			if (FastSkip)
+			{
+				FastSkip = false;
+				FastSkip = true;
+			}
+			if (AutoSkip)
+			{
+				AutoSkip = false;
+				AutoSkip = true;
+			}
 		}
 
 		/// <summary>
