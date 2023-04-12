@@ -322,6 +322,10 @@
 		{
 			SaveSlot.ActiveSlot.Load();
 		}
+		public void NextLine()
+		{
+			ScriptHandler.Instance.NextLine();
+		}
 	} 
 }
 #if UNITY_EDITOR
