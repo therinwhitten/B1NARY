@@ -44,6 +44,10 @@
 						{
 							RemoteBlock.CallRemote(Instance.document, call);
 						}),
+						["throwexception"] = (Action<string>)((message) =>
+						{
+							throw new Exception(message);
+						}),
 					},
 					DialogueSystem.Commands,
 					AudioController.Commands,
