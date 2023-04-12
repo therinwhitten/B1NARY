@@ -154,8 +154,6 @@
 			metadata.playedAmount += metadata.lastSaved - startPlay;
 			startPlay = metadata.lastSaved;
 			scriptPosition = ScriptPosition.Define();
-			characterSnapshots = CharacterManager.Instance.CharactersInScene
-				.Select(pair => pair.Value.controller.Serialize()).ToArray();
 			metadata.thumbnail = Thumbnail.CreateWithScreenshot(128, 128);
 			characterSnapshots = CharacterSnapshot.GetCurrentSnapshots();
 			audio = SerializedAudio.SerializeAudio();

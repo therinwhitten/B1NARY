@@ -33,13 +33,9 @@
 		public static CharacterSnapshot[] GetCurrentSnapshots()
 		{
 			CharacterSnapshot[] characterSnapshots = new CharacterSnapshot[CharacterManager.Instance.CharactersInScene.Count];
-			int i = 0;
 			using (var enumerator = CharacterManager.Instance.CharactersInScene.GetEnumerator())
-				while (enumerator.MoveNext())
-				{
+				for (int i = 0; enumerator.MoveNext(); i++)
 					characterSnapshots[i] = enumerator.Current.Value.controller.Serialize();
-					i += 1;
-				}
 			return characterSnapshots;
 		}
 
@@ -59,7 +55,7 @@
 			animation = controller.CurrentAnimation;
 			horizontalPosition = controller.HorizontalPosition;
 			selected = controller.Selected;
-			asEmpty = controller.EmptyCharacter;
+			asEmpty = controller.EmptyCharacter; 
 		}
 		public void Load()
 		{

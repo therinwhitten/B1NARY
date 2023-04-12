@@ -78,7 +78,12 @@
 
 		public string CurrentExpression
 		{
-			get => Expressions[expressionController.CurrentExpressionIndex];
+			get
+			{
+				if (expressionController != null && expressionController.CurrentExpressionIndex != -1)
+					return Expressions[expressionController.CurrentExpressionIndex];
+				return null;
+			}
 			set
 			{
 				int expressionIndex = Array.IndexOf(Expressions, value);
@@ -114,7 +119,7 @@
 
 		public bool Selected
 		{
-			get => Selected;
+			get => m_selected;
 			set
 			{
 				if (m_selected == value)
@@ -197,7 +202,8 @@
 		void ICharacterController.Deserialize(CharacterSnapshot snapshot)
 		{
 			ICharacterController thisInterface = this;
-			thisInterface.CurrentExpression = snapshot.expression;
+			if (Expressions.Length > 0)
+				thisInterface.CurrentExpression = snapshot.expression;
 			thisInterface.CharacterName = snapshot.name;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
