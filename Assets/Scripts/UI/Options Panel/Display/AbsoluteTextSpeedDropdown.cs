@@ -9,10 +9,10 @@
 	{
 		public override List<KeyValuePair<string, int>> DefinedPairs => new List<KeyValuePair<string, int>>
 		{
-			new KeyValuePair<string, int>("Slow", 15),
+			new KeyValuePair<string, int>("Slow", 45),
 			new KeyValuePair<string, int>("Normal", 30),
-			new KeyValuePair<string, int>("Fast", 45),
-			new KeyValuePair<string, int>("Immediate", int.MaxValue),
+			new KeyValuePair<string, int>("Fast", 15),
+			new KeyValuePair<string, int>("Immediate", 0),
 		};
 		public override int InitialValue
 		{

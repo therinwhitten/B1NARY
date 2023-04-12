@@ -14,6 +14,7 @@
 	using B1NARY.CharacterManagement;
 	using CharacterManager = B1NARY.CharacterManagement.CharacterManager;
 	using B1NARY.Audio;
+	using B1NARY.UI.Colors;
 
 	public enum Gender : byte
 	{
@@ -131,6 +132,7 @@
 			set => booleans[GENDER_KEY] = value == Gender.Male;
 		}
 		public Collection<string> strings;
+		public string formatName;
 		public ScriptPosition scriptPosition;
 		public CharacterSnapshot[] characterSnapshots;
 		public SerializedAudio[] audio;
@@ -157,6 +159,7 @@
 			metadata.thumbnail = Thumbnail.CreateWithScreenshot(128, 128);
 			characterSnapshots = CharacterSnapshot.GetCurrentSnapshots();
 			audio = SerializedAudio.SerializeAudio();
+			formatName = ColorFormat.CurrentFormat.FormatName;
 			using (var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write))
 				SlotSerializer.Serialize(stream, this);
 			EmptySaveCache();
@@ -181,6 +184,7 @@
 				for (int i = 0; i < audio.Length; i++)
 					audio[i].Play();
 			};
+			wrapper.AfterActions += (mono) => ColorFormat.Set(formatName);
 			wrapper.AfterActions += (mono) => ScriptHandler.Instance.NextLine();
 			wrapper.Start();
 		}
