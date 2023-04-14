@@ -67,5 +67,17 @@
 				}
 			return GetFile(source, fileName);
 		}
+
+		public static DirectoryInfo GetSubdirectory(this DirectoryInfo directoryInfo, string directoryName, bool createIfMissing = true)
+		{
+			string fullName = $"{directoryInfo.FullName}/{directoryName}/";
+			if (createIfMissing)
+				if (!Directory.Exists(fullName))
+				{
+					Debug.Log($"'{fullName}' is missing, creating..");
+					Directory.CreateDirectory(fullName);
+				}
+			return new DirectoryInfo(fullName);
+		}
 	}
 }
