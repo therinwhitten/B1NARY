@@ -9,6 +9,7 @@
 	using B1NARY.Scripting;
 	using System.Linq;
 	using UnityEngine.Audio;
+	using System.Globalization;
 
 	public sealed class AudioController : Singleton<AudioController>
 	{
@@ -19,7 +20,7 @@
 			["fadeinsound"] = (Action<string, string>)((name, floatStr) =>
 			{
 				name = name.Trim();
-				float fadeIn = float.Parse(floatStr);
+				float fadeIn = float.Parse(floatStr, CultureInfo.InvariantCulture);
 				try { Instance.PlaySound(name, fadeIn); }
 				catch (SoundNotFoundException ex)
 				{
@@ -29,7 +30,7 @@
 			["fadeoutsound"] = (Action<string, string>)((name, floatStr) =>
 			{
 				name = name.Trim();
-				float fadeOut = float.Parse(floatStr);
+				float fadeOut = float.Parse(floatStr, CultureInfo.InvariantCulture);
 				try { Instance.StopSound(name, fadeOut); }
 				catch (SoundNotFoundException ex)
 				{

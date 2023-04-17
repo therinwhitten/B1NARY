@@ -13,6 +13,7 @@
 	using B1NARY.Scripting;
 	using B1NARY.DataPersistence;
 	using B1NARY.CharacterManagement;
+	using System.Globalization;
 
 	/// <summary>
 	/// 
@@ -61,7 +62,7 @@
 		{
 			["textspeed"] = (Action<string>)(speedMultRaw =>
 			{
-				float multiplier = float.Parse(speedMultRaw);
+				float multiplier = float.Parse(speedMultRaw, CultureInfo.InvariantCulture);
 				Instance.TickMultiplier = multiplier;
 			}),
 			["additive"] = (Action<string>)(boolRaw =>

@@ -16,8 +16,8 @@
 	public partial class ColorFormat
 	{
 		public const string DEFAULT_THEME_NAME = "Default";
-		public static DirectoryInfo RootPath => SerializableSlot.StreamingAssets.GetSubdirectory("Color Themes");
-		public static DirectoryInfo CustomThemePath => RootPath.GetSubdirectory("Custom");
+		public static DirectoryInfo RootPath => SerializableSlot.StreamingAssets.CreateSubdirectory("Color Themes");
+		public static DirectoryInfo CustomThemePath => RootPath.CreateSubdirectory("Custom");
 		public static FileInfo DefaultThemePath => RootPath.GetFile("Default.xml");
 		public readonly static IndexFile indexFile = IndexFile.LoadNew();
 		public static CommandArray Commands = new CommandArray()

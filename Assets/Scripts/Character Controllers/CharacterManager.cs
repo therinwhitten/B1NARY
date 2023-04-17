@@ -9,6 +9,7 @@
 	using B1NARY.UI;
 	using B1NARY.Scripting;
 	using UnityEngine.Audio;
+	using System.Globalization;
 
 	public sealed class CharacterManager : Singleton<CharacterManager>
 	{
@@ -28,7 +29,7 @@
 				Character? character = Instance.SummonCharacter(gameObjectName);
 				if (!character.HasValue)
 					return;
-				character.Value.controller.HorizontalPosition = float.Parse(positionRaw);
+				character.Value.controller.HorizontalPosition = float.Parse(positionRaw, CultureInfo.InvariantCulture);
 				character.Value.ChangeCharacterName(characterName);
 			}),
 			["spawnchar"] = (Action<string, string>)((gameObjectName, positionRaw) =>
@@ -36,7 +37,7 @@
 				Character? character = Instance.SummonCharacter(gameObjectName);
 				if (!character.HasValue)
 					return;
-				character.Value.controller.HorizontalPosition = float.Parse(positionRaw);
+				character.Value.controller.HorizontalPosition = float.Parse(positionRaw, CultureInfo.InvariantCulture);
 			}),
 			["spawnempty"] = (Action<string>)(characterName =>
 			{
@@ -62,23 +63,23 @@
 			["movechar"] = (Action<string, string>)((characterName, positionRaw) =>
 			{
 				if (Instance.CharactersInScene.TryGetValue(characterName, out Character character))
-					character.controller.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
+					character.controller.SetPositionOverTime(float.Parse(positionRaw, CultureInfo.InvariantCulture), 0.3f);
 				else
 					Debug.LogError($"{characterName} does not exist!", Instance);
 			}),
 			["movechar"] = (Action<string>)((positionRaw) =>
 			{
-				Instance.ActiveCharacter.Value.controller.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
+				Instance.ActiveCharacter.Value.controller.SetPositionOverTime(float.Parse(positionRaw, CultureInfo.InvariantCulture), 0.3f);
 			}),
 			["movechar"] = (Action<string, string, string>)((characterName, positionRaw, time) =>
 			{
 				if (Instance.CharactersInScene.TryGetValue(characterName, out Character character))
 				{
-					float timeParsed = float.Parse(time);
+					float timeParsed = float.Parse(time, CultureInfo.InvariantCulture);
 					if (timeParsed == 0f)
-						character.controller.HorizontalPosition = float.Parse(positionRaw);
+						character.controller.HorizontalPosition = float.Parse(positionRaw, CultureInfo.InvariantCulture);
 					else
-						character.controller.SetPositionOverTime(float.Parse(positionRaw), timeParsed);
+						character.controller.SetPositionOverTime(float.Parse(positionRaw, CultureInfo.InvariantCulture), timeParsed);
 				}
 				else
 					Debug.LogError($"{characterName} does not exist!", Instance);

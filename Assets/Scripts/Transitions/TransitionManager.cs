@@ -13,6 +13,7 @@
 	using B1NARY.UI;
 	using System.Collections.Generic;
 	using B1NARY.Scripting;
+	using System.Globalization;
 
 	public class TransitionManager : Singleton<TransitionManager>
 	{
@@ -43,7 +44,7 @@
 			}),
 			["queuebgwait"] = (Action<string>)(length =>
 			{
-				InstanceOrDefault.queueWait = float.Parse(length);
+				InstanceOrDefault.queueWait = float.Parse(length, CultureInfo.InvariantCulture);
 			}),
 			["queueloopbg"] = (Action<string>)(str =>
 			{

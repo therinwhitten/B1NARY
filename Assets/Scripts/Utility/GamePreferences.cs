@@ -6,6 +6,7 @@
 	using System.Linq;
 	using System.Collections.Generic;
 	using UnityEngine;
+	using System.Globalization;
 
 	public static class GamePreferences
 	{
@@ -74,13 +75,13 @@
 						stringSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => tuple.data);
 						continue;
 					case "int":
-						intSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => int.Parse(tuple.data));
+						intSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => int.Parse(tuple.data, CultureInfo.InvariantCulture));
 						continue;
 					case "bool":
 						boolSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => bool.Parse(tuple.data));
 						continue;
 					case "float":
-						floatSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => float.Parse(tuple.data));
+						floatSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => float.Parse(tuple.data, CultureInfo.InvariantCulture));
 						continue;
 					default:
 						throw new KeyNotFoundException(node.Name);

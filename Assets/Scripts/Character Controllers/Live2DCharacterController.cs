@@ -202,7 +202,8 @@
 		{
 			ICharacterController thisInterface = this;
 			if (Expressions.Length > 0)
-				thisInterface.CurrentExpression = snapshot.expression;
+				if (!string.IsNullOrEmpty(snapshot.expression))
+					thisInterface.CurrentExpression = snapshot.expression;
 			thisInterface.CharacterName = snapshot.name;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
