@@ -1,0 +1,345 @@
+**TODO:Fade From White**
+
+{changeScene: Scenes/Star/Outside Default}
+{fadeinsound: Star Piano, 1}
+{fadeinsound: Wind Heavy, 1}
+{fadeoutsound: Ears Ringing, 5}
+{fadeoutsound: Heartbeat, 5}
+{spawnChar: malesilo, 2, Masked Punk}
+{spawnChar: femalesilo, 2, MC}
+MC::
+Mit Verzweiflung, schiebe ich alles was ich bin zurück in meinen Kopf. 
+{additive: on}
+Die Sicht verschwimmt und Tränen steigen auf, 
+Ich liege auf meinem Rücken.
+{additive: off}
+Lange, tiefe Atemzüge.
+Das Bewusstsein für meinen Körpers kehrt zurück, während die Panik vor der Spaltung meines Gehirns nachlässt.
+Ich fühle ohne Grund Schmerz, meine Muskeln werden von Krämpfen gequält.  
+Nicht bewegen. Noch nicht.
+Eine leichte Brise umspielt mich, warm und gemütlich. 
+Ich öffne meine Augen vorsichtig, der Schmerz schlägt mir in Pupillen.
+"Warum?"
+Meine Stimme hört sich heiser und ein wenig weinerlich 
+Ich platziere meinen Unterarm über meine Augen und fokussiere mich auf meine Atmung. 
+Ich bemerke Mondlicht. 
+Helles Mondlicht. 
+Mondlicht?
+Ich schaue über die Unterseite meines Unterarms hinaus auf das fahle Licht, das auf meinen Körper und die umliegende Vegetation fällt.
+Ich spüre, wie mein Rücken durch die Feuchtigkeit nass wird.
+Tau?
+Das Rauschen des Grases, als ich mich bewege, fokussieren meine Gedanken noch mehr.  
+Ich bewege meinen Arm von meinen Augen.
+{additive:on}
+Der größte Mond den ich je gesehen habe, dominiert den Nachthimmel.
+Ich kann die Oberfläche klar sehen, mit all den Details, welche aus mir herausschießen. 
+Es ist so nah, ich kann ihn fast berühren.
+{additive:off} 
+„Es ist so wunderschön!"
+Eine unbändige Ehrfurcht füllt meine Stimme.
+Wo... bin... ich?
+Ich spanne meinen Bauch an und zieh mich hoch, obwohl mein Körper sehr hartnäckig protestiert.
+Ich sitze in einem Feld, wo hohes Gras mich umgibt. 
+Die Aussicht nimmt mir meine Fähigkeit zusammenhängend zu reden.
+Das hab ich nicht erwartet.
+Das ist <i>nicht</i> der Testserver. 
+{additive: on}
+Der Testserver sollte eine sterile Umgebung sein. 
+Shirobi selbst, sagte mir, dass es wie ein Weißer Raum aussehen solle. 
+{additive: off}
+In der digitalen Welt sind die Dinge noch ausgeprägter, so heißt es in der Theorie.
+Die Perspektive bestimmt den Tag. 
+Das Gehirn sieht alles, was es in der digitalen Welt sehen will. 
+Es übersetzt, was es als gemütlich hält. 
+Nichts von dieser Szenerie ist vertraut. 
+Es fühlt sich fremd an. Meine Gedanken haben das nicht erfunden, ich bin mir sicher. 
+Aufzustehen ist eine Aufgabe, aber ich schaffe es.
+Ich kann nichts schaffen, wenn ich hier liege. 
+Außerdem ist mein Hintern nass.
+Mit dem hohen Gras beiseite, welches meine Sicht einschränkte, bemerke ich einen Wald mit Pinienbäumen, welche leicht im Wind schwanken.
+Hinter dem Wald sitzt ein drohendes und dunkles Herrenhaus. Behind that forest, sits an impending and dark mansion.
+Ich prüfe erneut. check again.
+Eine Villa?
+Ich blinzele zweimal. Nur um sicher zu gehen, dass meine „Augen" keinen Streich spielen. 
+Dort, in der Ferne, sitzt ein sehr großer Komplex. 
+Im Antiken Rumänischen Architektenstil: Ein langes, quadratisches Gebäude, bei denen herausragende Türme das Gebäude umhüllt. 
+Das Grafenschloss. 
+„Ich will dein Blut saugen. mwhah."
+Ich lache über mich. 
+Masked Punk::
+{anim: Masked Punk, smug}
+"Pervers."
+{fadeinsound: Szy Dark, 2}
+{fadeoutsound: Star Piano, 2}
+{fadeinsound: Flashstep, .3}
+{moveChar: Masked Punk, .50}
+MC::
+Plötzlich, zwei Meter vor mir entfernt, steht dort ein maskierter Mann.
+Er ist einfach da.  
+Druckluft schlägt mir ins Gesicht.  smacks me in the face. 
+Sein Körper ist starr, wie eine Eisenstange, bereit zum springen.
+Ich gehe einen Schritt zurück.
+Hinter der Maske auf seinem Gesicht strahlt grünes Licht durch. Es <i>schimmert</i>, während Nebel unter dem schwarzen Hoodie hervorquillt.
+Die Maske <i>ist</i> sein Gesicht!
+Masked Punk::
+{anim: Masked Punk, thinking}
+"Ich schmecke wahrscheinlich wie eine Flepsi..."
+MC::
+Ich bin sprachlos. Wer ist das?!
+{anim: Masked Punk, wind idle}
+Masked Punk::
+[annoyed]
+{additive: on}
+„Jedenfalls.
+Wer <i>verdammt</i> bist du?"
+MC::
+{additive:off}
+{choice: Soll ich ihm in die Nüsse treten?}
+ {
+    Behaupte deine Dominanz! Trete ihn in die Nüsse!
+    [
+       "EEEEEEKKKKK!!!!"
+       MC::
+       Ich gerate in Panik.
+       Ich sende einen soliden Tritt in seine Unterleibregion. 
+       {fadeinsound: body punch hard, .2}
+       Er fängt gerade noch meinen Fuß. Sein Griff ist so fest wie Stahl.
+       Er pfeift zu der Anerkennung.
+       [happy]
+       Masked Punk::
+       {additive:on}
+       „Heilige <i>Scheiße</i>, Frau! 
+       Dass ist ein starker Tritt."
+       {additive:off}
+       MC::
+       Mein ganzes Jiu Jitsu Training hat sich nicht ausgezahlt, nicht gegen einen Dämon.
+       Und nun hat er meinen Fuß. 
+       Er lässt mein Bein los und grinst gruselig durch die Maske.
+       Masked Punk::
+       „Ich kann jetzt nicht spielen."
+       „Dieser Tritt lässt mich zweimal denken."
+       MC::
+       „Was hat das zu bedeuten?!"
+       {changeScript: Female/Prologue/Star I, 132}
+    ]
+    Scheiß drauf! Schrei!!
+    [
+      "AHHHHHHHHHHHHHHHHHHHH! GEH WEG!!!!!" 
+    ]
+ }
+Er schreit zurück zu mir. Spöttisch.
+Masked Punk::
+„AHHHHHHHHHHHH!!!! Geh weg du gruseliger Dämon!"
+„Du bist so <i>gruselig</i>!"
+MC::
+{additive:on}
+„Warum bist du am schreien??!! 
+Das kannst du nicht machen! 
+Ich schreie!"
+{additive:off}
+„Das ist nicht fair!"
+Masked Punk::
+[annoyed]
+„Ich dachte, dass war eine Begrüßung aus deinem Land!!!"
+„Was zur Hölle willst du von mir?!"
+„Eigentlich. Was zum Teufel ist dein <i>Name</i>?"
+MC::
+Er zeigt langsam und absichtlich auf seine Brust, als ob er einem Kind erklärt.
+Szycrotic::
+„Mein Name ist Szycrotic."
+MC::
+{changeName: Masked Punk, Szycrotic}
+„Es ist MC! Nun hör auf mich anzuschreien!"
+Szycrotic::
+„Nein! Du hast damit angefangen, also hörst du zuerst auf!"
+MC::
+Wir stoppen beide, während wir schnaufen und pusten.  
+Ich kam erst gerade hier an und muss mich mit etwas auseinandersetzen, wofür ich nicht bereit bin.
+Ich kann diesen Mann nicht verletzen. Er ist zu stark. Zu schnell.
+Es ist unmöglich! Ich kann ihn nicht schlagen. Ich kann ihn nicht mal verletzen.
+Gebückt mit gespreizten Beinen schauen wir uns gegenseitig an.
+Nur einige Meter trennen uns. Ich spüre wie er mich sofort greifen kann, wenn er es möchte.
+Seine Haltung ist spöttisch identisch mit der meiner. 
+Das ist wie ein Spiel, welches ich spielen möchte!
+Wir starren uns für einen Moment gegenseitig an.
+Es fühlt sich länger, als einen Moment an.
+Die Angst, verrückterweise, löst sich langsam auf.
+Diese ganze Situation hat mich verwirrt.
+{additive:on}
+Ich hatte viele Sachen erwartet.
+Dinge die passieren <i>könnten</i>. 
+Serverglitches, oder das Gefühl der Desorientierung,
+selbst die Symptome des Abbaus der Gehirnmuster.
+{additive: off}
+Ich hatte nicht geplant, einem Dämonen mit einer Maske als Gesicht, gegenüberzutreten. 
+Szycrotic::
+{anim: Szycrotic, wind idle} 
+[happy]
+MC:: 
+Er entspannt seine Haltung mit einem riesigen Grinsen, welches sein „Gesicht" verschmiert.
+{fadeoutsound: Szy Dark, 4}
+{fadeinsound: Star Piano, 4}
+Plötzlich beginnt er herzlich zu lachen.
+Ich schaue ihm zu, blinzle ein paar mal und ich bin mir unsicher was ich sagen, beziehungsweise machen soll.
+Szycrotic::
+{additive:on}
+„Oh mein Gott, MC.
+Yo, das ist genial!"
+{additive:off}
+„Dein Gesicht war unbezahlbar!"
+MC::
+Sein brüllendes Lachen lässt mehr grünen Rauch hinter seiner Maske auftauchen.
+Es ist ziemlich nervig.
+Syzcrotic::
+„Ich danke dir dafür, MC. Wenn ich Tränendrüsen hätte, dann würde ich weinen."
+MC::
+Ich merke wie meine Backen sich in ein schmollen aufplustern. 
+„Szycrotic?"
+Szycrotic::
+„Yes?"
+MC::
+„Man erschreckt keine Frauen die nachts herumlaufen!"
+Deinen Namen Szycrotic, den <i>kenne</i> ich.
+Wie eine Lawine kommt die Erkenntnis seines Namen in meinen bewussten Gedanken.
+Ich <i>weiß</i> wer er ist. Ich kann es nur nicht glauben. 
+Ich bin nicht in dem Server wie es geplant war. 
+Nun habe ich keine Ahnung wo ich eigentlich bin.
+„Reich."
+Ich probiere das Wort vorsichtig aus.
+{anim: Szycrotic, thinking}
+Szycrotic scheint mir zuzusehen, wie ich über Sachen nachdenke. Er neigt seinen Kopf ein wenig nach links.
+Szycrotic::
+„Warte. Warte. Warte. Du weißt wer ich bin, richtig?"
+MC::
+Er plustert seine Brust ein bisschen auf.
+Szycrotic::
+{anim: Szycrotic, wind idle}
+[happy]
+„Endlich! Jemand der mich erkennt!"
+„Hell yeah, lass uns gehen!"
+MC::
+Er pausiert und schaut mir in die Augen.
+Szycrotic::
+„Zu der Villa! Meine ich. Uh, lass uns zu der Villa gehen."
+„Naja... Also technisch gesehen bist du ein Einbrecher, aber du scheinst nicht gefährlich zu sein."
+MC::
+„Ich bin mit Sicherheit nicht gefährlich. Weit davon entfernt."
+Er bewegt sich zu der Villa, hinunter der Straße nicht weit weg. 
+Szycrotic::
+„Komm. Ich werde dich zu Star führen, und wir werden alles herausfinden."
+{moveChar: Szycrotic, .25}
+{fadeinsound: walkingongravel, 1}
+MC::
+Er startet in einem angenehmen Tempo, schnell genug, dass eine kleine Frau folgen kann.
+<i>Seufzen</i>
+Ich trete hinter ihn.
+„Asterella Star?"
+Szycrotic::
+„Ja, scheinbar scheinst du sie auch zu kennen. Das macht einige Sachen sehr viel einfacher."
+{additive:on}
+„Normallerweise sieht sie keine Personen so spät in der Nacht, 
+aber sie hatte mich speziell <i>aufgefordert</i> dich zu holen."
+{additive:off}
+MC::
+Er schaut zurück, während grüner Rauch austritt, um sicherzugehen, dass ich ihm noch folge.
+Er dreht seinen Kopf zurück.
+Szycrotic::
+[indifference]
+„Du scheinst keine wahre Kraft zu besitzen."
+„Auf der anderen Seite, könntest du sie aber auch verstecken."
+MC::
+Er zuckt, und verwirft seinen Gedankengang. 
+Szycrotic::
+{additive:on}
+„Whelp, nicht mein Problem. 
+Solange du nicht dem Reich schadest, 
+oder Star, 
+interessiert es mich nicht was du tust."
+{additive:off}
+{additive:on}
+„Willkommen zu dem 69. Kreis der Hölle, MC.
+Ich hoffe du genießt deinen Aufenthalt."
+{additive:off}
+MC::
+Diese Begrüßung jagt mir einen Schauer über den Rücken.
+Das ist <i>real</i>!
+Kein Stream der online ist, es ist leibhaftig real!
+Und Szycrotic bringt mich zu <i>der</i> Asterella Star!
+Oh nein! 
+Was soll ich tun?!
+Eine plötzliche Welle der Nervosität umhüllt mich.
+Ich habe sie schon immer von der Ferne bewundert.
+Ja, ich streame auch, aber ich chatte mit Leuten auf persönlichem Level. 
+Sie ist jetzt so <i>riesig</i>. Sie macht das nun seit 20 Jahren oder so.
+Ich komme zurück zu mir selbst und studiere Szy's Rücken. 
+Das fühlt sich nicht wie ein Platz an von dem man streamen würde. 
+Als wir in der Nähe der äußeren Wände von diesem riesigem Komplex sind: Der Geruch, der Wind, alles hier.
+Es schockiert mich. Das alles fühlt sich real an. Alles zu real. 
+Und Szy, ist er wirklich nur am Rollenspielen? Oder ist er...
+War er schon immer ein Dämon? Oder sind sie nur in ihren Rollen in dieser virtuellen Welt?
+Wir gelangen an einem Eingang, das alte Tor öffnet sich ohne, dass irgendeine Kraft es berührt. 
+Szycrotic::
+„Hey MC, du kannst dir alles anschauen, während wir gehen. Später ist dafür mehr als genug Zeit."
+„Wir müssen Star als erstes sehen, alles klar?"
+MC::
+Ich nicke.
+Wer bin ich, wenn ich sowas ablehnen würde? Er könnte mich einfach in einem Moment fesseln. 
+Nicht dass ich das von ihm wollen würde...
+Ich möchte nicht gefesselt werden. Nein! Hör auf, Spieler!!
+Als wir  durch den Eingang gingen, badeten meine Augen in der Schönheit.
+{fadeoutsound: walkingongravel, 1}
+{fadeinsound: waterfountain, 2}
+{additive: on}
+Üppige Eichen und Eschen säumen die Landschaft in einer chaotischen Symmetrie.
+Der Wind der die Blätter trägt. 
+Das helle Mondlicht badet und reflektiert sich von den schwarzen Mamorbänken, der Platz wurde sorgfältig ausgewählt. 
+{additive:off}
+Vor der Villa ist ein großer Springbrunnen, das Wasser funkelt von dem Mondlicht. 
+Szycrotic::
+"Yo! Kommst du?"
+MC::
+Ich bemerke wie nicht laufe. 
+Ich stehe wie gefroren und schaue mir die Sehenswürdigkeiten an. 
+Ich habe nur es nur 4 Meter in die Hauptgärten gemacht. 
+Endlich spreche ich.
+„Tut mir leid. Es ist nur so atemberaubend..."
+Ich schaffe es nicht, die verblüffende Ehrfurcht aus meiner Stimme herauszuhalten und eile, um mit ihm Schritt zu halten. 
+Der Dämon nickt zustimmend.
+Syzcrotic::
+[happy]
+„Du hast einen guten Geschmack. Ich glaube du und Star werdet euch gut verstehen."
+{fadeinsound: walkingongravel, 1}
+MC::
+Ich laufe wieder. 
+Nächstes Mal. Die Sehenswürdigkeiten müssen warten. 
+Ich würde es lieben hier zu sitzen, zu relaxen und ein leichtes Mittag zu essen. 
+Wir laufen am Springbrunnen vorbei, mein Seufzen der Enttäuschung kommt heraus.
+Ich gehe die Treppe hinauf...
+{fadeoutsound: waterfountain, 5}
+{fadeoutsound: walkingongravel, 6}
+{moveChar: Szycrotic, .50}
+Die Haupttüren sind 1,5 m hoch, aus massiver Eiche und mit Stäben verstärkt. 
+Szy zieht am Griff.
+{fadeinsound: castle door, 1}
+{fadeoutsound: Wind Heavy, 2}
+{fadeoutsound: Star Piano, 2} 
+Szycrotic::
+„Warte bis du den Rest der Villa siehst, MC."
+„Es wird dich umhauen."
+{changeScript: Female/Prologue/Star II}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 

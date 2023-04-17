@@ -1,0 +1,84 @@
+{fadeinsound:Times-Square-Crowd,5} 
+Narrator:: New York City in der Times Square: Das Jahr 2040. In mitten des Tages an einem glühendem Sommertag. Ein normaler Tag, an dem die meisten Menschen herum laufen, zur Arbeit gehen, den Missklang der Fahrzeuge, Fußgänger, sowie der Beat hören, der in einer perfekten Harmonie zu der Werbung erklingt. Nicht heute... Heute, ist die Aufmerksamkeit von jedem, auf dem größten aller Holo-Bildschirme, der in den Himmel gerichtet ist, fokussiert. Tatsächlich, wird in jedem Holo-Display das gleiche übertragen, der Ton erklingt auf dem gesamten Platz. Die Autos blieben stehen, es herrscht Stillstand. Die Fußgänger murmeln und blicken hinauf.
+{additive: on}
+Nein. Diese Welt ist dabei etwas zu erleben, einen entscheidenden Moment in der Geschichte der Menschheit. Heute ist der erste Versuch des Menschens sich selber zu digitalisieren.
+{additive: off} 
+{spawnChar: malesilo, -1, Male Bystander} 
+{moveChar: Male Bystander, 0.20}
+Male Bystander:: „Ich kann nicht glauben das sie damit durchkommen!“ „Wer gab diesem Projekt ein grünes Licht?“ „Das Testobjekt ist entweder ein kompletter Idiot, oder es möchte sterben... Ich kann mich nicht entscheiden.“
+{spawnChar: femalesilo, -1,Female Bystander} 
+{moveChar: Female Bystander, .50}
+Female Bystander:: {additive: on} „Du konntest mich nicht genug bezahlen! Ist VR nicht gut genug für uns Menschen?“ 
+{additive: off} 
+„Kannst du dir vorstellen die Eltern dieses Kindes zu sein? Ich frage mich was sie darüber denken?“ Sie schüttelt ihren Kopf und seufzt.
+{spawnChar: malesilo, 2,Male Bystander 2} 
+{moveChar: Male Bystander 2, 0.80}
+Male Bystander 2:: "Ihr seid gefangen in der Vergangenheit, ihr beide.“ „Du lebst nur einmal richtig? Es ist nicht so das einer von euch dort ist.“
+{additive: on}
+„Wer möchte nicht in einer virtuellen Welt leben? Denk an den coolen Scheiß den du machen kannst.“
+{additive: off} 
+{additive:on} 
+„Und der erste zu sein der das erlebt? Es schauert mich nur daran zu denken!“
+{additive:off}
+Male Bystander:: Männlicher Zuschauer spottet hörbar und schaut nach oben zur Übertragung. „Was passiert wenn der Strom aus geht, egal auf welchem Server du bist? Wird dein Gehirn dann nicht zerstört?“ „Kannst du dir das vorstellen? Tod... Einfach... so.“
+{additive:on} 
+„Und lass mich nicht bei der „Maschine“ beginnen... die sie in diesem Raum haben. Laut der Schutzbrille erscheint es, dass es noch nicht einmal richtig funktioniert hat.“
+{additive:off} 
+„Es sei denn, sie haben es im Geheimen schon einmal ausprobiert...“ Female Bystander:: Die Weibliche Zuschauerin schaut verzweifelt zu dem Männlichen Zuschauer „Das kann nicht die Wahrheit sein.“ „Sie würden niemals einen Menschen in die Nähe dieses Dinges lassen, es sei denn es funktioniert.“ „Ich stimme diesem Experiment nicht zu, aber selbst ich weiß, das ein gescheitertes Experiment in einer weltweiten Übertragung reiner Selbstmord der Öffentlichkeitsarbeit ist.“ Ihre Stimme senkt sich, als würde sie zu sich selber sprechen.  
+{additive: on} 
+"Stell dir vor wie nervös das Kind gerade ist. Stell dir den Druck vor, nur in diesem Stuhl zu sitzen, vor Millionen Menschen...
+{additive: off} 
+{fadeinsound: News Music Intro, .2} 
+„Ich glaube sie beginnen jetzt!“ „Bitte Leise sein. Ich möchte das hören!“ 
+{moveChar: Male Bystander, -1} 
+{moveChar: Female Bystander, -1} 
+{moveChar: Male Bystander 2, 2} 
+{loopBG: false} 
+{playBG: Prologue/Times Square Pan Up} 
+{spawnChar: femalesilo, 2, Cindy} 
+{moveChar: Cindy, .75}
+Narrator:: Der Holo-Zuschauer, der sich zuvor in einer kurzen Werbepause befand, wechselt abrupt zum Bild einer scharf gekleideten Moderatorin. Sie lächelt süß außerhalb des Bildschirmes, doch wenn sie in die Kamera blickt, nimmt ihr Gesicht einen ernsten Ausdruck an.
+Cindy:: „Guten Nachmittag Amerika!“
+{additive: on} 
+„Heute, Digital Horizons, das größte Gehirn des Imaging-Unternehmens in der Nation, versucht sich in die Geschichtsbücher zu beißen." 
+{additive: off} 
+{additive: on} 
+„,Und wie haben sie geplant dies zu tun?‘ fragst du. Lass es uns zusammen herausfinden. LIVE!“
+{additive: off} 
+„Und, scheint so wir haben einen Sitz in der erste Reihe.“ „Vor Ort im Digital Horizons Labor, haben wir unseren Korrespondenten und Leiter des Nachichtenreportes, John Casnik.“ „John? Bist du da?" 
+{changeScene: Brain Sucking Chair Side} 
+{fadeoutsound: Times-Square-Crowd,2} 
+{fadeinsound: Laptop-Lab,2} 
+{fadeinsound: Fast Keyboard Typing, 2} 
+{fadeinsound: DIHI Low Power,5} 
+{fadeinsound: Lab Computer Room Beeps 2, 1} 
+{fadeinsound: Lab Ambience Music Light, 1} 
+{fadeinsound: LabAmbience, .4} 
+{spawnChar: malesilo, -1, John} 
+{moveChar: John, .20} 
+Narrator:: Vor der Kamera ist ein Mann in seinen 40ern, angezogen in einem scharfen dunkelgrauen Anzug, eine Hand spielt an seinem Ohrhörer. John:: Als der Nachrichtenkorrespodent zuhört, nickt er leicht. John lächelt zu der Kamera. „Danke Cindy! Wie erging es dir?“ Cindy:: {additive: on} „Ohhhh John, mir erging es gut! Wie geht es den Kindern?" {additive:off} 
+John:: „Ihnen geht es gut!“ „Sie lernen fleißig für die Finalen Prüfungen.“ Cindy:: "Ich bin so glücklich für dich, John! Sag Margie schöne Grüße okay?“ John:: „Bei der Gelegenheit, dass sie nicht mit dem Rest der Welt zuschaut, werde ich ihr mit Sicherheit Bescheid geben.“ Cindy:: „Wer würde heute, von allen Tagen, nicht zuschauen?“ Narrator:: Die beiden Nachrichtensprecher kichern ein wenig. 
+Cindy:: {additive: on} „Nun, John. Die Zuschauer haben keine Ahnung auf was sie hier schauen. Alles was ich hinter dir sehe, ist ein schrecklicher Stuhl... ist es das woran ich denke?“
+{additive: off}
+John:: Ein kurzes Nicken. {additive: on} "Das ist es, Cindy. Das Digital Imaging Human Interface, oder kurz DIHI.“ 
+{additive: off} 
+Cindy:: {additive: on} „Nun... Sei mein Gast, John. Begleite uns durch." {additive: off}
+John:: „Wie du sehen kannst, bin ich an der Tür des Hauptlabors.“ „Sehr bald werden wir den ersten auserwählten Menschen sehen, der digitalisiert wird.“ John bewegt sich aus dem Bildschirm. „Und sie werden durch diese Tür kommen.“ John tritt unbeholfen aus dem Weg, als sich einige Labortechniker vor der Kamera an ihm vorbeischieben. „Oh, entschuldigt mich Herren. 
+{fadeinsound: Door, 0.1} 
+{additive: on} "Das tut mir leid! Wo war ich?“
+{additive: off} 
+{additive: on} „Ja. Fast hätte ich den Faden meiner Gedanken verloren! Digital Horizons ist ein Unternehmen an der Spitze dieser Technologie steht, und seit über einem Jahrzehnt Gehirnmusterreplikatoren entwickelt.“
+{additive: off} „Jetzt siehst du Cindy, und auch die Zuschauer zuhause, diese Gehirnmuster ‘Kopien‘, auch bekannt als Synthgene, die funktionieren normalerweise als KI-Klone von Online-Persönlichkeiten. V-Tuber sind das perfekte Beispiel“ „Meistens werden diese Synthgene verwendet, wenn der Streamer offline ist oder wenn jemand in den Ruhestand geht.“ Cindy:: „John? Ich bin ein wenig verwirrt.“ John:: „Ja?" Cindy:: „Um... wir habe schon Synthgene. Was macht die Maschine so verschieden?“ John:: John wackelt seinen Finger zu der Kamera also ob er mit einem unschuldigem Kind schimpft. „Dazu wollte ich gerade kommen.“ „Die Standard-Synthgene haben einen großen Nachteil.“ „Die Kopien brechen nach einiger Zeit zusammen. Es gibt kein Gehirn, dass das Muster zusammen hält.“ Johns Ausdruck ändert sich in der Kamera. Der Fokus sitzt hinter seinen Augen. „Also, wie jedes Gemüse oder Obst mit der Zeit verrottet. Es läuft natürlich ab.“ „Dann müssen neue Kopien aufgenommen und verwendet werden um die verschlechterten alten zu ersetzen.“ „Es ist weit entfernt von einer perfekten Lösung.“ „So, woran Digital Horizons so lange gearbeitet hat, ist den Menschlichen Verstand komplett ins Internet zu transferieren.“ Narrator:: Die Ruhe wächst unangenehm auf der anderen Seite der Übertragung. Cindy:: „Warte eine Sekunde. Lass mich das klarstellen...“ „Die Seele der Person wird übertragen? Das heißt keine ist zuhause im Körper?“ John:: „Yep!" „Der eigentliche Zweck war den Verstand eines Krebserkrankten in einen Cyborg zu transferieren, oder Astronauten Zeit geben neue Techniken der Kryostase zu erlernen.“ „Es gibt jedoch viele Anwendungen, für die diese Technologie angewendet werden kann." „Daher der Name. Digital Imaging Human Interface. Es überträgt das Bild eines Menschen also ganzes.“ Narrator:: Die weibliche Zuschauerin spottet offen auf der Straße, und blickt im grenzenlosem Entsetzen auf. Female Bystander:: {additive: on} „Sag uns was es wirklich ist, John. „Ein Gehirn saugender Stuhl“ Narrator:: Laut genug damit es die anderen hören können, versuchen die Umstehenden, über die Oohs und Ahhs der sie umgebenden Menge zu sprechen. 
+{additive: off}
+Male Bystander:: „WOW! Das ist... unglaublich“ „Das könnte wirklich die Welt verändern.“ „Selbst wenn es riskant ist, glaube ich das es wert ist dieses Risiko einzugehen.“ Male Bystander 2:: „Fuck yeah!" „Innovationen, und bahnbrechend... und weiteres Zeug.“ „Mann ich würde es lieben digitalisiert zu werden“ „Ich könnte mit dem bahnbrechenden Zeug helfen und so. Nicht zu erwähnen die Erfahrung mit mehr... interessanten Teilen des Internets.“ Female Bystander:: Die weibliche Zuschauerin lässt einen ermüdeten Seufzer von sich. „So typisch..." „Lass mich raten... Pornos?" Male Bystander 2:: Der Männliche Zuschauer 2 kichert wissend. {additive: on} „Du weißt es Babe! Wir wissen alle, das dass der Hauptgrund für das Internet ist. Hab ich recht?“ {additive: off} „Spaß bei Seite...“ {additive: on} "Außerdem gibt es auch anderes Zeug was genauso cool ist. Möchtest du vom Mount Everest springen? Nun kannst du es. Oder am Grund des Ozeans schwimmen. Vielleicht sogar den Mars besuchen... Der Himmel ist das Limit, mein Freund!“ {additive: off} „Das ändert alles! Ich frage mich, ob ich mich für den nächsten Test bewerben soll.“ Female Bystander:: „Ihr beide übertönt die Übertragung.“ „Der Witz ist scharf...“
+{spawnChar: malesilo, 2, Lab Tech } 
+{moveChar: Lab Tech, .85} 
+Narrator:: John steht jetzt neben einem Technischem Labor. Der Techniker is groß und schlank gebaut, seine Brille ist zu groß für den Nasenrücken.  Sein dunkles Haar ist zerzaust, als ob er einige Tage im Labor war, ohne ein richtiges Bett. In dem Bildschirm, sacken seine Schultern zusammen, als ob er von dem Blick der Kameras zerquetscht wird. Seine Stimme aber, trotzt diesem Eindruck. Der Labortechniker schiebt seine Brille wieder auf die Nase. Labortechniker:: „Nach der Übertragung, verbleibt der Tester für einen Zeitraum von etwa vier Tagen auf unseren geschlossenen Servern." „Während sie dort drin sind, wird der Körper des Subjektes in der Form einer Warmluftstasis sein. Dies soll abrupte Veränderungen in der chemischen Zusammensetzung verhindern.“ „Diese Chemischen Veränderungen können eine ‘Konfusion‘ im Gehirn erzeugen.“ „Wir nennen dieses Phänomen ‘Gehirnentladung‘. Wir wollen diesem Effekt ausweichen, bis wir die langfristigen Auswirkungen besser verstanden haben.“ „Der Prozess-“ John:: John runzelt leicht die Stirn. „Warte... ‘Gehirnentladungen‘?“ Labortechniker:: Der Labortechniker schaut verwelkt in die Kamera und schüttelt seinen Kopf.  
+{additive: on} 
+„Ja... John, ist es? Eine Gehirnentladung. Es ist ziemlich schwer das Live zu erklären. Lass uns weiter gehen. Ich muss mich bald darum kümmern.“
+{additive: off} 
+Narrator:: Der Labortechniker weist die Verwirrung des Reporters zurück. Labortechniker:: „Noch ist der Prozess an einem Menschlichem Subjekt ungetestet.“ „Trotzdem zeigten die Daten des Experimentes von den Synthgenen nur kleine bis keine nachteiligen Nebenwirkungen.“ „Wir werden die gleichen Tests durchführen, die wir in der ‘Synthgen Simulation‘ durchgeführt haben.“ „Sie bleiben auf dem Server wach und bei Bewusstsein, führen motorische Fähigkeitstests durch, rezitieren Gedichte, singen Lieder und so weiter.“ „Der Zweck besteht darin, alle Teile des Gehirns zu aktivieren, um die volle Erkenntnis und Wahrnehmung zu gewährleisten.“ "Wir wollen sehen, wie viel des Gehirns im Cyberspace aktiv ist, und um sicher zu sein, dass wir keine eventuellen Verschlechterungen messen können...“ „Nach rund 4 Tagen, werden wir ihren Körper wiederbeleben, setzen ihre Gehirnmuster wieder zurück in ihr fleischiges Gefäß ein, und packen sie in Quarantäne für einige Monate um sicherzustellen, dass kein dauerhafter Schaden entstanden ist.“ Cindy:: „Frage ihn ob die Synthgene vom ersten Test immer noch in Ordnung sind John. John?“ John:: John tippt auf den Hörer und schaut zum Labortechniker. „Eine Frage uhm...“ Labortechniker:: Der Labortechniker nimmt einen Schluck vom Wasser und schließt den Deckel fest. „Der Name ist Shirobi." 
+{changeName: Lab Tech, Shirobi} 
+John:: „Shirobi. Was passiert wenn etwas fehlschlägt wenn sie immer noch im Server sind?“ „Was ist, wenn Sie eine Verschlechterung feststellen und diese so schnell wie möglich beseitigen müssen?“ „Was sind die Schritte zu diesem Prozess?“ Shirobi:: Shirobi zuckt lässig mit den Schultern. "Wenn es irgendwelche Probleme geben sollte, werden wir sie sofort in ihren Körper zurückversetzen.“ „Es wird eine Besatzung geben die 24/7 den Körper und den Geist in dem Server überwachen.“ Shirobi schaut direkt in die Kamera, das Gesicht ist ernst, aber zuversichtlich. „Das Subjekt dieses Tests ist der Gefahren des Risikos bewusst und es ist bereit, ein Pionier auf diesem Gebiet zu sein, um damit Geschichte zu schreiben.“ „Ich habe volles Vertrauen, dass dieser Test ohne oder mit geringen Problemen erfolgreich sein wird.“ „Das ist natürlich meine persönliche Meinung.“ John:: "Und wer ist der Pionier der Zukunft? Die Person, die beschlossen hat, dem Unbekannten des Internets zu trotzen.“
+{fadeinsound: Door,0.1} 
+Narrator:: Der Labortechniker lächelt das erste Mal beim Geräusch der Tür. Er fängt an, die ganze Presse voller Aufregung aus dem Labor zu führen. Shirobi:: „Warum, der mutige Pioniergeist...“ Narrator:: Es ist Zeit deine erste Entscheidung zu treffen. {Wähle: Also... Welchen Weg würdest du gerne gehen?} { Männlicher Weg [ Narrator:: „Der Männliche Weg ist es!“ {changeScript: Male/Prologue/Prologue} ] Weiblicher Weg [ Narrator:: „Der Weibliche Weg ist es!“ {changeScript: Female/Prologue/Prologue} ] } 
