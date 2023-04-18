@@ -16146,7 +16146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adeec4ed250bae44d8777078a3ec1e00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BlendMode: 1
+  BlendMode: 0
   MouthOpening: 1
 --- !u!114 &3262499215875940536
 MonoBehaviour:
@@ -16162,8 +16162,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AudioInput: {fileID: 3262499215875940528}
   SamplingQuality: 2
-  Gain: 3.2
-  Smoothing: 0.12
+  Gain: 3.16
+  Smoothing: 0.083
 --- !u!114 &3262499215875940537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16265,6 +16265,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a17cf993df9fb848981f506d270195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selectedSizeIncreaseMultiplier: 1.1
   expressionController: {fileID: 3262499215875940542}
 --- !u!82 &3262499215875940528
 AudioSource:
