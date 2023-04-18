@@ -147,6 +147,7 @@
 				playedAmount = new TimeSpan(),
 			};
 			booleans = new Collection<bool>();
+			booleans.Add("henable", () => PlayerConfig.Instance.hEnable.Value);
 			strings = new Collection<string>();
 		}
 
