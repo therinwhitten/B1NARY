@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 
 namespace BrightLib.Animation.Runtime
 {
@@ -54,3 +55,4 @@ namespace BrightLib.Animation.Runtime
         }
     }
 }
+#endif
