@@ -62,7 +62,7 @@
 		{
 			["textspeed"] = (Action<string>)(speedMultRaw =>
 			{
-				float multiplier = float.Parse(speedMultRaw, CultureInfo.InvariantCulture);
+				float multiplier = float.Parse(speedMultRaw);
 				Instance.TickMultiplier = multiplier;
 			}),
 			["additive"] = (Action<string>)(boolRaw =>

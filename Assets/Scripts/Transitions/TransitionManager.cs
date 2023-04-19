@@ -44,7 +44,7 @@
 			}),
 			["queuebgwait"] = (Action<string>)(length =>
 			{
-				InstanceOrDefault.queueWait = float.Parse(length, CultureInfo.InvariantCulture);
+				InstanceOrDefault.queueWait = float.Parse(length);
 			}),
 			["queueloopbg"] = (Action<string>)(str =>
 			{

@@ -20,7 +20,7 @@
 			["fadeinsound"] = (Action<string, string>)((name, floatStr) =>
 			{
 				name = name.Trim();
-				float fadeIn = float.Parse(floatStr, CultureInfo.InvariantCulture);
+				float fadeIn = float.Parse(floatStr);
 				try { Instance.PlaySound(name, fadeIn); }
 				catch (SoundNotFoundException ex)
 				{
@@ -30,7 +30,7 @@
 			["fadeoutsound"] = (Action<string, string>)((name, floatStr) =>
 			{
 				name = name.Trim();
-				float fadeOut = float.Parse(floatStr, CultureInfo.InvariantCulture);
+				float fadeOut = float.Parse(floatStr);
 				try { Instance.StopSound(name, fadeOut); }
 				catch (SoundNotFoundException ex)
 				{

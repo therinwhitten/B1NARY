@@ -75,13 +75,13 @@
 						stringSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => tuple.data);
 						continue;
 					case "int":
-						intSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => int.Parse(tuple.data, CultureInfo.InvariantCulture));
+						intSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => int.Parse(tuple.data));
 						continue;
 					case "bool":
 						boolSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => bool.Parse(tuple.data));
 						continue;
 					case "float":
-						floatSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => float.Parse(tuple.data, CultureInfo.InvariantCulture));
+						floatSettings = innerDataText.ToDictionary(tuple => tuple.itemName, tuple => float.Parse(tuple.data));
 						continue;
 					default:
 						throw new KeyNotFoundException(node.Name);
