@@ -157,7 +157,8 @@
 			metadata.playedAmount += metadata.lastSaved - startPlay;
 			startPlay = metadata.lastSaved;
 			scriptPosition = ScriptPosition.Define();
-			metadata.thumbnail = Thumbnail.CreateWithScreenshot(128, 128);
+			try { metadata.thumbnail = Thumbnail.CreateWithScreenshot(128, 128); }
+			catch (Exception ex) { metadata.thumbnail = null; Debug.LogException(ex); }
 			characterSnapshots = CharacterSnapshot.GetCurrentSnapshots();
 			audio = SerializedAudio.SerializeAudio();
 			formatName = ColorFormat.CurrentFormat.FormatName;

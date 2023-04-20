@@ -199,8 +199,9 @@
 		}
 		public bool DisableCharacter(string name)
 		{
-			if (m_charactersInScene.ContainsKey(name))
+			if (m_charactersInScene.TryGetValue(name, out var character))
 			{
+				character.characterObject.SetActive(false);
 				m_charactersInScene.Remove(name);
 				return true;
 			}
@@ -215,149 +216,6 @@
 			for (int i = 0; i < m_charactersInScene.Count; i++)
 				DisableCharacter(keys[i]);
 		}
-		/*
-
-		/// <summary>
-		/// Modifies a character name for <see cref="charactersInScene"/>.
-		/// </summary>
-		/// <param name="oldKey"> The current name to change. </param>
-		/// <param name="newKey"> The new name. </param>
-		public void ChangeName(string oldKey, string newKey)
-		{
-			if (!charactersInScene.TryGetValue(oldKey, out var pair))
-				throw new KeyNotFoundException($"character '{oldKey}' not found in data!");
-			charactersInScene.Remove(oldKey);
-			pair.gameObject.name = newKey;
-			charactersInScene.Add(newKey, pair);
-		}
-
-
-		protected override void SingletonAwake()
-		{
-			charLayerTransform = characterLayer.transform;
-		}
-
-
-		/// <summary>
-		/// Explicitly takes a character from disabled memory onto the scene.
-		/// <para>
-		/// This is the text only version for scripts, for hard-coding use, see
-		/// <see cref="InitiateCharacter(string, float, string)"/>.
-		/// </para>
-		/// </summary>
-		/// <param name="gameObjectName"> The character's <see cref="GameObject"/> name. </param>
-		/// <param name="positionRaw"> The new position to assign on the X axis. Text only, will be parsed as <see cref="float"/> </param>
-		/// <param name="characterName"> The value to modify the character's name. </param>
-		/// <returns> If the <see cref="GameObject"/> is found under <paramref name="gameObjectName"/>. </returns>
-		public bool InitiateCharacter(string gameObjectName, string positionRaw, string characterName, out ICharacterController characterController)
-		{
-			return InitiateCharacter(gameObjectName, float.Parse(positionRaw), out characterController, characterName);
-		}
-
-		/// <summary>
-		/// Explicitly takes a character from disabled memory onto the scene.
-		/// </summary>
-		/// <param name="gameObjectName"> The character's <see cref="GameObject"/> name. </param>
-		/// <param name="xPosition"> The new position to assign on the X axis. </param>
-		/// <param name="characterName"> The value to modify the character's name. </param>
-		/// <returns> If the <see cref="GameObject"/> is found under <paramref name="gameObjectName"/>. </returns>
-		public bool InitiateCharacter(string gameObjectName, float xPosition, out ICharacterController characterController, string characterName = "")
-		{
-			Transform charTransform = charLayerTransform.Find(gameObjectName);
-			if (charTransform == null)
-			{
-				characterController = null;
-				return false;
-			}
-			CharacterScript script = charTransform.GetComponent<CharacterScript>();
-			characterController = InitiateCharacter(script.gameObject, script, xPosition, characterName);
-			return true;
-		}
-
-		/// <summary>
-		/// Base method that makes the character more manage-able in code.
-		/// </summary>
-		/// <param name="script"> The character's <see cref="CharacterScript"/>. </param>
-		/// <param name="object"> The character's <see cref="GameObject"/>. </param>
-		/// <param name="xPosition"> The new position to assign on the X axis. </param>
-		/// <param name="characterName"> The value to modify the character's name. </param>
-		private ICharacterController InitiateCharacter(GameObject @object, ICharacterController script, float xPosition, string characterName)
-		{
-			ModifyGameObjectName(@object, characterName);
-			script.HorizontalPosition = xPosition;
-			@object.SetActive(true);
-			charactersInScene.Add(script.CharacterName, (@object, script));
-			return script;
-		}
-
-		/// <summary>
-		/// Explicitly tries to take a prefab of an existing character by combining
-		/// <see cref="prefabsPath"/> and the <paramref name="gameObjectName"/>
-		/// for <see cref="Resources.Load(string)"/> for use in the scene.
-		/// <para>
-		/// This is the text only version for scripts, for hard-coding use, see
-		/// <see cref="SummonCharacter(string, float, string)"/>.
-		/// </para>
-		/// </summary>
-		/// <param name="gameObjectName"> The character's <see cref="GameObject"/> name. </param>
-		/// <param name="positionRaw"> The new position to assign on the X axis. Text only, will be parsed as <see cref="float"/> </param>
-		/// <param name="characterName"> The value to modify the character's name. </param>
-		/// <returns> If the character is found in the path. </returns>
-		public bool SummonCharacter(string gameObjectName, string positionRaw, string characterName)
-			=> SummonCharacter(gameObjectName, float.Parse(positionRaw), characterName);
-		
-		/// <summary>
-		/// Explicitly tries to take a prefab of an existing character by combining
-		/// <see cref="prefabsPath"/> and the <paramref name="gameObjectName"/>
-		/// for <see cref="Resources.Load(string)"/> for use in the scene.
-		/// </summary>
-		/// <param name="gameObjectName"> The character's <see cref="GameObject"/> name. </param>
-		/// <param name="positionRaw"> The new position to assign on the X axis. Text only, will be parsed as <see cref="float"/> </param>
-		/// <param name="characterName"> The value to modify the character's name. </param>
-		/// <returns> If the character is found in the path. </returns>
-		public bool SummonCharacter(string gameObjectName, float xPosition, string characterName = "")
-		{
-			GameObject gameObject = Resources.Load<GameObject>(prefabsPath + gameObjectName);
-			if (gameObject == null)
-				return false;
-			if (!gameObject.TryGetComponent<CharacterScript>(out var characterScript))
-				return false;
-			InitiateCharacter(gameObject, characterScript, xPosition, characterName);
-			return true;
-		}
-
-		/// <summary>
-		/// Modifies the <paramref name="gameObject"/>'s name if <paramref name="characterName"/>
-		/// is not <see langword="null"/> or empty.
-		/// </summary>
-		/// <param name="gameObject"> The GameObject to modify. </param>
-		/// <param name="characterName"> The new name to assign. Does nothing if empty. </param>
-		private void ModifyGameObjectName(GameObject gameObject, string characterName)
-		{
-			if (string.IsNullOrWhiteSpace(characterName))
-				return;
-			gameObject.name = characterName;
-		}
-
-		/// <summary>
-		/// Clears all characters from the scene.
-		/// </summary>
-		public void ClearAllCharacters()
-		{
-			string[] keys = charactersInScene.Keys.ToArray();
-			for (int i = 0; i < charactersInScene.Count; i++)
-				DisableCharacter(keys[i]);
-		}
-
-		/// <summary>
-		/// Removes a single character from the scene.
-		/// </summary>
-		public void DisableCharacter(string character)
-		{
-			charactersInScene[character].gameObject.SetActive(false);
-			charactersInScene.Remove(character);
-		}
-		*/
 	}
 
 	public struct Character

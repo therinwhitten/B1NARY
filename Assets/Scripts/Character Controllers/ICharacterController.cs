@@ -70,6 +70,7 @@
 				Debug.LogError($"Failure to load {gameObjectName} from data.");
 				return;
 			}
+			@char.Value.ChangeCharacterName(name);
 			@char.Value.controller.HorizontalPosition = horizontalPosition;
 			@char.Value.controller.Deserialize(this);
 		}
