@@ -85,7 +85,7 @@
 			int index = 0;
 			while (m_activeAudioTrackers.ContainsKey((customAudioClip.Name, index)))
 				index++;
-			var audioTracker = new AudioTracker(this);
+			var audioTracker = new AudioTracker();
 			m_activeAudioTrackers.Add((customAudioClip.Name, index), audioTracker);
 			return (customAudioClip.Name, index);
 		}
@@ -230,8 +230,20 @@
 		}
 		public void StopAllSounds()
 		{
-			using (var enumerator = ActiveAudioTrackers.Values.GetEnumerator())
-				enumerator.Current.Stop();
+			(string name, int index)[] keys = m_activeAudioTrackers.Keys.ToArray();
+			for (int i = 0; i < keys.Length; i++)
+			{
+				(string name, int index) currentKey = keys[i];
+				AudioTracker currentValue = m_activeAudioTrackers[currentKey];
+				if (currentValue is null)
+				{
+					m_activeAudioTrackers.Remove(currentKey);
+					continue;
+				}
+				currentValue.Dispose();
+				m_activeAudioTrackers.Remove(currentKey);
+			}
+
 		}
 		private IEnumerator WaitUntil(string key)
 		{
