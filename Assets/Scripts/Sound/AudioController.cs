@@ -228,6 +228,11 @@
 			oneShotSounds.Add(audioMixerGroup.name, (coroutineWrapper, customAudioSource));
 			oneShotSounds[audioMixerGroup.name].disposeWrapper.Start();
 		}
+		public void StopAllSounds()
+		{
+			using (var enumerator = ActiveAudioTrackers.Values.GetEnumerator())
+				enumerator.Current.Stop();
+		}
 		private IEnumerator WaitUntil(string key)
 		{
 			yield return new WaitUntil(() => !oneShotSounds[key].source.isPlaying);

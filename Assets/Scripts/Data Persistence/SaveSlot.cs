@@ -183,6 +183,8 @@
 			};
 			wrapper.AfterActions += (mono) =>
 			{
+				if (AudioController.TryGetInstance(out var controller))
+					controller.StopAllSounds();
 				for (int i = 0; i < audio.Length; i++)
 					audio[i].Play();
 			};
