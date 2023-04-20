@@ -22,7 +22,6 @@
 		public event Action Disposing;
 
 		private readonly AudioSource audioSource;
-		private readonly MonoBehaviour monoBehaviour;
 
 		private CoroutineWrapper garbageCollector;
 		
@@ -75,16 +74,13 @@
 		public TimeSpan TotalSeconds => TimeSpan.FromSeconds(audioSource.clip.length);
 		public float CompletionPercent => audioSource.time / audioSource.clip.length;
 		public string TimeInfo => $"{audioSource.time:N2} : {audioSource.clip.length:N2}";
-		public AudioTracker(MonoBehaviour monoBehaviour)
+		public AudioTracker()
 		{
 			CreateAutoDisposableCoroutine = true;
-			this.monoBehaviour = monoBehaviour;
-			audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
 		}
-		public AudioTracker(MonoBehaviour monoBehaviour, AudioSource audioSource)
+		public AudioTracker(AudioSource audioSource)
 		{
 			CreateAutoDisposableCoroutine = true;
-			this.monoBehaviour = monoBehaviour;
 			this.audioSource = audioSource;
 		}
 
@@ -95,7 +91,7 @@
 			CustomAudioClip = audioClip;
 			ApplyCustomSoundData(audioSource, audioClip);
 			if (CreateAutoDisposableCoroutine)
-				garbageCollector = new CoroutineWrapper(monoBehaviour, WaitUntil()).Start();
+				garbageCollector = new CoroutineWrapper(AudioController.Instance, WaitUntil()).Start();
 			audioSource.Play();
 		}
 		public void PlaySingle(CustomAudioClip audioClip, float fadeIn)
@@ -105,10 +101,10 @@
 			CustomAudioClip = audioClip;
 			ApplyCustomSoundData(audioSource, audioClip);
 			if (CreateAutoDisposableCoroutine)
-				garbageCollector = new CoroutineWrapper(monoBehaviour, WaitUntil()).Start();
+				garbageCollector = new CoroutineWrapper(AudioController.Instance, WaitUntil()).Start();
 			float finalVolume = audioSource.volume;
 			audioSource.volume = 0f;
-			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume, 
+			AudioController.Instance.ChangeFloat(new Ref<float>(() => audioSource.volume, 
 				volume => audioSource.volume = volume), finalVolume, fadeIn);
 			audioSource.Play();
 		}
@@ -119,21 +115,15 @@
 		}
 
 
-		private void StopOneShots()
-		{
-			//audioSource.Stop();
-		}
 		public void Stop()
 		{
 			if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
 				garbageCollector.Stop();
-			StopOneShots();
 		}
 		public void Stop(float fadeOut)
 		{
-			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume,
+			AudioController.Instance.ChangeFloat(new Ref<float>(() => audioSource.volume,
 				volume => audioSource.volume = volume), 0, fadeOut, () => { if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector)) garbageCollector.Stop(); });
-			StopOneShots();
 		}
 
 		public void Dispose()
