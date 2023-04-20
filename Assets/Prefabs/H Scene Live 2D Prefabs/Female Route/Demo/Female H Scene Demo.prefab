@@ -704,6 +704,7 @@ GameObject:
   - component: {fileID: 5129416165590764605}
   - component: {fileID: 1191928630347284002}
   - component: {fileID: 2484990599760268242}
+  - component: {fileID: 1268931877}
   m_Layer: 10
   m_Name: ParamLEyeY
   m_TagString: Untagged
@@ -753,6 +754,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: L Eye Y
   DisplayName: 
+--- !u!114 &1268931877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124696828795195816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 30
 --- !u!1 &151789648321768663
 GameObject:
   m_ObjectHideFlags: 0
@@ -1749,7 +1764,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 197
+  m_SortingOrder: 196
 --- !u!114 &3043062596547338814
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1771,7 +1786,7 @@ MonoBehaviour:
   _mainTexture: {fileID: 2800000, guid: 7cd31e59a94c9a046abb381283489b68, type: 3}
   _sortingMode: 2
   _sortingOrder: 0
-  _renderOrder: 197
+  _renderOrder: 196
   _depthOffset: 0.00001
   _opacity: 0.59999996
 --- !u!1 &274988911716530653
@@ -9007,7 +9022,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 200
+  m_SortingOrder: 199
 --- !u!114 &5824624075076793899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9029,7 +9044,7 @@ MonoBehaviour:
   _mainTexture: {fileID: 2800000, guid: 7cd31e59a94c9a046abb381283489b68, type: 3}
   _sortingMode: 2
   _sortingOrder: 0
-  _renderOrder: 200
+  _renderOrder: 199
   _depthOffset: 0.00001
   _opacity: 1
 --- !u!1 &2099317828492257502
@@ -9515,6 +9530,8 @@ GameObject:
   - component: {fileID: 5493130452031321543}
   - component: {fileID: 7658519679267993322}
   - component: {fileID: 7117762610408150399}
+  - component: {fileID: 1871423881}
+  - component: {fileID: 6980945012728683437}
   m_Layer: 10
   m_Name: ParamStarBodyP
   m_TagString: Untagged
@@ -9564,6 +9581,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Body Physics
   DisplayName: 
+--- !u!114 &1871423881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193561691359589505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 0
+  Factor: 10
+--- !u!114 &6980945012728683437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2193561691359589505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 10
 --- !u!1 &2215176266414553278
 GameObject:
   m_ObjectHideFlags: 0
@@ -10892,6 +10937,7 @@ GameObject:
   - component: {fileID: 8257898822815067019}
   - component: {fileID: 2914651766640070936}
   - component: {fileID: 5289774111076887006}
+  - component: {fileID: 223343507}
   m_Layer: 10
   m_Name: ParamLEyeX
   m_TagString: Untagged
@@ -10941,6 +10987,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: L Eye X
   DisplayName: 
+--- !u!114 &223343507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2454500835377858266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 0
+  Factor: 30
 --- !u!1 &2498915973055504579
 GameObject:
   m_ObjectHideFlags: 0
@@ -14298,7 +14358,9 @@ GameObject:
   - component: {fileID: 6934141180386747044}
   - component: {fileID: 6863020316398492715}
   - component: {fileID: 709151486096206964}
+  - component: {fileID: 3784772023273417026}
   - component: {fileID: 168069053}
+  - component: {fileID: 8772787359389461933}
   m_Layer: 10
   m_Name: Female H Scene Demo
   m_TagString: Live 2D Character
@@ -14378,7 +14440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Opacity: 1
-  _lastOpacity: 0
+  _lastOpacity: 1
   _isOverwrittenModelMultiplyColors: 0
   _isOverwrittenModelScreenColors: 0
   _modelMultiplyColor: {r: 0, g: 0, b: 0, a: 0}
@@ -16649,6 +16711,22 @@ MonoBehaviour:
   SamplingQuality: 2
   Gain: 9.17
   Smoothing: 0.349
+--- !u!114 &3784772023273417026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3352781152880458764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73d28c5e3e468f4ead9ebd0ac07ef09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BlendMode: 1
+  _target: {fileID: 0}
+  Center: {fileID: 0}
+  Damping: 0.15
 --- !u!82 &168069053
 AudioSource:
   m_ObjectHideFlags: 0
@@ -16746,6 +16824,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8772787359389461933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3352781152880458764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73d28c5e3e468f4ead9ebd0ac07ef09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BlendMode: 1
+  _target: {fileID: 0}
+  Center: {fileID: 0}
+  Damping: 0.15
 --- !u!1 &3359800303514775006
 GameObject:
   m_ObjectHideFlags: 0
@@ -21171,7 +21265,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 196
+  m_SortingOrder: 204
 --- !u!114 &3627449364244139123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21193,7 +21287,7 @@ MonoBehaviour:
   _mainTexture: {fileID: 2800000, guid: 7cd31e59a94c9a046abb381283489b68, type: 3}
   _sortingMode: 2
   _sortingOrder: 0
-  _renderOrder: 196
+  _renderOrder: 204
   _depthOffset: 0.00001
   _opacity: 1
 --- !u!1 &4273289780927920592
@@ -22989,6 +23083,7 @@ GameObject:
   - component: {fileID: 7572019718880253737}
   - component: {fileID: 4139868396368671222}
   - component: {fileID: 3485577804986740282}
+  - component: {fileID: 1029697559}
   m_Layer: 10
   m_Name: ParamStarHeadBounce
   m_TagString: Untagged
@@ -23038,6 +23133,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Head Bounce
   DisplayName: 
+--- !u!114 &1029697559
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4839008981569187875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 0
+  Factor: 10
 --- !u!1 &4842848936886230098
 GameObject:
   m_ObjectHideFlags: 0
@@ -24595,6 +24704,7 @@ GameObject:
   - component: {fileID: 2511115060441076814}
   - component: {fileID: 5645204761003652334}
   - component: {fileID: 5275856931265785133}
+  - component: {fileID: 1587145859}
   m_Layer: 10
   m_Name: ParamStarHeadX
   m_TagString: Untagged
@@ -24644,6 +24754,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Head X
   DisplayName: 
+--- !u!114 &1587145859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5223327020419654296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 0
+  Factor: 30
 --- !u!1 &5240968066547265907
 GameObject:
   m_ObjectHideFlags: 0
@@ -27731,6 +27855,7 @@ GameObject:
   - component: {fileID: 7031131826542841789}
   - component: {fileID: 8326878214503475106}
   - component: {fileID: 2059034556221597633}
+  - component: {fileID: 1838677804}
   m_Layer: 10
   m_Name: ParamREyeY
   m_TagString: Untagged
@@ -27780,6 +27905,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: R Eye Y
   DisplayName: 
+--- !u!114 &1838677804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5983200355377313670}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 30
 --- !u!1 &5983541274787443270
 GameObject:
   m_ObjectHideFlags: 0
@@ -27791,6 +27930,7 @@ GameObject:
   - component: {fileID: 8915957167077315135}
   - component: {fileID: 3714968891737926143}
   - component: {fileID: 4383455668596582583}
+  - component: {fileID: 8096513916430214574}
   m_Layer: 10
   m_Name: ParamREyeX
   m_TagString: Untagged
@@ -27840,6 +27980,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: R Eye X
   DisplayName: 
+--- !u!114 &8096513916430214574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5983541274787443270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 0
+  Factor: 30
 --- !u!1 &6008662088513560280
 GameObject:
   m_ObjectHideFlags: 0
@@ -27933,7 +28087,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 199
+  m_SortingOrder: 198
 --- !u!114 &1096984751726471780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27955,7 +28109,7 @@ MonoBehaviour:
   _mainTexture: {fileID: 2800000, guid: 7cd31e59a94c9a046abb381283489b68, type: 3}
   _sortingMode: 2
   _sortingOrder: 0
-  _renderOrder: 199
+  _renderOrder: 198
   _depthOffset: 0.00001
   _opacity: 1
 --- !u!1 &6010302422684653160
@@ -31969,6 +32123,7 @@ GameObject:
   - component: {fileID: 6115924101874146565}
   - component: {fileID: 5909272058829556415}
   - component: {fileID: 55165955446248896}
+  - component: {fileID: 587635103}
   m_Layer: 10
   m_Name: ParamStarHeadSquish
   m_TagString: Untagged
@@ -32018,6 +32173,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Head Squish
   DisplayName: 
+--- !u!114 &587635103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6778477544539587536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 0
+  Factor: 10
 --- !u!1 &6847734739700658622
 GameObject:
   m_ObjectHideFlags: 0
@@ -32763,7 +32932,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 202
+  m_SortingOrder: 201
 --- !u!114 &6363943160487200635
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32785,7 +32954,7 @@ MonoBehaviour:
   _mainTexture: {fileID: 2800000, guid: 7cd31e59a94c9a046abb381283489b68, type: 3}
   _sortingMode: 2
   _sortingOrder: 0
-  _renderOrder: 202
+  _renderOrder: 201
   _depthOffset: 0.00001
   _opacity: 1
 --- !u!1 &7016622554004924551
@@ -35041,7 +35210,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 198
+  m_SortingOrder: 197
 --- !u!114 &9075412664048609766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35063,7 +35232,7 @@ MonoBehaviour:
   _mainTexture: {fileID: 2800000, guid: 7cd31e59a94c9a046abb381283489b68, type: 3}
   _sortingMode: 2
   _sortingOrder: 0
-  _renderOrder: 198
+  _renderOrder: 197
   _depthOffset: 0.00001
   _opacity: 1
 --- !u!1 &7483996796795157240
@@ -38166,7 +38335,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 204
+  m_SortingOrder: 203
 --- !u!114 &3488396519674567131
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38188,7 +38357,7 @@ MonoBehaviour:
   _mainTexture: {fileID: 2800000, guid: 7cd31e59a94c9a046abb381283489b68, type: 3}
   _sortingMode: 2
   _sortingOrder: 0
-  _renderOrder: 204
+  _renderOrder: 203
   _depthOffset: 0.00001
   _opacity: 1
 --- !u!1 &8138213986546231963
@@ -39401,6 +39570,7 @@ GameObject:
   - component: {fileID: 7691480244044909116}
   - component: {fileID: 8745328548548970704}
   - component: {fileID: 4988247392833673262}
+  - component: {fileID: 924256012}
   m_Layer: 10
   m_Name: ParamStarTwist
   m_TagString: Untagged
@@ -39450,6 +39620,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Twist
   DisplayName: 
+--- !u!114 &924256012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8430626176527881994}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 0
+  Factor: 10
 --- !u!1 &8445914186836987647
 GameObject:
   m_ObjectHideFlags: 0
@@ -39841,7 +40025,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 201
+  m_SortingOrder: 200
 --- !u!114 &4953539380203588320
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39863,7 +40047,7 @@ MonoBehaviour:
   _mainTexture: {fileID: 2800000, guid: 7cd31e59a94c9a046abb381283489b68, type: 3}
   _sortingMode: 2
   _sortingOrder: 0
-  _renderOrder: 201
+  _renderOrder: 200
   _depthOffset: 0.00001
   _opacity: 1
 --- !u!1 &8484116776532306460
@@ -40589,6 +40773,7 @@ GameObject:
   - component: {fileID: 7037115805939381946}
   - component: {fileID: 2632862801037388960}
   - component: {fileID: 1666442582222006279}
+  - component: {fileID: 832374802}
   m_Layer: 10
   m_Name: ParamStarHeadZ
   m_TagString: Untagged
@@ -40638,6 +40823,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Head Z
   DisplayName: 
+--- !u!114 &832374802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8735988973280273525}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 2
+  Factor: 30
 --- !u!1 &8807560909840247242
 GameObject:
   m_ObjectHideFlags: 0
@@ -41915,7 +42114,7 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 203
+  m_SortingOrder: 202
 --- !u!114 &199111696465234830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41937,7 +42136,7 @@ MonoBehaviour:
   _mainTexture: {fileID: 2800000, guid: 7cd31e59a94c9a046abb381283489b68, type: 3}
   _sortingMode: 2
   _sortingOrder: 0
-  _renderOrder: 203
+  _renderOrder: 202
   _depthOffset: 0.00001
   _opacity: 1
 --- !u!1 &9123705854824456857
@@ -42129,6 +42328,7 @@ GameObject:
   - component: {fileID: 9054961787400744340}
   - component: {fileID: 6152010494784393038}
   - component: {fileID: 6494739699082692681}
+  - component: {fileID: 625463853}
   m_Layer: 10
   m_Name: ParamStarHeadY
   m_TagString: Untagged
@@ -42178,6 +42378,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Head Y
   DisplayName: 
+--- !u!114 &625463853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9171474328459105473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 30
 --- !u!1 &9220059402501863540
 GameObject:
   m_ObjectHideFlags: 0
