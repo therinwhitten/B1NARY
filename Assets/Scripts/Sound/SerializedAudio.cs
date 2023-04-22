@@ -14,10 +14,9 @@
 		}
 		public static SerializedAudio[] SerializeAudio()
 		{
-			var audio = new SerializedAudio[AudioController.Instance.ActiveAudioTrackers.Count];
-			using (var enumerator = AudioController.Instance.ActiveAudioTrackers.GetEnumerator())
-				for (int i = 0; enumerator.MoveNext(); i++)
-					audio[i] = new SerializedAudio(enumerator.Current.Value);
+			var audio = new SerializedAudio[AudioController.Instance.ActiveAudio.Count];
+			for (int i = 0; i < audio.Length; i++)
+				audio[i] = new SerializedAudio(AudioController.Instance.ActiveAudio[i]);
 			Debug.Log($"array length {audio.Length}:, \n\t{string.Join("\n\t", audio.Select(aud => aud.ClipName))}");
 			return audio;
 		}
@@ -26,14 +25,25 @@
 		private long ticks;
 		[field: XmlAttribute("clipName")]
 		public string ClipName { get; }
+		public string SoundLibrary { get; }
 		public SerializedAudio(AudioTracker tracker)
 		{
 			ticks = tracker.PlayedSeconds.Ticks;
 			ClipName = tracker.ClipName;
+			SoundLibrary = tracker.SoundLibrary.name;
 		}
 		public AudioTracker Play()
 		{
-			AudioTracker tracker = AudioController.Instance.PlaySound(ClipName);
+			AudioTracker tracker;
+			if (SoundLibrary != AudioController.Instance.ActiveLibrary.name)
+			{
+				SoundLibrary oldLibrary = AudioController.Instance.ActiveLibrary;
+				AudioController.Instance.ActiveLibrary = Resources.Load<SoundLibrary>($"{AudioController.RESOURCES_SOUND_LIBRARY}/{SoundLibrary}");
+				tracker = AudioController.Instance.AddSound(ClipName);
+				AudioController.Instance.ActiveLibrary = oldLibrary;
+			}
+			else
+				tracker = AudioController.Instance.AddSound(ClipName);
 			if (tracker != null)
 				tracker.PlayedSeconds = PlayedSeconds;
 			return tracker;

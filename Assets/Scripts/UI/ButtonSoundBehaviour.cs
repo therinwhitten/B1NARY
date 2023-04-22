@@ -100,7 +100,7 @@
 		{
 			if (sound == null)
 				return;
-			AudioController.Instance.PlayOneShot(sound, audioMixerGroup, 1f);
+			AudioController.Instance.AddSound((CustomAudioClip)sound);
 		}
 	}
 }

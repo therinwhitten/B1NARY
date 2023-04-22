@@ -28,7 +28,7 @@ namespace B1NARY.Editor.Debugger
 
 			}
 			var audioHandler = AudioController.Instance;
-			EditorGUILayout.LabelField($"Current Library: {(audioHandler == null || audioHandler.CurrentSoundLibrary == null ? "Null" : audioHandler.CurrentSoundLibrary.name)}");
+			EditorGUILayout.LabelField($"Current Library: {(audioHandler == null || audioHandler.ActiveLibrary == null ? "Null" : audioHandler.ActiveLibrary.name)}");
 			AudioControllerEditor.DisplayAudioController(audioHandler);
 		}
 	}

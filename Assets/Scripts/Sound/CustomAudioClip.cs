@@ -84,6 +84,15 @@ namespace B1NARY.Audio
 			}
 		}
 
+		public void ApplyTo(AudioSource audioSource)
+		{
+			audioSource.clip = clip;
+			audioSource.outputAudioMixerGroup = audioMixerGroup;
+			audioSource.loop = loop;
+			audioSource.volume = FinalVolume;
+			audioSource.pitch = FinalPitch;
+		}
+
 		public override string ToString() => clip.ToString();
 	}
 }

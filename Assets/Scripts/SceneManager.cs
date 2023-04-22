@@ -158,9 +158,7 @@
 			}
 			ScriptHandler.Instance.pauser.Play();
 			ScriptHandler.Instance.Clear();
-			using (var enumerator = AudioController.Instance.ActiveAudioTrackers.Values.GetEnumerator())
-				while (enumerator.MoveNext())
-					enumerator.Current.Stop();
+			AudioController.Instance.RemoveAllSounds();
 		}
 		/// <summary>
 		/// Initializes the <see cref="ScriptHandler"/>, the system expects the
