@@ -22,7 +22,6 @@
 			}
 		}
 		public CustomAudioClip CustomAudioClip { get; }
-		public SoundLibrary SoundLibrary { get; }
 		public string ClipName => audioSource.clip.name;
 		public float Volume
 		{
@@ -51,13 +50,14 @@
 		}
 		public TimeSpan TotalSeconds => TimeSpan.FromSeconds(audioSource.clip.length);
 		public string TimeInfo => $"{audioSource.time:N2} : {audioSource.clip.length:N2}";
+		public string SceneName { get; }
 
-		public AudioTracker(CustomAudioClip customAudioClip, SoundLibrary source)
+		public AudioTracker(CustomAudioClip customAudioClip)
 		{
 			audioSource = AudioController.Instance.gameObject.AddComponent<AudioSource>();
 			customAudioClip.ApplyTo(audioSource);
 			CustomAudioClip = customAudioClip;
-			SoundLibrary = source;
+			SceneName = SceneManager.ActiveScene.name;
 		}
 		public AudioTracker Start(float fadeIn = 0f)
 		{

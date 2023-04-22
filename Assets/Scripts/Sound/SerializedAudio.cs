@@ -25,20 +25,22 @@
 		private long ticks;
 		[field: XmlAttribute("clipName")]
 		public string ClipName { get; }
-		public string SoundLibrary { get; }
+		public string SceneName { get; }
 		public SerializedAudio(AudioTracker tracker)
 		{
 			ticks = tracker.PlayedSeconds.Ticks;
 			ClipName = tracker.ClipName;
-			SoundLibrary = tracker.SoundLibrary.name;
+			SceneName = SceneManager.ActiveScene.name;
 		}
 		public AudioTracker Play()
 		{
 			AudioTracker tracker;
-			if (SoundLibrary != AudioController.Instance.ActiveLibrary.name)
+			if (SceneName != SceneManager.ActiveScene.name)
 			{
 				SoundLibrary oldLibrary = AudioController.Instance.ActiveLibrary;
-				AudioController.Instance.ActiveLibrary = Resources.Load<SoundLibrary>($"{AudioController.RESOURCES_SOUND_LIBRARY}/{SoundLibrary}");
+				AudioController.Instance.ActiveLibrary = Resources.Load<SoundLibrary>($"{AudioController.RESOURCES_SOUND_LIBRARY}/{SceneName}");
+				if (AudioController.Instance.ActiveLibrary == null)
+					throw new NullReferenceException($"Scene name '{SceneName}' for the sound library of clip '{ClipName}' is not found.");
 				tracker = AudioController.Instance.AddSound(ClipName);
 				AudioController.Instance.ActiveLibrary = oldLibrary;
 			}

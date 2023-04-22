@@ -138,7 +138,7 @@
 		
 		public AudioTracker AddSound(CustomAudioClip clip, float fadeIn = 0f)
 		{
-			var tracker = new AudioTracker(clip, ActiveLibrary);
+			var tracker = new AudioTracker(clip);
 			if (otherValues.Count > 0)
 				audioTrackers[otherValues.Dequeue()] = tracker;
 			else
