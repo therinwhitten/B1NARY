@@ -43,7 +43,6 @@
 							m_Instance = XmlSerializer.Deserialize(fileStream);
 					else
 						m_Instance = new PlayerConfig();
-					Debug.Log("Player Config Active!");
 #if UNITY_EDITOR
 					UnityEditor.EditorApplication.playModeStateChanged += EditorQuit;
 					void EditorQuit(UnityEditor.PlayModeStateChange state)
@@ -51,7 +50,6 @@
 						if (state != UnityEditor.PlayModeStateChange.ExitingPlayMode)
 							return;
 						m_Instance.Save();
-						//UnityEditor.EditorApplication.playModeStateChanged -= EditorQuit;
 					}
 #else
 			Application.quitting += Quit;
@@ -76,7 +74,6 @@
 					stream.CopyTo(fileStream);
 					fileStream.Flush();
 				}
-			Debug.Log("Saved Player Config!");
 		}
 
 		public ChangableValue<bool> hEnable = new ChangableValue<bool>(false);

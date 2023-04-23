@@ -15,6 +15,7 @@
 		{
 			if (ScriptHandler.TryGetInstance(out var handler))
 				handler.pauser.Play();
+			PlayerConfig.Instance.Save();
 		}
 	}
 }

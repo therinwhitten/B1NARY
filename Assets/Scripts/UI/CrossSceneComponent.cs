@@ -4,7 +4,6 @@
 	using System;
 	using System.Linq;
 	using UnityEngine;
-	using Object = UnityEngine.Object;
 
 	public sealed class CrossSceneComponent : GameObjectSingleton
 	{
@@ -12,8 +11,7 @@
 		private static void Constructor()
 		{
 			GameObject instance = Resources.Load<GameObject>("Cross Scene");
-			instance = Object.Instantiate(instance);
-			Debug.Log("Cross Scene Loaded!");
+			instance = Instantiate(instance);
 		}
 	}
 }
