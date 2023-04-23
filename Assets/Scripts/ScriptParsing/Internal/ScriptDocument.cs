@@ -102,7 +102,6 @@
 		public IDocumentWatcher StartAtLine(int line) => new Watcher(EnumerateThrough(line));
 		public override IEnumerator<ScriptNode> EnumerateThrough(int localIndex)
 		{
-			Debug.Log($"Starting at line with index {localIndex}");
 			using (var enumerator = base.EnumerateThrough(localIndex))
 				while (enumerator.MoveNext())
 				{

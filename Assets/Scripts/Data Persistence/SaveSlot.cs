@@ -12,7 +12,6 @@
 	using OVSXmlSerializer;
 	using System.Collections.ObjectModel;
 	using B1NARY.CharacterManagement;
-	using CharacterManager = B1NARY.CharacterManagement.CharacterManager;
 	using B1NARY.Audio;
 	using B1NARY.UI.Colors;
 
@@ -88,8 +87,6 @@
 		{
 
 		}
-
-
 		public string DisplaySaveContents =>
 			$"<size=125%><b>{SaveName}</b></size>\n" +
 			$"{PlayerName} : {scriptPosition.SceneName}\n" +
@@ -138,6 +135,8 @@
 		public SerializedAudio[] audio;
 		[XmlIgnore]
 		private DateTime startPlay;
+		[XmlIgnore]
+		public bool hasSaved = false;
 
 		public SaveSlot()
 		{
@@ -153,12 +152,12 @@
 
 		public void Save()
 		{
+			hasSaved = true;
 			metadata.lastSaved = DateTime.Now;
 			metadata.playedAmount += metadata.lastSaved - startPlay;
 			startPlay = metadata.lastSaved;
 			scriptPosition = ScriptPosition.Define();
-			try { metadata.thumbnail = Thumbnail.CreateWithScreenshot(128, 128); }
-			catch (Exception ex) { metadata.thumbnail = null; Debug.LogException(ex); }
+			metadata.thumbnail = SaveHider.GetThumbnail();
 			characterSnapshots = CharacterSnapshot.GetCurrentSnapshots();
 			audio = SerializedAudio.SerializeAudio();
 			formatName = ColorFormat.CurrentFormat.FormatName;
@@ -169,6 +168,8 @@
 
 		public void Load()
 		{
+			if (!hasSaved)
+				throw new InvalidOperationException("Currently active save has not saved properly! Did you press quickload without saving?");
 			ActiveSlot = this;
 			CoroutineWrapper wrapper = new CoroutineWrapper(ScriptHandler.Instance, scriptPosition.LoadToPosition());
 			wrapper.AfterActions += (mono) =>
@@ -176,9 +177,11 @@
 				for (int i = 0; i < characterSnapshots.Length; i++)
 				{
 					CharacterSnapshot currentSnapshot = characterSnapshots[i];
-					currentSnapshot.Load();
-					if (currentSnapshot.selected)
-						CharacterManager.Instance.ChangeActiveCharacterViaName(currentSnapshot.gameObjectName);
+					if (currentSnapshot.Load(out _))
+						if (currentSnapshot.selected)
+							if (!CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(currentSnapshot.name))
+								Debug.LogError($"Failed to load '{currentSnapshot.name}' as selected character!" +
+									$"\nDesignated gameobject name: {currentSnapshot.gameObjectName}");
 				}
 			};
 			wrapper.AfterActions += (mono) =>

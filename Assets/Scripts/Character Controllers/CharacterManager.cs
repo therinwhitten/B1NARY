@@ -135,7 +135,7 @@
 			=> m_charactersInScene;
 		private readonly Dictionary<string, Character> m_charactersInScene = new Dictionary<string, Character>(); 
 
-		public bool ChangeActiveCharacterViaName(string name)
+		public bool ChangeActiveCharacterViaCharacterName(string name)
 		{
 			if (!CharactersInScene.TryGetValue(name, out Character character))
 				return false;

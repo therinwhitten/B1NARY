@@ -11,7 +11,6 @@ namespace B1NARY.Audio
 	[CreateAssetMenu(fileName = "New Sound Library", menuName = "B1NARY/Sound Library (SL)", order = 0)]
 	public class SoundLibrary : ScriptableObject
 	{
-
 		/// <summary>
 		/// Gets a value indicating whether it has sounds that has an imageOption that can
 		/// play it on awake.

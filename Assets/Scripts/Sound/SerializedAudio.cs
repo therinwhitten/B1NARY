@@ -17,7 +17,6 @@
 			var audio = new SerializedAudio[AudioController.Instance.ActiveAudio.Count];
 			for (int i = 0; i < audio.Length; i++)
 				audio[i] = new SerializedAudio(AudioController.Instance.ActiveAudio[i]);
-			Debug.Log($"array length {audio.Length}:, \n\t{string.Join("\n\t", audio.Select(aud => aud.ClipName))}");
 			return audio;
 		}
 

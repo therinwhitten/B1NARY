@@ -120,13 +120,25 @@
 			config.AttributeListeners += ChangeExpression;
 			config.EntryListeners += ChangeCharacter;
 		}
-		private void SayLine(ScriptLine line) => 
-			CharacterManager.Instance.ActiveCharacter.Value.controller.SayLine(line);
-		private void ChangeExpression(string expressionName) => 
-			CharacterManager.Instance.ActiveCharacter.Value.controller.CurrentExpression = expressionName;
+		private void SayLine(ScriptLine line)
+		{
+			if (CharacterManager.Instance.ActiveCharacter.HasValue)
+				CharacterManager.Instance.ActiveCharacter.Value.controller.SayLine(line);
+			else
+				throw new NullReferenceException($"There is no active character selected!");
+		}
+
+		private void ChangeExpression(string expressionName)
+		{
+			if (CharacterManager.Instance.ActiveCharacter.HasValue)
+				CharacterManager.Instance.ActiveCharacter.Value.controller.CurrentExpression = expressionName;
+			else
+				throw new NullReferenceException($"There is no active character selected!");
+		}
+
 		private void ChangeCharacter(string newCharacter)
 		{
-			if (!CharacterManager.Instance.ChangeActiveCharacterViaName(newCharacter))
+			if (!CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(newCharacter))
 				throw new MissingMemberException($"'{newCharacter}' is not found in the internal character list!");
 		}
 

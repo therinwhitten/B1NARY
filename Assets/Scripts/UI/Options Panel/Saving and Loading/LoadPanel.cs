@@ -39,6 +39,7 @@
 					source = slotPair.Value.Value,
 					target = instance.GetComponent<SavePanelBehaviour>(),
 				};
+				pair.source.hasSaved = true;
 				pair.target.button.onClick.AddListener(() =>
 				{
 					actionPanel.gameObject.SetActive(true);

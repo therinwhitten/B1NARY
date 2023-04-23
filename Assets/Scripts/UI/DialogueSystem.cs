@@ -246,7 +246,7 @@
 
 		public void Say(string message, string speaker)
 		{
-			CharacterManager.Instance.ChangeActiveCharacterViaName(speaker);
+			CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(speaker);
 			Say(message);
 		}
 

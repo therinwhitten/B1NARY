@@ -57,22 +57,24 @@
 			selected = controller.Selected;
 			asEmpty = controller.EmptyCharacter; 
 		}
-		public void Load()
+		public bool Load(out Character? character)
 		{
 			if (asEmpty)
 			{
-				EmptyController.AddTo(CharacterManager.Instance, name).controller.Deserialize(this);
-				return;
+				character = EmptyController.AddTo(CharacterManager.Instance, name);
+				character.Value.controller.Deserialize(this);
+				return true;
 			}
-			Character? @char = CharacterManager.Instance.SummonCharacter(gameObjectName);
-			if (@char == null)
+			character = CharacterManager.Instance.SummonCharacter(gameObjectName);
+			if (character == null)
 			{
 				Debug.LogError($"Failure to load {gameObjectName} from data.");
-				return;
+				return false;
 			}
-			@char.Value.ChangeCharacterName(name);
-			@char.Value.controller.HorizontalPosition = horizontalPosition;
-			@char.Value.controller.Deserialize(this);
+			character.Value.ChangeCharacterName(name);
+			character.Value.controller.HorizontalPosition = horizontalPosition;
+			character.Value.controller.Deserialize(this);
+			return true;
 		}
 	}
 }
