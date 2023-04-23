@@ -6,7 +6,7 @@
 	using UnityEngine;
 	using UnityEngine.Audio;
 
-	public struct SerializedAudio : IAudioInfo
+	public struct SerializedAudio
 	{
 		public static explicit operator SerializedAudio(AudioTracker audio)
 		{
@@ -49,12 +49,5 @@
 				tracker.PlayedSeconds = PlayedSeconds;
 			return tracker;
 		}
-
-		bool IAudioInfo.IsPlaying { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-		float IAudioInfo.Volume { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-		float IAudioInfo.Pitch { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-		bool IAudioInfo.Loop { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-		AudioMixerGroup IAudioInfo.CurrentGroup { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-		TimeSpan IAudioInfo.TotalSeconds => throw new NotImplementedException();
 	}
 }

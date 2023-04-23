@@ -175,7 +175,7 @@ namespace B1NARY.Audio.Editor
 			Rect fullNameRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f)),
 				toggleRect = new Rect(fullNameRect) { width = 20f };
 			fullNameRect.xMin += toggleRect.xMax + 2;
-			audioInfo.IsPlaying = EditorGUI.Toggle(toggleRect, audioInfo.IsPlaying);
+			EditorGUI.Toggle(toggleRect, audioInfo.IsPlaying);
 			EditorGUI.LabelField(fullNameRect, audioInfo.ClipName, EditorStyles.boldLabel);
 			EditorGUI.indentLevel++;
 			Rect barRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 24f));
