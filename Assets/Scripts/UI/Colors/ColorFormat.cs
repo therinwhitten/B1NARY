@@ -10,6 +10,7 @@
 	{
 		public const string ROOT_NAME_CUSTOM = "ColorFormat",
 			ROOT_NAME_DEFAULT = "DefaultFormat";
+		public XmlSerializer<ColorFormat> FormatSerializer => XmlSerializer<ColorFormat>.Default;
 		/// <summary>
 		/// 
 		/// </summary>

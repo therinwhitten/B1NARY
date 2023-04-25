@@ -87,7 +87,7 @@
 				Instance.NextLine();
 			}
 		}
-		public static DirectoryInfo DocumentFolder { get; } = SerializableSlot.StreamingAssets.CreateSubdirectory("Docs");
+		public static DirectoryInfo DocumentFolder { get; } = SerializableSlot.StreamingAssets.GetOrCreateSubDirectory("Docs");
 		public static DocumentList AllDocuments { get; } = new DocumentList();
 
 
@@ -205,7 +205,7 @@
 			public static FileInfo FromVisual(string visualPath) =>
 				new FileInfo($"{SerializableSlot.StreamingAssets.FullName}/Docs/{visualPath}.txt");
 
-			public static DirectoryInfo DocumentFolder { get; } = SerializableSlot.StreamingAssets.CreateSubdirectory("Docs");
+			public static DirectoryInfo DocumentFolder { get; } = SerializableSlot.StreamingAssets.GetOrCreateSubDirectory("Docs");
 			private WeakReference visualNames;
 			public DocumentList() : base()
 			{

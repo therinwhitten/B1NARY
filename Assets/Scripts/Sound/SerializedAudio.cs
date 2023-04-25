@@ -27,6 +27,8 @@
 		public string SceneName { get; }
 		public SerializedAudio(AudioTracker tracker)
 		{
+			if (tracker is null)
+				throw new ArgumentNullException(nameof(tracker));
 			ticks = tracker.PlayedSeconds.Ticks;
 			ClipName = tracker.ClipName;
 			SceneName = SceneManager.ActiveScene.name;

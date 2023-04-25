@@ -28,7 +28,7 @@
 		public const string KEY_ADDITIVE = "Additive";
 		public const int MAX_SAVES = 69;
 		public static DirectoryInfo SavesDirectory { get; } =
-			SerializableSlot.PersistentData.CreateSubdirectory("Saves");
+			SerializableSlot.PersistentData.GetOrCreateSubDirectory("Saves");
 		
 		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
 		new XmlSerializer<SaveSlot>(new XmlSerializerConfig()
@@ -191,7 +191,10 @@
 				for (int i = 0; i < audio.Length; i++)
 					audio[i].Play();
 			};
-			wrapper.AfterActions += (mono) => ColorFormat.Set(formatName);
+			wrapper.AfterActions += (mono) =>
+			{
+				ColorFormat.Set(formatName);
+			};
 			wrapper.AfterActions += (mono) => ScriptHandler.Instance.NextLine();
 			wrapper.Start();
 		}

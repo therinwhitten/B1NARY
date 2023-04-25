@@ -18,7 +18,8 @@
 
 		public static IEnumerable<FileInfo> GetAllImages(string subFolderName)
 		{
-			FileInfo[] files = SerializableSlot.StreamingAssets.CreateSubdirectory("Fanart").CreateSubdirectory(subFolderName).GetFiles();
+			FileInfo[] files = SerializableSlot.StreamingAssets.GetOrCreateSubDirectory("Fanart")
+				.GetOrCreateSubDirectory(subFolderName).GetFiles();
 			for (int i = 0; i < files.Length; i++)
 			{
 				if (files[i].Extension == ".png" || files[i].Extension == ".jpg")

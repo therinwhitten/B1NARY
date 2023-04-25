@@ -9,15 +9,24 @@
 	using System.Xml;
 	using HideousDestructor.DataPersistence;
 	using System.IO;
-
+	using FormatSerializer = OVSXmlSerializer.XmlSerializer<ColorFormat>;
 
 	// Have it change formats per scene if it exists.
 	[Serializable]
 	public partial class ColorFormat
 	{
+		public enum SetState
+		{
+			/// <summary> If the set value is applied. </summary>
+			Passed,
+			/// <summary> If the set value is overrided and ignored. </summary>
+			OverridedBy,
+			/// <summary> If the set value is not found, effectively <see langword="null"/>. </summary>
+			Unknown,
+		}
 		public const string DEFAULT_THEME_NAME = "Default";
-		public static DirectoryInfo RootPath => SerializableSlot.StreamingAssets.CreateSubdirectory("Color Themes");
-		public static DirectoryInfo CustomThemePath => RootPath.CreateSubdirectory("Custom");
+		public static DirectoryInfo RootPath => SerializableSlot.StreamingAssets.GetOrCreateSubDirectory("Color Themes");
+		public static DirectoryInfo CustomThemePath => RootPath.GetOrCreateSubDirectory("Custom");
 		public static FileInfo DefaultThemePath => RootPath.GetFile("Default.xml");
 		public readonly static IndexFile indexFile = IndexFile.LoadNew();
 		public static CommandArray Commands = new CommandArray()
@@ -36,7 +45,7 @@
 				{
 					if (DefaultThemePath.Exists)
 					{
-						ColorFormat format = FormatSerializer.Deserialize(DefaultThemePath);
+						ColorFormat format = FormatSerializer.Default.Deserialize(DefaultThemePath);
 						if (format != null)
 							return m_defaultFormat = format;
 					}
@@ -56,12 +65,6 @@
 		} private static ColorFormat m_defaultFormat;
 
 
-		internal static XmlSerializer<ColorFormat> FormatSerializer;
-		static ColorFormat()
-		{
-			FormatSerializer = new XmlSerializer<ColorFormat>();
-			//FormatSerializer.Config.Logger = new OVSXmlLogger();
-		}
 
 		public static ColorFormat CurrentFormat
 		{
@@ -72,7 +75,7 @@
 					if (PlayerConfig.Instance.graphics.HasOverride)
 					{
 						string format = PlayerConfig.Instance.graphics.currentFormat;
-						if (Set(format))
+						if (Set(format) == SetState.Passed)
 							return m_currentFormat;
 					}
 					// Getting default..
@@ -92,23 +95,29 @@
 			m_currentFormat = DefaultFormat;
 			return m_currentFormat;
 		}
-		public static bool Set(ColorFormat format, bool @override = false)
+		public static SetState Set(ColorFormat format, bool @override = false)
 		{
 			if (@override)
+			{
 				PlayerConfig.Instance.graphics.currentFormat.Value = format.FormatName;
+				m_currentFormat = format;
+				ChangedFormat?.Invoke(format);
+				return SetState.Passed;
+			}
+			if (PlayerConfig.Instance.graphics.HasOverride)
+				return SetState.OverridedBy;
 			m_currentFormat = format;
 			ChangedFormat?.Invoke(format);
-			return true;
+			return SetState.Passed;
 		}
-		public static bool Set(string formatName, bool @override = false)
+		public static SetState Set(string formatName, bool @override = false)
 		{
 			for (int i = 0; i < AvailableFormats.Count; i++)
 				if (AvailableFormats[i].format.FormatName == formatName)
 				{
-					Set(AvailableFormats[i].format, @override);
-					return true;
+					return Set(AvailableFormats[i].format, @override);
 				}
-			return false;
+			return SetState.Unknown;
 		}
 
 		internal static List<(FileInfo fileInfo, ColorFormat format)> AllFormats =>
@@ -133,7 +142,7 @@
 							FileInfo fileInfo = enumerator.Current;
 							try
 							{
-								ColorFormat format = FormatSerializer.Deserialize(fileInfo);
+								ColorFormat format = FormatSerializer.Default.Deserialize(fileInfo);
 								m_availableFormats.Add((fileInfo, format));
 							}
 							catch (Exception ex)
