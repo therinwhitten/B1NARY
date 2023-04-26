@@ -38,6 +38,7 @@
 			Version = new Version(1, 0, 0),
 			IndentChars = "\t",
 			Indent = true,
+			IgnoreUndefinedValues = true,
 		});
 
 		public static SaveSlot ActiveSlot
@@ -47,7 +48,11 @@
 			{
 				m_activeSlot = value;
 				if (m_activeSlot != null)
+				{
+					if (!m_activeSlot.booleans.ContainsKey("henable"))
+						m_activeSlot.booleans.Add("henable", () => PlayerConfig.Instance.hEnable.Value);
 					m_activeSlot.startPlay = DateTime.Now;
+				}
 			}
 		}
 		private static SaveSlot m_activeSlot;
@@ -146,7 +151,6 @@
 				playedAmount = new TimeSpan(),
 			};
 			booleans = new Collection<bool>();
-			booleans.Add("henable", () => PlayerConfig.Instance.hEnable.Value);
 			strings = new Collection<string>();
 		}
 
