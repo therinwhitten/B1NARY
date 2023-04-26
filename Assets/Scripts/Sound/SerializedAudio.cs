@@ -2,6 +2,7 @@
 {
 	using OVSXmlSerializer;
 	using System;
+	using System.Collections.Generic;
 	using System.Linq;
 	using UnityEngine;
 	using UnityEngine.Audio;
@@ -14,9 +15,14 @@
 		}
 		public static SerializedAudio[] SerializeAudio()
 		{
-			var audio = new SerializedAudio[AudioController.Instance.ActiveAudio.Count];
-			for (int i = 0; i < audio.Length; i++)
-				audio[i] = new SerializedAudio(AudioController.Instance.ActiveAudio[i]);
+			var otherValues = new HashSet<int>(AudioController.Instance.otherValues);
+			var audio = new SerializedAudio[AudioController.Instance.ActiveAudio.Count - otherValues.Count];
+			for (int i = 0, audioI = 0; i < audio.Length; i++)
+				if (!otherValues.Contains(i))
+				{
+					audio[audioI] = new SerializedAudio(AudioController.Instance.ActiveAudio[i]);
+					audioI++;
+				}
 			return audio;
 		}
 

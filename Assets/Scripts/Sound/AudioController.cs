@@ -46,8 +46,8 @@
 		public SoundLibrary ActiveLibrary { get; internal set; } = null;
 		// List contains null values to reserve space
 		public IReadOnlyList<AudioTracker> ActiveAudio => audioTrackers;
-		private List<AudioTracker> audioTrackers = new List<AudioTracker>();
-		private Queue<int> otherValues = new Queue<int>();
+		private readonly List<AudioTracker> audioTrackers = new List<AudioTracker>();
+		public readonly Queue<int> otherValues = new Queue<int>();
 		internal List<Func<bool>> fadeSounds = new List<Func<bool>>();
 
 		private void Awake()
