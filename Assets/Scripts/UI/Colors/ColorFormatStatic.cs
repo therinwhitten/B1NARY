@@ -11,6 +11,7 @@
 	using System.IO;
 	using FormatSerializer = OVSXmlSerializer.XmlSerializer<ColorFormat>;
 
+
 	// Have it change formats per scene if it exists.
 	[Serializable]
 	public partial class ColorFormat
@@ -134,22 +135,23 @@
 			{
 				if (m_availableFormats is null)
 				{
-					var enumerable = CustomThemePath.GetFiles().Where(file => file.Extension == ".xml");
-					m_availableFormats = new List<(FileInfo fileInfo, ColorFormat format)>();
-					using (var enumerator = enumerable.GetEnumerator())
-						while (enumerator.MoveNext())
+					FileInfo[] files = CustomThemePath.GetFiles();
+					m_availableFormats = new List<(FileInfo FileInfo, ColorFormat format)>(files.Length);
+					for (int i = 0; i < files.Length; i++)
+					{
+						FileInfo fileInfo = files[i];
+						if (fileInfo.Extension != ".xml")
+							continue;
+						try
 						{
-							FileInfo fileInfo = enumerator.Current;
-							try
-							{
-								ColorFormat format = FormatSerializer.Default.Deserialize(fileInfo);
-								m_availableFormats.Add((fileInfo, format));
-							}
-							catch (Exception ex)
-							{
-								Debug.LogException(ex);
-							}
+							ColorFormat format = FormatSerializer.Default.Deserialize(fileInfo);
+							m_availableFormats.Add((fileInfo, format));
 						}
+						catch (Exception ex)
+						{
+							Debug.LogException(ex);
+						}
+					}
 				}
 				return m_availableFormats;
 			}
@@ -292,43 +294,6 @@ namespace B1NARY.UI.Colors.Editor
 			}
 			EditorGUI.indentLevel--;
 		}
-		/*
-		ColorFormat _colorFormat;
-		private ColorFormat ColorFormat
-		{
-			get
-			{
-				if (_colorFormat == null)
-				{
-					_colorFormat = (ColorFormat)target;
-				}
-				return _colorFormat;
-			}
-		}
-		private bool openedHeader = true;
-		public override void OnInspectorGUI()
-		{
-			EditorUtility.SetDirty(ColorFormat);
-			ColorFormat.primaryUI = DirtyAuto.Field(ColorFormat, new GUIContent("Primary Color"), ColorFormat.primaryUI);
-			ColorFormat.SecondaryUI = DirtyAuto.Field(ColorFormat, new GUIContent("Secondary Color"), ColorFormat.SecondaryUI);
-			if (openedHeader = EditorGUILayout.BeginFoldoutHeaderGroup(openedHeader, new GUIContent("Extra UI Color Data")))
-			{
-				EditorGUI.indentLevel++;
-				var editable = new DictionaryEditor<string, Color>(ColorFormat.ExtraUIValues)
-				{
-					defaultValue = Color.black,
-					defaultKey = ""
-				};
-				if (editable.Repaint())
-				{
-					ColorFormat.ExtraUIValues = editable.Flush();
-					EditorUtility.SetDirty(ColorFormat);
-				}
-				EditorGUI.indentLevel--;
-			}
-			EditorGUILayout.EndFoldoutHeaderGroup();
-		}
-		*/
 	}
 }
 #endif

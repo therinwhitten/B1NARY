@@ -22,44 +22,19 @@
 	[RequireComponent(typeof(Graphic))]
 	public class UIThemeHandler : MonoBehaviour
 	{
-		public enum Option
-		{
-			Primary,
-			Secondary,
-			Custom
-		}
-
-		public static Color GetColor(Option option)
-		{
-			switch (option)
-			{
-				case Option.Primary:
-					return ColorFormat.CurrentFormat.primaryUI;
-				case Option.Secondary:
-					return ColorFormat.CurrentFormat.SecondaryUI;
-				case Option.Custom:
-					throw new ArgumentException($"although {option} is a enum, you need" +
-						$"another argument or name to differentiate other settings!");
-				default:
-					throw new IndexOutOfRangeException(option.ToString());
-			}
-		}
 		public static Color GetColor(string name)
 		{
-			if (Enum.TryParse(name, out Option option))
-				return GetColor(option);
-			if (ColorFormat.CurrentFormat.ExtraUIColors.TryGetValue(name, out Color color))
+			if (ColorFormat.CurrentFormat.TryGetColor(name, out Color color))
 				return color;
 			throw new NullReferenceException($"'{name}' is not located within the currently " +
 				$"equipped format: {ColorFormat.CurrentFormat.FormatName}.");
 		}
 
-		public string imageThemeName = Option.Secondary.ToString(),
-			buttonHighlightedName = Option.Primary.ToString(),
-			buttonPressedName = Option.Primary.ToString(),
-			buttonSelectedName = Option.Primary.ToString(),
-			buttonDisabledName = Option.Primary.ToString();
-		public Color Color => GetColor(imageThemeName);
+		public string imageThemeName = ColorFormat.COLOR_NAME_SECONDARY,
+			buttonHighlightedName = ColorFormat.COLOR_NAME_PRIMARY,
+			buttonPressedName = ColorFormat.COLOR_NAME_PRIMARY,
+			buttonSelectedName = ColorFormat.COLOR_NAME_PRIMARY,
+			buttonDisabledName = ColorFormat.COLOR_NAME_PRIMARY;
 
 		/// <summary>
 		/// Contains the first <see cref="UnityEngine.Color"/> or <see cref="ColorBlock"/>,
@@ -156,23 +131,45 @@
 #if UNITY_EDITOR
 namespace B1NARY.UI.Colors.Editor
 {
-	using B1NARY.UI;
+	using B1NARY.Editor;
+	using DG.DemiEditor;
 	using System;
+	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
+	using System.IO;
 	using System.Linq;
 	using System.Reflection;
 	using UnityEditor;
 	using UnityEngine;
 	using UnityEngine.UI;
-	using Object = UnityEngine.Object;
 
 	[CustomEditor(typeof(UIThemeHandler))]
 	public class UIThemeHandlerEditor : Editor
 	{
-		internal static UIThemeHandler.Option[] options = (UIThemeHandler.Option[])Enum.GetValues(typeof(UIThemeHandler.Option));
-		internal static string[] optionNames = Enum.GetNames(typeof(UIThemeHandler.Option));
-
-
+		private static readonly ReadOnlyCollection<string> defaultValues =
+			new ReadOnlyCollection<string>(new string[]
+			{
+				ColorFormat.COLOR_NAME_PRIMARY,
+				ColorFormat.COLOR_NAME_SECONDARY
+			});
+		private static List<string> GetAllColorNames()
+		{
+			var hashSet = new HashSet<string>();
+			var list = new List<string>(defaultValues);
+			List<(FileInfo, ColorFormat)> allFormats = ColorFormat.AllFormats;
+			for (int i = 0; i < allFormats.Count; i++)
+			{
+				string[] allKeys = new string[allFormats[i].Item2.ExtraUIColors.Count];
+				allFormats[i].Item2.ExtraUIColors.Keys.CopyTo(allKeys, 0);
+				for (int ii = 0; ii < allKeys.Length; ii++)
+					if (!hashSet.Contains(allKeys[ii]))
+					{
+						list.Add(allKeys[ii]);
+						hashSet.Add(allKeys[ii]);
+					}
+			}
+			return list;
+		}
 
 		UIThemeHandler currentHandler;
 		private void Awake() => currentHandler = (UIThemeHandler)target;
@@ -194,9 +191,9 @@ namespace B1NARY.UI.Colors.Editor
 						"color-related blocks detected in the components, " +
 						"make sure that the one you want to modify is at the top!",
 						MessageType.Info);
-				//EditorGUILayout.ObjectField(new GUIContent("Color Format [readonly]", "The currently used format across all Theme Handlers"), , typeof(ColorFormat), false);
 				EditorGUILayout.Space();
 			}
+
 			try
 			{
 				string componentName = currentHandler.CurrentTarget.GetType().ToString();
@@ -207,67 +204,72 @@ namespace B1NARY.UI.Colors.Editor
 				EditorGUILayout.HelpBox(ex.Message, MessageType.Error);
 				throw;
 			}
-			bool hasChanges = false;
+
 			if (currentHandler.ColorEdit.Value is Color)
-				hasChanges = ModifyColor("Color Option", new Ref<string>(() => currentHandler.imageThemeName, str => currentHandler.imageThemeName = str));
-			else if (currentHandler.ColorEdit.Value is ColorBlock)
-				hasChanges = ModifyColor("Normal Color", new Ref<string>(() => currentHandler.imageThemeName, str => currentHandler.imageThemeName = str))
-				 | ModifyColor("Highlighted Color", new Ref<string>(() => currentHandler.buttonHighlightedName, str => currentHandler.buttonHighlightedName = str))
-				 | ModifyColor("Pressed Color", new Ref<string>(() => currentHandler.buttonPressedName, str => currentHandler.buttonPressedName = str))
-				 | ModifyColor("Selected Color", new Ref<string>(() => currentHandler.buttonSelectedName, str => currentHandler.buttonSelectedName = str))
-				 | ModifyColor("Disabled Color", new Ref<string>(() => currentHandler.buttonDisabledName, str => currentHandler.buttonDisabledName = str));
-			else
-				throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());
-			if (hasChanges)
 			{
+				ModifyColor("Color Option", new Ref<string>(() => currentHandler.imageThemeName, str => currentHandler.imageThemeName = str));
+			}
+			else if (currentHandler.ColorEdit.Value is ColorBlock)
+			{
+				ModifyColor("Normal Color", new Ref<string>(() => currentHandler.imageThemeName, str => currentHandler.imageThemeName = str));
+				ModifyColor("Highlighted Color", new Ref<string>(() => currentHandler.buttonHighlightedName, str => currentHandler.buttonHighlightedName = str));
+				ModifyColor("Pressed Color", new Ref<string>(() => currentHandler.buttonPressedName, str => currentHandler.buttonPressedName = str));
+				ModifyColor("Selected Color", new Ref<string>(() => currentHandler.buttonSelectedName, str => currentHandler.buttonSelectedName = str));
+				ModifyColor("Disabled Color", new Ref<string>(() => currentHandler.buttonDisabledName, str => currentHandler.buttonDisabledName = str));
+			}
+			else
+			{
+				throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());
+			}
+		}
+
+		public void ModifyColor(string label, Ref<string> colorName)
+		{
+			// Display warning message if its not present in all available formats
+			List<string> unsupportedFormats = new List<string>();
+			for (int i = 0; i < ColorFormat.AvailableFormats.Count; i++)
+				if (!ColorFormat.AvailableFormats[i].format.TryGetColor(colorName, out _))
+					unsupportedFormats.Add(ColorFormat.AvailableFormats[i].format.FormatName);
+			if (unsupportedFormats.Count > 0)
+				EditorGUILayout.HelpBox($"There are some available color themes that does not support the assigned color: {string.Join(", ", unsupportedFormats)}", MessageType.Warning, true);
+			// Starting here normally
+			List<string> colorNames = GetAllColorNames();
+			// Popup for changing name, taking from default
+			int currentIndex = colorNames.IndexOf(colorName);
+			if (currentIndex == -1)
+			{
+				colorName.Value = defaultValues[0];
+				currentIndex = 0;
+			}
+			var menu = new GenericMenu();
+			for (int i = 0; i < defaultValues.Count; i++)
+			{
+				int delegateIndex = i;
+				menu.AddItem(new GUIContent($"{defaultValues[i]}"), i == currentIndex, () => SetDirty(delegateIndex));
+			}
+			menu.AddSeparator("");
+			for (int i = defaultValues.Count; i < colorNames.Count; i++)
+			{
+				int delegateIndex = i;
+				menu.AddItem(new GUIContent($"{colorNames[i]}"), i == currentIndex, () => SetDirty(delegateIndex));
+			}
+			Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20f);
+			Rect textRect = fullRect;
+			textRect.width *= 0.4f;
+			Rect popupRect = fullRect;
+			popupRect.xMin = textRect.xMax + 2;
+			EditorGUI.LabelField(textRect, label);
+			if (GUI.Button(popupRect, new GUIContent(colorNames[currentIndex]), EditorStyles.popup))
+				menu.ShowAsContext();
+
+			void SetDirty(int setValue)
+			{
+				colorName.Value = colorNames[setValue];
 				if (Application.isPlaying)
 					currentHandler.UpdateColors();
 				else
-					EditorUtility.SetDirty(currentHandler);
+					DirtyAuto.SetDirty(currentHandler);
 			}
-		}
-
-		public bool ModifyColor(string label, Ref<string> colorName)
-		{
-			string old = colorName;
-			// Popup box for defaults
-			int currentIndex = Array.IndexOf(optionNames, colorName);
-			if (currentIndex == -1)
-				currentIndex = Array.IndexOf(options, UIThemeHandler.Option.Custom);
-			int newIndex = EditorGUILayout.Popup(label, currentIndex, optionNames);
-			if (newIndex != currentIndex)
-				colorName.Value = optionNames[newIndex];
-			if (Array.IndexOf(options, UIThemeHandler.Option.Custom) == currentIndex)
-			{
-				CustomMenu(colorName);
-			}
-			return colorName != old;
-		}
-
-		public void CustomMenu(Ref<string> newValueAction)
-		{
-			Rect fullRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f)),
-						popupRect = new Rect(fullRect) { width = 20f };
-			fullRect.xMin += 22f;
-			newValueAction.Value = EditorGUI.TextField(fullRect, newValueAction);
-
-			if (!GUI.Button(popupRect, "", EditorStyles.foldout))
-				return;
-			// Context Menu
-			//var menu = new GenericMenu();
-			////menu.AddDisabledItem(new GUIContent($"Current Selection: {ColorFormat..name}"));
-			//menu.AddSeparator("");
-			//for (int i = 0; i < UIThemeHandler.CurrentlyEquippedFormat.SavedPairs.Amount; i++)
-			//{
-			//	int currentIterative = i;
-			//	string capturedKey = UIThemeHandler.CurrentlyEquippedFormat.SavedPairs[i].Key;
-			//	menu.AddItem(new GUIContent(capturedKey), newValueAction.Value == capturedKey, () =>
-			//	{
-			//		newValueAction.Value = capturedKey;
-			//		EditorUtility.SetDirty(target);
-			//	});
-			//}
-			//menu.ShowAsContext();
 		}
 	}
 }

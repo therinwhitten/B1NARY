@@ -10,6 +10,9 @@
 	{
 		public const string ROOT_NAME_CUSTOM = "ColorFormat",
 			ROOT_NAME_DEFAULT = "DefaultFormat";
+		public const string COLOR_NAME_PRIMARY = "Primary",
+			COLOR_NAME_SECONDARY = "Secondary";
+
 		public XmlSerializer<ColorFormat> FormatSerializer => XmlSerializer<ColorFormat>.Default;
 		/// <summary>
 		/// 
@@ -36,7 +39,23 @@
 
 		// OTHER STRUCTS -------------------
 
-		
+		public bool TryGetColor(string name, out Color color)
+		{
+			if (COLOR_NAME_PRIMARY == name)
+			{
+				color = primaryUI;
+				return true;
+			}
+			else if (COLOR_NAME_SECONDARY == name)
+			{
+				color = SecondaryUI;
+				return true;
+			}
+			else if (ExtraUIColors.TryGetValue(name, out color))
+				return true;
+			color = primaryUI;
+			return false;
+		}
 
 		public void Save(string fileName, bool isDefault = false)
 		{
