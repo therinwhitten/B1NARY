@@ -8,6 +8,7 @@
 	using HideousDestructor.DataPersistence;
 	using System.Linq;
 	using OVSXmlSerializer;
+	using System.Threading.Tasks;
 
 	/// <summary>
 	/// A serializable image, typically for <see cref="SerializableSlot"/> to

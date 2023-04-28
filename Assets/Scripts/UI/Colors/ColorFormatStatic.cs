@@ -136,7 +136,10 @@
 				if (m_availableFormats is null)
 				{
 					FileInfo[] files = CustomThemePath.GetFiles();
-					m_availableFormats = new List<(FileInfo FileInfo, ColorFormat format)>(files.Length);
+					m_availableFormats = new List<(FileInfo FileInfo, ColorFormat format)>(files.Length + 1)
+					{
+						(DefaultThemePath, DefaultFormat),
+					};
 					for (int i = 0; i < files.Length; i++)
 					{
 						FileInfo fileInfo = files[i];

@@ -51,7 +51,6 @@
 				{
 					if (!m_activeSlot.booleans.ContainsKey("henable"))
 						m_activeSlot.booleans.Add("henable", () => PlayerConfig.Instance.hEnable.Value);
-					m_activeSlot.startPlay = DateTime.Now;
 				}
 			}
 		}
@@ -59,6 +58,7 @@
 
 		public static SaveSlot LoadIntoMemory(FileInfo loadSlot)
 		{
+			loadSlot.Refresh();
 			SaveSlot slot = SlotSerializer.Deserialize(loadSlot);
 			slot.metadata.ChangeFileTo(loadSlot);
 			slot.metadata.lastSaved = loadSlot.LastWriteTime;
@@ -138,8 +138,7 @@
 		public ScriptPosition scriptPosition;
 		public CharacterSnapshot[] characterSnapshots;
 		public SerializedAudio[] audio;
-		[XmlIgnore]
-		private DateTime startPlay;
+		private DateTime startPlay = DateTime.Now;
 		[XmlIgnore]
 		public bool hasSaved = false;
 
@@ -148,7 +147,7 @@
 			startPlay = DateTime.Now;
 			metadata = new Metadata()
 			{
-				playedAmount = new TimeSpan(),
+				playedAmount = TimeSpan.Zero,
 			};
 			booleans = new Collection<bool>();
 			strings = new Collection<string>();
@@ -209,9 +208,16 @@
 		{
 			public FileInfo DirectoryInfo
 			{
-				get => string.IsNullOrEmpty(m_directoryInfo)
-					? SavesDirectory.GetFileIncremental(NAME_START + NAME_EXT, true)
-					: new FileInfo(m_directoryInfo);
+				get
+				{
+					if (string.IsNullOrEmpty(m_directoryInfo))
+					{
+						FileInfo returnVal = SavesDirectory.GetFileIncremental(NAME_START + NAME_EXT, true);
+						m_directoryInfo = returnVal.FullName;
+						return returnVal;
+					}
+					return new FileInfo(m_directoryInfo);
+				}
 			}
 			public void ChangeFileTo(FileInfo fileInfo, bool deleteOnMove = false)
 			{
