@@ -120,15 +120,14 @@
 		{
 			if (localIndex < 0)
 				throw new ArgumentOutOfRangeException($"'{localIndex}' is negative!");
-			if (localIndex > Lines.Count)
+			if (localIndex >= Lines.Count)
 				throw new ArgumentOutOfRangeException($"'{localIndex}' is higher than the amount of lines of '{Lines.Count}'!");
 			if (Lines[localIndex] is ScriptElementPointer pointer)
 			{
-				using (var enumerator = pointer.target.EnumerateThrough(pointer.localPoint))
+				using (var enumerator = pointer.target.EnumerateThrough(pointer.LocalPoint))
 					while (enumerator.MoveNext())
 						yield return enumerator.Current;
-				while (Lines.Count > localIndex && !ReferenceEquals(Lines[localIndex].Parent, this))
-					localIndex++;
+				localIndex += pointer.target.Length - pointer.LocalPoint - pointer.target.StartBracketSkip.Count;
 			}
 			for (int i = localIndex; i < Lines.Count; i++)
 			{
@@ -138,7 +137,7 @@
 				}
 				if (Lines[i] is ScriptElementPointer)
 				{
-					throw new InvalidOperationException("Tried to invoke a pointer!");
+					throw new InvalidOperationException($"Tried to invoke a pointer on global line {ToGlobal(i)}!");
 				}
 				if (Lines[i] is ScriptElement element)
 				{
@@ -178,14 +177,14 @@
 	public sealed class ScriptElementPointer : ScriptNode
 	{
 		public readonly ScriptElement target;
-		public readonly int localPoint;
+		public int LocalPoint { get; private set; }
 
 		internal ScriptElementPointer(ScriptElement targetElement, int localPoint, ScriptLine rootLine) : base(rootLine)
 		{
 			target = targetElement;
-			this.localPoint = localPoint;
+			this.LocalPoint = localPoint;
 		}
 
-		public int GlobalPoint => target.Lines[localPoint].PrimaryLine.Index;
+		public int GlobalPoint => target.Lines[LocalPoint].PrimaryLine.Index;
 	}
 }

@@ -32,7 +32,10 @@
 		/// <returns> The image of the screen. </returns>
 		public static Thumbnail CreateWithScreenshot(int maxWidth = typicalThumbnailSize, int maxHeight = typicalThumbnailSize)
 		{
-			return new Thumbnail(new Vector2Int(maxWidth, maxHeight), ScreenCapture.CaptureScreenshotAsTexture());
+			//float desiredResolutionMultiplier = Math.Max(maxWidth, maxHeight);
+			//desiredResolutionMultiplier /= Math.Max(Screen.currentResolution.width, Screen.currentResolution.height);
+			Texture2D texture = ScreenCapture.CaptureScreenshotAsTexture();
+			return new Thumbnail(new Vector2Int(maxWidth, maxHeight), texture);
 		}
 
 		void IXmlSerializable.Read(XmlNode value)
