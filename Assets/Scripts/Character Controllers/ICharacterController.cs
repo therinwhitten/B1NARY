@@ -26,6 +26,10 @@
 		CharacterSnapshot Serialize();
 		void Deserialize(CharacterSnapshot snapshot);
 	}
+	public interface IFollowable
+	{
+		Transform FollowCubeParent { get; }
+	}
 
 	[Serializable]
 	public struct CharacterSnapshot

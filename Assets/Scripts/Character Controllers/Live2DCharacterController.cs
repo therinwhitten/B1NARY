@@ -11,7 +11,7 @@
 	using UnityEngine;
 
 	[RequireComponent(typeof(Animator))]
-	public class Live2DCharacterController : MonoBehaviour, ICharacterController
+	public class Live2DCharacterController : MonoBehaviour, ICharacterController, IFollowable
 	{
 		bool ICharacterController.EmptyCharacter => false;
 		public static string[] ToNameArray(CubismExpressionList list)
@@ -54,6 +54,8 @@
 		public VoiceActorHandler VoiceData { get; private set; }
 		public float selectedSizeIncreaseMultiplier = 1.1f;
 		public CubismExpressionController expressionController;
+		[field: SerializeField]
+		public Transform FollowCubeParent { get; set; }
 		public string CurrentAnimation
 		{
 			get
@@ -215,12 +217,20 @@
 #if UNITY_EDITOR
 namespace B1NARY.CharacterManagement.Editor
 {
+	using B1NARY.Editor;
 	using UnityEditor;
+	using UnityEngine;
 
 	[CustomEditor(typeof(Live2DCharacterController))]
 	public class CharacterScriptEditor : ControllerEditor
 	{
-
+		public override void OnInspectorGUI()
+		{
+			Live2DCharacterController controller = (Live2DCharacterController)target;
+			controller.FollowCubeParent = DirtyAuto.Field(controller, new GUIContent("Head Location"), controller.FollowCubeParent, true);
+			EditorGUILayout.Space();
+			base.OnInspectorGUI();
+		}
 	}
 }
 #endif

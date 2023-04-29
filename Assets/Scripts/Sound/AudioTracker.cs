@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
+	using System.Diagnostics.CodeAnalysis;
 	using UnityEngine;
 	using UnityEngine.Audio;
 
@@ -10,14 +11,17 @@
 	{
 		private readonly AudioSource audioSource;
 
+		[SuppressMessage("Correctness", "UNT0008:Null propagation on Unity objects", Justification = "<Pending>")]
 		public bool IsPlaying
 		{
-			get => audioSource.isPlaying;
+			get => audioSource?.isPlaying == true;
 			set
 			{
 				if (IsPlaying == value)
 					return;
-				if (!value)
+				if (value)
+					Start();
+				else
 					Stop();
 			}
 		}

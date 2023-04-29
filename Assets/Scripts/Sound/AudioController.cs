@@ -12,6 +12,7 @@
 	using System.Globalization;
 	using SceneManager = UnityEngine.SceneManagement.SceneManager;
 	using UnityEngine.SceneManagement;
+	using System.Diagnostics.CodeAnalysis;
 
 	public sealed class AudioController : Singleton<AudioController>
 	{
@@ -146,6 +147,8 @@
 			tracker.Start(fadeIn);
 			return tracker;
 		}
+
+		[SuppressMessage("Correctness", "UNT0008:Null propagation on Unity objects", Justification = "<Pending>")]
 		public AudioTracker AddSound(string soundName, float fadeIn = 0f)
 		{
 			for (int i = 0; i < ActiveLibrary.customAudioClips.Count; i++)
@@ -175,7 +178,7 @@ namespace B1NARY.Audio.Editor
 			Rect fullNameRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f)),
 				toggleRect = new Rect(fullNameRect) { width = 20f };
 			fullNameRect.xMin += toggleRect.xMax + 2;
-			EditorGUI.Toggle(toggleRect, audioInfo.IsPlaying);
+			audioInfo.IsPlaying = EditorGUI.Toggle(toggleRect, audioInfo.IsPlaying);
 			EditorGUI.LabelField(fullNameRect, audioInfo.ClipName, EditorStyles.boldLabel);
 			EditorGUI.indentLevel++;
 			Rect barRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 24f));
