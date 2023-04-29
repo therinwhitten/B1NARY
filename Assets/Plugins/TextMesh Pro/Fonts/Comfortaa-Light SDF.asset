@@ -49,6 +49,7 @@ Material:
     - _BumpFace: 0
     - _BumpOutline: 0
     - _ColorMask: 15
+    - _CullMode: 0
     - _Diffuse: 0.5
     - _FaceDilate: 0
     - _FaceUVSpeedX: 0
@@ -93,7 +94,7 @@ Material:
     m_Colors:
     - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
     - _EnvMatrixRotation: {r: 0, g: 0, b: 0, a: 0}
-    - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FaceColor: {r: 1.0592737, g: 1.0592737, b: 1.0592737, a: 1}
     - _GlowColor: {r: 0, g: 1, b: 0, a: 0.5}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
@@ -157,7 +158,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hashCode: 1746388556
   material: {fileID: -9140214897193126813}
-  materialHashCode: -1273499321
+  materialHashCode: 1073228268
   m_Version: 1.1.0
   m_SourceFontFileGUID: a48675f9b9a141f4e9da2a2fa41c7663
   m_SourceFontFile_EditorRef: {fileID: 12800000, guid: a48675f9b9a141f4e9da2a2fa41c7663,
@@ -165,6 +166,7 @@ MonoBehaviour:
   m_SourceFontFile: {fileID: 0}
   m_AtlasPopulationMode: 0
   m_FaceInfo:
+    m_FaceIndex: 0
     m_FamilyName: Comfortaa
     m_StyleName: Light
     m_PointSize: 37
@@ -4077,6 +4079,8 @@ MonoBehaviour:
   m_AtlasTextures:
   - {fileID: -8278428620523007566}
   m_AtlasTextureIndex: 0
+  m_IsMultiAtlasTexturesEnabled: 0
+  m_ClearDynamicDataOnBuild: 0
   m_UsedGlyphRects:
   - m_X: 0
     m_Y: 0
