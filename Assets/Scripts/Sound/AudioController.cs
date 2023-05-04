@@ -100,6 +100,8 @@
 				AudioTracker current = audioTrackers[i];
 				if (current is null)
 					continue;
+				if (!current.canAutoDispose)
+					continue;
 				if (current.IsPlaying)
 					continue;
 				current.Dispose();

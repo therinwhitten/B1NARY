@@ -6,10 +6,10 @@
 	using System.Drawing;
 	using System.IO;
 	using UnityEngine.UI;
-	using UnityImage = UnityEngine.UI.Image;
-	using Image = System.Drawing.Image;
 	using UnityEngine;
 	using B1NARY.UI.Saving;
+	using Image = SixLabors.ImageSharp.Image;
+	using SixLabors.ImageSharp;
 
 	public class FanArtPopulator : AutoPagePopulator
 	{
@@ -38,12 +38,12 @@
 					{
 						Debug.Log("Clicked Button!");
 					});
-					FileInfo image = enumerator.Current;
-					byte[] bytes;
-					using (FileStream stream = image.OpenRead())
-						using (MemoryStream memoryStream = new MemoryStream())
+					FileInfo imageInfo = enumerator.Current;
+					byte[] bytes; 
+					using (Image image = Image.Load(imageInfo.FullName))
+						using (var memoryStream = new MemoryStream())
 						{
-							stream.CopyTo(memoryStream);
+							image.SaveAsPng(memoryStream);
 							bytes = memoryStream.ToArray();
 						}
 					Texture2D texture = ImageUtility.LoadImage(bytes);

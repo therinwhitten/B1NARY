@@ -9,6 +9,8 @@
 	using System.Linq;
 	using OVSXmlSerializer;
 	using System.Threading.Tasks;
+	using SixLabors.ImageSharp;
+	using SixLabors.ImageSharp.Processing;
 
 	/// <summary>
 	/// A serializable image, typically for <see cref="SerializableSlot"/> to
@@ -53,26 +55,13 @@
 		/// The texture of the image. This is typically a JPG image if taken from
 		/// a screenshot.
 		/// </summary>
-		public Texture2D Texture => ImageUtility.LoadImage(data);
+		public Texture2D Texture => ImageUtility.LoadImage(data);//.LoadImage(data);
 		public Sprite Sprite
 		{
 			get
 			{
 				Texture2D texture = Texture;
 				return Sprite.Create(texture, new Rect(Vector2.zero, new Vector2(texture.width, texture.height)), Vector2.one / 2);
-			}
-		}
-
-		/// <summary>
-		/// Retrieves the image from the byte array internally for the system to
-		/// use.
-		/// </summary>
-		public Image SystemImage
-		{
-			get
-			{
-				using (var stream = new MemoryStream(data))
-					return Image.FromStream(stream);
 			}
 		}
 
@@ -102,9 +91,19 @@
 		{
 			
 		}
-		public Thumbnail(Vector2Int thumbnailMaxSize, byte[] image)
+		public Thumbnail(Vector2Int thumbnailMaxSize, byte[] imageData)
 		{
-			data = ImageUtility.Compress(image, thumbnailMaxSize.x, thumbnailMaxSize.y);
+			using (Image image = Image.Load(imageData))
+			{
+				Size size = new Size(thumbnailMaxSize.x, thumbnailMaxSize.y);
+				image.Mutate(x => x.Resize(size, KnownResamplers.Lanczos3, true));
+				using (var stream = new MemoryStream())
+				{
+					image.SaveAsPng(stream);
+					stream.Position = 0;
+					data = stream.ToArray();
+				}
+			}
 		}
 	}
 }

@@ -1,12 +1,13 @@
 ﻿namespace B1NARY
 {
 	using System;
-	using System.Drawing;
 	using System.IO;
 	using UnityEngine;
+	using SixLabors.ImageSharp;
 
 	public static class ImageUtility
 	{
+		/*
 		public static byte[] Compress(byte[] source, int maxWidth, int maxHeight)
 		{
 			if (source is null || source.Length <= 0)
@@ -33,6 +34,7 @@
 				return (byte[])new ImageConverter().ConvertTo(subImage, typeof(byte[]));
 			}
 		}
+		*/
 		public static Texture2D LoadImage(byte[] image)
 		{
 			var texture = new Texture2D(8, 8, TextureFormat.RGBA32, false, false);
@@ -53,4 +55,5 @@
 			return Sprite.Create(texture2D, new Rect(0f, 0f, texture2D.width, texture2D.height), defaultAnchor);
 		}
 	}
+	
 }

@@ -55,6 +55,7 @@
 		public TimeSpan TotalSeconds => TimeSpan.FromSeconds(audioSource.clip.length);
 		public string TimeInfo => $"{audioSource.time:N2} : {audioSource.clip.length:N2}";
 		public string SceneName { get; }
+		public bool canAutoDispose = true;
 
 		public AudioTracker(CustomAudioClip customAudioClip)
 		{

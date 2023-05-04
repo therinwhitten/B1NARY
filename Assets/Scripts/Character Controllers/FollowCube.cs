@@ -10,18 +10,19 @@
 		{
 			CharacterManager.Instance.ActiveCharacterChanged += ChangeToNewCharacter;
 			ChangeToNewCharacter(CharacterManager.Instance.ActiveCharacter);
+			gameObject.SetActive(false);
 		}
 
 		private void ChangeToNewCharacter(Character? nullableCharacter)
 		{
 			if (!EnableFollow)
 			{
-				gameObject.SetActive(false);
+				SetDisable();
 				return;
 			}
 			if (!nullableCharacter.HasValue)
 			{
-				gameObject.SetActive(false);
+				SetDisable();
 				return;
 			}
 
@@ -33,7 +34,15 @@
 			}
 			else
 			{
+				SetDisable();
+			}
+
+			void SetDisable()
+			{
+				if (!gameObject.activeSelf)
+					return;
 				gameObject.SetActive(false);
+				transform.SetParent(null);
 			}
 		}
 
