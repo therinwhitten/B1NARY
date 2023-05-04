@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using B1NARY;
+using UnityEngine;
 
 namespace BrightLib.Animation.Runtime
 {
@@ -60,9 +61,10 @@ namespace BrightLib.Animation.Runtime
 
 		private void Execute()
 		{
-			if (!_valid) return;
-
-			var currClip = !useMultiple ? clip : clips[_clipIndex++ % clips.Length];
+			if (!_valid) 
+				return;
+			_source.Stop();
+			AudioClip currClip = useMultiple ? clips.Random() : clip;
 			_source.PlayOneShot(currClip);
 		}
 
