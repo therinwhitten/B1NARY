@@ -1,5 +1,6 @@
 ﻿using B1NARY;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace BrightLib.Animation.Runtime
 {
@@ -8,6 +9,7 @@ namespace BrightLib.Animation.Runtime
 		public bool useMultiple;
 		public AudioClip clip;
 		public AudioClip[] clips;
+		public AudioMixerGroup group;
 
 		public PlayCondition condition;
 		public Delayer delayer;
@@ -64,6 +66,7 @@ namespace BrightLib.Animation.Runtime
 			if (!_valid) 
 				return;
 			_source.Stop();
+			_source.outputAudioMixerGroup = group;
 			AudioClip currClip = useMultiple ? clips.Random() : clip;
 			_source.PlayOneShot(currClip);
 		}
