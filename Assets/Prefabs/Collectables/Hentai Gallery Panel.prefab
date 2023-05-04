@@ -4224,7 +4224,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 279, y: -21.272919}
-  m_SizeDelta: {x: 480.35168, y: 11.254639}
+  m_SizeDelta: {x: 480.35168, y: 41.198303}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &7560292749550045712
 CanvasRenderer:
@@ -4276,7 +4276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
-  m_Softness: {x: 20, y: 20}
+  m_Softness: {x: 10, y: 10}
 --- !u!114 &7560292749550045719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5049,6 +5049,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7560292750096700663}
+  - component: {fileID: 7669832141305636994}
   m_Layer: 5
   m_Name: Hentai Gallery Panel
   m_TagString: UI
@@ -5079,6 +5080,18 @@ RectTransform:
   m_AnchoredPosition: {x: 70.84, y: 41.451}
   m_SizeDelta: {x: 1291.8427, y: 886.99915}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7669832141305636994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7560292750096700660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25eee7cec451d53468604cb93953c9a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7560292750257221626
 GameObject:
   m_ObjectHideFlags: 0
@@ -5185,6 +5198,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 7669832141305636994}
+        m_MethodName: NewGame
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Female/Prologue/Star II Hentai
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7560292750257221603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5277,17 +5301,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3333151710761339180}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 3333151710761339168}
         m_MethodName: PlayOneShot
@@ -5618,7 +5631,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 40
+  m_Spacing: 5
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
@@ -6231,6 +6244,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 7669832141305636994}
+        m_MethodName: NewGame
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Male/Prologue/Star II Hentai
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7560292750557917683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6323,17 +6347,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3333151710761339180}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
       - m_Target: {fileID: 3333151710761339168}
         m_MethodName: PlayOneShot
