@@ -121,6 +121,7 @@
 		public void Delete(SaveSlot slot)
 		{
 			slot.metadata.ChangeFileTo(null, true);
+			SaveSlot.EmptySaveCache();
 		}
 		protected virtual void OnDisable()
 		{
