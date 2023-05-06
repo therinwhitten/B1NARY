@@ -14,6 +14,9 @@
 	using B1NARY.CharacterManagement;
 	using B1NARY.Audio;
 	using B1NARY.UI.Colors;
+	using System.Threading.Tasks;
+	using UnityEngine.Rendering;
+	using Stopwatch = System.Diagnostics.Stopwatch;
 
 	public enum Gender : byte
 	{
@@ -86,7 +89,13 @@
 			}
 		}
 		private static IReadOnlyList<KeyValuePair<FileInfo, Lazy<SaveSlot>>> m_saves;
-		public static void EmptySaveCache() => m_saves = null;
+		public static void EmptySaveCache()
+		{
+			m_saves = null;
+			EmptiedSaveCache?.Invoke();
+		}
+
+		public static event Action EmptiedSaveCache;
 
 		static SaveSlot()
 		{
@@ -155,18 +164,41 @@
 
 		public void Save()
 		{
+			bool completedTask = false;
+			SceneManager.Instance.StartCoroutine(MainThread());
+
 			hasSaved = true;
+			Stopwatch stopwatch = Stopwatch.StartNew();
 			metadata.lastSaved = DateTime.Now;
 			metadata.playedAmount += metadata.lastSaved - startPlay;
-			startPlay = metadata.lastSaved;
 			scriptPosition = ScriptPosition.Define();
-			metadata.thumbnail = SaveHider.GetThumbnail();
+			startPlay = metadata.lastSaved;
 			characterSnapshots = ActorSnapshot.GetCurrentSnapshots();
 			audio = SerializedAudio.SerializeAudio();
 			formatName = ColorFormat.CurrentFormat.FormatName;
-			using (var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write))
-				SlotSerializer.Serialize(stream, this);
-			EmptySaveCache();
+
+			byte[] thumbnail = ScreenCapture.CaptureScreenshotAsTexture().EncodeToJPG();
+			Task.Run(() =>
+			{
+				metadata.thumbnail = new Thumbnail(new Vector2Int(128, 128), thumbnail);
+				using (var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write))
+					SlotSerializer.Serialize(stream, this);
+				
+			}).ContinueWith((task) => 
+			{
+				completedTask = true;
+				if (task.IsFaulted) 
+					Debug.LogException(task.Exception); 
+				else 
+					Debug.Log($"Saved! \n{stopwatch.Elapsed}");
+				stopwatch.Stop();
+			});
+
+			IEnumerator MainThread()
+			{
+				yield return new WaitUntil(() => completedTask);
+				EmptySaveCache();
+			}
 		}
 
 		public void Load()

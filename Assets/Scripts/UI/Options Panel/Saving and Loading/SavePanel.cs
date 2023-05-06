@@ -83,6 +83,12 @@
 				modifyActionPanel.inputField.text = "Quicksave";
 				modifyActionPanel.OnPress += (@override) => { if (@override) CreateNew(SaveSlot.ActiveSlot, modifyActionPanel.inputField.text); };
 			});
+			SaveSlot.EmptiedSaveCache += UpdateSaves;
+		}
+		private void UpdateSaves()
+		{
+			OnDisable();
+			OnEnable();
 		}
 		public void CreateNew(SaveSlot slot, string saveName)
 		{
@@ -98,9 +104,6 @@
 			newSlot.metadata.lastSaved = slot.metadata.lastSaved;
 			newSlot.SaveName = saveName;
 			newSlot.Save();
-			SaveSlot.EmptySaveCache();
-			OnDisable();
-			OnEnable();
 		}
 		/// <summary>
 		/// 
@@ -114,19 +117,14 @@
 			active.metadata.ChangeFileTo(fileInfo);
 			active.SaveName = saveName;
 			active.Save();
-			SaveSlot.EmptySaveCache();
-			OnDisable();
-			OnEnable();
 		}
 		public void Delete(SaveSlot slot)
 		{
 			slot.metadata.ChangeFileTo(null, true);
-			SaveSlot.EmptySaveCache();
-			OnDisable();
-			OnEnable();
 		}
 		protected virtual void OnDisable()
 		{
+			SaveSlot.EmptiedSaveCache -= UpdateSaves;
 			Clear();
 		}
 		public override void Clear()

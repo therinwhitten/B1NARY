@@ -11,6 +11,7 @@
 	using System.Threading.Tasks;
 	using SixLabors.ImageSharp;
 	using SixLabors.ImageSharp.Processing;
+	using System.Diagnostics;
 
 	/// <summary>
 	/// A serializable image, typically for <see cref="SerializableSlot"/> to
@@ -100,12 +101,12 @@
 					Size = new Size(thumbnailMaxSize.x, thumbnailMaxSize.y),
 					Mode = ResizeMode.Max,
 					Compand = true,
-					Sampler = KnownResamplers.Lanczos3
+					Sampler = KnownResamplers.Box,
 				};
 				image.Mutate(x => x.Resize(options));
 				using (var stream = new MemoryStream())
 				{
-					image.SaveAsPng(stream);
+					image.SaveAsJpeg(stream);
 					stream.Position = 0;
 					data = stream.ToArray();
 				}

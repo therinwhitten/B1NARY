@@ -64,9 +64,16 @@
 		protected virtual void OnEnable()
 		{
 			_ = AllObjects;
+			SaveSlot.EmptiedSaveCache += UpdateSaves;
+		}
+		private void UpdateSaves()
+		{
+			OnDisable();
+			OnEnable();
 		}
 		protected virtual void OnDisable()
 		{
+			SaveSlot.EmptiedSaveCache -= UpdateSaves;
 			Clear();
 		}
 		public void Delete(SaveSlot slot)
