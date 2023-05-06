@@ -1,7 +1,16 @@
-﻿{changeScene: Times Square}
+﻿{changeScene: Star Bedroom Night}
 {fadeinsound: Times Square Crowd, 1}
 {colorformat: Default}
 {spawnEmpty: Narrator, NPC}
 Narrator::
-
-{changeScript: PrologueStory, 343}
+Hello I am testing out the system. 
+Spawning the Transition blink
+{spawnChar: Transition Eyeblink, .5, Eyeblink}
+Now the Transistion is spawned.
+Attempting to close...
+{anim: Narrator, Close}
+Should be closed. You won't see this. 
+Opening..........
+{anim: Narrator, Open}
+Should be opening...
+Now to set animation to default. 
