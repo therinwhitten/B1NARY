@@ -95,8 +95,14 @@
 		{
 			using (Image image = Image.Load(imageData))
 			{
-				Size size = new Size(thumbnailMaxSize.x, thumbnailMaxSize.y);
-				image.Mutate(x => x.Resize(size, KnownResamplers.Lanczos3, true));
+				var options = new ResizeOptions()
+				{
+					Size = new Size(thumbnailMaxSize.x, thumbnailMaxSize.y),
+					Mode = ResizeMode.Max,
+					Compand = true,
+					Sampler = KnownResamplers.Lanczos3
+				};
+				image.Mutate(x => x.Resize(options));
 				using (var stream = new MemoryStream())
 				{
 					image.SaveAsPng(stream);
