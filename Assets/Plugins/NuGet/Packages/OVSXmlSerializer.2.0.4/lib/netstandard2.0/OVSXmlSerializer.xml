@@ -205,7 +205,7 @@
         </member>
         <member name="P:OVSXmlSerializer.XmlSerializerConfig.Default">
             <summary>
-            Default variation of the config.
+            Creates a new variation of the config.
             </summary>
         </member>
         <member name="P:OVSXmlSerializer.XmlSerializerConfig.CurrentCulture">
@@ -284,6 +284,13 @@
             how the XML file from <see cref="T:OVSXmlSerializer.XmlSerializer"/> should handle types. 
             </summary>
         </member>
+        <member name="P:OVSXmlSerializer.XmlSerializerConfig.HandleReadonlyFields">
+            <summary>
+            How the writer should handle readonly field. <see cref="F:OVSXmlSerializer.ReadonlyFieldHandle.Continue"/>
+            as default. This can be manipulated when concerning coding in restricted 
+            environment.when it throws a <see cref="T:System.Security.VerificationException"/>
+            </summary>
+        </member>
         <member name="P:OVSXmlSerializer.XmlSerializerConfig.Encoding">
             <summary>
             The encoding of the result of the file.
@@ -314,6 +321,26 @@
         <member name="F:OVSXmlSerializer.IncludeTypes.AlwaysIncludeTypes">
             <summary>
             The XML file will always write the type of the object. 
+            </summary>
+        </member>
+        <member name="T:OVSXmlSerializer.ReadonlyFieldHandle">
+            <summary>
+            How it should handle readonly fields.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.ReadonlyFieldHandle.Ignore">
+            <summary>
+            Ignores the readonly field entirely.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.ReadonlyFieldHandle.Continue">
+            <summary>
+            Allows the parser to continue serializing the field.
+            </summary>
+        </member>
+        <member name="F:OVSXmlSerializer.ReadonlyFieldHandle.ThrowError">
+            <summary>
+            Throws an error if a readonly field is encountered.
             </summary>
         </member>
         <member name="P:OVSXmlSerializer.FieldObject.Parent">
@@ -634,7 +661,8 @@
         </member>
         <member name="P:OVSXmlSerializer.XmlSerializer`1.Default">
             <summary>
-            Default Xml Serializer. Effectively creating a new blank instance.
+            Provides a shared <see cref="T:OVSXmlSerializer.XmlSerializer`1"/> instance that serializes
+            stuff
             </summary>
         </member>
         <member name="P:OVSXmlSerializer.XmlSerializer`1.Config">
@@ -762,6 +790,44 @@
             <param name="item"> The item to serialize. </param>
             <param name="writer"> The writer to write to. </param>
             <param name="rootElementName"> The custom name to store the root value to. </param>
+            <returns> A serialized object with the XML format. </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Serialize(System.IO.FileInfo,`0)">
+            <summary>
+            Serializes the specified <paramref name="item"/> as a XML file in a
+            file.
+            </summary>
+            <param name="file"> The file to write to. </param>
+            <param name="item"> The item to serialize. </param>
+            <returns> A serialized object with the XML format. </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Serialize(System.IO.FileInfo,`0,System.String)">
+            <summary>
+            Serializes the specified <paramref name="item"/> as a XML file in a
+            file.
+            </summary>
+            <param name="file"> The file to write to. </param>
+            <param name="item"> The item to serialize. </param>
+            <param name="rootElementName">The root element within the xml file. </param>
+            <returns> A serialized object with the XML format. </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Serialize(System.String,`0)">
+            <summary>
+            Serializes the specified <paramref name="item"/> as a XML file in a
+            file.
+            </summary>
+            <param name="fileLocation"> The file to write to. </param>
+            <param name="item"> The item to serialize. </param>
+            <returns> A serialized object with the XML format. </returns>
+        </member>
+        <member name="M:OVSXmlSerializer.XmlSerializer`1.Serialize(System.String,`0,System.String)">
+            <summary>
+            Serializes the specified <paramref name="item"/> as a XML file in a
+            file.
+            </summary>
+            <param name="fileLocation"> The file to write to. </param>
+            <param name="item"> The item to serialize. </param>
+            <param name="rootElementName">The root element within the xml file. </param>
             <returns> A serialized object with the XML format. </returns>
         </member>
         <member name="M:OVSXmlSerializer.XmlSerializer`1.DeepCopy(`0)">

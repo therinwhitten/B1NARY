@@ -113,7 +113,7 @@
 			}
 		}
 
-		Transform IFollowable.FollowCubeParent => GetComponent<RectTransform>();
+		public Transform FollowCubeParent { get; set; }
 
 		private bool m_selected = false;
 		private CoroutineWrapper SizerSelection;
@@ -164,7 +164,8 @@ namespace B1NARY.CharacterManagement.Editor
 	{
 		public override void OnInspectorGUI()
 		{
-			Live2DActor controller = (Live2DActor)target;
+			StandardActor controller = (StandardActor)target;
+			controller.animator = DirtyAuto.Field(controller, new GUIContent("Animator"), controller.animator, true);
 			controller.FollowCubeParent = DirtyAuto.Field(controller, new GUIContent("Head Location"), controller.FollowCubeParent, true);
 			EditorGUILayout.Space();
 			base.OnInspectorGUI();
