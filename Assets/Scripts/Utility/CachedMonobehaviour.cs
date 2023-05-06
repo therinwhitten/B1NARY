@@ -103,5 +103,13 @@
 		{
 			return GetComponent<TComponent>(includeChildObjects, includeParentObjects) != null;
 		}
+
+		public bool TryGetComponent<TComponent>(out TComponent component, 
+			bool includeChildObjects = false,
+			bool includeParentObjects = false) where TComponent : Component
+		{
+			component = GetComponent<TComponent>(includeChildObjects, includeParentObjects);
+			return component != null;
+		}
 	}
 }

@@ -9,7 +9,21 @@
 
 	public class EmptyController : MonoBehaviour, ICharacterController
 	{
-		bool ICharacterController.EmptyCharacter => true;
+		public const string CHARACTER_KEY = "Empty";
+		string ICharacterController.CharacterTypeKey => CHARACTER_KEY;
+
+		[RuntimeInitializeOnLoadMethod]
+		private static void Constructor()
+		{
+			CharacterSnapshot.snapshot.Add(CHARACTER_KEY, Create);
+		}
+
+		public static Character Create(CharacterSnapshot snapshot)
+		{
+			Character character = AddTo(CharacterManager.Instance, snapshot.name);
+			character.controller.Deserialize(snapshot);
+			return character;
+		}
 		public static Character AddTo(CharacterManager characterManager, string name)
 		{
 			var gameObject = new GameObject(name);
@@ -84,6 +98,8 @@
 
 			}
 		}
+
+
 		private bool m_selected = false;
 	}
 }

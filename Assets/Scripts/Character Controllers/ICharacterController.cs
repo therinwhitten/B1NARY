@@ -2,12 +2,13 @@
 {
 	using B1NARY.Audio;
 	using B1NARY.Scripting;
+	using OVSXmlSerializer;
 	using System;
+	using System.Collections.Generic;
 	using UnityEngine;
 
 	public interface ICharacterController
 	{
-		bool EmptyCharacter { get; }
 		string CharacterName { get; set; }
 		string GameObjectName { get; }
 		VoiceActorHandler VoiceData { get; }
@@ -23,6 +24,7 @@
 		/// </summary>
 		string CurrentExpression { get; set; }
 		bool Selected { get; set; }
+		string CharacterTypeKey { get; }
 		CharacterSnapshot Serialize();
 		void Deserialize(CharacterSnapshot snapshot);
 	}
@@ -34,6 +36,7 @@
 	[Serializable]
 	public struct CharacterSnapshot
 	{
+		public static Dictionary<string, Func<CharacterSnapshot, Character>> snapshot = new Dictionary<string, Func<CharacterSnapshot, Character>>();
 		public static CharacterSnapshot[] GetCurrentSnapshots()
 		{
 			CharacterSnapshot[] characterSnapshots = new CharacterSnapshot[CharacterManager.Instance.CharactersInScene.Count];
@@ -49,7 +52,8 @@
 		public string animation;
 		public float horizontalPosition;
 		public bool selected;
-		public bool asEmpty;
+		[XmlAttribute("type")]
+		public string characterTypeKey;
 
 		public CharacterSnapshot(ICharacterController controller)
 		{
@@ -59,26 +63,17 @@
 			animation = controller.CurrentAnimation;
 			horizontalPosition = controller.HorizontalPosition;
 			selected = controller.Selected;
-			asEmpty = controller.EmptyCharacter; 
+			characterTypeKey = controller.CharacterTypeKey; 
 		}
 		public bool Load(out Character? character)
 		{
-			if (asEmpty)
+			if (snapshot.TryGetValue(characterTypeKey, out var action))
 			{
-				character = EmptyController.AddTo(CharacterManager.Instance, name);
-				character.Value.controller.Deserialize(this);
+				character = action.Invoke(this);
 				return true;
 			}
-			character = CharacterManager.Instance.SummonCharacter(gameObjectName);
-			if (character == null)
-			{
-				Debug.LogError($"Failure to load {gameObjectName} from data.");
-				return false;
-			}
-			character.Value.ChangeCharacterName(name);
-			character.Value.controller.HorizontalPosition = horizontalPosition;
-			character.Value.controller.Deserialize(this);
-			return true;
+			character = null;
+			return false;
 		}
 	}
 }

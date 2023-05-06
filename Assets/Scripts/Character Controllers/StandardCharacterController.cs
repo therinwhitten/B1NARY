@@ -1,20 +1,18 @@
 ﻿namespace B1NARY.CharacterManagement
 {
-	using B1NARY.DataPersistence;
-	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
 	using B1NARY.UI;
-	using Live2D.Cubism.Framework.Expression;
 	using System;
 	using System.Collections;
 	using System.Linq;
 	using UnityEngine;
 
-	[RequireComponent(typeof(Animator))]
-	public class Live2DCharacterController : MonoBehaviour, ICharacterController, IFollowable
+	public class StandardCharacterController : CachedMonobehaviour, ICharacterController, IFollowable
 	{
-		public const string CHARACTER_KEY = "Live2DCharacter";
+		public const string CHARACTER_KEY = "StandardCharacter"; 
 		string ICharacterController.CharacterTypeKey => CHARACTER_KEY;
+
+
 		[RuntimeInitializeOnLoadMethod]
 		private static void Constructor()
 		{
@@ -32,49 +30,25 @@
 			character.controller.Deserialize(snapshot);
 			return character;
 		}
-		public static string[] ToNameArray(CubismExpressionList list)
+
+
+		public string CharacterName { get; set; }
+		string ICharacterController.GameObjectName => gameObject.name;
+
+		public Animator animator;
+		public VoiceActorHandler VoiceData { get; private set; }
+
+		public float HorizontalPosition
 		{
-			var expressions = new string[list.CubismExpressionObjects.Length];
-			for (int i = 0; i < expressions.Length; i++)
+			get => GetComponent<RectTransform>().anchorMin.x;
+			set
 			{
-				string expression = list.CubismExpressionObjects[i].name;
-				expressions[i] = expression.Remove(expression.LastIndexOf('.'));
+				GetComponent<RectTransform>().anchorMin = new Vector2(value, GetComponent<RectTransform>().anchorMin.y);
+				GetComponent<RectTransform>().anchorMax = new Vector2(value, GetComponent<RectTransform>().anchorMax.y);
 			}
-			return expressions;
 		}
 
-		private Animator animator;
-		private RectTransform m_transform;
-		public RectTransform Transform
-		{
-			get
-			{
-				if (m_transform == null)
-					m_transform = GetComponent<RectTransform>();
-				return m_transform;
-			}
-		}
-		public string[] Expressions
-		{
-			get
-			{
-				if (m_expressions is null)
-				{
-					if (expressionController != null && expressionController.ExpressionsList != null)
-						m_expressions = ToNameArray(expressionController.ExpressionsList);
-					else
-						m_expressions = Array.Empty<string>();
-				}
-				return m_expressions;
-			}
-		}
-		private string[] m_expressions;
-		public VoiceActorHandler VoiceData { get; private set; }
-		public float selectedSizeIncreaseMultiplier = 1.1f;
-		public CubismExpressionController expressionController;
-		[field: SerializeField]
-		public Transform FollowCubeParent { get; set; }
-		public string CurrentAnimation
+		public string CurrentAnimation 
 		{
 			get
 			{
@@ -94,50 +68,11 @@
 				}
 			}
 		}
+		string ICharacterController.CurrentExpression { get => CurrentAnimation; set => CurrentAnimation = value; }
 
-		public string CurrentExpression
-		{
-			get
-			{
-				if (expressionController != null && expressionController.CurrentExpressionIndex != -1)
-					return Expressions[expressionController.CurrentExpressionIndex];
-				return null;
-			}
-			set
-			{
-				int expressionIndex = Array.IndexOf(Expressions, value);
-				if (expressionIndex == -1)
-				{
-					Debug.LogException(new IndexOutOfRangeException($"'{value}' " +
-						$"is not an expression listed in the expressions of {name}!\n"
-						+ $"All options: {string.Join(",\n", Expressions)}"), gameObject);
-					return;
-				}
-				expressionController.CurrentExpressionIndex = expressionIndex;
-			}
-		}
-
-		public string CharacterName { get; set; }
-		string ICharacterController.GameObjectName => gameObject.name;
-
-		public Vector2 Position
-		{
-			get => Transform.position;
-			set => Transform.position = value;
-		}
-		public float HorizontalPosition
-		{
-			get => Transform.anchorMin.x;
-			set
-			{
-				Transform.anchorMin = new Vector2(value, Transform.anchorMin.y);
-				Transform.anchorMax = new Vector2(value, Transform.anchorMax.y);
-			}
-		}
-		private CoroutineWrapper PositionChanger;
-
-		public bool Selected
-		{
+		public float selectedSizeIncreaseMultiplier = 1.1f;
+		public bool Selected 
+		{ 
 			get => m_selected;
 			set
 			{
@@ -178,32 +113,14 @@
 			}
 		}
 
+		Transform IFollowable.FollowCubeParent => GetComponent<RectTransform>();
 
 		private bool m_selected = false;
 		private CoroutineWrapper SizerSelection;
 
-		public void SetPositionOverTime(float newXPosition, float time)
-		{
-			if (!CoroutineWrapper.IsNotRunningOrNull(PositionChanger))
-				PositionChanger.Stop();
-			PositionChanger = new CoroutineWrapper(this, SmoothPosChanger());
-			PositionChanger.AfterActions += (mono) => HorizontalPosition = newXPosition;
-			PositionChanger.Start();
-			IEnumerator SmoothPosChanger()
-			{
-				float acceptablePoint = 0.005f;
-				float velocity = 0f;
-				while (Math.Abs(HorizontalPosition - newXPosition) > acceptablePoint)
-				{
-					HorizontalPosition = Mathf.SmoothDamp(HorizontalPosition, newXPosition, ref velocity, time);
-					yield return new WaitForEndOfFrame();
-				}
-			}
-		}
 
 		protected virtual void Awake()
 		{
-			animator = GetComponent<Animator>();
 			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
@@ -215,17 +132,19 @@
 			VoiceData.Play(line);
 		}
 
+		void ICharacterController.SetPositionOverTime(float xCoord, float time)
+		{
+			throw new NotImplementedException();
+		}
+
 		CharacterSnapshot ICharacterController.Serialize()
 		{
-			CharacterSnapshot snapshot = new CharacterSnapshot(this);
+			var snapshot = new CharacterSnapshot(this) { expression = null };
 			return snapshot;
 		}
 		void ICharacterController.Deserialize(CharacterSnapshot snapshot)
 		{
 			ICharacterController thisInterface = this;
-			if (Expressions.Length > 0)
-				if (!string.IsNullOrEmpty(snapshot.expression))
-					thisInterface.CurrentExpression = snapshot.expression;
 			thisInterface.CharacterName = snapshot.name;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
@@ -233,7 +152,6 @@
 		}
 	}
 }
-
 #if UNITY_EDITOR
 namespace B1NARY.CharacterManagement.Editor
 {
@@ -241,8 +159,8 @@ namespace B1NARY.CharacterManagement.Editor
 	using UnityEditor;
 	using UnityEngine;
 
-	[CustomEditor(typeof(Live2DCharacterController))]
-	public class CharacterScriptEditor : ControllerEditor
+	[CustomEditor(typeof(StandardCharacterController))]
+	public class StandardCharacterControllerEditor : ControllerEditor
 	{
 		public override void OnInspectorGUI()
 		{
