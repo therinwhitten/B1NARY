@@ -42,7 +42,7 @@ namespace B1NARY.Editor
 			return true;
 		}
 
-		private void ShowCharacter(ICharacterController characterController, Rect rect)
+		private void ShowCharacter(IActor characterController, Rect rect)
 		{
 			Rect titleRect = rect;
 			titleRect.height = 20f;

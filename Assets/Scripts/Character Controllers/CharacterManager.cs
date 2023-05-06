@@ -41,11 +41,11 @@
 			}),
 			["spawnempty"] = (Action<string>)(characterName =>
 			{
-				EmptyController.AddTo(Instance, characterName);
+				EmptyActor.AddTo(Instance, characterName);
 			}),
 			["spawnempty"] = (Action<string, string>)((characterName, voiceName) =>
 			{
-				Character emptyCharacter = EmptyController.AddTo(Instance, characterName);
+				Character emptyCharacter = EmptyActor.AddTo(Instance, characterName);
 				emptyCharacter.controller.VoiceData.CurrentGroup =
 					Instance.voiceGroup.audioMixer.FindMatchingGroups(voiceName).Single();
 			}),
@@ -177,7 +177,7 @@
 			MonoBehaviour[] components = gameObject.GetComponents<MonoBehaviour>();
 			for (int i = 0; i < components.Length; i++)
 			{
-				if (components[i] is ICharacterController controller)
+				if (components[i] is IActor controller)
 				{
 					character = new Character(this, gameObject, controller);
 					gameObject.transform.SetParent(Transform);
@@ -221,10 +221,10 @@
 	public struct Character
 	{
 		public GameObject characterObject;
-		public ICharacterController controller;
+		public IActor controller;
 
 		private CharacterManager manager;
-		public Character(CharacterManager manager, GameObject characterObj, ICharacterController controller)
+		public Character(CharacterManager manager, GameObject characterObj, IActor controller)
 		{
 			this.characterObject = characterObj;
 			this.controller = controller;

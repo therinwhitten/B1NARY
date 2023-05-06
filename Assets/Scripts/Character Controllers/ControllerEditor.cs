@@ -8,11 +8,11 @@ namespace B1NARY.CharacterManagement.Editor
 	using UnityEditor;
 
 
-	[CustomEditor(typeof(ICharacterController), true)]
+	[CustomEditor(typeof(IActor), true)]
 	public abstract class ControllerEditor : Editor
 	{
-		protected ICharacterController characterController;
-		private void Awake() => characterController = (ICharacterController)target;
+		protected IActor characterController;
+		private void Awake() => characterController = (IActor)target;
 
 		public override void OnInspectorGUI()
 		{

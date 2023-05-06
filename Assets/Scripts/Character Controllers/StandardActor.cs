@@ -7,19 +7,19 @@
 	using System.Linq;
 	using UnityEngine;
 
-	public class StandardCharacterController : CachedMonobehaviour, ICharacterController, IFollowable
+	public class StandardActor : CachedMonobehaviour, IActor, IFollowable
 	{
 		public const string CHARACTER_KEY = "StandardCharacter"; 
-		string ICharacterController.CharacterTypeKey => CHARACTER_KEY;
+		string IActor.CharacterTypeKey => CHARACTER_KEY;
 
 
 		[RuntimeInitializeOnLoadMethod]
 		private static void Constructor()
 		{
-			CharacterSnapshot.snapshot.Add(CHARACTER_KEY, Create);
+			ActorSnapshot.snapshot.Add(CHARACTER_KEY, Create);
 		}
 
-		public static Character Create(CharacterSnapshot snapshot)
+		public static Character Create(ActorSnapshot snapshot)
 		{
 			Character? nullableCharacter = CharacterManager.Instance.SummonCharacter(snapshot.gameObjectName);
 			if (nullableCharacter == null)
@@ -33,7 +33,7 @@
 
 
 		public string CharacterName { get; set; }
-		string ICharacterController.GameObjectName => gameObject.name;
+		string IActor.GameObjectName => gameObject.name;
 
 		public Animator animator;
 		public VoiceActorHandler VoiceData { get; private set; }
@@ -68,7 +68,7 @@
 				}
 			}
 		}
-		string ICharacterController.CurrentExpression { get => CurrentAnimation; set => CurrentAnimation = value; }
+		string IActor.CurrentExpression { get => CurrentAnimation; set => CurrentAnimation = value; }
 
 		public float selectedSizeIncreaseMultiplier = 1.1f;
 		public bool Selected 
@@ -132,19 +132,19 @@
 			VoiceData.Play(line);
 		}
 
-		void ICharacterController.SetPositionOverTime(float xCoord, float time)
+		void IActor.SetPositionOverTime(float xCoord, float time)
 		{
 			throw new NotImplementedException();
 		}
 
-		CharacterSnapshot ICharacterController.Serialize()
+		ActorSnapshot IActor.Serialize()
 		{
-			var snapshot = new CharacterSnapshot(this) { expression = null };
+			var snapshot = new ActorSnapshot(this) { expression = null };
 			return snapshot;
 		}
-		void ICharacterController.Deserialize(CharacterSnapshot snapshot)
+		void IActor.Deserialize(ActorSnapshot snapshot)
 		{
-			ICharacterController thisInterface = this;
+			IActor thisInterface = this;
 			thisInterface.CharacterName = snapshot.name;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
@@ -159,12 +159,12 @@ namespace B1NARY.CharacterManagement.Editor
 	using UnityEditor;
 	using UnityEngine;
 
-	[CustomEditor(typeof(StandardCharacterController))]
+	[CustomEditor(typeof(StandardActor))]
 	public class StandardCharacterControllerEditor : ControllerEditor
 	{
 		public override void OnInspectorGUI()
 		{
-			Live2DCharacterController controller = (Live2DCharacterController)target;
+			Live2DActor controller = (Live2DActor)target;
 			controller.FollowCubeParent = DirtyAuto.Field(controller, new GUIContent("Head Location"), controller.FollowCubeParent, true);
 			EditorGUILayout.Space();
 			base.OnInspectorGUI();

@@ -136,7 +136,7 @@
 		public Collection<string> strings;
 		public string formatName;
 		public ScriptPosition scriptPosition;
-		public CharacterSnapshot[] characterSnapshots;
+		public ActorSnapshot[] characterSnapshots;
 		public SerializedAudio[] audio;
 		private DateTime startPlay = DateTime.Now;
 		[XmlIgnore]
@@ -161,7 +161,7 @@
 			startPlay = metadata.lastSaved;
 			scriptPosition = ScriptPosition.Define();
 			metadata.thumbnail = SaveHider.GetThumbnail();
-			characterSnapshots = CharacterSnapshot.GetCurrentSnapshots();
+			characterSnapshots = ActorSnapshot.GetCurrentSnapshots();
 			audio = SerializedAudio.SerializeAudio();
 			formatName = ColorFormat.CurrentFormat.FormatName;
 			using (var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write))
@@ -179,7 +179,7 @@
 			{
 				for (int i = 0; i < characterSnapshots.Length; i++)
 				{
-					CharacterSnapshot currentSnapshot = characterSnapshots[i];
+					ActorSnapshot currentSnapshot = characterSnapshots[i];
 					if (currentSnapshot.Load(out _))
 						if (currentSnapshot.selected)
 							if (!CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(currentSnapshot.name))

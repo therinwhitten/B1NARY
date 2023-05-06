@@ -7,18 +7,18 @@
 	using UnityEditor;
 	using UnityEngine;
 
-	public class EmptyController : MonoBehaviour, ICharacterController
+	public class EmptyActor : MonoBehaviour, IActor
 	{
 		public const string CHARACTER_KEY = "Empty";
-		string ICharacterController.CharacterTypeKey => CHARACTER_KEY;
+		string IActor.CharacterTypeKey => CHARACTER_KEY;
 
 		[RuntimeInitializeOnLoadMethod]
 		private static void Constructor()
 		{
-			CharacterSnapshot.snapshot.Add(CHARACTER_KEY, Create);
+			ActorSnapshot.snapshot.Add(CHARACTER_KEY, Create);
 		}
 
-		public static Character Create(CharacterSnapshot snapshot)
+		public static Character Create(ActorSnapshot snapshot)
 		{
 			Character character = AddTo(CharacterManager.Instance, snapshot.name);
 			character.controller.Deserialize(snapshot);
@@ -28,15 +28,15 @@
 		{
 			var gameObject = new GameObject(name);
 			gameObject.transform.SetParent(characterManager.Transform);
-			EmptyController controller = gameObject.AddComponent<EmptyController>();
+			EmptyActor controller = gameObject.AddComponent<EmptyActor>();
 			characterManager.AddCharacterToDictionary(gameObject, out Character character);
 			return character;
 		}
-		public static (GameObject @object, EmptyController emptyController) Instantiate(Transform parent, string name)
+		public static (GameObject @object, EmptyActor emptyController) Instantiate(Transform parent, string name)
 		{
 			var gameObject = new GameObject(name);
 			gameObject.transform.parent = parent;
-			var emptyController = gameObject.AddComponent<EmptyController>();
+			var emptyController = gameObject.AddComponent<EmptyActor>();
 			return (gameObject, emptyController);
 		}
 
@@ -48,27 +48,27 @@
 		}
 		public VoiceActorHandler VoiceData { get; private set; }
 		public string CharacterName { get; set; }
-		string ICharacterController.GameObjectName => gameObject.name;
+		string IActor.GameObjectName => gameObject.name;
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.RawLine);
 			VoiceData.Play(line);
 		}
 
-		float ICharacterController.HorizontalPosition { get => 0f; set { } }
-		void ICharacterController.SetPositionOverTime(float xCoord, float time)
+		float IActor.HorizontalPosition { get => 0f; set { } }
+		void IActor.SetPositionOverTime(float xCoord, float time)
 		{
 			
 		}
 
-		CharacterSnapshot ICharacterController.Serialize()
+		ActorSnapshot IActor.Serialize()
 		{
-			CharacterSnapshot snapshot = new CharacterSnapshot(this);
+			ActorSnapshot snapshot = new ActorSnapshot(this);
 			return snapshot;
 		}
-		void ICharacterController.Deserialize(CharacterSnapshot snapshot)
+		void IActor.Deserialize(ActorSnapshot snapshot)
 		{
-			ICharacterController thisInterface = this;
+			IActor thisInterface = this;
 			thisInterface.CurrentExpression = snapshot.expression;
 			thisInterface.CharacterName = snapshot.name;
 			thisInterface.Selected = snapshot.selected;
@@ -76,13 +76,13 @@
 			thisInterface.HorizontalPosition = snapshot.horizontalPosition;
 		}
 
-		string ICharacterController.CurrentAnimation
+		string IActor.CurrentAnimation
 		{
 			get => string.Empty;
 			set { }
 		}
 
-		string ICharacterController.CurrentExpression
+		string IActor.CurrentExpression
 		{
 			get => string.Empty;
 			set { }
@@ -109,7 +109,7 @@ namespace B1NARY.CharacterManagement.Editor
 {
 	using UnityEditor;
 
-	[CustomEditor(typeof(EmptyController))]
+	[CustomEditor(typeof(EmptyActor))]
 	public class EmptyControllerEditor : ControllerEditor
 	{
 

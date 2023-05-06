@@ -114,10 +114,10 @@ namespace B1NARY.Editor
 				controller.ScreenColorHandler = DirtyAuto.Field(target, new GUIContent("Screen Color Handler"), controller.ScreenColorHandler, true);
 				EditorGUI.indentLevel--;
 			}
-			if (!controller.gameObject.TryGetComponent<Live2DCharacterController>(out _))
+			if (!controller.gameObject.TryGetComponent<Live2DActor>(out _))
 				if (GUILayout.Button("Add Live2D Character Controller"))
 				{
-					controller.gameObject.AddComponent<Live2DCharacterController>();
+					controller.gameObject.AddComponent<Live2DActor>();
 					target.SetDirty();
 				}
 		}

@@ -11,17 +11,17 @@
 	using UnityEngine;
 
 	[RequireComponent(typeof(Animator))]
-	public class Live2DCharacterController : MonoBehaviour, ICharacterController, IFollowable
+	public class Live2DActor : MonoBehaviour, IActor, IFollowable
 	{
 		public const string CHARACTER_KEY = "Live2DCharacter";
-		string ICharacterController.CharacterTypeKey => CHARACTER_KEY;
+		string IActor.CharacterTypeKey => CHARACTER_KEY;
 		[RuntimeInitializeOnLoadMethod]
 		private static void Constructor()
 		{
-			CharacterSnapshot.snapshot.Add(CHARACTER_KEY, Create);
+			ActorSnapshot.snapshot.Add(CHARACTER_KEY, Create);
 		}
 
-		public static Character Create(CharacterSnapshot snapshot)
+		public static Character Create(ActorSnapshot snapshot)
 		{
 			Character? nullableCharacter = CharacterManager.Instance.SummonCharacter(snapshot.gameObjectName);
 			if (nullableCharacter == null)
@@ -118,7 +118,7 @@
 		}
 
 		public string CharacterName { get; set; }
-		string ICharacterController.GameObjectName => gameObject.name;
+		string IActor.GameObjectName => gameObject.name;
 
 		public Vector2 Position
 		{
@@ -215,14 +215,14 @@
 			VoiceData.Play(line);
 		}
 
-		CharacterSnapshot ICharacterController.Serialize()
+		ActorSnapshot IActor.Serialize()
 		{
-			CharacterSnapshot snapshot = new CharacterSnapshot(this);
+			ActorSnapshot snapshot = new ActorSnapshot(this);
 			return snapshot;
 		}
-		void ICharacterController.Deserialize(CharacterSnapshot snapshot)
+		void IActor.Deserialize(ActorSnapshot snapshot)
 		{
-			ICharacterController thisInterface = this;
+			IActor thisInterface = this;
 			if (Expressions.Length > 0)
 				if (!string.IsNullOrEmpty(snapshot.expression))
 					thisInterface.CurrentExpression = snapshot.expression;
@@ -241,12 +241,12 @@ namespace B1NARY.CharacterManagement.Editor
 	using UnityEditor;
 	using UnityEngine;
 
-	[CustomEditor(typeof(Live2DCharacterController))]
+	[CustomEditor(typeof(Live2DActor))]
 	public class CharacterScriptEditor : ControllerEditor
 	{
 		public override void OnInspectorGUI()
 		{
-			Live2DCharacterController controller = (Live2DCharacterController)target;
+			Live2DActor controller = (Live2DActor)target;
 			controller.FollowCubeParent = DirtyAuto.Field(controller, new GUIContent("Head Location"), controller.FollowCubeParent, true);
 			EditorGUILayout.Space();
 			base.OnInspectorGUI();
