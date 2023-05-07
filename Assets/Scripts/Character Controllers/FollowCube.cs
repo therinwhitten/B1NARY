@@ -48,7 +48,8 @@
 
 		private void OnDestroy()
 		{
-			CharacterManager.Instance.ActiveCharacterChanged -= ChangeToNewCharacter;
+			if (CharacterManager.TryGetInstance(out var instance))
+				instance.ActiveCharacterChanged -= ChangeToNewCharacter;
 		}
 	}
 }

@@ -43,12 +43,12 @@
 
 		void IXmlSerializable.Read(XmlNode value)
 		{
-			data = value.InnerText.Split('.').Select(str => byte.Parse(str)).ToArray();
+			data = Convert.FromBase64String(value.InnerText);
 		}
 
 		void IXmlSerializable.Write(XmlDocument document, XmlNode node)
 		{
-			node.InnerText = string.Join(".", data);
+			node.InnerText = Convert.ToBase64String(data);
 		}
 
 		private byte[] data;

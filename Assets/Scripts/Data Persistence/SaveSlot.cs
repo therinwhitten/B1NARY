@@ -146,7 +146,7 @@
 		public string formatName;
 		public ScriptPosition scriptPosition;
 		public ActorSnapshot[] characterSnapshots;
-		public SerializedAudio[] audio;
+		public List<SerializedAudio> audio;
 		private DateTime startPlay = DateTime.Now;
 		[XmlIgnore]
 		public bool hasSaved = false;
@@ -223,7 +223,7 @@
 			{
 				if (AudioController.TryGetInstance(out var controller))
 					controller.RemoveAllSounds();
-				for (int i = 0; i < audio.Length; i++)
+				for (int i = 0; i < audio.Count; i++)
 					audio[i].Play();
 			};
 			wrapper.AfterActions += (mono) =>
