@@ -1,4 +1,5 @@
 ﻿using B1NARY;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -16,6 +17,8 @@ namespace BrightLib.Animation.Runtime
 		public Timer frequencyTimer;
 
 		public AudioSource _source;
+
+		private CoroutineWrapper audioStuff;
 		
 
 		private int _clipIndex;
@@ -67,8 +70,10 @@ namespace BrightLib.Animation.Runtime
 				return;
 			_source.Stop();
 			_source.outputAudioMixerGroup = group;
-			AudioClip currClip = useMultiple ? clips.Random() : clip;
-			_source.PlayOneShot(currClip);
+			_source.loop = true;
+			if (CoroutineWrapper.IsNotRunningOrNull(audioStuff))
+				audioStuff.Stop();
+			audioStuff = new CoroutineWrapper(SceneManager.Instance, ExecuteLoop(_source)).Start();
 		}
 
 		private void Validate(Animator animator, AnimatorStateInfo stateInfo)
@@ -103,6 +108,20 @@ namespace BrightLib.Animation.Runtime
 			_valid = true;
 		}
 
+		private IEnumerator ExecuteLoop(AudioSource source)
+		{
+			while (true)
+			{
+				if (source.isPlaying)
+				{
+					yield return new WaitForEndOfFrame();
+					continue;
+				}
+				AudioClip newClip = useMultiple ? clips.Random(RandomFowarder.RandomType.Doom) : clip;
+				source.clip = newClip;
+				source.Play();
+			}
+		}
 	}
 
 }

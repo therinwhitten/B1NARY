@@ -70,14 +70,20 @@
 					// Assuming all brackets are in line, this will count the
 					// - layer count n stuff. Includes the last end bracket
 					for (int layers = 1, ii = 2; layers > 0; ii++)
-					{
-						ScriptLine currentLine = blockNodeData[i + ii];
-						subLines.Add(currentLine);
-						if (currentLine.Type == ScriptLine.LineType.BeginIndent)
-							layers++;
-						else if (currentLine.Type == ScriptLine.LineType.EndIndent)
-							layers--;
-					}
+						try
+						{
+							ScriptLine currentLine = blockNodeData[i + ii];
+							subLines.Add(currentLine);
+							if (currentLine.Type == ScriptLine.LineType.BeginIndent)
+								layers++;
+							else if (currentLine.Type == ScriptLine.LineType.EndIndent)
+								layers--;
+						}
+						catch (Exception ex)
+						{
+							Debug.LogError($"Error from block ({PrimaryLine})! Have you checked that the opening and closing brackets are equal?");
+							throw ex;
+						}
 					ScriptElement subElement = config.GetDefinedElement(subLines);
 					subElement.Parent = this;
 					List<ScriptNode> lineCollection = new List<ScriptNode>{subElement};

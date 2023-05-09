@@ -19,6 +19,7 @@
 		Male = 0,
 		Female = 1,
 	}
+	
 	public class SaveSlot
 	{
 		public enum QuicksaveType
