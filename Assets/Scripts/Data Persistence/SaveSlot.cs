@@ -25,6 +25,17 @@
 	}
 	public class SaveSlot
 	{
+		public enum QuicksaveType
+		{
+			/// <summary>
+			/// Creates a new save every time the player quicksaves
+			/// </summary>
+			NewSave,
+			/// <summary>
+			/// Quicksaves on an existing save, or a new save if it doesn't exist
+			/// </summary>
+			ExistingSave,
+		}
 		public const string NAME_START = "SaveSlot_",
 			NAME_EXT = ".xml";
 		public const string KEY_PLAYER_NAME = "Player Name";
@@ -58,6 +69,12 @@
 			}
 		}
 		private static SaveSlot m_activeSlot;
+		public void Quicksave()
+		{
+			if (!PlayerConfig.Instance.quickSaveOverrides.Value)
+				ActiveSlot.metadata.ChangeFileTo(null);
+			ActiveSlot.Save();
+		}
 
 		public static SaveSlot LoadIntoMemory(FileInfo loadSlot)
 		{

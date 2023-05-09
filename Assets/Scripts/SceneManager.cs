@@ -5,6 +5,7 @@
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
 	using B1NARY.UI;
+	using B1NARY.UI.Colors;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
@@ -159,6 +160,7 @@
 			ScriptHandler.Instance.pauser.Play();
 			ScriptHandler.Instance.Clear();
 			AudioController.Instance.RemoveAllSounds();
+			ColorFormat.Set(ColorFormat.DefaultFormat);
 		}
 		/// <summary>
 		/// Initializes the <see cref="ScriptHandler"/>, the system expects the

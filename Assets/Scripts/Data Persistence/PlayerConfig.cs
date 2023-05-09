@@ -76,6 +76,7 @@
 				}
 		}
 
+		public ChangableValue<bool> quickSaveOverrides = new ChangableValue<bool>(false);
 		public ChangableValue<bool> hEnable = new ChangableValue<bool>(false);
 		public ChangableValue<int> dialogueSpeedTicks = new ChangableValue<int>(30);
 		public Audio audio = new Audio();
