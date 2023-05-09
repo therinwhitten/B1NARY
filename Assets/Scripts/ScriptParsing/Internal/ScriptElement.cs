@@ -81,7 +81,7 @@
 						}
 						catch (Exception ex)
 						{
-							Debug.LogError($"Error from block ({PrimaryLine})! Have you checked that the opening and closing brackets are equal?");
+							Debug.LogError($"Error from the writers script! Have you checked that the opening and closing brackets are equal?");
 							throw ex;
 						}
 					ScriptElement subElement = config.GetDefinedElement(subLines);
