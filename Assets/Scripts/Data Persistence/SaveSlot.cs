@@ -6,16 +6,12 @@
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.IO;
-	using System.Runtime.Serialization;
 	using UnityEngine;
-	using System.Linq;
 	using OVSXmlSerializer;
-	using System.Collections.ObjectModel;
 	using B1NARY.CharacterManagement;
 	using B1NARY.Audio;
 	using B1NARY.UI.Colors;
 	using System.Threading.Tasks;
-	using UnityEngine.Rendering;
 	using Stopwatch = System.Diagnostics.Stopwatch;
 
 	public enum Gender : byte
