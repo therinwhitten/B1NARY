@@ -71,7 +71,7 @@ namespace BrightLib.Animation.Runtime
 			_source.Stop();
 			_source.outputAudioMixerGroup = group;
 			_source.loop = true;
-			if (CoroutineWrapper.IsNotRunningOrNull(audioStuff))
+			if (!CoroutineWrapper.IsNotRunningOrNull(audioStuff))
 				audioStuff.Stop();
 			audioStuff = new CoroutineWrapper(SceneManager.Instance, ExecuteLoop(_source)).Start();
 		}
