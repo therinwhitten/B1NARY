@@ -9,7 +9,7 @@
 
 	public sealed class AudioTracker : IDisposable, IAudioInfo
 	{
-		private readonly AudioSource audioSource;
+		public readonly AudioSource audioSource;
 
 		[SuppressMessage("Correctness", "UNT0008:Null propagation on Unity objects", Justification = "<Pending>")]
 		public bool IsPlaying
@@ -60,6 +60,13 @@
 		public AudioTracker(CustomAudioClip customAudioClip)
 		{
 			audioSource = AudioController.Instance.gameObject.AddComponent<AudioSource>();
+			customAudioClip.ApplyTo(audioSource);
+			CustomAudioClip = customAudioClip;
+			SceneName = SceneManager.ActiveScene.name;
+		}
+		public AudioTracker(CustomAudioClip customAudioClip, AudioSource source)
+		{
+			audioSource = source;
 			customAudioClip.ApplyTo(audioSource);
 			CustomAudioClip = customAudioClip;
 			SceneName = SceneManager.ActiveScene.name;

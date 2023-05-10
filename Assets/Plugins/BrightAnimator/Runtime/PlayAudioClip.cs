@@ -1,5 +1,7 @@
 ﻿using B1NARY;
+using B1NARY.Audio;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -23,6 +25,9 @@ namespace BrightLib.Animation.Runtime
 
 		private int _clipIndex;
 		private bool _valid;
+
+		private int lastTick;
+		private List<AudioTracker> trackers = new List<AudioTracker>();
 
 		
 		private void OnEnable()
@@ -68,12 +73,27 @@ namespace BrightLib.Animation.Runtime
 		{
 			if (!_valid) 
 				return;
+			if (lastTick == Time.frameCount)
+			{
+				AudioSource subSource = _source.gameObject.AddComponent<AudioSource>();
+				subSource.outputAudioMixerGroup = group;
+				AudioTracker tracker = new AudioTracker(null, subSource).Start();
+				tracker.Loop = true;
+				trackers.Add(tracker);
+				audioStuff.AfterActions += (mono) =>
+				{
+					tracker.Stop();
+					Destroy(subSource);
+					trackers.Remove(tracker);
+				};
+			}
+			lastTick = Time.frameCount;
 			_source.Stop();
 			_source.outputAudioMixerGroup = group;
 			_source.loop = true;
 			if (!CoroutineWrapper.IsNotRunningOrNull(audioStuff))
 				audioStuff.Stop();
-			audioStuff = new CoroutineWrapper(SceneManager.Instance, ExecuteLoop(_source)).Start();
+			audioStuff = new CoroutineWrapper(SceneManager.Instance, ExecuteLoop()).Start();
 		}
 
 		private void Validate(Animator animator, AnimatorStateInfo stateInfo)
@@ -108,18 +128,20 @@ namespace BrightLib.Animation.Runtime
 			_valid = true;
 		}
 
-		private IEnumerator ExecuteLoop(AudioSource source)
+		private IEnumerator ExecuteLoop()
 		{
 			while (true)
 			{
-				if (source.isPlaying)
+				for (int i = 0; i < trackers.Count; i++)
 				{
-					yield return new WaitForEndOfFrame();
-					continue;
+					AudioTracker track = trackers[i];
+					if (track.IsPlaying)
+						continue;
+					AudioClip newClip = useMultiple ? clips.Random(RandomFowarder.RandomType.Doom) : clip;
+					track.Dispose();
+					trackers[i] = new AudioTracker((CustomAudioClip)newClip, track.audioSource).Start();
 				}
-				AudioClip newClip = useMultiple ? clips.Random(RandomFowarder.RandomType.Doom) : clip;
-				source.clip = newClip;
-				source.Play();
+				yield return new WaitForEndOfFrame();
 			}
 		}
 	}
