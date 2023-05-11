@@ -1,5 +1,6 @@
 ﻿using B1NARY;
 using B1NARY.Audio;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -27,7 +28,7 @@ namespace BrightLib.Animation.Runtime
 		private bool _valid;
 
 		private int lastTick;
-		private List<AudioTracker> trackers = new List<AudioTracker>();
+		private List<AudioSource> trackers;
 
 		
 		private void OnEnable()
@@ -73,18 +74,16 @@ namespace BrightLib.Animation.Runtime
 		{
 			if (!_valid) 
 				return;
-			if (lastTick == Time.frameCount)
+			if (Math.Abs(Time.frameCount - lastTick) < 5)
 			{
 				AudioSource subSource = _source.gameObject.AddComponent<AudioSource>();
 				subSource.outputAudioMixerGroup = group;
-				AudioTracker tracker = new AudioTracker(null, subSource).Start();
-				tracker.Loop = true;
-				trackers.Add(tracker);
+				subSource.loop = true;
+				trackers.Add(subSource);
 				audioStuff.AfterActions += (mono) =>
 				{
-					tracker.Stop();
 					Destroy(subSource);
-					trackers.Remove(tracker);
+					trackers.Remove(subSource);
 				};
 			}
 			lastTick = Time.frameCount;
@@ -93,6 +92,8 @@ namespace BrightLib.Animation.Runtime
 			_source.loop = true;
 			if (!CoroutineWrapper.IsNotRunningOrNull(audioStuff))
 				audioStuff.Stop();
+			if (trackers is null)
+				trackers = new List<AudioSource>() { _source };
 			audioStuff = new CoroutineWrapper(SceneManager.Instance, ExecuteLoop()).Start();
 		}
 
@@ -134,12 +135,13 @@ namespace BrightLib.Animation.Runtime
 			{
 				for (int i = 0; i < trackers.Count; i++)
 				{
-					AudioTracker track = trackers[i];
-					if (track.IsPlaying)
+					AudioSource source = trackers[i];
+					if (source.isPlaying)
 						continue;
 					AudioClip newClip = useMultiple ? clips.Random(RandomFowarder.RandomType.Doom) : clip;
-					track.Dispose();
-					trackers[i] = new AudioTracker((CustomAudioClip)newClip, track.audioSource).Start();
+					source.Stop();
+					source.clip = newClip;
+					source.Play();
 				}
 				yield return new WaitForEndOfFrame();
 			}
