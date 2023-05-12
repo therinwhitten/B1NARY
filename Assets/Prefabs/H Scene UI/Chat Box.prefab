@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 589092567138765548}
   - component: {fileID: 589092567138765549}
   m_Layer: 5
-  m_Name: Name Plate
+  m_Name: Character Name Input
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104,8 +104,9 @@ GameObject:
   - component: {fileID: 589092567570336591}
   - component: {fileID: 589092567570336589}
   - component: {fileID: 589092567570336590}
+  - component: {fileID: 4395210797906885600}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -229,6 +230,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4395210797906885600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589092567570336576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae52b6b60326dc74c91b618a9f3c0fc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showOnlyPlayer: 1
 --- !u!1 &589092567627073118
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +255,7 @@ GameObject:
   - component: {fileID: 589092567627073115}
   - component: {fileID: 589092567627073116}
   m_Layer: 5
-  m_Name: 'Text (TMP) '
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -376,8 +390,8 @@ GameObject:
   - component: {fileID: 589092567728259840}
   - component: {fileID: 589092567728259853}
   - component: {fileID: 589092567728259854}
-  - component: {fileID: 589092567728259855}
   - component: {fileID: 5356859517374203772}
+  - component: {fileID: 589092567728259855}
   m_Layer: 5
   m_Name: Chat Box
   m_TagString: Untagged
@@ -442,23 +456,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &589092567728259855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 589092567728259841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f8fd09de1234840bdfdb7b138a2eef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  imageThemeName: Primary
-  buttonHighlightedName: Primary
-  buttonPressedName: Primary
-  buttonSelectedName: Primary
-  buttonDisabledName: Primary
 --- !u!114 &5356859517374203772
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,7 +474,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 0
+  m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
@@ -513,6 +510,23 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &589092567728259855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589092567728259841}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f8fd09de1234840bdfdb7b138a2eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imageThemeName: Primary
+  buttonHighlightedName: Primary
+  buttonPressedName: Primary
+  buttonSelectedName: Primary
+  buttonDisabledName: Primary
 --- !u!1 &589092568357690189
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,8 +540,9 @@ GameObject:
   - component: {fileID: 589092568357690186}
   - component: {fileID: 589092568357690187}
   - component: {fileID: 589092568357690184}
+  - component: {fileID: 2672068222923887224}
   m_Layer: 5
-  m_Name: H Chat
+  m_Name: Chat Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -610,3 +625,15 @@ MonoBehaviour:
   TickMultiplier: 1
   speakerBox: {fileID: 589092567570336590}
   textBox: {fileID: 589092567627073116}
+--- !u!114 &2672068222923887224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 589092568357690189}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59bf62e5204e92444af61a516e989f85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
