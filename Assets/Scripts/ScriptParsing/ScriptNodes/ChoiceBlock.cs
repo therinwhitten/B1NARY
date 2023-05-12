@@ -53,7 +53,11 @@
 			while (panel.HasBeenInitialized)
 			{
 				ScriptLine phonyLine = StartBracketSkip[0].PrimaryLine;
-				phonyLine = new ScriptLine(string.Join(", ", ScriptLine.CastCommand(phonyLine).arguments), phonyLine.Index);
+				string line = string.Join(", ", ScriptLine.CastCommand(phonyLine).arguments);
+#warning TODO: Fix recursive empty scriptline issue!
+				if (string.IsNullOrWhiteSpace(line))
+					line = "";
+				phonyLine = new ScriptLine(line, phonyLine.Index);
 				yield return new ScriptNode(phonyLine);
 			}
 			if (choices.TryGetValue(currentLine, out ScriptElement element))

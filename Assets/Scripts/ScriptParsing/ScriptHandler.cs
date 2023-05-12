@@ -1,6 +1,7 @@
 ﻿namespace B1NARY.Scripting
 {
 	using B1NARY.Audio;
+	using B1NARY.CharacterManagement;
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
 	using B1NARY.UI;
@@ -54,7 +55,8 @@
 					SceneManager.Commands,
 					CharacterManager.Commands,
 					TransitionManager.Commands,
-					ColorFormat.Commands 
+					ColorFormat.Commands,
+					FollowCube.Commands,
 				}.SelectMany<CommandArray, OverloadableCommand>(commands => commands));
 		}
 		[ForcePause]
