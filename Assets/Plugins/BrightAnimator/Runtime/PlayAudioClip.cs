@@ -146,7 +146,7 @@ namespace BrightLib.Animation.Runtime
 					AudioSource source = trackers[i];
 					if (source.isPlaying)
 						continue;
-					AudioClip newClip = useMultiple ? clips.Random(RandomFowarder.RandomType.Doom) : clip;
+					AudioClip newClip = useMultiple ? clips.Random(RandomFowarder.RandomType.CSharp) : clip;
 					source.Stop();
 					source.clip = newClip;
 					source.Play();
