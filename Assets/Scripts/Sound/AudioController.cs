@@ -30,7 +30,9 @@
 			{
 				name = name.Trim();
 				float fadeOut = float.Parse(floatStr);
-				Instance.RemoveSound(name, fadeOut);
+				if (Instance.RemoveSound(name, fadeOut))
+					throw new ArgumentOutOfRangeException($"{name} doesn't lead to any sounds and cannot be stopped!" +
+						$"\nStoppable sounds: {string.Join(", ", Instance.ActiveAudio)}");
 			}),
 			["playsound"] = (Action<string>)((name) =>
 			{
@@ -40,7 +42,9 @@
 			["stopsound"] = (Action<string>)((name) =>
 			{
 				name = name.Trim();
-				Instance.RemoveSound(name);
+				if (Instance.RemoveSound(name))
+					throw new ArgumentOutOfRangeException($"{name} doesn't lead to any sounds and cannot be stopped!" +
+						$"\nStoppable sounds: {string.Join(", ", Instance.ActiveAudio)}");
 			}),
 		};
 
@@ -156,10 +160,10 @@
 			for (int i = 0; i < ActiveLibrary.customAudioClips.Count; i++)
 			{
 				CustomAudioClip clip = ActiveLibrary.customAudioClips[i];
-				if (clip.Name == soundName)
+				if (clip.Name.ToLower() == soundName.ToLower())
 					return AddSound(clip, fadeIn);
 			}
-			Debug.LogException(new NullReferenceException($"sound '{soundName}' does not exist in library '{ActiveLibrary?.name}"));
+			Debug.LogException(new NullReferenceException($"sound '{soundName}' does not exist in library '{ActiveLibrary?.name}'"));
 			return null;
 		}
 	}

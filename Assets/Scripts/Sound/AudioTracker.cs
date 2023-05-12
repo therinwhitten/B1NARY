@@ -118,5 +118,10 @@
 		{
 			Stop();
 		}
+
+		public override string ToString()
+		{
+			return $"AudioTracker ({ClipName})";
+		}
 	}
 }
