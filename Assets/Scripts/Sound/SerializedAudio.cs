@@ -15,11 +15,9 @@
 		}
 		public static List<SerializedAudio> SerializeAudio()
 		{
-			var otherValues = new HashSet<int>(AudioController.Instance.otherValues);
-			int length = AudioController.Instance.ActiveAudio.Count - otherValues.Count;
-			var audio = new List<SerializedAudio>(length);
-			for (int i = 0; i < length; i++)
-				if (!otherValues.Contains(i))
+			var audio = new List<SerializedAudio>(AudioController.Instance.ActiveAudio.Count);
+			for (int i = 0; i < AudioController.Instance.ActiveAudio.Count; i++)
+				if (AudioController.Instance.ActiveAudio[i] != null)
 					audio.Add(new SerializedAudio(AudioController.Instance.ActiveAudio[i]));
 			return audio;
 		}

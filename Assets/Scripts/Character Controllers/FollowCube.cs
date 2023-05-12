@@ -74,7 +74,7 @@
 			}
 
 			Character character = nullableCharacter.Value;
-			if (character.controller is IFollowable followable)
+			if (character.controller is IFollowable followable && followable.FollowCubeParent != null)
 				TargetPosition = followable.FollowCubeParent.position;
 			else
 				SetDisable();
