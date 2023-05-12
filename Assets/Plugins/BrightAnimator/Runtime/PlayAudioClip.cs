@@ -10,6 +10,8 @@ namespace BrightLib.Animation.Runtime
 {
 	public class PlayAudioClip : StateMachineBehaviour
 	{
+		private static int lastStateIndex = -1;
+
 		public bool useMultiple;
 		public AudioClip clip;
 		public AudioClip[] clips;
@@ -27,8 +29,8 @@ namespace BrightLib.Animation.Runtime
 		private int _clipIndex;
 		private bool _valid;
 
-		private int lastTick;
 		private List<AudioSource> trackers;
+		private (Animator animator, int layer) lastUsedAnimator;
 
 		
 		private void OnEnable()
@@ -46,6 +48,8 @@ namespace BrightLib.Animation.Runtime
 		public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 		{
 			Validate(animator, stateInfo);
+			lastStateIndex = stateInfo.fullPathHash;
+			lastUsedAnimator = (animator, layerIndex);
 
 			delayer.Reset();
 			frequencyTimer.Reset();
@@ -61,40 +65,44 @@ namespace BrightLib.Animation.Runtime
 			else if (condition == PlayCondition.OnUpdate)
 			{
 				frequencyTimer.Update();
-			}			
+			}
+			lastStateIndex = stateInfo.fullPathHash;
+			lastUsedAnimator = (animator, layerIndex);
 		}
 
 		public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 		{
 			if (condition != PlayCondition.OnExit) return;
 			Execute();
+			lastStateIndex = stateInfo.fullPathHash;
+			lastUsedAnimator = (animator, layerIndex);
 		}
 
 		private void Execute()
 		{
 			if (!_valid) 
 				return;
-			if (Math.Abs(Time.frameCount - lastTick) < 5)
+			if (lastStateIndex != lastUsedAnimator.animator.GetCurrentAnimatorStateInfo(lastUsedAnimator.layer).fullPathHash)
 			{
-				AudioSource subSource = _source.gameObject.AddComponent<AudioSource>();
-				subSource.outputAudioMixerGroup = group;
-				subSource.loop = true;
-				trackers.Add(subSource);
-				audioStuff.AfterActions += (mono) =>
-				{
-					Destroy(subSource);
-					trackers.Remove(subSource);
-				};
+				_source.Stop();
+				_source.outputAudioMixerGroup = group;
+				_source.loop = true;
+				if (!CoroutineWrapper.IsNotRunningOrNull(audioStuff))
+					audioStuff.Stop();
+				if (trackers is null)
+					trackers = new List<AudioSource>() { _source };
+				audioStuff = new CoroutineWrapper(SceneManager.Instance, ExecuteLoop()).Start();
+				return;
 			}
-			lastTick = Time.frameCount;
-			_source.Stop();
-			_source.outputAudioMixerGroup = group;
-			_source.loop = true;
-			if (!CoroutineWrapper.IsNotRunningOrNull(audioStuff))
-				audioStuff.Stop();
-			if (trackers is null)
-				trackers = new List<AudioSource>() { _source };
-			audioStuff = new CoroutineWrapper(SceneManager.Instance, ExecuteLoop()).Start();
+			AudioSource subSource = _source.gameObject.AddComponent<AudioSource>();
+			subSource.outputAudioMixerGroup = group;
+			subSource.loop = true;
+			trackers.Add(subSource);
+			audioStuff.AfterActions += (mono) =>
+			{
+				Destroy(subSource);
+				trackers.Remove(subSource);
+			};
 		}
 
 		private void Validate(Animator animator, AnimatorStateInfo stateInfo)
