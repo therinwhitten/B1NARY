@@ -49,7 +49,7 @@ namespace B1NARY.Audio
 		/// Random type used for randomization of <see cref="pitchVariance"/> 
 		/// and <see cref="volumeVariance"/>. 
 		/// </summary>
-		public RandomFowarder.RandomType randomType;
+		public RandomForwarder.RandomType randomType;
 
 		/// <summary>
 		/// Final pitch by basing on <see cref="volume"/>, and adjusting it on 
@@ -63,7 +63,7 @@ namespace B1NARY.Audio
 					return volume;
 				float adjustedVolumeRandom = volumeVariance * volume,
 					randomVolume = volume - adjustedVolumeRandom;
-				randomVolume += RandomFowarder.NextFloat(randomType) * adjustedVolumeRandom;
+				randomVolume += RandomForwarder.NextFloat(randomType) * adjustedVolumeRandom;
 				return randomVolume;
 			}
 		}
@@ -79,7 +79,7 @@ namespace B1NARY.Audio
 					return pitch;
 				float adjustedPitchRandom = pitchVariance * pitch,
 					randomPitch = pitch - adjustedPitchRandom;
-				randomPitch += RandomFowarder.NextFloat(randomType) * adjustedPitchRandom;
+				randomPitch += RandomForwarder.NextFloat(randomType) * adjustedPitchRandom;
 				return randomPitch;
 			}
 		}

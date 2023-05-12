@@ -36,8 +36,8 @@
 		/// Plays a one-shot sound using <see cref="hoverSounds"/> using a
 		/// random number generator to randomly select a sound.
 		/// </summary>
-		/// <param name="randomType"> The random type to pass into <see cref="RandomFowarder"/>. </param>
-		public void PlayRandomHoverSound(RandomFowarder.RandomType randomType = RandomFowarder.RandomType.Unity) =>
+		/// <param name="randomType"> The random type to pass into <see cref="RandomForwarder"/>. </param>
+		public void PlayRandomHoverSound(RandomForwarder.RandomType randomType = RandomForwarder.RandomType.Unity) =>
 			PlaySound(config.GetRandomAudioClip(ButtonSoundConfig.SoundType.Hover, randomType));
 		void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
 		{
@@ -67,8 +67,8 @@
 		/// Plays a one-shot sound using <see cref="pressedSounds"/> using a
 		/// random number generator to randomly select a sound.
 		/// </summary>
-		/// <param name="randomType"> The random type to pass into <see cref="RandomFowarder"/>. </param>
-		public void PlayRandomPressedSound(RandomFowarder.RandomType randomType = RandomFowarder.RandomType.Unity) =>
+		/// <param name="randomType"> The random type to pass into <see cref="RandomForwarder"/>. </param>
+		public void PlayRandomPressedSound(RandomForwarder.RandomType randomType = RandomForwarder.RandomType.Unity) =>
 			PlaySound(config.GetRandomAudioClip(ButtonSoundConfig.SoundType.Pressed, randomType));
 		void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
 		{
@@ -86,8 +86,8 @@
 		/// <summary>
 		/// Selects any sounds located in <see cref="config"/> to play.
 		/// </summary>
-		/// <param name="randomType"> The random value to pass through <see cref="RandomFowarder"/>. </param>
-		public void PlayRandomSound(RandomFowarder.RandomType randomType = RandomFowarder.RandomType.Unity)
+		/// <param name="randomType"> The random value to pass through <see cref="RandomForwarder"/>. </param>
+		public void PlayRandomSound(RandomForwarder.RandomType randomType = RandomForwarder.RandomType.Unity)
 			=> PlaySound(config.GetRandomAudioClip(ButtonSoundConfig.SoundType.Any, randomType));
 		#endregion
 

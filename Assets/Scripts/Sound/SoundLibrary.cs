@@ -172,7 +172,7 @@ namespace B1NARY.Audio.Editor
 					EditorGUILayout.Space();
 					soundLibrary.customAudioClips[i].loop = EditorGUILayout.Toggle(new GUIContent("Loopable", "If the audioclip finishes, it will play again instead of stopping."), soundLibrary.customAudioClips[i].loop);
 					soundLibrary.customAudioClips[i].playOnAwake = EditorGUILayout.Toggle(new GUIContent("Play On Scene Start", "Plays the audioClip on the start of the scene."), soundLibrary.customAudioClips[i].playOnAwake);
-					soundLibrary.customAudioClips[i].randomType = (RandomFowarder.RandomType)EditorGUILayout.EnumPopup(new GUIContent("Random Variance Method", "Use which type of random number generator."), soundLibrary.customAudioClips[i].randomType);
+					soundLibrary.customAudioClips[i].randomType = (RandomForwarder.RandomType)EditorGUILayout.EnumPopup(new GUIContent("Random Variance Method", "Use which type of random number generator."), soundLibrary.customAudioClips[i].randomType);
 					EditorGUILayout.Space();
 					EditorGUILayout.LabelField(new GUIContent("Scene Transitioning"), EditorStyles.boldLabel);
 					EditorGUI.indentLevel++;

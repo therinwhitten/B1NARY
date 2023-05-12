@@ -12,18 +12,18 @@ namespace B1NARY.Editor.Debugger
 		public override void DisplayTab()
 		{
 			showLimitValues = EditorGUILayout.ToggleLeft("Show unsigned 32bit limit count values", showLimitValues);
-			EditorGUILayout.LabelField($"C# Random Iterations: {RandomFowarder.CSharpRandomIterations}");
+			EditorGUILayout.LabelField($"C# Random Iterations: {RandomForwarder.CSharpRandomIterations}");
 			if (showLimitValues)
-				EditorGUI.ProgressBar(BarRect, RandomFowarder.CSharpRandomIterations / uint.MaxValue, $"{RandomFowarder.CSharpRandomIterations}/{uint.MaxValue}");
-			EditorGUILayout.LabelField($"Unity Random Iterations: {RandomFowarder.UnityRandomIterations}");
+				EditorGUI.ProgressBar(BarRect, RandomForwarder.CSharpRandomIterations / uint.MaxValue, $"{RandomForwarder.CSharpRandomIterations}/{uint.MaxValue}");
+			EditorGUILayout.LabelField($"Unity Random Iterations: {RandomForwarder.UnityRandomIterations}");
 			if (showLimitValues)
-				EditorGUI.ProgressBar(BarRect, RandomFowarder.UnityRandomIterations / uint.MaxValue, $"{RandomFowarder.UnityRandomIterations}/{uint.MaxValue}");
-			EditorGUILayout.LabelField($"Doom Random Iterations: {RandomFowarder.DoomRandomIterations}");
+				EditorGUI.ProgressBar(BarRect, RandomForwarder.UnityRandomIterations / uint.MaxValue, $"{RandomForwarder.UnityRandomIterations}/{uint.MaxValue}");
+			EditorGUILayout.LabelField($"Doom Random Iterations: {RandomForwarder.DoomRandomIterations}");
 			if (showLimitValues)
-				EditorGUI.ProgressBar(BarRect, RandomFowarder.DoomRandomIterations / uint.MaxValue, $"{RandomFowarder.DoomRandomIterations}/{uint.MaxValue}");
+				EditorGUI.ProgressBar(BarRect, RandomForwarder.DoomRandomIterations / uint.MaxValue, $"{RandomForwarder.DoomRandomIterations}/{uint.MaxValue}");
 			EditorGUI.indentLevel++;
-			EditorGUILayout.LabelField($"Index: {RandomFowarder.DoomIndex}");
-			EditorGUILayout.LabelField($"Next Value: {RandomFowarder.doomRandomTable[RandomFowarder.DoomIndex]}");
+			EditorGUILayout.LabelField($"Index: {RandomForwarder.DoomIndex}");
+			EditorGUILayout.LabelField($"Next Value: {RandomForwarder.doomRandomTable[RandomForwarder.DoomIndex]}");
 			EditorGUI.indentLevel--;
 		}
 		private Rect BarRect

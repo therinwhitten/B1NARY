@@ -7,7 +7,7 @@
 	[CreateAssetMenu(fileName = "New Dynamic Audio Clip", menuName = "Dynamic Audio Clip")]
 	public class DynamicAudioClip : ScriptableObject
 	{
-		public RandomFowarder.RandomType randomType;
+		public RandomForwarder.RandomType randomType;
 		public AudioClip[] audioClips;
 		public void Play(AudioSource source, float volume = 1f)
 		{

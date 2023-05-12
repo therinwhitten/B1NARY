@@ -45,7 +45,7 @@
 		/// <exception cref="IndexOutOfRangeException">
 		/// If the <see cref="SoundType"/> is not defined in the switch case.
 		/// </exception>
-		public AudioClip GetRandomAudioClip(SoundType soundType, RandomFowarder.RandomType randomType = RandomFowarder.RandomType.Unity)
+		public AudioClip GetRandomAudioClip(SoundType soundType, RandomForwarder.RandomType randomType = RandomForwarder.RandomType.Unity)
 		{
 			AudioClip[] selection;
 			switch (soundType) // This would work perfectly with a switch expression
@@ -62,7 +62,7 @@
 				default:
 					throw new IndexOutOfRangeException();
 			}
-			return selection[RandomFowarder.Next(selection.Length, randomType)];
+			return selection[RandomForwarder.Next(selection.Length, randomType)];
 		}
 	}
 }

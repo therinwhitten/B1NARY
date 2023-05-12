@@ -6,7 +6,7 @@
 	using URandom = UnityEngine.Random;
 
 	/// <summary> The primary class used for randomization. </summary>
-	public static class RandomFowarder
+	public static class RandomForwarder
 	{
 		public static T Random<T>(this T[] values, RandomType type = RandomType.Unity)
 		{

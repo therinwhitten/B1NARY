@@ -9,7 +9,7 @@
 		public TMP_Text title;
 		private void Awake()
 		{
-			if (RandomFowarder.Next(0, 1000) == 0)
+			if (RandomForwarder.Next(0, 1000) == 0)
 				title.text = "B1NARDY";
 		}
 	}

@@ -7,7 +7,7 @@
 	using System.Linq;
 	using UnityEngine;
 	using UnityEngine.UI;
-	using static B1NARY.RandomFowarder;
+	using static B1NARY.RandomForwarder;
 
 	[RequireComponent(typeof(Text))]
 	public class LoadingScreenTips : MonoBehaviour
