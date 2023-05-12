@@ -10,7 +10,7 @@ namespace BrightLib.Animation.Runtime
 {
 	public class PlayAudioClip : StateMachineBehaviour
 	{
-		private static int lastStateIndex = -1;
+		private static int globalFrame = -1;
 
 		public bool useMultiple;
 		public AudioClip clip;
@@ -48,7 +48,6 @@ namespace BrightLib.Animation.Runtime
 		public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 		{
 			Validate(animator, stateInfo);
-			lastStateIndex = stateInfo.fullPathHash;
 			lastUsedAnimator = (animator, layerIndex);
 
 			delayer.Reset();
@@ -66,7 +65,6 @@ namespace BrightLib.Animation.Runtime
 			{
 				frequencyTimer.Update();
 			}
-			lastStateIndex = stateInfo.fullPathHash;
 			lastUsedAnimator = (animator, layerIndex);
 		}
 
@@ -74,7 +72,6 @@ namespace BrightLib.Animation.Runtime
 		{
 			if (condition != PlayCondition.OnExit) return;
 			Execute();
-			lastStateIndex = stateInfo.fullPathHash;
 			lastUsedAnimator = (animator, layerIndex);
 		}
 
@@ -82,7 +79,7 @@ namespace BrightLib.Animation.Runtime
 		{
 			if (!_valid) 
 				return;
-			if (lastStateIndex != lastUsedAnimator.animator.GetCurrentAnimatorStateInfo(lastUsedAnimator.layer).fullPathHash)
+			if (Math.Abs(globalFrame -Time.frameCount) > 5)
 			{
 				_source.Stop();
 				_source.outputAudioMixerGroup = group;
@@ -94,6 +91,7 @@ namespace BrightLib.Animation.Runtime
 				audioStuff = new CoroutineWrapper(SceneManager.Instance, ExecuteLoop()).Start();
 				return;
 			}
+			globalFrame = Time.frameCount;
 			AudioSource subSource = _source.gameObject.AddComponent<AudioSource>();
 			subSource.outputAudioMixerGroup = group;
 			subSource.loop = true;
