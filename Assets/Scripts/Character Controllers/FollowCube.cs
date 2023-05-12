@@ -2,9 +2,10 @@
 {
 	using B1NARY.Scripting;
 	using System;
+	using System.Net.Sockets;
 	using UnityEngine;
 
-	public class FollowCube : MonoBehaviour
+	public class FollowCube : CachedMonobehaviour
 	{
 		public static CommandArray Commands => new CommandArray()
 		{
@@ -57,6 +58,8 @@
 			ChangeToNewCharacter(CharacterManager.Instance.ActiveCharacter);
 		}
 
+		private Vector2 TargetPosition = Vector2.zero;
+		private Vector3 velocity = Vector3.zero;
 		private void ChangeToNewCharacter(Character? nullableCharacter)
 		{
 			if (!EnableAutoFollow || !enabled)
@@ -72,20 +75,20 @@
 
 			Character character = nullableCharacter.Value;
 			if (character.controller is IFollowable followable)
-			{
-				transform.SetParent(followable.FollowCubeParent);
-				transform.localPosition = Vector3.zero;
-			}
+				TargetPosition = followable.FollowCubeParent.position;
 			else
-			{
 				SetDisable();
-			}
 
 			void SetDisable()
 			{
-				transform.SetParent(null);
-				transform.localPosition = Vector3.zero;
+				TargetPosition = Vector2.zero;
 			}
+		}
+		private void Update()
+		{
+			GetComponent<Transform>().position =
+				Vector3.SmoothDamp(GetComponent<Transform>().position,
+				TargetPosition, ref velocity, 0.35f);
 		}
 
 		private void OnDestroy()
