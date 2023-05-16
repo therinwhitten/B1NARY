@@ -1,18 +1,12 @@
-﻿{changeScene: Star Bedroom Night}
-{fadeinsound: Times Square Crowd, 1}
+﻿{changeScene: Knight Test Bed}
 {colorformat: Default}
 {spawnEmpty: Narrator, NPC}
 Narrator::
-Balls
-Hello I am testing out the system. 
-Spawning the Transition blink
-{spawnChar: Transition Eyeblink, .5, Eyeblink}
-Now the Transistion is spawned.
-Attempting to close...
-{anim: Eyeblink, Close}
-Should be closed. You won't see this. 
-Opening..........
-{anim: Eyeblink, Open}
-Should be opening...
-Now to set animation to default. 
-This concludes the test. Star bedroom is the only one requiring it for the demo. 
+Knight, I set up the animations with different audio sources so you can see in the mixer how it works. 
+What I need is this: 
+1. Audio in each animation loop repeats RANDOMLY while still playing. (Repeat on repeats the random one it selected.)
+2. Both Channels need to play at the same time. It always chooses the lowest in the heirchy when playing audio. 
+I expect us to have Speech, body sounds, and another person speaking all playing at the same time. 
+I only added audio to angry, impatient and smug. 
+Scene can be found in Test Scenes Folder
+Good Luck!
