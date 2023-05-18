@@ -1,6 +1,8 @@
 ﻿namespace B1NARY.Audio
 {
+	using MEC;
 	using System;
+	using System.Collections;
 	using System.Collections.Generic;
 	using System.Reflection;
 	using UnityEngine;
@@ -8,9 +10,10 @@
 
 	public class AudioClipPlayer : StateMachineBehaviour
 	{
-		private static readonly List<AudioSource> extraAudioSources = new List<AudioSource>();
+		public static List<AudioState> states = new List<AudioState>();
 		private static AudioSource motherOfAllSources = null;
-		private static int stateName = -1;
+		private static CoroutineHandle handle;
+		private static int lastFrame = -1;
 
 		public AudioClip[] playableClips;
 		public StatePlayType statePlayType;
@@ -25,44 +28,66 @@
 				if (animator.gameObject.TryGetComponent<AudioSource>(out var source))
 					motherOfAllSources = source;
 				else
-					motherOfAllSources = animator.gameObject.AddComponent<AudioSource>();
+					throw new Exception("balls");
 
-			if (stateName != stateInfo.shortNameHash)
+			if (lastFrame != Time.frameCount)
 			{
-				stateName = stateInfo.shortNameHash;
-				for (int i = 0; i < extraAudioSources.Count; i++)
-				{
-					extraAudioSources[i].Stop();
-					Destroy(extraAudioSources[i]);
-				}
-				extraAudioSources.Clear();
+				Debug.Log("Disposing");
+				lastFrame = Time.frameCount;
+				Timing.KillCoroutines(handle);
 				motherOfAllSources.Stop();
-				
-				switch (statePlayType)
-				{
-					case StatePlayType.All:
-						for (int i = 0; i < playableClips.Length; i++)
-							AddNewAudioSource(playableClips[i]);
-						break;
-					case StatePlayType.Random:
-						AddNewAudioSource(playableClips.Random(randomType));
-						break;
-				}
+				states.Clear();
+
+				handle = Timing.RunCoroutine(UpdateCoroutine());
+			}
+			switch (statePlayType)
+			{
+				case StatePlayType.All:
+					for (int i = 0; i < playableClips.Length; i++)
+						states.Add(new AudioState(motherOfAllSources, playableClips[i]));
+					break;
+				case StatePlayType.Random:
+					states.Add(new AudioState(motherOfAllSources, playableClips.Random(randomType)));
+					break;
 			}
 		}
-		
-		private void AddNewAudioSource(AudioClip clip)
+
+		IEnumerator<float> UpdateCoroutine()
 		{
-			if (!motherOfAllSources.isPlaying)
+			while (true)
 			{
-				motherOfAllSources.clip = clip;
-				motherOfAllSources.Play();
+				for (int i = 0; i < states.Count; i++)
+					states[i] = states[i].Update();
+				yield return Timing.WaitForOneFrame;
 			}
-			var source = motherOfAllSources.gameObject.AddComponent<AudioSource>();
-			extraAudioSources.Add(source);
-			Array.ForEach(typeof(AudioSource).GetFields(BindingFlags.NonPublic | BindingFlags.Instance),
-				(field) => field.SetValue(source, field.GetValue(motherOfAllSources)));
-			source.outputAudioMixerGroup = group;
+		}
+
+		public struct AudioState : IDisposable
+		{
+			public AudioClip clip;
+			public AudioSource target;
+			public TimeSpan ticksLeft;
+			public AudioState(AudioSource target, AudioClip clip)
+			{
+				this.clip = clip;
+				this.target = target;
+				ticksLeft = TimeSpan.Zero;
+			}
+
+			public AudioState Update()
+			{
+				ticksLeft -= TimeSpan.FromSeconds(Time.deltaTime);
+				if (ticksLeft < TimeSpan.Zero)
+				{
+					ticksLeft = TimeSpan.FromSeconds(clip.length);
+					target.PlayOneShot(clip);
+				}
+				return this;
+			}
+			public void Dispose()
+			{
+				target.Stop();
+			}
 		}
 	}
 
