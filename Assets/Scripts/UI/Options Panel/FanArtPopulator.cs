@@ -25,16 +25,12 @@
 	{
 		public GameObject Slot;
 		public string subFolder = "Twitch TOS";
-		private PngEncoder encoder = new PngEncoder()
-		{
-			CompressionLevel = PngCompressionLevel.NoCompression,
-		};
-
 		[Space]
 		public UnityEngine.UI.Image beegPanelImage;
 		public TMP_Text textName;
 		public TMP_Text textCredit;
 		public GameObject fanArtPreview;
+		public bool showHentai = false;
 
 		public static List<FileInfo> GetAllImages(string subFolderName)
 		{
@@ -55,29 +51,54 @@
 			return output;
 		}
 
-		private void OnEnable()
+		protected virtual void Start()
 		{
-			StartCoroutine(LOADFUCKINGIMAGESWHYISITSOHARDUNITY());
+			base.Awake();
+			StartCoroutine(ImageLoader());
+			loadingThread = new Thread(() =>
+			{
+				while (!stop)
+				{
+					if (images.Count > 0)
+					{
+						(Action<byte[]> action, FileInfo info) = images.Dequeue();
+						var memoryStream = new MemoryStream();
+						using (FileStream stream = info.OpenRead())
+							stream.CopyTo(memoryStream);
+						action.Invoke(memoryStream.ToArray());
+						memoryStream.Dispose();
+					}
+					else if (others.Count > 0)
+					{
+						others.Dequeue().Invoke();
+					}
+				}
+			});
+			loadingThread.Start();
 		}
-		// God, why the fuck is literally using ANYTHING WITH THREADS 
-		private IEnumerator LOADFUCKINGIMAGESWHYISITSOHARDUNITY()
+		private Thread loadingThread;
+		private bool stop = false;
+		private Queue<(Action<byte[]>, FileInfo)> images = new Queue<(Action<byte[]>, FileInfo)>();
+		private Queue<Action> others = new Queue<Action>();
+
+		// God, why the fuck is literally using ANYTHING WITH THREADS SO FUCKING HARD
+		private IEnumerator ImageLoader()
 		{
 			List<FileInfo> list = GetAllImages(subFolder);
 			for (int i = 0; i < list.Count; i++)
 			{
 				(bool hEnable, string creator, string name) = ParseName(list[i]);
-				bool final = i - 1 == list.Count;
-				if (hEnable && PlayerConfig.Instance.hEnable == false)
+				if (hEnable != showHentai)
 					continue;
 
 				FileInfo imageInfo = list[i];
+				byte[] array = null;
+				images.Enqueue((bytes => array = bytes, imageInfo));
 				// Expensive stuff here
-				Task<MemoryStream> spriteTask = Task.Run(() => LoadImage(imageInfo, i));
-				while (!spriteTask.GetAwaiter().IsCompleted)
+				while (array == null)
 					yield return new WaitForEndOfFrame();
-				Sprite sprite;
-				using (MemoryStream stream = spriteTask.Result)
-					sprite = ImageUtility.CreateDefaultSprite(ImageUtility.LoadImage(stream.ToArray())); 
+				Texture2D texture = ImageUtility.LoadImage(array);
+				Sprite sprite = ImageUtility.CreateDefaultSprite(texture); 
 
 				GameObject obj = AddEntry(Slot);
 				LoadPanelBehaviour loadPanelBehaviour = obj.GetComponent<LoadPanelBehaviour>();
@@ -92,72 +113,8 @@
 					textCredit.text = $"Artist: {creator}";
 					fanArtPreview.SetActive(true);
 				});
-
-
-				async Task<MemoryStream> LoadImage(FileInfo file, int index)
-				{
-					var memoryStream = new MemoryStream();
-					using (Image image = Image.Load(file.FullName))
-						await image.SaveAsPngAsync(memoryStream, encoder);
-					return memoryStream;
-				}
 			}
-		}
-		private void OnDisable()
-		{
-			base.Clear();
-		}
-		Thread imageLoader;
-
-
-		private async Task LoadAllImages()
-		{
-			List<FileInfo> list = GetAllImages(subFolder);
-			List<Task<Sprite>> tasks = new List<Task<Sprite>>(list.Count);
-			for (int i = 0; i < list.Count; i++)
-			{
-				if (!enabled)
-					return;
-				(bool hEnable, string creator, string name) = ParseName(list[i]);
-				if (hEnable && PlayerConfig.Instance.hEnable == false)
-					continue;
-
-				GameObject obj = AddEntry(Slot);
-				LoadPanelBehaviour loadPanelBehaviour = obj.GetComponent<LoadPanelBehaviour>();
-
-				loadPanelBehaviour.tmpText.text = name;
-				FileInfo imageInfo = list[i];
-				// Expensive stuff here
-				Task<Sprite> task = LoadImage(imageInfo, i);
-				tasks.Add(task);
-				
-				
-				loadPanelBehaviour.button.onClick.AddListener(() =>
-				{
-					Debug.Log("Clicked Button!");
-					beegPanelImage.sprite = task.Result;
-					textName.text = $"Title: {name}";
-					textCredit.text = $"Artist: {creator}";
-					fanArtPreview.SetActive(true);
-				});
-
-
-				async Task<Sprite> LoadImage(FileInfo file, int index)
-				{
-					byte[] bytes;
-					using (Image image = await Image.LoadAsync(file.FullName))
-					using (var memoryStream = new MemoryStream())
-					{
-						await image.SaveAsPngAsync(memoryStream, encoder);
-						bytes = memoryStream.ToArray();
-					}
-					Texture2D texture = ImageUtility.LoadImage(bytes);
-					Sprite sprite = ImageUtility.CreateDefaultSprite(texture);
-					loadPanelBehaviour.foregroundImage.sprite = sprite;
-					return sprite;
-				}
-			}
-			await Task.WhenAll(tasks);
+			stop = true;
 		}
 
 		public (bool hEnable, string creator, string name) ParseName(FileInfo file)
