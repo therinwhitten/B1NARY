@@ -12,6 +12,7 @@
 	using SixLabors.ImageSharp;
 	using SixLabors.ImageSharp.Processing;
 	using System.Diagnostics;
+	using SixLabors.ImageSharp.Formats.Jpeg;
 
 	/// <summary>
 	/// A serializable image, typically for <see cref="SerializableSlot"/> to
@@ -106,7 +107,7 @@
 				image.Mutate(x => x.Resize(options));
 				using (var stream = new MemoryStream())
 				{
-					image.SaveAsJpeg(stream);
+					image.SaveAsJpeg(stream, new JpegEncoder() { Quality = 10 });
 					stream.Position = 0;
 					data = stream.ToArray();
 				}
