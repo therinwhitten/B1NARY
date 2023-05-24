@@ -240,7 +240,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1914812156222146158}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -571,7 +571,7 @@ MonoBehaviour:
   m_ScrollSensitivity: 20
   m_Viewport: {fileID: 3692184906836957688}
   m_HorizontalScrollbar: {fileID: 0}
-  m_VerticalScrollbar: {fileID: 0}
+  m_VerticalScrollbar: {fileID: 5837572633245995003}
   m_HorizontalScrollbarVisibility: 0
   m_VerticalScrollbarVisibility: 0
   m_HorizontalScrollbarSpacing: 0
@@ -675,6 +675,7 @@ MonoBehaviour:
   textName: {fileID: 5932597479332064395}
   textCredit: {fileID: 8173458375670095645}
   fanArtPreview: {fileID: 5932597479816957448}
+  showHentai: 0
 --- !u!1 &8813986153920341561
 GameObject:
   m_ObjectHideFlags: 0
@@ -912,6 +913,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Fan Art Preview
+      objectReference: {fileID: 0}
+    - target: {fileID: 6193580509546993376, guid: 54ed68c255ff2f545996f6cbca282301,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6193580509546993377, guid: 54ed68c255ff2f545996f6cbca282301,
         type: 3}
