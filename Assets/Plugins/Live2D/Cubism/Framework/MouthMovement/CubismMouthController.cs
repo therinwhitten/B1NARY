@@ -47,6 +47,7 @@ namespace Live2D.Cubism.Framework.MouthMovement
 		/// An index or tag that specifies which <see cref="CubismMouthParameter"/>s it should be
 		/// assigned to. Defaulted to 0.
 		/// </summary>
+		[field: SerializeField]
 		public int TargetMouth { get; set; } = 0;
 
 

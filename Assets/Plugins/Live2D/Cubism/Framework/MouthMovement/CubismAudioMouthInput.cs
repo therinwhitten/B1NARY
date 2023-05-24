@@ -65,6 +65,8 @@ namespace Live2D.Cubism.Framework.MouthMovement
 		/// Targeted <see cref="CubismMouthController"/>.
 		/// </summary>
 		private CubismMouthController Target { get; set; }
+
+		[field: SerializeField]
 		public int TargetMouth { get; set; } = 0;
 
 
