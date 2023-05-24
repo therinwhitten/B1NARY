@@ -11,6 +11,11 @@ namespace B1NARY.Editor
 	/// </summary>
 	public static class DirtyAuto
 	{
+		/// <summary>
+		/// Sets an object dirty or not.
+		/// </summary>
+		/// <param name="target"> The object to set to dirty. </param>
+		/// <param name="clearDirty"> If it should clear the dirtyness or not uwu </param>
 		public static void SetDirty(this Object target, bool clearDirty = false)
 		{
 			if (clearDirty)
@@ -18,7 +23,6 @@ namespace B1NARY.Editor
 			else
 				EditorUtility.ClearDirty(target);
 		}
-
 		public static bool Toggle(in Object target, in GUIContent content, in bool input)
 		{
 			bool output = EditorGUILayout.Toggle(content, input);

@@ -6,176 +6,230 @@
  */
 
 
+using System.Linq;
 using UnityEngine;
 
 
 namespace Live2D.Cubism.Framework.MouthMovement
 {
-    /// <summary>
-    /// Real-time <see cref="CubismMouthController"/> input from <see cref="AudioSource"/>s.
-    /// </summary>
-    [RequireComponent(typeof(CubismMouthController))]
-    public sealed class CubismAudioMouthInput : MonoBehaviour
-    {
-        /// <summary>
-        /// Audio source to sample.
-        /// </summary>
-        [SerializeField]
-        public AudioSource AudioInput;
+	/// <summary>
+	/// Real-time <see cref="CubismMouthController"/> input from <see cref="AudioSource"/>s.
+	/// </summary>
+	[RequireComponent(typeof(CubismMouthController))]
+	public sealed class CubismAudioMouthInput : MonoBehaviour
+	{
+		/// <summary>
+		/// Audio source to sample.
+		/// </summary>
+		[SerializeField]
+		public AudioSource AudioInput;
 
 
-        /// <summary>
-        /// Sampling quality.
-        /// </summary>
-        [SerializeField]
-        public CubismAudioSamplingQuality SamplingQuality;
+		/// <summary>
+		/// Sampling quality.
+		/// </summary>
+		[SerializeField]
+		public CubismAudioSamplingQuality SamplingQuality;
 
 
-        /// <summary>
-        /// Audio gain.
-        /// </summary>
-        [Range(1.0f, 10.0f)]
-        public float Gain = 1.0f;
+		/// <summary>
+		/// Audio gain.
+		/// </summary>
+		[Range(1.0f, 10.0f)]
+		public float Gain = 1.0f;
 
-        /// <summary>
-        /// Smoothing.
-        /// </summary>
-        [Range(0.0f, 1.0f)]
-        public float Smoothing;
-
-
-        /// <summary>
-        /// Current samples.
-        /// </summary>
-        private float[] Samples { get; set; }
-
-        /// <summary>
-        /// Last root mean square.
-        /// </summary>
-        private float LastRms { get; set; }
-
-        /// <summary>
-        /// Buffer for <see cref="Mathf.SmoothDamp(float, float, ref float, float)"/> velocity.
-        /// </summary>
-        // ReSharper disable once InconsistentNaming
-        private float VelocityBuffer;
-
-        /// <summary>
-        /// Targeted <see cref="CubismMouthController"/>.
-        /// </summary>
-        private CubismMouthController Target { get; set; }
+		/// <summary>
+		/// Smoothing.
+		/// </summary>
+		[Range(0.0f, 1.0f)]
+		public float Smoothing;
 
 
-        /// <summary>
-        /// True if instance is initialized.
-        /// </summary>
-        private bool IsInitialized
-        {
-            get { return Samples != null; }
-        }
+		/// <summary>
+		/// Current samples.
+		/// </summary>
+		private float[] Samples { get; set; }
+
+		/// <summary>
+		/// Last root mean square.
+		/// </summary>
+		private float LastRms { get; set; }
+
+		/// <summary>
+		/// Buffer for <see cref="Mathf.SmoothDamp(float, float, ref float, float)"/> velocity.
+		/// </summary>
+		// ReSharper disable once InconsistentNaming
+		private float VelocityBuffer;
+
+		/// <summary>
+		/// Targeted <see cref="CubismMouthController"/>.
+		/// </summary>
+		private CubismMouthController Target { get; set; }
+		public int TargetMouth { get; set; } = 0;
 
 
-        /// <summary>
-        /// Makes sure instance is initialized.
-        /// </summary>
-        private void TryInitialize()
-        {
-            // Return early if already initialized.
-            if (IsInitialized)
-            {
-                return;
-            }
+		/// <summary>
+		/// True if instance is initialized.
+		/// </summary>
+		private bool IsInitialized
+		{
+			get { return Samples != null; }
+		}
 
 
-            // Initialize samples buffer.
-            switch (SamplingQuality)
-            {
-                case (CubismAudioSamplingQuality.VeryHigh):
-                {
-                        Samples = new float[256];
+		/// <summary>
+		/// Makes sure instance is initialized.
+		/// </summary>
+		private bool TryInitialize()
+		{
+			// Return early if already initialized.
+			if (IsInitialized)
+			{
+				return false;
+			}
 
 
-                        break;
-                    }
-                case (CubismAudioSamplingQuality.Maximum):
-                {
-                    Samples = new float[512];
+			// Initialize samples buffer.
+			switch (SamplingQuality)
+			{
+				default:
+				case (CubismAudioSamplingQuality.VeryHigh):
+				{
+					Samples = new float[256];
 
 
-                    break;
-                }
-                default:
-                {
-                    Samples = new float[256];
+					break;
+				}
+				case (CubismAudioSamplingQuality.Maximum):
+				{
+					Samples = new float[512];
 
 
-                    break;
-                }
-            }
+					break;
+				}
+			}
 
 
-            // Cache target.
-            Target = GetComponent<CubismMouthController>();
-        }
+			// Cache target.
+			if (Target == null)
+				Target = GetComponents<CubismMouthController>().Single(mouth => mouth.TargetMouth == TargetMouth);
+			return true;
+		}
 
-        #region Unity Event Handling
+		#region Unity Event Handling
 
-        /// <summary>
-        /// Samples audio input and applies it to mouth controller.
-        /// </summary>
-        private void Update()
-        {
-            // 'Fail' silently.
-            if (AudioInput == null)
-            {
-                return;
-            }
-
-
-            // Sample audio.
-            var total = 0f;
+		/// <summary>
+		/// Samples audio input and applies it to mouth controller.
+		/// </summary>
+		private void Update()
+		{
+			// 'Fail' silently.
+			if (AudioInput == null)
+			{
+				return;
+			}
 
 
-            AudioInput.GetOutputData(Samples, 0);
+			// Sample audio.
+			float total = 0f;
 
 
-            for (var i = 0; i < Samples.Length; ++i)
-            {
-                var sample = Samples[i];
+			AudioInput.GetOutputData(Samples, 0);
 
 
-                total += (sample * sample);
-            }
+			for (var i = 0; i < Samples.Length; ++i)
+			{
+				var sample = Samples[i];
 
 
-            // Compute root mean square over samples.
-            var rms = Mathf.Sqrt(total / Samples.Length) * Gain;
+				total += (sample * sample);
+			}
 
 
-            // Clamp root mean square.
-            rms = Mathf.Clamp(rms, 0.0f, 1.0f);
+			// Compute root mean square over samples.
+			var rms = Mathf.Sqrt(total / Samples.Length) * Gain;
 
 
-            // Smooth rms.
-            rms = Mathf.SmoothDamp(LastRms, rms, ref VelocityBuffer, Smoothing * 0.1f);
+			// Clamp root mean square.
+			rms = Mathf.Clamp(rms, 0.0f, 1.0f);
 
 
-            // Set rms as mouth opening and store it for next evaluation.
-            Target.MouthOpening = rms;
+			// Smooth rms.
+			rms = Mathf.SmoothDamp(LastRms, rms, ref VelocityBuffer, Smoothing * 0.1f);
 
 
-            LastRms = rms;
-        }
+			// Set rms as mouth opening and store it for next evaluation.
+			Target.MouthOpening = rms;
 
 
-        /// <summary>
-        /// Initializes instance.
-        /// </summary>
-        private void OnEnable()
-        {
-            TryInitialize();
-        }
+			LastRms = rms;
+		}
 
-        #endregion
-    }
+
+		private void Reset()
+		{
+			// Prevent duplicates on component creation.
+			int targetMouth = 0;
+			CubismAudioMouthInput[] allControllers = GetComponents<CubismAudioMouthInput>();
+			for (int i = 0; i < allControllers.Length; i++)
+			{
+				if (ReferenceEquals(this, allControllers[i]))
+					continue;
+				if (allControllers[i].TargetMouth != targetMouth)
+					continue;
+				targetMouth += 1;
+				i = 0;
+			}
+			TargetMouth = targetMouth;
+		}
+
+		/// <summary>
+		/// Initializes instance.
+		/// </summary>
+		private void OnEnable()
+		{
+			TryInitialize();
+		}
+
+		#endregion
+	}
 }
+
+#if UNITY_EDITOR
+namespace Live2D.Cubism.Framework.MouthMovement.Editor
+{
+	using Live2D.Cubism.Framework.Editor;
+	using System;
+	using System.Collections.Generic;
+	using UnityEditor;
+	using UnityEngine.Rendering;
+
+	[CustomEditor(typeof(CubismAudioMouthInput))]
+	public class CubismAudioMouthInputEditor : Editor
+	{
+		public override void OnInspectorGUI()
+		{
+			CubismAudioMouthInput controller = (CubismAudioMouthInput)target;
+
+			controller.AudioInput = DirtyAuto.Field(controller, new GUIContent("Blend Mode"), controller.AudioInput, true);
+			controller.SamplingQuality = DirtyAuto.Popup(controller, new GUIContent("Mouth Opening"), controller.SamplingQuality);
+			controller.Gain = DirtyAuto.Slider(controller, new GUIContent("Gain"), controller.Gain, 1f, 10f);
+			controller.Smoothing = DirtyAuto.Slider(controller, new GUIContent("Smoothing"), controller.Smoothing, 0f, 1f);
+
+			CubismAudioMouthInput[] otherControllers = controller.gameObject.GetComponents<CubismAudioMouthInput>();
+			if (otherControllers.Length > 1)
+			{
+				controller.TargetMouth = DirtyAuto.Field(controller, new GUIContent("Target Mouth"), controller.TargetMouth);
+				for (int i = 0; i < otherControllers.Length; i++)
+					if (!ReferenceEquals(controller, otherControllers[i]) && otherControllers[i].TargetMouth == controller.TargetMouth)
+						EditorGUILayout.HelpBox($"'{controller.TargetMouth}' matches other components of '{nameof(CubismAudioMouthInput)}' and may cause errors!", MessageType.Warning);
+			}
+			else if (controller.TargetMouth != 0)
+			{
+				controller.TargetMouth = 0;
+				controller.SetDirty();
+			}
+		}
+	}
+}
+#endif

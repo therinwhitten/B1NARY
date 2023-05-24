@@ -21,6 +21,7 @@
 	using MEC;
 	using UnityEngine.Rendering;
 
+	[DisallowMultipleComponent]
 	public class FanArtPopulator : AutoPagePopulator
 	{
 		public GameObject Slot;
@@ -30,7 +31,6 @@
 		public TMP_Text textName;
 		public TMP_Text textCredit;
 		public GameObject fanArtPreview;
-		public bool showHentai = false;
 
 		public static List<FileInfo> GetAllImages(string subFolderName)
 		{
@@ -88,7 +88,7 @@
 			for (int i = 0; i < list.Count; i++)
 			{
 				(bool hEnable, string creator, string name) = ParseName(list[i]);
-				if (hEnable != showHentai)
+				if (hEnable && PlayerConfig.Instance.hEnable.Value == false)
 					continue;
 
 				FileInfo imageInfo = list[i];
