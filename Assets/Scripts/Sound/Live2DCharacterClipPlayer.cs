@@ -14,7 +14,25 @@
 	{
 		private static int lastFrame = -1;
 		private static CoroutineWrapper trueLoop;
-		private readonly List<(IEnumerator<bool> span, Live2DCharacterClipPlayer player)> playerStates = new List<(IEnumerator<bool> span, Live2DCharacterClipPlayer player)>();
+		private static readonly List<(IEnumerator<bool> span, Live2DCharacterClipPlayer player)> playerStates = new List<(IEnumerator<bool> span, Live2DCharacterClipPlayer player)>();
+		private static IEnumerator TrueRandom()
+		{
+			while (true)
+			{
+				for (int i = 0; i < playerStates.Count; i++)
+				{
+					playerStates[i].span.MoveNext();
+					bool giveNew = playerStates[i].span.Current;
+					if (giveNew)
+					{
+						IEnumerator<bool> enumerator = playerStates[i].player.PlayNewRandomClip();
+						enumerator.MoveNext();
+						playerStates[i] = (enumerator, playerStates[i].player);
+					}
+				}
+				yield return new WaitForEndOfFrame();
+			}
+		}
 
 		[Tooltip("Playable clips; clips are selected at random but only if there is more than 1 element.")]
 		public AudioClip[] playableClips;
@@ -58,21 +76,6 @@
 			playerStates.Add((clipPlayer, this));
 			if (trueRandom && CoroutineWrapper.IsNotRunningOrNull(trueLoop))
 				trueLoop = new CoroutineWrapper(targetMouth, TrueRandom());
-
-			IEnumerator TrueRandom()
-			{
-				while (true)
-				{
-					for (int i = 0; i < playerStates.Count; i++)
-					{
-						playerStates[i].span.MoveNext();
-						bool giveNew = playerStates[i].span.Current;
-						if (giveNew)
-							playerStates[i] = (playerStates[i].player.PlayNewRandomClip(), playerStates[i].player);
-					}
-					yield return new WaitForEndOfFrame();
-				}
-			}
 		}
 
 		public IEnumerator<bool> PlayNewRandomClip()
@@ -92,6 +95,8 @@
 			}
 			yield return true;
 		}
+
+		
 	}
 }
 #if UNITY_EDITOR
