@@ -108,6 +108,7 @@ namespace B1NARY.Audio.Editor
 		{
 			Live2DCharacterClipPlayer clipPlayer = (Live2DCharacterClipPlayer)target;
 			DirtyAuto.Property(serializedObject, nameof(Live2DCharacterClipPlayer.playableClips));
+			clipPlayer.trueRandom = DirtyAuto.Toggle(clipPlayer, new GUIContent("True Randomization", "Instead of picking a random option at the start and continue moving forward, this will instead will try to select a new random item every time it is finished"), clipPlayer.trueRandom);
 			clipPlayer.randomType = DirtyAuto.Popup(clipPlayer, new GUIContent("Random Type", "Niche controlling option. Allows you to assign which randomization tool you want to apply when using multiple clips"), clipPlayer.randomType);
 			clipPlayer.TargetSpeaker = DirtyAuto.Field(clipPlayer, new GUIContent("Target Speaker (Multiple Mouths)", "An index or tag system to allow multiple mouths to play for a single character. If you have a single mouth, leave this blank."), clipPlayer.TargetSpeaker);
 		}
