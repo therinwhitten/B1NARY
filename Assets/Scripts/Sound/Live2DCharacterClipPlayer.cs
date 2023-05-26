@@ -13,9 +13,12 @@
 	public class Live2DCharacterClipPlayer : StateMachineBehaviour
 	{
 		private static int lastFrame = -1;
-		private Queue<Live2DCharacterClipPlayer> playerStates = new Queue<Live2DCharacterClipPlayer>();
+		private static CoroutineWrapper trueLoop;
+		private readonly List<(IEnumerator<bool> span, Live2DCharacterClipPlayer player)> playerStates = new List<(IEnumerator<bool> span, Live2DCharacterClipPlayer player)>();
 
+		[Tooltip("Playable clips; clips are selected at random but only if there is more than 1 element.")]
 		public AudioClip[] playableClips;
+		public bool trueRandom;
 		public RandomForwarder.RandomType randomType = RandomForwarder.RandomType.CSharp;
 		private CubismAudioMouthInput targetMouth;
 
@@ -45,13 +48,48 @@
 			{
 				Debug.Log("Disposing");
 				lastFrame = Time.frameCount;
-				while (playerStates.Count > 0)
-					playerStates.Dequeue().targetMouth.AudioInput.Stop();
+				for (int i = 0; i < playerStates.Count; i++)
+					playerStates[i].player.targetMouth.AudioInput.Stop();
+				playerStates.Clear();
+				trueLoop?.Stop();
 			}
-			playerStates.Enqueue(this);
+			IEnumerator<bool> clipPlayer = PlayNewRandomClip();
+			clipPlayer.MoveNext(); // start play
+			playerStates.Add((clipPlayer, this));
+			if (trueRandom && CoroutineWrapper.IsNotRunningOrNull(trueLoop))
+				trueLoop = new CoroutineWrapper(targetMouth, TrueRandom());
+
+			IEnumerator TrueRandom()
+			{
+				while (true)
+				{
+					for (int i = 0; i < playerStates.Count; i++)
+					{
+						playerStates[i].span.MoveNext();
+						bool giveNew = playerStates[i].span.Current;
+						if (giveNew)
+							playerStates[i] = (playerStates[i].player.PlayNewRandomClip(), playerStates[i].player);
+					}
+				}
+			}
+		}
+
+		public IEnumerator<bool> PlayNewRandomClip()
+		{
 			targetMouth.AudioInput.Stop();
-			targetMouth.AudioInput.clip = playableClips.Random();
+			AudioClip clip = playableClips.Random();
+			targetMouth.AudioInput.clip = clip;
 			targetMouth.AudioInput.Play();
+			yield return false;
+
+			// Time counter stuff here
+			float delay = clip.length;
+			while (delay > 0f)
+			{
+				delay -= Time.deltaTime;
+				yield return false;
+			}
+			yield return true;
 		}
 	}
 }
