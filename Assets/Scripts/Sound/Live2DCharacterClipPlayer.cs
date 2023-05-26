@@ -70,6 +70,7 @@
 						if (giveNew)
 							playerStates[i] = (playerStates[i].player.PlayNewRandomClip(), playerStates[i].player);
 					}
+					yield return new WaitForEndOfFrame();
 				}
 			}
 		}
