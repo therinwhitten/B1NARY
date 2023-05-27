@@ -31,7 +31,7 @@
 				name = name.Trim();
 				float fadeOut = float.Parse(floatStr);
 				if (Instance.RemoveSound(name, fadeOut))
-					throw new ArgumentOutOfRangeException($"{name} doesn't lead to any sounds and cannot be stopped!" +
+					Debug.LogWarning($"{name} doesn't lead to any sounds and cannot be stopped!" +
 						$"\nStoppable sounds: {string.Join(", ", Instance.ActiveAudio)}");
 			}),
 			["playsound"] = (Action<string>)((name) =>
@@ -43,7 +43,7 @@
 			{
 				name = name.Trim();
 				if (Instance.RemoveSound(name))
-					throw new ArgumentOutOfRangeException($"{name} doesn't lead to any sounds and cannot be stopped!" +
+					Debug.LogWarning($"{name} doesn't lead to any sounds and cannot be stopped!" +
 						$"\nStoppable sounds: {string.Join(", ", Instance.ActiveAudio)}");
 			}),
 		};
