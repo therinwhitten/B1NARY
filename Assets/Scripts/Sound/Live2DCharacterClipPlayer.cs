@@ -37,6 +37,7 @@
 		[Tooltip("Playable clips; clips are selected at random but only if there is more than 1 element.")]
 		public AudioClip[] playableClips;
 		public bool trueRandom;
+		public bool loop = true;
 		public RandomForwarder.RandomType randomType = RandomForwarder.RandomType.CSharp;
 		private CubismAudioMouthInput targetMouth;
 
@@ -74,8 +75,11 @@
 			IEnumerator<bool> clipPlayer = PlayNewRandomClip();
 			clipPlayer.MoveNext(); // start play
 			playerStates.Add((clipPlayer, this));
+			// This will cause all sounds to act if it is truly randomized if enabled,
+			// - but i dont think anyone sensible enough will actually do that.
 			if (trueRandom && CoroutineWrapper.IsNotRunningOrNull(trueLoop))
-				trueLoop = new CoroutineWrapper(targetMouth, TrueRandom());
+				trueLoop = new CoroutineWrapper(targetMouth, TrueRandom()).Start();
+			targetMouth.AudioInput.loop = loop;
 		}
 
 		public IEnumerator<bool> PlayNewRandomClip()
@@ -87,10 +91,10 @@
 			yield return false;
 
 			// Time counter stuff here
-			float delay = clip.length;
-			while (delay > 0f)
+			TimeSpan delay = TimeSpan.FromSeconds(clip.length);
+			while (delay.Ticks > 0)
 			{
-				delay -= Time.deltaTime;
+				delay -= TimeSpan.FromSeconds(Time.deltaTime);
 				yield return false;
 			}
 			yield return true;
@@ -114,6 +118,7 @@ namespace B1NARY.Audio.Editor
 		{
 			Live2DCharacterClipPlayer clipPlayer = (Live2DCharacterClipPlayer)target;
 			DirtyAuto.Property(serializedObject, nameof(Live2DCharacterClipPlayer.playableClips));
+			clipPlayer.loop = DirtyAuto.Toggle(clipPlayer, new GUIContent("Loop"), clipPlayer.loop);
 			clipPlayer.trueRandom = DirtyAuto.Toggle(clipPlayer, new GUIContent("True Randomization", "Instead of picking a random option at the start and continue moving forward, this will instead will try to select a new random item every time it is finished"), clipPlayer.trueRandom);
 			clipPlayer.randomType = DirtyAuto.Popup(clipPlayer, new GUIContent("Random Type", "Niche controlling option. Allows you to assign which randomization tool you want to apply when using multiple clips"), clipPlayer.randomType);
 			clipPlayer.TargetSpeaker = DirtyAuto.Field(clipPlayer, new GUIContent("Target Speaker (Multiple Mouths)", "An index or tag system to allow multiple mouths to play for a single character. If you have a single mouth, leave this blank."), clipPlayer.TargetSpeaker);
