@@ -17,7 +17,7 @@
 		};
 
 		private Dictionary<string, Button> AllButtons = null;
-		private void Awake()
+		private void Start()
 		{
 			if (AllButtons is null)
 				DefineAllButtons();
