@@ -12,6 +12,21 @@
 
 	public class VoiceActorHandler : Multiton<VoiceActorHandler>, IAudioInfo
 	{
+		public static CommandArray Commands = new CommandArray()
+		{
+			["switchvoice"] = ((Action<string>)((intRaw) =>
+			{
+				int mouthIndex = int.Parse(intRaw);
+				IVoice voice = CharacterManager.Instance.ActiveCharacter.Value.controller;
+				voice.CurrentMouth = mouthIndex;
+			})),
+			["switchvoice"] = ((Action<string, string>)((character, intRaw) =>
+			{
+				int mouthIndex = int.Parse(intRaw);
+				IVoice voice = CharacterManager.Instance.CharactersInScene[character].controller;
+				voice.CurrentMouth = mouthIndex;
+			})),
+		};
 		public static string GetResourceVoicePath(int index, ScriptHandler handler)
 			=> $"Voice/{ScriptHandler.DocumentList.ToVisual(handler.document.ReadFile.FullName)}/{index}";
 		public static AudioClip GetVoiceLine(int index, ScriptHandler handler)

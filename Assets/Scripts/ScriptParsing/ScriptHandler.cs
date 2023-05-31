@@ -58,6 +58,7 @@
 					ColorFormat.Commands,
 					FollowCube.Commands,
 					ButtonInvoker.Commands,
+					VoiceActorHandler.Commands,
 				}.SelectMany<CommandArray, OverloadableCommand>(commands => commands));
 		}
 		[ForcePause]
