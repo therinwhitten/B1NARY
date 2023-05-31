@@ -3,7 +3,10 @@
 	using B1NARY.Audio;
 	using B1NARY.Scripting;
 	using B1NARY.UI;
+	using Live2D.Cubism.Framework.MouthMovement;
 	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 	using UnityEditor;
 	using UnityEngine;
 
@@ -42,17 +45,17 @@
 
 		private void Awake()
 		{
-			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
+			voices.Add(gameObject.AddComponent<VoiceActorHandler>());
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
 		}
-		public VoiceActorHandler VoiceData { get; private set; }
 		public string CharacterName { get; set; }
 		string IActor.GameObjectName => gameObject.name;
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.RawLine);
-			VoiceData.Play(line);
+			AudioClip voiceLine = VoiceActorHandler.GetVoiceLine(line.Index, ScriptHandler.Instance);
+			(this as IVoice).PlayClip(voiceLine);
 		}
 
 		float IActor.HorizontalPosition { get => 0f; set { } }
@@ -76,18 +79,40 @@
 			thisInterface.HorizontalPosition = snapshot.horizontalPosition;
 		}
 
+		void IVoice.PlayClip(AudioClip clip, int mouth)
+		{
+			if (mouth <= -1)
+				// No idea why i have to do this but ok
+				mouth = (this as IVoice).CurrentMouth;
+			voices[mouth].Play(clip);
+		}
+
+		void IVoice.Stop()
+		{
+			for (int i = 0; i < voices.Count; i++)
+				voices[i].Stop();
+		}
+		IReadOnlyDictionary<int, VoiceActorHandler> IVoice.Mouths
+		{
+			get
+			{
+				int i = -1;
+				return voices.ToDictionary(item => { i++; return i; });
+			}
+		}
+		private readonly List<VoiceActorHandler> voices = new List<VoiceActorHandler>();
+
 		string IActor.CurrentAnimation
 		{
 			get => string.Empty;
 			set { }
 		}
-
 		string IActor.CurrentExpression
 		{
 			get => string.Empty;
 			set { }
 		}
-		public bool Selected 
+		bool IActor.Selected 
 		{ 
 			get => m_selected; 
 			set 
@@ -99,6 +124,7 @@
 			}
 		}
 
+		int IVoice.CurrentMouth { get; set; } = 0;
 
 		private bool m_selected = false;
 	}

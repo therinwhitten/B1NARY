@@ -4,6 +4,7 @@
 	using B1NARY.UI;
 	using System;
 	using System.Collections;
+	using System.Collections.Generic;
 	using System.Linq;
 	using UnityEngine;
 
@@ -115,6 +116,10 @@
 
 		public Transform FollowCubeParent { get; set; }
 
+		IReadOnlyDictionary<int, VoiceActorHandler> IVoice.Mouths => throw new NotImplementedException();
+		int IVoice.CurrentMouth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+
 		private bool m_selected = false;
 		private CoroutineWrapper SizerSelection;
 
@@ -149,6 +154,16 @@
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
 			thisInterface.HorizontalPosition = snapshot.horizontalPosition;
+		}
+
+		void IVoice.PlayClip(AudioClip clip, int mouth)
+		{
+			throw new NotImplementedException();
+		}
+
+		void IVoice.Stop()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

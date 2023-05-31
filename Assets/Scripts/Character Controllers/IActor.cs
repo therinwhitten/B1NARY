@@ -1,13 +1,13 @@
 ﻿namespace B1NARY.CharacterManagement
 {
 	using B1NARY.Scripting;
+	using System.Collections.Generic;
 	using UnityEngine;
 
-	public interface IActor
+	public interface IActor : IVoice
 	{
 		string CharacterName { get; set; }
 		string GameObjectName { get; }
-		VoiceActorHandler VoiceData { get; }
 		void SayLine(ScriptLine line);
 
 		float HorizontalPosition { get; set; }
@@ -27,5 +27,12 @@
 	public interface IFollowable
 	{
 		Transform FollowCubeParent { get; }
+	}
+	public interface IVoice
+	{
+		IReadOnlyDictionary<int, VoiceActorHandler> Mouths { get; }
+		int CurrentMouth { get; set; }
+		void PlayClip(AudioClip clip, int mouth = -1);
+		void Stop();
 	}
 }

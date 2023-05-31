@@ -23,50 +23,58 @@
 					"could not be retrieved.").ToString());
 			return clip;
 		}
+		public static VoiceActorHandler GetNewActor(AudioSource source)
+		{
+			var output = source.gameObject.AddComponent<VoiceActorHandler>();
+			output.AudioSource = source;
+			return output;
+		}
 		public static bool BlockPreviousSpeakersOnNextLine { get; set; } = true;
 
-		private AudioSource audioSource;
+		public AudioSource AudioSource { get; set; }
 		private AudioClip currentVoiceLine;
 		public bool IsPlaying
 		{
-			get => audioSource != null ? audioSource.isPlaying : false;
+			get => AudioSource != null ? AudioSource.isPlaying : false;
 			set 
 			{
-				if (audioSource != null && audioSource.isPlaying != value)
+				if (AudioSource != null && AudioSource.isPlaying != value)
 					if (value)
-						audioSource.Play();
+						AudioSource.Play();
 					else
-						audioSource.Stop();
+						AudioSource.Stop();
 			}
 		}
 
-		public string ClipName => audioSource != null ? audioSource.clip.name : string.Empty;
+		public string ClipName => AudioSource != null ? AudioSource.clip.name : string.Empty;
 		public float Volume 
 		{ 
-			get => audioSource != null ? audioSource.volume : float.NaN;
-			set { if (audioSource != null) audioSource.volume = value; }
+			get => AudioSource != null ? AudioSource.volume : float.NaN;
+			set { if (AudioSource != null) AudioSource.volume = value; }
 		}
 		float IAudioInfo.Pitch 
 		{ 
-			get => audioSource != null ? audioSource.pitch : float.NaN;
-			set { if (audioSource != null) audioSource.pitch = value; } 
+			get => AudioSource != null ? AudioSource.pitch : float.NaN;
+			set { if (AudioSource != null) AudioSource.pitch = value; } 
 		}
 		bool IAudioInfo.Loop
 		{
-			get => audioSource != null ? audioSource.loop : false;
-			set { if (audioSource != null) audioSource.loop = value; }
+			get => AudioSource != null ? AudioSource.loop : false;
+			set { if (AudioSource != null) AudioSource.loop = value; }
 		}
 		public AudioMixerGroup CurrentGroup
 		{
-			get => audioSource.outputAudioMixerGroup;
-			set => audioSource.outputAudioMixerGroup = value;
+			get => AudioSource.outputAudioMixerGroup;
+			set => AudioSource.outputAudioMixerGroup = value;
 		}
-		public TimeSpan PlayedSeconds => audioSource != null ? TimeSpan.FromSeconds(audioSource.time) : TimeSpan.Zero;
-		public TimeSpan TotalSeconds => audioSource != null ? TimeSpan.FromSeconds(audioSource.clip.length) : TimeSpan.Zero;
+		public TimeSpan PlayedSeconds => AudioSource != null ? TimeSpan.FromSeconds(AudioSource.time) : TimeSpan.Zero;
+		public TimeSpan TotalSeconds => AudioSource != null ? TimeSpan.FromSeconds(AudioSource.clip.length) : TimeSpan.Zero;
 
-		private void Awake()
+		private void OnEnable()
 		{
-			audioSource = GetSource();
+			if (AudioSource != null)
+				return;
+			AudioSource = GetSource();
 
 			AudioSource GetSource()
 			{
@@ -83,18 +91,23 @@
 		}
 		public void Stop()
 		{
-			if (audioSource != null)
-				audioSource.Stop();
+			if (AudioSource != null)
+				AudioSource.Stop();
 		}
 		public void Play(ScriptLine line)
 		{
-			currentVoiceLine = GetVoiceLine(line.Index, ScriptHandler.Instance);
+			Play(GetVoiceLine(line.Index, ScriptHandler.Instance));
+		}
+		public void Play(AudioClip clip)
+		{
+			currentVoiceLine = clip;
 			if (BlockPreviousSpeakersOnNextLine && CharacterManager.HasInstance)
 				using (var enumerator = CharacterManager.Instance.CharactersInScene.Values.GetEnumerator())
 					while (enumerator.MoveNext())
-						enumerator.Current.controller.VoiceData.Stop();
-			audioSource.clip = currentVoiceLine;
-			audioSource.Play();
+						using (var enumerator2 = enumerator.Current.controller.Mouths.GetEnumerator())
+							enumerator2.Current.Value.Stop();
+			AudioSource.clip = currentVoiceLine;
+			AudioSource.Play();
 		}
 	}
 }

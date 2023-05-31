@@ -5,8 +5,10 @@
 	using B1NARY.Scripting;
 	using B1NARY.UI;
 	using Live2D.Cubism.Framework.Expression;
+	using Live2D.Cubism.Framework.MouthMovement;
 	using System;
 	using System.Collections;
+	using System.Collections.Generic;
 	using System.Linq;
 	using UnityEngine;
 
@@ -69,7 +71,6 @@
 			}
 		}
 		private string[] m_expressions;
-		public VoiceActorHandler VoiceData { get; private set; }
 		public float selectedSizeIncreaseMultiplier = 1.1f;
 		public CubismExpressionController expressionController;
 		[field: SerializeField]
@@ -178,6 +179,9 @@
 			}
 		}
 
+		IReadOnlyDictionary<int, VoiceActorHandler> IVoice.Mouths => mouths;
+		private readonly Dictionary<int, VoiceActorHandler> mouths = new Dictionary<int, VoiceActorHandler>();
+		int IVoice.CurrentMouth { get; set; } = 0;
 
 		private bool m_selected = false;
 		private CoroutineWrapper SizerSelection;
@@ -204,7 +208,13 @@
 		protected virtual void Awake()
 		{
 			animator = GetComponent<Animator>();
-			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
+			CubismAudioMouthInput[] voice = GetComponents<CubismAudioMouthInput>();
+			for (int i = 0; i < voice.Length; i++)
+			{
+				VoiceActorHandler targetHandler = gameObject.AddComponent<VoiceActorHandler>();
+				targetHandler.AudioSource = voice[i].AudioInput;
+				mouths.Add(voice[i].TargetMouth, targetHandler);
+			}
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
 		}
@@ -212,7 +222,7 @@
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.RawLine);
-			VoiceData.Play(line);
+			(this as IVoice).PlayClip(VoiceActorHandler.GetVoiceLine(line.Index, ScriptHandler.Instance));
 		}
 
 		ActorSnapshot IActor.Serialize()
@@ -230,6 +240,21 @@
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
 			thisInterface.HorizontalPosition = snapshot.horizontalPosition;
+		}
+
+		void IVoice.PlayClip(AudioClip clip, int mouth)
+		{
+			if (mouth <= -1)
+				// No idea why i have to do this but ok
+				mouth = (this as IVoice).CurrentMouth;
+			mouths[mouth].Play(clip);
+		}
+
+		void IVoice.Stop()
+		{
+			using (var enumerator = mouths.GetEnumerator())
+				while (enumerator.MoveNext())
+					enumerator.Current.Value.Stop();
 		}
 	}
 }

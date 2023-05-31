@@ -99,7 +99,7 @@
 					obj.SetActive(true);
 					choiceButtons[i].Text = enumerator.Current.RawLine;
 					choiceButtons[i].tiedPanel = this;
-					choiceButtons[i].VoiceActor = CharacterManager.Instance.ActiveCharacter.Value.controller.VoiceData;
+					choiceButtons[i].VoiceActor = CharacterManager.Instance.ActiveCharacter.Value.controller.Mouths[0];
 					choiceButtons[i].currentLine = enumerator.Current;
 				}
 		}

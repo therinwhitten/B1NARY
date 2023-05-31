@@ -18,14 +18,14 @@ namespace B1NARY.CharacterManagement.Editor
 		{
 			if (DialogueSystem.HasInstance && CharacterManager.Instance.ActiveCharacter.HasValue)
 				EditorGUILayout.LabelField($"Is current speaker: {CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterName == characterController.CharacterName}");
-			if (characterController.VoiceData != null)
-				AudioControllerEditor.DisplayAudioData(characterController.VoiceData);
+			if (characterController.Mouths != null)
+				AudioControllerEditor.DisplayAudioData(characterController.Mouths[0]);
 		}
 
 		public override bool RequiresConstantRepaint() => 
 			characterController != null 
-			&& characterController.VoiceData != null 
-			? characterController.VoiceData.IsPlaying : false;
+			&& characterController.Mouths != null 
+			? characterController.Mouths[0].IsPlaying : false;
 	}
 }
 #endif

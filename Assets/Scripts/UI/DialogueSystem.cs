@@ -154,7 +154,7 @@
 						yield return new WaitForEndOfFrame();
 						if (!CoroutineWrapper.IsNotRunningOrNull(Instance.speakCoroutine))
 							continue;
-						if (CharacterManager.Instance.CharactersInScene.Values.Any(pair => pair.controller.VoiceData.IsPlaying))
+						if (CharacterManager.Instance.CharactersInScene.Values.Any(pair => pair.controller.Mouths[0].IsPlaying))
 							continue;
 						ScriptHandler.Instance.NextLine();
 					}

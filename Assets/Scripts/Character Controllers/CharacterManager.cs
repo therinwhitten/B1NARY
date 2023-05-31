@@ -46,7 +46,7 @@
 			["spawnempty"] = (Action<string, string>)((characterName, voiceName) =>
 			{
 				Character emptyCharacter = EmptyActor.AddTo(Instance, characterName);
-				emptyCharacter.controller.VoiceData.CurrentGroup =
+				emptyCharacter.controller.Mouths[0].CurrentGroup =
 					Instance.voiceGroup.audioMixer.FindMatchingGroups(voiceName).Single();
 			}),
 			["anim"] = (Action<string, string>)((characterName, animationName) =>

@@ -57,6 +57,7 @@
 					TransitionManager.Commands,
 					ColorFormat.Commands,
 					FollowCube.Commands,
+					ButtonInvoker.Commands,
 				}.SelectMany<CommandArray, OverloadableCommand>(commands => commands));
 		}
 		[ForcePause]
