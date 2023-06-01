@@ -120,7 +120,8 @@
 				using (var enumerator = CharacterManager.Instance.CharactersInScene.Values.GetEnumerator())
 					while (enumerator.MoveNext())
 						using (var enumerator2 = enumerator.Current.controller.Mouths.GetEnumerator())
-							enumerator2.Current.Value.Stop();
+							while (enumerator2.MoveNext())
+								enumerator2.Current.Value.Stop();
 			AudioSource.clip = currentVoiceLine;
 			AudioSource.Play();
 		}
