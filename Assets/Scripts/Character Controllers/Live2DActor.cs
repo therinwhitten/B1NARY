@@ -211,9 +211,15 @@
 			CubismAudioMouthInput[] voice = GetComponents<CubismAudioMouthInput>();
 			for (int i = 0; i < voice.Length; i++)
 			{
-				VoiceActorHandler targetHandler = gameObject.AddComponent<VoiceActorHandler>();
-				targetHandler.AudioSource = voice[i].AudioInput;
+				VoiceActorHandler targetHandler = VoiceActorHandler.GetNewActor(voice[i].AudioInput);
 				mouths.Add(voice[i].TargetMouth, targetHandler);
+			}
+			// Some Live2D characters just straight up doesn't have a mouth, so
+			// - this is a quick fix for that.
+			if (voice.Length <= 0)
+			{
+				VoiceActorHandler targetHandler = gameObject.AddComponent<VoiceActorHandler>();
+				mouths.Add(0, targetHandler);
 			}
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
