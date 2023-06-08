@@ -23,7 +23,7 @@
 			["switchvoice"] = ((Action<string, string>)((character, intRaw) =>
 			{
 				int mouthIndex = int.Parse(intRaw);
-				IVoice voice = CharacterManager.Instance.CharactersInScene[character].controller;
+				IVoice voice = CharacterManager.Instance.GetCharacter(character).controller;
 				voice.CurrentMouth = mouthIndex;
 			})),
 		};

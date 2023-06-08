@@ -51,10 +51,7 @@
 			}),
 			["anim"] = (Action<string, string>)((characterName, animationName) =>
 			{
-				if (Instance.CharactersInScene.TryGetValue(characterName, out Character character))
-					character.controller.CurrentAnimation = animationName;
-				else
-					Debug.LogError($"{characterName} does not exist!", Instance);
+				Instance.GetCharacter(characterName).controller.CurrentAnimation = animationName;
 			}),
 			["anim"] = (Action<string>)((animationName) =>
 			{
@@ -62,10 +59,7 @@
 			}),
 			["movechar"] = (Action<string, string>)((characterName, positionRaw) =>
 			{
-				if (Instance.CharactersInScene.TryGetValue(characterName, out Character character))
-					character.controller.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
-				else
-					Debug.LogError($"{characterName} does not exist!", Instance);
+				Instance.GetCharacter(characterName).controller.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
 			}),
 			["movechar"] = (Action<string>)((positionRaw) =>
 			{
@@ -131,8 +125,13 @@
 		private Character? m_active;
 		public event Action<Character?> ActiveCharacterChanged;
 
-		public IReadOnlyDictionary<string, Character> CharactersInScene
-			=> m_charactersInScene;
+		public IReadOnlyDictionary<string, Character> CharactersInScene => m_charactersInScene;
+		public Character GetCharacter(string name)
+		{
+			if (CharactersInScene.TryGetValue(name, out var output))
+				return output;
+			throw new MissingMemberException($"'{name}' is not a character present in the current game!");
+		}
 		private readonly Dictionary<string, Character> m_charactersInScene = new Dictionary<string, Character>(); 
 
 		public bool ChangeActiveCharacterViaCharacterName(string name)
