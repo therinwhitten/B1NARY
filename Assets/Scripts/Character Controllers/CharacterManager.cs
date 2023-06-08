@@ -28,7 +28,7 @@
 			{
 				Character? character = Instance.SummonCharacter(gameObjectName);
 				if (!character.HasValue)
-					return;
+					throw new Exception($"Failed to spawn character: {gameObjectName}");
 				character.Value.controller.HorizontalPosition = float.Parse(positionRaw);
 				character.Value.ChangeCharacterName(characterName);
 			}),
@@ -36,7 +36,8 @@
 			{
 				Character? character = Instance.SummonCharacter(gameObjectName);
 				if (!character.HasValue)
-					return;
+					throw new Exception($"Failed to spawn character: {gameObjectName}");
+
 				character.Value.controller.HorizontalPosition = float.Parse(positionRaw);
 			}),
 			["spawnempty"] = (Action<string>)(characterName =>
@@ -67,16 +68,11 @@
 			}),
 			["movechar"] = (Action<string, string, string>)((characterName, positionRaw, time) =>
 			{
-				if (Instance.CharactersInScene.TryGetValue(characterName, out Character character))
-				{
-					float timeParsed = float.Parse(time);
-					if (timeParsed == 0f)
-						character.controller.HorizontalPosition = float.Parse(positionRaw);
-					else
-						character.controller.SetPositionOverTime(float.Parse(positionRaw), timeParsed);
-				}
+				float timeParsed = float.Parse(time);
+				if (timeParsed == 0f)
+					Instance.GetCharacter(characterName).controller.HorizontalPosition = float.Parse(positionRaw);
 				else
-					Debug.LogError($"{characterName} does not exist!", Instance);
+					Instance.GetCharacter(characterName).controller.SetPositionOverTime(float.Parse(positionRaw), timeParsed);
 			}),
 			["emptyscene"] = (Action)(() =>
 			{
