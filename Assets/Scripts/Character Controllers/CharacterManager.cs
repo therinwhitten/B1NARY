@@ -26,19 +26,14 @@
 		{
 			["spawnchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
-				Character? character = Instance.SummonCharacter(gameObjectName);
-				if (!character.HasValue)
-					throw new Exception($"Failed to spawn character: {gameObjectName}");
-				character.Value.controller.HorizontalPosition = float.Parse(positionRaw);
-				character.Value.ChangeCharacterName(characterName);
+				Character character = Instance.SummonCharacter(gameObjectName); 
+				character.controller.HorizontalPosition = float.Parse(positionRaw);
+				character.ChangeCharacterName(characterName);
 			}),
 			["spawnchar"] = (Action<string, string>)((gameObjectName, positionRaw) =>
 			{
-				Character? character = Instance.SummonCharacter(gameObjectName);
-				if (!character.HasValue)
-					throw new Exception($"Failed to spawn character: {gameObjectName}");
-
-				character.Value.controller.HorizontalPosition = float.Parse(positionRaw);
+				Character character = Instance.SummonCharacter(gameObjectName);
+				character.controller.HorizontalPosition = float.Parse(positionRaw);
 			}),
 			["spawnempty"] = (Action<string>)(characterName =>
 			{
@@ -105,6 +100,10 @@
 			Transform = GetComponent<Transform>();
 		}
 
+		/// <summary>
+		/// The currently active character. <see langword="null"/> if there is no
+		/// active character.
+		/// </summary>
 		public Character? ActiveCharacter
 		{
 			get => m_active;
@@ -137,21 +136,26 @@
 			ActiveCharacter = character;
 			return true;
 		}
-		public Character? SummonCharacter(string gameObjectName)
+		/// <summary>
+		/// Summons a character from memory via the scene, or the resources folder.
+		/// </summary>
+		/// <param name="gameObjectName"> The gameobject name to summon. </param>
+		/// <returns> The successfully summoned character </returns>
+		/// <exception cref="MissingReferenceException"/>
+		public Character SummonCharacter(string gameObjectName)
 		{
 			Transform charTransform = Transform.Find(gameObjectName);
 			if (charTransform == null)
 			{
+				// Try again and load via resources.
 				GameObject gameObject = Resources.Load<GameObject>(prefabsPath + gameObjectName);
 				if (gameObject == null)
-				{
-					Debug.LogError($"GameObject or Character named '{gameObjectName}'" +
+					throw new MissingReferenceException($"GameObject or Character named '{gameObjectName}'" +
 						" is not found in the scene, and unable to summmon in Resources Folder " +
 						$"'{prefabsPath}{gameObjectName}, most likely missing.");
-					return null;
-				}
 
-				if (AddCharacterToDictionary(Instantiate(gameObject, Transform), out var character))
+				// Found successfully, adding to dictionary.
+				if (AddCharacterToDictionary(Instantiate(gameObject, Transform), out Character character))
 				{
 					Debug.LogWarning($"GameObject or Character named '{gameObjectName}'" +
 						" is not found in the scene, trying to summmon in Resources Folder " +
@@ -160,13 +164,27 @@
 						"'summonchar' to explicitly say to get it from a prefab!");
 					return character;
 				}
+
+				throw new MissingReferenceException($"Gameobject or character named" +
+					$"'{gameObjectName}' does not contain an actor component.");
 			}
+			// Successfully got from transform
 			GameObject childObject = charTransform.gameObject;
 			childObject.SetActive(true);
-			if (AddCharacterToDictionary(childObject, out var character1))
+			if (AddCharacterToDictionary(childObject, out Character character1))
 				return character1;
-			return null;
+			throw new MissingReferenceException($"Gameobject or character named" +
+				$"'{gameObjectName}' does not contain an actor component.");
 		}
+		/// <summary>
+		/// Adds a character to the dictionary.
+		/// </summary>
+		/// <param name="gameObject"> The gameobject or character instance. </param>
+		/// <param name="character"> The character, now registered in the dictionary. </param>
+		/// <returns> 
+		/// If the character has been sucessfully added becuase it contains an
+		/// <see cref="IActor"/> component.
+		/// </returns>
 		public bool AddCharacterToDictionary(GameObject gameObject, out Character character)
 		{
 			MonoBehaviour[] components = gameObject.GetComponents<MonoBehaviour>();
