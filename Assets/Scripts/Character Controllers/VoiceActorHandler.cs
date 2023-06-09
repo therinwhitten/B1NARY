@@ -142,6 +142,7 @@
 						using (var enumerator2 = enumerator.Current.controller.Mouths.GetEnumerator())
 							while (enumerator2.MoveNext())
 								enumerator2.Current.Value.Stop();
+			AudioSource.loop = false;
 			AudioSource.clip = currentVoiceLine;
 			AudioSource.Play();
 		}
