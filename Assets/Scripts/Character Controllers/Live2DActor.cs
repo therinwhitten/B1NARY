@@ -13,6 +13,7 @@
 	using UnityEngine;
 
 	[RequireComponent(typeof(Animator))]
+	[DisallowMultipleComponent]
 	public class Live2DActor : MonoBehaviour, IActor, IFollowable
 	{
 		public const string CHARACTER_KEY = "Live2DCharacter";

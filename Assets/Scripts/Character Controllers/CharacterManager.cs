@@ -165,7 +165,7 @@
 					return character;
 				}
 
-				throw new MissingReferenceException($"Gameobject or character named" +
+				throw new MissingReferenceException($"Gameobject or character named " +
 					$"'{gameObjectName}' does not contain an actor component.");
 			}
 			// Successfully got from transform

@@ -25,7 +25,8 @@ namespace B1NARY.CharacterManagement.Editor
 		public override bool RequiresConstantRepaint() => 
 			characterController != null 
 			&& characterController.Mouths != null 
-			? characterController.Mouths[0].IsPlaying : false;
+			&& characterController.Mouths.Count > 0
+			&& characterController.Mouths[0].IsPlaying;
 	}
 }
 #endif

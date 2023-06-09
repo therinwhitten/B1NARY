@@ -10,6 +10,7 @@
 	using UnityEditor;
 	using UnityEngine;
 
+	[DisallowMultipleComponent]
 	public class EmptyActor : MonoBehaviour, IActor
 	{
 		public const string CHARACTER_KEY = "Empty";

@@ -8,6 +8,7 @@
 	using System.Linq;
 	using UnityEngine;
 
+	[DisallowMultipleComponent]
 	public class StandardActor : CachedMonobehaviour, IActor, IFollowable
 	{
 		public const string CHARACTER_KEY = "StandardCharacter"; 

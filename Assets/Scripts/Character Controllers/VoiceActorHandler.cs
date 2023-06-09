@@ -26,6 +26,26 @@
 				IVoice voice = CharacterManager.Instance.GetCharacter(character).controller;
 				voice.CurrentMouth = mouthIndex;
 			})),
+
+			// Because of H scenes and the technical stuff where you cannot have different
+			// - character names per voice, this is a bit of a hacky solution to appear
+			// - so.
+			["internalchar"] = ((Action<string, string, string>)((characterName, intRawVoice, newName) =>
+			{
+				int mouthIndex = int.Parse(intRawVoice);
+				Character character = CharacterManager.Instance.GetCharacter(characterName);
+				IVoice voice = character.controller;
+				voice.CurrentMouth = mouthIndex;
+				character.ChangeCharacterName(newName);
+			})),
+			["internalchar"] = ((Action<string, string>)((intRawVoice, newName) =>
+			{
+				int mouthIndex = int.Parse(intRawVoice);
+				Character character = CharacterManager.Instance.ActiveCharacter.Value;
+				IVoice voice = character.controller;
+				voice.CurrentMouth = mouthIndex;
+				character.ChangeCharacterName(newName);
+			})),
 		};
 		public static string GetResourceVoicePath(int index, ScriptHandler handler)
 			=> $"Voice/{ScriptHandler.DocumentList.ToVisual(handler.document.ReadFile.FullName)}/{index}";
