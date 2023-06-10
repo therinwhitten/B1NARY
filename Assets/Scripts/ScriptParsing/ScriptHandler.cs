@@ -37,6 +37,8 @@
 						["changescript"] = (Action<string>)(ChangeScript),
 						["changescript"] = (Action<string, string>)(ChangeScript),
 						["usegameobject"] = (Action<string>)(UseGameObject),
+						["usegameobject"] = (Action<string, string>)((gameObjectName, pauseGame) => UseGameObject(gameObjectName, bool.Parse(pauseGame))),
+						["stoponline"] = (Action)(StopOnLine),
 						["setbool"] = (Action<string, string>)((name, value) =>
 						{
 							SaveSlot.ActiveSlot.booleans[name] = bool.Parse(value);
@@ -90,6 +92,23 @@
 				Instance.pauser.Play();
 				Instance.NextLine();
 			}
+		}
+		[ForcePause]
+		internal static void StopOnLine()
+		{
+
+		}
+		internal static void UseGameObject(string objectName, bool pauseGame)
+		{
+			if (pauseGame)
+			{
+				UseGameObject(objectName);
+				return;
+			}
+			GameObject @object = Marker.FindWithMarker(objectName).SingleOrDefault();
+			if (@object == null)
+				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
+			@object.SetActive(true);
 		}
 		public static DirectoryInfo DocumentFolder { get; } = SerializableSlot.StreamingAssets.GetOrCreateSubDirectory("Docs");
 		public static DocumentList AllDocuments { get; } = new DocumentList();
