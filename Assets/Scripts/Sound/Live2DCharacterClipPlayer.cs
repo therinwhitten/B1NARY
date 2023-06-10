@@ -15,6 +15,7 @@
 		private static int lastFrame = -1;
 		private static CoroutineWrapper trueLoop;
 		private static readonly List<(IEnumerator<bool> span, Live2DCharacterClipPlayer player)> playerStates = new List<(IEnumerator<bool> span, Live2DCharacterClipPlayer player)>();
+		private static Queue<AudioSource> extraSources = new Queue<AudioSource>();
 		private static IEnumerator TrueRandom()
 		{
 			while (true)
@@ -39,7 +40,8 @@
 		public bool trueRandom;
 		public bool loop = true;
 		public RandomForwarder.RandomType randomType = RandomForwarder.RandomType.CSharp;
-		private CubismAudioMouthInput targetMouth;
+		private AudioSource targetMouth;
+		public AudioMixerGroup group;
 
 		[Space]
 		public int TargetSpeaker = 0;
@@ -48,19 +50,8 @@
 		{
 			if (targetMouth == null)
 			{
-				CubismAudioMouthInput[] mouths = animator.gameObject.GetComponents<CubismAudioMouthInput>();
-				for (int i = 0; i < mouths.Length; i++)
-				{
-					CubismAudioMouthInput mouth = mouths[i];
-					if (mouth.TargetMouth != TargetSpeaker)
-						continue;
-
-					if (targetMouth != null)
-						throw new ArgumentException($"There is more than 1 mouths that target the tag: '{TargetSpeaker}'!", nameof(TargetSpeaker));
-					targetMouth = mouth;
-				}
-				if (targetMouth == null)
-					throw new ArgumentException($"'{TargetSpeaker}' is not linked to a proper {nameof(CubismAudioMouthInput)}!", nameof(TargetSpeaker));
+				targetMouth = extraSources.Count > 0 ? extraSources.Dequeue() : animator.gameObject.AddComponent<AudioSource>();
+				targetMouth.outputAudioMixerGroup = group;
 			}
 
 			if (lastFrame != Time.frameCount)
@@ -68,7 +59,11 @@
 				Debug.Log("Disposing");
 				lastFrame = Time.frameCount;
 				for (int i = 0; i < playerStates.Count; i++)
-					playerStates[i].player.targetMouth.AudioInput.Stop();
+				{
+					playerStates[i].player.targetMouth.Stop();
+					extraSources.Enqueue(playerStates[i].player.targetMouth);
+					playerStates[i].player.targetMouth = null;
+				}
 				playerStates.Clear();
 				trueLoop?.Stop();
 			}
@@ -78,16 +73,16 @@
 			// This will cause all sounds to act if it is truly randomized if enabled,
 			// - but i dont think anyone sensible enough will actually do that.
 			if (trueRandom && CoroutineWrapper.IsNotRunningOrNull(trueLoop))
-				trueLoop = new CoroutineWrapper(targetMouth, TrueRandom()).Start();
-			targetMouth.AudioInput.loop = loop;
+				trueLoop = new CoroutineWrapper(animator.GetComponent<MonoBehaviour>(), TrueRandom()).Start();
+			targetMouth.loop = loop;
 		}
 
 		public IEnumerator<bool> PlayNewRandomClip()
 		{
-			targetMouth.AudioInput.Stop();
+			targetMouth.Stop();
 			AudioClip clip = playableClips.Random();
-			targetMouth.AudioInput.clip = clip;
-			targetMouth.AudioInput.Play();
+			targetMouth.clip = clip;
+			targetMouth.Play();
 			yield return false;
 
 			// Time counter stuff here
