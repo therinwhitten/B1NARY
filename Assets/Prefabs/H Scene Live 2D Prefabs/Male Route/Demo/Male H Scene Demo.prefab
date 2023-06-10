@@ -21737,6 +21737,7 @@ GameObject:
   - component: {fileID: 7522890302531943051}
   - component: {fileID: 7522890302531943048}
   - component: {fileID: 7522890302531943049}
+  - component: {fileID: -7712412767361541563}
   - component: {fileID: 7522890302531943054}
   - component: {fileID: 7522890302531943055}
   - component: {fileID: 7522890302531943052}
@@ -24097,6 +24098,21 @@ MonoBehaviour:
   Gain: 7.12
   Smoothing: 0.336
   <TargetMouth>k__BackingField: 0
+--- !u!114 &-7712412767361541563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7522890302531943042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a17cf993df9fb848981f506d270195a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedSizeIncreaseMultiplier: 1.1
+  expressionController: {fileID: 0}
+  <FollowCubeParent>k__BackingField: {fileID: 0}
 --- !u!82 &7522890302531943054
 AudioSource:
   m_ObjectHideFlags: 0
@@ -24112,7 +24128,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -24241,7 +24257,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
