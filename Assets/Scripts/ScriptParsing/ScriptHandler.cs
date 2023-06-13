@@ -80,7 +80,7 @@
 		[ForcePause]
 		internal static void UseGameObject(string objectName)
 		{
-			GameObject @object = Marker.FindWithMarker(objectName).SingleOrDefault();
+			GameObject @object = Marker.GetMarkers(objectName).SingleOrDefault().gameObject;
 			if (@object == null)
 				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
 			@object.SetActive(true);
@@ -105,7 +105,7 @@
 				UseGameObject(objectName);
 				return;
 			}
-			GameObject @object = Marker.FindWithMarker(objectName).SingleOrDefault();
+			GameObject @object = Marker.GetMarkers(objectName).SingleOrDefault().gameObject;
 			if (@object == null)
 				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
 			@object.SetActive(true);

@@ -102,7 +102,7 @@
 		{
 			public ChangableValue<float> glow = new ChangableValue<float>(1f);
 			public ChangableValue<int> graphicSettingIndex = new ChangableValue<int>(0);
-			public ChangableValue<int> frameRate = new ChangableValue<int>(69);
+			public ChangableValue<int> frameRate = new ChangableValue<int>(Math.Min(69, Screen.currentResolution.refreshRate));
 			public ChangableValue<string> currentFormat = new ChangableValue<string>(null);
 			public bool HasOverride => !string.IsNullOrEmpty(currentFormat.Value);
 		}

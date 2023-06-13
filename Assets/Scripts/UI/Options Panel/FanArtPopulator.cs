@@ -3,23 +3,14 @@
 	using HideousDestructor.DataPersistence;
 	using System;
 	using System.Collections.Generic;
-	using System.Drawing;
 	using System.IO;
-	using UnityEngine.UI;
 	using UnityEngine;
 	using B1NARY.UI.Saving;
-	using Image = SixLabors.ImageSharp.Image;
-	using SixLabors.ImageSharp;
 	using System.Text;
 	using TMPro;
 	using System.Linq;
-	using System.Threading.Tasks;
 	using System.Collections;
-	using SixLabors.ImageSharp.Processing;
-	using SixLabors.ImageSharp.Formats.Png;
 	using System.Threading;
-	using MEC;
-	using UnityEngine.Rendering;
 
 	[DisallowMultipleComponent]
 	public class FanArtPopulator : AutoPagePopulator
@@ -87,7 +78,7 @@
 			List<FileInfo> list = GetAllImages(subFolder);
 			for (int i = 0; i < list.Count; i++)
 			{
-				(bool hEnable, string creator, string name) = ParseName(list[i]);
+				(bool hEnable, string creator, string name) = FanartInspector.ParseName(list[i].NameWithoutExtension());
 				if (hEnable && PlayerConfig.Instance.hEnable.Value == false)
 					continue;
 
@@ -117,52 +108,6 @@
 			stop = true;
 		}
 
-		public (bool hEnable, string creator, string name) ParseName(FileInfo file)
-		{
-			string fileName = file.NameWithoutExtension();
-			// getting H-enable
-			int hEnableIndex = fileName.LastIndexOf('_');
-			bool hEnabled;
-			if (hEnableIndex != -1)
-			{
-				string hEnableUnparsed = fileName.Substring(hEnableIndex + 1);
-				if (hEnableUnparsed == "!henable")
-					hEnabled = false;
-				else if (hEnableUnparsed == "henable")
-					hEnabled = true;
-				else
-					throw new InvalidCastException();
-				fileName = fileName.Remove(hEnableIndex);
-			}
-			else
-			{ 
-				// Just to be secure
-				hEnabled = true;
-				Debug.LogWarning($"Filename '{fileName}' is found to have no hEnable in the name! Marking as hentai.");
-			}
-
-			// Getting Creator Name and File
-			string[] splitFileName = fileName.Split(' ');
-			HashSet<string> credit = new HashSet<string>() { "by", "credit" };
-
-			string name;
-			string creator = null;
-
-			StringBuilder nameBuilder = new StringBuilder();
-
-			for (int i = splitFileName.Length - 1; i >= 0; i--)
-			{
-				if (credit.Contains(splitFileName[i]) && creator == null)
-				{
-					creator = nameBuilder.Remove(nameBuilder.Length - 1, 1).ToString();
-					nameBuilder = new StringBuilder();
-					continue;
-				}
-				nameBuilder.Insert(0, $"{splitFileName[i]} ");
-			}
-			name = nameBuilder.Remove(nameBuilder.Length - 1, 1).ToString();
-
-			return (hEnabled, creator, name);
-		}
+		
 	}
 }

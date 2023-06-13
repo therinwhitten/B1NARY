@@ -157,15 +157,11 @@
 				if (!CoroutineWrapper.IsNotRunningOrNull(SizerSelection))
 					SizerSelection.Stop();
 				SizerSelection = new CoroutineWrapper(this, SmoothSizeChanger());
-				SizerSelection.AfterActions += (mono) =>
-				{
-					Vector3 totalDiff = currentScale - toScale;
-					transform.localScale += totalDiff;
-				};
+				SizerSelection.AfterActions += (mono) => transform.localScale = toScale;
 				SizerSelection.Start();
 				IEnumerator SmoothSizeChanger()
 				{
-					float acceptablePoint = 0.005f;
+					float acceptablePoint = 0.001f;
 					float velocity = 0f;
 					while (Math.Abs(CurrentScaleMag() - toScaleMag) > acceptablePoint)
 					{
