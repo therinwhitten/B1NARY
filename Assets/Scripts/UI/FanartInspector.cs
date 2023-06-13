@@ -70,6 +70,7 @@
 			authorName.text = creator;
 			fileName.text = name;
 			this.image.sprite = image.sprite;
+			gameObject.SetActive(true);
 		}
 	}
 }
