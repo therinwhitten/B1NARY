@@ -28,7 +28,7 @@
 				throw new NullReferenceException($"Failure to load {snapshot.gameObjectName} from data.");
 			Character character = nullableCharacter.Value;
 			character.ChangeCharacterName(snapshot.name);
-			character.controller.HorizontalPosition = snapshot.horizontalPosition;
+			character.controller.ScreenPosition = snapshot.screenPosition;
 			character.controller.Deserialize(snapshot);
 			return character;
 		}
@@ -154,7 +154,7 @@
 			thisInterface.CharacterName = snapshot.name;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
-			thisInterface.HorizontalPosition = snapshot.horizontalPosition;
+			thisInterface.ScreenPosition = snapshot.screenPosition;
 		}
 
 		void IVoice.PlayClip(AudioClip clip, int mouth)

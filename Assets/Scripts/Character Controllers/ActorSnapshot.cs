@@ -3,6 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using OVSXmlSerializer;
+	using UnityEngine;
 
 	[Serializable]
 	public struct ActorSnapshot
@@ -21,7 +22,7 @@
 		public string gameObjectName;
 		public string expression;
 		public string animation;
-		public float horizontalPosition;
+		public Vector2 screenPosition;
 		public bool selected;
 		[XmlAttribute("type")]
 		public string characterTypeKey;
@@ -32,7 +33,7 @@
 			gameObjectName = controller.GameObjectName;
 			expression = controller.CurrentExpression;
 			animation = controller.CurrentAnimation;
-			horizontalPosition = controller.HorizontalPosition;
+			screenPosition = controller.ScreenPosition;
 			selected = controller.Selected;
 			characterTypeKey = controller.CharacterTypeKey;
 		}
