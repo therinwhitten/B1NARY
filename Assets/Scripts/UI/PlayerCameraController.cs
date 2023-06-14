@@ -67,16 +67,15 @@
 			StartCoroutine(Enum());
 			IEnumerator Enum()
 			{
-				Vector2 original = targetedCameras[0].ScreenToWorldPoint(module.point.action.ReadValue<Vector2>());
+				Vector2 original = module.point.action.ReadValue<Vector2>();
 				while (callbackContext.action.IsPressed())
 				{
-					Vector2 @new = targetedCameras[0].ScreenToWorldPoint(module.point.action.ReadValue<Vector2>());
+					Vector2 @new = module.point.action.ReadValue<Vector2>();
 					Vector2 delta = original - @new;
 					delta *= speedMultiplier;
 					delta /= currentMagnification;
-					original = @new + delta;
+					original = @new;
 					SetOriginPosition((Vector3)delta + transform.position);
-					Debug.Log("sex");
 					yield return new WaitForEndOfFrame();
 				}
 			}
