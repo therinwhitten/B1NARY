@@ -8,6 +8,9 @@
 	using System.Linq;
 	using UnityEngine;
 
+	/// <summary>
+	/// 
+	/// </summary>
 	[DisallowMultipleComponent]
 	public class StandardActor : CachedMonobehaviour, IActor, IFollowable
 	{
@@ -20,7 +23,6 @@
 		{
 			ActorSnapshot.snapshot.Add(CHARACTER_KEY, Create);
 		}
-
 		public static Character Create(ActorSnapshot snapshot)
 		{
 			Character? nullableCharacter = CharacterManager.Instance.SummonCharacter(snapshot.gameObjectName);
@@ -28,7 +30,7 @@
 				throw new NullReferenceException($"Failure to load {snapshot.gameObjectName} from data.");
 			Character character = nullableCharacter.Value;
 			character.ChangeCharacterName(snapshot.name);
-			character.controller.HorizontalPosition = snapshot.horizontalPosition;
+			character.controller.ScreenPosition = snapshot.screenPosition;
 			character.controller.Deserialize(snapshot);
 			return character;
 		}
@@ -38,15 +40,14 @@
 		string IActor.GameObjectName => gameObject.name;
 
 		public Animator animator;
-		public VoiceActorHandler VoiceData { get; private set; }
-
-		public float HorizontalPosition
+		private RectTransform m_transform;
+		public RectTransform Transform
 		{
-			get => GetComponent<RectTransform>().anchorMin.x;
-			set
+			get
 			{
-				GetComponent<RectTransform>().anchorMin = new Vector2(value, GetComponent<RectTransform>().anchorMin.y);
-				GetComponent<RectTransform>().anchorMax = new Vector2(value, GetComponent<RectTransform>().anchorMax.y);
+				if (m_transform == null)
+					m_transform = GetComponent<RectTransform>();
+				return m_transform;
 			}
 		}
 
@@ -117,9 +118,16 @@
 
 		public Transform FollowCubeParent { get; set; }
 
-		IReadOnlyDictionary<int, VoiceActorHandler> IVoice.Mouths => throw new NotImplementedException();
-		int IVoice.CurrentMouth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
+		private CoroutineWrapper PositionChanger;
+		public Vector2 ScreenPosition
+		{
+			get => Transform.anchorMin;
+			set
+			{
+				Transform.anchorMin = value;
+				Transform.anchorMax = value;
+			}
+		}
 
 		private bool m_selected = false;
 		private CoroutineWrapper SizerSelection;
@@ -127,7 +135,13 @@
 
 		protected virtual void Awake()
 		{
-			VoiceData = gameObject.AddComponent<VoiceActorHandler>();
+			animator = GetComponent<Animator>();
+			AudioSource[] voice = GetComponents<AudioSource>();
+			for (int i = 0; i < voice.Length; i++)
+			{
+				VoiceActorHandler targetHandler = VoiceActorHandler.GetNewActor(voice[i]);
+				mouths.Add(i, targetHandler);
+			}
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
 		}
@@ -135,13 +149,9 @@
 		public void SayLine(ScriptLine line)
 		{
 			DialogueSystem.Instance.Say(line.RawLine);
-			VoiceData.Play(line);
+			(this as IVoice).PlayClip(VoiceActorHandler.GetVoiceLine(line.Index, ScriptHandler.Instance));
 		}
 
-		void IActor.SetPositionOverTime(float xCoord, float time)
-		{
-			throw new NotImplementedException();
-		}
 
 		ActorSnapshot IActor.Serialize()
 		{
@@ -154,18 +164,73 @@
 			thisInterface.CharacterName = snapshot.name;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
-			thisInterface.HorizontalPosition = snapshot.horizontalPosition;
+			thisInterface.ScreenPosition = snapshot.screenPosition;
 		}
+
+
+		void IActor.SetPositionOverTime(Vector2 newPosition, float time)
+		{
+			if (!CoroutineWrapper.IsNotRunningOrNull(PositionChanger))
+				PositionChanger.Stop();
+			PositionChanger = new CoroutineWrapper(this, SmoothPosChanger());
+			PositionChanger.AfterActions += (mono) => ScreenPosition = newPosition;
+			PositionChanger.Start();
+			IEnumerator SmoothPosChanger()
+			{
+				float acceptablePoint = 0.005f;
+				Vector2 velocity = Vector2.zero;
+				while (Math.Abs((ScreenPosition - newPosition).magnitude) > acceptablePoint)
+				{
+					ScreenPosition = Vector2.SmoothDamp(ScreenPosition, newPosition, ref velocity, time);
+					yield return new WaitForEndOfFrame();
+				}
+			}
+		}
+		void IActor.SetPositionOverTime(float newXPosition, float time)
+		{
+			if (!CoroutineWrapper.IsNotRunningOrNull(PositionChanger))
+				PositionChanger.Stop();
+			PositionChanger = new CoroutineWrapper(this, SmoothPosChanger());
+			PositionChanger.AfterActions += (mono) => ScreenPosition = new Vector2(newXPosition, ScreenPosition.y);
+			PositionChanger.Start();
+			IEnumerator SmoothPosChanger()
+			{
+				float acceptablePoint = 0.005f;
+				float velocity = 0f;
+				while (Math.Abs(ScreenPosition.x - newXPosition) > acceptablePoint)
+				{
+					ScreenPosition = new Vector2(Mathf.SmoothDamp(ScreenPosition.x, newXPosition, ref velocity, time), ScreenPosition.y);
+					yield return new WaitForEndOfFrame();
+				}
+			}
+		}
+
+
+
+
 
 		void IVoice.PlayClip(AudioClip clip, int mouth)
 		{
-			throw new NotImplementedException();
+			if (mouths.Count <= 0)
+			{
+				VoiceActorHandler targetHandler = gameObject.AddComponent<VoiceActorHandler>();
+				mouths.Add(0, targetHandler);
+			}
+
+			if (mouth <= -1)
+				mouth = (this as IVoice).CurrentMouth;
+			mouths[mouth].Play(clip);
 		}
 
 		void IVoice.Stop()
 		{
-			throw new NotImplementedException();
+			using (var enumerator = mouths.GetEnumerator())
+				while (enumerator.MoveNext())
+					enumerator.Current.Value.Stop();
 		}
+		IReadOnlyDictionary<int, VoiceActorHandler> IVoice.Mouths => mouths;
+		private Dictionary<int, VoiceActorHandler> mouths = new Dictionary<int, VoiceActorHandler>();
+		int IVoice.CurrentMouth { get; set; } = 0;
 	}
 }
 #if UNITY_EDITOR

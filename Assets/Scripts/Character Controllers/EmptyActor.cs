@@ -10,6 +10,10 @@
 	using UnityEditor;
 	using UnityEngine;
 
+	/// <summary>
+	/// A actor that is made in runtime. Doesn't have any textures, but still 
+	/// technically a character with a voice ingame.
+	/// </summary>
 	[DisallowMultipleComponent]
 	public class EmptyActor : MonoBehaviour, IActor
 	{
@@ -59,10 +63,14 @@
 			(this as IVoice).PlayClip(voiceLine);
 		}
 
-		float IActor.HorizontalPosition { get => 0f; set { } }
+		Vector2 IActor.ScreenPosition { get => new Vector2(0.5f, 0.5f); set { } }
 		void IActor.SetPositionOverTime(float xCoord, float time)
 		{
 			
+		}
+		void IActor.SetPositionOverTime(Vector2 newPos, float time)
+		{
+
 		}
 
 		ActorSnapshot IActor.Serialize()
@@ -77,7 +85,7 @@
 			thisInterface.CharacterName = snapshot.name;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
-			thisInterface.HorizontalPosition = snapshot.horizontalPosition;
+			thisInterface.ScreenPosition = snapshot.screenPosition;
 		}
 
 		void IVoice.PlayClip(AudioClip clip, int mouth)
@@ -113,21 +121,9 @@
 			get => string.Empty;
 			set { }
 		}
-		bool IActor.Selected 
-		{ 
-			get => m_selected; 
-			set 
-			{
-				if (m_selected == value)
-					return;
-				m_selected = value;
-
-			}
-		}
+		bool IActor.Selected { get; set; } = false;
 
 		int IVoice.CurrentMouth { get; set; } = 0;
-
-		private bool m_selected = false;
 	}
 }
 

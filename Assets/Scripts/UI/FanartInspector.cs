@@ -17,7 +17,7 @@
 			bool hEnabled;
 			if (hEnableIndex != -1)
 			{
-				string hEnableUnparsed = name.Substring(hEnableIndex + 1);
+				string hEnableUnparsed = name.Substring(hEnableIndex + 1).ToLower();
 				if (hEnableUnparsed == "!henable")
 					hEnabled = false;
 				else if (hEnableUnparsed == "henable")
@@ -35,7 +35,7 @@
 
 			// Getting Creator Name and File
 			string[] splitFileName = name.Split(' ');
-			HashSet<string> credit = new HashSet<string>() { "by", "credit" };
+			HashSet<string> credit = new HashSet<string>() { "by", "By", "credit", "Credit" };
 
 			string outName;
 			string creator = null;
@@ -67,9 +67,9 @@
 		public void InspectImage(Image image)
 		{
 			(_, string creator, string name) = ParseName(image.sprite.name);
-			authorName.text = creator;
-			fileName.text = name;
 			this.image.sprite = image.sprite;
+			fileName.text = $"Title: {name}";
+			authorName.text = $"Artist: {creator}";
 			gameObject.SetActive(true);
 		}
 	}

@@ -18,7 +18,7 @@
 			}),
 			["movecube"] = (Action<string, string>)((x, y) =>
 			{
-				Vector2 localPosition = new Vector2(float.Parse(x), float.Parse(y));
+				Vector3 localPosition = new Vector3(float.Parse(x), float.Parse(y), 0f);
 				FollowCube[] cubes = FindObjectsOfType<FollowCube>();
 				for (int i = 0; i < cubes.Length; i++)
 					cubes[i].transform.localPosition = localPosition;
@@ -33,20 +33,20 @@
 		};
 		public bool EnableAutoFollow
 		{
-			get => enableAutoFollow;
+			get => m_enableAutoFollow;
 			set
 			{
-				if (enableAutoFollow == value)
+				if (m_enableAutoFollow == value)
 					return;
-				enableAutoFollow = value;
-				if (enableAutoFollow)
+				m_enableAutoFollow = value;
+				if (m_enableAutoFollow)
 					ChangeToNewCharacter(CharacterManager.Instance.ActiveCharacter);
 				else
 					ChangeToNewCharacter(null);
 			}
 		}
 		[SerializeField]
-		private bool enableAutoFollow = false;
+		internal bool m_enableAutoFollow = false;
 
 
 		private void Awake()
@@ -58,7 +58,8 @@
 			ChangeToNewCharacter(CharacterManager.Instance.ActiveCharacter);
 		}
 
-		private Vector2 TargetPosition = Vector2.zero;
+		[NonSerialized, HideInInspector]
+		internal Vector2 TargetPosition = Vector2.zero;
 		private Vector3 velocity = Vector3.zero;
 		private void ChangeToNewCharacter(Character? nullableCharacter)
 		{
@@ -86,8 +87,8 @@
 		}
 		private void Update()
 		{
-			GetComponent<Transform>().position =
-				Vector3.SmoothDamp(GetComponent<Transform>().position,
+			Transform transform = GetComponent<Transform>();
+			transform.position = Vector3.SmoothDamp(transform.position,
 				TargetPosition, ref velocity, 0.35f);
 		}
 
@@ -98,3 +99,28 @@
 		}
 	}
 }
+#if UNITY_EDITOR
+namespace B1NARY.CharacterManagement.Editor
+{
+	using B1NARY.Editor;
+	using System;
+	using System.Reflection;
+	using UnityEditor;
+	using UnityEngine;
+
+	[CustomEditor(typeof(FollowCube))]
+	public class FollowCubeEditor : Editor
+	{
+		public override void OnInspectorGUI()
+		{
+			FollowCube cube = (FollowCube)target;
+			bool outFollow = DirtyAuto.Toggle(target, new GUIContent("Auto Follow", "Using the head transforms that are inputted in, it moves the follow cube to the direction."), cube.EnableAutoFollow);
+			if (outFollow != cube.EnableAutoFollow && Application.isPlaying)
+				cube.EnableAutoFollow = outFollow;
+			else
+				cube.m_enableAutoFollow = outFollow;
+			EditorGUILayout.Vector3Field("Target Pos (readonly)", cube.TargetPosition);
+		}
+	}
+}
+#endif

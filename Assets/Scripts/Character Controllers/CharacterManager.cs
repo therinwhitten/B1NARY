@@ -26,14 +26,18 @@
 		{
 			["spawnchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
-				Character character = Instance.SummonCharacter(gameObjectName); 
-				character.controller.HorizontalPosition = float.Parse(positionRaw);
+				Character character = Instance.SummonCharacter(gameObjectName);
+				Vector2 pos = character.controller.ScreenPosition;
+				pos.x = float.Parse(positionRaw);
+				character.controller.ScreenPosition = pos;
 				character.ChangeCharacterName(characterName);
 			}),
 			["spawnchar"] = (Action<string, string>)((gameObjectName, positionRaw) =>
 			{
 				Character character = Instance.SummonCharacter(gameObjectName);
-				character.controller.HorizontalPosition = float.Parse(positionRaw);
+				Vector2 pos = character.controller.ScreenPosition;
+				pos.x = float.Parse(positionRaw);
+				character.controller.ScreenPosition = pos;
 			}),
 			["spawnempty"] = (Action<string>)(characterName =>
 			{
@@ -61,13 +65,10 @@
 			{
 				Instance.ActiveCharacter.Value.controller.SetPositionOverTime(float.Parse(positionRaw), 0.3f);
 			}),
-			["movechar"] = (Action<string, string, string>)((characterName, positionRaw, time) =>
+			["movechar"] = (Action<string, string, string>)((characterName, positionX, positionY) =>
 			{
-				float timeParsed = float.Parse(time);
-				if (timeParsed == 0f)
-					Instance.GetCharacter(characterName).controller.HorizontalPosition = float.Parse(positionRaw);
-				else
-					Instance.GetCharacter(characterName).controller.SetPositionOverTime(float.Parse(positionRaw), timeParsed);
+				Instance.GetCharacter(characterName).controller.SetPositionOverTime(
+					new Vector2(float.Parse(positionX), float.Parse(positionY)), 0.3f);
 			}),
 			["emptyscene"] = (Action)(() =>
 			{

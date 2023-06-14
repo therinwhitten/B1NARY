@@ -10,8 +10,9 @@
 		string GameObjectName { get; }
 		void SayLine(ScriptLine line);
 
-		float HorizontalPosition { get; set; }
+		Vector2 ScreenPosition { get; set; }
 		void SetPositionOverTime(float xCoord, float time);
+		void SetPositionOverTime(Vector2 newPos, float time);
 
 		string CurrentAnimation { get; set; }
 		/// <summary>

@@ -31,19 +31,9 @@
 				throw new NullReferenceException($"Failure to load {snapshot.gameObjectName} from data.");
 			Character character = nullableCharacter.Value;
 			character.ChangeCharacterName(snapshot.name);
-			character.controller.HorizontalPosition = snapshot.horizontalPosition;
+			character.controller.ScreenPosition = snapshot.screenPosition;
 			character.controller.Deserialize(snapshot);
 			return character;
-		}
-		public static string[] ToNameArray(CubismExpressionList list)
-		{
-			var expressions = new string[list.CubismExpressionObjects.Length];
-			for (int i = 0; i < expressions.Length; i++)
-			{
-				string expression = list.CubismExpressionObjects[i].name;
-				expressions[i] = expression.Remove(expression.LastIndexOf('.'));
-			}
-			return expressions;
 		}
 
 		private Animator animator;
@@ -64,7 +54,7 @@
 				if (m_expressions is null)
 				{
 					if (expressionController != null && expressionController.ExpressionsList != null)
-						m_expressions = ToNameArray(expressionController.ExpressionsList);
+						m_expressions = expressionController.ExpressionsList.ToNames();
 					else
 						m_expressions = Array.Empty<string>();
 				}
@@ -122,18 +112,13 @@
 		public string CharacterName { get; set; }
 		string IActor.GameObjectName => gameObject.name;
 
-		public Vector2 Position
+		public Vector2 ScreenPosition
 		{
-			get => Transform.position;
-			set => Transform.position = value;
-		}
-		public float HorizontalPosition
-		{
-			get => Transform.anchorMin.x;
+			get => Transform.anchorMin;
 			set
 			{
-				Transform.anchorMin = new Vector2(value, Transform.anchorMin.y);
-				Transform.anchorMax = new Vector2(value, Transform.anchorMax.y);
+				Transform.anchorMin = value;
+				Transform.anchorMax = value;
 			}
 		}
 		private CoroutineWrapper PositionChanger;
@@ -176,9 +161,24 @@
 			}
 		}
 
+		int IVoice.CurrentMouth { get; set; } = 0;
 		IReadOnlyDictionary<int, VoiceActorHandler> IVoice.Mouths => mouths;
 		private readonly Dictionary<int, VoiceActorHandler> mouths = new Dictionary<int, VoiceActorHandler>();
-		int IVoice.CurrentMouth { get; set; } = 0;
+
+		void IVoice.PlayClip(AudioClip clip, int mouth)
+		{
+			if (mouth <= -1)
+				// No idea why i have to do this but ok
+				mouth = (this as IVoice).CurrentMouth;
+			mouths[mouth].Play(clip);
+		}
+
+		void IVoice.Stop()
+		{
+			using (var enumerator = mouths.GetEnumerator())
+				while (enumerator.MoveNext())
+					enumerator.Current.Value.Stop();
+		}
 
 		private bool m_selected = false;
 		private CoroutineWrapper SizerSelection;
@@ -188,19 +188,38 @@
 			if (!CoroutineWrapper.IsNotRunningOrNull(PositionChanger))
 				PositionChanger.Stop();
 			PositionChanger = new CoroutineWrapper(this, SmoothPosChanger());
-			PositionChanger.AfterActions += (mono) => HorizontalPosition = newXPosition;
+			PositionChanger.AfterActions += (mono) => ScreenPosition = new Vector2(newXPosition, ScreenPosition.y);
 			PositionChanger.Start();
 			IEnumerator SmoothPosChanger()
 			{
 				float acceptablePoint = 0.005f;
 				float velocity = 0f;
-				while (Math.Abs(HorizontalPosition - newXPosition) > acceptablePoint)
+				while (Math.Abs(ScreenPosition.x - newXPosition) > acceptablePoint)
 				{
-					HorizontalPosition = Mathf.SmoothDamp(HorizontalPosition, newXPosition, ref velocity, time);
+					ScreenPosition = new Vector2(Mathf.SmoothDamp(ScreenPosition.x, newXPosition, ref velocity, time), ScreenPosition.y);
 					yield return new WaitForEndOfFrame();
 				}
 			}
 		}
+		public void SetPositionOverTime(Vector2 newPosition, float time)
+		{
+			if (!CoroutineWrapper.IsNotRunningOrNull(PositionChanger))
+				PositionChanger.Stop();
+			PositionChanger = new CoroutineWrapper(this, SmoothPosChanger());
+			PositionChanger.AfterActions += (mono) => ScreenPosition = newPosition;
+			PositionChanger.Start();
+			IEnumerator SmoothPosChanger()
+			{
+				float acceptablePoint = 0.005f;
+				Vector2 velocity = Vector2.zero;
+				while (Math.Abs((ScreenPosition - newPosition).magnitude) > acceptablePoint)
+				{
+					ScreenPosition = Vector2.SmoothDamp(ScreenPosition, newPosition, ref velocity, time);
+					yield return new WaitForEndOfFrame();
+				}
+			}
+		}
+
 
 		protected virtual void Awake()
 		{
@@ -242,22 +261,7 @@
 			thisInterface.CharacterName = snapshot.name;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
-			thisInterface.HorizontalPosition = snapshot.horizontalPosition;
-		}
-
-		void IVoice.PlayClip(AudioClip clip, int mouth)
-		{
-			if (mouth <= -1)
-				// No idea why i have to do this but ok
-				mouth = (this as IVoice).CurrentMouth;
-			mouths[mouth].Play(clip);
-		}
-
-		void IVoice.Stop()
-		{
-			using (var enumerator = mouths.GetEnumerator())
-				while (enumerator.MoveNext())
-					enumerator.Current.Value.Stop();
+			thisInterface.ScreenPosition = snapshot.screenPosition;
 		}
 	}
 }
