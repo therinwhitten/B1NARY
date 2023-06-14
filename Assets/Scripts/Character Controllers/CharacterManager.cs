@@ -204,11 +204,14 @@
 		}
 		public bool RenameCharacter(string oldName, string newName)
 		{
+			bool selectedCharacter = ActiveCharacter.HasValue && ActiveCharacter.Value.controller.CharacterName == oldName;
 			if (!m_charactersInScene.TryGetValue(oldName, out Character character))
 				return false;
 			character.controller.CharacterName = newName;
 			m_charactersInScene.Remove(oldName);
 			m_charactersInScene.Add(newName, character);
+			if (selectedCharacter)
+				ChangeActiveCharacterViaCharacterName(newName);
 			return true;
 		}
 		public bool DisableCharacter(string name)
