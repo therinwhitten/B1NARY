@@ -239,6 +239,13 @@
 			}
 			if (string.IsNullOrEmpty(CharacterName))
 				CharacterName = gameObject.name;
+
+			// Getting vertical and horizontal axis from a range to a point
+			Vector2 anchorMin = Transform.anchorMin;
+			anchorMin.x = (Transform.anchorMin.x + Transform.anchorMax.x) * 0.5f;
+			anchorMin.y = (Transform.anchorMin.y + Transform.anchorMax.y) * 0.5f;
+			Transform.anchorMin = anchorMin;
+			Transform.anchorMax = anchorMin;
 		}
 
 		public void SayLine(ScriptLine line)

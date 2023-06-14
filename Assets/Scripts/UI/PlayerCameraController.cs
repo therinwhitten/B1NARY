@@ -46,12 +46,12 @@
 		{
 			module = FindObjectOfType<InputSystemUIInputModule>();
 			module.scrollWheel.action.performed += OnScrollWheel;
-			module.leftClick.action.performed += OnStartHold;
+			module.rightClick.action.performed += OnStartHold;
 		}
 		private void OnDisable()
 		{
 			module.scrollWheel.action.performed -= OnScrollWheel;
-			module.leftClick.action.performed -= OnStartHold;
+			module.rightClick.action.performed -= OnStartHold;
 		}
 		private void OnScrollWheel(InputAction.CallbackContext callbackContext)
 		{
