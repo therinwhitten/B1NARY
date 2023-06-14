@@ -35,16 +35,6 @@
 			character.controller.Deserialize(snapshot);
 			return character;
 		}
-		public static string[] ToNameArray(CubismExpressionList list)
-		{
-			var expressions = new string[list.CubismExpressionObjects.Length];
-			for (int i = 0; i < expressions.Length; i++)
-			{
-				string expression = list.CubismExpressionObjects[i].name;
-				expressions[i] = expression.Remove(expression.LastIndexOf('.'));
-			}
-			return expressions;
-		}
 
 		private Animator animator;
 		private RectTransform m_transform;
@@ -64,7 +54,7 @@
 				if (m_expressions is null)
 				{
 					if (expressionController != null && expressionController.ExpressionsList != null)
-						m_expressions = ToNameArray(expressionController.ExpressionsList);
+						m_expressions = expressionController.ExpressionsList.ToNames();
 					else
 						m_expressions = Array.Empty<string>();
 				}
@@ -171,9 +161,24 @@
 			}
 		}
 
+		int IVoice.CurrentMouth { get; set; } = 0;
 		IReadOnlyDictionary<int, VoiceActorHandler> IVoice.Mouths => mouths;
 		private readonly Dictionary<int, VoiceActorHandler> mouths = new Dictionary<int, VoiceActorHandler>();
-		int IVoice.CurrentMouth { get; set; } = 0;
+
+		void IVoice.PlayClip(AudioClip clip, int mouth)
+		{
+			if (mouth <= -1)
+				// No idea why i have to do this but ok
+				mouth = (this as IVoice).CurrentMouth;
+			mouths[mouth].Play(clip);
+		}
+
+		void IVoice.Stop()
+		{
+			using (var enumerator = mouths.GetEnumerator())
+				while (enumerator.MoveNext())
+					enumerator.Current.Value.Stop();
+		}
 
 		private bool m_selected = false;
 		private CoroutineWrapper SizerSelection;
@@ -257,21 +262,6 @@
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
 			thisInterface.ScreenPosition = snapshot.screenPosition;
-		}
-
-		void IVoice.PlayClip(AudioClip clip, int mouth)
-		{
-			if (mouth <= -1)
-				// No idea why i have to do this but ok
-				mouth = (this as IVoice).CurrentMouth;
-			mouths[mouth].Play(clip);
-		}
-
-		void IVoice.Stop()
-		{
-			using (var enumerator = mouths.GetEnumerator())
-				while (enumerator.MoveNext())
-					enumerator.Current.Value.Stop();
 		}
 	}
 }

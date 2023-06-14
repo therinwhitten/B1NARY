@@ -67,7 +67,8 @@
 			}),
 			["movechar"] = (Action<string, string, string>)((characterName, positionX, positionY) =>
 			{
-				Instance.GetCharacter(characterName).controller.SetPositionOverTime(float.Parse(positionX), timeParsed);
+				Instance.GetCharacter(characterName).controller.SetPositionOverTime(
+					new Vector2(float.Parse(positionX), float.Parse(positionY)), 0.3f);
 			}),
 			["emptyscene"] = (Action)(() =>
 			{

@@ -17,5 +17,16 @@ namespace Live2D.Cubism.Framework.Expression
         /// </summary>
         [SerializeField]
         public CubismExpressionData[] CubismExpressionObjects;
+#warning Added Values Here!
+        public string[] ToNames()
+        {
+			var expressions = new string[CubismExpressionObjects.Length];
+			for (int i = 0; i < expressions.Length; i++)
+			{
+				string expression = CubismExpressionObjects[i].name;
+				expressions[i] = expression.Remove(expression.LastIndexOf('.'));
+			}
+			return expressions;
+		}
     }
 }
