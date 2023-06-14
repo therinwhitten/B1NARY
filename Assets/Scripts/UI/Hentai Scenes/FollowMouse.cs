@@ -1,6 +1,6 @@
 ﻿namespace B1NARY
 {
-    using System.Collections;
+	using System.Collections;
 	using UnityEngine;
 	using UI;
 	using UnityEngine.InputSystem.UI;
@@ -16,10 +16,10 @@
 			module = FindObjectOfType<InputSystemUIInputModule>();
 		}
 		public void Update()
-        {
-            pos = module.point.action.ReadValue<Vector2>();
+		{
+			pos = module.point.action.ReadValue<Vector2>();
 			pos.z = speed;
 			transform.position = Camera.main.ScreenToWorldPoint(pos);
-        }
+		}
 	}
 }
