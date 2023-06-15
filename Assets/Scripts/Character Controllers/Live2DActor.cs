@@ -287,6 +287,7 @@ namespace B1NARY.CharacterManagement.Editor
 		{
 			Live2DActor controller = (Live2DActor)target;
 			controller.FollowCubeParent = DirtyAuto.Field(controller, new GUIContent("Head Location"), controller.FollowCubeParent, true);
+			controller.selectedSizeIncreaseMultiplier = DirtyAuto.Field(target, new GUIContent("Selected Size Mult."), controller.selectedSizeIncreaseMultiplier);
 			EditorGUILayout.Space();
 			base.OnInspectorGUI();
 		}
