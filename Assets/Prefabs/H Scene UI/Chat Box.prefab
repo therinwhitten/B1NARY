@@ -128,8 +128,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.00000059605, y: 0.000005722}
-  m_SizeDelta: {x: 264.22168, y: 58.61505}
+  m_AnchoredPosition: {x: -0.85, y: 0.000005722}
+  m_SizeDelta: {x: 268.9334, y: 58.61505}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &589092567570336589
 CanvasRenderer:
@@ -158,9 +158,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Asterella
-
-'
+  m_text: Therin (Internal)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
   m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
@@ -188,7 +186,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 32
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -206,7 +204,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -224,7 +222,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0.39160374, w: -7.81441}
+  m_margin: {x: 0, y: 0, z: 0.39160374, w: -5.4585524}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -242,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae52b6b60326dc74c91b618a9f3c0fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showOnlyPlayer: 1
+  showOnlyPlayer: 0
 --- !u!1 &589092567627073118
 GameObject:
   m_ObjectHideFlags: 0
@@ -355,7 +353,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -390,7 +388,6 @@ GameObject:
   - component: {fileID: 589092567728259840}
   - component: {fileID: 589092567728259853}
   - component: {fileID: 589092567728259854}
-  - component: {fileID: 5356859517374203772}
   - component: {fileID: 589092567728259855}
   m_Layer: 5
   m_Name: Chat Box
@@ -456,60 +453,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5356859517374203772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 589092567728259841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Navigation:
-    m_Mode: 3
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 589092567728259854}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 589092568357690184}
-        m_MethodName: NextLine
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &589092567728259855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -543,7 +486,7 @@ GameObject:
   - component: {fileID: 2672068222923887224}
   m_Layer: 5
   m_Name: Chat Box
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -623,7 +566,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TickMultiplier: 1
-  speakerBox: {fileID: 589092567570336590}
+  speakerBox: {fileID: 0}
   textBox: {fileID: 589092567627073116}
 --- !u!114 &2672068222923887224
 MonoBehaviour:
