@@ -100,7 +100,7 @@
 					Instance.CurrentText = string.Empty;
 			}
 		}
-		public TMP_Text speakerBox, textBox;
+		public TMP_Text textBox;
 
 
 		/// <summary>
@@ -244,12 +244,6 @@
 			speakCoroutine = new CoroutineWrapper(this, Speaking(message)).Start();
 		}
 
-		public void Say(string message, string speaker)
-		{
-			CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(speaker);
-			Say(message);
-		}
-
 		/// <summary>
 		/// Stops the speaking coroutine.
 		/// </summary>
@@ -348,7 +342,6 @@ namespace B1NARY.Editor
 		public override void OnInspectorGUI()
 		{
 			//EditorGUILayout.LabelField("Current Font: " + dialogueSystem.CurrentFontAsset.name);
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.speakerBox)));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.textBox)));
 			serializedObject.ApplyModifiedProperties();
 		}
