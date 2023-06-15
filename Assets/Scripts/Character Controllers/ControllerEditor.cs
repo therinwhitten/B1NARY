@@ -18,8 +18,6 @@ namespace B1NARY.CharacterManagement.Editor
 		{
 			if (DialogueSystem.HasInstance && CharacterManager.Instance.ActiveCharacter.HasValue)
 				EditorGUILayout.LabelField($"Is current speaker: {CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterName == characterController.CharacterName}");
-			if (characterController.Mouths != null)
-				AudioControllerEditor.DisplayAudioData(characterController.Mouths[0]);
 		}
 
 		public override bool RequiresConstantRepaint() => 
