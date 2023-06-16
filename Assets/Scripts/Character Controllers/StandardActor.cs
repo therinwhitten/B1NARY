@@ -212,6 +212,10 @@
 			}
 		}
 
+		private void Reset()
+		{
+			animator = GetComponent<Animator>();
+		}
 
 
 

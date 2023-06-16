@@ -7,9 +7,13 @@
 	[RequireComponent(typeof(Selectable))]
 	public class HButtonToggler : MonoBehaviour
 	{
+		public bool totalToggle = false;
 		private void Start()
 		{
-			PlayerConfig.Instance.hEnable.AttachValue(var => GetComponent<Selectable>().interactable = var);
+			if (totalToggle)
+				PlayerConfig.Instance.hEnable.AttachValue(var => gameObject.SetActive(var));
+			else
+				PlayerConfig.Instance.hEnable.AttachValue(var => GetComponent<Selectable>().interactable = var);
 		}
 	}
 }
