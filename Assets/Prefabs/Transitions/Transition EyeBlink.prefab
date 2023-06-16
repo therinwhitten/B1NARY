@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2877083158053008797}
   - component: {fileID: 2877083158053008795}
   - component: {fileID: 2877083158053008794}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: Upper Eyelid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -84,11 +84,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2877083159076676300}
   - component: {fileID: 2877083159076676303}
-  - component: {fileID: 2877083159076676302}
   - component: {fileID: 2877083159076676305}
   - component: {fileID: 2877083159076676301}
   - component: {fileID: 2877083159076676298}
-  m_Layer: 10
+  - component: {fileID: 5519200344023766877}
+  m_Layer: 5
   m_Name: EyeBlink
   m_TagString: Overlays
   m_Icon: {fileID: 0}
@@ -108,7 +108,7 @@ RectTransform:
   m_Children:
   - {fileID: 2877083158053008797}
   - {fileID: 2877083159919233057}
-  m_Father: {fileID: 2877083159415509717}
+  m_Father: {fileID: 5366490548076244055}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -125,40 +125,18 @@ Canvas:
   m_GameObject: {fileID: 2877083159076676304}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
+  m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 1200
+  m_SortingLayerID: -1442113659
+  m_SortingOrder: 1
   m_TargetDisplay: 0
---- !u!114 &2877083159076676302
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2877083159076676304}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_UiScaleMode: 1
-  m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 1
-  m_MatchWidthOrHeight: 0
-  m_PhysicalUnit: 3
-  m_FallbackScreenDPI: 96
-  m_DefaultSpriteDPI: 96
-  m_DynamicPixelsPerUnit: 1
 --- !u!114 &2877083159076676305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +185,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5519200344023766877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2877083159076676304}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16cb8886c8d48aa4cafc3121c58ae52d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 2877083159076676298}
+  selectedSizeIncreaseMultiplier: 1.1
 --- !u!1 &2877083159415509716
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,44 +207,34 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2877083159415509717}
-  - component: {fileID: 8400990554996464318}
-  m_Layer: 10
+  - component: {fileID: 5366490548076244055}
+  m_Layer: 5
   m_Name: Transition EyeBlink
   m_TagString: Overlays
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2877083159415509717
-Transform:
+  m_IsActive: 0
+--- !u!224 &5366490548076244055
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2877083159415509716}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 302.77292, y: -196.27122, z: -84.089745}
-  m_LocalScale: {x: 1.7091774, y: 1.7091774, z: 1.7091774}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2877083159076676300}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8400990554996464318
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2877083159415509716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 16cb8886c8d48aa4cafc3121c58ae52d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 2877083159076676298}
-  selectedSizeIncreaseMultiplier: 1.1
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 302.77292, y: -196.27122}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2877083159919233056
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,7 +246,7 @@ GameObject:
   - component: {fileID: 2877083159919233057}
   - component: {fileID: 2877083159919233055}
   - component: {fileID: 2877083159919233054}
-  m_Layer: 10
+  m_Layer: 5
   m_Name: Lower Eyelid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
