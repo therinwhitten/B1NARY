@@ -9,14 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6137445987224839171}
-  - component: {fileID: 1190439247290869397}
-  - component: {fileID: 3604397530641720776}
-  - component: {fileID: 2236015015404131254}
   - component: {fileID: 8538157108300079367}
   - component: {fileID: 3031554040137984579}
-  m_Layer: 5
+  - component: {fileID: 6912683666706279274}
+  m_Layer: 10
   m_Name: EyeBlink
-  m_TagString: Overlays
+  m_TagString: Live 2D Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -42,56 +40,6 @@ RectTransform:
   m_AnchoredPosition: {x: 856.24084, y: 458.46542}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!223 &1190439247290869397
-Canvas:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6386061685553646819}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_RenderMode: 1
-  m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 1
-  m_ReceivesEvents: 1
-  m_OverrideSorting: 1
-  m_OverridePixelPerfect: 0
-  m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: -1442113659
-  m_SortingOrder: 1
-  m_TargetDisplay: 0
---- !u!114 &3604397530641720776
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6386061685553646819}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!225 &2236015015404131254
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6386061685553646819}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!95 &8538157108300079367
 Animator:
   serializedVersion: 3
@@ -125,6 +73,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8538157108300079367}
   selectedSizeIncreaseMultiplier: 1.1
+--- !u!223 &6912683666706279274
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6386061685553646819}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_SortingLayerID: 1691632499
+  m_SortingOrder: 1
+  m_TargetDisplay: 0
 --- !u!1 &6550721081135422108
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +105,7 @@ GameObject:
   - component: {fileID: 2467465892772737308}
   - component: {fileID: 3458772104023979715}
   - component: {fileID: 5102002714518035513}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Upper Eyelid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -210,7 +179,7 @@ GameObject:
   - component: {fileID: 873127987256349995}
   - component: {fileID: 1340531894664321610}
   - component: {fileID: 1324135971002533966}
-  m_Layer: 5
+  m_Layer: 10
   m_Name: Lower Eyelid
   m_TagString: Untagged
   m_Icon: {fileID: 0}
