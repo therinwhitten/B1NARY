@@ -1,11 +1,12 @@
 ﻿{changeScene: Star Outside Night}
 {colorformat: Default}
 {spawnEmpty: Narrator, NPC}
+{spawnChar: EyeBlink, .5, EyeBlink}
 Narrator::
-Time to test the UwU Panel. 
-FLashing Warning Next line
-{usegameobject: Flashing Warning Panel, true}
-If nothing shows up. 
+Time to test the eyeblinks
+Eyeblinks turn on is next line
+Closing Eyeblink
+{anim: EyeBlink, Close}
 Turning it off.
 {usegameobject: Flashing Lights Complete Panel, true}
 Testing Hentai Warning Panel Next Line
