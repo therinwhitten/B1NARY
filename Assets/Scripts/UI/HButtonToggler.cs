@@ -11,9 +11,9 @@
 		private void Start()
 		{
 			if (totalToggle)
-				PlayerConfig.Instance.hEnable.AttachValue(var => gameObject.SetActive(var));
+				PlayerConfig.Instance.hEnable.AttachValue(var => { if (gameObject != null) gameObject.SetActive(var); });
 			else
-				PlayerConfig.Instance.hEnable.AttachValue(var => GetComponent<Selectable>().interactable = var);
+				PlayerConfig.Instance.hEnable.AttachValue(var => { if (gameObject != null) GetComponent<Selectable>().interactable = var; });
 		}
 	}
 }
