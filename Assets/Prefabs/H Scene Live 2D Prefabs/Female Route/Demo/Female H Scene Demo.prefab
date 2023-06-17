@@ -767,7 +767,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 1
-  Factor: 30
+  Factor: 40
 --- !u!1 &151789648321768663
 GameObject:
   m_ObjectHideFlags: 0
@@ -1347,7 +1347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 128
-  Value: 0
+  Value: 1.2
 --- !u!114 &8435084736635204358
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7196,7 +7196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 129
-  Value: 0
+  Value: -0.6
 --- !u!114 &8832121814519653704
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8352,8 +8352,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Axis: 1
-  Factor: 10
+  Axis: 0
+  Factor: 40
 --- !u!1 &1968335647569260609
 GameObject:
   m_ObjectHideFlags: 0
@@ -9547,8 +9547,6 @@ GameObject:
   - component: {fileID: 5493130452031321543}
   - component: {fileID: 7658519679267993322}
   - component: {fileID: 7117762610408150399}
-  - component: {fileID: 1871423881}
-  - component: {fileID: 6980945012728683437}
   m_Layer: 10
   m_Name: ParamStarBodyP
   m_TagString: Untagged
@@ -9598,34 +9596,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Body Physics
   DisplayName: 
---- !u!114 &1871423881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2193561691359589505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Axis: 0
-  Factor: 10
---- !u!114 &6980945012728683437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2193561691359589505}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Axis: 1
-  Factor: 10
 --- !u!1 &2215176266414553278
 GameObject:
   m_ObjectHideFlags: 0
@@ -11018,7 +10988,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 0
-  Factor: 30
+  Factor: 75
 --- !u!1 &2498915973055504579
 GameObject:
   m_ObjectHideFlags: 0
@@ -12074,7 +12044,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 113
-  Value: 0
+  Value: -4.5
 --- !u!114 &7240078060715556810
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16762,7 +16732,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a17cf993df9fb848981f506d270195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedSizeIncreaseMultiplier: 1.1
+  selectedSizeIncreaseMultiplier: 1
   expressionController: {fileID: 0}
   <FollowCubeParent>k__BackingField: {fileID: 0}
 --- !u!82 &168069053
@@ -16785,7 +16755,7 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -16914,7 +16884,7 @@ AudioSource:
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -20991,6 +20961,7 @@ GameObject:
   - component: {fileID: 1546946822902003617}
   - component: {fileID: 675958020964034872}
   - component: {fileID: 2305628675220722429}
+  - component: {fileID: 1089170500}
   m_Layer: 10
   m_Name: ParamStarFrontArmRotate
   m_TagString: Untagged
@@ -21040,6 +21011,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Front Arm Rotate
   DisplayName: 
+--- !u!114 &1089170500
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4173973027030079637}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 30
 --- !u!1 &4202138523270068370
 GameObject:
   m_ObjectHideFlags: 0
@@ -22747,7 +22732,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 11
-  Value: 0
+  Value: -0.45
 --- !u!114 &8831702327869879507
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22773,6 +22758,7 @@ GameObject:
   - component: {fileID: 435695281788835292}
   - component: {fileID: 9097389783500053327}
   - component: {fileID: 3130174411879437696}
+  - component: {fileID: 861365294}
   m_Layer: 10
   m_Name: ParamStarBackForearmRotate
   m_TagString: Untagged
@@ -22822,6 +22808,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Back Forearm Rotate
   DisplayName: 
+--- !u!114 &861365294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4714866757549232500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 30
 --- !u!1 &4737236642581564888
 GameObject:
   m_ObjectHideFlags: 0
@@ -23071,6 +23071,7 @@ GameObject:
   - component: {fileID: 4326305786781387240}
   - component: {fileID: 5443755133214892845}
   - component: {fileID: 5531262041278374000}
+  - component: {fileID: 1990644744}
   m_Layer: 10
   m_Name: ParamStarFrontHandRotate
   m_TagString: Untagged
@@ -23105,7 +23106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 37
-  Value: 0
+  Value: -5.4
 --- !u!114 &5531262041278374000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23120,6 +23121,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Front Hand Rotate
   DisplayName: 
+--- !u!114 &1990644744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4804134226870050453}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 30
 --- !u!1 &4807662263479661521
 GameObject:
   m_ObjectHideFlags: 0
@@ -23284,7 +23299,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 28
-  Value: 0
+  Value: 0.4
 --- !u!114 &3485577804986740282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24933,7 +24948,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 0
-  Factor: 30
+  Factor: 75
 --- !u!1 &5240968066547265907
 GameObject:
   m_ObjectHideFlags: 0
@@ -25631,7 +25646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _localSortingOrder: 0
-  _color: {r: 0.93948025, g: 0.96146315, b: 0.9811321, a: 1}
+  _color: {r: 1, g: 0.7688679, b: 0.8421584, a: 1}
   _isOverwrittenDrawableMultiplyColors: 0
   _isOverwrittenDrawableScreenColors: 0
   _multiplyColor: {r: 1, g: 1, b: 1, a: 1}
@@ -26067,6 +26082,7 @@ GameObject:
   - component: {fileID: 470311131064626487}
   - component: {fileID: 1830376460277440176}
   - component: {fileID: 9219293017967310135}
+  - component: {fileID: 73744838}
   m_Layer: 10
   m_Name: ParamStarBackHandRotate
   m_TagString: Untagged
@@ -26116,6 +26132,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Back Hand Rotate
   DisplayName: 
+--- !u!114 &73744838
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5536278993267650713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 30
 --- !u!1 &5538686664556068836
 GameObject:
   m_ObjectHideFlags: 0
@@ -26636,7 +26666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 108
-  Value: 0
+  Value: 0.9
 --- !u!114 &7076853604206372620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28099,7 +28129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 1
-  Factor: 30
+  Factor: 40
 --- !u!1 &5983541274787443270
 GameObject:
   m_ObjectHideFlags: 0
@@ -28174,7 +28204,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 0
-  Factor: 30
+  Factor: 75
 --- !u!1 &6008662088513560280
 GameObject:
   m_ObjectHideFlags: 0
@@ -29136,7 +29166,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 97
-  Value: 10
+  Value: 10.38
 --- !u!114 &3755984986787811191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29516,6 +29546,7 @@ GameObject:
   - component: {fileID: 8083518429901202145}
   - component: {fileID: 8133013317859767387}
   - component: {fileID: 690975057122717650}
+  - component: {fileID: 935124911}
   m_Layer: 10
   m_Name: ParamStarBackArmRotate
   m_TagString: Untagged
@@ -29565,6 +29596,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Back Arm Rotate
   DisplayName: 
+--- !u!114 &935124911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6242461651145073733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 30
 --- !u!1 &6251058419586378579
 GameObject:
   m_ObjectHideFlags: 0
@@ -30146,7 +30191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _localSortingOrder: 0
-  _color: {r: 0.82961017, g: 0.9046454, b: 0.9716981, a: 1}
+  _color: {r: 0.8313726, g: 0.9058824, b: 0.9725491, a: 1}
   _isOverwrittenDrawableMultiplyColors: 0
   _isOverwrittenDrawableScreenColors: 0
   _multiplyColor: {r: 1, g: 1, b: 1, a: 1}
@@ -30976,7 +31021,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 106
-  Value: 0
+  Value: 7.2
 --- !u!114 &5151509848491940621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32338,7 +32383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 29
-  Value: 0
+  Value: -0.1
 --- !u!114 &55165955446248896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32956,6 +33001,7 @@ GameObject:
   - component: {fileID: 6033748463140815252}
   - component: {fileID: 560235359887653859}
   - component: {fileID: 7823985510515900469}
+  - component: {fileID: 825717335}
   m_Layer: 10
   m_Name: ParamStarFrontForearmRotate
   m_TagString: Untagged
@@ -33005,6 +33051,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Star Front Forearm Rotate
   DisplayName: 
+--- !u!114 &825717335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6940913862962776851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 30
 --- !u!1 &6963559118304530226
 GameObject:
   m_ObjectHideFlags: 0
@@ -33601,7 +33661,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _localSortingOrder: 0
-  _color: {r: 0.82961017, g: 0.9046454, b: 0.9716981, a: 1}
+  _color: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
   _isOverwrittenDrawableMultiplyColors: 0
   _isOverwrittenDrawableScreenColors: 0
   _multiplyColor: {r: 1, g: 1, b: 1, a: 1}
@@ -35161,6 +35221,7 @@ GameObject:
   - component: {fileID: 2401347620629546413}
   - component: {fileID: 2274811195618248770}
   - component: {fileID: 5240025115180584143}
+  - component: {fileID: 101097017}
   m_Layer: 10
   m_Name: ParamMCHeadYaw
   m_TagString: Untagged
@@ -35195,7 +35256,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 104
-  Value: 0
+  Value: 0.4
 --- !u!114 &5240025115180584143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35210,6 +35271,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: MC Head Yaw
   DisplayName: 
+--- !u!114 &101097017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7398945650784767379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 0
+  Factor: 1
 --- !u!1 &7409209693622098836
 GameObject:
   m_ObjectHideFlags: 0
@@ -35257,7 +35332,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 95
-  Value: 10
+  Value: 9.47
 --- !u!114 &4665151111646872848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36821,7 +36896,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 105
-  Value: 0
+  Value: -14.8
 --- !u!114 &6627712717452721918
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37934,7 +38009,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 109
-  Value: 0
+  Value: 0.3
 --- !u!114 &7546173459051167409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -39785,7 +39860,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 31
-  Value: 0
+  Value: -0.5
 --- !u!114 &4988247392833673262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41818,7 +41893,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unmanagedIndex: 99
-  Value: 0
+  Value: 16
 --- !u!114 &5803967369785886851
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -41846,7 +41921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 0
-  Factor: 10
+  Factor: 40
 --- !u!1 &8988916197306943131
 GameObject:
   m_ObjectHideFlags: 0
@@ -42571,7 +42646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 1
-  Factor: 30
+  Factor: 50
 --- !u!1 &9220059402501863540
 GameObject:
   m_ObjectHideFlags: 0
