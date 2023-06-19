@@ -5525,7 +5525,7 @@ RectTransform:
   m_GameObject: {fileID: 1751119289492434271}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1000, y: 1000, z: 1}
+  m_LocalScale: {x: 1100, y: 1100, z: 1}
   m_Children:
   - {fileID: 1751119290307353898}
   - {fileID: 1751119289433731793}
@@ -5615,7 +5615,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Opacity: 1
-  _lastOpacity: 0
+  _lastOpacity: 1
   _isOverwrittenModelMultiplyColors: 0
   _isOverwrittenModelScreenColors: 0
   _modelMultiplyColor: {r: 0, g: 0, b: 0, a: 0}
@@ -5873,6 +5873,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BlendMode: 1
   MouthOpening: 1
+  <TargetMouth>k__BackingField: 0
 --- !u!114 &1751119289492434279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5889,6 +5890,7 @@ MonoBehaviour:
   SamplingQuality: 2
   Gain: 8.12
   Smoothing: 0.499
+  <TargetMouth>k__BackingField: 0
 --- !u!114 &1751119289492434278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5963,6 +5965,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedSizeIncreaseMultiplier: 1.1
   expressionController: {fileID: 1751119289492434283}
+  <FollowCubeParent>k__BackingField: {fileID: 0}
 --- !u!82 &1751119289492434269
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8265,6 +8268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7198ae67c7f9bd14b86134e395d11f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouthType: 0
 --- !u!1 &1751119290099613063
 GameObject:
   m_ObjectHideFlags: 0
