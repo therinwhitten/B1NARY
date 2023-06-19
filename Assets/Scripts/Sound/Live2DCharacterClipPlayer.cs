@@ -40,7 +40,24 @@
 		public bool trueRandom;
 		public bool loop = true;
 		public RandomForwarder.RandomType randomType = RandomForwarder.RandomType.CSharp;
-		private CubismAudioMouthInput targetMouth;
+		private CubismAudioMouthInput TargetMouth
+		{
+			get
+			{
+				if (TargetMouth == null)
+				{
+					if (extraSources.Count > 0)
+						m_mouth = extraSources.Dequeue();
+					else
+						m_mouth = lastAnimator.GetComponents<CubismAudioMouthInput>().First(input => input.TargetMouth == TargetSpeaker);
+					TargetMouth.AudioInput.outputAudioMixerGroup = group;
+				}
+				return m_mouth;
+			}
+			set => m_mouth = value;
+		}
+		private CubismAudioMouthInput m_mouth;
+		private Animator lastAnimator;
 		public AudioMixerGroup group;
 
 		[Space]
@@ -48,14 +65,8 @@
 
 		public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
 		{
-			if (targetMouth == null)
-			{
-				if (extraSources.Count > 0)
-					targetMouth = extraSources.Dequeue();
-				else
-					targetMouth = animator.GetComponents<CubismAudioMouthInput>().First(input => input.TargetMouth == TargetSpeaker);
-				targetMouth.AudioInput.outputAudioMixerGroup = group;
-			}
+			lastAnimator = animator;
+			
 
 			if (lastFrame != Time.frameCount)
 			{
@@ -63,9 +74,9 @@
 				lastFrame = Time.frameCount;
 				for (int i = 0; i < playerStates.Count; i++)
 				{
-					playerStates[i].player.targetMouth.AudioInput.Stop();
-					extraSources.Enqueue(playerStates[i].player.targetMouth);
-					playerStates[i].player.targetMouth = null;
+					playerStates[i].player.TargetMouth.AudioInput.Stop();
+					extraSources.Enqueue(playerStates[i].player.TargetMouth);
+					playerStates[i].player.TargetMouth = null;
 				}
 				playerStates.Clear();
 				trueLoop?.Stop();
@@ -77,15 +88,17 @@
 			// - but i dont think anyone sensible enough will actually do that.
 			if (trueRandom && CoroutineWrapper.IsNotRunningOrNull(trueLoop))
 				trueLoop = new CoroutineWrapper(animator.GetComponent<MonoBehaviour>(), TrueRandom()).Start();
-			targetMouth.AudioInput.loop = loop;
+			TargetMouth.AudioInput.loop = loop;
+			if (group != null)
+				TargetMouth.AudioInput.outputAudioMixerGroup = group;
 		}
 
 		public IEnumerator<bool> PlayNewRandomClip()
 		{
-			targetMouth.AudioInput.Stop();
+			TargetMouth.AudioInput.Stop();
 			AudioClip clip = playableClips.Random();
-			targetMouth.AudioInput.clip = clip;
-			targetMouth.AudioInput.Play();
+			TargetMouth.AudioInput.clip = clip;
+			TargetMouth.AudioInput.Play();
 			yield return false;
 
 			// Time counter stuff here

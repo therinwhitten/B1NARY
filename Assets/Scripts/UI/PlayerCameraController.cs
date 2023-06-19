@@ -55,6 +55,8 @@
 		}
 		private void OnScrollWheel(InputAction.CallbackContext callbackContext)
 		{
+			if (!module.rightClick.action.IsPressed())
+				return;
 			float deltaScroll = callbackContext.ReadValue<Vector2>().y > 0f ? 1f : -1f;
 			currentMagnification = Mathf.Clamp(currentMagnification + deltaScroll, 1f, maxZoomMagnification);
 			for (int i = 0; i < targetedCameras.Length; i++)

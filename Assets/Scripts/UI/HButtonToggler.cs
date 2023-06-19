@@ -7,13 +7,13 @@
 	[RequireComponent(typeof(Selectable))]
 	public class HButtonToggler : MonoBehaviour
 	{
-		private static void FuckYouUnity1(HButtonToggler toggler, bool setting)
+		private static void DisableObject(HButtonToggler toggler, bool setting)
 		{
 			if (toggler == null)
 				return;
 			toggler.gameObject.SetActive(setting);
 		}
-		private static void FuckYouUnity2(HButtonToggler toggler, bool setting)
+		private static void DisableBootun(HButtonToggler toggler, bool setting)
 		{
 			if (toggler == null)
 				return;
@@ -24,9 +24,9 @@
 		private void Start()
 		{
 			if (totalToggle)
-				PlayerConfig.Instance.hEnable.AttachValue(var => FuckYouUnity1(this, var));
+				PlayerConfig.Instance.hEnable.AttachValue(var => DisableObject(this, var));
 			else
-				PlayerConfig.Instance.hEnable.AttachValue(var => FuckYouUnity2(this, var));
+				PlayerConfig.Instance.hEnable.AttachValue(var => DisableBootun(this, var));
 		}
 	}
 }
