@@ -50,7 +50,6 @@
 						m_mouth = extraSources.Dequeue();
 					else
 						m_mouth = lastAnimator.GetComponents<CubismAudioMouthInput>().First(input => input.TargetMouth == TargetSpeaker);
-					m_mouth.AudioInput.outputAudioMixerGroup = group;
 				}
 				return m_mouth;
 			}
@@ -58,7 +57,6 @@
 		}
 		private CubismAudioMouthInput m_mouth;
 		private Animator lastAnimator;
-		public AudioMixerGroup group;
 
 		[Space]
 		public int TargetSpeaker = 0;
@@ -89,8 +87,6 @@
 			if (trueRandom && CoroutineWrapper.IsNotRunningOrNull(trueLoop))
 				trueLoop = new CoroutineWrapper(animator.GetComponent<MonoBehaviour>(), TrueRandom()).Start();
 			TargetMouth.AudioInput.loop = loop;
-			if (group != null)
-				TargetMouth.AudioInput.outputAudioMixerGroup = group;
 		}
 
 		public IEnumerator<bool> PlayNewRandomClip()
