@@ -44,13 +44,13 @@
 		{
 			get
 			{
-				if (TargetMouth == null)
+				if (m_mouth == null)
 				{
 					if (extraSources.Count > 0)
 						m_mouth = extraSources.Dequeue();
 					else
 						m_mouth = lastAnimator.GetComponents<CubismAudioMouthInput>().First(input => input.TargetMouth == TargetSpeaker);
-					TargetMouth.AudioInput.outputAudioMixerGroup = group;
+					m_mouth.AudioInput.outputAudioMixerGroup = group;
 				}
 				return m_mouth;
 			}
