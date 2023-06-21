@@ -5,6 +5,7 @@
 	using System.Net.Sockets;
 	using UnityEngine;
 
+	[RequireComponent(typeof(RectTransform))]
 	public class FollowCube : CachedMonobehaviour
 	{
 		public static CommandArray Commands => new CommandArray()
@@ -18,10 +19,13 @@
 			}),
 			["movecube"] = (Action<string, string>)((x, y) =>
 			{
-				Vector3 localPosition = new Vector3(float.Parse(x), float.Parse(y), 0f);
+				Vector2 localPosition = new Vector2(float.Parse(x), float.Parse(y));
 				FollowCube[] cubes = FindObjectsOfType<FollowCube>();
 				for (int i = 0; i < cubes.Length; i++)
-					cubes[i].transform.localPosition = localPosition;
+				{
+					cubes[i].m_rectTransform.anchorMax = localPosition;
+					cubes[i].m_rectTransform.anchorMin = localPosition;
+				}
 			}),
 			["toggleautocube"] = (Action<string>)((booleanRaw) => 
 			{
@@ -47,11 +51,13 @@
 		}
 		[SerializeField]
 		internal bool m_enableAutoFollow = false;
+		internal RectTransform m_rectTransform;
 
 
 		private void Awake()
 		{
 			CharacterManager.Instance.ActiveCharacterChanged += ChangeToNewCharacter;
+			m_rectTransform = GetComponent<RectTransform>();
 		}
 		private void OnEnable()
 		{
