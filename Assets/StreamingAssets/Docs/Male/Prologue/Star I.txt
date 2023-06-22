@@ -5,7 +5,8 @@
 {fadeinsound: Wind Heavy, 1}
 {fadeoutsound: Ears Ringing, 15}
 {spawnChar: szycrotic default, 2, Masked Punk}
-{anim: Masked Punk, idle} 
+{spawnChar: Look Target Object (Scenes UI), .5, Tracker}
+{moveChar: Tracker, .5, .2}
 {spawnEmpty: MC, Player}
 {spawnEmpty: Narrator, NPC}
 Narrator::
@@ -112,6 +113,7 @@ and get beat down.
 I need to show I'm not a threat. 
 <i>Not hard to do.</i>  
 So, the only thing I can do is offer my hand.
+{moveChar: Tracker, .5, 0}
 Stay calm MC. 
 "I was teleported here. I didn't mean to encroach on your property."
 Masked Punk::
@@ -120,6 +122,7 @@ MC::
 He looks at my hand, pausing, as if waiting for something.
 It feels like a couple of seconds before his mask lights up in annoyance.
 Masked Punk::
+{moveChar: Tracker, .5, .5}
 [Angry]
 "Encroach? What the fuck?" 
 "What does that even mean?"
@@ -135,7 +138,8 @@ Masked Punk::
 "Huh? Well..."
 [Default]
 MC::
-He pauses. 
+He pauses.
+{moveChar: Tracker, .5, .1} 
 He looks down at my hand and takes it. 
 {changeName: Masked Punk, Szycrotic}
 Szycrotic:: 
@@ -173,7 +177,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
     Are you stupid? Run!
     [
        Ok, here goes nothing!
-       //  {changeBG: Star Default Animated}  (REMOVE)
+       //  **Add Wipe Transition**
        {moveChar: Szycrotic, -1}
        MC::
        {fadeinsound: footsteps run forest, .5}
@@ -232,6 +236,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        Although, with his mask, it is kind of hard to read his expressions.
        Not this time though.
        His mask cracks in a smile. 
+       {moveChar: Tracker, .5, .0}
        Szycrotic::
        [Lewd]
        "And one more rope should work... And another rope, and another rope, and another rope."
@@ -248,6 +253,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        Five fucking minutes in the digital realm, and I'm already a prisoner.
        Szycrotic turns around, satisfied with his handiwork.
        Szycrotic::
+       {moveChar: Tracker, .5, .4}
        [Default]
         "Ok boy. Let's go."
        MC::
@@ -261,6 +267,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        "You got some balls man, all tied up like that."
        "Ok <i>MC</i>. We will see if those balls will stay after meeting Star."
        {moveChar: Szycrotic, .25}
+       {moveChar: Tracker, .25, .1}
        [Default]
        {fadeinsound: Walking on Gravel, 1}
        {fadeinsound: Star Piano, 4}
@@ -302,6 +309,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        MC::
        Szycrotic shakes his head in disbelief.
        {moveChar: Szycrotic, .50}
+       {moveChar: Tracker, .5, .1}
        {fadeoutsound: Walking on Gravel, 1}
        He stops for a second, and studies me for a moment. 
        Szycrotic::
@@ -316,6 +324,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        MC::
        {fadeinsound: Walking on Gravel, 1}
        {moveChar: Szycrotic, .25}
+       {moveChar: Tracker, .25, .1}
        Szycrotic::
        [Default]
        MC::
@@ -351,6 +360,7 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        {fadeoutsound: Walking on Gravel, 1}
        {fadeoutsound: Star Piano, 3}
        {moveChar: Szycrotic, .50}
+       {moveChar: Tracker, .5, .3}
        {anim: Szycrotic, Idle}
        We stop in front of the 10 foot tall, ancient wooden doors. 
        Szycrotic::
@@ -375,6 +385,7 @@ Or worse, tortured. This "guy" seems to be the type to enjoy pain.
 For a brief second, disappointment flashes across his mask.
 Szycrotic turns around and starts walking. 
 {moveChar: Szycrotic, .25}
+{moveChar: Tracker, .25, .1}
 {anim: Szycrotic, wind idle}
 {fadeinsound: Walking on Gravel, 1}
 {fadeoutsound: Szy Dark, 5}
@@ -475,6 +486,7 @@ I still have to maintain speed, so I try to soak in more.
 Like the <i>enormous,</i> waist deep, fountain directly center of the main doors into the manor proper. 
 {fadeoutsound: Walking on Gravel, 1}
 {moveChar: Szycrotic, .50}
+{moveChar: Tracker, .5, .3}
 We stop in front of the 10 foot tall ancient wooden doors. 
 Szycrotic::
 "I noticed you admiring the grounds. You think <i>that</i> is beautiful, wait until you go inside."
@@ -494,8 +506,8 @@ And with those words, we saunter into the largest mansion I have ever seen...
 {spawnEmpty: MC, Player}
 {spawnChar: szycrotic default, -1, Szycrotic}
 {spawnChar: star nightgown, 2, Asterella}
-{anim: Szycrotic, Idle}
-{anim: Asterella, Idle}
+{spawnChar: Look Target Object (Scenes UI), .5, Tracker}
+{moveChar: Tracker, .5, .1}
 {moveChar: Szycrotic, .3}
 MC::
 It took at least 5 mins of walking to get here. 
@@ -508,6 +520,7 @@ Mah Heart!
 And...
 Szycrotic has been humming songs under his breath the entire way. 
 I don't recognize the tune at all. It's alien to me.
+{moveChar: Tracker, .3, .4}
 {moveChar: Asterella, .70}
 {additive: on}
 As we come in, 
@@ -583,6 +596,7 @@ MC::
 A slight turn of her lips suggests a smile.
 Asterella::
 "And almost sarcastic."
+{moveChar: Tracker, .65, .2}
 MC::
 She motions to me, looking at me for the first time.
 Asterella::
@@ -607,6 +621,7 @@ Asterella::
 }
 MC::
 After trying out my name, she turns to Szycrotic.
+{moveChar: Tracker, .4, .4}
 Asterella::
 [Default]
 "Yes, you may be rewarded."
@@ -627,6 +642,7 @@ Szycrotic::
 "I'm weak compared to her. My advice? Don't piss her off."
 {moveChar: Szycrotic, -1}
 {moveChar: Asterella, .5}
+{moveChar: Tracker, .7, .4}
 {anim: Asterella, Smug}
 Asterella::
 [Happy]
