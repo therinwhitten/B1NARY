@@ -1,16 +1,14 @@
 ﻿{changeScene: Star Bedroom Night}
 {colorformat: Default}
 {spawnEmpty: Narrator, NPC}
-{spawnChar: EyeBlink, .5, EyeBlink}
+{spawnChar: star nightgown, .5, Asterella}
 Narrator::
-Time to test the eyeblinks
-Eyeblinks turn on is next line
-Closing Eyeblink
-{anim: EyeBlink, Close}
-Opening EyeBlink multiple Times
-{anim: EyeBlink, Open}
-UwU Working?
-Should show the animation like they are bllinking fast. 
-Hope this works dammit!
-{anim: EyeBlink, Open}
-FAILURE
+Spawning Eye Track Object
+{spawnChar: Look Target Object (Scenes UI), .5, Tracker}
+Now checking to see if she looks. 
+Tracking left....
+{moveChar: Tracker, .3, .9}
+Moving Right...
+{moveChar: Tracker, .8, .1}
+Now looking at you you bad bad guh!
+{moveChar: Tracker, .5, .3}
