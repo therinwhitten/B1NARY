@@ -24,6 +24,12 @@
 				for (int i = 0; i < cubes.Length; i++)
 					cubes[i].MoveToPosition(localPosition);
 			}),
+			["attachcubetocharacter"] = (Action<string>)((characterName) =>
+			{
+				FollowCube[] cubes = FindObjectsOfType<FollowCube>();
+				for (int i = 0; i < cubes.Length; i++)
+					cubes[i].SwitchToCharacter(CharacterManager.Instance.GetCharacter(characterName));
+			}),
 			["toggleautocube"] = (Action<string>)((booleanRaw) =>
 			{
 				FollowCube[] cubes = FindObjectsOfType<FollowCube>();
@@ -124,7 +130,7 @@
 		public void MoveToPosition(Vector2 normalizedPosition)
 		{
 			targetPosition = normalizedPosition;
-
+			followState = FollowState.StayingAtPosition;
 		}
 		private void PositionUpdate()
 		{
