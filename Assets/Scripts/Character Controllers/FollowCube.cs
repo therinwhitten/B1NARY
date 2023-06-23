@@ -135,7 +135,7 @@
 		private void PositionUpdate()
 		{
 			AnchorPosition = Vector2.SmoothDamp(AnchorPosition, targetPosition, ref anchorVelocity, 0.35f);
-			RectTransform.localPosition = Vector2.SmoothDamp(RectTransform.localPosition, Vector2.zero, ref velocity, 0.35f);
+			RectTransform.anchoredPosition = Vector2.SmoothDamp(RectTransform.anchoredPosition, Vector2.zero, ref velocity, 0.35f);
 		}
 
 		/*
