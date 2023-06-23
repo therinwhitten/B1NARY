@@ -4,8 +4,7 @@
 {fadeinsound: Wind Heavy, 1}
 {fadeoutsound: Ears Ringing, 15}
 {fadeoutsound: Normal Heartbeat Prologue, 5}
-{spawnChar: Look Target Object (Scenes UI), .5, Tracker}
-{moveChar: Tracker, .5, .1}
+{movecube: .5, .1}
 {spawnChar: szycrotic default, 2, Masked Punk}
 {spawnEmpty: Narrator, NPC}
 {spawnEmpty: MC, Player}
@@ -246,7 +245,7 @@ He motions to the manor, down the path not far off.
 Szycrotic::
 "Come. I will take you to Star, and we will figure this all out."
 {moveChar: Szycrotic, .3}
-{moveChar: Tracker, .3, .2}
+{movecube: .3, .2}
 {fadeinsound: Walking on Gravel, 1}
 MC::
 He starts off at a leisurely pace, enough for a short woman to follow.
@@ -314,7 +313,7 @@ The bright moonlight bathes and reflects off the black marble benches, their pla
 {additive:off}
 In front of the manor, sits a large fountain, the water sparkling from the moonlight. 
 Szycrotic::
-{moveChar: Tracker, .5, .1}
+{movecube: .5, .1}
 [OWO]
 "Yo! You coming?"
 MC::
