@@ -32,6 +32,15 @@
 				character.controller.ScreenPosition = pos;
 				character.ChangeCharacterName(characterName);
 			}),
+			["spawnchar"] = (Action<string, string, string, string>)((gameObjectName, positionX, positionY, characterName) =>
+			{
+				Character character = Instance.SummonCharacter(gameObjectName);
+				Vector2 pos = character.controller.ScreenPosition;
+				pos.x = float.Parse(positionX);
+				pos.y = float.Parse(positionY);
+				character.controller.ScreenPosition = pos;
+				character.ChangeCharacterName(characterName);
+			}),
 			["spawnchar"] = (Action<string, string>)((gameObjectName, positionRaw) =>
 			{
 				Character character = Instance.SummonCharacter(gameObjectName);
