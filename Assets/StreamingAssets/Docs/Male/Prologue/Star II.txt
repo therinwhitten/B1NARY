@@ -7,6 +7,7 @@
 {fadeoutsound: Wind Heavy, 1}
 {spawnChar: szycrotic default, -.5, Szycrotic}
 {moveChar: Szycrotic, .3}
+{movecube: .5, .2}
 MC::
 It took at least 5 mins of walking to get to the center of the manor. 
 Yep. Still tied up.
@@ -77,7 +78,9 @@ MC::
 I open my mouth to protest that I do <i>not</i> have a rope fetish. 
 Asterella::
 {anim: Asterella, Pouting}
+{movecube: .7, .7}
 "I can't have you beating up people that come into my realm!"
+{movecube: .5, .4}
 "What if they are a visiting Demon Lord?"
 Szycrotic::
 "But-"
@@ -127,6 +130,7 @@ Szycrotic::
 }
 {moveChar: Szycrotic, -1}
 {moveChar: Asterella, .5}
+{movecube: .2, .4}
 MC::
 {fadeinsound: openclosedoor, 1}
 Star watches Szy close the door with a look of satisfaction on her face. 
@@ -139,6 +143,7 @@ MC::
 The light giggle that escapes her throat is oddly not surprising. 
 They seem to be very close to each other.
 As if deciding something, she focuses on me, her eyes apologetic.
+{movecube: .5, .1}
 Asterella::
 [Default]
 "Ok, let's get those ropes off of you."
@@ -156,11 +161,13 @@ Asterella::
 [Happy]
 MC::
 She looks at me with a wry twist of her lips.
+{movecube: .5, 0}
 Extends one fingernail and slices the ropes off my wrists and throat. 
 The nail cuts like a knife. 
 No wonder Szycrotic wasn't worried. 
 Wait, was that a warning? 
 I intend to take it as one.
+{movecube: .5, .2}
 Asterella Star, not a foot from my face.
 In the flesh. 
 {if: henable}
@@ -202,7 +209,9 @@ Please excuse me.
 Have a seat on the sofa, let me get you some wine."
 {additive:off}
 MC::
-She glides gracefully to the sofa, sitting with the grace of a queen. 
+She glides gracefully to the sofa, sitting with the grace of a queen.
+{moveChar: Asterella, .4} 
+{movecube: .4, .2}
 With an elegant hand, she pats the sofa cushion next to her suggestively.
 It's an invitation.
 Asterella::
@@ -220,6 +229,7 @@ It <i>can't</i> be what you are thinking.
 Get a hold of yourself!
 "So, Star. Why did you bring me to your room?"
 Asterella::
+{movecube: .4, .1}
 [Default]
 MC::
 {fadeinsound: woodwine1, .1}
@@ -232,6 +242,7 @@ Asterella::
 {additive: on}
 "Other than the fact that you are an unknown? 
 Suddenly appearing without authorization into my realm? 
+{movecube: .4, .3}
 As if you own it?"
 {additive:off}
 MC::
@@ -287,12 +298,14 @@ Asterella::
 MC::
 I pipe in.
 "What would you say if I said I came from the Twatch servers?"
+{movecube: .4, .1}
 She smiles sweetly, one that doesn't reach her eyes.
 A glint starts to ignite in her eyes dangerously.
 Sudden as a firecracker.
 Asterella::
 [Disgust]
 "And that would be a complete lie." 
+{movecube: .4, .3}
 "Don't test the waters with me, MC." 
 {additive:on}
 "I may be forgiving and merciful, 
@@ -408,6 +421,7 @@ She looks almost pouty, her cheeks puffing just slightly.
 {anim: Asterella, Pouting}
 Asterella::
 "You wouldn't deny a Demon Lord in her own domain would you?"
+{movecube: .4, .1}
 "As an intruder to boot."
 MC:: 
 What do I say?
@@ -421,6 +435,7 @@ I am in an unknown situation, with dark pits all around me.
 Not to mention that demon "enjoying" himself in the dungeon tonight can cause problems with either decision I make. 
 Am I hurting the realm if I hurt her feelings?
 Will Szycrotic be enraged if I go with Star's suggestion?
+{movecube: .4, .3}
 {choice: What should I do?}
 {
 	I answer her by pulling her to my chest, gently raising her chin. (H-Scene)
@@ -460,9 +475,11 @@ Will Szycrotic be enraged if I go with Star's suggestion?
 		"Oh no... Did I misread this?"
 		"Are you gay?"
 		"Do I need to call Szy back here?"
+		{movecube: .1, .4}
 		MC::
 		"Um, no?"
 		She chuckles, her attention back to my thigh, tracing circles playfully.
+		{movecube: .4, .3}
 		Asterella::
 		[Horny]
 		"If not, then maybe..."
@@ -480,7 +497,7 @@ Will Szycrotic be enraged if I go with Star's suggestion?
 				"I don't know you. It just doesn't feel right to me."
 				{changeScript: Male/Prologue/Star II FriendZoned}
 			]
-			Screw it! I can't deny those eyes! (H-Scene)
+			Screw it! I can't deny those eyes! 
 			[
 				{setbool: starbed,true}
 				I cup her face gently in my hands and pull her lips to mine.
