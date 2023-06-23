@@ -26,6 +26,11 @@
 				IVoice voice = CharacterManager.Instance.GetCharacter(character).controller;
 				voice.CurrentMouth = mouthIndex;
 			})),
+			["stopvoices"] = ((Action<string>)((boolean) =>
+			{
+				bool setter = bool.Parse(boolean);
+				BlockPreviousSpeakersOnNextLine = setter;
+			})),
 
 			// Because of H scenes and the technical stuff where you cannot have different
 			// - character names per voice, this is a bit of a hacky solution to appear
