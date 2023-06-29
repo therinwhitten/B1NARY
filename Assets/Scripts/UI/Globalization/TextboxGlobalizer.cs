@@ -1,46 +1,12 @@
-﻿namespace B1NARY.UI.Globalization
+﻿namespace B1NARY.Globalization
 {
 	using System;
 	using TMPro;
 	using UnityEngine;
 
-	public class TextLanguageReflector : MonoBehaviour
+	public class TextboxGlobalizer : MonoBehaviour
 	{
-		public string Text
-		{
-			get
-			{
-				if (target == null)
-					target = GetTarget();
-				return target.Value;
-			}
-			set
-			{
-				if (target == null)
-					target = GetTarget();
-				target.Value = value;
-			}
-		}
-		private Ref<string> target;
-
-		public Ref<string> GetTarget()
-		{
-			Component[] components = gameObject.GetComponents(typeof(Component));
-			for (int i = 0; i < components.Length; i++)
-				if (components[i] is TMP_Text text)
-				{
-					target = new Ref<string>(() => text.text, set => text.text = set);
-					return target;
-				}
-			throw new MissingComponentException("There is no types that is marked on the gameobject to modify!");
-		}
-
-		private string[] languageKeys, languageValues;
-
-		private void Awake()
-		{
-
-		}
+		
 	}
 	/*
 	using System;

@@ -6,9 +6,10 @@
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.Xml;
 	using UnityEngine;
 
-	public class Languages : List<string>
+	public class Languages : List<string>, IXmlSerializable
 	{
 		private static FileInfo LanguagesInfo { get; } = SerializableSlot.StreamingAssets.GetFile("languages.xml");
 		private static Languages m_instance;
@@ -20,16 +21,80 @@
 				{
 					if (LanguagesInfo.Exists)
 						m_instance = XmlSerializer<Languages>.Default.Deserialize(LanguagesInfo);
-					else
+					if (m_instance is null)
 						m_instance = new Languages();
 				}
 				return m_instance;
 			}
 		}
+
+		 
 		public void Save()
 		{
 			using (var stream = LanguagesInfo.Open(FileMode.Create))
 				XmlSerializer<Languages>.Default.Serialize(stream, this, "Languages");
+		}
+
+#if UNITY_EDITOR
+		private bool guiOpen = false;
+		public void Editor_OnGUI()
+		{
+			if (guiOpen = UnityEditor.EditorGUILayout.BeginFoldoutHeaderGroup(guiOpen, "Languages"))
+			{
+				UnityEditor.EditorGUI.indentLevel++;
+				for (int i = 0; i < Count; i++)
+				{
+					Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20f);
+					fullRect = UnityEditor.EditorGUI.IndentedRect(fullRect);
+
+					Rect languageRect = fullRect;
+					languageRect.width /= 2f;
+					string newLanguage = UnityEditor.EditorGUI.DelayedTextField(languageRect, this[i]);
+					if (newLanguage != this[i])
+					{
+						this[i] = newLanguage;
+						Save();
+					}
+
+					Rect removeButtonRect = fullRect;
+					removeButtonRect.xMin = languageRect.xMax + 2f;
+					removeButtonRect.xMax -= 3f;
+					if (GUI.Button(removeButtonRect, "Remove"))
+					{
+						RemoveAt(i);
+						i--;
+						Save();
+					}
+				}
+				if (GUILayout.Button("Add New"))
+				{
+					Add("English");
+					Save();
+				}
+				UnityEditor.EditorGUI.indentLevel--;
+			}
+			UnityEditor.EditorGUILayout.EndFoldoutHeaderGroup();
+		}
+#endif
+
+		bool IXmlSerializable.ShouldWrite => true;
+		void IXmlSerializable.Read(XmlNode value)
+		{
+			for (int i = 0; i < value.ChildNodes.Count; i++)
+			{
+				Add(value.ChildNodes[i].Attributes[0].Value);
+			}
+		}
+		void IXmlSerializable.Write(XmlDocument sourceDocument, XmlNode currentNode)
+		{
+			for (int i = 0; i < Count; i++)
+			{
+				XmlElement element = sourceDocument.CreateElement("Language");
+				XmlAttribute attribute = sourceDocument.CreateAttribute("data");
+				attribute.Value = this[i];
+				element.Attributes.Append(attribute);
+				currentNode.AppendChild(element);
+			}
 		}
 	}
 }
@@ -40,17 +105,16 @@ namespace B1NARY.UI.Globalization.Editor
 	using UnityEditor;
 	using UnityEngine;
 
-	// Too lazy, maybe later
 	public class LanguageEditor : EditorWindow
 	{
 
 
 		private static readonly Vector2Int defaultMinSize = new Vector2Int(300, 350);
-		//[MenuItem("B1NARY/Language Selection", priority = 1)]
+		[MenuItem("B1NARY/Language Selection", priority = 1)]
 		public static void ShowWindow()
 		{
 			// Get existing open window or if none, make a new one:
-			ColorFormatWindow window = GetWindow<ColorFormatWindow>();
+			LanguageEditor window = GetWindow<LanguageEditor>();
 			window.titleContent = new GUIContent("Language Selection Editor");
 			window.minSize = defaultMinSize;
 			window.Show();
@@ -58,7 +122,7 @@ namespace B1NARY.UI.Globalization.Editor
 
 		public void OnGUI()
 		{
-
+			Languages.Instance.Editor_OnGUI();
 		}
 	}
 }
