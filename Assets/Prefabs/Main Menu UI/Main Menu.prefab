@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 262563999}
   - component: {fileID: 262564001}
   - component: {fileID: 262564000}
+  - component: {fileID: 7800748825756871497}
   m_Layer: 5
   m_Name: ChangeLog Title
   m_TagString: Untagged
@@ -34,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000012398, y: 239.39}
-  m_SizeDelta: {x: 391.81348, y: 45.474365}
+  m_AnchoredPosition: {x: -0.000012398, y: 239.4}
+  m_SizeDelta: {x: 391.81348, y: 45.474396}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &262564001
 CanvasRenderer:
@@ -92,12 +93,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 45.45
   m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 256
@@ -134,6 +135,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7800748825756871497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262563998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 262564000}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Updates
+  - Aktualisierungen
+  - "\u66F4\u65B0\u60C5\u5831"
+  - Actualizaciones
 --- !u!1 &881683312
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,6 +263,7 @@ GameObject:
   - component: {fileID: 1194529603}
   - component: {fileID: 1194529605}
   - component: {fileID: 1194529604}
+  - component: {fileID: 2117309577}
   m_Layer: 5
   m_Name: ChangeLog
   m_TagString: Untagged
@@ -295,20 +320,24 @@ MonoBehaviour:
   m_text: '~New Loading Animation!
 
 
-    ~Some VA might be interrupted in H Scenes.
-    This is a known bug. Will be polished as we work on Phase IV
+    ~Main Menu Translations
 
 
-    ~To Zoom and
-    Pan in H Scenes: Hold Right Click
+    ~Some VA might
+    be interrupted in H Scenes. This is a known bug. Will be polished as we work
+    on Phase IV
 
 
-    ~Hentai Scenes can only be accessed via
-    the Main Menu or Finishing a Route. (WIP)
+    ~To Zoom and Pan in H Scenes: Hold Right Click
 
 
-    ~Auto Skip in H Scenes and in
-    Female Route Eyeblink stops working. Will be fixed in Phase III.'
+    ~Hentai
+    Scenes can only be accessed via the Main Menu or Finishing a Route. (WIP)
+
+
+    ~Auto
+    Skip in H Scenes and in Female Route Eyeblink stops working. Will be fixed in
+    Phase III.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9476861b6a9cdca409e8769907d1a9d0, type: 2}
   m_sharedMaterial: {fileID: 9137770337806101678, guid: 9476861b6a9cdca409e8769907d1a9d0,
@@ -336,7 +365,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 21.8
+  m_fontSize: 20.95
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -378,6 +407,63 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2117309577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1194529602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1194529604}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - '~New Loading Animation!
+
+
+    ~Main Menu Translations
+
+
+    ~Some VA might be
+    interrupted in H Scenes. This is a known bug. Will be polished as we work on
+    Phase IV
+
+
+    ~To Zoom and Pan in H Scenes: Hold Right Click
+
+
+    ~Hentai Scenes
+    can only be accessed via the Main Menu or Finishing a Route. (WIP)
+
+
+    ~Auto
+    Skip in H Scenes and in Female Route Eyeblink stops working. Will be fixed in
+    Phase III.'
+  - "~Neue Ladeanimation!  ~Hauptmen\xFC-\xDCbersetzungen  ~Einige VA k\xF6nnen in
+    H-Szenen unterbrochen werden. Dies ist ein bekannter Fehler. Wird mit der Arbeit
+    an Phase IV behoben.  ~Zum Zoomen und Schwenken in H-Szenen: Rechtsklick halten 
+    ~Hentai-Szenen k\xF6nnen nur \xFCber das Hauptmen\xFC oder das Beenden einer
+    Route erreicht werden. (WIP)  ~Auto Skip in H-Szenen und in Female Route Eyeblink
+    funktioniert nicht mehr. Wird in Phase III behoben."
+  - "~\u65B0\u3057\u3044\u30ED\u30FC\u30C7\u30A3\u30F3\u30B0\u30FB\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3 
+    ~\u30E1\u30A4\u30F3\u30E1\u30CB\u30E5\u30FC\u306E\u7FFB\u8A33  ~H\u30B7\u30FC\u30F3\u3067VA\u304C\u9014\u5207\u308C\u308B\u3053\u3068\u304C\u3042\u308A\u307E\u3059\u3002\u3053\u308C\u306F\u65E2\u77E5\u306E\u30D0\u30B0\u3067\u3059\u3002\u30D5\u30A7\u30FC\u30BAIV\u3067\u6539\u5584\u3055\u308C\u308B\u4E88\u5B9A\u3067\u3059\u3002 
+    ~H\u30B7\u30FC\u30F3\u3067\u30BA\u30FC\u30E0\u3068\u30D1\u30F3\u3092\u3059\u308B\u306B\u306F\uFF1A\u53F3\u30AF\u30EA\u30C3\u30AF\u3057\u305F\u307E\u307E\u3002 
+    ~HENTAI\u30B7\u30FC\u30F3\u306F\u30E1\u30A4\u30F3\u30E1\u30CB\u30E5\u30FC\u304B\u30EB\u30FC\u30C8\u7D42\u4E86\u304B\u3089\u306E\u307F\u30A2\u30AF\u30BB\u30B9\u3067\u304D\u307E\u3059\u3002(WIP) 
+    ~H\u30B7\u30FC\u30F3\u3068\u5973\u6027\u30EB\u30FC\u30C8\u306EEyeblink\u3067\u81EA\u52D5\u30B9\u30AD\u30C3\u30D7\u304C\u6A5F\u80FD\u3057\u306A\u304F\u306A\u308A\u307E\u3057\u305F\u3002\u30D5\u30A7\u30FC\u30BAIII\u3067\u4FEE\u6B63\u3055\u308C\u308B\u4E88\u5B9A\u3067\u3059\u3002"
+  - "~\xA1Nueva animaci\xF3n de carga!  ~Traducci\xF3n del men\xFA principal  ~Algunas
+    VA podr\xEDan interrumpirse en las Escenas H. Se trata de un error conocido.
+    Ser\xE1 pulido mientras trabajamos en la Fase IV.  ~Para Zoom y Pan en Escenas
+    H: Mantener Click Derecho  ~S\xF3lo se puede acceder a las Escenas Hentai a trav\xE9s
+    del Men\xFA Principal o Finalizando una Ruta. (WIP)  ~Auto Skip en Escenas H
+    y en Ruta Femenina Eyeblink deja de funcionar. Se arreglar\xE1 en la Fase III."
 --- !u!1 &1996701403342450897
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,6 +475,7 @@ GameObject:
   - component: {fileID: 2856876834438287494}
   - component: {fileID: 402505767438909959}
   - component: {fileID: 7116674988327568972}
+  - component: {fileID: 4234918375144726589}
   m_Layer: 5
   m_Name: Version Number
   m_TagString: Untagged
@@ -473,9 +560,9 @@ MonoBehaviour:
   m_fontSize: 45
   m_fontSizeBase: 45
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 45
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -512,6 +599,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4234918375144726589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996701403342450897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 7116674988327568972}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - P3 .1 Translations
+  - "P3 .1 \xDCbersetzungen"
+  - "P3 .1 \u7FFB\u8A33"
+  - P3 .1 Traducciones
 --- !u!1 &6094002358359024601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1064,9 +1174,9 @@ MonoBehaviour:
   m_fontSize: 50
   m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -1642,12 +1752,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50.7
-  m_fontSizeBase: 50.7
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2312,12 +2422,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50.11
+  m_fontSize: 50
   m_fontSizeBase: 50.11
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2765,9 +2875,9 @@ MonoBehaviour:
   m_fontSize: 50
   m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -3292,9 +3402,9 @@ MonoBehaviour:
   m_fontSize: 50
   m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -3934,9 +4044,9 @@ MonoBehaviour:
   m_fontSize: 50
   m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -4515,9 +4625,9 @@ MonoBehaviour:
   m_fontSize: 50
   m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -5825,6 +5935,7 @@ GameObject:
   - component: {fileID: 8623014722330409409}
   - component: {fileID: 8623014722330409415}
   - component: {fileID: 8623014722330409414}
+  - component: {fileID: 6813820459353655669}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -5911,9 +6022,9 @@ MonoBehaviour:
   m_fontSize: 40
   m_fontSizeBase: 40
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 40
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 1024
@@ -5950,6 +6061,31 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6813820459353655669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8623014722330409408}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 8623014722330409414}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - 'Language
+
+'
+  - Sprache
+  - "\u8A00\u8A9E"
+  - Idioma
 --- !u!1 &8623014722467505552
 GameObject:
   m_ObjectHideFlags: 0
@@ -7963,6 +8099,7 @@ GameObject:
   - component: {fileID: 8623014723042362719}
   - component: {fileID: 8623014723042362717}
   - component: {fileID: 8623014723042362716}
+  - component: {fileID: 1897545117}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -8088,6 +8225,31 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1897545117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8623014723042362718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 8623014723042362716}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - 'Social Media
+
+'
+  - Soziale Medien
+  - "\u30BD\u30FC\u30B7\u30E3\u30EB\u30E1\u30C7\u30A3\u30A2"
+  - Redes sociales
 --- !u!1 &8623014723250123596
 GameObject:
   m_ObjectHideFlags: 0
@@ -8515,12 +8677,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50.11
-  m_fontSizeBase: 50.11
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -11170,6 +11332,7 @@ GameObject:
   - component: {fileID: 907494933211049319}
   - component: {fileID: 6228188901973884209}
   - component: {fileID: 1509912419166812020}
+  - component: {fileID: 333623318}
   m_Layer: 5
   m_Name: Demo Logo
   m_TagString: Untagged
@@ -11306,3 +11469,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: {fileID: 6228188901973884209}
+--- !u!114 &333623318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8763496828309772963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 6228188901973884209}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Demo
+  - Demo
+  - "\u30C7\u30E2"
+  - Demo
