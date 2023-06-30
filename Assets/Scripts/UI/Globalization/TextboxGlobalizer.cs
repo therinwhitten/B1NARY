@@ -1,117 +1,105 @@
 ﻿namespace B1NARY.Globalization
 {
+	using B1NARY.UI.Globalization;
 	using System;
+	using System.Collections.Generic;
+	using System.Linq;
 	using TMPro;
 	using UnityEngine;
 
 	public class TextboxGlobalizer : MonoBehaviour
 	{
-		
-	}
-	/*
-	using System;
-	using System.Collections;
-	using System.Collections.Generic;
-	using System.Linq;
-	using UnityEngine;
-	using UnityEngine.UI;
-	using B1NARY.DesignPatterns;
-	using System.Runtime.Serialization.Formatters.Binary;
-	using System.IO;
+		public TMP_Text text;
 
-	[RequireComponent(typeof(Text)), AddComponentMenu("UI/Globalization/Text Font Language Changer")]
-	public class FontLanguageChanger : Multiton<FontLanguageChanger>
-	{
-		private const string fontDataKey = "FontLanguageChangerData";
-		private static FontData fontData;
-		public static int LanguageIndex
+		public List<string> languageKeys = new List<string>();
+		public List<string> languageValues = new List<string>();
+
+		public string this[string language]
 		{
-			get => fontData.languageIndex;
-			set
+			get
 			{
-				fontData.languageIndex = value;
-				fontData.Save(fontDataKey);
+				for (int i = 0; i < languageKeys.Count; i++)
+				{
+					if (languageKeys[i] == language)
+						return languageValues[i];
+				}
+				throw new IndexOutOfRangeException(language);
 			}
 		}
-		public static IReadOnlyList<string> Languages => fontData.languages;
 
-		static FontLanguageChanger()
+		private void Reset()
 		{
-			if (FontData.TryLoad(fontDataKey, out var data))
-				fontData = data.Value;
-			else
-				fontData = new FontData(0, new List<string>() { "english" });
-			/*
-			IEnumerator<FontLanguageChanger> enumerator = GetEnumerator();
-			while (enumerator.MoveNext())
-				for (int i = 0; i < languages.Amount; i++)
-					if (enumerator.Current.languageCollection.Contains(languages[i]))
-						enumerator.Current.languageCollection.AddLanguage(languages[i]);
-		}
-		public static void AddLanguage(string language)
-		{
-			language = language.Trim().ToLower();
-			if (Languages.Contains(language))
-				throw new InvalidOperationException();
-			fontData.languages.Add(language);
-			fontData.Save(fontDataKey);
-			IEnumerator<FontLanguageChanger> enumerator = GetEnumerator();
-			while (enumerator.MoveNext())
-				enumerator.Current.languageCollection.AddLanguage(language);
-		}
-		public static void RemoveLanguage(string language)
-		{
-			language = language.Trim().ToLower();
-			fontData.languages.Remove(language);
-			fontData.Save(fontDataKey);
-			IEnumerator<FontLanguageChanger> enumerator = GetEnumerator();
-			while (enumerator.MoveNext())
-				enumerator.Current.languageCollection.RemoveLanguage(language);
+			text = GetComponent<TMP_Text>();
+			UpdateLanguageList();
+			if (text != null && languageValues.Count > 0)
+				languageValues[0] = text.text;
 		}
 
-		private Text text;
-		public LanguageCollection languageCollection = new LanguageCollection();
-		protected override void MultitonAwake()
+		private void OnEnable()
 		{
-			text = GetComponent<Text>();
+			if (text == null)
+				throw new MissingFieldException(nameof(TMP_Text), nameof(text));
+			PlayerConfig.Instance.language.AttachValue(UpdateLanguage);
 		}
-		private void Start()
+		private void OnDisable()
 		{
-			text.text = languageCollection[LanguageIndex];
+			PlayerConfig.Instance.language.ValueChanged -= UpdateLanguage;
+		}
+
+		private void UpdateLanguage(string newLanguage)
+		{
+			text.text = this[newLanguage];
+		}
+
+		internal void UpdateLanguageList()
+		{
+			Dictionary<string, string> existingLanguage = new Dictionary<string, string>();
+			for (int i = 0; i < languageKeys.Count; i++)
+				existingLanguage.Add(languageKeys[i], languageValues[i]);
+			HashSet<string> preExistingLanguage = new HashSet<string>(Languages.Instance);
+
+			// Adding newly added languages
+			for (int i = 0; i < Languages.Instance.Count; i++)
+				if (existingLanguage.ContainsKey(Languages.Instance[i]) == false)
+				{
+					languageKeys.Add(Languages.Instance[i]);
+					languageValues.Add("");
+				}
+
+			// Removing older languages
+			for (int i = 0; i < languageKeys.Count; i++)
+				if (preExistingLanguage.Contains(languageKeys[i]) == false)
+				{
+					languageKeys.RemoveAt(i);
+					i--;
+				}
 		}
 	}
-
-	
-
-	[Serializable]
-	internal struct FontData
-	{
-		private const string structPath = "/Language Font Data/";
-		public static bool TryLoad(string fileData, out FontData? loadedData)
-		{
-			string path = Application.streamingAssetsPath + structPath + fileData;
-			if (File.Exists(path))
-			{
-				using (var stream = new FileStream(path, FileMode.Open))
-					loadedData = (FontData)new BinaryFormatter().Deserialize(stream);
-				return true;
-			}
-			loadedData = null;
-			return false;
-		}
-
-		public int languageIndex;
-		public List<string> languages;
-		public FontData(int index, List<string> languages)
-		{
-			languageIndex = index;
-			this.languages = languages;
-		}
-		public void Save(string fileData)
-		{
-			using (var stream = new FileStream(Application.streamingAssetsPath + structPath + fileData, FileMode.Create))
-				new BinaryFormatter().Serialize(stream, this);
-		}
-	}
-	*/
 }
+#if UNITY_EDITOR
+namespace B1NARY.Globalization.Editor
+{
+	using B1NARY.Editor;
+	using B1NARY.UI.Globalization;
+	using System;
+	using UnityEditor;
+	using UnityEngine;
+
+	[CustomEditor(typeof(TextboxGlobalizer))]
+	public class TextboxGlobalizerEditor : Editor
+	{
+		public override void OnInspectorGUI()
+		{
+			TextboxGlobalizer globalizer = (TextboxGlobalizer)target;
+			globalizer.UpdateLanguageList();
+			globalizer.text = DirtyAuto.Field(target, new GUIContent("Text"), globalizer.text, true);
+			EditorGUILayout.Space();
+			for (int i = 0; i < globalizer.languageKeys.Count; i++)
+			{
+				globalizer.languageValues[i] = DirtyAuto.Field(target, new GUIContent(globalizer.languageKeys[i]), globalizer.languageValues[i]);
+			}
+			Languages.Instance.Editor_OnGUI();
+		}
+	}
+}
+#endif

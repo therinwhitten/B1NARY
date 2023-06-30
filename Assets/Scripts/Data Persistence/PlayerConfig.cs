@@ -13,6 +13,7 @@
 	using OVSXmlSerializer;
 	using OVSXmlSerializer.Extras;
 	using B1NARY.UI.Colors;
+	using B1NARY.UI.Globalization;
 
 	public class PlayerConfig
 	{
@@ -79,6 +80,7 @@
 		public ChangableValue<bool> quickSaveOverrides = new ChangableValue<bool>(false);
 		public ChangableValue<bool> hEnable = new ChangableValue<bool>(false);
 		public ChangableValue<int> dialogueSpeedTicks = new ChangableValue<int>(30);
+		public ChangableValue<string> language = new ChangableValue<string>(Languages.Instance.Count > 0 ? Languages.Instance[0] : "English");
 		public Audio audio = new Audio();
 		public Graphics graphics = new Graphics();
 
