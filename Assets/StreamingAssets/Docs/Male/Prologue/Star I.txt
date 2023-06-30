@@ -171,18 +171,21 @@ The dude is fast.
 If I go with him, this "Star" may skewer me. 
 Then again, I might be able to dodge him enough and get into the forest. 
 We have about 10 feet of distance between us. I <i>might</i> just be able to get to full speed.
+{spawnChar: Circle Wipe, .5, CircleWipe}
 {choice: What should I do? Try not to get me killed here player.}
 {
     Are you stupid? Run!
     [
        Ok, here goes nothing!
-       //  **Add Wipe Transition**
+       {anim: CircleWipe, RightStart}
        {moveChar: Szycrotic, -1}
        MC::
+       {anim: CircleWipe, LeftEnd}
        {fadeinsound: footsteps run forest, .5}
        Off through the trees and tall grass I run, forcing my stride to widen.
        My body immediately protests loudly at the sudden movement. 
        Grunts escape my clenching teeth. 
+       {disablechar: CircleWipe}
        This was a bad idea.
        This was an <i>incredibly</i> bad idea.
        My body, not exactly prime-fitness material to begin with, is still reeling from the teleportation.
@@ -211,7 +214,6 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        By the time I notice the blood, the throbbing pain catches up to my brain. 
        I groan a bit, a sharp intake of breath coming after. 
        Szycrotic laughs behind me.
-       // {fadeinsound: Szy Laugh 2, .1}
        Szycrotic::
        [Lewd]
        {if: henable}
@@ -425,39 +427,17 @@ Szycrotic::
 MC::
 He pauses, kicking a rock off the path as he thinks.
 Szycrotic::
-{additive:on}
-"Bruh, she's like, the sexiest demon lord ever.
-Only one other matches her, and that's Satan herself, yo."
-{additive:off}
+"Bruh, she's like, the sexiest demon lord ever."
 MC::
 He laughs openly.
-Szycrotic::
-{additive: on}
-"They both disagree often. 
-Ironmouse and Star are like sisters."
-{additive: off}
 MC::
-Wait Ironmouse too?
 What did I walk into? This brings up so many questions.
 Maybe they are just roleplaying? A live stream event?
-"Are you saying Ironmouse is in charge of all the demon lords in Hell?"
-"And Asterella is one of them?"
-Szycrotic::
-"That's what I said, MC."
-"Ironmouse doesn't take her job that serious man." 
-MC::
-I can hear frustration in his tone. 
 I can't help but just stare down the path at the outer wall.
 This is crazy! Are they not human streamers?
 The demon looks back at me with an amused glance.
 Szycrotic::
-{additive: on}
-"And Star doesn't approve.
-Star treats Mousey like she is the younger sister, 
-running off and playing instead of being responsible."
 [Default]
-{additive: off}
-"The sparks that sometimes fly between these two... You can't help but grab some popcorn and watch."
 MC::
 I mull over this.
 "So where is this place that I accidentally fell into?"
@@ -648,4 +628,4 @@ MC::
 {fadeinsound: openclosedoor, 1}
 Star watches Szy close the door, with a look of satisfaction on her face. 
 When the door closes, she sighs, closing her eyes for a brief moment.
-{changeScript: Male/Prologue/Star II, 164}
+{changeScript: Male/Prologue/Star II, 170}
