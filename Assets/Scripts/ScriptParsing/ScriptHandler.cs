@@ -172,7 +172,7 @@
 		}
 		public void NewDocument(string streamingAssetsDocument, int index = 0)
 		{
-			document = new ScriptDocument(config, DocumentList.FromVisual(streamingAssetsDocument));
+			document = new ScriptDocument(config, DocumentList.FromVisualLanguage(streamingAssetsDocument));
 			documentWatcher = document.StartAtLine(index);
 		}
 
@@ -215,57 +215,6 @@
 			IsActive = false;
 			document = null;
 			documentWatcher = null;
-		}
-
-
-
-		
-		
-		public sealed class DocumentList : List<FileInfo>
-		{
-			public static string ToVisual(string fullPath) =>
-				fullPath.Replace(BasePath, "").Replace(".txt", "");
-			public static FileInfo FromVisual(string visualPath) =>
-				new FileInfo($"{SerializableSlot.StreamingAssets.FullName}/Docs/{visualPath}.txt");
-
-			public static DirectoryInfo DocumentFolder { get; } = SerializableSlot.StreamingAssets.GetOrCreateSubDirectory("Docs");
-			private WeakReference visualNames;
-			public DocumentList() : base()
-			{
-				RecursivelyGetFiles(DocumentFolder);
-			}
-			/// <summary>
-			/// Uses recursion to get all the documents as a full path, including
-			/// the drive and such.
-			/// </summary>
-			/// <param name="currentPath"> The directory to interact with. </param>
-			/// <returns> 
-			/// All the file paths that start with .txt within the directory.
-			/// </returns>
-			private void RecursivelyGetFiles(DirectoryInfo currentPath)
-			{
-				AddRange(currentPath.EnumerateFiles().Where(path => path.Extension == ".txt"));
-				IEnumerable<DirectoryInfo> directories = currentPath.EnumerateDirectories();
-				if (directories.Any())
-				{
-					using (IEnumerator<DirectoryInfo> enumerator = directories.GetEnumerator())
-						while (enumerator.MoveNext())
-							RecursivelyGetFiles(enumerator.Current);
-				}
-			}
-			public static string BasePath => $"{Application.streamingAssetsPath.Replace('/', '\\')}\\Docs\\";
-			public string[] AsVisual()
-			{
-				if (visualNames != null && visualNames.IsAlive)
-					return (string[])visualNames.Target;
-				string[] output = new string[Count];
-				for (int i = 0; i < output.Length; i++)
-				{
-					output[i] = ToVisual(this[i].FullName);
-				}
-				visualNames = new WeakReference(output);
-				return output;
-			}
 		}
 	}
 }

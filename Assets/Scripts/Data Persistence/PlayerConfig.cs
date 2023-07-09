@@ -1,18 +1,13 @@
 ﻿namespace B1NARY
 {
-	using B1NARY.DataPersistence;
-	using B1NARY.UI;
 	using HideousDestructor.DataPersistence;
 	using System;
-	using System.Collections;
 	using System.Collections.Generic;
 	using System.IO;
-	using System.Linq;
 	using System.Xml.Serialization;
 	using UnityEngine;
 	using OVSXmlSerializer;
 	using OVSXmlSerializer.Extras;
-	using B1NARY.UI.Colors;
 	using B1NARY.UI.Globalization;
 
 	public class PlayerConfig

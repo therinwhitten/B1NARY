@@ -5837,6 +5837,7 @@ GameObject:
   - component: {fileID: 1610249543556910502}
   - component: {fileID: 1610249543556910503}
   - component: {fileID: 1755746264120664163}
+  - component: {fileID: 5794957881057129390}
   m_Layer: 5
   m_Name: Mode Drop Down
   m_TagString: UI
@@ -6265,6 +6266,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropdown: {fileID: 0}
+--- !u!114 &5794957881057129390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249543556910496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0eb0275dbe7114a9f98578df07a983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 1610249543556910499}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - 'Twitch
+
+    Hentai'
+  - "\n "
+  - "\n "
+  - "\n "
+  expectedLines: 2
 --- !u!1 &1610249543561675936
 GameObject:
   m_ObjectHideFlags: 0
@@ -11400,6 +11427,7 @@ GameObject:
   - component: {fileID: 1610249544477848248}
   - component: {fileID: 1610249544477848249}
   - component: {fileID: 1610249544477848230}
+  - component: {fileID: 2644594594793036965}
   m_Layer: 5
   m_Name: Display Drop Down
   m_TagString: Untagged
@@ -11828,6 +11856,42 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &2644594594793036965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249544477848227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0eb0275dbe7114a9f98578df07a983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 1610249544477848226}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - 'Fullscreen
+
+    Borderless
+
+    Windowed'
+  - 'Ganzer Bildschirm
+
+    Grenzenlos
+
+    Mit Fenster'
+  - "\u5168\u753B\u9762\u8868\u793A\n\u30DC\u30FC\u30C0\u30EC\u30B9\n\u7A93\u4ED8\u304D"
+  - 'Pantalla completa
+
+    sin bordes
+
+    con ventana'
+  expectedLines: 3
 --- !u!1 &1610249544484048859
 GameObject:
   m_ObjectHideFlags: 0

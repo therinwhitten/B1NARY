@@ -25,6 +25,17 @@
 				}
 				throw new IndexOutOfRangeException(language);
 			}
+			set
+			{
+				for (int i = 0; i < languageKeys.Count; i++)
+				{
+					if (languageKeys[i] != language)
+						continue;
+					languageValues[i] = value;
+					return;
+				}
+				throw new IndexOutOfRangeException(language);
+			}
 		}
 
 		private void Reset()
@@ -53,7 +64,7 @@
 
 		internal void UpdateLanguageList()
 		{
-			Dictionary<string, string> existingLanguage = new Dictionary<string, string>();
+			var existingLanguage = new Dictionary<string, string>(languageKeys.Count);
 			for (int i = 0; i < languageKeys.Count; i++)
 				existingLanguage.Add(languageKeys[i], languageValues[i]);
 			HashSet<string> preExistingLanguage = new HashSet<string>(Languages.Instance);
@@ -71,6 +82,7 @@
 				if (preExistingLanguage.Contains(languageKeys[i]) == false)
 				{
 					languageKeys.RemoveAt(i);
+					languageValues.RemoveAt(i);
 					i--;
 				}
 		}
