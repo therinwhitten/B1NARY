@@ -47,14 +47,11 @@
 		/// from the appdata; causing it to not display any directory location 
 		/// at all.
 		/// </remarks>
-		public static DirectoryInfo PersistentData => persistentData.Value;
-		// Set as lazy since trying to get the persistent data path is not looked
-		// - up upon on static class creation.
-		private static readonly Lazy<DirectoryInfo> persistentData = new Lazy<DirectoryInfo>(() => new DirectoryInfo(Application.persistentDataPath));
+		public static DirectoryInfo PersistentData => new DirectoryInfo(Application.persistentDataPath);
 		/// <summary>
 		/// Gets the streaming assets folder with a <see cref="DirectoryInfo"/>.
 		/// </summary>
-		public static DirectoryInfo StreamingAssets { get; } = new DirectoryInfo(Application.streamingAssetsPath);
+		public static DirectoryInfo StreamingAssets => new DirectoryInfo(Application.streamingAssetsPath);
 
 		#region Thumbnail
 		/// <summary>

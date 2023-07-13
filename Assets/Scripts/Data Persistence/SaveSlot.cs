@@ -294,7 +294,7 @@
 			{
 				SceneName = SceneManager.ActiveScene.name,
 				Line = ScriptHandler.Instance.documentWatcher.CurrentNode.GlobalIndex,
-				StreamingAssetsPath = DocumentList.ToVisual(ScriptHandler.Instance.document.ReadFile.FullName),
+				StreamingAssetsPath = new Document(ScriptHandler.Instance.document.ReadFile).VisualPath,
 			};
 		}
 		public string SceneName { get; set; }

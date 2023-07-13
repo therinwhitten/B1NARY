@@ -110,8 +110,7 @@
 				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
 			@object.SetActive(true);
 		}
-		public static DirectoryInfo DocumentFolder { get; } = SerializableSlot.StreamingAssets.GetOrCreateSubDirectory("Docs");
-		public static DocumentList AllDocuments { get; } = new DocumentList();
+		public static DocumentExplorer DocumentExplorer { get; } = new DocumentExplorer();
 
 
 
@@ -172,7 +171,7 @@
 		}
 		public void NewDocument(string streamingAssetsDocument, int index = 0)
 		{
-			document = new ScriptDocument(config, DocumentList.FromVisualLanguage(streamingAssetsDocument));
+			document = new ScriptDocument(config, DocumentExplorer.GetFromVisual(streamingAssetsDocument).FullPath);
 			documentWatcher = document.StartAtLine(index);
 		}
 
@@ -236,24 +235,24 @@ namespace B1NARY.Editor
 		public override void OnInspectorGUI()
 		{
 			var scriptHandler = (ScriptHandler)target;
-			string[] allFullPaths = ScriptHandler.AllDocuments.AsVisual();
-			if (allFullPaths.Length > 0)
+			string[] allVisualPaths = ScriptHandler.DocumentExplorer.CoreDocuments.Select(doc => doc.VisualPath).ToArray();
+			if (allVisualPaths.Length > 0)
 			{
-				int oldIndex = Array.IndexOf(allFullPaths, scriptHandler.defaultStreamingAssetsDocumentPath);
+				int oldIndex = Array.IndexOf(allVisualPaths, scriptHandler.defaultStreamingAssetsDocumentPath);
 				if (oldIndex < 0)
 				{
 					oldIndex = 0;
-					scriptHandler.defaultStreamingAssetsDocumentPath = allFullPaths[0];
+					scriptHandler.defaultStreamingAssetsDocumentPath = allVisualPaths[0];
 					EditorUtility.SetDirty(scriptHandler);
 				}
-				int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, allFullPaths);
+				int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, allVisualPaths);
 				if (oldIndex != newIndex)
 				{
-					scriptHandler.defaultStreamingAssetsDocumentPath = allFullPaths[newIndex];
+					scriptHandler.defaultStreamingAssetsDocumentPath = allVisualPaths[newIndex];
 					EditorUtility.SetDirty(scriptHandler);
 				}
 				if (GUILayout.Button("Open File"))
-					Process.Start(ScriptHandler.AllDocuments[newIndex].FullName);
+					Process.Start(ScriptHandler.DocumentExplorer.CoreDocuments[newIndex].FullPath.FullName);
 			}
 			else
 			{

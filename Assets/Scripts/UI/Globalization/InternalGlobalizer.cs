@@ -6,7 +6,7 @@
 
 	internal static class InternalGlobalizer
 	{
-		[RuntimeInitializeOnLoadMethod]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
 		public static void Constructor()
 		{
 			CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");

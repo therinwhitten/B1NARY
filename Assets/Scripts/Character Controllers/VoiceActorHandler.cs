@@ -52,15 +52,19 @@
 				character.ChangeCharacterName(newName);
 			})),
 		};
-		public static string GetResourceVoicePath(int index, ScriptHandler handler)
-			=> $"Voice/{DocumentList.ToVisual(handler.document.ReadFile.FullName)}/{index}";
 		public static AudioClip GetVoiceLine(int index, ScriptHandler handler)
 		{
-			string filePath = GetResourceVoicePath(index, handler);
+			Document current = new Document(handler.document.ReadFile);
+			string filePath = $"Voice/{current.VisualPath}/{index}";
 			AudioClip clip = Resources.Load<AudioClip>(filePath);
 			if (clip == null)
-				Debug.LogWarning(new IOException($"Voiceline in resources path '{filePath}' " +
-					"could not be retrieved.").ToString());
+			{
+				// try again but with default
+				clip = Resources.Load<AudioClip>($"Voice/{current.GetWithoutLanguage().VisualPath}/{index}");
+				if (clip == null)
+					Debug.LogWarning(new IOException($"Voiceline in resources path '{filePath}' " +
+						"could not be retrieved.").ToString());
+			}
 			return clip;
 		}
 		public static VoiceActorHandler GetNewActor(AudioSource source)
