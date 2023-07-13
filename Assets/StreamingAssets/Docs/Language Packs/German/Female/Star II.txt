@@ -1,11 +1,12 @@
-{changeScene: Scenes/Star/Bedroom}
-{fadeinsound: starandszy, 1}
+{changeScene: Star Bedroom Night}
+{colorformat: Asterella}
+{fadeinsound: Szy and Star Dinner, 1}
 {fadeinsound: fireplace, 1}
-{spawnChar: malesilo, -1, Szycrotic}
-{spawnChar: femalesilo, 2, Asterella}
-{spawnChar: femalesilo, 2, MC}
-{anim: Szycrotic, idle}
-{moveChar: Szycrotic, .25}
+{spawnChar: szycrotic default, -.5, Szycrotic}
+{spawnChar: star nightgown, 1.3, Asterella}
+{spawnEmpty: MC, Player}
+{movecube: .4, .4}
+{moveChar: Szycrotic, .3}
 MC::
 Große Flächen mit königlicher Orchidee kontrastieren mit dunkler Eiche im größten Teil des Anwesens.
 Nach den Dutzenden von Zimmern zu urteilen, durch die ich gegangen bin, sind hier mindestens 40 Personen beschäftigt. Vielleicht auch mehr.
@@ -23,7 +24,7 @@ Eingerichtet in einer simplen, dennoch eleganter Dekoration.
 Dunkles Violett und Antike Eiche.
 Oh!
 Dort ist sie!
-{moveChar: Asterella, .75}
+{moveChar: Asterella, .65}
 {additive:on}
 Am lesen eines vielseitigen Buch, 
 Asterella Star, 
@@ -37,48 +38,89 @@ Ara Ara...
 {fadeinsound: Heart Thump, .1}
 Sie öffnet ihren Mund, ein Eindruck von Ungeduld und leichter Verärgerung färbt ihre Rede.
 Asterella::
-[annoyed]
+[Annoyed]
 „Bruh."
 „Es wurde an der Zeit, dass du unseren 'Gast' herbringst."
 MC::
 Sie schließt ihr Buch mit Endgültigkeit.
+{fadeinsound: bookclose1, .1}
 Szycrotic erwidert lässig. 
-Szycrotic::
-„Frau, sie wollte den Garten sehen! Gib mir nicht die Schuld!"
-MC::
-Szycrotic schießt einen seitenlangen Blick auf mich. 
-Oh oh. Ein Funke einer Idee. Ich kann es hinter der Maske brauen sehen.
-Mit einer dramatischen Pose gestikuliert er auf mein Gesicht. With a dramatic pose, he gestures at my face. 
-Szycrotic::
-{additive:on}
-„Wie kannst du dieses Gesicht ablehnen?"
-Schau zu ihr! 
-Sie schwebte beinahe auf Wolken wenn sie in dem Garten war!"
-{additive:off}
+{if: n-b}
+{
+ Szycrotic::
+ "Frau, sie wollten den Garten sehen, nimm es mir nicht übel."
+ MC::
+ Szycrotic wirft mir einen Seitenblick zu. 
+ Oh nein. Ein Funke einer Idee. Ich kann sehen, wie sie hinter dieser Maske brodelt.
+ Mit einer dramatischen Pose deutet er auf mein Gesicht. 
+ Szycrotic::
+ [Lewd]
+ {additive:on}
+ "Wie kannst du dieses Gesicht leugnen? 
+ Seht sie euch an! 
+ Sie schwebten fast auf Wolken, als sie im Garten waren!"
+ {additive:off} 
+ [Default]
+}
+{if: !n-b}
+{
+ Szycrotic::
+ „Frau, sie wollte den Garten sehen! Gib mir nicht die Schuld!"
+ MC::
+ Szycrotic schießt einen seitenlangen Blick auf mich. 
+ Oh oh. Ein Funke einer Idee. Ich kann es hinter der Maske brauen sehen.
+ Mit einer dramatischen Pose gestikuliert er auf mein Gesicht. 
+ Szycrotic::
+ [Lewd]
+ {additive:on}
+ „Wie kannst du dieses Gesicht ablehnen?"
+ Schau zu ihr! 
+ Sie schwebte beinahe auf Wolken wenn sie in dem Garten war!"
+ {additive:off} 
+ [Default]
+}
+{movecube: .65, .2}
 MC::
 Asterella nimmt Blickkontakt mit mir auf. Ich merke wie das rot zu meinen Wangen rennt. 
-Asterella::
-[happy]
-„Sie <i>ist</i> süß."
-„So süß, dass ich sie <i>essen</i> könnte!"
+{if: !n-b}
+{
+ Asterella::
+ [Happy]
+ „Sie <i>ist</i> süß."
+ „So süß, dass ich sie <i>essen</i> könnte!"
+}
+{if: n-b}
+{
+ Asterella::
+ [Happy]
+ "Sie <i>sind</i> süß."
+ "So süß, ich könnte sie <i>einfach</i> aufessen!"
+}
 MC::
 Panik steigt auf. 
 Star lacht und platziert das Buch auf den Kaffeetisch.
 Asterella::
 „Ich esse keine Menschen, Liebes. Also beruhige dich."
+{movecube: .4, .4}
+[Default]
 MC::
 Ihre Stimme wird spöttisch ernst. 
 Asterella::
+[Indifference]
+{anim: Asterella, Pouting}
 „Szy, du weißt ich mag es nicht wenn du mich warten lässt." 
 MC::
 Sie berührt ihr Kinn nachdenklich.
 Asterella::
+[Default]
+{anim: Asterella, Smug}
 „Ich weiß. Deine Bestrafung ist... eine Million Jahre im Kerker!"
 MC::
 Was?
 {additive:on}
 „Warte! Du kannst nicht! 
 Er war so nett zu mir!"
+{movecube: .65, .2}
 {additive:off}
 Was mache ich gerade?
 {choice: Nimm die Schuld?}
@@ -94,7 +136,9 @@ Was mache ich gerade?
             „Wenn mein Leiden seines verringert, werde ich es nehmen!"
             Asterella lächelt entschuldigend. 
             Asterella::
+            [Happy]
             „Es ist nur eine Spaßbestrafung. Er ist nicht <i>wirklich</i> in Gefahr."
+            [Default]
             „Aber ihr könnt es teilen, wenn du das wirklich möchtest."
             „Bist du wirklich sicher?"
             MC::
@@ -109,7 +153,7 @@ Was mache ich gerade?
             Naja. Wenn es so was geben sollte.
         ]
     }
-{if: starbed, true}
+{if: starbed}
 {
     {choice: Willst du Stars Angebot annehmen?}
     {
@@ -121,33 +165,40 @@ Was mache ich gerade?
            Ich bin mir der Sache sicher. 
            Ich werde nicht nachgeben!
            Asterella::
+           [Happy]
+           {anim: Asterella, Pouting}
            „Schau dir das süße und entschlossene Gesicht an, Szy."
            „Das ist so wertvoll!"That's so precious!"
            Szycrotic::
-           [surprised]
+           [OWO]
            „Ich bin berührt, MC. Du kennst mich nicht mal!"
+           [Default]
            „Ich werde nicht lügen, du <i>scheinst</i> ein wenig verrückt zu sein."
            Asterella:: 
-           [serious]
+           [Default]
            {additive:on}
            „Also gut.
            Wenn du bereit bist, die Strafe für Szy's mangelnden Respekt zu übernehmen,
            dann schließe deine Augen."
            {additive:off}
            MC::
-           **TODO: Close Eyes Tranisition**
-           {changeBG: Black Trans}
+           {spawnChar: EyeBlink, .5, EyeBlink}
+           {anim: EyeBlink, Close}
            Ich schließe meine Augen. Plötzlich kommt die Nervosität.
            Was wird mit mir geschehen?
            Ich fühle eine Welle der Reue. 
            Ich <i>werde</i> meinen Mann stehen!
            Ich höre das Schlurfen von nackten Füßen auf dem Boden, die auf mich zukommen.
+           {moveChar: Asterella, .5}
+           {moveChar: Szycrotic, .25}
+           {movecube: .5, .2}
            Szycrotic::
            „Star nicht das! Nicht mal ich bin so beschissen!"
            MC::
-           ................
+           ...
            Asterella::
            „Ok, bist du bereit MC?"
+           [Happy]
            MC::
            Ich sehe nichts und Stars Stimme ist ziemlich nah.
            Ich kann das Gleiten der Seide auf der Haut und das Knistern des Feuers in der Stille des Raumes hören. 
@@ -156,9 +207,9 @@ Was mache ich gerade?
            {fadeinsound: body punch hard, 1}
            Die Mitte meiner Stirn bricht in einen sofortigen und scharfen Schmerz aus.
            „OWWWWW!"
-           **TODO: Open Eyes Transition**
-           {changeBG: Star Bedroom Night Animated}
+           {anim: EyeBlink, Open}
            {additive:on}
+           {anim: EyeBlink, Open}
            Ich öffne meine Augen um Star zu sehen, 
            Zentimeter von meinem Gesicht entfernt,
            ihr leichter Atem streicht mein Gesicht.
@@ -166,7 +217,7 @@ Was mache ich gerade?
            Hat sie mich mit dem Finger geschnippt?
            Der Ausdruck in Stars Gesicht, ist ein Ausdruck von leichter Belustigung. 
            Asterella::
-           {anim: Asterella, smug}
+           {anim: Asterella, Smug}
            „Da. Alles gemacht."
            MC:: 
            Star scheint befriedigt und nah am lachen zu sein.
@@ -174,9 +225,11 @@ Was mache ich gerade?
            „Es gibt wirklich keinen Grund jemanden zu beschützen, speziell Szycrotic nicht."
            MC::
            Star streicht mein Haar weg und küsst meine verletzte Stirn leicht. 
+           {movecube: .5, .4} 
            {fadeinsound: Heart Thump, 1}
            Asterella::
-           {anim: Asterella, idle}
+           {anim: Asterella, Thinking}
+           {movecube: .5, .2}
            „Er wird in Ordnung sein. Szy liebt seine Bestrafungen, und es hat nichts mit seiner Performance zu tun." 
            "Ich verspreche es, ok?"
            MC::
@@ -186,29 +239,48 @@ Was mache ich gerade?
            {moveChar: Szycrotic, .1}
            MC::
            Szy stoppt an der Tür.
-           Szycrotic::
-           „Star, wenn sie <i>irgendwas</i> macht."
+           {movecube: .2, .3}
+           {if: !n-b}
+           {
+             Szycrotic::
+             [Angry]
+             „Star, wenn sie <i>irgendwas</i> macht."
+           }
+           {if: n-b}
+           {
+             Szycrotic::
+             [Angry]
+             "Star, wenn sie <i>irgendwas tun.</i>"
+           }
            MC::
            Asterella lächelt, und schickt Szys Kommentar mit einem Handschwung fort.
            Asterella::
-           [happy]
+           [Happy]
            {additive:on}
            „Szy, du machst dir zu viele Sorgen. 
            Ich bin ein großes Mädchen."
            {additive:off}
            {additive:on}
+           [Indifference]
+           {anim: Asterella, Pouting}
            „Und als dein <i>Lord</i>...
            <i>musst</i> du dich mir fügen."
            {additive:off}
            MC::
            Er verbeugt sich tief auf eine spielerische Art, ein Kichern bricht durch seine sonst ernste Performance.
            Szycrotic::
+           [Default]
            „Ich lebe nur um dir zu dienen, Milady."
+            Asterella::
+           [Happy]
            MC::
+           {fadeinsound: Star Laugh 2, .1}
+           {fadeinsound: Szy Laugh 5, .5}
            Er hat es fast geschafft. Beide fangen an zu lachen.
-           {fadeinsound: Door, 1}
+           {fadeinsound: openclosedoor, 1}
            {moveChar: Szycrotic, -1}
-           {moveChar: Asterella, .50}
+           {moveChar: Asterella, .45}
+           {movecube: .45, .2}
            Als Szy geht, sind wir alleine. Star und ich.
            Der Kuss auf meiner Stirn brennt mehr, als der Stich in meinen Stolz oder der Fingerschnipser.
            She is so captivating.
@@ -216,15 +288,14 @@ Was mache ich gerade?
            Alles Eigenschaften die ein Dämonenlord haben soll?
            Ich berühre meine Stirn sanft.
            Asterella::
-           [sad]
+           [Default]
            „Hat es geschmerzt?"
            MC::
            Ich lache nervös.
            „Es war nicht der Fingerschnipser..."
            Asterella::
-           [happy]
            „Naja, MC. Wir müssen uns über einiges reden."
-           {changeScript: Female/Prologue/Star II, 288}
+           {changeScript: Female/Prologue/Star II, 378}
         ]
         Vergiss es, ich kann das nicht!
         [
@@ -233,6 +304,7 @@ Was mache ich gerade?
             Vielleicht gehe ich zu weit...
             Ich schau zu Szycrotic. 
             Asterella::
+            {anim: Asterella, Thinking}
             „Hast du den Mut verloren?"
             MC::
         ]
@@ -241,22 +313,33 @@ Was mache ich gerade?
 Oh mein Gott ich ersticke.
 Ich muss mich beruhigen.
 Asterella hebt ihre Augenbrauen und steht auf. 
-Asterella::
-„Sie scheint dich ziemlich zu beschützen. Muss ich die Bestrafung erhöhen?"
+{movecube: .3, .4}
+{if: !n-b}
+{ 
+ Asterella::
+ „Sie scheint dich ziemlich zu beschützen. Muss ich die Bestrafung erhöhen?"
+}
+{if: n-b}
+{
+ Asterella::
+ "Sie scheinen dich ziemlich zu beschützen, Szy. Soll ich die Strafe erhöhen?"
+}
 MC::
 Ich stehe erstaunt. Ich möchte nicht noch mehr zu seinen Schmerzen hinzufügen.
 Szycrotic::
-[horny]
+[Lewd]
 „Oh yeah dommy mommy, gib mir die Strafe die ich verdiene."
 MC::
+{fadeinsound: Szy Laugh 5, .5}
 Er lacht herzlich, geht auf Star zu und küsst sie auf die Stirn. 
 Mit einem winken, öffnet er die Tür.
 Szycrotic::
-{anim: Szycrotic, smug}
+[Default]
 „Ihr beide habt Spaß."
-{fadeinsound: Door, 1}
+{fadeinsound: openclosedoor, 1}
 {moveChar: Szycrotic, -1}
-{moveChar: Asterella, .50}
+{moveChar: Asterella, .45}
+{movecube: .45, .2}
 MC::
 Wir sind alleine.Star und ich.
 Wie aufs Stichwort schreitet sie selbstbewusst auf mich zu.
@@ -265,12 +348,16 @@ Sie ist ein bisschen kleiner als ich, aber ihre Präsenz von Autorität ist grei
 Trotz meiner selbst spüre ich, dass ich mich ihr hingeben möchte. 
 Sie ist ganz und gar ein Lord. 
 Asterella::
-{anim: Asterella, thinking}
+{anim: Asterella, Thinking}
 „Also, hast du einen Namen?"
 MC::
 Sie lässt die Frage offen stehen. 
 Oh!
 „Mein Name ist MC, Lord Star."
+{if: n-b}
+{
+ "Mein Pronomen ist sie..."
+}
 Ich stottere es.  
 Innerlich bin ich am stöhnen.
 Damit hab ich meinen ersten Eindruck zerstört.
@@ -279,12 +366,17 @@ Von wo sie steht, kann ich sehen, dass ihre Unterwäsche viel enthüllt.
 Fast transparent. 
 Ich kann Lavendel und can smell lavender and... brimstone?
 Sie ist so nah. 
-{anim: Asterella, idle}
+{anim: Asterella, Pouting}
 Sie nickt und lächelt in einem aufrichtigem Lächeln.  
 Asterella::
-[happy]
+[Happy]
 „Das ist ein sehr toller Name, MC."
+{if: n-b}
+{
+ "Das habe ich aus Szy's Rede entnommen. Sehr gut."
+}
 {additive: on}
+[Default]
 „Bevor wir uns über das Geschäftliche sprechen, 
 würde ich gerne ein wenig entspannen.
 Hast du vielleicht Lust auf ein Glas Wein?"
@@ -295,8 +387,11 @@ Alles um diese Trance zu brechen.
 „Dass wäre sehr nett. Ich bin tatsächlich ziemlich durstig."
 Sie bewegt sich anmutig zu dem Sofa.
 Asterella::
+{anim: Asterella, Pouting}
 „Bitte setze dich. Ich bringe den Wein."
 MC::
+{moveChar: Asterella, .65}
+{movecube: .8, .3}
 Sie bewegt den Tisch gegen die Wand und fordert mich auf, mich zu bewegen.
 Ich gehe meines Weges zu dem Sofa. 
 Der ganze Raum schreit nach bescheidenen königlichen Verhältnissen, als ob sie es nicht nötig hätte, auffällig zu demonstrieren, wer sie ist.
@@ -318,21 +413,26 @@ Weiß sie irgendwas?
 Ich schließe mich dem schnell an.
 Vielleicht ein wenig zu verzweifelt.
 „Ich kann dir versichern, es war keine Absicht, dass ich hier bin."
+{movecube: .65, .2}
 Sie schaut zurück mit einem unlesbaren Ausdruck.
-{fadeinsond: woodwine1, .1}
+{fadeinsound: woodwine1, .1}
 Asterella::
 „Ich hatte so viel schon vermutet." 
 „Aber, dass rettet dich nicht. Noch nicht."
+{movecube: .8, .3}
+{anim: Asterella, Thinking}
 {fadeinsound: woodwine2, .1}
-{fadeinsound: glasspouring, 1}
+{fadeinsound: Pouring, 1}
 „Und du hast mir immer noch nicht gesagt von wo du kommst."
 „Und auch scheinst du nicht ein Synthgen zu sein. Jedenfalls scheine ich nichts zu <i>fühlen</i>."
-{fadeinsound: glasspouring, 1}
+{fadeinsound: Pouring, 1}
 MC::
 Sie greift das Glas und gleitet anmutig zum Sofa, um mir danach ein Glas anzubieten.
+{moveChar: Asterella, .45}
+{movecube: .45, .2}
 Ich nehme es anmutig an.
 „Domo arigatou."
-{choice:}
+{choice: Was soll ich sagen?}
 {
         Sei ehrlich und offen.
         [
@@ -341,7 +441,7 @@ Ich nehme es anmutig an.
             Da. Die Wahrheit, aber ich halte die Informationen zurück, die ich <i>preiszugeben wage</i>. 
             Ich hoffe, dass war gut genug...
             Sie führt ihren Finger überlegend über die Kante des Weinglases.
-            {anim: Asterella, thinking}
+            {anim: Asterella, Thinking}
             Asterella::
             „In Ordnung. Ich kann das erstmal akzeptieren."
             „Später werden trotzdem Fragen kommen, Ich verspreche es."
@@ -355,7 +455,7 @@ Ich nehme es anmutig an.
           Und sie wird's auch nicht.
           Star runzelt die Stirn. Die Luft fühlt sich plötzlich kalt an. 
           Asterella::
-          [angry]
+          [Annoyed]
           {additive: on}
           „Es gibt einige Sachen die ich nicht toleriere.
           Eine davon ist lügen.
@@ -372,7 +472,7 @@ Ich nehme es anmutig an.
           Fügte ich schnell hinzu.
           „Ich möchte deinem Gebiet noch deiner Leute irgendetwas Böses. So viel ist sicher."
           Sie studiert mich. Hat sie in diesem Blick ein wenig Misstrauen entdeckt?
-          [happy]
+          [Default]
           Asterella::
           „Ich werde, dass vorerst akzeptieren. Ich verstehe deine Position."
           MC::
@@ -384,28 +484,35 @@ Nur ein oder zwei Fuß sind zwischen uns.
 {additive:off}
 Ich starre auf das Glas, die dunkle stechende Flüssigkeit strahlt in dem Licht des knisternden Feuers.
 Asterella::
-[happy]
+[Happy]
 „Auf zukünftige Beziehungen."
 MC::
 Sie bringt ihr Glas an meines und wir stoßen an.
-{fadeinsound: winetoast, .1} 
+{fadeinsound: Wine Toast, .1} 
 MC::
 „Zukünftige Beziehungen."
+{movecube: .45, 0}
+{anim: Asterella, Impatient}
 Wir nehmen die ersten Schluck in Stille. Der Geschmack ist sehr rauchig und rein. 
 Ich widerstehe der Versuchung es zu schnell zu trinken.  
 „Also, warum die ganze Zeremonie nur für mich?"
 Ein kleines Lächeln berührt ihre Lippen.
 Asterella::
+{movecube: .45, .3}
 {additive:on}
 „Direkt auf den Punkt. 
 Ich mag das."
 {additive:off}
+[Horny]
 MC::
 Ihre Stimme ist fast schwül, als sie ihren Blick von ihrem Glas erhebt.
 Sie nimmt einen weiteren Schluck und platziert das Glas auf den Tisch.
+{movecube: .45, .0}
 {fadeinsound: wineglassdown, 1}
 Eine Pause.
+{movecube: .45, .3}
 Asterella::
+[Default]
 „Zwei Sachen..."
 MC::
 Sie hält einen Finger nach oben. 
@@ -413,6 +520,7 @@ Asterella::
 „Nummer Eins."
 „Du kamst in mein Reich ohne meine Erlaubnis."
 {additive:on}
+{anim: Asterella, Pouting}
 „Das ist hier nicht so einfach möglich. 
 Also... entweder hast du ein unglaubliches Level an Macht...
 oder du bist kein Teil des Systems welches alles hier laufen lässt, was du um dich herum erkennst."
@@ -420,15 +528,20 @@ oder du bist kein Teil des Systems welches alles hier laufen lässt, was du um d
 MC::
 Sie schaut mich an, während sie nachdenkt.
 Asterella::
+{anim: Asterella, Thinking}
 {additive:on}
 „Ich möchte annehmen, dass es sich um Letzteres handelt. Aber offensichtlich,
 kann ich das nicht ohne...
-[horny]
+{movecube: .45, .2}
+[Happy]
 dich zu studieren."
 {additive:off}
 MC::
 Sie probiert meine Augen zu lesen, um etwas zu suchen?
-{anim: Asterella, pouting}
+Asterella::
+[Indifference]
+{anim: Asterella, Pouting}
+MC::
 Ein wenig Frustration kommt aus ihrem Seufzer.
 Asterella::
 {additive:on}
@@ -439,8 +552,8 @@ Ich versichere dir, das ist eine gute Sache."
 MC::
 Sie stellt gezielt direkten Augenkontakt her. 
 Asterella::
-{anim: Asterella, idle}
-[horny]
+[Horny]
+[Happy]
 „Viel besser als die Alternative."
 MC::
 Ich schlucke ein wenig, so dass man es hört. Sie ist unheimlich und sinnlich zugleich.
@@ -462,28 +575,23 @@ Es ist alles was ich sagen kann.
 Ich nehme einen tiefen Schluck, um mein errötetes Gesicht, hinter der Aktion zu verdecken.
 Asterella Star fragt mich, mit ihr „die Nacht zu verbringen." 
 Sie schaut mich an, mit den Fragen in ihren Augen. 
-{choice:}
-    {
-        Ja, ich bin damit einverstanden. (Hentai Scene)
-        [
-            MC::
-            Zögernd strecke ich die Hand aus, berühre ihre Hand und lege sie auf mein Bein.
-            Sie schaut zu mir mit sanften Augen. 
-            „Es wird mein erstes Mal mit einer Frau sein."
-            „Sei zahm."
-            {changeScript: Female/Prologue/Star II Hentai}
-        ]
-        Nein. Das geht zu schnell. 
-        [
-            {changeScript: Female/Prologue/Star II FriendZoned}
-        ]
-    }
-
-
-
-
-
-
-
-
-
+{choice: Keine Panik...} 
+{
+    Ja, ich bin damit einverstanden.
+    [
+        MC::
+        Zögernd strecke ich die Hand aus, berühre ihre Hand und lege sie auf mein Bein.
+        Sie schaut zu mir mit sanften Augen. 
+        „Es wird mein erstes Mal mit einer Frau sein."
+        „Sei zahm."          
+        MC:: 
+        {usegameobject: Hentai Warning Panel, true}
+        {fadeoutsound: fireplace, 1}
+        {fadeoutsound: Szy and Star Dinner, 1} 
+        {changeScript: Female/Prologue/Star II Hentai}
+    ]
+    Nein. Das geht zu schnell. 
+    [
+        {changeScript: Female/Prologue/Star II FriendZoned}
+    ]
+}

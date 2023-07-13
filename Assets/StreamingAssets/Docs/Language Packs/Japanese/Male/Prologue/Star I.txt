@@ -1,18 +1,20 @@
-**TODO:Fade From White**
-
-{changeScene: Scenes/Star/Outside Default}
-{fadeoutsound: Heartbeat, 10}
+{changeScene: Scenes/Star/Star Outside Night}
+{colorformat: Asterella}
+{fadeoutsound: Normal Heartbeat Prologue, 5}
 {fadeinsound: Star Piano, 10}
 {fadeinsound: Wind Heavy, 1}
 {fadeoutsound: Ears Ringing, 15}
-{spawnChar: malesilo, 2, Masked Punk}
-{anim: Masked Punk, idle} 
-{spawnChar: malesilo, 2, MC}
+{spawnChar: szycrotic default, 2, Masked Punk}
+{movecube: .5, .2}
+{spawnEmpty: MC, Player}
+{spawnEmpty: ナレーター, NPC}
+ナレーター::
+{usegameobject: Flashing Lights Complete Panel, true}
 MC::
 輪ゴムが張り詰めすぎているように、俺の心は再び激しいスナップで一つになる。 
 俺は突然再び俺になり、筋肉のけいれんとうずきがいたるところにある。 
 俺は空気をあえぎ。
-クソ
+「なんてこった 
 地? 俺は地面に横たわっている？
 植物は俺の背中に湿っていて、俺のシャツを浸している。
 うるおいを感じる。
@@ -57,14 +59,14 @@ MC::
 サーバーはクリーンな環境であると想定されていた。 
 それでも、ルーマニアの屋敷は高く立っており、明るい月明かりを浴びている。
 Masked Punk::
-[annoyed]
+[Default]
 {additive: on}
 "おい、何これ?
 そして、あんた、だれ？"
 {additive: off}
 {fadeinsound: Szy Dark, 3}
 {fadeoutsound: Star Piano, 2}
-{fadeinsound: Flashstep, .3}
+{fadeinsound: Flash Step, .3}
 {moveChar: Masked Punk, .50}
 "マジ? 俺はここに来るのは敗者が忍び寄るのを見つけるためだけ？"
 MC::
@@ -89,16 +91,12 @@ MC::
 だれ？
 Masked Punk::
 "おい! クソやろう! あんたに質問をしたことをはっきりと覚えてる。"
-{anim: Masked Punk, impatient}
-[angry]
+{anim: Masked Punk, Wind Idle}
+[Angry]
 MC:: 
 "名前はMC. あの。。。こんにちは? ここに着いた"
 俺は飲み込む。
 "よろしく?"
-Masked Punk::
-{anim: Masked Punk, thinking}
-[confusion]
-MC::
 自由形式の質問を残した。
 俺が走ることができる方法はない。彼は速すぎる。 
 そして、即座の暴力が可能。
@@ -114,13 +112,17 @@ MC::
 俺は自分が脅威ではないことを示す必要がある。
 難しいことではない。
 だから、俺にできることは手を差し伸べることだけ。
+{movecube: .5, 0}
 落ち着いてMC。 
 "ここにテレポートした。俺はあなたの財産を侵害するつもりはなかった。"
+Masked Punk::
+[OWO]
+MC::
 彼は俺の手を見て、何かを待っているかのように一時停止する。
 彼のマスクがイライラして点灯する前に、それは数秒のように感じる。
 Masked Punk::
-{anim: Masked Punk, idle}
-[disgust]
+{movecube: .5, .5}
+[Angry]
 "侵害? 何これ?" 
 "一体何の意味？"
 "あんた、俺を侮辱してる？!"
@@ -133,9 +135,10 @@ MC::
 彼の目のスリットは不審に狭くなっている。
 Masked Punk::
 "はあ? まあ..."
-[indifference]
+[Default]
 MC::
 彼は一時停止する。
+{movecube: .5, 0} 
 彼は俺の手を見下ろしてそれを取る。 
 {changeName: Masked Punk, Szycrotic}
 Szycrotic:: 
@@ -143,9 +146,6 @@ Szycrotic::
 MC::
 よかった!
 彼は俺の手をつかみ、一気に俺を引き寄る。
-Szycrotic::
-[happy]
-MC::
 マスクがほとんど俺の鼻に触れている。
 よく考えて飲み込む。
 これを閉じると、硫黄の匂いが俺の鼻の穴を満たす。 
@@ -161,7 +161,7 @@ MC::
 数歩後、彼は立ち止まり、頭が人間には少し遠すぎる。
 彼の視線は俺を貫く。 
 Szycrotic::
-[indifference]
+{anim: Szycrotic, Impatient End}
 "それは要求ではなかった。あんたは俺と一緒に来る。" 
 "Starはあなたをどうするかを理解する。"
 "結局、あんたは侵入してる。"
@@ -171,70 +171,75 @@ MC::
 俺が彼と一緒に行くと、この「Star」は俺を歪めるかもしれない。 
 それからまた、俺は彼を十分にかわして森に入ることができるかもしれない。
 俺たちの間には約10フィートの距離がある。全速力で走れるかもしれない。
-{選び: 俺は何をすべきか？ここで俺を殺さないようにしてください。}
- {
+{spawnChar: Circle Wipe, .5, CircleWipe}
+{choice: 俺は何をすべきか？ここで俺を殺さないようにしてください。}
+{
     ばか? 走れ!
     [
        じゃ、今行く！
-       {changeBG: Star Default Animated}}
+       {anim: CircleWipe, RightStart}
        {moveChar: Szycrotic, -1}
        MC::
+       {anim: CircleWipe, LeftEnd}
        {fadeinsound: footsteps run forest, .5}
        木々や背の高い草を駆け抜けて走り、歩幅を広げさせた。
-      俺の体は突然の動きにすぐに大声で抗議する。 
-     不機嫌そうな人は俺の歯を食いしばって逃げる。
+       俺の体は突然の動きにすぐに大声で抗議する。 
+       不機嫌そうな人は俺の歯を食いしばって逃げる。
+       {disablechar: CircleWipe}
        これは悪い考えだった。
        これは信じられないほど悪い考えだった。
-
        俺の体は、そもそもプライムフィットネスの素材ではないが、テレポートでまだ痛い。
-      前に倒れるほど速く走っていると、一瞬バランスが崩れる。
+       前に倒れるほど速く走っていると、一瞬バランスが崩れる。
        {fadeinsound: body punch hard, 1}
        痛い!
        俺の足が枝にぶつかり、そのゴツンという音が聞こえるほど強くなった。俺はほとんど顔を伏せる。
-      鉄のように固い手が肩を掴んでいるのを感じる。 
-       {anim: Szycrotic, windswept}
+       鉄のように固い手が肩を掴んでいるのを感じる。 
+       {anim: Szycrotic, wind idle}
        {moveChar: Szycrotic, .5}
        Szycrotic::
-       [happy]
+       [Lewd]
        "じゃ. あんたはこれを難しい方法でやりたい、な?"
        "はは。いいだろう ラフが好き！"
        MC::
        "パニックになった、分かる？! 頼む! 俺を切らないで!"
-      彼のマスクは混乱しているように見える。
+       彼のマスクは混乱しているように見える。
        Szycrotic::
-       [confusion]
+       [OWO]
        "あんた、ばか? あんたを切らない。"
        "ま. まだ."
        "真剣に、あんたはこの領域をまったく傷つけていない。"
        "オイ, あんたを見て、足は出血している。"
        MC::
-      下を見下ろすと、ズボンから少し血がにじみ出ている。 
+       下を見下ろすと、ズボンから少し血がにじみ出ている。 
        血に気付く頃には、ドキドキする痛みが脳に追いつく。 
-      俺は少しうめき声を上げ、その後に鋭い息を吸い込んだ。 
+       俺は少しうめき声を上げ、その後に鋭い息を吸い込んだ。 
        Szycroticは俺の後ろで笑う。
        Szycrotic::
-       [happy]
-       **TODO: Make henable**
-       if: henabled, true
-       "俺はまだあんたに何も突き刺していない、pogchampちゃん。"
-       if: henable, false
-       "落ち着け。ただあんたを縛るつもり。Starにあんたの怪我のせいにすることはできない、今俺たちはできるか？"
+       [Lewd]
+       {if: henable}
+       {
+         "俺はまだあんたに何も突き刺していない、pogchampちゃん。"
+       }
+       {if: !henable}
+       {
+         "落ち着け。ただあんたを縛るつもり。Starにあんたの怪我のせいにすることはできない、今俺たちはできるか？"
+       }
+       [Default]
        MC::
        突然、アイアングリップが手首を掴んでいるのを感じる。 
-      一瞬、俺は戦おうとするが、彼を止めることはできない。
+       一瞬、俺は戦おうとするが、彼を止めることはできない。
        彼の強さは俺のものをはるかに超えている。 
-       俺はあきらめる、そしてすぐに、ロープは俺の背中の後ろの俺の手首の周りにある。 
-       {anim: Szycrotic, thinking}
-       {additive: on}
+       俺はあきらめる、そしてすぐに、ロープは俺の背中の後ろの俺の手首の周りにある。
+       {additive: on} 
        Szycroticは俺に直面するために動き回る、
        俺を勉強している。 
        {additive: off}
        とはいえ、彼のマスクでは、彼の表情を読むのはちょっと難しい。
        今回は違う。
-       彼のマスクは笑顔で割れる。 
+       彼のマスクは笑顔で割れる。
+       {movecube: .5, .0} 
        Szycrotic::
-       {anim: Szycrotic, wind idle}
-       [happy]
+       [Lewd]
        "そしてもう1本のロープが機能するはず。。。そしてもう1本のロープともう1本のロープともう1本のロープ。"
        "おおお、 それはちょっと俺を少しオンにする。"
        MC::
@@ -243,22 +248,29 @@ MC::
        "おお, それ、楽しい! 走ってよかった。"
        MC::
        {additive: on}
-      何も言わない。俺は野良犬のようにつながれている。
-      俺は自分ができる唯一のことをする：しかめっ面。
-      デジタルの領域で5分、俺はすでに囚人。
+       何も言わない。俺は野良犬のようにつながれている。
+       俺は自分ができる唯一のことをする：しかめっ面。
        {additive:off}
+       デジタルの領域で5分、俺はすでに囚人。
        Szycroticは振り返り、彼の手仕事に満足した。
        Szycrotic::
+       {movecube: .5, .4}
+       [Default]
        "OK、少年。 行こう。"
        MC::
        "少年じゃない。' MCだ。"
-      彼はロープを引っ張って、俺はしぶしぶ従いる。
+       {if: n-b}
+       {
+          "そして、"彼ら "をお願いします」。
+       }
+       彼はロープを引っ張って、俺はしぶしぶ従いる。
        Szycrotic::
        "おい、たま持ってるよ, すべてそのように縛られた。"
        "Ok MC. Starに会った後、それらのボールが残るかどうかを確認する。"
-       {moveChar: Szycrotic, .15}
-       {anim: Szycrotic, wind idle}
-       {fadeinsound: walkingongravel, 1}
+       {moveChar: Szycrotic, .25}
+       {movecube: .25, .2}
+       [Default]
+       {fadeinsound: Walking on Gravel, 1}
        {fadeinsound: Star Piano, 4}
        {fadeoutsound: Szy Dark, 3}
        MC::
@@ -266,7 +278,7 @@ MC::
        Asterella。。。 Star?
        それはトラックのように俺を襲う。 
        "Asterella Star? その名前、知っている。"
-      　俺たちが歩くと、彼は感謝の気持ちでうめく。
+       俺たちが歩くと、彼は感謝の気持ちでうめく。
        Szycrotic::
        "縛られてかなり落ち着いている。 ええ, Asterella Star。"
        "あんたは少なくとも彼女を知っているようだ。彼女に適切な敬意を示すようにして。彼女は忙しい。"
@@ -275,8 +287,8 @@ MC::
        彼女はただのストリーマーだ。
        そしてSzycrotic、その名前は実際にはストリーマーの名前かもしれない。 
        名前はとてもおなじみ。
-      それでも、ストリーマーは悪魔のようには動かない。 
-      俺はTwatchを使用しているか？?
+       それでも、ストリーマーは悪魔のようには動かない。 
+       俺はTwatchを使用しているか？?
        いいえ。
        いいえ。
        "ね、 Szycrotic?"
@@ -284,93 +296,99 @@ MC::
        "ああ?"
        MC::
        "俺たちは実際に第69回地獄の輪にいる？"
+       {fadeinsound: Szy Laugh 4, .2}
        彼は笑う。 
-      影は、俺たちが進んでいた道がどれほどうまく構築されているかを隠していた。 
+       影は、俺たちが進んでいた道がどれほどうまく構築されているかを隠していた。 
        手で切り刻まれ、非常に長い間着用された古い石。まるで舗装のようだ。
        Szycrotic:: 
        "他にどこにいる？もちろん！"
        MC:: 
        彼は息を吐き出し、私にも聞こえる。 
        Szycrotic::
-       [indifference]
        "ほら、, あんたは自分自身にこれをした。 彼女の明示的な許可なしに誰もここに来ることはない。"
        "なのに,どうにか, 弱いパンクがここでワルツをすることができた。"
        MC::
        Szycroticは信じられない思いで首を横に振る。
        {moveChar: Szycrotic, .50}
-       {fadeoutsound: walkingongravel, 1}
-       {anim: Szycrotic, thinking}
+       {movecube: .5, .1}
+       {fadeoutsound: Walking on Gravel, 1}
        彼は一瞬立ち止まり、俺をしばらく勉強する。 
        Szycrotic::
+       [Lewd]
        "な、あんたが弱いふりをして、ちょうどこのたわごとにいる可能性がある。"
-       {anim: Szycrotic, wind idle}
-       [happy]
        MC::
        彼がそれを真実にしたいと思っているように、笑顔はもっと大きい。 
        "真剣に、ジャガイモの袋のように縛られるのが好きな人は誰？"
-      俺はこれを少し反抗してつぶやく。 
+       俺はこれを少し反抗してつぶやく。 
        Szycrotic::
        "パパ、傷つけて... ああ!"
        MC::
-       {fadeinsound: walkingongravel, 1}
-       {moveChar: Szycrotic, .15}
+       {fadeinsound: Walking on Gravel, 1}
+       {moveChar: Szycrotic, .25}
+       {movecube: .25, .1}
+       Szycrotic::
+       [Default]
+       MC::
+       {fadeinsound: Szy Laugh 1, .2}
        彼はロープをぐいと動かし、再び動き始めると笑う。
        俺は自分の状況をコントロールできない。 
        Asterella Starを知ってる. 実際、俺は過去に彼女のストリームの多くを見てきた。 
        彼女が本当にここにいるなら、多分俺はいくつかの助けを得ることができる。
-      少し眉をひそめているように感じる。 
-      それでも、Szycroticは彼がロールプレイングをしているようには見えない。
-      彼は自分が悪魔だと思っている。
-      Starも同じようになるかな？
-      手首に結び目が少し食い込んでいるので、ロープがガクガクしているのを感じる。 
+       少し眉をひそめているように感じる。 
+       それでも、Szycroticは彼がロールプレイングをしているようには見えない。
+       彼は自分が悪魔だと思っている。
+       Starも同じようになるかな？
+       手首に結び目が少し食い込んでいるので、ロープがガクガクしているのを感じる。 
        それはほとんど俺をバランスから外す、そして俺はそれに対して本能的に調整する。
        Szycrotic::
        "俺たちは時間を無駄にしています。早く！かかとを引きずることはない。"
        {fadeoutsound: Szy Dark, 5}
-       {fadeinsound: walkingongravel, 1}
+       {fadeinsound: Walking on Gravel, 1}
        MC::
        一歩一歩、屋敷に近づいていく。
-      　俺はこれまでこのように縛られたことはない。 
+       俺はこれまでこのように縛られたことはない。 
        俺はほとんど...俺の状況でほとんど笑う。
        巨大な邸宅に近づくと、これは森の中の邸宅だけではないことに気づく。 
        これは、周囲に複数の建物がある複合施設全体だ。
        外壁の敷居を越えて、優雅な美しさを目にする。 
        芝生は大きすぎて芝生とは言えない。 
        その全体に広がるのは、非常に注意深く配置されたオークとアッシュで、小さなシッティングスポットと花壇がある。 
-       {fadeinsound: waterfountain, 2}
+       {fadeinsound: waterfountainstar, 2}
        黒い大理石のベンチは、主要なウォークスルーの下に数学的に心地よい方法で設置されている。 
        俺はまだスピードを維持しなければならないので、もっと浸るようにしている。
        巨大な腰の深い噴水のように、マナーへのメインドアの真ん中にある。
-       {fadeoutsound: waterfountain, 4} 
-       {fadeoutsound: walkingongravel, 1}
+       {fadeoutsound: waterfountainstar, 4} 
+       {fadeoutsound: Walking on Gravel, 1}
        {fadeoutsound: Star Piano, 3}
        {moveChar: Szycrotic, .50}
-       {anim: Szycrotic, idle}
+       {movecube: .5, .3}
+       {anim: Szycrotic, Idle}
        高さ10フィートの古代の木製のドアの前に立ち寄る。 
        Szycrotic::
        "あんたがその理由を賞賛しているのに気づいた。あんたはそれが美しいと思う、あんたが中に入るまで待って。"
        MC::
        彼はハンドルを引っ張る。
-       {fadeinsound: castle door, 1}
+       {fadeinsound: Castle Door, 1}
        Szycrotic::
        "さらに良いことに、あんたが彼女に会うまで待ってよ。"
        MC::
-      俺たちは今まで見た中で最大の屋敷に入る。。。
+       俺たちは今まで見た中で最大の屋敷に入る。。。
        {changeScript: Male/Prologue/Star II}
     ]
     彼があなたの前にどのように現れたかを忘れたか？
     [
        悪魔を怒らせるのは賢明ではないと思う。今のところ、俺は生きている。 
     ]
- }
+}
 "先導して。"
 何もすることはないが、俺が殺されないことを願っている。
 さらに悪いことに、拷問された。この「男」は痛みを楽しむタイプのようだ。
 少しの間、彼のマスクに失望が点滅する。
 Szycroticは振り返り、歩き始める。 
-{moveChar: Szycrotic, .2}
+{moveChar: Szycrotic, .25}
+{movecube: .25, .1}
 {anim: Szycrotic, wind idle}
-{fadeinsound: walkingongravel, 1}
+{fadeinsound: Walking on Gravel, 1}
 {fadeoutsound: Szy Dark, 5}
 {fadeinsound: Star Piano, 5}
 Szycroticは彼の肩越しに見て、俺がまだフォローしていることを確認する。 
@@ -392,7 +410,6 @@ MC::
 "Asterella Star? ここで担当している人か？"
 Szycroticはうなずき、俺を横から見つめ、俺を再評価する。
 Szycrotic::
-[confusion]
 "ええ. あんたは彼女を知っているようだ。あんたは魔王か？ それとも..."
 MC::
 不信が彼の表現を支配している。
@@ -401,52 +418,28 @@ MC::
 彼も俺を嘘で捕まえるかもしれないと感じる。 
 "俺は友達を通して彼女のことを知っている。彼女はとても美しいと聞いた。"
 "そして、俺はあなたにとって悪魔の支配者のように見えるか？"
+{fadeinsound: Szy Laugh 3, .1}
 Szycroticが笑う。
 Szycrotic::
-{anim: Szycrotic, smug}
 "ええ. 思えなかった。 不快感はないが。。。"
 "彼女に会うまで待って。彼女は美しさを超えている。"
-{anim: Szycrotic, wind idle}
+{anim: Szycrotic, Wind Idle}
 MC::
 彼は一時停止し、思い通りに道から岩を蹴る。
 Szycrotic::
-{additive:on}
 "おまえ, 彼女は, これまでで最もセクシーな魔王。
-他の1人だけが彼女に一致する、そしてそれはサタン自身だぜ。"
-{additive:off}
 MC::
 彼は公然と笑う。
-Szycrotic::
-[happy]
-{additive: on}
-"彼らは両方ともしばしば反対する。 
-IronmouseとStarは姉妹みたい"
-{additive: off}
 MC::
-待って、Ironmouseまで?
-何に入った？これは非常に多くの質問を引き起こす。
-たぶん彼らはただのロールプレイング？ライブストリームイベント？
-"Ironmouseが地獄のすべての魔王を担当していると言っているか？"
-"そして、Asterella Starはそれらの1つ？"
+私は何に足を踏み入れたのだろう？多くの疑問が浮かんでくる。
+ロールプレイング？ライブストリームイベント？
+私はただ外壁を見つめるしかない。
+これはクレイジーだ！人間のぼりじゃないのか？
+悪魔は面白そうに私を振り返る。
 Szycrotic::
-[annoyed]
-"俺が言ったことだ。, MC."
-"は彼女の仕事をそれほど真剣に受け止めていない。" 
+[Default]
 MC::
-彼の口調には欲求不満が聞こえる。 
-外壁の小道をじっと見つめるしかない。
-狂ってる！彼女人間のストリーマーではないか？
-鬼は面白がって俺を振り返る。
-Szycrotic::
-{additive: on}
-"そして、Starは承認しない。
-StarはMouseyを妹のように扱う, 
-責任を負う代わりに逃げて遊ぶ。"
-[happy]
-{additive: off}
-"たまにこの二つの間を飛ぶ火花...ポップコーンを手に取って見るしかない。"
-MC::
-俺はこれを熟考する。
+私はこれを熟考する。
 "それで、俺が偶然に陥ったこの場所はどこにある？"
 俺たちの前には、古代の石で切り刻まれた外壁が迫っている。
 亀裂や隙間に植生が生えている。 
@@ -463,36 +456,37 @@ MC::
 ヤード？
 まさか。
 大きすぎてフィールド以外にはならない。
-{fadeinsound: waterfountain, 5}
+{fadeinsound: waterfountainstar, 5}
 {additive:off} 
 そこには細心の注意を払って配置されたオークとアッシュが広がり、小さなシッティングスポットと花壇がある。 
 黒い大理石のベンチは、主要なウォークスルーの下に数学的に心地よい方法で設置されている。 
 俺はまだスピードを維持しなければならないので、もっと浸るようにしている。 
-{fadeoutsound: waterfountain, 5}
+{fadeoutsound: waterfountainstar, 5}
 巨大な腰の深さのように、マナーへのメインドアの真ん中にある噴水。 
-{fadeoutsound: walkingongravel, 1}
+{fadeoutsound: Walking on Gravel, 1}
 {moveChar: Szycrotic, .50}
+{movecube: .5, .3}
 高さ10フィートの古代の木製のドアの前に立ち寄る。 
 Szycrotic::
 "あんたがその理由を賞賛しているのに気づいた。あんたはそれが美しいと思う、あんたが中に入るまで待って。"
 MC::
 彼はハンドルを引っ張る。
-{fadeinsound: castle door, 1}
+{fadeinsound: Castle Door, 1}
 {fadeoutsound: Wind Heavy, 2}
-{fadeoutsound: Star Piano, 2} 
+{fadeoutsound: Star Piano, 2}  
 Szycrotic::
 "さらに良いことに、あんたが彼女に会うまで待ってよ。"
 MC::
 そして、それらの言葉で、俺たちは今まで見た中で最大の屋敷に足を踏み入れる。。。
-{changeScene: Scenes/Star/Bedroom}
-{fadeinsound: starandszy, 1}
+{changeScene: Scenes/Star/Star Bedroom Night}
+{colorformat: Asterella}
+{fadeinsound:Szy and Star Dinner, 1}
 {fadeinsound: fireplace, 1}
-{spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo, -1, Szycrotic}
-{spawnChar: femalesilo, 2, Asterella}
-{anim: Szycrotic, idle}
-{anim: Asterella, idle}
-{moveChar: Szycrotic, .25}
+{spawnEmpty: MC, Player}
+{spawnChar: szycrotic default, -1, Szycrotic}
+{spawnChar: star nightgown, 2, Asterella}
+{movecube: .5, .1}
+{moveChar: Szycrotic, .3}
 MC::
 ここに着くのに少なくとも五分歩いた。 
 屋敷はそれ自体がほとんど小さな村であり、多くの異なる部屋がある。
@@ -504,7 +498,8 @@ MC::
 そして。。。
 Szycroticはずっと彼の息を呑んで歌をハミングしてきた。 
 曲が全然わからない。それは俺には異質だ。
-{moveChar: Asterella, .75}
+{movecube: .4, .4}
+{moveChar: Asterella, .70}
 {additive: on}
 俺たちが入ってくると、
 見事な若い女性、
@@ -536,26 +531,31 @@ Asterella Starは、レルムを担当する魔王。
 本物だと思うかどうか。彼らはそうする。
 俺は黙っている。
 Szycrotic::
-{anim: Szycrotic, thinking}
+[OWO]
 "良かったですか？良かった気がします。はい？"
 MC::
 まだ真っ只中、彼は俺を振り返ってサポートを求めている。
 俺は肩をすくめ、混乱した。
-の軽い笑い声は彼女のアイデンティティを固定する。 
+の軽い笑い声は彼女のアイデンティティを固定する。
+{fadeinsound: Star Laugh Bowing, 1} 
 MC::
 "俺はエチケットの専門家のように見えるか？"
 Szycrotic::
-[annoyed]
+[Angry]
 MC::
 とても満足のいくしかめっ面を貰う。
 Asterella::
-[happy]
+[Happy]
+{anim: Asterella, Thinking}
 "Szy. 実際、それはそれほど悪くはなかった。"
+Szycrotic::
+[Default]
+Asterella::
 "ただし、それを再度行わないで。あなたがそれをするとき、それは私をびっくりさせる。"
-{anim: Szycrotic, smug}
 MC::
 彼女の声の驚きは私のものを反映している。
 彼女は本を最後の空気で閉じ、テーブルに置く。
+{fadeinsound: bookclose1,  .1}
 部屋に入ってから初めて、彼女は俺たち二人を見る。
 スムーズな動きで彼女は立っている。
 俺はSzyと一緒にハーフボウの位置にとどまる。
@@ -567,14 +567,18 @@ Szycrotic::
 MC::
 Asterellaからの空白の外観は貴重だった。
 Asterella::
+[Indifference]
 "お辞儀を辞めて。あなたからは、それはかなりばかげているように見える。"
+[Happy]
 MC::
 彼女の唇のわずかな回転は笑顔を示唆している。
 Asterella::
 "そして、ほとんど皮肉。"
+{movecube: .65, .2}
 MC::
 彼女は俺に向かって動き、初めて俺を見る。
 Asterella::
+{anim: Asterella, Pouting}
 "彼はかなりかわいいエルフの男の子だ。"
 {additive:on}
 "Starはいいよ。 
@@ -583,11 +587,21 @@ Asterella::
 {additive:off}
 MC:: 
 "俺はMC, よろしく。"
+{if: n-b}
+{
+ もしよろしければ、私の代名詞は "彼ら "です」。
+}
 Asterella::
 "素敵な前。 MC."
+{if: n-b}
+{
+ "よろしい、MC。私はあなたの要求を尊重します"
+}
 MC::
 俺の名前を試した後、彼女はSzycroticに目を向く。
+{movecube: .4, .4}
 Asterella::
+[Default]
 "ええ, 君は報われるかもしれない。
 "さ。 毎晩の罰については、ダンジョンマスターに相談してください。"
 "私はこれに出席する...侵入者。"
@@ -606,9 +620,12 @@ Szycrotic::
 "俺は彼女に比べて弱い。俺のアドバイスは？彼女を怒らせないで。"
 {moveChar: Szycrotic, -1}
 {moveChar: Asterella, .5}
+{movecube: .8, .4}
+{anim: Asterella, Smug}
+Asterella::
+[Happy]
 MC::
-{fadeinsound: Door, 1}
+{fadeinsound: openclosedoor, 1}
 Starは、彼女の顔に満足の表情を浮かべて、Szyがドアを閉めるのを見ている。 
 ドアが閉まると、彼女はため息をつき、少しの間目を閉じた。
-{changeScript: Male/Prologue/Star II, 131}
-
+{changeScript: Male/Prologue/Star II, 170}

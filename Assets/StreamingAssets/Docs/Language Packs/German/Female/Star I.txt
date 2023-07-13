@@ -1,12 +1,15 @@
-**TODO:Fade From White**
-
-{changeScene: Scenes/Star/Outside Default}
+{changeScene: Scenes/Star/Star Outside Night}
+{colorformat: Asterella}
 {fadeinsound: Star Piano, 1}
 {fadeinsound: Wind Heavy, 1}
-{fadeoutsound: Ears Ringing, 5}
-{fadeoutsound: Heartbeat, 5}
-{spawnChar: malesilo, 2, Masked Punk}
-{spawnChar: femalesilo, 2, MC}
+{fadeoutsound: Ears Ringing, 15}
+{fadeoutsound: Normal Heartbeat Prologue, 5}
+{movecube: .5, .1}
+{spawnChar: szycrotic default, 2, Maskierter Punk}
+{spawnEmpty: Erzähler, NPC}
+{spawnEmpty: MC, Player}
+Erzähler::
+{usegameobject: Flashing Lights Complete Panel, true}
 MC::
 Mit Verzweiflung, schiebe ich alles was ich bin zurück in meinen Kopf. 
 {additive: on}
@@ -20,7 +23,7 @@ Nicht bewegen. Noch nicht.
 Eine leichte Brise umspielt mich, warm und gemütlich. 
 Ich öffne meine Augen vorsichtig, der Schmerz schlägt mir in Pupillen.
 "Warum?"
-Meine Stimme hört sich heiser und ein wenig weinerlich 
+Meine Stimme hört sich heiser und ein wenig weinerlich. 
 Ich platziere meinen Unterarm über meine Augen und fokussiere mich auf meine Atmung. 
 Ich bemerke Mondlicht. 
 Helles Mondlicht. 
@@ -66,13 +69,13 @@ Im Antiken Rumänischen Architektenstil: Ein langes, quadratisches Gebäude, bei
 Das Grafenschloss. 
 „Ich will dein Blut saugen. mwhah."
 Ich lache über mich. 
-Masked Punk::
-{anim: Masked Punk, smug}
+Maskierter Punk::
+[OWO]
 "Pervers."
 {fadeinsound: Szy Dark, 2}
 {fadeoutsound: Star Piano, 2}
-{fadeinsound: Flashstep, .3}
-{moveChar: Masked Punk, .50}
+{fadeinsound: Flash Step, .3}
+{moveChar: Maskierter Punk, .50}
 MC::
 Plötzlich, zwei Meter vor mir entfernt, steht dort ein maskierter Mann.
 Er ist einfach da.  
@@ -81,14 +84,14 @@ Sein Körper ist starr, wie eine Eisenstange, bereit zum springen.
 Ich gehe einen Schritt zurück.
 Hinter der Maske auf seinem Gesicht strahlt grünes Licht durch. Es <i>schimmert</i>, während Nebel unter dem schwarzen Hoodie hervorquillt.
 Die Maske <i>ist</i> sein Gesicht!
-Masked Punk::
-{anim: Masked Punk, thinking}
+Maskierter Punk::
+[Default]
 "Ich schmecke wahrscheinlich wie eine Flepsi..."
 MC::
 Ich bin sprachlos. Wer ist das?!
-{anim: Masked Punk, wind idle}
-Masked Punk::
-[annoyed]
+{anim: Maskierter Punk, wind idle}
+Maskierter Punk::
+[Angry]
 {additive: on}
 „Jedenfalls.
 Wer <i>verdammt</i> bist du?"
@@ -105,8 +108,8 @@ MC::
        {fadeinsound: body punch hard, .2}
        Er fängt gerade noch meinen Fuß. Sein Griff ist so fest wie Stahl.
        Er pfeift zu der Anerkennung.
-       [happy]
-       Masked Punk::
+       Maskierter Punk::
+       [OWO]
        {additive:on}
        „Heilige <i>Scheiße</i>, Frau! 
        Dass ist ein starker Tritt."
@@ -115,12 +118,12 @@ MC::
        Mein ganzes Jiu Jitsu Training hat sich nicht ausgezahlt, nicht gegen einen Dämon.
        Und nun hat er meinen Fuß. 
        Er lässt mein Bein los und grinst gruselig durch die Maske.
-       Masked Punk::
+       Maskierter Punk::
        „Ich kann jetzt nicht spielen."
        „Dieser Tritt lässt mich zweimal denken."
        MC::
        „Was hat das zu bedeuten?!"
-       {changeScript: Female/Prologue/Star I, 132}
+       {changeScript: Female/Prologue/Star I, 152}
     ]
     Scheiß drauf! Schrei!!
     [
@@ -128,7 +131,9 @@ MC::
     ]
  }
 Er schreit zurück zu mir. Spöttisch.
-Masked Punk::
+Maskierter Punk::
+{anim: Maskierter Punk, Impatient Start}
+{anim: Maskierter Punk, Impatient Loop}
 „AHHHHHHHHHHHH!!!! Geh weg du gruseliger Dämon!"
 „Du bist so <i>gruselig</i>!"
 MC::
@@ -138,21 +143,27 @@ Das kannst du nicht machen!
 Ich schreie!"
 {additive:off}
 „Das ist nicht fair!"
-Masked Punk::
-[annoyed]
+Maskierter Punk::
+{anim: Maskierter Punk, Impatient End}
+{anim: Maskierter Punk, Wind Idle}
+[Angry]
 „Ich dachte, dass war eine Begrüßung aus deinem Land!!!"
 „Was zur Hölle willst du von mir?!"
+Maskierter Punk::
+[Default]
 „Eigentlich. Was zum Teufel ist dein <i>Name</i>?"
 MC::
 Er zeigt langsam und absichtlich auf seine Brust, als ob er einem Kind erklärt.
-Szycrotic::
+Maskierter Punk::
 „Mein Name ist Szycrotic."
 MC::
-{changeName: Masked Punk, Szycrotic}
+{changeName: Maskierter Punk, Szycrotic}
 „Es ist MC! Nun hör auf mich anzuschreien!"
 Szycrotic::
 „Nein! Du hast damit angefangen, also hörst du zuerst auf!"
 MC::
+{fadeinsound: Szy Breath Hard, .2}
+{fadeinsound: Min Sigh Extreme, .2}
 Wir stoppen beide, während wir schnaufen und pusten.  
 Ich kam erst gerade hier an und muss mich mit etwas auseinandersetzen, wofür ich nicht bereit bin.
 Ich kann diesen Mann nicht verletzen. Er ist zu stark. Zu schnell.
@@ -174,9 +185,9 @@ selbst die Symptome des Abbaus der Gehirnmuster.
 Ich hatte nicht geplant, einem Dämonen mit einer Maske als Gesicht, gegenüberzutreten. 
 Szycrotic::
 {anim: Szycrotic, wind idle} 
-[happy]
 MC:: 
 Er entspannt seine Haltung mit einem riesigen Grinsen, welches sein „Gesicht" verschmiert.
+{fadeinsound: Szy Laugh 5, .2}
 {fadeoutsound: Szy Dark, 4}
 {fadeinsound: Star Piano, 4}
 Plötzlich beginnt er herzlich zu lachen.
@@ -197,8 +208,16 @@ Ich merke wie meine Backen sich in ein schmollen aufplustern.
 „Szycrotic?"
 Szycrotic::
 „Yes?"
-MC::
-„Man erschreckt keine Frauen die nachts herumlaufen!"
+{if: n-b}
+{
+ MC::
+ "Du kannst die Leute nicht einfach so erschrecken! Okay?"
+}
+{if: !n-b}
+{
+ MC::
+ „Man erschreckt keine Frauen die nachts herumlaufen!"
+}
 Deinen Namen Szycrotic, den <i>kenne</i> ich.
 Wie eine Lawine kommt die Erkenntnis seines Namen in meinen bewussten Gedanken.
 Ich <i>weiß</i> wer er ist. Ich kann es nur nicht glauben. 
@@ -206,29 +225,29 @@ Ich bin nicht in dem Server wie es geplant war.
 Nun habe ich keine Ahnung wo ich eigentlich bin.
 „Reich."
 Ich probiere das Wort vorsichtig aus.
-{anim: Szycrotic, thinking}
 Szycrotic scheint mir zuzusehen, wie ich über Sachen nachdenke. Er neigt seinen Kopf ein wenig nach links.
 Szycrotic::
 „Warte. Warte. Warte. Du weißt wer ich bin, richtig?"
 MC::
 Er plustert seine Brust ein bisschen auf.
 Szycrotic::
-{anim: Szycrotic, wind idle}
-[happy]
+[Lewd]
 „Endlich! Jemand der mich erkennt!"
 „Hell yeah, lass uns gehen!"
 MC::
 Er pausiert und schaut mir in die Augen.
 Szycrotic::
 „Zu der Villa! Meine ich. Uh, lass uns zu der Villa gehen."
+[Default]
 „Naja... Also technisch gesehen bist du ein Einbrecher, aber du scheinst nicht gefährlich zu sein."
 MC::
 „Ich bin mit Sicherheit nicht gefährlich. Weit davon entfernt."
 Er bewegt sich zu der Villa, hinunter der Straße nicht weit weg. 
 Szycrotic::
 „Komm. Ich werde dich zu Star führen, und wir werden alles herausfinden."
-{moveChar: Szycrotic, .25}
-{fadeinsound: walkingongravel, 1}
+{moveChar: Szycrotic, .3}
+{movecube: .3, .2}
+{fadeinsound: Walking on Gravel, 1}
 MC::
 Er startet in einem angenehmen Tempo, schnell genug, dass eine kleine Frau folgen kann.
 <i>Seufzen</i>
@@ -244,7 +263,6 @@ MC::
 Er schaut zurück, während grüner Rauch austritt, um sicherzugehen, dass ich ihm noch folge.
 Er dreht seinen Kopf zurück.
 Szycrotic::
-[indifference]
 „Du scheinst keine wahre Kraft zu besitzen."
 „Auf der anderen Seite, könntest du sie aber auch verstecken."
 MC::
@@ -287,8 +305,8 @@ Wer bin ich, wenn ich sowas ablehnen würde? Er könnte mich einfach in einem Mo
 Nicht dass ich das von ihm wollen würde...
 Ich möchte nicht gefesselt werden. Nein! Hör auf, Spieler!!
 Als wir  durch den Eingang gingen, badeten meine Augen in der Schönheit.
-{fadeoutsound: walkingongravel, 1}
-{fadeinsound: waterfountain, 2}
+{fadeoutsound: Walking on Gravel, 1}
+{fadeinsound: waterfountainstar, 2}
 {additive: on}
 Üppige Eichen und Eschen säumen die Landschaft in einer chaotischen Symmetrie.
 Der Wind der die Blätter trägt. 
@@ -296,6 +314,8 @@ Das helle Mondlicht badet und reflektiert sich von den schwarzen Mamorbänken, d
 {additive:off}
 Vor der Villa ist ein großer Springbrunnen, das Wasser funkelt von dem Mondlicht. 
 Szycrotic::
+{movecube: .5, .1}
+[OWO]
 "Yo! Kommst du?"
 MC::
 Ich bemerke wie nicht laufe. 
@@ -306,40 +326,24 @@ Endlich spreche ich.
 Ich schaffe es nicht, die verblüffende Ehrfurcht aus meiner Stimme herauszuhalten und eile, um mit ihm Schritt zu halten. 
 Der Dämon nickt zustimmend.
 Syzcrotic::
-[happy]
+[Default]
 „Du hast einen guten Geschmack. Ich glaube du und Star werdet euch gut verstehen."
-{fadeinsound: walkingongravel, 1}
+{fadeinsound: Walking on Gravel, 1}
 MC::
 Ich laufe wieder. 
 Nächstes Mal. Die Sehenswürdigkeiten müssen warten. 
 Ich würde es lieben hier zu sitzen, zu relaxen und ein leichtes Mittag zu essen. 
 Wir laufen am Springbrunnen vorbei, mein Seufzen der Enttäuschung kommt heraus.
 Ich gehe die Treppe hinauf...
-{fadeoutsound: waterfountain, 5}
-{fadeoutsound: walkingongravel, 6}
+{fadeoutsound: waterfountainstar, 5}
+{fadeoutsound: Walking on Gravel, 6}
 {moveChar: Szycrotic, .50}
-Die Haupttüren sind 1,5 m hoch, aus massiver Eiche und mit Stäben verstärkt. 
+Die Haupttüren sind hoch, sehr hoch, aus massiver Eiche und mit Stäben verstärkt.  
 Szy zieht am Griff.
-{fadeinsound: castle door, 1}
+{fadeinsound: Castle Door, 1}
 {fadeoutsound: Wind Heavy, 2}
 {fadeoutsound: Star Piano, 2} 
 Szycrotic::
 „Warte bis du den Rest der Villa siehst, MC."
 „Es wird dich umhauen."
 {changeScript: Female/Prologue/Star II}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- 

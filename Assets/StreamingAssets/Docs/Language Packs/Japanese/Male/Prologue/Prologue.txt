@@ -1,21 +1,28 @@
 {changeScene: Brain Sucking Chair side}
-{fadeinsound: Laptop-Lab,2}
+{colorformat: Emerald}
+{fadeinsound: Laptop Lab Scene,2}
 {fadeinsound: Fast Keyboard Typing, 2}
-{fadeinsound: DIHI Low Power,5}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
-{spawnChar: malesilo, 2, Shirobi}
-{spawnChar: malesilo, 2, MC}
-{fadeinsound: Heartbeat, 1}
+{spawnChar: malesilo3, 2, Shirobi}
+{spawnEmpty: MC, Player}
+{fadeinsound: Fast Heartbeat, 1}
 Shirobi::
-{anim: Shirobi, idle} 
-"彼は1年以上会社のインターンをしています。-"
+ {if: !n-b}
+{ 
+   "彼は1年以上会社のインターンをしています。-"
+}
+{if: n-b}
+{
+   "彼らはもう1年以上、この会社でインターンをしている..."
+}
 "驚くべき、ハンサムな、そして実にクールな人間, MC!" 
 MC::
 俺が脳吸引室に案内されている間、ノイズは一瞬の言葉として記録される。
 {additive: on}
-ラボテックは、俺がそれをそれと呼ぶのは嫌いだけど、それを他のものと見なすと、
+ラボテックは、俺がそれをそれと呼ぶのは嫌いだけど、
+それを他のものと見なすと、
 露骨な洗脳の練習になるだろう。
 {additive: off}
 {additive: on}
@@ -40,25 +47,28 @@ MC::
 突然,
 誰かが俺の肩をつかんで、すぐに俺をジャンプさせる。
 {additive: off}
-{選び: 振り返りますか？}
+{spawnChar: Circle Wipe, .5, CircleWipe}
+{choice: 振り返りますか？}
 {
      振り向かないで。
      [
         手がしっかり握ってる感じ. そして俺をぐるぐる回す。
+        {anim: CircleWipe, RightStart}
      ]
      あなたの加害者に直面します。
      [
-        ぐるぐる回す
+        ぐるぐる回す.
+        {anim: CircleWipe, RightStart}
      ]    
 }
-{changeBG: DIHI Room Animated}
-{fadeoutsound: Heartbeat, 1}
+{fadeoutsound: Fast Heartbeat, 1}
+{anim: CircleWipe, LeftEnd}
 {fadeinsound: Press Cameras, .2}
 俺の目は、それらのハイテクカメラから白い光を一気に浴びる。
 光は俺の気を散らすものを消し去り、俺は明るさを瞬きさせようとする。
 {spawnChar: malesilo, 2, Smug Reporter}
 {anim: Smug Reporter, kime1}
-{moveChar: Smug Reporter, .85}
+{moveChar: Smug Reporter, .75}
 Smug Reporter::
 "MC! 
 大丈夫ですか。? あなたは不安定に見えます。"
@@ -80,9 +90,9 @@ MC::
 酸を飲み込む。 荒れ狂う唇を少し舐める。
 部屋の中央に座っている巨大なものに身振りで示す、俺は明確にする。
 "DIHIが緊張すると言わなかったら嘘をつく。"
-{spawnChar: malesilo, -1, Cliff}
-{anim: Cliff, kime2}
-{moveChar: Cliff, .20}
+{spawnChar: malesilo2, -1, Cliff}
+{moveChar: Cliff, .25}
+{anim: Cliff, handwave}
 目が調整され始め、プレスの後ろで主任プロジェクトマネージャーのCliffが腕を組んで厳しい顔をしているのに気づく。
 彼の姿勢ははっきりと言っています。「これを台無しにすると、一年間の支払いがあります。"
 なぜ誰も何も言わないか？
@@ -108,10 +118,17 @@ MC::
 くそーライト！
 {moveChar: Cliff, -1}
 {moveChar: Smug Reporter, 2}
-{moveChar: Shirobi, .75}
+{moveChar: Shirobi, .55}
 Shirobi::
-{anim: Shirobi, idle} 
-"まあ、少なくとも彼は少し落ち着いたようです。正直，心配し始めました。" 
+{anim: Shirobi, Glasses} 
+{if: !n-b}
+{
+ "まあ、少なくとも彼は少し落ち着いたようです。正直，心配し始めました。" 
+}
+{if: n-b}
+{
+ 「少なくとも、彼らは落ち着いたようだ。はっきり言って、心配になってきたよ" 
+}
 MC::
 俺の目は彼に短剣を撃つ。
 その鼻、小さなオタクの野郎。
@@ -125,19 +142,17 @@ MC::
 "ね Shirobi... 準備ができているといい。。。"
 Shirobiが歩いて肩に手を当てる。
 Shirobi::
-{anim: Shirobi, kime1} 
+{anim: Shirobi, Bow} 
 "心配するな MC. 何も起こらないように、私はあなたのバイタルを監視する."
-"あのさ、。。 安全でなければこの椅子に近づかない。
- な?" 
+"あのね... 安全でない限り、この椅子には近づかせない。そうだろ？" 
 "四日. その後、私たちはあなたを引き出す. いい?"
 MC::
 俺はうなずいて、部屋を取る。
 プレスは部屋の外に案内されている。 中にいるのは俺、ラボテック達、そしてCliffだけだった。
-{fadeinsound: LeavingFootsteps, .3}
-{fadeinsound: Door, .1}
+{fadeinsound: slowfootsteps, .3}
+{fadeinsound: openclosedoor, .1}
 {fadeoutsound: LabAmbience, .1}
 DIHIの音が急変し、空気中の電離感が増する。
-{fadeinsound: DIHI Up Close, 1}
 記者や検査技師がおしゃべりをしている観察ラウンジの窓を覗く。
 彼らはコーヒーを飲みながら座っているよう。
 今. コーヒが欲しい. 本当、本当にコーヒを飲みたい。  
@@ -156,11 +171,12 @@ MC::
 待って...
 俺はそれを大声で言いた？
 ま、いい.
-"じゃあ? そうか"
+「それで？私が？
 Shirobi::
 "答えはＮＯだ. あなたはすべてが固い状態で停滞することはない。."
 MC::
-彼はマイクを避けるために寄りかかっている。 
+彼はマイクを避けるために寄りかかっている。
+{anim: Shirobi, Bow}  
 Shirobi::
 "そして、あなたを利用する看護師はいない、約束する。"
 MC:: 
@@ -190,13 +206,15 @@ Shirobi::
 MC::
 俺は椅子をまっすぐ見ながら、部屋の中央に歩いて行く。
 {changeScene: The Lab}
-{fadeinsound: FastHeartbeat, .5}
-{fadeinsound: DIHI Up Close, .1}
+{colorformat: Emerald}
+{fadeinsound: Fast Heartbeat, .5}
+{fadeinsound: DIHI Low Power, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {fadeoutsound: Lab Ambience Music Light, 2} 
-{spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo, 2, Shirobi}
+{spawnEmpty: MC, Player}
+{spawnEmpty: Shirobi, NPC}
+MC::
 近づくと骨が振動する。
 DIHIは俺のビジョン全体を満たしている。
 {additive: on}
@@ -222,7 +240,8 @@ MC::
 ハムは俺の足の下の金属パネルを振動させる。 
 俺は「恐ろしい意味のデジタル化の玉座」を見つめている。
 突然の勇気で、頭蓋骨にハミングしながら、ピボットして座る。
-何も聞こえない。耳元で息を速くして息を吐き、息を遅くする。
+ほとんど何も聞こえない。
+耳元で息を速くして息を吐き、息を遅くする。
 "俺をテレポートさせろ、Shirobi."
 Shirobi::
 "もう! 言葉の選択が悪い。" 
@@ -258,19 +277,11 @@ MC::
 頭がチクチクし始めた気がする。
 椅子の音は俺自身の鼓動以外は俺が聞くすべて。
 プレスも同僚もいない: ただ俺の鼓動、椅子の鼓動、そして一人でいることへの突然の恐怖。 
-{fadeoutsound: FastHeartbeat, .1}
-{fadeoutsound: Fast Keyboard Typing, .1}
-{fadeoutsound: Lab Computer Room Beeps 2, .1}
+{fadeoutsound: Lab Computer Room Beeps 2, 1}
+{fadeoutsound: Fast Heartbeat, .1}
 {fadeoutsound: DIHI Low Power, .1}
-{fadeoutsound: DIHI Up Close, .1}
 {fadeoutsound: DIHI High Power, .1}
-{fadeoutsound: Laptop-Lab,.1}
 すると、ガチガチになりそうな腰を下ろして、突然頭のてっぺんに引っ張られているような気がする。。。
+{fadeoutsound: DIHI Power Up, 1}
 {fadeinsound: Brain Sucking Chair Activate, .5}
-
-
-**TODO:Fade To Black**
-
-
 {changeScript: Male/Prologue/Prologue II}
-

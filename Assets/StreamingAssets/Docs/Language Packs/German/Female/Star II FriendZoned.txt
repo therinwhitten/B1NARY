@@ -1,26 +1,36 @@
-**FriendZoned!**
+{changeScene: Scenes/Star/Star Bedroom Night}
+{colorformat: Asterella}
+{fadeinsound: fireplace, 1}
+{fadeinsound: Szy and Star Dinner, 1}
+{spawnChar: star nightgown, .5, Asterella}
+{spawnEmpty: Erzähler, NPC}
+{spawnEmpty: MC, Player}
+Asterella::
+{anim: Asterella, Woozy}
+[Confusion]
 MC::
-„Es tut mir leid Star, ich fühle mich damit nicht wohl."
+"Tut mir leid, Star, ich fühle mich dabei nicht wohl."
 MC, warum? 
 {additive:on}
 Weil, 
-du gerade erst hier ankamst! 
+du bist gerade erst angekommen! 
 Du kennst sie nicht, 
-oder die Situation in der du dich befindest.
+oder die Situation, in der du dich befindest.
 Das ist der Grund!
 {additive:off} 
-Asterella setzt sich auf und verdeckt ihre Enttäuschung.
+Asterella setzt sich aufrecht hin, um ihre Enttäuschung zu verbergen.
 Asterella::
-[sad]
-„Welp, das war unerwartet, aber ok."
-„Wir können immer noch reden."
-Narrator::
-Durch die Nacht herrschte ein Gespräch von Jungs, Spielen und weiteren Sachen welche beide lieben zu streamen.
-Es war eine Pyjamaparty für Mädchen, und Szycrotic gesellte sich bald darauf zu ihnen, um einige Kartenspiele zu spielen. 
-Friendzoned zu werden, muss aber nichts schlechtes sein. 
-Es kann Zeiten geben in der es deiner Situation helfen kann.
-Aber auch, kann es passieren dass du eines der "Schlechten Enden" bekommst.
-Naja... worauf wartest du?
-Geh zurück zu der H Szene!
-Vergnüge dich an dem Rest der Demo. XD
+[Happy]
+"Na ja, das war unerwartet, aber okay."
+"Wir können immer noch reden."
+[Default]
+Erzähler::
+Die ganze Nacht hindurch wurde über Jungs, Spiele und verschiedene Dinge, die sie gerne streamen, gesprochen.
+Es war eine Pyjamaparty für Mädchen, und Szycrotic gesellte sich bald darauf zu ihnen, um ein paar Kartenspiele zu spielen. 
+Friendzoned zu sein muss keine schlechte Sache sein. 
+Es kann Zeiten geben, in denen es für deine Situation von Vorteil sein kann. 
+Manchmal kann es aber auch einfach nur ein "böses Ende" nehmen.
+Nun... worauf wartest du noch?
+Gehen Sie zurück in die H-Szene!
+Viel Spaß mit dem Rest der Demo. XD
 DOT

@@ -1,0 +1,36 @@
+{changeScene: Scenes/Star/Star Bedroom Night}
+{colorformat: Asterella}
+{fadeinsound: fireplace, 1}
+{fadeinsound: Szy and Star Dinner, 1}
+{spawnChar: star nightgown, .5, Asterella}
+{spawnEmpty: Narrador, NPC}
+{spawnEmpty: MC, Player}
+Asterella::
+{anim: Asterella, Woozy}
+[Confusion]
+MC::
+"Lo siento Star, no me siento cómodo con esto".
+MC, ¿por qué?
+{additive:on}
+Porque 
+¡Acabas de llegar aquí! 
+No la conoces, 
+o la situación en la que te encuentras.
+¡Por eso!
+{additive:off} 
+Asterella se sienta derecha, enmascarando su decepción.
+Asterella::
+[Happy]
+"Welp, eso fue inesperado, pero está bien".
+"Todavía podemos hablar".
+[Default]
+Narrador::
+A lo largo de la noche, la conversación consistió en niños, juegos y diferentes cosas que les encantaba transmitir.
+Era una fiesta de pijamas de una noche de chicas, y Szycrotic pronto se unió a ellos más tarde para jugar algunos juegos de cartas. 
+Ser Friendzoned no tiene por qué ser algo malo. 
+Puede haber momentos en los que pueda beneficiar su situación. 
+Otras veces, es posible que solo obtengas uno de los "malos finales".
+Pozo... ¿A qué esperas?
+¡Vuelve a la escena H ya!
+Disfruta del resto de la demo. XD
+PUNTO

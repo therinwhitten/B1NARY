@@ -1,17 +1,25 @@
-Star II A: FriendZoned!
-{changeScene: Scenes/Star/Bedroom}
+{changeScene: Scenes/Star/Star Bedroom Night}
+{colorformat: Asterella}
+{fadeinsound: fireplace, 1}
+{fadeinsound: Szy and Star Dinner, 1}
+{spawnEmpty: ナレーター, NPC}
+{spawnChar: star nightgown, .5, Asterella}
+{spawnEmpty: MC, Player}
+{movecube: .4, .2}
 Asterella::
-[sad]
+[Confusion]
 "ええと...私は正直にそれを期待していませんでした。"
+{movecube: .4, 0}
 MC::
 彼女は官能的に唇を噛みる。
 Asterella::
-[horny]
+[Disgust]
+{movecube: .4, .4}
 "私が欲しいものを否定する神経を持っている人はそれほど多くありません, MC."
 MC::
 彼女は僕をひどく見ている.
 Asterella::
-[annoyed]
+[Default]
 "特に侵入者です。"
 MC::
 彼女の顔は柔らかくなる。彼女は自分のワインを手に取り、残りを飲む。 
@@ -38,8 +46,7 @@ Asterella::
 "彼は文句を言うかもしれませんが、結局彼は私の決定を尊重します。"
 "将来彼のことを心配する必要はありません。"
 {moveChar: Asterella, 2}
-{emptyScene}
-Narrator::
+ナレーター::
 残りの夜は彼女の領域についての会話に費やされました。。。。。
 フレンドゾーンされています。デモでは、ブランチが終了しただけです。
 メインゲームでは、これらの決定は他のルートに深刻な影響を与える可能性があります。 
@@ -47,5 +54,3 @@ Narrator::
 ただし、堅実な友達がいると、他の人に勝つことができる場合があります。 
 デモを楽しんでいただけたでしょうか。
 終わり
-
-
