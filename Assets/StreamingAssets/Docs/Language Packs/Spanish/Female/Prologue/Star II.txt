@@ -1,6 +1,6 @@
 {changeScene: Star Bedroom Night}
 {colorformat: Asterella}
-{fadeinsound: Szy and Star Dinner, 1}
+{fadeinsound: Lucas and Star Dinner, 1}
 {fadeinsound: fireplace, 1}
 {spawnChar: szycrotic default, -.5, Lucas}
 {spawnChar: star nightgown, 1.3, Asterella}
@@ -108,7 +108,7 @@ Su voz se vuelve burlonamente seria.
 Asterella::
 [Indifference]
 {anim: Asterella, Pouting}
-"Szy, sabes que no me gusta cuando me haces esperar".
+"Lucas, sabes que no me gusta cuando me haces esperar".
 MC::
 Se golpea la barbilla pensativamente.
 Asterella::
@@ -167,7 +167,7 @@ MC::
            Asterella::
            [Happy]
            {anim: Asterella, Pouting}
-           "Mira esa cara linda y decidida, Szy".
+           "Mira esa cara linda y decidida, Lucas".
            "¡Eso es tan precioso!"
            Lucas::
            [OWO]
@@ -178,7 +178,7 @@ MC::
            [Default]
            {additive:on}
            "Muy bien. 
-           Si desea aceptar voluntariamente el castigo por la falta de respeto de Szy,
+           Si desea aceptar voluntariamente el castigo por la falta de respeto de Lucas,
            luego cierra los ojos".
            {additive:off}
            MC::
@@ -230,7 +230,7 @@ MC::
            Asterella::
            {anim: Asterella, Thinking}
            {movecube: .5, .2}
-           "Él estará bien. A Szy le encanta su castigo, y no tiene nada que ver con su actuación".
+           "Él estará bien. A Lucas le encanta su castigo, y no tiene nada que ver con su actuación".
            "Lo prometo, ¿de acuerdo?"
            MC::
            Soy un poco inexperto, pero estoy sintiendo algunas vibraciones BDSM serias aquí ...
@@ -238,7 +238,7 @@ MC::
            "Hablando de eso, dejaré que ustedes dos se diviertan. Algunos de nosotros tenemos mierda que hacer".
            {moveChar: Lucas, .1}
            MC::
-           Szy stops at the door.
+           Lucas stops at the door.
            {movecube: .2, .3}
            {if: !n-b}
            {
@@ -253,11 +253,11 @@ MC::
              "Estrella, si hacen <i>algo".</i>
            }
            MC::
-           Asterella sonríe, descartando el comentario de Szy con un movimiento de su mano.
+           Asterella sonríe, descartando el comentario de Lucas con un movimiento de su mano.
            Asterella::
            [Happy]
            {additive:on}
-           "Szy, te preocupas demasiado. 
+           "Lucas, te preocupas demasiado. 
            Soy una niña grande".
            {additive:off}
            {additive:on}
@@ -275,13 +275,13 @@ MC::
            [Happy]
            MC::
            {fadeinsound: Star Laugh 2, .1}
-           {fadeinsound: Szy Laugh 5, .5}
+           {fadeinsound: Lucas Laugh 5, .5}
            Casi lo logró. Ambos comienzan a reírse.
            {fadeinsound: openclosedoor, 1}
            {moveChar: Lucas, -1}
            {moveChar: Asterella, .45}
            {movecube: .45, .2}
-           Con Szy fuera, estamos solos. Star y yo.
+           Con Lucas fuera, estamos solos. Star y yo.
            El beso en la frente arde más que el aguijón a mi orgullo, o el movimiento del dedo.
            Ella es tan cautivadora.
            Real, confiado y ligeramente sádico.
@@ -322,7 +322,7 @@ Asterella arquea las cejas, poniéndose de pie.
 {if: n-b}
 {
  Asterella::
- "Parecen bastante protectores contigo, Szy. ¿Debería aumentar el castigo?"
+ "Parecen bastante protectores contigo, Lucas. ¿Debería aumentar el castigo?"
 }
 MC::
 Estoy horrorizado. No quiero agregar más a su dolor.
@@ -330,7 +330,7 @@ Lucas::
 [Lewd]
 "Oh, sí, mamá, dame el castigo que merezco".
 MC::
-{fadeinsound: Szy Laugh 5, .5}
+{fadeinsound: Lucas Laugh 5, .5}
 Se ríe a carcajadas, se acerca y besa a Star en la frente. 
 Con un saludo, abre la puerta.
 Lucas::
@@ -373,7 +373,7 @@ Asterella::
 "Ese es un nombre muy bonito, MC".
 {if: n-b}
 {
- "Me enteré del discurso de Szy. Muy bien."
+ "Me enteré del discurso de Lucas. Muy bien."
 }
 {additive: on}
 [Default]
@@ -587,7 +587,7 @@ Ella me mira, con la pregunta en sus ojos.
         MC:: 
         {usegameobject: Hentai Warning Panel, true}
         {fadeoutsound: fireplace, 1}
-        {fadeoutsound: Szy and Star Dinner, 1} 
+        {fadeoutsound: Lucas and Star Dinner, 1} 
         {changeScript: Female/Prologue/Star II Hentai}
     ]
     No. ¡Esto va demasiado rápido!
