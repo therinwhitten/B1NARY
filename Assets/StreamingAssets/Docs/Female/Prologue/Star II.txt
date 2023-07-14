@@ -2,11 +2,11 @@
 {colorformat: Asterella}
 {fadeinsound: Szy and Star Dinner, 1}
 {fadeinsound: fireplace, 1}
-{spawnChar: szycrotic default, -.5, Szycrotic}
+{spawnChar: Lucas default, -.5, Lucas}
 {spawnChar: star nightgown, 1.3, Asterella}
 {spawnEmpty: MC, Player}
 {movecube: .4, .4}
-{moveChar: Szycrotic, .3}
+{moveChar: Lucas, .3}
 MC::
 Large swaths of regal orchid contrasts with dark oak throughout most of the manor.
 Judging from the dozens of rooms I have walked through, there are at least 40 people on staff here. Maybe more. 
@@ -17,7 +17,7 @@ There were even species I couldn't recognize.
 Were they other V-Tubers? Or something different altogether?
 {additive:off}
 So many rooms. I could see at least two waiting rooms, a ball room, and a library. 
-Szycrotic was humming some unidentifiable tune I could not recognize. 
+Lucas was humming some unidentifiable tune I could not recognize. 
 Every time I tried to ask him what it was, he would hush me and motion forward. 
 This room matches the rest of the manor.
 Set up in a simple yet elegant decor. 
@@ -44,16 +44,16 @@ Asterella::
 MC::
 She closes the book with a finality.
 {fadeinsound: bookclose1, .1}
-Szycrotic casually retorts.
+Lucas casually retorts.
 {if: n-b}
 {
- Szycrotic::
+ Lucas::
  "Woman, they wanted to see the garden, don't blame me."
  MC::
- Szycrotic shoots a sidelong glance at me. 
+ Lucas shoots a sidelong glance at me. 
  Oh no. A spark of an idea. I can see it brewing behind that mask.
  With a dramatic pose, he gestures at my face. 
- Szycrotic::
+ Lucas::
  [Lewd]
  {additive:on}
  "How can you deny that face? 
@@ -64,13 +64,13 @@ Szycrotic casually retorts.
 }
 {if: !n-b}
 {
- Szycrotic::
+ Lucas::
  "Look woman, she wanted to see the garden. Don't blame me."
  MC::
- Szycrotic shoots a sidelong glance at me. 
+ Lucas shoots a sidelong glance at me. 
  Oh no. A spark of an idea. I can see it brewing behind that mask.
  With a dramatic pose, he gestures at my face. 
- Szycrotic::
+ Lucas::
  [Lewd]
  {additive:on}
  "How can you deny this face? 
@@ -169,7 +169,7 @@ What am I doing?
            {anim: Asterella, Pouting}
            "Look at that cute, determined face, Szy."
            "That's so precious!"
-           Szycrotic::
+           Lucas::
            [OWO]
            "I'm touched, MC. You don't even know me!"
            [Default]
@@ -190,9 +190,9 @@ What am I doing?
            I <i>will</i> stand my ground!
            I can hear shuffling of bare feet on the floor, coming towards me.
            {moveChar: Asterella, .5}
-           {moveChar: Szycrotic, .25}
+           {moveChar: Lucas, .25}
            {movecube: .5, .2}
-           Szycrotic::
+           Lucas::
            "Star not that! Even I'm not fucked up enough to do that!"
            MC::
            ...
@@ -222,7 +222,7 @@ What am I doing?
            MC:: 
            Star seems satisfied and close to laughing. 
            Asterella::
-           "There really is no need to protect anyone, especially Szycrotic."
+           "There really is no need to protect anyone, especially Lucas."
            MC::
            Star pushes my hair away and kisses my wounded forehead lightly.
            {movecube: .5, .4} 
@@ -234,21 +234,21 @@ What am I doing?
            "I promise, ok?"
            MC::
            I am slightly inexperienced, but I am sensing some serious BDSM vibes here...
-           Szycrotic::
+           Lucas::
            "Speaking of which, I will let you two have fun. Some of us got shit to do."
-           {moveChar: Szycrotic, .1}
+           {moveChar: Lucas, .1}
            MC::
            Szy stops at the door.
            {movecube: .2, .3}
            {if: !n-b}
            {
-             Szycrotic::
+             Lucas::
              [Angry]
              "Star, if she does <i>anything.</i>"
            }
            {if: n-b}
            {
-             Szycrotic::
+             Lucas::
              [Angry]
              "Star, if they do <i>anything.</i>"
            }
@@ -268,7 +268,7 @@ What am I doing?
            {additive:off}
            MC::
            He bows deeply, in a playful way, a chuckle breaking his otherwise serious performance.
-           Szycrotic::
+           Lucas::
            [Default]
            "I live to serve only you, my lady."
            Asterella::
@@ -278,7 +278,7 @@ What am I doing?
            {fadeinsound: Szy Laugh 5, .5}
            He almost made it. They both start laughing.
            {fadeinsound: openclosedoor, 1}
-           {moveChar: Szycrotic, -1}
+           {moveChar: Lucas, -1}
            {moveChar: Asterella, .45}
            {movecube: .45, .2}
            With Szy gone, we are alone. Star and I.
@@ -326,18 +326,18 @@ Asterella raises her eyebrows, standing up.
 }
 MC::
 I stand aghast. I don't want to add more to his pain.
-Szycrotic::
+Lucas::
 [Lewd]
 "Oh yeah dommy mommy, give me the punishment I deserve."
 MC::
 {fadeinsound: Szy Laugh 5, .5}
 He laughs heartily, walks up, and kisses Star on the forehead. 
 With a wave, he opens the door.
-Szycrotic::
+Lucas::
 [Default]
 "You two have fun."
 {fadeinsound: openclosedoor, 1}
-{moveChar: Szycrotic, -1}
+{moveChar: Lucas, -1}
 {moveChar: Asterella, .45}
 {movecube: .45, .2}
 MC::

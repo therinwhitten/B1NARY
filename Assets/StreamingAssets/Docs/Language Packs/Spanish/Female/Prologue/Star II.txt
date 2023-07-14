@@ -2,11 +2,11 @@
 {colorformat: Asterella}
 {fadeinsound: Szy and Star Dinner, 1}
 {fadeinsound: fireplace, 1}
-{spawnChar: szycrotic default, -.5, Szycrotic}
+{spawnChar: szycrotic default, -.5, Lucas}
 {spawnChar: star nightgown, 1.3, Asterella}
 {spawnEmpty: MC, Player}
 {movecube: .4, .4}
-{moveChar: Szycrotic, .3}
+{moveChar: Lucas, .3}
 MC::
 Grandes franjas de orquídeas reales contrastan con roble oscuro en la mayor parte de la mansión.
 A juzgar por las docenas de habitaciones por las que he caminado, hay al menos 40 personas en el personal aquí. Tal vez más.
@@ -17,7 +17,7 @@ Incluso había especies que no podía reconocer.
 ¿Eran otros V-Tubers? ¿O algo completamente diferente?
 {additive:off}
 Tantas habitaciones. Pude ver al menos dos salas de espera, un salón de baile y una biblioteca. 
-Szycrotic estaba tarareando una melodía no identificable que no podía reconocer. 
+Lucas estaba tarareando una melodía no identificable que no podía reconocer. 
 Cada vez que intentaba preguntarle qué era, me callaba y avanzaba. 
 Esta habitación coincide con el resto de la mansión.
 Decorado con una decoración sencilla pero elegante. 
@@ -44,16 +44,16 @@ Asterella::
 MC::
 Ella cierra el libro con una finalidad.
 {fadeinsound: bookclose1, .1}
-Szycrotic replica casualmente.
+Lucas replica casualmente.
 {if: n-b}
 {
- Szycrotic::
+ Lucas::
  "Mujer, querían ver el jardín, no me culpes".
  MC::
- Szycrotic me lanza una mirada de reojo. 
+ Lucas me lanza una mirada de reojo. 
  No. Una chispa de una idea. Puedo verlo gestarse detrás de esa máscara.
  Con una pose dramática, me hace un gesto a la cara.
- Szycrotic::
+ Lucas::
  [Lewd]
  {additive:on}
 "¿Cómo puedes negar esa cara? 
@@ -64,13 +64,13 @@ Szycrotic replica casualmente.
 }
 {if: !n-b}
 {
- Szycrotic::
+ Lucas::
  "Mira mujer, ella quería ver el jardín. No me culpes".
  MC::
- Szycrotic me lanza una mirada de reojo. 
+ Lucas me lanza una mirada de reojo. 
  No. Una chispa de una idea. Puedo verlo gestarse detrás de esa máscara.
  Con una pose dramática, me hace un gesto a la cara.
- Szycrotic::
+ Lucas::
  [Lewd]
  {additive:on}
  "¿Cómo puedes negar esta cara? 
@@ -169,7 +169,7 @@ MC::
            {anim: Asterella, Pouting}
            "Mira esa cara linda y decidida, Szy".
            "¡Eso es tan precioso!"
-           Szycrotic::
+           Lucas::
            [OWO]
            "Estoy conmovido, MC. ¡Ni siquiera me conoces!"
            [Default]
@@ -190,9 +190,9 @@ MC::
            ¡Me <i>mantendré</i> firme!
            Puedo oír arrastrar los pies descalzos en el suelo, viniendo hacia mí.
            {moveChar: Asterella, .5}
-           {moveChar: Szycrotic, .25}
+           {moveChar: Lucas, .25}
            {movecube: .5, .2}
-           Szycrotic::
+           Lucas::
            "¡Estrella no eso! ¡Incluso yo no estoy lo suficientemente jodido como para hacer eso!"
            MC::
            ...
@@ -222,7 +222,7 @@ MC::
            MC:: 
            Star parece satisfecha y cerca de reír.
            Asterella::
-           "Realmente no hay necesidad de proteger a nadie, especialmente a Szycrotic".
+           "Realmente no hay necesidad de proteger a nadie, especialmente a Lucas".
            MC::
            Star aparta mi cabello y besa ligeramente mi frente herida.
            {movecube: .5, .4} 
@@ -234,21 +234,21 @@ MC::
            "Lo prometo, ¿de acuerdo?"
            MC::
            Soy un poco inexperto, pero estoy sintiendo algunas vibraciones BDSM serias aquí ...
-           Szycrotic::
+           Lucas::
            "Hablando de eso, dejaré que ustedes dos se diviertan. Algunos de nosotros tenemos mierda que hacer".
-           {moveChar: Szycrotic, .1}
+           {moveChar: Lucas, .1}
            MC::
            Szy stops at the door.
            {movecube: .2, .3}
            {if: !n-b}
            {
-             Szycrotic::
+             Lucas::
              [Angry]
              "Estrella, si ella hace <i>algo".</i>
            }
            {if: n-b}
            {
-             Szycrotic::
+             Lucas::
              [Angry]
              "Estrella, si hacen <i>algo".</i>
            }
@@ -268,7 +268,7 @@ MC::
            {additive:off}
            MC::
            Se inclina profundamente, de una manera juguetona, una risita rompiendo su actuación seria.
-           Szycrotic::
+           Lucas::
            [Default]
            "Vivo para servirte solo a ti, mi señora".
            Asterella::
@@ -278,7 +278,7 @@ MC::
            {fadeinsound: Szy Laugh 5, .5}
            Casi lo logró. Ambos comienzan a reírse.
            {fadeinsound: openclosedoor, 1}
-           {moveChar: Szycrotic, -1}
+           {moveChar: Lucas, -1}
            {moveChar: Asterella, .45}
            {movecube: .45, .2}
            Con Szy fuera, estamos solos. Star y yo.
@@ -326,18 +326,18 @@ Asterella arquea las cejas, poniéndose de pie.
 }
 MC::
 Estoy horrorizado. No quiero agregar más a su dolor.
-Szycrotic::
+Lucas::
 [Lewd]
 "Oh, sí, mamá, dame el castigo que merezco".
 MC::
 {fadeinsound: Szy Laugh 5, .5}
 Se ríe a carcajadas, se acerca y besa a Star en la frente. 
 Con un saludo, abre la puerta.
-Szycrotic::
+Lucas::
 [Default]
 "Ustedes dos se divierten".
 {fadeinsound: openclosedoor, 1}
-{moveChar: Szycrotic, -1}
+{moveChar: Lucas, -1}
 {moveChar: Asterella, .45}
 {movecube: .45, .2}
 MC::
