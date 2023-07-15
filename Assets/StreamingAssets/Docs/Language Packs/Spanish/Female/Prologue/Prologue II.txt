@@ -1,0 +1,235 @@
+{changeScene: Press Room}
+{colorformat: Emerald}
+{fadeinsound: Lab Tension, .2}
+{fadeinsound: DIHI Power Down, .2}
+{fadeinsound: Laptop Lab Scene, 2}
+{fadeinsound: Lab Computer Room Beeps 2, 1}
+{spawnEmpty: Narrador, NPC}
+{spawnEmpty: John, NPC}
+{spawnEmpty: Cindy, NPC}
+{spawnEmpty: Reportera, NPC}
+Narrador::
+{if: !n-b}
+{
+ {additive: on}
+ Finalmente
+ Después de lo que parece una eternidad, 
+ Su rostro se relaja por completo.
+ Fue un infierno ver el pánico en la cara de la niña.
+ {additive: off}
+ Sus ojos se cierran lentamente, pacíficos ahora, desprovistos de cualquier expresión.
+}
+{if: n-b}
+{
+ {additive: on}
+ Finalmente
+ Después de lo que parece una eternidad, 
+ Su rostro se relaja.
+ Fue un infierno ver el pánico en su rostro.
+ {additive: off}
+ El ojo de MC se cierra lentamente, pacífico ahora, desprovisto de cualquier expresión.
+}
+{additive: on}
+Parece casi anticlimático como el zumbido del digitalizador acaba de ...
+Deja
+El cuerpo inerte cojea en el asiento.
+{additive: off}
+{fadeinsound: openclosedoor, .2}
+{fadeinsound: LabCrewLeavingFootsteps, .2}
+{fadeinsound: LabAmbience, .2}
+{fadeinsound: Fast Keyboard Typing, .5}
+Mientras la prensa observa, las cámaras ruedan, un equipo de médicos con un criotubo entra lentamente por la puerta con equipo médico, preparando eficientemente la criocámara.
+{fadeinsound: Medic Stretcher, .1}
+Dentro de la sala de prensa, el silencio es palpable.
+La prensa comparte miradas, bebe café, garabatea notas, mientras esperan impacientes el anuncio.
+Se siente como varias horas para algunos, pero el tiempo te juega una mala pasada cuando te estás enfocando.
+Solo toma unos minutos. Luego, las luces en el laboratorio vuelven a encenderse.
+{fadeinsound: fluorescent light flicker, .2}
+{if: !n-b}
+{
+  Los médicos agarran a MC, colocándola cuidadosamente en el criotubo y aplicando sensores a las diferentes secciones de su cuerpo.
+}
+{if: n-b}
+{
+ Los médicos agarran MC, colocándolos cuidadosamente en el criotubo y aplicando sensores a las diferentes secciones de su cuerpo.
+}
+El cuerpo parece tan muerto que pone nervioso al veterano periodista.
+John se limpia un poco de sudor de la cabeza.
+{if: !n-b}
+{ 
+ Con un swoosh neumático, la cámara de estasis se cierra con ella dentro.
+}
+{if: n-b}
+{ 
+ Con un swoosh neumático, la cámara de estasis se cierra con ellos dentro.
+}
+{fadeinsound: CryoStasis Close, .1}
+{fadeinsound: Slow Heartbeat Machine, .1}
+La cámara de estasis no se parece a nada que John haya visto antes, pantallas táctiles que cubren la parte superior de la tapa.
+El veterano reportero puede escuchar el monitor de frecuencia cardíaca, incluso en la "sala de prensa". Incluso a través del grueso panel de vidrio. 
+John mira a su alrededor.
+"Sala de prensa". Es básicamente la sala de descanso de los técnicos de laboratorio.
+{if: !n-b}
+{
+ Al menos para la joven, Digital Horizons no ha escatimado en gastos.
+} 
+{if: n-b}
+{
+ Al menos para este empleado, Digital Horizons no ha escatimado en gastos.
+}
+Sin embargo, ese conocimiento hace poco para calmar a los espectadores. 
+A través del panel de vidrio, los técnicos de laboratorio que manejan las computadoras portátiles llaman a su líder de equipo.
+{fadeinsound: LabCrewLeavingFootsteps, .1}
+{additive: on}
+Juan no puede seguir la discusión, sus labios no están a la vista directa,
+Pero el discurso cuidadoso está sucediendo.
+{additive: off}
+John huele una primicia.
+Mientras continúan la discusión, los médicos retiran el cuerpo y las puertas se cierran herméticamente.
+{fadeinsound: openclosedoor, 2}
+{fadeoutsound: Lab Computer Room Beeps 2, 4}
+{fadeoutsound: Slow Heartbeat Machine, 4}
+{fadeoutsound: LabAmbience, 4}
+Una vez que las puertas se cierran, se puede escuchar el clic de un solo teclado de computadora portátil de uno de los otros reporteros. 
+Los sonidos del laboratorio se cortan de manera efectiva, excepto por un solo altavoz al lado de la ventana. 
+De repente, el sonido de la voz sedosa de Cindy aparece en el auricular de John, sorprendiéndolo.
+Cindy::
+"¿John?"
+{additive:on}
+"¿Todo bien? 
+Cortamos el feed hasta el anuncio. 
+Y déjenme decirles, 
+Eso fue un gran metraje ... ¿Qué está pasando ahora?"
+{additive: off}
+Narrador::
+John se lleva una mano a la oreja, activando la función de conversación automática.
+John::
+"Standy por Cindy. Creo que el supervisor de laboratorio está a punto de hablar".
+Narrador::
+Él continúa observando de cerca. Algo es diferente.
+El supervisor de laboratorio, Cliff, está inclinado sobre la computadora portátil de un técnico de laboratorio, de espaldas a la habitación.
+{additive: on}
+Mientras hace preguntas,
+Podías ver la tensión endureciendo su espalda.
+{additive: off}
+{spawnChar: malesilo, -1, Cliff}
+{anim: Cliff, kime2}
+{moveChar: Cliff, .50}
+Cliff se pone de pie con confianza, girando hacia la ventana de prensa.
+Con un dramático aclaramiento de su garganta, habla, proyectando su voz.
+{additive: on}
+Cliff::
+"A los habitantes de la Tierra,
+Puedo anunciar oficialmente la transferencia exitosa de MC al ámbito digital".
+{additive: off}
+Narrador::
+Hace una pausa para el afecto, haciendo contacto visual con la prensa a través de la ventana de observación, uno por uno.
+Cuando los observa hablando entre ellos, continúa, con voz fuerte y firme.
+Cliff::
+{if: !n-b}
+{
+ {additive: on}
+ "Hemos confirmado sus patrones de pensamiento en el servidor 10.
+ Su cuerpo está estable y a temperatura ambiente en nuestro laboratorio médico".
+ {additive: off}
+ "Todavía se están realizando pruebas para garantizar que sea consciente de su ubicación y plenamente consciente".
+}
+{if: n-b}
+{
+ {additive: on}
+ "Hemos confirmado sus patrones de pensamiento en el servidor 10.
+ Su cuerpo está estable y a temperatura ambiente en nuestro laboratorio médico".
+ {additive: off}
+ "Todavía se están realizando pruebas para garantizar que sean conscientes de su ubicación y plenamente conscientes".
+}
+"Dicho esto, ¡oficialmente pronuncio este experimento como un éxito rotundo!"
+Narrador::
+{fadeinsound: Press Conference Long, 1}
+{fadeinsound: smallgroupwhisper, 1}
+La sinfonía de los obturadores de las cámaras y el parpadeo de las luces estalla cuando hace su anuncio al mundo.
+{additive: on}
+Esa simple declaración trae una emoción considerable.
+La tensión reprimida ondea a través de los reporteros como olas en un estanque.
+{additive: off}
+John::
+<i>¿Qué estás escondiendo, Cliff?</i>
+Narrador::
+El levantamiento de manos, como una ola ellos mismos, suplican la atención de Cliff.  
+Cliff señala a una joven reportera, una señora de otro canal de noticias.
+{anim: Cliff, kime1}
+Cliff::
+"Sí, tú ahí. Adelante con tu pregunta".
+{anim: Cliff, kime2}
+Narrador::
+Ella frunce los labios, nerviosa.
+Reportera::
+"Hay muchas preocupaciones sobre los riesgos involucrados con un experimento como este".
+"Nos gustaría saber de ellos, <i>personalmente</i>, si eso es posible..."
+"¿Cuándo podemos hablar con ellos? Quizás algo más... ¡Como una entrevista mientras están en los servidores!"
+Narrador::
+Los otros reporteros de noticias dejan de susurrar. Todos los ojos se fijan en el supervisor de laboratorio.
+{fadeoutsound: smallgroupwhisper, 1}
+Cliff hace una pausa por unos segundos, su rostro no delata ninguna emoción.
+Cliff::
+"Bueno, eso todavía está en el aire. Debemos permanecer en alerta máxima a través de esta primera prueba".
+{additive: on}
+"Hay muchas incógnitas,
+y la presión de lidiar con una frontera completamente nueva,
+{if: !n-b}
+{
+ la mantendrá probablemente desorientada.
+ Es crucial que la mantengamos tranquila y segura.
+}
+{if: n-b}
+{
+ los mantendrá probablemente desorientados.
+ Es crucial que los mantengamos tranquilos y seguros.
+}
+Debido a esto, planeamos mantener la primera prueba de cuatro días en privado".
+{additive: off}
+Narrador::
+{fadeinsound: smallgroupwhisper, 1}
+Los reporteros levantan la mano aún más alto, más urgentes, como si volvieran a ser niños de primaria. 
+Cliff suspira visiblemente, un toque de irritabilidad agrieta su fachada normalmente tranquila.
+Cliff::
+"Por favor, comprenda que ya le hemos advertido antes de la conferencia que este es un experimento de muy <i>alto riesgo</i>".
+"Entendemos que el mundo quiere saber más a medida que se desarrolla. Y nos esforzaremos por mantenerlos informados".
+{if: !n-b}
+{
+ {additive: on}
+"Sin embargo,
+ hay la vida de una joven en juego aquí, 
+ Y queremos ser tan cuidadosos como sea humanamente posible. 
+ Tras la conclusión de la primera prueba, 
+ y después de que la señora MC haya sido liberada de la cuarentena, le permitiremos hablar con la prensa".
+ {additive: off}
+}
+{if: n-b}
+{
+ {additive: on}
+ "Sin embargo,
+ hay una vida de joven en juego aquí, 
+ Y queremos ser tan cuidadosos como sea humanamente posible. 
+ Tras la conclusión de la primera prueba, 
+ y después de que MC haya sido liberado de la cuarentena, les permitiremos hablar con la prensa".
+ {additive: off}
+}
+Narrador::
+Con un aire de finalidad, se despide de la prensa.
+Cliff::
+"No aceptaremos más preguntas en este momento".
+"Tendrás que esperar con el resto del mundo ..."
+Narrador::
+{additive: on}
+John siente que algo anda mal mientras observa a Cliff moverse hacia los técnicos del laboratorio para fumar la ventana. 
+Sus colegas periodistas parecen decepcionados, como él esperaría que lo estuvieran.
+Nada fuera de lo común allí.
+{additive: off}
+John toca sus auriculares para encender el micrófono.
+John::
+"Lo viste tú misma, Cindy. Esperamos".
+Narrador::
+Nadie parece notar el sudor en la frente de Cliff cuando la ventana se convierte en una pared sólida, bloqueando la verdad ...
+{fadeoutsound: smallgroupwhisper, 1}
+{fadeoutsound: Lab Tension, .2}
+{changeScript: Female/Prologue/Prologue III}

@@ -1,27 +1,41 @@
-{changeScene: Press Room Animated 1}
-{fadeinsound: labtension, .2}
+{changeScene: Press Room}
+{colorformat: Emerald}
+{fadeinsound: Lab Tension, .2}
 {fadeinsound: DIHI Power Down, .2}
-{fadeinsound: Laptop-Lab,2}
+{fadeinsound: Laptop Lab Scene, 2}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
-{spawnChar: malesilo, -1, Narrator}
-{spawnChar: malesilo, -1.5, John}
-{spawnChar: femalesilo, 2, Cindy}
-{spawnChar: femalesilo, 2, Female Reporter}
-Narrator::
-{additive: on}
-ついに、
-永遠のように思えた後 
-彼女の顔は完全にリラックスします。
-少女の慌てた表情を見ているのは地獄でした。 
-{additive: off}
-彼女の目はゆっくりと閉じ、今は平和で、何の表現もない。 
+{spawnEmpty: ナレーター, NPC}
+{spawnEmpty: ジョン, NPC}
+{spawnEmpty: シンディ, NPC}
+{spawnEmpty: 女性記者, NPC}
+ナレーター::
+{if: !n-b}
+{
+ {additive: on}
+ ついに、
+ 永遠のように思えた後 
+ 彼女の顔は完全にリラックスします。
+ 少女の慌てた表情を見ているのは地獄でした。 
+ {additive: off}
+ 彼女の目はゆっくりと閉じ、今は平和で、何の表現もない。 
+}
+{if: n-b}
+{
+ {additive: on}
+ ついに
+ 永遠とも思える時間を経て 
+ 彼らの表情が緩む。
+ 彼らのパニック顔を見るのは地獄だった。
+ {additive: off}
+ MCの目はゆっくりと閉じ、今は何の表情もなく穏やかだ。
+}
 {additive: on}
 デジタイザーのハム音がちょうど...
 やめる、
 シートの不活性なボディリンプ。
 {additive: off}
-{fadeinsound: Door, .2}
-{fadeinsound: LeavingFootsteps, .2}
+{fadeinsound: openclosedoor, .2}
+{fadeinsound: LabCrewLeavingFootsteps, .2}
 {fadeinsound: LabAmbience, .2}
 {fadeinsound: Fast Keyboard Typing, .5}
 報道機関が見守る中、カメラが回転し、クライオチューブを持った医療従事者のチームが医療機器とともにゆっくりと出入り口から入り、効率的にクライオチャンバーを準備します。
@@ -30,18 +44,39 @@ Narrator::
 プレスは、発表を待ち焦がれている間、一瞥し、コーヒーを飲み、メモを落書きします。
 数時間からのように感じますが、集中していると時間がかかります。
 ほんの数分しかかかりません。 その後、ラボのライトが再び点灯します。
-医療従事者は彼女の体をつかみ、慎重にサイロチューブに入れ、センサーを体のさまざまな部分に適用します。
+{fadeinsound: fluorescent light flicker, .2}
+{if: !n-b}
+{
+  医療従事者は彼女の体をつかみ、慎重にサイロチューブに入れ、センサーを体のさまざまな部分に適用します。
+}
+{if: n-b}
+{
+ メディックはMCをつかまえ、慎重にクライオチューブに入れ、体のさまざまな部分にセンサーをつける。
+}
 体はとても死んでいるように見えます。それはベテランジャーナリストを不安にさせます。 
 Johnは頭から少し汗を拭き取ります。
-空気圧スウッシュで、うっ滞チャンバーは彼女の内側で閉じます。 
-{fadeinsound: Cyrotube Close, .1}
+{if: !n-b}
+{ 
+    空気圧スウッシュで、うっ滞チャンバーは彼女の内側で閉じます。
+}
+{if: n-b}
+{ 
+    空気圧でシューッという音がして、ステイシス・チェンバーは彼らを中に入れたまま閉じられる。
+} 
+{fadeinsound: CryoStasis Close, .1}
 {fadeinsound: Slow Heartbeat Machine, .1}
 スタシスチャンバーは、Johnがこれまでに見たことのないように見え、タッチスクリーンが蓋の上部を覆っています。
-ベテラン記者は、「プレスルーム」でも心拍数モニターを聞くことができます。
-ガラスの厚いパネルを通してさえ。 
+ベテラン記者は、「プレスルーム」でも心拍数モニターを聞くことができます。ガラスの厚いパネルを通してさえ。 
 Johnは周りを見回します。
 "プレスルーム。" 基本的にはラボテックの休憩室です。 
-少なくとも若い女性にとって、DigitalHorizonsは費用を惜しまなかった。 
+{if: !n-b}
+{
+    少なくとも若い女性にとって、DigitalHorizonsは費用を惜しまなかった。 
+} 
+{if: n-b}
+{
+    少なくともこの従業員に対しては、Digital Horizons社は出費を惜しまなかった。
+}
 しかし、その知識は見物人を解決するのにほとんど役立たない。 
 ガラスのパネルを通して、ラップトップを担当するラボテックがチームリーダーを呼び出します。
 {fadeinsound: LeavingFootsteps, .1}
@@ -51,14 +86,14 @@ Johnは起こっている議論を追うことができず、彼らの唇は直�
 {additive: off}
 Johnはスクープのにおいがする。
 チームが話し合いを続けると、医師が体を取り除き、ドアがしっかり閉まります。 
-{fadeinsound: Door, 2}
+{fadeinsound: openclosedoor, 2}
 {fadeoutsound: Lab Computer Room Beeps 2, 4}
 {fadeoutsound: Slow Heartbeat Machine, 4}
 {fadeoutsound: LabAmbience, 4}
 ドアが閉まると、他の記者の一人から一つのラップトップキーボードのクリック音が聞こえます。 
 実験室からの音は効果的に遮断されますが、窓の横にある一つのスピーカーを除きます。 
 突然、Cindyの絹のような声の音がJohnのイヤピースに現れ、彼を驚かせました。
-Cindy::
+シンディ::
 "Johnさん?"
 {additive:on}
 "大丈夫ですか? 
@@ -66,108 +101,135 @@ Cindy::
 そして、私に言わせてください、
 それはいくつかの素晴らしい映像でした。。。 いま何が起きているのですか？"
 {additive: off}
-Narrator::
+ナレーター::
 Johnは片方の手を耳に当て、オートトーク機能をアクティブにします。
-John::
+ジョン::
 "待機してください、Cindyさん。 ラボスーパーバイザーが話そうとしていると思います。"
-Narrator::
+ナレーター::
 彼は注意深く観察し続けています。何かが違う。
 プロジェクトリーダーのCliffは、ラボテックのラップトップに寄りかかって部屋に戻っています。 
 {additive: on}
 彼が質問しているとき、
 緊張がCliffの背中を固める。
 {additive: off}
-{spawnChar: malesilo, -1, Cliff}
-{anim: Cliff, kime2}
-{moveChar: Cliff, .50}
+{spawnChar: malesilo, -1, クリフ}
+{anim: クリフ, kime2}
+{moveChar: クリフ, .50}
 CliffCliffは自信を持ってまっすぐに立ち、プレスウィンドウに向きを変えます。
 劇的な喉の清算で、彼は話し、声を出します。 
 {additive: on}
-Cliff::
+クリフ::
 "地球の住人に。
 MCのデジタル領域への移行が成功したことを正式に発表できます。"
 {additive: off}
-Narrator::
+ナレーター::
 彼は効果のために一時停止し、観察ウィンドウを通してプレスとアイコンタクトを一つずつ行います。
 彼らが彼らの間で話しているのを彼が観察するとき、彼は続けて、強くて安定した声を出します。
-Cliff::
-{additive: on}
-"サーバー10で彼女の思考パターンを確認しました。
-彼女の体は安定しており、私たちの医療ラボでは室温で静止しています。" 
-{additive: off}
-"彼女が自分の居場所を認識し、完全に認識していることを確認するために、テストはまだ実施されています。" 
-"そうは言っても、私はこの実験を公式に大成功と宣言します！"
-Narrator::
-{fadeinsound: Press Conference, 1}
-{fadeinsound: Small-Group-Whisper, 1}
+クリフ::
+{if: !n-b}
+{
+ {additive: on}
+ "サーバー10で彼女の思考パターンを確認しました。
+ 彼女の体は安定しており、私たちの医療ラボでは室温で静止しています。" 
+ {additive: off}
+ "彼女が自分の居場所を認識し、完全に認識していることを確認するために、テストはまだ実施されています。" 
+ "そうは言っても、私はこの実験を公式に大成功と宣言します！"
+}
+{if: n-b}
+{
+ {additive: on}
+ 「サーバー10で思考パターンを確認。
+ 彼らの身体は安定しており、我々の医療ラボで室温で静止している" 
+ {additive: off}
+ "彼らが自分の位置を認識し、完全に認知していることを確認するためのテストはまだ行なわれている" 
+}
+ナレーター::
+{fadeinsound: Press Conference Long, 1}
+{fadeinsound: smallgroupwhisper, 1}
 彼が世界に向けて発表すると、カメラのシャッターのシンフォニーとライトの点滅が噴出します。
 {additive: on}
 その簡単な声明はかなりの興奮をもたらします。
 溜まった緊張は、池の波のように記者たちに波及します。
 {additive: off}
-John::
-何を隠しているんだ、Cliff?
-Narrator::
+ジョン::
+何を隠しているんだ、クリフ?
+ナレーター::
 手を上げることは、波そのもののように、Cliffの注意を促します。  
 Cliffは、ある若い記者、別のニュースチャンネルの女性を指しています。
-{anim: Cliff, kime1}
-Cliff::
+{anim: クリフ, kime1}
+クリフ::
 "はい、あなたはそこにいます。質問を進めてください。"
-{anim: Cliff, kime2}
-Narrator::
+{anim: クリフ, kime2}
+ナレーター::
 彼女は緊張して唇をすぼめる。
-Female Reporter::
+女性記者::
 "このような実験に伴うリスクについては多くの懸念があります。"
 "可能であれば、個人的に彼らから話を聞きたいと思います。。。"
 "いつ彼らと話すことができますか？おそらくもっと何か...彼らがサーバーにいる間のインタビューのように？"
-Narrator::
+ナレーター::
 他の報道記者はささやきをやめます。 すべての目がラボスーパーバイザーに固定されます。 
-{fadeoutsound: Small-Group-Whisper, 1}
+{fadeoutsound: smallgroupwhisper, 1}
 Cliffは数秒間一時停止し、彼の顔は感情を裏切っていません。
-Cliff::
+クリフ::
 "まあ、それはまだ空中にあります。この最初のテストを通じて、私たちは高い警戒を怠らない必要があります。"
 {additive: on}
 "未知数がたくさんあります、
 そして、まったく新しいフロンティアに対処するというプレッシャー、
-彼女はおそらく混乱したままになります。
-彼女を落ち着かせて安全に保つことが重要です。 
+{if: !n-b}
+{
+ 彼女はおそらく混乱したままになります。
+ 彼女を落ち着かせて安全に保つことが重要です。 
+}
+{if: n-b}
+{
+ 彼らは見当識障害を起こしている可能性が高い。
+ 彼らを落ち着かせ、安全に保つことが重要だ。
+}
 このため、最初の4日間のテストは非公開にする予定です。"
 {additive: off}
-Narrator::
-{fadeinsound: Small-Group-Whisper, 1}
+ナレーター::
+{fadeinsound: smallgroupwhisper, 1}
 記者たちは、あたかも彼らが再び小学生であるかのように、手をさらに高く、より緊急に上げます。 
 は目に見えてため息をつき、イライラ感が彼の通常は穏やかなファサードを割っています。
-Cliff::
+クリフ::
 "これは非常にリスクの高い実験であると、会議の前にすでに警告していることを理解してください。"
 "私たちは、世界が発展するにつれて、もっと知りたいと望んでいることを理解しています。 そして、私たちはあなたに情報を提供するよう努めます。"
-{additive: on}
-"しかし,
-ここには若い女性の命がかかっています、
-そして私たちは人間的に可能な限り注意を払いたいと思っています。 
-最初のテストの終了後、
-MC女史が検疫をクリアされた後、私たちは彼女がマスコミと話すことを許可します。"
-{additive: off}
-Narrator::
+{if: !n-b}
+{
+ {additive: on}
+ "しかし,
+ ここには若い女性の命がかかっています、
+ そして私たちは人間的に可能な限り注意を払いたいと思っています。 
+ 最初のテストの終了後、
+ MC女史が検疫をクリアされた後、私たちは彼女がマスコミと話すことを許可します。"
+ {additive: off}
+}
+{if: n-b}
+{
+ {additive: on}
+  「しかし、
+ 若者の命がかかっている、 
+ 可能な限り慎重に行いたい。
+ 最初のテストが終了し、三菱商事の検疫が解除された後、報道陣に話をすることを許可する、 
+ 検疫が解除された後、記者会見を許可する"
+ {additive: off}
+}
+ナレーター::
 ファイナリティの空気で、彼はマスコミに別れを告げます。 
-Cliff::
+クリフ::
 "現時点では、これ以上質問はありません。"
 "あなたは世界の残りの部分で待つ必要があります。。。"
-Narrator::
+ナレーター::
 {additive: on}
-John は、窓を吸うためにラボテックにクリフが動くのを見て、何かがおかしいと感じています。 
+ジョン は、窓を吸うためにラボテックにクリフが動くのを見て、何かがおかしいと感じています。 
 彼の仲間のジャーナリストは、彼らがそうなることを期待しているので、ただがっかりしているように見えます。
 そこには異常なことは何もありません。
 {additive: off}
 Johnはヘッドセットをタップしてマイクをオンにします。
-John::
+ジョン::
 "あなたはそれを自分で見ました, Cindyさん. 待ってます。"
-Narrator::
-窓が固い壁に変わり、真実を遮っているので、Cliffの額の汗に誰も気づいていないようです。。。。。。
-{moveChar: Cliff, -1}
-{fadeoutsound: Small-Group-Whisper, 1}
-{fadeoutsound: labtension, .2}
-
-
-**TODO: Fade to Black**
+ナレーター::
+窓が固い壁に変わり、真実を遮っているので、Cliffの額の汗に誰も気づいていないようです。。。
+{fadeoutsound: smallgroupwhisper, 1}
+{fadeoutsound: Lab Tension, .2}
 {changeScript: Female/Prologue/Prologue III}
-

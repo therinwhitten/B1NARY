@@ -1,13 +1,15 @@
 {changeScene: Fiberoptic Cable} 
-**TODO:Fade in from White**
-
+{colorformat: FiberOptic}
+{fadeinsound: cable1, .2}
+{fadeinsound: cable2, .2}
+{fadeinsound: CableAmbience, 1}
 {fadeinsound: Fiberoptic Cable, 1}
-{fadeinsound: Denizen Cable Music, 3}
+{fadeinsound: Piano Calm Music, 3}
 {fadeinsound: Pulsing Light, 1}
 {fadeinsound: Light Travels, 1}
 {fadeinsound: Deep Wind Ambience, 1}
-{fadeinsound: Heartbeat, 1}
-{spawnChar: malesilo, 2, MC}
+{fadeinsound: Normal HeartBeat Prologue, 1}
+{spawnEmpty: MC, Player}
 MC::
 Ich fühle keinen Schmerz, und auch überhaupt kein Gefühl.
 Ich kann nichts <i>fühlen</i>.
@@ -32,6 +34,7 @@ Waren es einige Sekunden?
 Oder länger?
 {additive: off}
 Ein weiterer Bewegungsschlüssel, verursacht meine eigene Realität zu wechseln. Ich „trenne" mich ein wenig.
+{fadeinsound: Brain Sucking Chair Activate, 1}
 „UGHHHHHH"
 Ich werde wieder eins.  
 Heilige Scheiße, das ist gruselig! Bin ich gerade... auseinander gekommen?
@@ -59,18 +62,18 @@ Kann mich nicht fokussieren...
 ICH! 
 ICH bin ICH!
 Eine Berührung an meiner Seele...
-Bist du da, MC? 
-Bist <i>du</i> wirklich MC?
+Bist du da? 
+Bist <i>du</i> wirklich?
 Oder bist du nur eine Erinnerung?
 Bin ich Tot? 
 ICH bin NICHT TOT!
 {fadeinsound: Ears Ringing, 1}
+{fadeoutsound: cable1, 1}
+{fadeoutsound: cable2, 1}
+{fadeoutsound: CableAmbience, 1}
 {fadeoutsound: Pulsing Light, 1}
 {fadeoutsound: Light Travels, 1}
 {fadeoutsound: Deep Wind Ambience, 1}
 {fadeoutsound: Fiberoptic Cable, 1}
-{fadeoutsound: Denizen Cable Music, 3}
-
-**TODO: Fade to White** End of Section II
-
+{fadeoutsound: Piano Calm Music, 3}
 {changeScript: Male/Prologue/Star I}

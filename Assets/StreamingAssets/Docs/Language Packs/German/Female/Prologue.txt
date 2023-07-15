@@ -1,16 +1,23 @@
 {changeScene: Brain Sucking Chair side}
-{fadeinsound: Laptop-Lab,2}
+{colorformat: Emerald}
+{fadeinsound: Laptop Lab Scene, 2}
 {fadeinsound: Fast Keyboard Typing, 2}
-{fadeinsound: DIHI Low Power,5}
+{fadeinsound: DIHI Low Power, 1}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
-{fadeinsound: Heartbeat, 1}
-{spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo, 2, Shirobi}
+{fadeinsound: Fast Heartbeat, 1}
+{spawnEmpty: MC, Player}
+{spawnChar: malesilo3, 1.5, Shirobi}
 Shirobi:: 
-{anim: Shirobi, kime2}
-„MC! Sie ist seit über einem Jahr eine Praktikantin in unserem Unternehmen gewesen..."
+{if: !n-b}
+{ 
+ „MC! Sie ist seit über einem Jahr eine Praktikantin in unserem Unternehmen gewesen..."
+}
+{if: n-b}
+{
+ "Sie sind jetzt seit über einem Jahr Praktikanten im Unternehmen..."
+}
 MC::
 Der Gehirnsaugestuhl...
 Alle Labortechniker hassen es wenn ich es so nenne, aber es interessiert mich nicht.
@@ -28,27 +35,38 @@ Rechts...
 {additive:off}
 Jemand greift meine Schulter, was mich brachte sofort aufzuspringen.
 Ich quietsche, das Geräusch, welches aus eigenem Antrieb kommt.
-{choice: Do I face them?}
+{spawnChar: Circle Wipe, .5, CircleWipe}
+{choice: Soll ich mich ihnen stellen?}
 {
      Ich habe Angst! Ich sollte wahrscheinlich hier bleiben.
      [
          Ich fühle wie die Hand mich fest greift. Und mich herumwirbelt.
+         {anim: CircleWipe, RightStart}
      ]
      Stell dich der Musik.
      [
          Ich wirble herum.
+         {anim: CircleWipe, RightStart}
      ]    
 }
-{fadeoutsound: Heartbeat, 1}
-{changeBG: DIHI Room Animated} 
+{fadeoutsound: Fast Heartbeat, 1} 
+{anim: CircleWipe, LeftEnd}
 {fadeinsound: Press Cameras, .2}
 Die Lichter der Kameras erblinden mich.
 Ich versuche die blendende Helligkeit wegzublinzeln, und erhebe meine Hand um meine Augen zu beschatten.
-{spawnChar: malesilo, 2, Old Reporter}
-Old Reporter::
-{anim: Old Reporter, kime1}
-{moveChar: Old Reporter, .85}
-„Da ist sie! MC?"
+{spawnChar: malesilo, 2, Alter Reporter}
+{disablechar: CircleWipe}
+Alter Reporter::
+{anim: Alter Reporter, kime1}
+{moveChar: Alter Reporter, .85}
+{if: !n-b}
+{
+ „Da ist sie! MC?"
+}
+{if: n-b}
+{
+ "Da sind sie! MC?"
+}
 „Bist du okay? Du siehst nicht sehr munter aus."
 Der alte Kauz lacht, der Klang, der sich gegen die Spannung in der Luft stemmt.
 „Muss für Milliarden von Menschen nervenaufreibend sein, zu sehen wie du Geschichte schreibst, habe ich recht?"    
@@ -68,10 +86,10 @@ Ich kann es kaum erwarten, an die Arbeit zu gehen!"
 Ich schau in die Kamera, welche am nächsten zu mir ist.
 „Ich werde dich nicht enttäuschen!" 
 {additive: off}
-{spawnChar: malesilo, -1, Cliff}
+{spawnChar: malesilo2, -1, Cliff}
 Cliff::
-{anim: Cliff, kime2}
 {moveChar: Cliff, .25}  
+{anim: Cliff, kime2}
 MC::
 Meine Augen beginnen sich anzupassen. Ich bemerke Cliff, den anführenden Projektmanager, hinter der Presse, seine Arme verrenkt und mit einem Blick der Besorgnis in seinem Gesicht.
 Warum sagt niemand irgendwas?
@@ -109,9 +127,10 @@ Stell dir vor wie Menschen in Zukunft, wegen dieses Experimentes, über ihren Wi
 Denke nicht zu viel darüber nach, MC. Du bist gerade unglaublich nervös.
 Ich schaue nach unten, meine Hände zittern aus eigenem Antrieb.
 {moveChar: Cliff, -1}
-{moveChar: Old Reporter, 2}
-{moveChar: Shirobi, .75}
+{moveChar: Alter Reporter, 2}
+{moveChar: Shirobi, .70}
 {additive: on}
+{anim: Shirobi, Checktime}
 Kratze meinen Nacken,
 Ich scanne das kleine Publikum durch die blendenden Lichter um Shirobi zu finden,
 den Laborpraktikanten.
@@ -126,7 +145,7 @@ Schau ihn dir an, mit dem PDA in der Hand, beobachtet meinen Ausdruck, sein Gesi
 Ich lächle mein bestes Lächeln,
 welches ihn immer ein wenig zum erröten bringt.
 Shirobi::
-{anim: Shirobi, kime1}
+{anim: Shirobi, Glasses}
 MC:: 
 Seine Körperhaltung entspannt sich schlagartig.
 {additive: off}
@@ -137,9 +156,11 @@ Mein Ton ist spöttisch ernst. Ich salutiere sogar.
 Er hasst es auch, wenn ich ihn Shibi nenne. Er nimmt sich manchmal selber viel zu ernst. 
 Er nickt schlauerweise, ein leichtes Lächeln krümmt seine Lippen.
 Er bewegt sich zu dem DIHI. 
+{anim: Shirobi, Thisway}
 Shirobi::
 {additive: on}
 „Ich bin verantwortlich für die Überwachung deiner Vitalwerte.
+{anim: Shirobi, Bow}
 Also bitte... nimm das Ernst?
 {additive:off}
 „Es sind vier Tage. Das ist alles."
@@ -148,12 +169,10 @@ MC::
 Meine Augenbrauen erheben sich aus eigenem Antrieb. 
 „Es wird mir gut gehen, ich verspreche es. Möchte nicht das du dir Sorgen machst."  
 Ich bemerke indirekt wie die Presse aus dem DIHI Raum hinaus eskortiert wird.
-{fadeinsound: LeavingFootsteps, .3}
-{fadeinsound: Door, 2}
-{fadeoutsound: LabAmbience, .1}
-{fadeoutsound: Lab Ambience Music Light, 5}
+{fadeinsound: LabCrewLeavingFootsteps, .3}
+{fadeinsound: openclosedoor, .5}
+{fadeoutsound: LabAmbience, 5}
 Der Klang des DIHI verändert sich plötzlich, und das Gefühl der Ionisierung in der Luft erhöht sich.
-{fadeinsound: DIHI Up Close, 1}
 Der ganze Raum <i>vibriert</i>.
 Es gibt kein anderes Wort dafür.
 Es fühlt sich an als ob der Stuhl, sein eigenes Reich in dem Raum kreiert.
@@ -176,12 +195,14 @@ Shirobi::
 „Also, keine Sorgen MC, um dich wird gesorgt." 
 "Ich verspreche es."
 {changeScene: The Lab}
-{fadeinsound: FastHeartbeat, .5}
-{fadeinsound: DIHI Up Close, .1}
+{colorformat: Emerald}
+{fadeinsound: Fast Heartbeat, .5}
+{fadeinsound: DIHI Low Power, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
-{spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo, 2, Shirobi}
+{fadeoutsound: Lab Ambience Music Light, 2} 
+{spawnEmpty: MC, Player}
+{spawnEmpty: Shirobi, NPC}
 MC::
 Ich stelle mich vor dem Portal des digitalen Reiches.
 Es fühlt sich so surreal an.
@@ -230,7 +251,7 @@ Ich willige ein und schließe meine Augen.
 Ich schaffe es zu zwinkern.
 Die Angst lässt mich mehr reden, mehr als normaler Weise. Irgendwas, um die Spannung hier abzubauen.
 Shirobi schnippt mir leicht gegen die Stirn.
-{fadeinsound: fingerflick, .01}
+{fadeinsound: Finger Flick, .01}
 „Hey!"
 Shirobi::
 „Schweige. Versuche dich zu beherrschen okay? Und würdest du endlich aufhören dich mir anzupassen?"
@@ -245,19 +266,12 @@ Ich setze ein tapferes Gesicht auf, welches nicht mehr zu mir passt. Ich klemme 
 Ich will nicht sterben.
 Die Spitze meines Kopfes beginnt zu Kribbeln. 
 Oh mein Gott, ich glaube ich bin...
-{fadeoutsound: FastHeartbeat, .1}
+{fadeoutsound: Fast Heartbeat, .1}
 {fadeoutsound: Fast Keyboard Typing, .1}
 {fadeoutsound: Lab Computer Room Beeps 2, .1}
 {fadeoutsound: DIHI Low Power, .1}
-{fadeoutsound: DIHI Up Close, .1}
 {fadeoutsound: DIHI High Power, .1}
 {fadeoutsound: Laptop-Lab,.1}
 Dann, mit einer fast herzzerreißende Erschütterung, alles verschwindet aus meinem Kopf...
 {fadeinsound: Brain Sucking Chair Activate, .5}
-
-
-**TODO:Fade To Black**
-
-
-
 {changeScript: Female/Prologue/Prologue II}

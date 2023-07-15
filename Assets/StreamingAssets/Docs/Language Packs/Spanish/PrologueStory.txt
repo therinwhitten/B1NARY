@@ -1,0 +1,358 @@
+{changeScene: Times Square}
+{fadeinsound: Times Square Crowd, 1}
+{colorformat: Times Square}
+{spawnEmpty: Narrador, NPC}
+Narrador::
+Nueva York en Times Square: es el año 2040. Mediodía de un abrasador día de verano.
+En cualquier día normal, se puede ver a la mayoría de la gente arremolinada, dirigiéndose al trabajo, con la cacofonía de vehículos, peatones y anuncios acompasando sus ritmos en perfecta armonía.
+Hoy no... 
+Hoy, la atención de todo el mundo está fija en la mayor de las holopantallas del cielo.
+De hecho, todas las holopantallas emiten la misma emisión, con sonido estéreo en toda la plaza.
+Los coches se detienen en un silencioso atasco. Los peatones murmuran y miran hacia arriba.
+{additive: on}
+No.
+El mundo está a punto de presenciar un momento crucial en la historia de la humanidad.
+Hoy es el primer intento del hombre de digitalizar a uno de los suyos.
+{additive: off}
+{spawnChar: malesilo1, -1, Hombre espectador}
+{anim: Hombre espectador, Thinking}
+{moveChar: Hombre espectador, 0.27}
+Hombre espectador::
+"¡No puedo creer que sigan adelante con esto!".
+"¿Quién dio luz verde a este proyecto?"
+"El sujeto de prueba es un maldito idiota, o simplemente quiere morir... No puedo decidir cuál". 
+{spawnChar: femalesilo1, -.4, Mujer espectadora}
+{moveChar: Mujer espectadora, .50}
+Mujer espectadora::
+{additive: on} 
+"¡No podrías pagarme lo suficiente!
+{anim: Mujer espectadora, hmmph}
+¿La RV no es suficiente para la gente?".
+{additive: off}
+"¿Imaginas ser los padres de ese niño? Me pregunto qué pensarán de esto".
+Narrador::
+Sacude la cabeza y suspira.
+{anim: Mujer espectadora, Noarmscrossed}
+{spawnChar: malesilo2, 2, Hombre espectador 2}
+{moveChar: Hombre espectador 2, 0.75}
+{anim: Hombre espectador 2, kime1}
+Hombre espectador 2::
+"Estáis atrapados en el pasado, los dos."
+"Sólo se vive una vez, ¿verdad? No es como si alguno de los dos estuviera allá arriba".
+{additive: on}
+"¿Quién no querría vivir en un mundo virtual? 
+Piensa en la de cosas chulas que puedes hacer".
+{additive: off}
+{additive:on}
+"¿Y ser el primero en experimentarlo?  
+Me dan escalofríos sólo de pensarlo".
+{additive:off}
+Narrador::
+Hombre espectador se burla audiblemente y mira la emisión.
+Hombre espectador::
+{anim: Hombre espectador, Thisway}
+"¿Y si se va la luz en el servidor en el que estás? ¿No se te revuelve el cerebro?". 
+"¿Te lo imaginas? Muerto. Justo... así".
+{additive:on}
+"Y no me hagas hablar de esa...'máquina' que tienen en esa habitación. 
+Según Goggles, no ha funcionado con éxito ni una sola vez". 
+{additive:off}
+"A menos que lo hayan probado en secreto..."
+Narrador::
+Mujer espectadora mira a Hombre espectador con exasperación.
+Mujer espectadora::
+{anim: Mujer espectadora, Thinking}
+"Eso no puede ser verdad."
+"No dejarían que un humano se acercara a esa cosa a menos que funcione".
+"No estoy de acuerdo con este experimento, pero incluso yo sé que un experimento fallido en una emisión mundial sería un suicidio de relaciones públicas". 
+Narrador::
+Baja un poco la voz, como si hablara consigo misma.
+Mujer espectadora::
+{additive: on}
+"Imagina lo nervioso que está ese chico ahora mismo.
+Imagina la presión de sentarse en esa silla, delante de millones..."
+{additive: off}
+{fadeinsound: Modern News, .1}
+"¡Creo que están empezando ahora!"
+"Silencio por favor. Quiero escuchar esto!"
+{moveChar: Hombre espectador, -1}
+{moveChar: Mujer espectadora, -1}
+{moveChar: Hombre espectador 2, 2}
+{loopBG: false}
+{playBG: Prologue/Times Square Pan Up}
+{spawnChar: femalesilo, 2, Cindy}
+{moveChar: Cindy, .75}
+{anim: Cindy, Excited}
+Narrador::
+El Holo-espectador, que antes estaba en una breve pausa publicitaria, cambia bruscamente a la imagen de una presentadora elegantemente vestida.
+Sonríe dulcemente fuera de la pantalla. 
+Cuando mira a la cámara frontal, su rostro adopta una expresión más seria.
+Cindy::
+"¡Buenas tardes América!"
+{additive: on}
+"Hoy, Digital Horizons, 
+la mayor empresa de imágenes cerebrales del país, 
+intenta grabarse en los libros de historia."
+{additive: off}
+{additive: on}
+"'¿Y cómo piensan hacerlo?', preguntarás.
+Let's find out together. LIVE!" 
+{additive: off}
+"Y, parece que tenemos un asiento en primera fila." 
+"En escena en el Laboratorio de Horizontes Digitales, tenemos a nuestro corresponsal y principal reportero de noticias, John Casnik".
+"¿John? ¿Estás ahí?"
+{changeScene: Brain Sucking Chair Side}
+{fadeoutsound: Times Square Crowd, 1}
+{colorformat: Emerald}
+{fadeinsound: Laptop Lab Scene, 1.5}
+{fadeinsound: Fast Keyboard Typing, 1.5}
+{fadeinsound: DIHI Low Power, 2}
+{fadeinsound: Lab Computer Room Beeps 2, 1}
+{fadeinsound: Lab Ambience Music Light, 1}
+{fadeinsound: LabAmbience, .4}
+{spawnChar: malesilo, -1, John}
+{spawnEmpty: Cindy, NPC}
+{spawnEmpty: Hombre espectador, NPC}
+{spawnEmpty: Hombre espectador 2, NPC} 
+{spawnEmpty: Mujer espectadora, NPC}
+{spawnEmpty: Narrador, NPC}
+{anim: John, kime2}
+{moveChar: John, .30}
+Narrador::
+Delante de la pantalla hay un hombre de unos 40 años, vestido con un elegante traje gris oscuro, con una mano jugueteando con su auricular.
+Mientras el corresponsal escucha, asiente con la cabeza. 
+John sonríe ampliamente a la cámara.
+John::
+"¡Gracias Cindy! ¿Cómo has estado?"
+Cindy::
+{additive: on}
+"Ohhhh John, ¡he estado genial! 
+¿Cómo están los niños?"
+{additive:off}
+John::
+"¡Son buenos!"
+"Estudiando duro para los finales."
+Cindy:: 
+"¡Estoy tan feliz por ti, John! Saluda a Margie de mi parte, ¿vale?"
+John::
+"On the off chance she <i>isn't</i> watching with the rest of the world, I will be sure and let her know."
+Cindy::
+"¿Quién no estaría mirando, precisamente hoy?"
+Narrador::
+Los presentadores se ríen entre dientes.
+Cindy::
+{additive: on}
+"Ahora, John.
+Los espectadores no tienen ni idea de lo que están viendo aquí.
+Todo lo que veo detrás de ti es una silla de aspecto aterrador...
+¿Es eso lo que creo que es?"
+{additive: off}
+Narrador::
+{anim: John, kime1}
+John responde asintiendo con la cabeza.
+John::
+{additive: on}
+"Esto es, Cindy.
+La Interfaz Humana de Imagen Digital. O DIHI para abreviar".
+{additive: off}
+Cindy::
+{additive: on}
+"Bueno... 
+adelante, John.
+Guíanos a través de él."
+{additive: off}
+John::
+"Como pueden ver, estoy en la puerta del laboratorio principal". 
+"Muy pronto conoceremos al primer humano elegido para ser digitalizado".
+Narrador::
+John hace un gesto fuera de la pantalla.
+John::
+"Y entrarán por esa puerta..."
+Narrador::
+John esquiva torpemente a unos técnicos de laboratorio que le empujan delante de la cámara.
+{spawnChar: malesilo2, 1.4, LabTech0}
+{spawnChar: malesilo1, 1.4, LabTech1}
+{moveChar: LabTech0, .5}
+{moveChar: LabTech1, .75}
+John::
+"Oh, discúlpenme caballeros."
+{moveChar: LabTech0, -.4}
+{fadeinsound: openclosedoor, 0.1}
+{moveChar: LabTech1, -.4}
+{additive: on}
+"¡Lo siento!
+{disablechar: LabTech0}
+{disablechar: LabTech1}
+¿Dónde estaba?"
+{additive: off}
+{additive: on}
+"Sí. ¡Casi pierdo el hilo!
+Digital Horizons es una empresa a la vanguardia de esta tecnología, que lleva más de una década desarrollando replicadores de patrones cerebrales."
+{additive: off}
+"Ahora ves Cindy, y los espectadores en casa, estas 'copias' de patrones cerebrales, conocidas como Synthgens, funcionan normalmente como clones de IA de personalidades online. Los V-Tubers son un excelente ejemplo".
+"La mayoría de las veces estos Synthgens se utilizan cuando el streamer está desconectado, o cuando alguien se retira". 
+Cindy::
+"¿John? Estoy un poco confundido". 
+John::
+"¿Sí?"
+Cindy::
+"Um... ya tenemos Synthgens. ¿Qué hace a esta máquina diferente?" 
+Narrador::
+El reportero mueve el dedo hacia la cámara como si regañara a un niño impaciente.
+John::
+"A eso iba." 
+"Los Synthgens estándar tienen un gran inconveniente." 
+"Las copias se descomponen con el tiempo. No hay un cerebro que mantenga los patrones juntos". 
+Narrador::
+La expresión de John cambia ante la cámara. El foco se sitúa detrás de sus ojos. 
+John::
+"Así que, como cualquier verdura o fruta, se 'pudre' con el tiempo. Caduca de forma natural".
+"Entonces hay que grabar nuevas copias, y utilizarlas para reemplazar las deterioradas y viejas". 
+"Está lejos de ser una solución perfecta".
+"Entonces, en lo que Digital Horizons ha estado trabajando durante tanto tiempo, es en transferir una mente humana completamente a internet..."
+Narrador::
+El silencio se hace incómodo al otro lado de la transmisión.
+Cindy::
+"Espera un segundo. A ver si lo entiendo..."
+"¿El alma de la persona es transferida? ¿Significa que no hay nadie en el cuerpo?"
+John::
+"¡Sí!" 
+"Su propósito original era transferir la mente de un paciente de cáncer a un cyborg, o dar tiempo a los astronautas para aprender nuevas habilidades en criostasis".
+"Pero hay muchas aplicaciones para las que se puede utilizar esta tecnología". 
+"De ahí el nombre. Interfaz Humana de Imagen Digital. Transfiere la imagen de un humano como un todo".
+Narrador::
+La transeúnte se burla abiertamente en la calle, mirando hacia arriba al borde del horror.
+Mujer espectadora::
+{additive: on}
+"Llámalo como realmente es, John.
+Una silla chupa cerebros".
+{additive: off}
+Narrador::
+En voz suficientemente alta como para que los demás puedan oírlos, los transeúntes intentan hablar por encima de los oohs y ahhs de la multitud que los rodea. 
+Hombre espectador::
+"¡WOW! Eso es... impresionante." 
+"Esto realmente podría cambiar el mundo para mejor".
+"Aunque sea arriesgado, creo que vale la pena ese riesgo". 
+Hombre espectador 2::
+"¡Sí, joder!"
+"Innovador, y rompedor... y otras cosas".
+"Tío, me encantaría ser digitalizado."
+"Podría ayudar con lo innovador y esas cosas. Por no hablar de experimentar el lado más... entretenido de internet."
+Narrador::
+A la espectadora se le escapa un suspiro cansado.
+Mujer espectadora::
+"Tan típico..." 
+"Déjame adivinar... ¿Porno?"
+Narrador::
+El espectador masculino 2 se ríe con complicidad.
+Hombre espectador 2::
+{additive: on}
+"¡Lo sabes nena!
+Todos sabemos que esa es la razón principal de Internet.
+¿Estoy en lo cierto?"
+{additive: off}
+"Bromas aparte..."
+{additive: on}
+"¡Hay otras cosas igual de chulas!
+¿Quieres saltar desde el Everest? Puedes hacerlo.
+Nadar en el fondo del océano.
+Tal vez incluso visitar Marte...
+El cielo es el límite, mi hombre..."
+{additive: off}
+Mujer espectadora:: 
+"Ustedes dos están ahogando la transmisión."
+Narrador::
+La ocurrencia es aguda...
+{spawnChar: malesilo3, 1.3, Lab Tech} 
+{moveChar: Lab Tech, .70}
+{anim: Lab Tech, Checktime}
+Narrador::
+John se encuentra junto a un técnico de laboratorio.
+El técnico es alto y larguirucho, sus gafas son demasiado grandes para el puente de su nariz.
+Lleva el pelo oscuro despeinado, como si llevara días en el laboratorio sin dormir.
+En la pantalla, sus hombros están un poco caídos, como si le aplastaran todas las miradas de la cámara. Su voz, sin embargo, desafía esa impresión.
+El técnico de laboratorio se lleva las gafas a la nariz.
+{anim: Lab Tech, Glasses}
+Lab Tech::
+"Una vez transferido, el sujeto permanecerá en nuestros servidores cerrados durante un periodo de unos cuatro días, más o menos". 
+"Mientras estén allí, el cuerpo del sujeto permanecerá en una forma de estasis de aire caliente. Esto es para prevenir cualquier cambio abrupto en la composición química". 
+"Estos cambios químicos pueden crear 'confusión' dentro del cerebro".
+"Llamamos a este fenómeno 'Descarga Cerebral'. Queremos evitar este efecto hasta que tengamos una mejor comprensión de las implicaciones a largo plazo." 
+"El proceso..."
+Narrador::
+El corresponsal frunce ligeramente el ceño. 
+John::
+"Espera... ¿'Descargas cerebrales'?"
+Narrador::
+El técnico de laboratorio mira a la cámara con gesto fulminante y niega con la cabeza.
+Lab Tech::
+{additive: on}
+"Sí... John, ¿verdad? 
+Una descarga cerebral. 
+Es demasiado complicado para explicarlo en directo. 
+Sigamos adelante. Tengo cosas que atender pronto".
+{additive: off}
+Narrador::
+El técnico de laboratorio desestima la confusión del reportero.
+{anim: Lab Tech, Thinking}
+Lab Tech::
+"Actualmente, este proceso no se ha probado en un sujeto humano". 
+"Sin embargo, los datos experimentales de los synthgens han mostrado poco o ningún efecto secundario adverso".
+"Llevaremos a cabo las mismas pruebas que realizamos en la 'Simulación Synthgens'".
+"Permanecerán despiertos y conscientes en el servidor, realizarán pruebas de habilidades motoras, recitarán poemas, cantarán canciones, etcétera". 
+"El propósito es activar todas las partes del cerebro para asegurar la plena congnición y conciencia". 
+{anim: Lab Tech, Glasses}
+"Queremos ver qué parte del cerebro está activa en el ciberespacio, y estar seguros de que podemos medir el deterioro, si lo hay..."
+"Después de unos cuatro días, reanimaremos su cuerpo, reinsertaremos los patrones cerebrales de nuevo en su recipiente carnoso, y los pondremos en cuarentena durante un par de meses para asegurarnos de que no se ha producido ningún daño permanente". 
+Cindy::
+"Pregúntale si los sintgenos de la primera prueba siguen bien John. ¿John?"
+Narrador::
+{anim: John, kime1}
+John toca el auricular y mira hacia el técnico de laboratorio.
+John::
+"Pregunta er...."
+Narrador::
+El técnico de laboratorio bebe un sorbo de agua y cierra bien la tapa.
+Lab Tech::
+"Mi nombre es Shirobi."
+{changeName: Lab Tech, Shirobi}
+John::
+"Shirobi. ¿Qué pasa si algo va mal mientras están dentro del servidor?" 
+"¿Qué pasa si ves deterioro, y necesitas sacarlos lo más rápido posible?" 
+"¿Cuáles son los pasos de ese proceso?"
+Narrador::
+Shrobi se encoge de hombros con indiferencia, imperturbable.
+Shirobi::
+"Si hay algún problema que cause alarma, los transferiremos inmediatamente de vuelta a su cuerpo".
+"Habrá un equipo vigilando 24 horas al día, 7 días a la semana, tanto el cuerpo como la mente en el servidor". 
+Narrador::
+Shirobi mira directamente a la cámara, con rostro serio, pero seguro de sí mismo.
+Shirobi::
+"El sujeto de esta prueba es muy consciente de los riesgos, y está dispuesto a ser pionero en este campo; haciendo historia en el proceso".
+"Tengo plena confianza en que esta prueba tendrá éxito con poco o ningún problema". 
+"Esa es mi opinión personal, por supuesto". 
+John::
+"¿Y quién es ese pionero del futuro? ¿La persona que ha decidido enfrentarse a lo desconocido de Internet?".
+{fadeinsound: openclosedoor, 0.1}
+Narrador::
+El técnico del laboratorio sonríe por primera vez al oír el ruido de la puerta.
+Comienza a guiar a toda la prensa fuera del laboratorio con aire de excitación.
+{anim: Shirobi, Thisway}
+Shirobi::
+"El espíritu valiente y pionero..."
+Narrador:: 
+Es el momento de hacer tu primera elección. También podrás poner tu propio nombre, y añadir la opción no binario en este punto.
+¿Prefieres identificarte como binario o no binario? Esta opción permitirá que los personajes se refieran a tu persona de forma neutra en cuanto al género.
+{usegameobject: Binary Selection Panel}
+Entonces... ¿qué camino le gustaría seguir?
+{usegameobject: Character Selection Panel}
+{if: MalePath}
+{
+	"¡Ruta Masculina es!"
+	{changeScript: Male/Prologue/Prologue}
+}	
+{if: !MalePath}
+{
+	"¡Ruta Femenina es!"
+	{changeScript: Female/Prologue/Prologue}
+}

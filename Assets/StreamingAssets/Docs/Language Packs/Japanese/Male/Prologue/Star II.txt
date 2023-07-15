@@ -1,11 +1,13 @@
-{changeScene: Scenes/Star/Bedroom}
-{fadeinsound: starandszy, 1}
+{changeScene: Star Bedroom Night}
+{colorformat: Asterella}
+{fadeinsound: Lucas and Star Dinner, 1}
 {fadeinsound: fireplace, 1}
-{spawnChar: malesilo, -1, Szycrotic}
-{spawnChar: femalesilo, 2, Asterella}
+{spawnEmpty: MC, Player}
+{spawnChar: star nightgown, 1.3, Asterella}
 {fadeoutsound: Wind Heavy, 1}
-{anim: Szycrotic, idle}
-{moveChar: Szycrotic, .25}
+{spawnChar: szycrotic default, -.5, Lucas}
+{moveChar: Lucas, .3}
+{movecube: .5, .2}
 MC::
 屋敷の中心に到達するのに少なくとも5分歩いた。
 うん。まだ縛られている。
@@ -16,8 +18,8 @@ MC::
 MC::
 俺の心！ 
 そして。。。
-Szycroticはずっと彼の息を呑んで歌をハミングしてきた。 
-{moveChar: Asterella, .75}
+Lucasはずっと彼の息を呑んで歌をハミングしてきた。 
+{moveChar: Asterella, .65}
 {additive: on}
 入ると、
 見事な若い女性、
@@ -37,42 +39,69 @@ Szycroticはずっと彼の息を呑んで歌をハミングしてきた。
 {fadeinsound: Heart Thump, .1}
 それに応えて私の心はドキドキする。
 Asterella::
-[annoyed]
-"Szy!" 
+[Annoyed]
+"Lucas!" 
 MC::
 あの甘美な声は憤慨に満ちている。
 Asterella::
-{additive:on}
-"私はあなたに彼を連れてくるように言いた、
+{if: !n-b}
+{
+ {additive:on}
+ "私はあなたに彼を連れてくるように言いた、
 彼を殴ったり引きずったりしないで！"
-{additive:off}
+ {additive:off}
+}
+{if: n-b}
+{
+ {additive:on}
+ 「連れて来いと言ったはずだ、
+ 殴ったり引きずったりするな！"
+ {additive:off}
+}
 MC::
-肩をすくめるSzycrotic、肩をすくめる防御のヒント。 
-Szycrotic::
-[indifference]
-"Star, 彼は文字通りそれを予約しようとした。"
-"だから、当然。俺は彼を縛った。"
-"俺を責めないで！彼のキンクだと思う。"
+肩をすくめるLucas、肩をすくめる防御のヒント。 
+Lucas::
+[Default]
+{if: !n-b}
+{
+ "Star, 彼は文字通りそれを予約しようとした。"
+ "だから、当然。俺は彼を縛った。"
+ "俺を責めないで！彼のキンクだと思う。"
+}
+{if: n-b}
+{
+ "スター、彼らは文字通り予約しようとした"
+ 「だから当然だ。私はMCを縛った。
+ 「私を責めないで！彼らの趣味だと思う。
+}
 MC::
 ロープフェチがないことに抗議するために口を開ける。 
 Asterella::
-{anim: Asterella, pouting}
+{anim: Asterella, Pouting}
+{movecube: .7, .7}
 "私の領域に入ってくる人々を打ち負かすことはできない！"
+{movecube: .5, .4}
 "彼らが訪問している魔王である場合はどうなるか？"
-Szycrotic::
+Lucas::
 "しかし-"
-[confusion]
+[OWO]
 Asterella::
-{anim: Asterella, impatient}
-"侵入者のように見えても！もし彼が変装した魔王だったら？"
+{anim: Asterella, Pouting}
+{if: !n-b}
+{
+ "侵入者のように見えても！もし彼が変装した魔王だったら？"
+} 
+{if: n-b}
+{
+ "たとえ侵入者に見えたとしても！変装した魔王だったらどうする？"
+}
 MC::
-Szycroticは俺を思慮深く見ている。
-{anim: Szycrotic, thinking} 
+Lucasは俺を思慮深く見ている。
 Starは目に見える欲求不満で頭を振る。 
 彼女はゆっくりと手を上げる。
 そして、最終的にドアを指し示す：決定がなされた。
 Asterella::
-{anim: Asterella, impatient}
+[Indifference]
 "出ていけ。" 
 {additive:on}
 "毎晩の罰については、ダンジョンマスターに相談してください。
@@ -87,27 +116,36 @@ MC::
 これはV-Tuberストリームではない。
 彼らはここに住んでいるようだ。
 {additive: off}
-{moveChar: Szycrotic, .1}
-Szycrotic::
-{anim: Szycrotic, pouting}
+{moveChar: Lucas, .1}
+Lucas::
+[Angry]
 "分かった、女"
-"彼が敵対的になったとしても、俺を責めないでね。"
-{moveChar: Szycrotic, -1}
+{if: !n-b}
+{
+ "彼が敵対的になったとしても、俺を責めないでね。"
+}
+{if: n-b}
+{
+ 「彼らが敵対的になっても、私を責めないでくれ。
+}
+{moveChar: Lucas, -1}
 {moveChar: Asterella, .5}
+{movecube: .2, .4}
 MC::
-{anim: Asterella, smug}
-{fadeinsound: Door, 1}
-Starは、Szyが満足そうな顔でドアを閉めるのを見ている。 
+{fadeinsound: openclosedoor, 1}
+Starは、Lucasが満足そうな顔でドアを閉めるのを見ている。 
 ドアが閉まると、彼女はため息をつき、少しの間目を閉じた。 
 Asterella::
-{anim: Asterella, idle}
-[happy]
+[Happy]
+{anim: Asterella, Thinking}
 "私は彼がいつか戦争を始めることを誓う。"
 MC::
 彼女の喉から逃げる軽いクスクス笑いは奇妙なことに驚くべきことではない。 
 それらは互いに非常に近いようだ。
 何かを決めるかのように、彼女は俺に焦点を合わせ、彼女の目は謝罪する。
+{movecube: .5, .1}
 Asterella::
+[Default]
 "はい, それらのロープをあなたから外ししょう。"
 本当にごめんね。。。あの。。。"
 MC::
@@ -120,62 +158,83 @@ MC::
 俺は少し乾いて笑いう。 
 Asterella::
 "そのような冗談で、多分私はあなたを縛り続けるべき。"
-{anim: Asterella, thinking}
+[Happy]
 MC::
 彼女は唇をひねって俺を見ている。
+{movecube: .5, 0}
 1本の指の爪を伸ばし、手首と喉からロープをスライスする。 
 ネイルはナイフのようにカットされた。
-Szycroticが心配していなかったのも不思議ではない。
+Lucasが心配していなかったのも不思議ではない。
 待って、それは警告だったか？ 
 俺はそれを一つにするつもり。
+{movecube: .5, .2}
 Asterella Star,俺の顔から足ではない。
 本物。 
-
-**TODO: henable**
-if: henabled, true
-
-紳士になり。 
-彼女は背が低く、頭は俺の胸の真ん中までしか上がらない。 
-俺の目は彼女の跳ねる「資産」をロックせずにはいられない。
-タスクは正常に失敗した。
-
-if: henable, false
-
-彼女は背が低く、頭は俺の胸の真ん中までしか上がらない。
-紳士なので、彼女と目を合わせる。 
-それらのゴージャスな目。
-
+{if: henable}
+{
+	{if: n-b}
+ {
+   優しい人であれ。
+ }
+ {if: !n-b}
+ {
+   紳士になり。 
+ }
+ 彼女は背が低く、頭は俺の胸の真ん中までしか上がらない。 
+ 俺の目は彼女の跳ねる「資産」をロックせずにはいられない。
+ タスクは正常に失敗した。
+}
+{if: !henable}
+{
+	彼女は背が低く、頭は俺の胸の真ん中までしか上がらない。
+ {if: n-b}
+ {
+   優しい私は彼女と目を合わせた。
+ }
+ {if: !n-b}
+ {
+  紳士なので、彼女と目を合わせる。 
+ }
+ それらのゴージャスな目。
+} 
 彼女の大波の香りが私たちの間の小さな空気の空間に流れ込む。ラベンダーが混ざったブリムストーンだ。
 それは酔わせる。。。
 Asterella::
-{anim: Asterella, idle}
+[Default]
 "Starはいいよ, MC. 私の正式な称号は正式な式典のために保存されている。"
 {additive:on}
+{anim: Asterella, Pouting}
 "私のマナーはどこにある？ 
 失礼。
 ソファに座って、ワインをもらおう。"
 {additive:off}
 MC::
 彼女は女王の優雅さで座って、優雅にソファに滑り込む。 
+{moveChar: Asterella, .4} 
+{movecube: .4, .2}
 優雅な手で、彼女は彼女の隣のソファクッションを暗示的に軽くたたく。
 招待状だ。
 Asterella::
 "さ、おいで, 私は噛まない。"
-[horny]
+[Happy]
 MC::
 彼女の繊細な特徴にいたずらっぽい表情が現れる。
 Asterella::
 "もちろん、あなたも私を欲しがらない限り。"
-[happy]
+{anim: Asterella, Smug}
 MC::
 飲み込む。
 それはあなたが思っていることではない。
 それはあなたが考えていることではない。
 しっかりして！
 "あのさ、 Star. なぜ俺をあなたの部屋に連れて行った？"
+Asterella::
+{movecube: .4, .1}
+[Default]
+MC::
 {fadeinsound: woodwine1, .1}
 {fadeinsound: woodwine2, .1}
-{fadeinsound: glasspouring, .1}
+{fadeinsound: Pouring, .1}
 は二つ目のシャンパングラスを手に取り、クリスタルの杯から深紅色のワインを注ぐ。
 軽く、彼女はゴブレットを隣のテーブルに置く。 
 {fadeinsound: wineglassdown, .1}
@@ -183,6 +242,7 @@ Asterella::
 {additive: on}
 "あなたが未知であるという事実以外に？ 
 突然私の領域に許可なく表示されるか？ 
+{movecube: .4, .3}
 あなたがそれを所有しているかのように？"
 {additive:off}
 MC::
@@ -196,12 +256,11 @@ MC::
 おそらく足を口に入れているのだろうが、知る必要がある。 
 "あなたは答えを得るためにあなたの喜びで拷問するために俺をダンジョンに送るべき。"
 Asterellaは静かにワインを掴みながら見上げる。 
-{anim: Asterella, smug}
+{anim: Asterella, Thinking}
 Asterella::
 "いいえ、それではうまくいきない。ダンジョンは良い男の子と女の子のためのものだ。" 
 "ほら、地獄では物事が違った働きをする。"
 MC::
-{anim: Asterella, idle}
 彼女の口調は事実が、穏やかだ。まるで楽しみのために罰せられるのはまったく普通のことのようだ。
 それは俺をさらに不安にさせる。 
 ここで起こっているいくつかの深刻なBDSMの雰囲気。 
@@ -221,7 +280,8 @@ Asterella::
 "将来の関係へ。"
 MC::
 "将来の関係へ。"
-{fadeinsound: winetoast, .1}
+{fadeinsound: Wine Toast, .1}
+{anim: Asterella, Impatient}
 俺はそれの素敵な一口を取る。
 少し焦げるが、味はなめらか。 
 声が少し下がる。 
@@ -229,7 +289,7 @@ MC::
 じゃ、いくよ。
 "もし、俺がここにいるのかわからないと言ったらどうなるだろうか。それは偶然の出来事だった。"
 は眉をひそめ、俺を再び注意深く研究する。
-{anim: Asterella, thinking}
+{anim: Asterella, Thinking}
 非常に不快な時期には、部屋、空気は寒い。
 最後に、彼女は話す。
 Asterella::
@@ -238,12 +298,14 @@ Asterella::
 MC::
 ちょっと話す。
 "俺がTwatchサーバーから来たと言ったらどうする？"
-{anim: Asterella, angry}
+{movecube: .4, .1}
 彼女は、彼女の目に届かない、優しく微笑む。
 きらめきが彼女の目に危険なほどに発火し始める。
 爆竹として突然。
 Asterella::
+[Disgust]
 "そして、それは完全な嘘にる。" 
+{movecube: .4, .3}
 "遊ばないで, MC." 
 {additive:on}
 "私は寛容で慈悲深いかもしれない、
@@ -251,8 +313,9 @@ Asterella::
 {additive:off}
 MC::
 彼女は一時停止する。
-{anim: Asterella, idle}
+{anim: Asterella, Thinking}
 Asterella::
+[Default]
 "とにかく、少なくとも私には。"
 "あなたは私の王国に脅威を与える？"
 "または、おそらく、他の地獄のサークル？"
@@ -265,9 +328,10 @@ MC::
 "もしそうなら、なぜ私は囚人としてここにワルツを入れるのだろうか？"
 彼女が笑う番だった。
 Asterella::
-[happy]
+[Happy]
 "そうだね, MC. 私たちは情報が行き詰まっていると思う。。。"
 "今のところ、とにかく。"
+[Default]
 MC::
 {additive:on}
 彼女は何かを熟考している、
@@ -288,8 +352,8 @@ MC::
 {additive:off}
 太ももが触れるのに十分な距離で、彼女はまつ毛を通して俺を見上げる。
 Asterella::
-{anim: Asterella, woozy}
-[horny]
+{anim: Asterella, Smug}
+[Happy]
 "あなたから情報を得る他の方法がある。"
 MC::
 それは正確にはどういう意味？
@@ -301,58 +365,63 @@ MC::
 落ち着け, MC. 落ち着け。
 きゅうりのようにかっこいい。
 Asterella::
-"私と馬鹿にしないで、 MC. あなたはとても親切で魅力的なエルフの男の子のようだ、そして私は少し「喉が渇いている」。。。"
+{if: !n-b}
+{
+ "私と馬鹿にしないで、 MC. あなたはとても親切で魅力的なエルフの男の子のようだ、そして私は少し「喉が渇いている」。。。"
+}
+{if: n-b}
+{
+ 「とぼけるな、MC。あなたはとても親切で魅力的なエルフのようだし、私はちょっと "のどが渇いている"..."
+}
 "そして、それはより多くのワインのためではない。"
 MC::
 彼女の顔の表情は、彼女の本当の意図が何であったかについてのボリュームを物語っている。
-
-**TODO: henable**
-
-if: henable, true
-
-{additive:on}
-そして、本当の処女のように（それはそんなに長い間）, 
-俺の気まぐれなピクルスはダークナイトのように上昇する。
-{additive:off}
-少なくとも俺はそれが今うまくいくことを知っているよね？
-もちろん、それは優先事項ではない。
-小さな男が目を覚ますことができることを知っておくのは良いことだ。
-ワインを窒息させて恥ずかしい思いをする。
-
-if: henable, false
-
-俺の心は俺の喉に跳躍する。優しい気持ちがより強引になる。
-これは起こらない。。。 
-ワインを窒息させて恥ずかしい思いをする。 
-"待って、今？"
-なんとか声がきしむのを防いでいる。
-それをとても誇りに思っている。
-Starはそっと俺の足を愛撫し始める。
-
-**TODO: henable**
-
-if: henable, true
-俺の股間に信じられないほど近づいている。
-俺の小さな男がけいれんするのを感じる。
-彼女の動きはより積極的になる。
-
-if: henable, false
-これは急速に深刻になっている。
-彼女の動きはより断定的になり、彼女は俺の目を覗き込む。。。 
-{additive: on}
-その目:
-美しい, 
-穏やかでありながら積極的に空腹。
-{additive:off} 
-
+{if: henable}
+{
+	{additive:on}
+    そして、本当の処女のように（それはそんなに長い間）, 
+    俺の気まぐれなピクルスはダークナイトのように上昇する。
+    {additive:off}
+    少なくとも俺はそれが今うまくいくことを知っているよね？
+    もちろん、それは優先事項ではない。
+    小さな男が目を覚ますことができることを知っておくのは良いことだ。
+    ワインを窒息させて恥ずかしい思いをする。
+}
+{if: !henable}
+{
+	俺の心は俺の喉に跳躍する。優しい気持ちがより強引になる。
+    これは起こらない。。。 
+    ワインを窒息させて恥ずかしい思いをする。 
+    "待って、今？"
+    なんとか声がきしむのを防いでいる。
+    それをとても誇りに思っている。
+    Starはそっと俺の足を愛撫し始める。
+}
+{if: henable}
+{
+	俺の股間に信じられないほど近づいている。
+    俺の小さな男がけいれんするのを感じる。
+    彼女の動きはより積極的になる。
+}
+{if: !henable}
+{
+	これは急速に深刻になっている。
+    彼女の動きはより断定的になり、彼女は俺の目を覗き込む。。。 
+    {additive: on}
+    その目:
+    美しい, 
+    穏やかでありながら積極的に空腹。
+    {additive:off} 
+}
 確かな笑顔がゆっくりと彼女の顔を包み込む：満足の笑顔。
 Asterella::
 "あなたの体は私に嘘をつくことはできない, MC. あなたも私を欲しがっているのは知っている"
 MC:: 
 彼女はほとんどぽっちゃりしているように見え、彼女の頬はほんの少し膨らんでいる。
-{anim: Asterella, pouting}
+{anim: Asterella, Pouting}
 Asterella::
 "あなたは彼女自身の領域で魔王を否定しないか？"
+{movecube: .4, .1}
 "侵入者としても。"
 MC:: 
 俺は何と言う？
@@ -365,20 +434,32 @@ MC::
 俺は未知の状況にあり、俺の周りには暗い穴がある。
 言うまでもなく、今夜のダンジョンで悪魔が自分自身を「楽しんでいる」と、俺が下したどちらの決定にも問題が生じる可能性がある。 
 彼女の気持ちを傷つけたら、俺は領域を傷つける？
-Starの提案に従えば、Szycroticは激怒する？
-{選び: 何をすべきか？}
+Starの提案に従えば、Lucasは激怒する？
+{movecube: .4, .3}
+{choice: 何をすべきか？}
 {
-    俺は彼女を胸に引き寄せ、あごをそっと持ち上げて答える。 (H-Scene)
+    俺は彼女を胸に引き寄せ、あごをそっと持ち上げて答える。 
     [
         {setbool: starbed,true}
         Asterella::
-        {anim: idle}
-        [horny]
-        "いい子"
-        MC::
-        彼女は静かにつぶやく。
-        Asterella::
-        "とってもいい子だ。"
+        {anim: Asterella, Smug}
+		[Horny]
+        {if: !n-b}
+		{
+			"いい子"
+			MC::
+            彼女は静かにつぶやく。
+            Asterella::
+            "とってもいい子だ。"
+		}
+		{if: n-b}
+		{
+			"いいおもちゃだね..."
+			MC::
+			彼女は静かにつぶやく。
+			Asterella::
+			"そう、とてもいいおもちゃだ..."
+		}
         MC:: 
         真実は俺の唇から逃れる。
         "どうすればノーと言える？"
@@ -390,18 +471,21 @@ Starの提案に従えば、Szycroticは激怒する？
        彼女は凍りついて座っていて、ほとんどショックを受けている。 
         実現ヒット。彼女は手を口に当てる。..
         Asterella::
-        [confusion]
+        [Confusion]
         "あら。。。私はこれを読み間違えたか？"
         "あなたは同性愛者か？"
-        "ここにSzyをコールバックする必要がある？"
+        "ここにLucasをコールバックする必要がある？"
+        {movecube: .1, .4}
         MC::
         "あの、いいえ?"
         彼女は笑いながら、俺の太ももに注意を向け、ふざけて円をなぞる。
+        {movecube: .4, .3}
         Asterella::
-        [horny]
+        [Horny]
         "そうでない場合は、多分。。。"
+        [Happy]
         MC::
-        {選び: 同性愛者じゃない。。。でも。。。}
+        {choice: 同性愛者じゃない。。。でも。。。}
         {
             無理。出来ないよ。
             [
@@ -413,7 +497,7 @@ Starの提案に従えば、Szycroticは激怒する？
                 "俺はあなたを知らない。それは俺には正しく感じられない。"
                 {changeScript: Male/Prologue/Star II FriendZoned}
             ]
-            もういい! 俺はそれらの目を否定することはできない！ (H-Scene)
+            もういい! 俺はそれらの目を否定することはできない！
             [
                 {setbool: starbed,true}
                 俺は彼女の顔をそっと手に取り、彼女の唇を引っ張って俺のものにする。
@@ -427,7 +511,7 @@ Starの提案に従えば、Szycroticは激怒する？
 }
 {if: starbed,true}
 {
-    {選び:攻めか受け? (H-Scene)}
+    {choice:攻めか受け? }
     {
         攻め: 率いる。
         [
@@ -454,7 +538,9 @@ Starの提案に従えば、Szycroticは激怒する？
             俺は彼女の先導に従い、彼女の歩みは私たち二人を大きなベッドに導く。
         ]
     }
-    {changeScript: Male/Prologue/Star II Hentai}
 }
-
-
+MC::
+{usegameobject: Hentai Warning Panel, true}
+{fadeoutsound: fireplace, 1}
+{fadeoutsound: Lucas and Star Dinner, 1}
+{changeScript: Male/Prologue/Star II Hentai}

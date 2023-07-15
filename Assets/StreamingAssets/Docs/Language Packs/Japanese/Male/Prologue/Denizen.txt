@@ -1,13 +1,15 @@
 {changeScene: Fiberoptic Cable} 
-**TODO:Fade in from White**
-
+{colorformat: FiberOptic}
+{fadeinsound: cable1, .2}
+{fadeinsound: cable2, .2}
+{fadeinsound: CableAmbience, 1}
 {fadeinsound: Fiberoptic Cable, 1}
-{fadeinsound: Denizen Cable Music, 3}
+{fadeinsound: Piano Calm Music, 3}
 {fadeinsound: Pulsing Light, 1}
 {fadeinsound: Light Travels, 1}
 {fadeinsound: Deep Wind Ambience, 1}
-{fadeinsound: Heartbeat, 1}
-{spawnChar: malesilo, 2, MC}
+{fadeinsound: Normal HeartBeat Prologue, 1}
+{spawnEmpty: MC, Player}
 MC::
 痛みも感覚もまったく感じない。
 何も感じない。
@@ -32,6 +34,7 @@ MC::
 それ以上？
 {additive: off}
 俺自身の現実をシフトさせるもう一つの動きのレンチ。 少し「分離」する。
+{fadeinsound: Brain Sucking Chair Activate, 1}
 "うわあああ"
 再び一つになる。 
 くそ, 怖いよ! 俺はただ...バラバラになったか?
@@ -65,13 +68,12 @@ MC::
 俺は死んでいる? 
 死んでいない!
 {fadeinsound: Ears Ringing, 1}
+{fadeoutsound: cable1, 1}
+{fadeoutsound: cable2, 1}
+{fadeoutsound: CableAmbience, 1}
 {fadeoutsound: Pulsing Light, 1}
 {fadeoutsound: Light Travels, 1}
 {fadeoutsound: Deep Wind Ambience, 1}
 {fadeoutsound: Fiberoptic Cable, 1}
-{fadeoutsound: Denizen Cable Music, 3}
-
-**TODO: Fade to White** End of Section II
-
+{fadeoutsound: Piano Calm Music, 3}
 {changeScript: Male/Prologue/Star I}
-

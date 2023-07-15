@@ -1,12 +1,15 @@
-**TODO:Fade From White**
-
-{changeScene: Scenes/Star/Outside Default}
+{changeScene: Scenes/Star/Star Outside Night}
+{colorformat: Asterella}
 {fadeinsound: Star Piano, 1}
 {fadeinsound: Wind Heavy, 1}
-{fadeoutsound: Ears Ringing, 5}
-{fadeoutsound: Heartbeat, 5}
-{spawnChar: malesilo, 2, Masked Punk}
-{spawnChar: femalesilo, 2, MC}
+{fadeoutsound: Ears Ringing, 15}
+{fadeoutsound: Normal Heartbeat Prologue, 5}
+{movecube: .5, .1}
+{spawnChar: szycrotic default, 2, マスクド・パンク}
+{spawnEmpty: ナレーター, NPC}
+{spawnEmpty: MC, Player}
+ナレーター::
+{usegameobject: Flashing Lights Complete Panel, true}
 MC::
 必死になって、私は自分のすべてを頭の中に押し戻す。 
 {additive: on}
@@ -66,13 +69,13 @@ MC::
 伯爵の邸宅。 
 "あなたの血を吸いたい。 ウワハハ."
 自分にも関わらず笑う。 
-Masked Punk::
-{anim: Masked Punk, smug}
+マスクド・パンク::
+[OWO]
 "キンキー."
-{fadeinsound: Szy Dark, 2}
+{fadeinsound: Lucas Dark, 2}
 {fadeoutsound: Star Piano, 2}
-{fadeinsound: Flashstep, .3}
-{moveChar: Masked Punk, .50}
+{fadeinsound: Flash Step, .3}
+{moveChar: マスクド・パンク, .50}
 MC::
 突然、目の前1メートルに仮面の男が立った。
 彼はただそこにいる。  
@@ -81,54 +84,56 @@ MC::
 私自身にもかかわらず、私は一歩後退する。
 彼の顔のマスク、その後ろで光る緑色の光は、黒いパーカーの下から霧が染み出すにつれてきらめく。
 マスクは彼の顔！
-Masked Punk::
-{anim: Masked Punk, thinking}
+マスクド・パンク::
+[Default]
 "私はおそらくフレプシのような味がする。。。"
 MC::
 言葉が出ない。この人はだれ？!
-{anim: Masked Punk, wind idle}
-Masked Punk::
-[annoyed]
+{anim: マスクド・パンク, wind idle}
+マスクド・パンク::
+[Angry]
 {additive: on}
 "とにかく。
 おまえ、だれだ？"
 MC::
 {additive:off}
-{choice: Do I kick him in the nuts?}
- {
+{choice: 彼のタマを蹴るか？}
+{
    あなたの優位性を主張して！睾丸で彼を蹴ります！
-    [
-       "えええええええ!!!!"
-       MC::
+   [
+      "えええええええ!!!!"
+      MC::
       当然、パニックになる。
-       私は彼の鼠径部にしっかりとしたキックを送る。 
-       {fadeinsound: body punch hard, .2}
+      私は彼の鼠径部にしっかりとしたキックを送る。 
+      {fadeinsound: body punch hard, .2}
       彼はかろうじて私の足を捕まえる。彼のグリップは鋼のようにしっかりしている。
       彼は感謝の気持ちで口笛を吹く。
-       [happy]
-       Masked Punk::
-       {additive:on}
-       "おい、女、 
-       それは良いキックだぜ。"
-       {additive:off}
-       MC::
-       私の柔術の訓練はすべて、悪魔に対してではなく、報われなかった。
-       そして今、彼は私の足を持っている。 
-       彼は私の足を落とし、そのマスクに大きな笑みを浮かべた。
-       Masked Punk::
-       "今は遊べない。"
-       "そのキックは俺に二度考えさせている。"
-       MC::
-       "それはどういう意味？!"
-       {changeScript: Female/Prologue/Star I, 132}
+      マスクド・パンク::
+       [OWO]
+      {additive:on}
+      "おい、女、 
+      それは良いキックだぜ。"
+      {additive:off}
+      MC::
+      私の柔術の訓練はすべて、悪魔に対してではなく、報われなかった。
+      そして今、彼は私の足を持っている。 
+      彼は私の足を落とし、そのマスクに大きな笑みを浮かべた。
+      マスクド・パンク::
+      "今は遊べない。"
+      "そのキックは俺に二度考えさせている。"
+      MC::
+      "それはどういう意味？!"
+      {changeScript: Female/Prologue/Star I, 152}
     ]
    クソ! 叫べ!!
     [
       "わあああああああ! 出ていけ!!!!!" 
     ]
- }
+}
 彼は私に向かって叫ぶ。嘲笑する。
-Masked Punk::
+マスクド・パンク::
+{anim: マスクド・パンク, Impatient Start}
+{anim: マスクド・パンク, Impatient Loop}
 "わあああああああ!!!! 怖い悪魔、出ていけ！"
 "あなたはとても怖い！"
 MC::
@@ -138,21 +143,27 @@ MC::
 私は叫んでる!"
 {additive:off}
 "公平ではない"
-Masked Punk::
-[annoyed]
+マスクド・パンク::
+{anim: マスクド・パンク, Impatient End}
+{anim: マスクド・パンク, Wind Idle}
+[Angry]
 "それはあなたのドメインからの挨拶だと思った！!!"
 "俺に何をしてほしい？!"
+マスクド・パンク::
+[Default]
 "実際。名前は何?"
 MC::
 彼は子供に説明するように、ゆっくりと慎重に胸を指さす。
-Szycrotic::
-"俺はSzycrotic."
+Lucas::
+"俺はLucas."
 MC::
-{changeName: Masked Punk, Szycrotic}
+{changeName: マスクド・パンク, Lucas}
 "MCだよ! 今私に叫ぶのをやめて！"
-Szycrotic::
+Lucas::
 "いいえ! あんたはこれを始めた、あんたは最初に止まる！"
 MC::
+{fadeinsound: Lucas Breath Hard, .2}
+{fadeinsound: Min Sigh Extreme, .2}
 私たちは両方とも立ち止まり、ハフとパフをする。  
 私はちょうどここに着いた、そして私はすでに私が準備ができていない何かに対処しなければならない。
 この男を傷つけることはできない。彼は強すぎる。速すぎる。 
@@ -172,16 +183,16 @@ MC::
 脳のパターン劣化の症状でさえ。
 {additive: off}
 私は顔のマスクで悪魔を下に向けるつもりはなかった。 
-Szycrotic::
-{anim: Szycrotic, wind idle} 
-[happy]
+Lucas::
+{anim: Lucas, wind idle} 
 MC:: 
 彼はスタンスを緩め、彼の「顔」を汚す大きな笑顔。
-{fadeoutsound: Szy Dark, 4}
+{fadeinsound: Lucas Laugh 5, .2}
+{fadeoutsound: Lucas Dark, 4}
 {fadeinsound: Star Piano, 4}
 彼は突然心から笑い始める。
 私は彼を見て、数回まばたきをし、何を言うか、何をすべきかわからない。
-Szycrotic::
+Lucas::
 {additive:on}
 "お。マイ。ゴッド, MC.
 おい, すげいいい!"
@@ -194,47 +205,55 @@ Syzcrotic::
 "ありがとな, MC. 涙管があったら泣いてしまう。"
 MC::
 頬がふくれっ面に膨らんでいるのを感じる。
-"Szycrotic?"
-Szycrotic::
+"Lucas?"
+Lucas::
 "はい?"
-MC::
-"あなたは夜に歩き回っている女性を怖がらせることについては行くな！"
-Szycroticという名前は知っている。
+{if: n-b}
+{
+ MC::
+ "そんな風に人を怖がらせて回るんじゃない！いいか？"
+}
+{if: !n-b}
+{
+ MC::
+ "あなたは夜に歩き回っている女性を怖がらせることについては行くな！"
+}
+Lucasという名前は知っている。
 雪崩のように、名前の認識は私の意識的な考えにぶつかる。
 私は彼が誰であるか知っている。でも信じられない。 
 計画どおりにサーバーを使用していない。
 今、私は実際にどこにいるのか分からない。
 "ドメイン."
 その言葉を注意深く試す。
-{anim: Szycrotic, thinking}
-Szycroticは、私が物事を熟考しているのを見ているようだ。彼は頭を少し左に傾ける。
-Szycrotic::
+Lucasは、私が物事を熟考しているのを見ているようだ。彼は頭を少し左に傾ける。
+Lucas::
 "待て. 待て. 待て. あんたは俺が誰であるか知っている？"
 MC::
 彼は胸を少し膨らませる。
 Syzcrotic::
-{anim: Szycrotic, wind idle}
-[happy]
+[Lewd]
 "ついに！俺を認める人！"
 "じゃあ, 行こうううう!"
 MC::
 彼は立ち止まって私と目を合わせる。
 Syzcrotic::
 "荘！つまり。ええと、荘に行こう。"
+[Default]
 "えと... あんたは技術的には侵入者だが、危険ではないようだ。"
 MC::
 "私は確かに危険ではない。それからは程遠い。"
 彼は遠くない道を下って、荘に向かって動きます。 
-Szycrotic::
+Lucas::
 "来い. 俺はあんたをStarに連れて行く、そして私たちはこれをすべて理解する。"
-{moveChar: Szycrotic, .25}
-{fadeinsound: walkingongravel, 1}
+{moveChar: Lucas, .3}
+{movecube: .3, .2}
+{fadeinsound: Walking on Gravel, 1}
 MC::
 彼はゆったりとしたペースでスタートし、短い女性がフォローするのに十分。
 はああ
 私は彼の後ろに足を踏み入れた。 
 "Asterella Star?"
-Szycrotic::
+Lucas::
 "ええ, あんたも彼女を知っているようだ。それは物事をはるかに簡単にする。"
 {additive:on}
 "彼女は通常、これほど夜遅くに人々に会うことはない。
@@ -243,13 +262,12 @@ Szycrotic::
 MC::
 彼は振り返って、私がフォローしていることを確認する。緑に照らされた煙が漏れている。
 彼は頭を振り返る。
-Szycrotic::
-[indifference]
+Lucas::
 "あんたには本当の力がないようだ。"
 "でも、あんたはそれを隠しているだけかもしれない。"
 MC::
 彼は肩をすくめ、思考の流れを却下した。 
-Szycrotic::
+Lucas::
 {additive:on}
 "ま, 俺の問題じゃない 
 このドメインに害を及ぼさない限り、
@@ -264,18 +282,18 @@ MC::
 署名の挨拶は私の背骨に震えを送る。
 これは現実!
 オンラインのストリームではないが、実際に本物だ！
-そして、Szycroticは私をAsterella Starに連れて行ってくれる！
+そして、Lucasは私をAsterella Starに連れて行ってくれる！
 いや! 
 どうすればいい？!
 突然の緊張の波が私を包み込む。
 私はいつも遠くから彼女を賞賛してきた。
 ええ、私はストリーミングを行うが、個人レベルで人とチャットすることはほとんどない。 
 彼女はとっても人気。彼女はこれを20年ほどやっている。
-私は自分自身に戻り、Szyの背中を研究する。 
+私は自分自身に戻り、Lucasの背中を研究する。 
 これはあなたがストリーミングする場所のようには感じない。 
 巨大な複合施設の外壁に近づくと: 匂い、風、そのすべて。
 それは私にショックを与える。これは本物のように感じる。あまりにも現実的だ。
-そして、Szy，彼は本当にロールプレイング？それとも。。。
+そして、Lucas，彼は本当にロールプレイング？それとも。。。
 彼はいつも悪魔だったか？それとも、彼らはこの仮想世界での役割を果たしているだけか？
 外力が作用せずに古い門が開いている入り口に着く。 
 Syzcrotic::
@@ -287,15 +305,17 @@ MC::
 私は彼に望んでいないというわけではない。。。
 縛られたくない。いや！プレーヤーを止めろ！
 私たちが入口を通過するとき、私の目は美しさに浸っている。
-{fadeoutsound: walkingongravel, 1}
-{fadeinsound: waterfountain, 2}
+{fadeoutsound: Walking on Gravel, 1}
+{fadeinsound: waterfountainstar, 2}
 {additive: on}
 緑豊かなオークとトネリコの木が混沌とした対称性で風景に点在してる。
 風が彼らの葉を愛撫する。 
 明るい月明かりが、入念に選ばれた黒い大理石のベンチを浴びて反射する。
 {additive:off}
 邸宅の前には大きな噴水があり、月明かりから水がきらめき。 
-Szycrotic::
+Lucas::
+{movecube: .5, .1}
+[OWO]
 "おい! くる?"
 MC::
 私は歩いていないことに気づく。 
@@ -306,25 +326,24 @@ MC::
 魅惑的な畏怖の念を私の声から遠ざけることができず、私は彼のペースに合わせて急いでいる。 
 悪魔は賛成してうなずく。
 Syzcrotic::
-[happy]
+[Default]
 "あんたはいい味がする。あんたとStarはかなりうまくやっていくと思う。"
-{fadeinsound: walkingongravel, 1}
+{fadeinsound: Walking on Gravel, 1}
 MC::
 また歩き始める。 
 次回. 観光は待たなければならない。 
 ここに座って、リラックスして、軽いランチを食べたい。 
 私たちは噴水を通り過ぎ、失望の溜息が漏れ出した。
 私は階段を上る。。。
-{fadeoutsound: waterfountain, 5}
-{fadeoutsound: walkingongravel, 6}
-{moveChar: Szycrotic, .50}
+{fadeoutsound: waterfountainstar, 5}
+{fadeoutsound: Walking on Gravel, 6}
+{moveChar: Lucas, .50}
 メインドアは高く、高さ1.5メートルの高さで、オーク材で補強されている。
-Szyはハンドルを引っ張る
-{fadeinsound: castle door, 1}
+Lucasはハンドルを引っ張る
+{fadeinsound: Castle Door, 1}
 {fadeoutsound: Wind Heavy, 2}
 {fadeoutsound: Star Piano, 2} 
-Szycrotic::
+Lucas::
 "邸宅の残りの部分が見えるまで待って, MC."
 "それはあなたの心を吹き飛ばす。"
 {changeScript: Female/Prologue/Star II}
-

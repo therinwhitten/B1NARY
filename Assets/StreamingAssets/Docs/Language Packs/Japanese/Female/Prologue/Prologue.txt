@@ -1,16 +1,23 @@
 {changeScene: Brain Sucking Chair side}
-{fadeinsound: Laptop-Lab,2}
+{colorformat: Emerald}
+{fadeinsound: Laptop Lab Scene, 2}
 {fadeinsound: Fast Keyboard Typing, 2}
-{fadeinsound: DIHI Low Power,5}
+{fadeinsound: DIHI Low Power, 1}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
-{fadeinsound: Heartbeat, 1}
-{spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo, 2, Shirobi}
-Shirobi:: 
-{anim: Shirobi, kime2}
-"MC! 彼女は1年以上会社のインターンをしている。。。"
+{fadeinsound: Fast Heartbeat, 1}
+{spawnEmpty: MC, Player}
+{spawnChar: malesilo3, 1.5, シロビ}
+シロビ:: 
+{if: !n-b}
+{ 
+ "MC! 彼女は1年以上会社のインターンをしている。。。"
+}
+{if: n-b}
+{
+ "彼らはもう1年以上、この会社でインターンをしている..."
+}
 MC::
 脳吸引椅子。。。
 私がそれをそれと呼ぶとき、すべてのラボテック達はうんざりする、しかし私は気にしない。
@@ -28,27 +35,38 @@ MC::
 {additive:off}
 誰かが私の肩をつかんで、すぐに私をジャンプさせる。
 私はきしむ、それ自身の意志から出てくる音。
-{選び: 彼らに直面しますか？}
+{spawnChar: Circle Wipe, .5, CircleWipe}
+{choice: 彼らと向き合うか？}
 {
-     怖い！ 私はおそらく置かれたままにする必要がある。
-     [
-         手がしっかり握ってる感じ。そして私をぐるぐる回す。
-     ]
-     音楽に向き合う。
-     [
-         ぐるぐる回る。
-     ]    
+    怖い！ 私はおそらく置かれたままにする必要がある。
+    [
+        手がしっかり握ってる感じ。そして私をぐるぐる回す。
+        {anim: CircleWipe, RightStart}
+    ]
+    音楽に向き合う。
+    [
+        ぐるぐる回る。
+        {anim: CircleWipe, RightStart}
+    ]    
 }
-{fadeoutsound: Heartbeat, 1}
-{changeBG: DIHI Room Animated} 
+{fadeoutsound: Fast Heartbeat, 1} 
+{anim: CircleWipe, LeftEnd}
 {fadeinsound: Press Cameras, .2}
 カメラのライトが私を盲目にする。
 眩しい明るさをまばたきし、手を上げて目を覆い隠そうとする。
-{spawnChar: malesilo, 2, Old Reporter}
-Old Reporter::
-{anim: Old Reporter, kime1}
-{moveChar: Old Reporter, .85}
-"彼女はそこです! MC?"
+{spawnChar: malesilo, 2, オールド・レポーター}
+{disablechar: CircleWipe}
+オールド・レポーター::
+{anim: オールド・レポーター, kime1}
+{moveChar: オールド・レポーター, .85}
+{if: !n-b}
+{
+ "彼女はそこです! MC?"
+}
+{if: n-b}
+{
+ "いたぞ！MC？"
+}
 "大丈夫ですか。? 元気がないみたいです。"
 古いオオバンは笑い、空気の緊張と戦うために音が緊張します。
 "何十億もの人々があなたが歴史を作るのを見るのは神経質になっているに違いありません、私は正しいですか？"
@@ -68,10 +86,10 @@ MC::
 一番近いカメラを見る.
 "頑張ります。!" 
 {additive: off}
-{spawnChar: malesilo, -1, Cliff}
+{spawnChar: malesilo2, -1, Cliff}
 Cliff::
-{anim: Cliff, kime2}
 {moveChar: Cliff, .25}  
+{anim: Cliff, kime2}
 MC::
 私の目は調整し始める. プレスの後ろにいるリードプロジェクトマネージャーのクリフが腕を組んで、彼の顔に心配そうな顔をしているのに気づいた。
 なぜ誰も何も言わないのか？
@@ -109,11 +127,13 @@ NDAは永続的。 賞味期限はない。
 あまり考えないで, MC。 あなたはすでにめちゃくちゃ緊張している。
 私は見下ろし、自分の意志で手を振る。
 {moveChar: Cliff, -1}
-{moveChar: Old Reporter, 2}
-{moveChar: Shirobi, .75}
+{moveChar: オールド・レポーター, 2}
+{moveChar: シロビ, .70}
 {additive: on}
+{anim: シロビ, Checktime}
 首の後ろを引っ掻く,
-目がくらむようなライトを通して小さな群衆をスキャンして、ラボインターンのShirobiを見つける。
+私はまばゆいばかりの照明の中、小さな群衆を見渡し、シロビを探した、
+研究室のインターン。
 {additive: off}
 大学に会った。 ほんの数クラス.。
 数ヶ月後、私たちは速い友達になった。 
@@ -124,8 +144,8 @@ NDAは永続的。 賞味期限はない。
 {additive: on}
 最高の笑顔を浮かべる,
 それはいつも彼を少し赤面させる。
-Shirobi::
-{anim: Shirobi, kime1}
+シロビ::
+{anim: シロビ, Glasses}
 MC:: 
 彼の姿勢は突然リラックスする。
 {additive: off}
@@ -136,9 +156,11 @@ MC::
 私が彼をShibiと呼ぶときも彼は嫌い。 彼は時々自分自身を真剣に考えすぎる。 
 彼は賢くうなずき、唇を曲げる微笑み。
 彼はDIHIに向かって動く. 
-Shirobi::
+{anim: シロビ, Thisway}
+シロビ::
 {additive: on}
 "私はあなたのすべてのバイタルを監視する責任があります。
+{anim: シロビ, Bow}
 お願い。。。 これを真剣に受け止めますか？
 {additive:off}
 "で4日です。 それだけ。"
@@ -147,12 +169,10 @@ MC::
 私の眉毛は勝手に上がる。 
 "私はいいです, 約束します。 心配してほしくないです。"  
 プレスがDIHIの部屋からエスコートされているのに斜めに気づいた。
-{fadeinsound: LeavingFootsteps, .3}
-{fadeinsound: Door, 2}
-{fadeoutsound: LabAmbience, .1}
-{fadeoutsound: Lab Ambience Music Light, 5}
+{fadeinsound: LabCrewLeavingFootsteps, .3}
+{fadeinsound: openclosedoor, .5}
+{fadeoutsound: LabAmbience, 5}
 DIHIの音が急変し、空気中の電離感が増する。
-{fadeinsound: DIHI Up Close, 1}
 部屋全体が振動する。
 他に言葉はない。
 椅子がこの部屋の中に独自の領域を作っているように感じる。
@@ -160,7 +180,7 @@ DIHIの音が急変し、空気中の電離感が増する。
 少しの間、私は躊躇する。
 よし, それはボルトへの私の衝動を取り戻している。
 Shibiが声を上げ、彼の口調は無理矢理カジュアル。
-Shirobi::
+シロビ::
 "プロセスは実際にはかなり平凡です。" 
 {additive: on}
 "あなたの体は不活性になります、
@@ -169,18 +189,20 @@ Shirobi::
 {additive:off}
 MC::
 Shibiは額を軽くたたく。
-Shirobi::
+シロビ::
 "しかし、誰もそこにいません。"
 "私たちはあなたの体をすぐに停滞させます。" 
 "だから、MCの心配はありません、あなたは世話をします。" 
 "約束します。"
 {changeScene: The Lab}
-{fadeinsound: FastHeartbeat, .5}
-{fadeinsound: DIHI Up Close, .1}
+{colorformat: Emerald}
+{fadeinsound: Fast Heartbeat, .5}
+{fadeinsound: DIHI Low Power, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
-{spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo, 2, Shirobi}
+{fadeoutsound: Lab Ambience Music Light, 2} 
+{spawnEmpty: MC, Player}
+{spawnEmpty: シロビ, NPC}
 MC::
 私はデジタルレルムへのポータルの前に身を置く。
 とてもシュールな感じ。
@@ -192,7 +214,7 @@ MC::
 クーラントミストの巻きひげは、装置から発生する。
 Shirobiは椅子の隣のコンソールに移動する。
 彼がプレスキャナーをシャットダウンすると、椅子への道が開く。 ハムの音量が少し下がる。 
-Shirobi::
+シロビ::
 "じゃ. ここから始まります。"
 "ただ座ってください。"
 "向こうでお会いしましょう, ok?"
@@ -218,7 +240,7 @@ MC::
 落ち着いたタッチで呼吸ができる。 
 {additive: off}
 頭を少し回転させて、目がShirobiに出会う。彼はもう一度簡単に微笑む。 
-Shirobi::
+シロビ::
 "目を閉じるだけ... バカ."
 MC::
 "バカ?"
@@ -229,9 +251,9 @@ MC::
 私は苦労して管理する。
 恐れは私が通常持っているよりも多く話し続ける。 この時点で緊張をほぐすもの。
 Shirobiは額を軽くはじく。
-{fadeinsound: fingerflick, .01}
+{fadeinsound: Finger Flick, .01}
 "おい!"
-Shirobi::
+シロビ::
 "静かに. 自分を封じ込めてみるか？ そして、あなたはすでに私と一致しようとするのをやめる？"
 MC::
 {fadeinsound: touchscreentaps, .01}
@@ -244,20 +266,12 @@ MC::
 死にたくない。 
 頭のてっぺんがチクチクし始める。 
 なんてこった、私は。。。
-{fadeoutsound: FastHeartbeat, .1}
+{fadeoutsound: Fast Heartbeat, .1}
 {fadeoutsound: Fast Keyboard Typing, .1}
 {fadeoutsound: Lab Computer Room Beeps 2, .1}
 {fadeoutsound: DIHI Low Power, .1}
-{fadeoutsound: DIHI Up Close, .1}
 {fadeoutsound: DIHI High Power, .1}
 {fadeoutsound: Laptop-Lab,.1}
 それから、ほとんど腸を痛めつけるような腰を下ろして、すべてが私の頭のてっぺんから逃げる。。。
 {fadeinsound: Brain Sucking Chair Activate, .5}
-
-
-**TODO:Fade To Black**
-
-
-
 {changeScript: Female/Prologue/Prologue II}
-

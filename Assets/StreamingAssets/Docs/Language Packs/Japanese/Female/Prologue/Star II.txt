@@ -1,11 +1,12 @@
-{changeScene: Scenes/Star/Bedroom}
-{fadeinsound: starandszy, 1}
+{changeScene: Star Bedroom Night}
+{colorformat: Asterella}
+{fadeinsound: Lucas and Star Dinner, 1}
 {fadeinsound: fireplace, 1}
-{spawnChar: malesilo, -1, Szycrotic}
-{spawnChar: femalesilo, 2, Asterella}
-{spawnChar: femalesilo, 2, MC}
-{anim: Szycrotic, idle}
-{moveChar: Szycrotic, .25}
+{spawnChar: szycrotic default, -.5, Lucas}
+{spawnChar: star nightgown, 1.3, Asterella}
+{spawnEmpty: MC, Player}
+{movecube: .4, .4}
+{moveChar: Lucas, .3}
 MC::
 堂々とした蘭の大きな帯は、邸宅のほとんど全体でダークオークと対照的。
 私が歩いた数十の部屋から判断すると、ここには少なくとも四十人のスタッフがいる。多分もっと。 
@@ -16,14 +17,14 @@ MC::
 彼らは他のV-Tubersか？それともまったく違うものか？
 {additive:off}
 とても多くの部屋。少なくとも2つの待合室、ボールルーム、そして図書室が見えた。 
-Szycroticは、私が認識できなかったいくつかの識別できない曲をハミングしていた。 
+Lucasは、私が認識できなかったいくつかの識別できない曲をハミングしていた。 
 私が彼にそれが何であるかを尋ねようとするたびに、彼は私を黙らせて前進した。
 この部屋は他の邸宅と一致している。
 シンプルでありながらエレガントな装飾でセットアップする。
 濃い紫と古代のオーク。
 オウ!
 彼女はそこだ!
-{moveChar: Asterella, .75}
+{moveChar: Asterella, .65}
 {additive:on}
 大きな本を読む, 
 Asterella Star, 
@@ -37,51 +38,92 @@ Asterella Star,
 {fadeinsound: Heart Thump, .1}
 彼女は口を開け、焦りと軽い不快感が彼女のスピーチを彩る。
 Asterella::
-[annoyed]
+[Annoyed]
 "オイ"
 "それはあなたが私たちのゲストを連れてきた時だ。"
 MC::
 彼女は最終的に本を閉じる。
-Szycroticはさりげなくレトルトする。
-Szycrotic::
-"女, 彼女は庭を見たかった！俺を責めないで！"
+{fadeinsound: bookclose1, .1}
+Lucasはさりげなくレトルトする。
+{if: n-b}
+{
+ Lucas::
+ "女, 彼女は庭を見たかった！俺を責めないで！"
+ MC::
+ Lucasは私を横目で見る。 
+ ああ　ああ。アイデアの火花。そのマスクの後ろでそれが醸造されているのを見ることができる。
+ ドラマチックなポーズで、彼は私の顔を身振りで示す。 
+ Lucas::
+  [Lewd]
+ {additive:on}
+ "どうすればその顔を否定できるか？ 
+ 彼女を見て！
+ 彼女が庭にいたとき、彼女はほとんど雲に浮かんでいた！"
+ {additive:off}
+ [Default]
+}
+{if: !n-b}
+{
+ Lucas::
+ 「彼女は庭を見たかったんだ。私を責めないで」。
+ MC::
+ シクロティックが私を横目で見た。
+ やばい。アイデアが閃いた。そのマスクの奥で、アイデアが生まれているのが見える。
+ ドラマチックなポーズで、私の顔をジェスチャーする。
+ Lucas::
+ [Lewd]
+ {additive:on}
+ 「この顔を否定できますか？
+ 彼女を見てごらん。
+ 庭にいるとき、彼女は雲の上に浮かんでいるようだった"
+ {additive:off}
+ [Default]
+}
+{movecube: .65, .2}
 MC::
-Szycroticは私を横目で見る。 
-ああ　ああ。アイデアの火花。そのマスクの後ろでそれが醸造されているのを見ることができる。
-ドラマチックなポーズで、彼は私の顔を身振りで示す。 
-Szycrotic::
-{additive:on}
-"どうすればその顔を否定できるか？ 
-彼女を見て！
-彼女が庭にいたとき、彼女はほとんど雲に浮かんでいた！"
-{additive:off}
-MC::
-Asterellaは私とアイコンタクトを取る。赤が頬に突っ込んでいるのを感じる。 
-Asterella::
-[happy]
-"彼女はかわいい。"
-"とてもかわいいので、私は彼女を食べることができる！"
+Asterellaは私とアイコンタクトを取る。赤が頬に突っ込んでいるのを感じる。
+{if: !n-b}
+{
+ Asterella::
+ [Happy]
+ "彼女はかわいい。"
+ "とてもかわいいので、私は彼女を食べることができる！"
+}
+{if: n-b}
+{
+ Asterella::
+ [Happy]
+ "かわいい"
+ "かわいい、食べちゃいたいくらい！"
+} 
 MC::
 パニックが発生する。 
 Starは笑い、本をコーヒーテーブルに置く。
 Asterella::
 "私は人間を食べない。落ち着いてください。"
+{movecube: .4, .4}
+[Default]
 MC::
 彼女の声は嘲笑的に真剣になる。 
 Asterella::
-"Szy, あなたが私を待たせているとき、あなたは私がそれを好きではないことを知っている。" 
+[Indifference]
+{anim: Asterella, Pouting}
+"Lucas, あなたが私を待たせているとき、あなたは私がそれを好きではないことを知っている。" 
 MC::
 彼女は思慮深くあごをたたく。 
 Asterella::
+[Default]
+{anim: Asterella, Smug}
 "知っている。あなたの罰は。。。 100万年のダンジョンだ！"
 MC::
 何?
 {additive:on}
 "待って! あなたはできない! 
 彼は私に親切にしてくれた！"
+{movecube: .65, .2}
 {additive:off}
 私は何をやっている？
-{選び: 責任を取ります？}
+{choice: 責任を取ります？}
 {
         それは私のせいだ！
         [
@@ -94,7 +136,9 @@ MC::
             "私の苦しみが彼を和らげるなら、私はそれを取りる！"
             Asterellaは謝罪して微笑む。  
             Asterella::
+            [Happy]
             "それは単なる冗談の罰。彼は本当に困っていない。"
+            [Default]
             "しかし、本当に必要な場合は、共有することができる。"
             "いいの?"
             MC::
@@ -111,7 +155,7 @@ MC::
     }
 {if: starbed, true}
 {
-    {選び: Starの申し出を受けますか？}
+    {choice: Starの申し出を受けますか？}
     {
         ええ、 私は彼女が計画したものは何でも準備ができている。 
         [
@@ -121,33 +165,40 @@ MC::
           私はこれについて真剣に考えている。 
            私は後退しない！
            Asterella::
-           "そのかわいい、決心した顔を見て, Szy."
+           [Happy]
+           {anim: Asterella, Pouting}
+           "そのかわいい、決心した顔を見て, Lucas."
            "かわいい"
-           Szycrotic::
-           [surprised]
+           Lucas::
+           [OWO]
            "感動した, MC. あんたも俺を知らない！"
+           [Default]
            "うそをつくつもりはない、あんたは少し頭がおかしいかもしれない。"
            Asterella:: 
-           [serious]
+           [Default]
            {additive:on}
            "いいだろう。 
-           Szyの適切な敬意の欠如に対する罰を喜んで受けたいのであれば、
+           Lucasの適切な敬意の欠如に対する罰を喜んで受けたいのであれば、
            じゃ、目を閉じる。"
            {additive:off}
            MC::
-           **TODO: Close Eyes Tranisition**
-           {changeBG: Black Trans}
+           {spawnChar: EyeBlink, .5, EyeBlink}
+           {anim: EyeBlink, Close}
            目を閉じて、突然緊張した。
            私はどうなるか？
           後悔の波が押し寄る。
            私は自分の立場に立つ！
            床に素足がシャッフルして近づいてくるのが聞こえる。
-           Szycrotic::
+           {moveChar: Asterella, .5}
+           {moveChar: Lucas, .25}
+           {movecube: .5, .2}
+           Lucas::
            "Star、それはだめ!俺、それほどクレイジーではない！"
            MC::
-           ................
+           ...
            Asterella::
            "じゃ, 準備はいいMC?"
+           [Happy]
            MC::
            何も見えず、Starの声は信じられないほど近い。
            シルクが肌に移り、部屋の静寂の中で火がパチパチと鳴る音が聞こえる。 
@@ -156,9 +207,9 @@ MC::
            {fadeinsound: body punch hard, 1}
           私の額の中心は突然の鋭い痛みで噴火する。
            "いたいいいいい!"
-           **TODO: Open Eyes Transition**
-           {changeBG: Star Bedroom Night Animated}
+           {anim: EyeBlink, Open}
            {additive:on}
+           {anim: EyeBlink, Open}
            目を開けてスターを見に、
            私の顔からインチ、
            彼女の息が私の顔を軽く愛撫している。
@@ -166,65 +217,85 @@ MC::
            彼女は私を指でフリックしたか？
            Starの顔の表情は軽快なアミューズメントのひとつ。 
            Asterella::
-           {anim: Asterella, smug}
+           {anim: Asterella, Smug}
            "じゃ。 治った。"
            MC:: 
            Starは満足していて、笑いに近いようだ。
            Asterella::
-           "誰か、特にSzycroticを保護する必要は本当にない。"
+           "誰か、特にLucasを保護する必要は本当にない。"
            MC::
            Starは私の髪を押しのけ、傷ついた額に軽くキスする。
+           {movecube: .5, .4} 
            {fadeinsound: Heart Thump, 1}
            Asterella::
-           {anim: Asterella, idle}
-           "彼は大丈夫。 Szyは彼の罰が大好きで、それは彼のパフォーマンスとは何の関係もない。"
+           {anim: Asterella, Thinking}
+           {movecube: .5, .2}
+           "彼は大丈夫。 Lucasは彼の罰が大好きで、それは彼のパフォーマンスとは何の関係もない。"
            "約束する、ね？"
            MC::
           私は少し経験が浅いが、ここでいくつかの深刻なBDSMの雰囲気を感じている。。。
-           Szycrotic::
+           Lucas::
            "そういえば、お二人に楽しんでもらいたいと思いう。私たちの何人かはやるべき仕事を得た。"
-           {moveChar: Szycrotic, .1}
+           {moveChar: Lucas, .1}
            MC::
-           Szyはドアで止まる。
-           Szycrotic::
-           "Star, 彼女が何かをするなら。"
+           Lucasはドアで止まる。
+           {movecube: .2, .3}
+           {if: !n-b}
+           {
+             Lucas::
+             [Angry]
+             "Star, 彼女が何かをするなら。"
+           }
+           {if: n-b}
+           {
+             Lucas::
+             [Angry]
+             「スターよ、もし彼らが<i>何でも</i>するのなら......</i>」。
+           }
            MC::
-           Asterellaは微笑み、手を振ってSzyのコメントを却下した。
+           Asterellaは微笑み、手を振ってLucasのコメントを却下した。
            Asterella::
-           [happy]
+           [Happy]
            {additive:on}
-           "Szy, あなたは心配すぎるよ。 
+           "Lucas, あなたは心配すぎるよ。 
            私は大きな女の子よ。"
            {additive:off}
            {additive:on}
+           [Indifference]
+           {anim: Asterella, Pouting}
            "そしてあなたの主。。。
            あなたは私に従う。"
            {additive:off}
            MC::
            彼は遊び心のある方法で深くお辞儀をし、さもなければ深刻なパフォーマンスを壊す笑い声を上る。
-           Szycrotic::
+           Lucas::
+           [Default]
            "俺はあなただけに仕えるために生きています、女王様。"
+           Asterella::
+           [Happy]
            MC::
+           {fadeinsound: Star Laugh 2, .1}
+           {fadeinsound: Lucas Laugh 5, .5}
            彼はほとんどそれを成し遂げた。二人とも笑い始める。
-           {fadeinsound: Door, 1}
-           {moveChar: Szycrotic, -1}
-           {moveChar: Asterella, .50}
-           Szyがいなくなったので、私たちは一人。Starと私。
+           {fadeinsound: openclosedoor, 1}
+           {moveChar: Lucas, -1}
+           {moveChar: Asterella, .45}
+           {movecube: .45, .2}
+           Lucasがいなくなったので、私たちは一人。Starと私。
           額へのキスは、私のプライドへの刺し傷や指のフリック以上に燃える。
            彼女はとても魅力的だ。
           リーガル、自信、そして少しサディスティック。
            魔王がすべきことはすべて？
            額に軽く触れる。
            Asterella::
-           [sad]
+           [Default]
            "痛かった?"
            MC::
            緊張して笑う。
            "それは指のフリックではなかった。。。"
            Asterella::
-           [happy]
            "じゃ, MC.話し合うことがいくつかある。"
-           {changeScript: Female/Prologue/Star II, 288}
+           {changeScript: Female/Prologue/Star II, 378}
         ]
        むり、私はこれを行うことはできない！
         [
@@ -233,6 +304,7 @@ MC::
             多分私はここに行き過ぎかな。..
             私はSycroticを見る。 
             Asterella::
+            {anim: Asterella, Thinking}
             "勇気を失った？"
             MC::
         ]
@@ -240,23 +312,34 @@ MC::
 }
 しまった、振れる。
 落ち着く必要がある。
-Asterellaは立ち上がって眉を上げる。 
-Asterella::
-"彼女はあなたをかなり守っているようだ。罰を増やす必要がある？"
+Asterellaは立ち上がって眉を上げる。
+{movecube: .3, .4}
+{if: !n-b}
+{ 
+ Asterella::
+ "彼女はあなたをかなり守っているようだ。罰を増やす必要がある？"
+}
+{if: n-b}
+{
+ Asterella::
+ "彼らはあなたをとても大切にしているようだ。罰を増やすべきか？"
+} 
 MC::
 私はびっくりする。私は彼の痛みをこれ以上増したくない。
-Szycrotic::
-[horny]
+Lucas::
+[Lewd]
 "オウ、ドミーママ, 俺にふさわしい罰をくれ。"
 MC::
+{fadeinsound: Lucas Laugh 5, .5}
 彼は心から笑い、歩き、額でStarにキスする。 
 振るで、彼はドアを開ける。
-Szycrotic::
-{anim: Szycrotic, smug}
+Lucas::
+[Default]
 "楽しんで。"
-{fadeinsound: Door, 1}
-{moveChar: Szycrotic, -1}
-{moveChar: Asterella, .50}
+{fadeinsound: openclosedoor, 1}
+{moveChar: Lucas, -1}
+{moveChar: Asterella, .45}
+{movecube: .45, .2}
 MC::
 私たちは一人。 Starと私。
 まるで合図のように、彼女は自信を持って私に向かって歩く。
@@ -265,12 +348,16 @@ MC::
 私自身にもかかわらず、私は自分が彼女に降伏したいと思っていると感じている。 
 彼女は隅々まで主。 
 Asterella::
-{anim: Asterella, thinking}
+{anim: Asterella, Thinking}
 "さ, 名前がある?"
 MC::
 彼女は質問をそこに開いたままにする。 
 ああ!
 "私はMC, Star様."
+{if: n-b}
+{
+ "私の代名詞は彼らだ..."
+}
 吃音する。
 私は内部でうめく。
 第一印象を壊している。
@@ -279,12 +366,17 @@ MC::
 ほぼ透明。 
 ラベンダーと...ブリムストーンの匂いがする？
 彼女はとても近い。 
-{anim: Asterella, idle}
+{anim: Asterella, Pouting}
 彼女はうなずき、本物の笑顔を浮かべる。 
 Asterella::
-[happy]
+[Happy]
 "それはいい名前, MC."
+{if: n-b}
+{
+ 「Lucasのスピーチから察した。よくわかった"
+}
 {additive: on}
+[Default]
 "ビジネスについて話す前に、
 少しリラックスしたい。
 たぶん、ワインが好き？"
@@ -295,8 +387,11 @@ MC::
 "それは非常にいいだろう。実はかなり喉が渇いている。"
 彼女は優雅にソファに向かって動く。
 Asterella::
+{anim: Asterella, Pouting}
 "どうぞ、座って ワインを持ってくる。"
 MC::
+{moveChar: Asterella, .65}
+{movecube: .8, .3}
 彼女は壁に向かってテーブルに移動し、私に移動するように合図する。
 私はソファに向かう。 
 彼女が誰であるかを派手に思い出させる必要がないかのように、部屋全体が謙虚な王族を叫ぶ。
@@ -318,21 +413,26 @@ MC::
 私はそれをすぐにフォローアップする。
 多分少し必死になりすぎる。
 "私はあなたを保証することができる。私がここにいることは意図的ではなかった。"
+{movecube: .65, .2}
 彼女は読めない表情で私を振り返る。
-{fadeinsond: woodwine1, .1}
+{fadeinsound: woodwine1, .1}
 Asterella::
 "私も同じように推測した。" 
 "しかし、それはあなたをクリアしない。まだ。"
+{movecube: .8, .3}
+{anim: Asterella, Thinking}
 {fadeinsound: woodwine2, .1}
-{fadeinsound: glasspouring, 1}
+{fadeinsound: Pouring, 1}
 "あなたはまだあなたがどこから来たのか私に言っていない。"
 "そして、あなたはSynthgenではないようだ。あなたは私にとって一つのようには感じない。"
-{fadeinsound: glasspouring, 1}
+{fadeinsound: Pouring, 1}
 MC::
 彼女はグラスをつかみ、優雅にソファに滑り込み、私に一つを差し出す。
+{moveChar: Asterella, .45}
+{movecube: .45, .2}
 ありがたい。
 "どうもありがとう。"
-{選び:}
+{choice: 何て言えばいいんだ？}
 {
         正直で前向きに。
         [
@@ -341,7 +441,7 @@ MC::
             じゃ。 私があえて開示しない情報をまだ差し控えている真実。 
            十分良かったと思う。。。
             彼女はワイングラスの端を思慮深くたどる。
-            {anim: Asterella, thinking}
+            {anim: Asterella, Thinking}
             Asterella::
             "いいだろう。 今のところそれを受け入れることができる。"
             "質問は後で来るだろう、私は約束する。"
@@ -355,7 +455,7 @@ MC::
           And neither will she.
           Starは眉をひそめる。突然空気が冷たくなる。 
           Asterella::
-          [angry]
+          [Annoyed]
           {additive: on}
           "私が容認しないことはほとんどない。
           それらの一つは嘘をついてる。
@@ -372,8 +472,8 @@ MC::
           私はすぐにそれをフォローアップする。
           "私はあなたのドメインやあなたの人々に害を及ぼすという意味ではない。それだけは確か。"
           彼女は私を研究する。その外観に少し疑いを感じたか？
-          [happy]
           Asterella::
+          [Default]
           "今のところそれを受け入れる。私はその立場を理解することができる。"
           MC::
         ]
@@ -384,28 +484,35 @@ MC::
 {additive:off}
 私はガラスを見つめます。パチパチと音を立てる火の光の中で輝く、暗くて刺激的な液体。
 Asterella::
-[happy]
+[Happy]
 "将来の関係へ。"
 MC::
 彼女はグラスを私の方に持ってきて、私たちは乾杯する。
-{fadeinsound: winetoast, .1} 
+{fadeinsound: Wine Toast, .1} 
 MC::
 "将来の関係。"
+{movecube: .45, 0}
+{anim: Asterella, Impatient}
 私たちは沈黙の中で最初の一口を取る。味はとてもスモーキーでクリーンだ。 
 私はそれをあまりにも速く飲みたいという衝動に抵抗する。 
 "それで、なぜ私だけのためのすべての式典？"
 小さな笑顔が彼女の唇に触れる。
 Asterella::
+{movecube: .45, .3}
 {additive:on}
 "ポイントにまっすぐ。
 私はすきだ。"
 {additive:off}
+[Horny]
 MC::
 彼女がグラスから見上げると、彼女の声はほとんど蒸し暑い。
 彼女はもう一口飲んで、グラスをテーブルの上に注意深く置く。 
+{movecube: .45, .0}
 {fadeinsound: wineglassdown, 1}
 停止。
+{movecube: .45, .3}
 Asterella::
+[Default]
 "二つのこと。" 
 MC::
 彼女は一本の指を持ち上げる。 
@@ -413,6 +520,7 @@ Asterella::
 "一つ。"
 "あなたは私の許可なしに私の領域に来た。"
 {additive:on}
+{anim: Asterella, Pouting}
 "それはここではそれほど簡単にはできない。 
 だから。。。あなたは印象的なレベルの力を持っている。。。
 または、あなたはあなたの周りにあるすべてのものを実行するシステムの一部ではない。"
@@ -420,15 +528,20 @@ Asterella::
 MC::
 彼女は私を見て、自分自身をじっと見つめている。
 Asterella::
+{anim: Asterella, Thinking}
 {additive:on}
 "後者だと思う。しかし、明らかに、
 私はあなたを勉強せずにそれをすることは。。。
-[horny]
+{movecube: .45, .2}
+[Happy]
 できない。"
 {additive:off}
 MC::
 彼女は何かを探して私の目を読み込もうとするか？
-{anim: Asterella, pouting}
+Asterella::
+[Indifference]
+{anim: Asterella, Pouting}
+MC::
 彼女のため息に少し欲求不満が漏れる。
 Astrella::
 {additive:on}
@@ -439,8 +552,8 @@ Astrella::
 MC::
 彼女は鋭く直接アイコンタクトをする。
 Asterella::
-{anim: Asterella, idle}
-[horny]
+[Horny]
+[Happy]
 "代替よりもはるかに優れている。"
 MC::
 私は少し音を立ててゴロゴロする。彼女は怖いと同時に官能的だ。
@@ -462,15 +575,19 @@ MC::
 アクションの背後にある顔を赤らめながら、ワインを深く引っ張る。
 Asterella Starは私に彼女と「夜を過ごす」ように頼んでいる。 
 彼女は質問を目にして私を見上げる。 
-{選び:}
+{choice: パニックにならないで...}
     {
-        ええ、それがいい。 (Hentai Scene)
+        ええ、それがいい。
         [
             MC::
             暫定的に、私は手を伸ばし、彼女の手に触れ、それを私の足に閉じ込めた。
             彼女は柔らかい目で私を見ている。
             "女性との出会いは初めて。"
             "穏やかな。"
+            MC:: 
+            {usegameobject: Hentai Warning Panel, true}
+            {fadeoutsound: fireplace, 1}
+            {fadeoutsound: Lucas and Star Dinner, 1} 
             {changeScript: Female/Prologue/Star II Hentai}
         ]
         いいえ。 早すぎるよ。 
@@ -478,7 +595,3 @@ Asterella Starは私に彼女と「夜を過ごす」ように頼んでいる。
             {changeScript: Female/Prologue/Star II FriendZoned}
         ]
     }
-
-
-
-

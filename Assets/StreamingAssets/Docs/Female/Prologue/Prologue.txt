@@ -35,22 +35,27 @@ right...
 {additive:off}
 Someone grabs my shoulder, instantly causing me to jump.
 I squeak, the sound coming out of it's own volition.
+{spawnChar: Circle Wipe, .5, CircleWipe}
 {choice: Do I face them?}
 {
      I am scared! I should probably stay put.
      [
        I feel the hand grip me tight. And twirl me around.
+       {anim: CircleWipe, RightStart}
      ]
      Face the music.
      [
        I whirl around.
+       {anim: CircleWipe, RightStart}
      ]    
 }
 {fadeoutsound: Fast Heartbeat, 1} 
+{anim: CircleWipe, LeftEnd}
 {fadeinsound: Press Cameras, .2}
 The lights of the cameras blind me.
 I attempt to blink away the glaring brightness, raising my hand to shade my eyes.
 {spawnChar: malesilo, 2, Old Reporter}
+{disablechar: CircleWipe}
 Old Reporter::
 {anim: Old Reporter, kime1}
 {moveChar: Old Reporter, .85}

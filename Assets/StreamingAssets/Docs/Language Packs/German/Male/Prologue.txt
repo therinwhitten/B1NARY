@@ -1,16 +1,22 @@
 {changeScene: Brain Sucking Chair side}
-{fadeinsound: Laptop-Lab,2}
+{colorformat: Emerald}
+{fadeinsound: Laptop Lab Scene,2}
 {fadeinsound: Fast Keyboard Typing, 2}
-{fadeinsound: DIHI Low Power,5}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
 {fadeinsound: Lab Ambience Music Light, 1}
 {fadeinsound: LabAmbience, .4}
-{spawnChar: malesilo, 2, Shirobi}
-{spawnChar: malesilo, 2, MC}
-{fadeinsound: Heartbeat, 1}
+{spawnChar: malesilo3, 2, Shirobi}
+{spawnEmpty: MC, Player}
+{fadeinsound: Fast Heartbeat, 1}
 Shirobi::
-{anim: Shirobi, idle} 
-„Er ist seit über einem Jahr ein Praktikant im Unternehmen gewesen"
+{if: !n-b}
+{
+	„Er ist seit über einem Jahr ein Praktikant im Unternehmen gewesen."
+}
+{if: n-b}
+{
+ "Sie sind jetzt seit über einem Jahr Praktikanten im Unternehmen..."
+}
 „Der Unglaubliche, gutaussehende, und geradezu cooler Mensch, MC!"
 MC::
 Das Geräusch wird für den Bruchteil einer Sekunde als Worte registriert, als ich zum Gehirnsaugeraum eskortiert werde.
@@ -26,13 +32,13 @@ Ich höre meinen Herzschlag rhythmisch in meinen Ohren pochen.
 Mechanisches surren von Laptops, Server Ventilatoren, und das Summen von den EM-Feldern umfassen den Stuhl, schwingen in meinem Schädel.
 {fadeinsound: slowfootsteps, .2}
 {additive:on}
-Links.
-Rechts.
-Links.
-Rechts.
+Links...
+Rechts...
+Links...
+Rechts...
 {additive: off}
 {additive: on}
-Ich fokussiere mich auf meine Füße I focus on my feet.
+Ich fokussiere mich auf meine Füße.
 Das scheint zu funktionieren.
 {additive: off}
 Ablenkungen sind ein Segen für den Moment.
@@ -41,31 +47,34 @@ Ich versuche das Gemurmel der Reporter auszublenden.
 Plötzlich,
 greift jemand meinen Schulter, sofort sprang ich auf.
 {additive: off}
-{choice: Do I turn around?}
+{spawnChar: Circle Wipe, .5, CircleWipe}
+{choice: Soll ich mich umdrehen?}
 {
      Drehe dich nicht um.
      [
         Ich fühle wie die Hand mich fest greift. Und mich herumwirbelt.
+        {anim: CircleWipe, RightStart}
      ]
      Stell dich deinem Angreifer.
      [
         Ich wirbele.
+        {anim: CircleWipe, RightStart}
      ]    
 }
-{changeBG: DIHI Room Animated}
-{fadeoutsound: Heartbeat, 1}
+{fadeoutsound: Fast Heartbeat, 1}
+{anim: CircleWipe, LeftEnd}
 {fadeinsound: Press Cameras, .2}
 Meine Augen bekommen von den Hightech Kameras einen vollen Schuss von weißem Licht ab.
 Das Licht löscht meine Ablenkung und ich versuche die Helligkeit weg zu blinken.
-{spawnChar: malesilo, 2, Smug Reporter}
-{anim: Smug Reporter, kime1}
-{moveChar: Smug Reporter, .85}
-Smug Reporter::
+{spawnChar: malesilo, 2, Sumg Reporter}
+{anim: Sumg Reporter, kime1}
+{moveChar: Sumg Reporter, .75}
+Sumg Reporter::
 „MC! 
 Bist du okay? Du siehst unsicher aus."
 MC::
 Der selbstgefällige Reporter lacht zu der klaren Anspannung in den Raum. 
-Smug Reporter::
+Sumg Reporter::
 „Muss nervenaufreibend sein für Milliarden Menschen zu sehen wie du Geschichte schreibst, hab ich recht?"
 MC::
 Verdammte Lichter!
@@ -81,9 +90,9 @@ Normalerweise bin ich trocken, und ziemlich sarkastisch, erwidere ich zurück.
 Ich schluckte etwas Gift runter. Ich lecke meine rissigen Lippen ein wenig.
 Gestikulierend auf das Ungetüm, das in der Mitte des Raumes sitzt, kläre ich auf.
 „Ich würde lügen, wenn ich nicht sagen würde, dass das DIHI mich nervös macht."
-{spawnChar: malesilo, -1, Cliff}
-{anim: Cliff, kime2}
-{moveChar: Cliff, .20}
+{spawnChar: malesilo2, -1, Cliff}
+{moveChar: Cliff, .25}
+{anim: Cliff, handwave}
 Augen beginnen sich anzupassen, und ich bemerke Cliff, der leitende Projektmanager, hinter der Presse, verschränkt seine Arme in Kombination zu einem strengen Gesicht.
 Seine Haltung sagt mit Sicherheit, „Wenn du hier versagst, dann verfliegt dein Gehalt für ein Jahr."
 Warum sagt niemand etwas? 
@@ -93,11 +102,11 @@ Ich öffne meinen Mund.
 „Ich weiß, dass sie mich wieder in einem Stück zurückbringen werden. Darüber, kannst du dir sicher sein."
 Hoffnungsvoll, komme ich mit all meinen Erinnerungen zurück.
 So viele Sachen zum Vergessen: Mein Praktikum, Meine Eltern, Meine Hentai Kollektion...
-Würde ich immer noch die gleiche Person sein, wenn ich meine Erinnerung verliere. 
+Wäre ich noch dieselbe Person, wenn ich meine Erinnerungen verlieren würde?
 Meine Mutter und Vater, haben sich nie interessiert wie es mir geht.
 Ich verbrachte die meiste Zeit nur Streams zu schauen, Anime, und bisschen Hentai so nebenbei.
 Also, die Vorstellung in die Digitale Welt zu gehen, hatte schon immer meine Neugierigkeit gefangen.  
-Wie cool wäre es im Internet zu leben? Wäre es möglich, dass ich einfach in einer Stream Seite sitzen könnte, oder ein YouTube Video schaue?
+Wie cool wäre es im Internet zu leben? Wäre es möglich, dass ich einfach in einer Stream Seite sitzen könnte, oder ein Youbtube Video schaue?
 {additive: on}
 Müsste ich essen?
 Schlafen?
@@ -109,10 +118,17 @@ Ich höre irgendwo ein Kichern... Die Stimme hört sich bekannt an.
 Scheiß Lichter!
 {moveChar: Cliff, -1}
 {moveChar: Smug Reporter, 2}
-{moveChar: Shirobi, .75}
+{moveChar: Shirobi, .55}
 Shirobi::
-{anim: Shirobi, idle} 
-„Naja, jedenfalls scheint es, als ob er sich ein wenig beruhigt hat. Um ehrlich zu sein, war ich dabei mir Sorgen zu machen." 
+{anim: Shirobi, Glasses} 
+{if: !n-b}
+{
+ „Naja, jedenfalls scheint es, als ob er sich ein wenig beruhigt hat. Um ehrlich zu sein, war ich dabei mir Sorgen zu machen." 
+}
+{if: n-b}
+{
+ "Wenigstens scheinen sie sich beruhigt zu haben. Ich habe mir schon Sorgen gemacht, um ehrlich zu sein." 
+}
 MC::
 Meine Augen schießen Dolche auf ihn. 
 Dieser nasale, kleine Otaku Arsch!
@@ -126,18 +142,17 @@ Ich atme ein.
 "Hey Shirobi... Ich hoffe du bist bereit für mich..."
 Shirobi geht auf mir zu und legt eine Hand auf meine Schulter.
 Shirobi::
-{anim: Shirobi, kime1} 
+{anim: Shirobi, Bow}
 „Mach dir keine Sorgen MC. Ich werde deine lebenswichtigen Organe beobachten, um sicher zu gehen, dass nichts passiert."
 „Du weißt... Ich würde dich nicht in die Nähe dieses Stuhls lassen, es sei denn es ist sicher. Richtig?" 
 „Vier Tage. Dann werden wir dich zurückholen. Ok?"
 MC::
 Ich nicke, nehme es in den Raum auf.
 Die Presse wird nach draußen begleitet, außerhalb des Raumes. Die einzigen Personen im Raum waren die Laboranten, CLiff und Ich. 
-{fadeinsound: LeavingFootsteps, .3}
-{fadeinsound: Door, .1}
+{fadeinsound: slowfootsteps, .3}
+{fadeinsound: openclosedoor, .1}
 {fadeoutsound: LabAmbience, .1}
 Der Ton von dem DIHI änderte sich plötzlich, auch das Gefühl vom Ionisieren in der Luft erhöht sich.
-{fadeinsound: DIHI Up Close, 1}
 Ich schaue in das Fenster der Aussichtslounge, wo Reporter, und Labortechniker sich unterhalten.
 Es sieht aus, als ob sie Kaffee holen und sich hinsetzen.
 Genau jetzt. Ich möchte eine Tasse Kaffee. Ich möchte wirklich, wirklich eine Tasse Kaffee.  
@@ -155,12 +170,13 @@ Wirst auf einem Multi-Milliarden Dollar Stuhl sitzen, und dass ist worüber du n
 MC::
 Warte...
 Hab ich das gerade laut gesagt?
-Was soll's.
+Besitzen Sie es.
 „Und? Werde ich?"
 Shirobi::
-„Die Antwort ist Nein. Du wirst nicht in Stasis mit einem steifen Körper sitzen."
+"Die Antwort ist nein. Du wirst nicht mit einem Steifen in Stasis sitzen."
 MC::
-Er lehnt sich näher an, um den Mikrofonen auszuweichen.  
+Er lehnt sich näher an, um den Mikrofonen auszuweichen. 
+{anim: Shirobi, Bow}  
 Shirobi::
 „Und hier werden keine Krankenschwestern einen Vorteil von dir ziehen, ich verspreche."
 MC:: 
@@ -190,13 +206,15 @@ Shirobi::
 MC::
 Ich gehe zu der Mitte des Raumes, schau gerade zum Stuhl.
 {changeScene: The Lab}
-{fadeinsound: FastHeartbeat, .5}
-{fadeinsound: DIHI Up Close, .1}
+{colorformat: Emerald}
+{fadeinsound: Fast Heartbeat, .5}
+{fadeinsound: DIHI Low Power, .1}
 {fadeinsound: DIHI High Power, .1}
 {fadeinsound: slowfootsteps, 1}
 {fadeoutsound: Lab Ambience Music Light, 2} 
-{spawnChar: malesilo, 2, MC}
-{spawnChar: malesilo, 2, Shirobi}
+{spawnEmpty: MC, Player}
+{spawnEmpty: Shirobi, NPC}
+MC::
 Es vibriert in meinen Knochen als ich näher komme.
 Das DIHI füllt meine ganze Vision aus.
 {additive: on}
@@ -259,18 +277,11 @@ Ist das mein letzter Moment meiner selbst bewusst zu sein?
 Ich fühle, wie mein Kopf anfängt zu kribbeln.
 Die Geräusche von dem Stuhl sind alles, was ich außer meinen Herzschlag noch höre.
 Keine Presse, keine Mitarbeiter: nur mein Herzschlag, das Dröhnen vom Stuhl, und meine plötzliche Angst allein zu sein. 
-{fadeoutsound: FastHeartbeat, .1}
-{fadeoutsound: Fast Keyboard Typing, .1}
-{fadeoutsound: Lab Computer Room Beeps 2, .1}
+{fadeoutsound: Lab Computer Room Beeps 2, 1}
+{fadeoutsound: Fast Heartbeat, .1}
 {fadeoutsound: DIHI Low Power, .1}
-{fadeoutsound: DIHI Up Close, .1}
 {fadeoutsound: DIHI High Power, .1}
-{fadeoutsound: Laptop-Lab,.1}
 <i>Dann, mit einem herzzerreißendem Ruck, alles fühlt sich plötzlich an, als wenn es aus meinem Kopf gezogen wird...</i>
+{fadeoutsound: DIHI Power Up, 1}
 {fadeinsound: Brain Sucking Chair Activate, .5}
-
-
-**TODO:Fade To Black**
-
-
 {changeScript: Male/Prologue/Prologue II}

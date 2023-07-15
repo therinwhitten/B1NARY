@@ -1,4 +1,13 @@
-**FriendZoned!**
+{changeScene: Scenes/Star/Star Bedroom Night}
+{colorformat: Asterella}
+{fadeinsound: fireplace, 1}
+{fadeinsound: Lucas and Star Dinner, 1}
+{spawnChar: star nightgown, .5, Asterella}
+{spawnEmpty: ナレーター, NPC}
+{spawnEmpty: MC, Player}
+Asterella::
+{anim: Asterella, Woozy}
+[Confusion]
 MC::
 "ごめんなさい、 Starさん, 私はこれに満足していません。"
 MC, どうしてですか? 
@@ -11,12 +20,13 @@ MC, どうしてですか?
 {additive:off} 
 Asterellaはまっすぐに座り、失望を隠する。
 Asterella::
-[sad]
+[Happy]
 "じゃ, それは予想外でしたが、大丈夫です。"
 "私たちはまだ話すことができます。"
-Narrator::
+[Default]
+ナレーター::
 一晩中、トークは男の子、ゲーム、そして彼らがストリーミングするのが好きだったさまざまなもので構成されていました。
-それは女の子の夜のパジャマパーティーでした、そしてSzycroticはすぐにいくつかのカードゲームをするために彼らに加わりました。 
+それは女の子の夜のパジャマパーティーでした、そしてLucasはすぐにいくつかのカードゲームをするために彼らに加わりました。 
 フレンドゾーンであることは悪いことである必要はありません。 
 それがあなたの状況に利益をもたらすことができる時があるかもしれません。 
 また、「悪い結末」の日一つを取得する場合もあります。"
@@ -24,6 +34,3 @@ Narrator::
 すでにHシーンに戻ってください！
 残りのデモをお楽しみください。 XD
 DOT
-
-
-

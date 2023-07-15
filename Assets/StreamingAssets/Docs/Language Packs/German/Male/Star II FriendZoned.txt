@@ -1,17 +1,25 @@
-Star II A: FriendZoned!
-{changeScene: Scenes/Star/Bedroom}
+{changeScene: Scenes/Star/Star Bedroom Night}
+{colorformat: Asterella}
+{fadeinsound: fireplace, 1}
+{fadeinsound: Lucas and Star Dinner, 1}
+{spawnEmpty: Erzähler, NPC}
+{spawnChar: star nightgown, .5, Asterella}
+{spawnEmpty: MC, Player}
+{movecube: .4, .2}
 Asterella::
-[sad]
-„Also... ich habe das wirklich nicht erwartet.
+[Confusion]
+„Also... ich habe das wirklich nicht erwartet."
+{movecube: .4, 0}
 MC::
 Sie beißt ihre Lippe sinnlich. 
 Asterella::
-[horny]
+[Disgust]
+{movecube: .4, .4}
 „Nicht viele haben die Nerven, mir zu verweigern, was ich will, MC."
 MC::
 Sie schaut ernst zu mir.
 Asterella::
-[annoyed]
+[Default]
 „Vor allem ein Eindringling"
 MC::
 Ihr Gesicht erweicht. Sie greift ihren Wein und trinkt den Rest. 
@@ -27,19 +35,18 @@ Ich fühle mich richtig schlecht. Mein zweites Gehirn ist nicht wirklich glückl
 {additive:on}
 „Ich meine keine Respektlosigkeit.
 Es ist nur zu plötzlich. 
-Ich kenne dich nicht, noch deinen Diener, Szycrotic.
+Ich kenne dich nicht, noch deinen Diener, Lucas.
 Und um direkt zu sein.
 Ich wollte nicht sterben."
 {additive:off}
 Es ist die Wahrheit. 
 Ich glaube sie weiß das. 
 Asterella::
-„Naja, Szycrotic wird mich immer unterstützen was auch immer machen will."
+„Naja, Lucas wird mich immer unterstützen was auch immer machen will."
 „Er mag sich beschweren, aber am Ende wird er meine Entscheidungen respektieren."
 „Du brauchst dich in Zukunft keine Sorgen um ihn machen."
 {moveChar: Asterella, 2}
-{emptyScene}
-Narrator::
+Erzähler::
 Den Rest der Nacht wurde in einer Konversation über ihrem Reich verbracht.....
 Du wurdest <i>Friendzoned</i>. In der Demo, bist du am Ende der Verzweigung angekommen.
 Im Hauptspiel, werden diese Entscheidungen die anderen Routen zutiefst beeinflussen. 
