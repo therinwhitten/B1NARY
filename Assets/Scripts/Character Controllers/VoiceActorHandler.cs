@@ -54,18 +54,18 @@
 		public static AudioClip GetVoiceLine(int index, ScriptHandler handler)
 		{
 			Document current = new Document(handler.document.ReadFile);
-			string filePath = $"Voice/{current.VisualPath}/{index}";
+			string filePath = $"Voice\\{current.VisualPath}\\{index}";
 			AudioClip clip = Resources.Load<AudioClip>(filePath);
 			if (clip == null)
 			{
 				// try again but with default
-				string coreFilePath = $"Voice/{current.GetWithoutLanguage().VisualPath}/{index}";
+				string coreFilePath = $"Voice\\{current.GetWithoutLanguage().VisualPath}\\{index}";
+				Debug.Log($"'{filePath}' doesn't appear to work to get the normal voice line, using '{coreFilePath}' instead.");
 				clip = Resources.Load<AudioClip>(coreFilePath);
 				if (clip == null)
 					Debug.LogWarning(new IOException($"Voiceline in resources path '{filePath}' " +
 						"could not be retrieved.").ToString());
 			}
-			Debug.Log(clip);
 			return clip;
 		}
 		public static VoiceActorHandler GetNewActor(AudioSource source)
