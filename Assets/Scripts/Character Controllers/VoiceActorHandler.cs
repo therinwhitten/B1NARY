@@ -7,7 +7,6 @@
 	using B1NARY.Audio;
 	using Live2D.Cubism.Framework.MouthMovement;
 	using UnityEngine.Audio;
-	using System.Xml.Linq;
 	using System.IO;
 
 	public class VoiceActorHandler : Multiton<VoiceActorHandler>, IAudioInfo
@@ -60,11 +59,13 @@
 			if (clip == null)
 			{
 				// try again but with default
-				clip = Resources.Load<AudioClip>($"Voice/{current.GetWithoutLanguage().VisualPath}/{index}");
+				string coreFilePath = $"Voice/{current.GetWithoutLanguage().VisualPath}/{index}";
+				clip = Resources.Load<AudioClip>(coreFilePath);
 				if (clip == null)
 					Debug.LogWarning(new IOException($"Voiceline in resources path '{filePath}' " +
 						"could not be retrieved.").ToString());
 			}
+			Debug.Log(clip);
 			return clip;
 		}
 		public static VoiceActorHandler GetNewActor(AudioSource source)
@@ -79,7 +80,7 @@
 		private AudioClip currentVoiceLine;
 		public bool IsPlaying
 		{
-			get => AudioSource != null ? AudioSource.isPlaying : false;
+			get => AudioSource != null && AudioSource.isPlaying;
 			set 
 			{
 				if (AudioSource != null && AudioSource.isPlaying != value)

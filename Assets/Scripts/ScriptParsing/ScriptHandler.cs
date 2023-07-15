@@ -6,6 +6,7 @@
 	using B1NARY.DesignPatterns;
 	using B1NARY.UI;
 	using B1NARY.UI.Colors;
+	using B1NARY.UI.Globalization;
 	using HideousDestructor.DataPersistence;
 	using System;
 	using System.Collections;
@@ -110,7 +111,7 @@
 				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
 			@object.SetActive(true);
 		}
-		public static DocumentExplorer DocumentExplorer { get; } = new DocumentExplorer();
+		public static DocumentExplorer DocumentExplorer { get; } = new DocumentExplorer(Languages.Instance.FirstOrDefault());
 
 
 
@@ -141,6 +142,7 @@
 			config.NormalLine += SayLine;
 			config.AttributeListeners += ChangeExpression;
 			config.EntryListeners += ChangeCharacter;
+			DocumentExplorer.PrintConcerns();
 		}
 		private void SayLine(ScriptLine line)
 		{

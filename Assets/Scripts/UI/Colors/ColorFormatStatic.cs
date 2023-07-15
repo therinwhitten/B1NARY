@@ -135,7 +135,6 @@
 			{
 				if (m_availableFormats is null)
 				{
-					Debug.LogError($"Getting themes from ({CustomThemePath.FullName})..");
 					FileInfo[] files = CustomThemePath.GetFiles();
 					m_availableFormats = new List<(FileInfo FileInfo, ColorFormat format)>(files.Length + 1)
 					{
