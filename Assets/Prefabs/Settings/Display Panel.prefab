@@ -4047,6 +4047,8 @@ GameObject:
   - component: {fileID: 1610249543367426951}
   - component: {fileID: 1610249543367426948}
   - component: {fileID: 1610249543367426949}
+  - component: {fileID: 7924695812842939982}
+  - component: {fileID: 8029470972741367357}
   m_Layer: 5
   m_Name: Language Drop Down
   m_TagString: Untagged
@@ -4466,6 +4468,49 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &7924695812842939982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249543367426944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 498188e4179676f46b72c4119e52ce1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 0}
+--- !u!114 &8029470972741367357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249543367426944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0eb0275dbe7114a9f98578df07a983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 1610249543367426969}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - 'English
+
+    German
+
+    Japanese
+
+    Spanish'
+  - "\n \n \n "
+  - "\n \n \n "
+  - "\n \n \n "
+  expectedLines: 4
 --- !u!1 &1610249543424461770
 GameObject:
   m_ObjectHideFlags: 0

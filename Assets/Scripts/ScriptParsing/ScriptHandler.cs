@@ -13,6 +13,7 @@
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
+	using System.Reflection;
 	using System.Xml.Linq;
 	using UnityEngine;
 	using UnityEngine.InputSystem;
@@ -143,6 +144,22 @@
 			config.AttributeListeners += ChangeExpression;
 			config.EntryListeners += ChangeCharacter;
 			DocumentExplorer.PrintConcerns();
+			PlayerConfig.Instance.language.ValueChanged += UpdateDocumentViaLanguage;
+		}
+		private void OnDestroy()
+		{
+			PlayerConfig.Instance.language.ValueChanged -= UpdateDocumentViaLanguage;
+		}
+		private void UpdateDocumentViaLanguage(string newLanguage)
+		{
+			if (documentWatcher == null || documentWatcher.EndOfDocument)
+				return;
+			int currentIndex = documentWatcher.CurrentNode.GlobalIndex;
+			Document newDocument = new Document(document.ReadFile);
+			newDocument = newDocument.GetWithLanguage(newLanguage);
+			document = new ScriptDocument(config, newDocument.FullPath);
+			documentWatcher = document.StartAtLine(currentIndex);
+			NextLine(true);
 		}
 		private void SayLine(ScriptLine line)
 		{
