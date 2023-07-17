@@ -157,7 +157,13 @@
 			int currentIndex = documentWatcher.CurrentNode.GlobalIndex;
 			Document newDocument = new Document(document.ReadFile);
 			newDocument = newDocument.GetWithLanguage(newLanguage);
-			document = new ScriptDocument(config, newDocument.FullPath);
+			FileInfo file = newDocument.FullPath;
+			if (!file.Exists)
+			{
+				Debug.LogWarning($"File '{file.FullName}' doesn't exist, using core path instead.");
+				file = newDocument.GetWithoutLanguage().FullPath;
+			}
+			document = new ScriptDocument(config, file);
 			documentWatcher = document.StartAtLine(currentIndex);
 			NextLine(true);
 		}
