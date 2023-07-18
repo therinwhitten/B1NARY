@@ -1,16 +1,15 @@
 ﻿namespace B1NARY.UI
 {
-	using HideousDestructor.DataPersistence;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
 	using UnityEngine;
 	using B1NARY.UI.Saving;
-	using System.Text;
 	using TMPro;
 	using System.Linq;
 	using System.Collections;
 	using System.Threading;
+	using B1NARY.DataPersistence;
 
 	[DisallowMultipleComponent]
 	public class FanArtPopulator : AutoPagePopulator
@@ -25,7 +24,7 @@
 
 		public static List<FileInfo> GetAllImages(string subFolderName)
 		{
-			return RecursivelyGetFiles(SerializableSlot.StreamingAssets.GetOrCreateSubDirectory("Fanart")
+			return RecursivelyGetFiles(SaveSlot.StreamingAssets.GetOrCreateSubDirectory("Fanart")
 				.GetOrCreateSubDirectory(subFolderName));
 		}
 		private static List<FileInfo> RecursivelyGetFiles(DirectoryInfo currentPath)

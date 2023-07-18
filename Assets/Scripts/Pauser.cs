@@ -1,49 +1,83 @@
 ﻿namespace B1NARY
 {
 	using System;
+	using System.Collections.Generic;
+	using UnityEngine.SceneManagement;
+	using Object = UnityEngine.Object;
+	using SceneManagerSex = UnityEngine.SceneManagement.SceneManager;
 
-	public sealed class Pauser
+	public sealed class Pauser : IDisposable
 	{
+		public Pauser()
+		{
+			SceneManagerSex.activeSceneChanged += UpdateOnScene;
+		}
+		public void Dispose()
+		{
+			SceneManagerSex.activeSceneChanged -= UpdateOnScene;
+		}
+		private void UpdateOnScene(Scene old, Scene @new) => _ = Blocking;
+		private readonly LinkedList<Object> Sources = new LinkedList<Object>();
 
-		public sbyte Count { get; private set; } = 0;
-		public bool ShouldPause
+
+		public bool Blocking
 		{
 			get
 			{
-				if (ForceState)
-					return forcedState.Value;
-				return Count > 0;
-			}
-			set
-			{
-				if (value)
-					Pause();
-				else
-					Play();
+				// Updating sources
+				LinkedListNode<Object> current = Sources.First;
+				while (current != null)
+				{
+					LinkedListNode<Object> next = current.Next;
+					if (current.Value == null)
+						Sources.Remove(current);
+					current = next;
+				}
+
+				// Getting return value
+				bool output = broken || Sources.Count > 0;
+				if (output != m_blocking)
+				{
+					m_blocking = output;
+					BlockingChanged?.Invoke(output);
+				}
+				return output;
 			}
 		}
-		public void ManuallyForceState(bool pause)
+		private bool m_blocking = false;
+		private bool broken = false;
+		public event Action<bool> BlockingChanged;
+
+		public bool RemoveBlocker(Object source)
 		{
-			forcedState = pause;
-			m_forceState = true;
+			bool output = Sources.Remove(source);
+			_ = Blocking;
+			return output;
 		}
-		public bool ForceState
+		public void AddBlocker(Object source)
 		{
-			get => m_forceState;
-			set
-			{
-				if (m_forceState == value)
-					return;
-				if (value)
-					forcedState = ShouldPause;
-				else
-					forcedState = null;
-				m_forceState = value;
-			}
+			if (Sources.Contains(source))
+				return;
+			Sources.AddLast(source);
+			_ = Blocking;
 		}
-		private bool m_forceState = false;
-		private bool? forcedState;
-		public void Pause() => Count = checked((sbyte)(Count + 1));
-		public void Play() => Count = checked((sbyte)(Count - 1));
+		public void ToggleBlocker(Object source)
+		{
+			if (!Sources.Remove(source))
+				Sources.AddLast(source);
+			_ = Blocking;
+		}
+		public void ToggleBlocker(Object source, bool toggle)
+		{
+			if (toggle)
+				AddBlocker(source);
+			else
+				RemoveBlocker(source);
+		}
+		public void Break()
+		{
+			broken = true;
+			_ = Blocking;
+		}
 	}
 }

@@ -7,6 +7,7 @@
 	using B1NARY.Audio;
 	using System.Collections.Generic;
 	using OVSXmlSerializer.Extras;
+	using B1NARY.DataPersistence;
 
 	public class SoundOptionsBehaviour : MonoBehaviour 
 	{

@@ -1,5 +1,6 @@
 ﻿namespace B1NARY.UI.Globalization
 {
+	using B1NARY.DataPersistence;
 	using System;
 	using UnityEngine;
 

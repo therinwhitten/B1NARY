@@ -1,5 +1,6 @@
 ﻿namespace B1NARY
 {
+	using B1NARY.DataPersistence;
 	using System;
 	using UnityEngine;
 

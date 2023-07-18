@@ -1,6 +1,5 @@
-﻿namespace B1NARY
+﻿namespace B1NARY.DataPersistence
 {
-	using HideousDestructor.DataPersistence;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
@@ -15,7 +14,7 @@
 		public const string PRE_GRAPHICS = "gra_";
 		public const string PRE_SOUND = "snd_";
 
-		public static FileInfo ConfigLocation => SerializableSlot.PersistentData.GetFile("config.xml");
+		public static FileInfo ConfigLocation => SaveSlot.PersistentData.GetFile("config.xml");
 		private static XmlSerializer<PlayerConfig> XmlSerializer { get; }
 			= new XmlSerializer<PlayerConfig>(new XmlSerializerConfig
 			{

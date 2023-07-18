@@ -5,11 +5,9 @@
 	using System.Linq;
 	using UnityEngine;
 	using B1NARY.Scripting;
-	using OVSXmlSerializer;
-	using System.Xml;
-	using HideousDestructor.DataPersistence;
 	using System.IO;
 	using FormatSerializer = OVSXmlSerializer.XmlSerializer<ColorFormat>;
+	using B1NARY.DataPersistence;
 
 
 	// Have it change formats per scene if it exists.
@@ -26,7 +24,7 @@
 			Unknown,
 		}
 		public const string DEFAULT_THEME_NAME = "Default";
-		public static DirectoryInfo RootPath => SerializableSlot.StreamingAssets.GetOrCreateSubDirectory("Color Themes");
+		public static DirectoryInfo RootPath => SaveSlot.StreamingAssets.GetOrCreateSubDirectory("Color Themes");
 		public static DirectoryInfo CustomThemePath => RootPath.GetOrCreateSubDirectory("Custom");
 		public static FileInfo DefaultThemePath => RootPath.GetFile("Default.xml");
 		public readonly static IndexFile indexFile = IndexFile.LoadNew();

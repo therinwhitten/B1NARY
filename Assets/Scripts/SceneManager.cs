@@ -105,7 +105,7 @@
 		public IEnumerator ChangeScene(string sceneName, bool handleScripts)
 		{
 			if (handleScripts)
-				ScriptHandler.Instance.pauser.Pause();
+				ScriptHandler.Instance.pauser.AddBlocker(this);
 			IEnumerator fadeEnum = FadeScene();
 			while (fadeEnum.MoveNext())
 				yield return fadeEnum.Current;
@@ -121,7 +121,7 @@
 				if (Application.isEditor)
 				{
 					Debug.LogException(new MissingReferenceException($"'{sceneName}' does not exist as a scene, fix this before production! IT WILL BREAK YOUR SHIT!"));
-					ScriptHandler.Instance.pauser.Pause();
+					ScriptHandler.Instance.pauser.Break();
 				}
 				else
 					Utils.ForceCrash(ForcedCrashCategory.FatalError);
@@ -133,13 +133,13 @@
 
 			if (handleScripts)
 			{
-				ScriptHandler.Instance.pauser.Play();
+				ScriptHandler.Instance.pauser.RemoveBlocker(this);
 				ScriptHandler.Instance.NextLine();
 			}
 		}
 		public IEnumerator ReturnToMainMenu()
 		{
-			ScriptHandler.Instance.pauser.Pause();
+			ScriptHandler.Instance.pauser.AddBlocker(this);
 			IEnumerator fadeEnum = FadeScene();
 			while (fadeEnum.MoveNext())
 				yield return fadeEnum.Current;
@@ -152,12 +152,12 @@
 				if (Application.isEditor)
 				{
 					Debug.LogException(new MissingReferenceException($"'{MainMenuSceneIndex}' does not exist as a scene index, fix this before production! IT WILL BREAK YOUR SHIT!"));
-					ScriptHandler.Instance.pauser.ManuallyForceState(true);
+					ScriptHandler.Instance.pauser.Break();
 				}
 				else
 					Utils.ForceCrash(ForcedCrashCategory.FatalError);
 			}
-			ScriptHandler.Instance.pauser.Play();
+			ScriptHandler.Instance.pauser.RemoveBlocker(this);
 			ScriptHandler.Instance.Clear();
 			AudioController.Instance.RemoveAllSounds();
 			ColorFormat.Set(ColorFormat.DefaultFormat);

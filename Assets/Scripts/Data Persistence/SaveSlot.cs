@@ -1,6 +1,5 @@
 ﻿namespace B1NARY.DataPersistence
 {
-	using HideousDestructor.DataPersistence;
 	using B1NARY.Scripting;
 	using System;
 	using System.Collections;
@@ -22,6 +21,21 @@
 	
 	public class SaveSlot
 	{
+		/// <summary>
+		/// Gets the local appdata folder for saving settings, configs, etc.
+		/// </summary>
+		/// <remarks>
+		/// Uses window's <see cref="Environment.GetFolderPath(Environment.SpecialFolder)"/> 
+		/// structure due to <see cref="Application.persistentDataPath"/>
+		/// being incredibly buggy, especially when the folder is missing 
+		/// from the appdata; causing it to not display any directory location 
+		/// at all.
+		/// </remarks>
+		public static DirectoryInfo PersistentData => new DirectoryInfo(Application.persistentDataPath);
+		/// <summary>
+		/// Gets the streaming assets folder with a <see cref="DirectoryInfo"/>.
+		/// </summary>
+		public static DirectoryInfo StreamingAssets => new DirectoryInfo(Application.streamingAssetsPath);
 		public enum QuicksaveType
 		{
 			/// <summary>
@@ -38,8 +52,7 @@
 		public const string KEY_PLAYER_NAME = "Player Name";
 		public const string KEY_ADDITIVE = "Additive";
 		public const int MAX_SAVES = 69;
-		public static DirectoryInfo SavesDirectory { get; } =
-			SerializableSlot.PersistentData.GetOrCreateSubDirectory("Saves");
+		public static DirectoryInfo SavesDirectory => PersistentData.GetOrCreateSubDirectory("Saves");
 		
 		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
 		new XmlSerializer<SaveSlot>(new XmlSerializerConfig()

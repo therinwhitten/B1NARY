@@ -1,5 +1,6 @@
 ﻿namespace B1NARY.Globalization
 {
+	using B1NARY.DataPersistence;
 	using B1NARY.UI.Globalization;
 	using System;
 	using System.Collections.Generic;

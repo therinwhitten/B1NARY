@@ -1,7 +1,6 @@
 ﻿namespace B1NARY.Scripting
 {
-	using B1NARY.UI.Globalization;
-	using HideousDestructor.DataPersistence;
+	using B1NARY.DataPersistence;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
@@ -16,7 +15,7 @@
 		/// The documents folder that has all the playable scripts the system
 		/// can access.
 		/// </summary>
-		public static DirectoryInfo DocumentFolder => SerializableSlot.StreamingAssets.GetOrCreateSubDirectory("Docs");
+		public static DirectoryInfo DocumentFolder => SaveSlot.StreamingAssets.GetOrCreateSubDirectory("Docs");
 		/// <summary>
 		/// All the documents that are divided into languages, located within the
 		/// original <see cref="DocumentFolder"/>.

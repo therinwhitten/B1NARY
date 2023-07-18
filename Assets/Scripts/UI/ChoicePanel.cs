@@ -84,7 +84,7 @@
 					" been used to make a choice panel. Did you forget to dispose?");
 			HasBeenInitialized = true;
 			enabled = true;
-			ScriptHandler.Instance.pauser.Pause();
+			ScriptHandler.Instance.pauser.AddBlocker(this);
 			gameObject.SetActive(true);
 			PickedChoice = key =>
 			{
@@ -122,7 +122,7 @@
 				return;
 			HasBeenInitialized = false;
 			CurrentlyPickedChoice = null;
-			ScriptHandler.Instance.pauser.Play();
+			ScriptHandler.Instance.pauser.RemoveBlocker(this);
 			gameObject.SetActive(false);
 			enabled = false;
 			for (int i = 0; i < choiceButtons.Count; i++)

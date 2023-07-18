@@ -4,6 +4,7 @@
 	using System.Collections.Generic;
 	using UnityEngine;
 	using B1NARY.UI.Globalization;
+	using B1NARY.DataPersistence;
 
 	public sealed class LanguageDropdown : DropdownPanel<string>
 	{

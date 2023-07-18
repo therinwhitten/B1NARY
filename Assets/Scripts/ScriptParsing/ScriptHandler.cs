@@ -7,7 +7,6 @@
 	using B1NARY.UI;
 	using B1NARY.UI.Colors;
 	using B1NARY.UI.Globalization;
-	using HideousDestructor.DataPersistence;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
@@ -86,12 +85,12 @@
 			if (@object == null)
 				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
 			@object.SetActive(true);
-			Instance.pauser.Pause();
+			Instance.pauser.AddBlocker(Instance);
 			Instance.StartCoroutine(Wait());
 			IEnumerator Wait()
 			{
 				yield return new WaitUntil(() => !@object.activeSelf);
-				Instance.pauser.Play();
+				Instance.pauser.RemoveBlocker(Instance);
 				Instance.NextLine();
 			}
 		}
@@ -164,8 +163,11 @@
 				file = newDocument.GetWithoutLanguage().FullPath;
 			}
 			document = new ScriptDocument(config, file);
-			documentWatcher = document.StartAtLine(currentIndex);
-			NextLine(true);
+			documentWatcher = document.StartAtLine(currentIndex - 1);
+			Pauser pausedPauser = this.pauser;
+			using (this.pauser = new Pauser())
+				NextLine(true);
+			this.pauser = pausedPauser;
 		}
 		private void SayLine(ScriptLine line)
 		{
@@ -202,7 +204,7 @@
 
 		public ScriptNode NextLine(bool forceContinue = false)
 		{
-			if (pauser.ShouldPause)
+			if (pauser.Blocking)
 			{
 				Debug.Log("Pausing is enabled.");
 				return documentWatcher.CurrentNode;

@@ -1,16 +1,11 @@
 ﻿namespace B1NARY.Scripting
 {
-	using B1NARY.Globalization;
-	using HideousDestructor.DataPersistence;
 	using System;
-	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
-	using UnityEngine;
 
 	public struct Document
 	{
-
 		// nullable
 		/// <summary>
 		/// What language the visual path targets. <see langword="null"/> if it

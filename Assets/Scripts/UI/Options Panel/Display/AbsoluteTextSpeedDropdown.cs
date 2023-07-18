@@ -4,6 +4,7 @@
 	using System.Collections.Generic;
 	using UnityEngine;
 	using System;
+	using B1NARY.DataPersistence;
 
 	public sealed class AbsoluteTextSpeedDropdown : DropdownPanel<int>
 	{

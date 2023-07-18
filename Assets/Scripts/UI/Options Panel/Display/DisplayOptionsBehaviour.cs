@@ -7,6 +7,7 @@
 	using UnityEngine.UI;
 	using UnityEngine.Rendering;
 	using System;
+	using B1NARY.DataPersistence;
 
 	public sealed class DisplayOptionsBehaviour : MonoBehaviour
 	{

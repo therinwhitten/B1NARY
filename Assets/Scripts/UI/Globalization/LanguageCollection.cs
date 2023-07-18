@@ -1,9 +1,7 @@
 ﻿namespace B1NARY.UI.Globalization
 {
-	using HideousDestructor.DataPersistence;
+	using B1NARY.DataPersistence;
 	using OVSXmlSerializer;
-	using System;
-	using System.Collections;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
@@ -11,7 +9,7 @@
 
 	public class Languages : List<string>, IXmlSerializable
 	{
-		private static FileInfo LanguagesInfo { get; } = SerializableSlot.StreamingAssets.GetFile("languages.xml");
+		private static FileInfo LanguagesInfo => SaveSlot.StreamingAssets.GetFile("languages.xml");
 		private static Languages m_instance;
 		public static Languages Instance
 		{
