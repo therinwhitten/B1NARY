@@ -12,6 +12,7 @@
 	using B1NARY.UI.Colors;
 	using System.Threading.Tasks;
 	using Stopwatch = System.Diagnostics.Stopwatch;
+	using System.Linq;
 
 	public enum Gender : byte
 	{
@@ -24,8 +25,8 @@
 		[RuntimeInitializeOnLoadMethod]
 		private static void Poopoo()
 		{
-			Debug.LogError(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
-			Debug.LogError(SavesDirectory.FullName);
+			Debug.LogError(ColorFormat.RootPath.FullName);
+			Debug.LogError($"All formats in folder: {ColorFormat.CustomThemePath.FullName}\n{string.Join("\n", ColorFormat.CustomThemePath.GetFiles().Select(file => $"\t{file.FullName}"))}");
 		}
 		/// <summary>
 		/// Gets the local appdata folder for saving settings, configs, etc.
