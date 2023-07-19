@@ -56,7 +56,7 @@
 		/// The texture of the image. This is typically a JPG image if taken from
 		/// a screenshot.
 		/// </summary>
-		public Texture2D Texture => ImageUtility.LoadImage(data);//.LoadImage(data);
+		public Texture2D Texture => ImageUtility.LoadImage(data);
 		public Sprite Sprite
 		{
 			get

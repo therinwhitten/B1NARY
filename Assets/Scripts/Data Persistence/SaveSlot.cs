@@ -21,6 +21,12 @@
 	
 	public class SaveSlot
 	{
+		[RuntimeInitializeOnLoadMethod]
+		private static void Poopoo()
+		{
+			Debug.LogError(Environment.GetFolderPath(Environment.SpecialFolder.Desktop));
+			Debug.LogError(SavesDirectory.FullName);
+		}
 		/// <summary>
 		/// Gets the local appdata folder for saving settings, configs, etc.
 		/// </summary>
