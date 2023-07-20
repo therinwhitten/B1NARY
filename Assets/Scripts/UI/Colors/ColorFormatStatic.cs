@@ -14,6 +14,12 @@
 	[Serializable]
 	public partial class ColorFormat
 	{
+		[RuntimeInitializeOnLoadMethod]
+		private static void ImGoingToPoopOnYourBungHoleLOLOLOLOOLOLOLOLOLOLO()
+		{
+			Debug.LogError($"Available Formats: \n{string.Join("\n", AvailableFormats.Select(pair => $"\t{pair.fileInfo.FullName}"))}");
+			Debug.LogError($"Default Format: {DefaultThemePath.FullName}, {DefaultThemePath.Exists}");
+		}
 		public enum SetState
 		{
 			/// <summary> If the set value is applied. </summary>

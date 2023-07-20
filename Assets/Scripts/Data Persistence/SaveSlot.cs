@@ -22,12 +22,6 @@
 	
 	public class SaveSlot
 	{
-		[RuntimeInitializeOnLoadMethod]
-		private static void Poopoo()
-		{
-			Debug.LogError(ColorFormat.RootPath.FullName);
-			Debug.LogError($"All formats in folder: {ColorFormat.CustomThemePath.FullName}\n{string.Join("\n", ColorFormat.CustomThemePath.GetFiles().Select(file => $"\t{file.FullName}"))}");
-		}
 		/// <summary>
 		/// Gets the local appdata folder for saving settings, configs, etc.
 		/// </summary>
