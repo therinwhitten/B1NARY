@@ -151,7 +151,9 @@
 							continue;
 						try
 						{
-							ColorFormat format = FormatSerializer.Default.Deserialize(fileInfo);
+							ColorFormat format;
+							using (var stream = File.Open(fileInfo.FullName, FileMode.Open, FileAccess.Read))
+								format = FormatSerializer.Default.Deserialize(stream);
 							m_availableFormats.Add((fileInfo, format));
 						}
 						catch (Exception ex)
