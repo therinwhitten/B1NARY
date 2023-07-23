@@ -72,6 +72,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
+#warning TODO: Get the character's old name instead of getting the newer one
 					Character emptyChar = Instance.GetCharacter(characterName);
 					Debug.Log(PlayerConfig.Instance.language.Value);
 					emptyChar.ChangeCharacterName(characterName);

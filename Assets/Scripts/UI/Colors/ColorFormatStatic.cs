@@ -44,7 +44,9 @@
 				{
 					if (DefaultThemePath.Exists)
 					{
-						ColorFormat format = FormatSerializer.Default.Deserialize(DefaultThemePath);
+						ColorFormat format;
+						using (var stream = DefaultThemePath.OpenStream(FileMode.Open, FileAccess.Read))
+							format = FormatSerializer.Default.Deserialize(stream);
 						if (format != null)
 							return m_defaultFormat = format;
 					}
