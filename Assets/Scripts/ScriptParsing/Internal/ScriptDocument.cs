@@ -99,7 +99,7 @@
 			}
 		}
 
-		public IDocumentWatcher StartAtLine(int line) => new Watcher(EnumerateThrough(line));
+		public IDocumentWatcher StartAtLine(int line) => new Watcher(EnumerateWatcher(line));
 		public override IEnumerator<ScriptNode> EnumerateThrough(int localIndex)
 		{
 			using (var enumerator = base.EnumerateThrough(localIndex))
@@ -113,20 +113,33 @@
 					yield return currentNode;
 				}
 		}
+		internal IEnumerator<(bool canSkip, ScriptNode currentNode)> EnumerateWatcher(int localIndex)
+		{
+			using (var enumerator = base.EnumerateThrough(localIndex))
+				while (enumerator.MoveNext())
+				{
+					ScriptNode currentNode = enumerator.Current;
+					if (currentNode is null)
+						yield return (false, null);
+					bool canSkip = InvokeLine(currentNode.PrimaryLine) && !DocumentConfig.stopOnAllLines;
+					yield return (canSkip, currentNode);
+				}
+		}
 
 		public IDocumentWatcher Start() => StartAtLine(0);
 
 
 		public class Watcher : IDocumentWatcher
 		{
-			private IEnumerator<ScriptNode> enumerator;
-			public Watcher(IEnumerator<ScriptNode> enumerator)
+			private IEnumerator<(bool canSkip, ScriptNode currentNode)> enumerator;
+			public Watcher(IEnumerator<(bool canSkip, ScriptNode currentNode)> enumerator)
 			{
 				this.enumerator = enumerator;
 			}
 
 			public bool NextNode(out ScriptNode node)
 			{
+				restart:
 				if (EndOfDocument)
 				{
 					node = null;
@@ -135,11 +148,13 @@
 				bool output = enumerator.MoveNext();
 				if (!output)
 					EndOfDocument = true;
-				node = enumerator.Current;
+				node = enumerator.Current.currentNode;
+				if (enumerator.Current.canSkip)
+					goto restart;
 				return output;
 			}
 
-			public ScriptNode CurrentNode => enumerator.Current;
+			public ScriptNode CurrentNode => enumerator.Current.currentNode;
 			public bool EndOfDocument { get; private set; } = false;
 		}
 	}
