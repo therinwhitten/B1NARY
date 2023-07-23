@@ -13,11 +13,16 @@
 		public Volume volume;
 		public float BloomIntensity
 		{
-			get => volume.profile.components.Single().parameters[1].GetValue<float>();
+			get => volume.profile.components.First().parameters[1].GetValue<float>();
 			set
 			{
-				((VolumeParameter<float>)volume.profile.components.Single().parameters[1]).value = value;
+				((VolumeParameter<float>)volume.profile.components.First().parameters[1]).value = value;
 			}
+		}
+
+		private void Reset()
+		{
+			volume = GetComponent<Volume>();
 		}
 
 		private void Awake()
@@ -26,13 +31,18 @@
 #warning TODO: Temporary fix, be sure to screw it in!
 				volume = GameObject.Find("UI Bloom").GetComponent<Volume>();
 			nameToSearch = volume.name;
-			PlayerConfig.Instance.graphics.glow.AttachValue((value) => BloomIntensity = value);
-			SceneManager.Instance.SwitchedScenes.AddPersistentListener(() =>
+			PlayerConfig.Instance.graphics.glow.AttachValue((value) =>
 			{
-				if (volume == null)
-					volume = GameObject.Find(nameToSearch).GetComponent<Volume>();
-				BloomIntensity = PlayerConfig.Instance.graphics.glow.Value;
+				if (this == null)
+					return;
+				BloomIntensity = value;
 			});
+			//SceneManager.Instance.SwitchedScenes.AddPersistentListener(() =>
+			//{
+			//	if (volume == null)
+			//		volume = GameObject.Find(nameToSearch).GetComponent<Volume>();
+			//	BloomIntensity = PlayerConfig.Instance.graphics.glow.Value;
+			//});
 		}
 	}
 }

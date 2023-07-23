@@ -15,12 +15,12 @@
 		/// The documents folder that has all the playable scripts the system
 		/// can access.
 		/// </summary>
-		public static DirectoryInfo DocumentFolder => SaveSlot.StreamingAssets.GetOrCreateSubDirectory("Docs");
+		public static DirectoryInfo DocumentFolder => SaveSlot.StreamingAssets.GetSubdirectory("Docs");
 		/// <summary>
 		/// All the documents that are divided into languages, located within the
 		/// original <see cref="DocumentFolder"/>.
 		/// </summary>
-		public static DirectoryInfo LanguagePacks => DocumentFolder.GetOrCreateSubDirectory("Language Packs");
+		public static DirectoryInfo LanguagePacks => DocumentFolder.GetSubdirectory("Language Packs");
 		
 
 		public List<Document> CoreDocuments { get; }

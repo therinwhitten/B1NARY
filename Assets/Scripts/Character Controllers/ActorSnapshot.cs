@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using B1NARY.UI.Globalization;
 	using OVSXmlSerializer;
 	using UnityEngine;
 
@@ -12,13 +13,12 @@
 		public static ActorSnapshot[] GetCurrentSnapshots()
 		{
 			ActorSnapshot[] characterSnapshots = new ActorSnapshot[CharacterManager.Instance.CharactersInScene.Count];
-			using (var enumerator = CharacterManager.Instance.CharactersInScene.GetEnumerator())
-				for (int i = 0; enumerator.MoveNext(); i++)
-					characterSnapshots[i] = enumerator.Current.Value.controller.Serialize();
+			for (int i = 0; i < CharacterManager.Instance.CharactersInScene.Count; i++)
+				characterSnapshots[i] = CharacterManager.Instance.CharactersInScene[i].controller.Serialize();
 			return characterSnapshots;
 		}
 
-		public string name;
+		public CharacterNames characterNames;
 		public string gameObjectName;
 		public string expression;
 		public string animation;
@@ -29,7 +29,7 @@
 
 		public ActorSnapshot(IActor controller)
 		{
-			name = controller.CharacterName;
+			characterNames = controller.CharacterNames;
 			gameObjectName = controller.GameObjectName;
 			expression = controller.CurrentExpression;
 			animation = controller.CurrentAnimation;

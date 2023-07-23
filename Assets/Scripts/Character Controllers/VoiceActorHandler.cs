@@ -147,11 +147,10 @@
 		{
 			currentVoiceLine = clip;
 			if (BlockPreviousSpeakersOnNextLine && CharacterManager.HasInstance)
-				using (var enumerator = CharacterManager.Instance.CharactersInScene.Values.GetEnumerator())
-					while (enumerator.MoveNext())
-						using (var enumerator2 = enumerator.Current.controller.Mouths.GetEnumerator())
-							while (enumerator2.MoveNext())
-								enumerator2.Current.Value.Stop();
+				for (int i = 0; i < CharacterManager.Instance.CharactersInScene.Count; i++)
+					using (var enumerator2 = CharacterManager.Instance.CharactersInScene[i].controller.Mouths.GetEnumerator())
+						while (enumerator2.MoveNext())
+							enumerator2.Current.Value.Stop();
 			AudioSource.loop = false;
 			AudioSource.clip = currentVoiceLine;
 			AudioSource.Play();

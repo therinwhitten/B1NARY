@@ -19,6 +19,7 @@
 	{
 		public const string CHARACTER_KEY = "Empty";
 		string IActor.CharacterTypeKey => CHARACTER_KEY;
+		private static readonly LinkedList<EmptyActor> allActors = new LinkedList<EmptyActor>();
 
 		[RuntimeInitializeOnLoadMethod]
 		private static void Constructor()
@@ -28,16 +29,16 @@
 
 		public static Character Create(ActorSnapshot snapshot)
 		{
-			Character character = AddTo(CharacterManager.Instance, snapshot.name);
+			Character character = AddTo(CharacterManager.Instance);
 			character.controller.Deserialize(snapshot);
 			return character;
 		}
-		public static Character AddTo(CharacterManager characterManager, string name)
+		public static Character AddTo(CharacterManager characterManager)
 		{
-			var gameObject = new GameObject(name);
+			var gameObject = new GameObject($"Empty Actor {allActors.Count}");
 			gameObject.transform.SetParent(characterManager.Transform);
 			EmptyActor controller = gameObject.AddComponent<EmptyActor>();
-			characterManager.AddCharacterToDictionary(gameObject, out Character character);
+			characterManager.AddNewCharacter(gameObject, out Character character);
 			return character;
 		}
 		public static (GameObject @object, EmptyActor emptyController) Instantiate(Transform parent, string name)
@@ -50,11 +51,16 @@
 
 		private void Awake()
 		{
+			allActors.AddLast(this);
 			voices.Add(gameObject.AddComponent<VoiceActorHandler>());
-			if (string.IsNullOrEmpty(CharacterName))
-				CharacterName = gameObject.name;
+			if (string.IsNullOrEmpty(CharacterNames.CurrentName))
+				CharacterNames.CurrentName = gameObject.name;
 		}
-		public string CharacterName { get; set; }
+		private void OnDestroy()
+		{
+			allActors.Remove(this);
+		}
+		public CharacterNames CharacterNames { get; private set; } = new CharacterNames();
 		string IActor.GameObjectName => gameObject.name;
 		public void SayLine(ScriptLine line)
 		{
@@ -82,7 +88,7 @@
 		{
 			IActor thisInterface = this;
 			thisInterface.CurrentExpression = snapshot.expression;
-			thisInterface.CharacterName = snapshot.name;
+			CharacterNames = snapshot.characterNames;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
 			thisInterface.ScreenPosition = snapshot.screenPosition;

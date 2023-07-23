@@ -64,9 +64,9 @@ namespace B1NARY.Editor.Debugger
 				var onSpeaker = new StringBuilder("On Speaker: ");
 				if (!Application.isPlaying)
 					return onSpeaker.Append(notPlaying).ToString();
-				if (!DialogueSystem.HasInstance || string.IsNullOrEmpty(CharacterManager.Instance.ActiveCharacter?.controller.CharacterName))
+				if (!DialogueSystem.HasInstance || string.IsNullOrEmpty(CharacterManager.Instance.ActiveCharacter?.controller.CharacterNames.CurrentName))
 					return onSpeaker.Append(@null).ToString();
-				return onSpeaker.Append(CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterName).ToString();
+				return onSpeaker.Append(CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName).ToString();
 			}
 			string CurrentLine()
 			{

@@ -187,8 +187,7 @@
 
 		private void ChangeCharacter(string newCharacter)
 		{
-			if (!CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(newCharacter))
-				throw new MissingMemberException($"'{newCharacter}' is not found in the internal character list!");
+			CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(newCharacter);
 		}
 
 

@@ -1,5 +1,6 @@
 ﻿namespace B1NARY.UI.Colors
 {
+	using Codice.Client.BaseCommands.Fileinfo;
 	using OVSXmlSerializer;
 	using System.Collections.Generic;
 	using System.IO;
@@ -65,7 +66,7 @@
 					FormatSerializer.Serialize(stream, this, ROOT_NAME_DEFAULT);
 				return;
 			}
-			using (var stream = CustomThemePath.GetFile(fileName).Open(FileMode.Create, FileAccess.Write))
+			using (var stream = CustomThemePath.GetFile(fileName).OpenStream(FileMode.Create, FileAccess.Write))
 				FormatSerializer.Serialize(stream, this, ROOT_NAME_CUSTOM);
 		}
 	}

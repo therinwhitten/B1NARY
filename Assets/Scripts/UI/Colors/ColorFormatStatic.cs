@@ -14,12 +14,6 @@
 	[Serializable]
 	public partial class ColorFormat
 	{
-		[RuntimeInitializeOnLoadMethod]
-		private static void ImGoingToPoopOnYourBungHoleLOLOLOLOOLOLOLOLOLOLO()
-		{
-			Debug.LogError($"Available Formats: \n{string.Join("\n", AvailableFormats.Select(pair => $"\t{pair.fileInfo.FullName}"))}");
-			Debug.LogError($"Default Format: {DefaultThemePath.FullName}, {DefaultThemePath.Exists}");
-		}
 		public enum SetState
 		{
 			/// <summary> If the set value is applied. </summary>
@@ -30,8 +24,8 @@
 			Unknown,
 		}
 		public const string DEFAULT_THEME_NAME = "Default";
-		public static DirectoryInfo RootPath => SaveSlot.StreamingAssets.GetOrCreateSubDirectory("Color Themes");
-		public static DirectoryInfo CustomThemePath => RootPath.GetOrCreateSubDirectory("Custom");
+		public static DirectoryInfo RootPath => SaveSlot.StreamingAssets.GetSubdirectory("Color Themes");
+		public static DirectoryInfo CustomThemePath => RootPath.GetSubdirectory("Custom");
 		public static FileInfo DefaultThemePath => RootPath.GetFile("Default.xml");
 		public readonly static IndexFile indexFile = IndexFile.LoadNew();
 		public static CommandArray Commands = new CommandArray()
@@ -152,7 +146,7 @@
 						try
 						{
 							ColorFormat format;
-							using (var stream = File.Open(fileInfo.FullName, FileMode.Open, FileAccess.Read))
+							using (var stream = fileInfo.OpenStream(FileMode.Open, FileAccess.Read))
 								format = FormatSerializer.Default.Deserialize(stream);
 							m_availableFormats.Add((fileInfo, format));
 						}

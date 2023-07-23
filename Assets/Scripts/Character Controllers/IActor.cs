@@ -6,7 +6,7 @@
 
 	public interface IActor : IVoice
 	{
-		string CharacterName { get; set; }
+		CharacterNames CharacterNames { get; }
 		string GameObjectName { get; }
 		void SayLine(ScriptLine line);
 

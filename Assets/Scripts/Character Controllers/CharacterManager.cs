@@ -10,6 +10,8 @@
 	using B1NARY.Scripting;
 	using UnityEngine.Audio;
 	using System.Globalization;
+	using B1NARY.UI.Globalization;
+	using B1NARY.DataPersistence;
 
 	public sealed class CharacterManager : Singleton<CharacterManager>
 	{
@@ -26,6 +28,14 @@
 		{
 			["spawnchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
+				// Switching names really, quirks n stuff
+				if (CharacterNames.ChangingNames)
+				{
+					Character summmoned = Instance.GetCharacter(gameObjectName);
+					summmoned.ChangeCharacterName(characterName);
+					return;
+				}
+				// Actual code
 				Character character = Instance.SummonCharacter(gameObjectName);
 				Vector2 pos = character.controller.ScreenPosition;
 				pos.x = float.Parse(positionRaw);
@@ -34,6 +44,14 @@
 			}),
 			["spawnchar"] = (Action<string, string, string, string>)((gameObjectName, positionX, positionY, characterName) =>
 			{
+				// Switching names really, quirks n stuff
+				if (CharacterNames.ChangingNames)
+				{
+					Character summmoned = Instance.GetCharacter(gameObjectName);
+					summmoned.ChangeCharacterName(characterName);
+					return;
+				}
+				// Actual code
 				Character character = Instance.SummonCharacter(gameObjectName);
 				Vector2 pos = character.controller.ScreenPosition;
 				pos.x = float.Parse(positionX);
@@ -43,6 +61,8 @@
 			}),
 			["spawnchar"] = (Action<string, string>)((gameObjectName, positionRaw) =>
 			{
+				if (CharacterNames.ChangingNames)
+					return;
 				Character character = Instance.SummonCharacter(gameObjectName);
 				Vector2 pos = character.controller.ScreenPosition;
 				pos.x = float.Parse(positionRaw);
@@ -50,11 +70,27 @@
 			}),
 			["spawnempty"] = (Action<string>)(characterName =>
 			{
-				EmptyActor.AddTo(Instance, characterName);
+				if (CharacterNames.ChangingNames)
+				{
+					Character emptyChar = Instance.GetCharacter(characterName);
+					Debug.Log(PlayerConfig.Instance.language.Value);
+					emptyChar.ChangeCharacterName(characterName);
+					return;
+				}
+				Character actor = EmptyActor.AddTo(Instance);
+				actor.ChangeCharacterName(characterName);
 			}),
 			["spawnempty"] = (Action<string, string>)((characterName, voiceName) =>
 			{
-				Character emptyCharacter = EmptyActor.AddTo(Instance, characterName);
+				if (CharacterNames.ChangingNames)
+				{
+					Character emptyChar = Instance.GetCharacter(characterName);
+					Debug.Log(PlayerConfig.Instance.language.Value);
+					emptyChar.ChangeCharacterName(characterName);
+					return;
+				}
+				Character emptyCharacter = EmptyActor.AddTo(Instance);
+				emptyCharacter.ChangeCharacterName(characterName);
 				emptyCharacter.controller.Mouths[0].CurrentGroup =
 					Instance.voiceGroup.audioMixer.FindMatchingGroups(voiceName).Single();
 			}),
@@ -89,7 +125,7 @@
 			}),
 			["disablechar"] = (Action)(() =>
 			{
-				Instance.DisableCharacter(Instance.ActiveCharacter.Value.controller.CharacterName);
+				Instance.DisableCharacter(Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName);
 			}),
 			["changename"] = (Action<string, string>)((oldName, newName) =>
 			{
@@ -97,7 +133,7 @@
 			}),
 			["changename"] = (Action<string>)((newName) =>
 			{
-				Instance.RenameCharacter(Instance.ActiveCharacter.Value.controller.CharacterName, newName);
+				Instance.RenameCharacter(Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName, newName);
 			}),
 		};
 
@@ -130,21 +166,20 @@
 		private Character? m_active;
 		public event Action<Character?> ActiveCharacterChanged;
 
-		public IReadOnlyDictionary<string, Character> CharactersInScene => m_charactersInScene;
+		public IReadOnlyList<Character> CharactersInScene => m_charactersInScene;
 		public Character GetCharacter(string name)
 		{
-			if (CharactersInScene.TryGetValue(name, out var output))
-				return output;
+			for (int i = 0; i < CharactersInScene.Count; i++)
+				if (CharactersInScene[i].controller.CharacterNames.CurrentName == name)
+					return CharactersInScene[i];
 			throw new MissingMemberException($"'{name}' is not a character present in the current game!");
 		}
-		private readonly Dictionary<string, Character> m_charactersInScene = new Dictionary<string, Character>(); 
+		private readonly List<Character> m_charactersInScene = new List<Character>(); 
 
-		public bool ChangeActiveCharacterViaCharacterName(string name)
+		public void ChangeActiveCharacterViaCharacterName(string name)
 		{
-			if (!CharactersInScene.TryGetValue(name, out Character character))
-				return false;
+			Character character = GetCharacter(name);
 			ActiveCharacter = character;
-			return true;
 		}
 		/// <summary>
 		/// Summons a character from memory via the scene, or the resources folder.
@@ -165,7 +200,7 @@
 						$"'{prefabsPath}{gameObjectName}, most likely missing.");
 
 				// Found successfully, adding to dictionary.
-				if (AddCharacterToDictionary(Instantiate(gameObject, Transform), out Character character))
+				if (AddNewCharacter(Instantiate(gameObject, Transform), out Character character))
 				{
 					Debug.LogWarning($"GameObject or Character named '{gameObjectName}'" +
 						" is not found in the scene, trying to summmon in Resources Folder " +
@@ -181,7 +216,7 @@
 			// Successfully got from transform
 			GameObject childObject = charTransform.gameObject;
 			childObject.SetActive(true);
-			if (AddCharacterToDictionary(childObject, out Character character1))
+			if (AddNewCharacter(childObject, out Character character1))
 				return character1;
 			throw new MissingReferenceException($"Gameobject or character named" +
 				$"'{gameObjectName}' does not contain an actor component.");
@@ -195,7 +230,7 @@
 		/// If the character has been sucessfully added becuase it contains an
 		/// <see cref="IActor"/> component.
 		/// </returns>
-		public bool AddCharacterToDictionary(GameObject gameObject, out Character character)
+		public bool AddNewCharacter(GameObject gameObject, out Character character)
 		{
 			MonoBehaviour[] components = gameObject.GetComponents<MonoBehaviour>();
 			for (int i = 0; i < components.Length; i++)
@@ -204,31 +239,27 @@
 				{
 					character = new Character(this, gameObject, controller);
 					gameObject.transform.SetParent(Transform);
-					m_charactersInScene.Add(controller.CharacterName, character);
+					m_charactersInScene.Add(character);
 					return true;
 				}
 			}
 			character = default;
 			return false;
 		}
-		public bool RenameCharacter(string oldName, string newName)
+		public void RenameCharacter(string oldName, string newName)
 		{
-			bool selectedCharacter = ActiveCharacter.HasValue && ActiveCharacter.Value.controller.CharacterName == oldName;
-			if (!m_charactersInScene.TryGetValue(oldName, out Character character))
-				return false;
-			character.controller.CharacterName = newName;
-			m_charactersInScene.Remove(oldName);
-			m_charactersInScene.Add(newName, character);
-			if (selectedCharacter)
-				ChangeActiveCharacterViaCharacterName(newName);
-			return true;
+			//bool selectedCharacter = ActiveCharacter.HasValue && ActiveCharacter.Value.controller.CharacterNames.CurrentName == oldName;
+			Character character = GetCharacter(oldName);
+			character.controller.CharacterNames.CurrentName = newName;
 		}
 		public bool DisableCharacter(string name)
 		{
-			if (m_charactersInScene.TryGetValue(name, out var character))
+			for (int i = 0; i < m_charactersInScene.Count; i++)
 			{
-				character.characterObject.SetActive(false);
-				m_charactersInScene.Remove(name);
+				if (m_charactersInScene[i].controller.CharacterNames.CurrentName != name)
+					continue;
+				m_charactersInScene[i].characterObject.SetActive(false);
+				m_charactersInScene.RemoveAt(i);
 				return true;
 			}
 			return false;
@@ -238,9 +269,9 @@
 		/// </summary>
 		public void ClearAllCharacters()
 		{
-			string[] keys = m_charactersInScene.Keys.ToArray();
 			for (int i = 0; i < m_charactersInScene.Count; i++)
-				DisableCharacter(keys[i]);
+				m_charactersInScene[i].characterObject.SetActive(false);
+			m_charactersInScene.Clear();
 		}
 	}
 
@@ -256,9 +287,6 @@
 			this.controller = controller;
 			this.manager = manager;
 		}
-		public void ChangeCharacterName(string newName)
-		{
-			manager.RenameCharacter(controller.CharacterName, newName);
-		}
+		public void ChangeCharacterName(string newName) => controller.CharacterNames.CurrentName = newName;
 	}
 }

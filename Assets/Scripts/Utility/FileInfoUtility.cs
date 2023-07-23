@@ -7,45 +7,8 @@
 	using System.Linq;
 	using System.Collections.Generic;
 
-	/// <summary>
-	/// Manages <see cref="FileInfo"/> and <see cref="DirectoryInfo"/> as well.
-	/// </summary>
-	public static class FileInfoUtility
+	public static class DirectoryInfoUtility
 	{
-		/// <summary>
-		/// Gets the name without the extension.
-		/// </summary>
-		public static string NameWithoutExtension(this FileInfo fileInfo) 
-			=> fileInfo.Name.Remove(fileInfo.Name.LastIndexOf(fileInfo.Extension));
-		
-		/// <summary>
-		/// Gets the file based on name and extension from <paramref name="fileName"/>.
-		/// </summary>
-		/// <param name="directoryInfo"> The directory of the file. </param>
-		/// <param name="fileName"> 
-		/// The file name, expected to have the name itself, and the extension. 
-		/// </param>
-		/// <returns> The file info directed to the <paramref name="fileName"/>. </returns>
-		public static FileInfo GetFile(this DirectoryInfo directoryInfo, string fileName)
-		{
-			return new FileInfo(directoryInfo.FullName + $"\\{fileName}");
-		}
-
-		/// <summary>
-		/// Renames <see cref="FileInfo.Name"/> without considering the extension.
-		/// </summary>
-		public static void Rename(this FileInfo fileInfo, string newName)
-		{
-			string oldName = fileInfo.NameWithoutExtension();
-			if (oldName == newName)
-				return;
-			string newFullPath = fileInfo.FullName.Replace(oldName, newName);
-			fileInfo.GetType().GetMethod("Init", BindingFlags.NonPublic | BindingFlags.Instance)
-				.Invoke(fileInfo, new object[] { newFullPath, true });
-			fileInfo.Refresh();
-		}
-
-
 		/// <summary>
 		/// Creates a new file, increases number incrementally if there are any
 		/// files that are existant in the name.
@@ -68,16 +31,72 @@
 			return GetFile(source, fileName);
 		}
 
-		public static DirectoryInfo GetSubdirectory(this DirectoryInfo directoryInfo, string directoryName, bool createIfMissing = true)
+		/// <summary>
+		/// Gets the file based on name and extension from <paramref name="fileName"/>.
+		/// </summary>
+		/// <param name="directoryInfo"> The directory of the file. </param>
+		/// <param name="fileName"> 
+		/// The file name, expected to have the name itself, and the extension. 
+		/// </param>
+		/// <returns> The file info directed to the <paramref name="fileName"/>. </returns>
+		public static FileInfo GetFile(this DirectoryInfo directoryInfo, string fileName)
 		{
-			string fullName = $"{directoryInfo.FullName}/{directoryName}/";
-			if (createIfMissing)
-				if (!Directory.Exists(fullName))
-				{
-					Debug.Log($"'{fullName}' is missing, creating..");
-					Directory.CreateDirectory(fullName);
-				}
-			return new DirectoryInfo(fullName);
+			return new FileInfo(directoryInfo.FullName + $"\\{fileName}");
+		}
+
+
+
+		public static DirectoryInfo GetSubdirectory(this DirectoryInfo directoryInfo, string directoryName)
+		{
+			if (!directoryInfo.Exists)
+				throw new IOException($"Directory '{directoryInfo.FullName}' does not exist!");
+			var newPath = new DirectoryInfo($"{directoryInfo.FullName}\\{directoryName}");
+			if (!newPath.Exists)
+			{
+				newPath.Create();
+				newPath.Refresh();
+			}
+			return newPath;
+		}
+		public static DirectoryInfo GetPathing(this DirectoryInfo directoryInfo, params string[] subDirectories)
+		{
+			for (int i = 0; i < subDirectories.Length; i++)
+				directoryInfo = GetSubdirectory(directoryInfo, subDirectories[i]);
+			return directoryInfo;
+		}
+	}
+	/// <summary>
+	/// Manages <see cref="FileInfo"/> and <see cref="DirectoryInfo"/> as well.
+	/// </summary>
+	public static class FileInfoUtility
+	{
+		public static FileStream OpenStream(this FileInfo info, FileMode mode, FileAccess fileAccess)
+		{
+			if (Environment.OSVersion.Platform != PlatformID.Unix)
+				return info.Open(mode, fileAccess);
+			string path = info.FullName;
+			path = path.Replace('/', '\\');
+			return File.Open(path, mode, fileAccess);
+		}
+		/// <summary>
+		/// Gets the name without the extension.
+		/// </summary>
+		public static string NameWithoutExtension(this FileInfo fileInfo) 
+			=> fileInfo.Name.Remove(fileInfo.Name.LastIndexOf(fileInfo.Extension));
+		
+
+		/// <summary>
+		/// Renames <see cref="FileInfo.Name"/> without considering the extension.
+		/// </summary>
+		public static void Rename(this FileInfo fileInfo, string newName)
+		{
+			string oldName = fileInfo.NameWithoutExtension();
+			if (oldName == newName)
+				return;
+			string newFullPath = fileInfo.FullName.Replace(oldName, newName);
+			fileInfo.GetType().GetMethod("Init", BindingFlags.NonPublic | BindingFlags.Instance)
+				.Invoke(fileInfo, new object[] { newFullPath, true });
+			fileInfo.Refresh();
 		}
 	}
 }

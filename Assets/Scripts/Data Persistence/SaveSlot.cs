@@ -53,7 +53,7 @@
 		public const string KEY_PLAYER_NAME = "Player Name";
 		public const string KEY_ADDITIVE = "Additive";
 		public const int MAX_SAVES = 69;
-		public static DirectoryInfo SavesDirectory => PersistentData.GetOrCreateSubDirectory("Saves");
+		public static DirectoryInfo SavesDirectory => PersistentData.GetSubdirectory("Saves");
 		
 		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
 		new XmlSerializer<SaveSlot>(new XmlSerializerConfig()
@@ -242,9 +242,7 @@
 					ActorSnapshot currentSnapshot = characterSnapshots[i];
 					if (currentSnapshot.Load(out _))
 						if (currentSnapshot.selected)
-							if (!CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(currentSnapshot.name))
-								Debug.LogError($"Failed to load '{currentSnapshot.name}' as selected character!" +
-									$"\nDesignated gameobject name: {currentSnapshot.gameObjectName}");
+							CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(currentSnapshot.characterNames.CurrentName);
 				}
 			};
 			wrapper.AfterActions += (mono) =>

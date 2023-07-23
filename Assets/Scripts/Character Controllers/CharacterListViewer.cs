@@ -46,7 +46,7 @@ namespace B1NARY.Editor
 		{
 			Rect titleRect = rect;
 			titleRect.height = 20f;
-			var titleLabel = new Label($"<b>{characterController.CharacterName} ({characterController.GameObjectName})</b>") { tooltip = "This contains the character name or in-game name, and the GameObject name, the name that will be referenced by certain scripts (like saving & loading) and in the scene" };
+			var titleLabel = new Label($"<b>{characterController.CharacterNames.CurrentName} ({characterController.GameObjectName})</b>") { tooltip = "This contains the character name or in-game name, and the GameObject name, the name that will be referenced by certain scripts (like saving & loading) and in the scene" };
 			//titleLabel.style.backgroundColor = new Color(0.2165094f, 0, 0.254717f);
 			rootVisualElement.Add(titleLabel);
 		}

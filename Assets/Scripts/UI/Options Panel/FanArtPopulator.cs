@@ -24,8 +24,8 @@
 
 		public static List<FileInfo> GetAllImages(string subFolderName)
 		{
-			return RecursivelyGetFiles(SaveSlot.StreamingAssets.GetOrCreateSubDirectory("Fanart")
-				.GetOrCreateSubDirectory(subFolderName));
+			return RecursivelyGetFiles(SaveSlot.StreamingAssets.GetSubdirectory("Fanart")
+				.GetSubdirectory(subFolderName));
 		}
 		private static List<FileInfo> RecursivelyGetFiles(DirectoryInfo currentPath)
 		{

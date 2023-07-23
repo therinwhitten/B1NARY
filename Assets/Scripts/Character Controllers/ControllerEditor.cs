@@ -17,7 +17,7 @@ namespace B1NARY.CharacterManagement.Editor
 		public override void OnInspectorGUI()
 		{
 			if (DialogueSystem.HasInstance && CharacterManager.Instance.ActiveCharacter.HasValue)
-				EditorGUILayout.LabelField($"Is current speaker: {CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterName == characterController.CharacterName}");
+				EditorGUILayout.LabelField($"Is current speaker: {CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName == characterController.CharacterNames.CurrentName}");
 		}
 
 		public override bool RequiresConstantRepaint() => 

@@ -29,14 +29,14 @@
 			if (nullableCharacter == null)
 				throw new NullReferenceException($"Failure to load {snapshot.gameObjectName} from data.");
 			Character character = nullableCharacter.Value;
-			character.ChangeCharacterName(snapshot.name);
+			(character.controller as StandardActor).CharacterNames = snapshot.characterNames;
 			character.controller.ScreenPosition = snapshot.screenPosition;
 			character.controller.Deserialize(snapshot);
 			return character;
 		}
 
 
-		public string CharacterName { get; set; }
+		public CharacterNames CharacterNames { get; set; } = new CharacterNames();
 		string IActor.GameObjectName => gameObject.name;
 
 		public Animator animator;
@@ -142,8 +142,8 @@
 				VoiceActorHandler targetHandler = VoiceActorHandler.GetNewActor(voice[i]);
 				mouths.Add(i, targetHandler);
 			}
-			if (string.IsNullOrEmpty(CharacterName))
-				CharacterName = gameObject.name;
+			if (string.IsNullOrEmpty(CharacterNames.CurrentName))
+				CharacterNames.CurrentName = gameObject.name;
 
 			// Getting vertical and horizontal axis from a range to a point
 			Vector2 anchorMin = Transform.anchorMin;
@@ -168,7 +168,7 @@
 		void IActor.Deserialize(ActorSnapshot snapshot)
 		{
 			IActor thisInterface = this;
-			thisInterface.CharacterName = snapshot.name;
+			CharacterNames = snapshot.characterNames;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
 			thisInterface.ScreenPosition = snapshot.screenPosition;

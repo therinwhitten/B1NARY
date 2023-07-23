@@ -10,6 +10,7 @@
 	public class Languages : List<string>, IXmlSerializable
 	{
 		private static FileInfo LanguagesInfo => SaveSlot.StreamingAssets.GetFile("languages.xml");
+		public static string CurrentLanguage { get => PlayerConfig.Instance.language; set => PlayerConfig.Instance.language.Value = value; }
 		private static Languages m_instance;
 		public static Languages Instance
 		{

@@ -8,47 +8,70 @@
 
 	public sealed class PlayerNameReplacer : CachedMonobehaviour
 	{
-		public bool showOnlyPlayer = true;
-
 		public static string ReplaceText(in string text)
 		{
-			if (text == SaveSlot.DEFAULT_NAME) 
+			if (text == SaveSlot.DEFAULT_NAME)
 				return SaveSlot.ActiveSlot.PlayerName;
-			if (string.IsNullOrEmpty(text))
+			if (string.IsNullOrWhiteSpace(text))
 				return "Indescribable Horror";
 			return text;
 		}
-		public bool ShouldChangeName(Character? character)
+
+		public TMP_Text text;
+		public bool displayOnlyPlayerName = false;
+
+		private void Reset()
 		{
-			if (!character.HasValue)
-				return false;
-			if (!showOnlyPlayer)
-				return true;
-			if (CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterName == "MC")
-				return true;
-			return false;
+			text = GetComponent<TMP_Text>();
 		}
 		private void OnEnable()
 		{
-			TMP_Text text = GetComponent<TMP_Text>();
-			CharacterManager.Instance.ActiveCharacterChanged += (character) =>
-			{
-				if (ShouldChangeName(character))
-					text.text = ReplaceText(character.Value.controller.CharacterName);
-			};
-			SaveSlot.ActiveSlot.strings.UpdatedValue += UpdateName;
-			text.text = ReplaceText(text.text);
+			SaveSlot.ActiveSlot.strings.UpdatedValue += UpdateMCName;
+			CharacterManager.Instance.ActiveCharacterChanged += ActiveCharacterChanged;
+			PlayerConfig.Instance.language.ValueChanged += ChangedLanguage;
+			if (displayOnlyPlayerName)
+				ChangeText(SaveSlot.ActiveSlot.strings[SaveSlot.KEY_PLAYER_NAME]);
 		}
-		private void UpdateName(string key, string oldValue, string newValue, Collection<string> source)
+		private void OnDisable()
+		{
+			CharacterManager.Instance.ActiveCharacterChanged -= ActiveCharacterChanged;
+			SaveSlot.ActiveSlot.strings.UpdatedValue -= UpdateMCName;
+			PlayerConfig.Instance.language.ValueChanged -= ChangedLanguage;
+		}
+		public void ChangeText(string unfilteredName)
+		{
+			string name = ReplaceText(unfilteredName);
+			text.text = name;
+		}
+		private void ActiveCharacterChanged(Character? character)
+		{
+			if (!ShouldChangeName(character))
+				return;
+			ChangeText(character.Value.controller.CharacterNames.CurrentName);
+		}
+		private void ChangedLanguage(string newLanguage)
+		{
+			if (!ShouldChangeName(CharacterManager.Instance.ActiveCharacter))
+				return;
+			ChangeText(CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterNames[newLanguage]);
+		}
+		private void UpdateMCName(string key, string oldValue, string newValue, Collection<string> source)
 		{
 			if (key != SaveSlot.KEY_PLAYER_NAME)
 				return;
 			TMP_Text text = GetComponent<TMP_Text>();
 			text.text = ReplaceText(text.text);
 		}
-		private void OnDisable()
+
+		public bool ShouldChangeName(Character? character)
 		{
-			SaveSlot.ActiveSlot.strings.UpdatedValue -= UpdateName;
+			if (!character.HasValue)
+				return false;
+			if (!displayOnlyPlayerName)
+				return true;
+			if (CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName == SaveSlot.DEFAULT_NAME)
+				return true;
+			return false;
 		}
 	}
 }

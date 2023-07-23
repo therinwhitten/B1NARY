@@ -30,7 +30,7 @@
 			if (nullableCharacter == null)
 				throw new NullReferenceException($"Failure to load {snapshot.gameObjectName} from data.");
 			Character character = nullableCharacter.Value;
-			character.ChangeCharacterName(snapshot.name);
+			(character.controller as Live2DActor).CharacterNames = snapshot.characterNames;
 			character.controller.ScreenPosition = snapshot.screenPosition;
 			character.controller.Deserialize(snapshot);
 			return character;
@@ -109,7 +109,7 @@
 			}
 		}
 
-		public string CharacterName { get; set; }
+		public CharacterNames CharacterNames { get; set; } = new CharacterNames();
 		string IActor.GameObjectName => gameObject.name;
 
 		public Vector2 ScreenPosition
@@ -237,8 +237,8 @@
 				VoiceActorHandler targetHandler = gameObject.AddComponent<VoiceActorHandler>();
 				mouths.Add(0, targetHandler);
 			}
-			if (string.IsNullOrEmpty(CharacterName))
-				CharacterName = gameObject.name;
+			if (string.IsNullOrEmpty(CharacterNames.CurrentName))
+				CharacterNames.CurrentName = gameObject.name;
 
 			// Getting vertical and horizontal axis from a range to a point
 			Vector2 anchorMin = Transform.anchorMin;
@@ -265,7 +265,7 @@
 			if (Expressions.Length > 0)
 				if (!string.IsNullOrEmpty(snapshot.expression))
 					thisInterface.CurrentExpression = snapshot.expression;
-			thisInterface.CharacterName = snapshot.name;
+			CharacterNames = snapshot.characterNames;
 			thisInterface.Selected = snapshot.selected;
 			thisInterface.CurrentAnimation = snapshot.animation;
 			thisInterface.ScreenPosition = snapshot.screenPosition;

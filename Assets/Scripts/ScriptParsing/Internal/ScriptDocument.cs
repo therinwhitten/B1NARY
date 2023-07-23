@@ -19,7 +19,7 @@
 		/// The file location it was read off of. May be <see langword="null"/>.
 		/// </summary>
 		public virtual FileInfo ReadFile { get; set; }
-		private readonly ScriptDocumentConfig documentConfig;
+		public ScriptDocumentConfig DocumentConfig { get; }
 		public IReadOnlyList<ScriptElement> AllElements
 		{
 			get
@@ -47,7 +47,7 @@
 		}
 		public ScriptDocument(ScriptDocumentConfig config, string contents) : base(config, Init(contents))
 		{
-			documentConfig = config;
+			DocumentConfig = config;
 		}
 		private static List<ScriptLine> Init(string fileContents)
 		{
@@ -75,18 +75,18 @@
 			switch (line.Type)
 			{
 				case ScriptLine.LineType.Normal:
-					documentConfig.InvokeNormal(line);
+					DocumentConfig.InvokeNormal(line);
 					return false;
 				case ScriptLine.LineType.Command:
 					var (command, @params) = ScriptLine.CastCommand(line);
-					return !documentConfig.Commands.B1NARY_Invoke(command, @params);
+					return !DocumentConfig.Commands.B1NARY_Invoke(command, @params);
 				case ScriptLine.LineType.Attribute:
-					documentConfig.InvokeAttribute(ScriptLine.CastAttribute(line));
+					DocumentConfig.InvokeAttribute(ScriptLine.CastAttribute(line));
 					return true;
 				case ScriptLine.LineType.Empty:
 					return true;
 				case ScriptLine.LineType.Entry:
-					documentConfig.InvokeEntry(ScriptLine.CastEntry(line));
+					DocumentConfig.InvokeEntry(ScriptLine.CastEntry(line));
 					return true;
 				case ScriptLine.LineType.DocumentFlag:
 				case ScriptLine.LineType.EndIndent:
@@ -108,7 +108,7 @@
 					ScriptNode currentNode = enumerator.Current;
 					if (currentNode is null)
 						yield return null;
-					if (InvokeLine(currentNode.PrimaryLine) && !documentConfig.stopOnAllLines)
+					if (InvokeLine(currentNode.PrimaryLine) && !DocumentConfig.stopOnAllLines)
 						continue;
 					yield return currentNode;
 				}
