@@ -32,11 +32,29 @@
 		/// from the appdata; causing it to not display any directory location 
 		/// at all.
 		/// </remarks>
-		public static DirectoryInfo PersistentData => new DirectoryInfo(Application.persistentDataPath);
+		public static DirectoryInfo PersistentData
+		{
+			get
+			{
+				try { return m_persist = new DirectoryInfo(Application.persistentDataPath); }
+				catch { return m_persist; }
+			}
+		}
+		private static DirectoryInfo m_persist;
+
 		/// <summary>
 		/// Gets the streaming assets folder with a <see cref="DirectoryInfo"/>.
 		/// </summary>
-		public static DirectoryInfo StreamingAssets => new DirectoryInfo(Application.streamingAssetsPath);
+		public static DirectoryInfo StreamingAssets
+		{
+			get
+			{
+				try { return m_streaming = new DirectoryInfo(Application.streamingAssetsPath); }
+				catch { return m_streaming; }
+			}
+		}
+		private static DirectoryInfo m_streaming;
+
 		public enum QuicksaveType
 		{
 			/// <summary>
