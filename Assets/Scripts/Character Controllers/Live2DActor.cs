@@ -109,7 +109,7 @@
 			}
 		}
 
-		public CharacterNames CharacterNames { get; set; } = new CharacterNames();
+		public CharacterNames CharacterNames { get; set; }
 		string IActor.GameObjectName => gameObject.name;
 
 		public Vector2 ScreenPosition
@@ -223,6 +223,7 @@
 
 		protected virtual void Awake()
 		{
+			CharacterNames = new CharacterNames(this);
 			animator = GetComponent<Animator>();
 			CubismAudioMouthInput[] voice = GetComponents<CubismAudioMouthInput>();
 			for (int i = 0; i < voice.Length; i++)

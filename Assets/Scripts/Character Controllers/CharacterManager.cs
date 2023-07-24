@@ -31,8 +31,7 @@
 				// Switching names really, quirks n stuff
 				if (CharacterNames.ChangingNames)
 				{
-					Character summmoned = Instance.GetCharacter(gameObjectName);
-					summmoned.ChangeCharacterName(characterName);
+					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
 					return;
 				}
 				// Actual code
@@ -47,8 +46,7 @@
 				// Switching names really, quirks n stuff
 				if (CharacterNames.ChangingNames)
 				{
-					Character summmoned = Instance.GetCharacter(gameObjectName);
-					summmoned.ChangeCharacterName(characterName);
+					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
 					return;
 				}
 				// Actual code
@@ -72,10 +70,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-#warning TODO: Get the character's old name instead of getting the newer one
-					Character emptyChar = Instance.GetCharacter(characterName);
-					Debug.Log(PlayerConfig.Instance.language.Value);
-					emptyChar.ChangeCharacterName(characterName);
+					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
 					return;
 				}
 				Character actor = EmptyActor.AddTo(Instance);
@@ -85,9 +80,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					Character emptyChar = Instance.GetCharacter(characterName);
-					Debug.Log(PlayerConfig.Instance.language.Value);
-					emptyChar.ChangeCharacterName(characterName);
+					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
 					return;
 				}
 				Character emptyCharacter = EmptyActor.AddTo(Instance);
@@ -130,10 +123,20 @@
 			}),
 			["changename"] = (Action<string, string>)((oldName, newName) =>
 			{
+				if (CharacterNames.ChangingNames)
+				{
+					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = newName;
+					return;
+				}
 				Instance.RenameCharacter(oldName, newName);
 			}),
 			["changename"] = (Action<string>)((newName) =>
 			{
+				if (CharacterNames.ChangingNames)
+				{
+					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = newName;
+					return;
+				}
 				Instance.RenameCharacter(Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName, newName);
 			}),
 		};

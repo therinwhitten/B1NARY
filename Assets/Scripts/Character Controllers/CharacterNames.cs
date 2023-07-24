@@ -1,5 +1,6 @@
 ﻿namespace B1NARY
 {
+	using B1NARY.CharacterManagement;
 	using B1NARY.Scripting;
 	using B1NARY.UI.Globalization;
 	using OVSXmlSerializer;
@@ -12,11 +13,14 @@
 #warning TODO: With it using lazy classes, it may be helpful in the future to simply convert them to normal variables in .NET 5, around there.
 	public class CharacterNames : IXmlSerializable
 	{
-		public static bool ChangingNames { get; private set; } = false;
+		public static IActor ChangingNameOf { get; private set; } = null;
+		public static bool ChangingNames => ChangingNameOf != null;
 
 		private Dictionary<string, Lazy<string>> _characterNames;
-		public CharacterNames()
+		public IActor TargetActor { get; }
+		public CharacterNames(IActor actor)
 		{
+			TargetActor = actor;
 			_characterNames = new Dictionary<string, Lazy<string>>();
 			for (int i = 0; i < Languages.Instance.Count; i++)
 				_characterNames.Add(Languages.Instance[i], new Lazy<string>(() => ""));
@@ -33,11 +37,11 @@
 					return;
 				for (int i = 0; i < Languages.Instance.Count; i++)
 				{
-					string currentLanguage = Languages.Instance[i];
-					if (currentLanguage == language)
+					string targetLanguage = Languages.Instance[i];
+					if (targetLanguage == language)
 						continue;
 					int index = ScriptHandler.Instance.documentWatcher.CurrentNode.GlobalIndex;
-					_characterNames[currentLanguage] = new Lazy<string>(() => GetAlternateName(language, index));
+					_characterNames[targetLanguage] = new Lazy<string>(() => GetAlternateName(targetLanguage, index));
 				}
 			}
 		}
@@ -50,22 +54,22 @@
 
 		private string GetAlternateName(string targetLanguage, int documentIndex)
 		{
-			if (Languages.CurrentLanguage == targetLanguage)
-				return _characterNames[targetLanguage].Value;
-			ChangingNames = true;
+			ChangingNameOf = TargetActor;
 			Document newDocument = new Document(ScriptHandler.Instance.document.ReadFile);
 			newDocument = newDocument.GetWithLanguage(targetLanguage);
 			FileInfo info = newDocument.FullPath;
 			if (!info.Exists)
+			{
+				Debug.Log($"{info.FullName} doesn't exist, using core path instead");
 				info = newDocument.GetWithoutLanguage().FullPath;
+			}
+
 			ScriptHandler.config.stopOnAllLines = true;
 			var document = new ScriptDocument(ScriptHandler.config, info);
 			IDocumentWatcher watcher = document.StartAtLine(documentIndex);
-			watcher.NextNode(out var line); // changes line here
-			Debug.Log(line);
-			ChangingNames = false;
+			watcher.NextNode(out _); // changes line here
 			ScriptHandler.config.stopOnAllLines = false;
-			Debug.Log(_characterNames[targetLanguage].Value);
+			ChangingNameOf = null;
 			return _characterNames[targetLanguage].Value;
 		}
 
