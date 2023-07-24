@@ -2,7 +2,6 @@
 {
 	using B1NARY.Scripting;
 	using B1NARY.UI.Globalization;
-	using Codice.CM.Common;
 	using OVSXmlSerializer;
 	using System;
 	using System.Collections.Generic;
