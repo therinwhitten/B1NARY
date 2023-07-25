@@ -1,6 +1,5 @@
 ﻿namespace B1NARY.UI.Colors
 {
-	using Codice.Client.BaseCommands.Fileinfo;
 	using OVSXmlSerializer;
 	using System.Collections.Generic;
 	using System.IO;
