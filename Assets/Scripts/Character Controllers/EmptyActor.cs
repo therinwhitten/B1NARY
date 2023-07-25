@@ -19,7 +19,7 @@
 	{
 		public const string CHARACTER_KEY = "Empty";
 		string IActor.CharacterTypeKey => CHARACTER_KEY;
-		private static readonly LinkedList<EmptyActor> allActors = new LinkedList<EmptyActor>();
+		private static readonly LinkedList<EmptyActor> allActors = new();
 
 		[RuntimeInitializeOnLoadMethod]
 		private static void Constructor()
@@ -51,7 +51,6 @@
 
 		private void Awake()
 		{
-			CharacterNames = new CharacterNames(this);
 			allActors.AddLast(this);
 			voices.Add(gameObject.AddComponent<VoiceActorHandler>());
 			if (string.IsNullOrEmpty(CharacterNames.CurrentName))
@@ -61,7 +60,7 @@
 		{
 			allActors.Remove(this);
 		}
-		public CharacterNames CharacterNames { get; private set; }
+		public CharacterNames CharacterNames { get; private set; } = new CharacterNames();
 		string IActor.GameObjectName => gameObject.name;
 		public void SayLine(ScriptLine line)
 		{
@@ -70,7 +69,7 @@
 			(this as IVoice).PlayClip(voiceLine);
 		}
 
-		Vector2 IActor.ScreenPosition { get => new Vector2(0.5f, 0.5f); set { } }
+		Vector2 IActor.ScreenPosition { get => new(0.5f, 0.5f); set { } }
 		void IActor.SetPositionOverTime(float xCoord, float time)
 		{
 			

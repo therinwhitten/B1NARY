@@ -36,7 +36,7 @@
 		}
 
 
-		public CharacterNames CharacterNames { get; set; }
+		public CharacterNames CharacterNames { get; set; } = new CharacterNames();
 		string IActor.GameObjectName => gameObject.name;
 
 		public Animator animator;
@@ -135,7 +135,6 @@
 
 		protected virtual void Awake()
 		{
-			CharacterNames = new CharacterNames(this);
 			animator = GetComponent<Animator>();
 			AudioSource[] voice = GetComponents<AudioSource>();
 			for (int i = 0; i < voice.Length; i++)

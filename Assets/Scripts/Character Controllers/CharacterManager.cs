@@ -24,14 +24,14 @@
 		/// <summary>
 		/// Commands for <see cref="ScriptHandler"/>.
 		/// </summary>
-		public static readonly CommandArray Commands = new CommandArray()
+		public static readonly CommandArray Commands = new()
 		{
 			["spawnchar"] = (Action<string, string, string>)((gameObjectName, positionRaw, characterName) =>
 			{
 				// Switching names really, quirks n stuff
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.CurrentName = characterName;
 					return;
 				}
 				// Actual code
@@ -46,7 +46,7 @@
 				// Switching names really, quirks n stuff
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.CurrentName = characterName;
 					return;
 				}
 				// Actual code
@@ -70,7 +70,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.CurrentName = characterName;
 					return;
 				}
 				Character actor = EmptyActor.AddTo(Instance);
@@ -80,7 +80,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.CurrentName = characterName;
 					return;
 				}
 				Character emptyCharacter = EmptyActor.AddTo(Instance);
@@ -125,7 +125,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = newName;
+					CharacterNames.ChangingNameOf.CurrentName = newName;
 					return;
 				}
 				Instance.RenameCharacter(oldName, newName);
@@ -134,7 +134,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = newName;
+					CharacterNames.ChangingNameOf.CurrentName = newName;
 					return;
 				}
 				Instance.RenameCharacter(Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName, newName);
@@ -178,7 +178,7 @@
 					return CharactersInScene[i];
 			throw new MissingMemberException($"'{name}' is not a character present in the current game!");
 		}
-		private readonly List<Character> m_charactersInScene = new List<Character>(); 
+		private readonly List<Character> m_charactersInScene = new(); 
 
 		public void ChangeActiveCharacterViaCharacterName(string name)
 		{

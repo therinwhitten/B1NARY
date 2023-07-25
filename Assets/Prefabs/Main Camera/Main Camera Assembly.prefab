@@ -26,15 +26,16 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2852575530868386776}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.83294, y: -1.2841644, z: 5779.648}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2852575530132990601}
   - {fileID: 2852575530281196415}
   - {fileID: 2852575529376862554}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2852575530868386779
 Camera:
@@ -50,9 +51,17 @@ Camera:
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
   m_SensorSize: {x: 36, y: 24}
   m_LensShift: {x: 0, y: 0}
-  m_FocalLength: 50
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -106,25 +115,39 @@ MonoBehaviour:
   m_Cameras:
   - {fileID: 2852575530281196409}
   - {fileID: 2852575530132990612}
-  m_RendererIndex: -1
+  m_RendererIndex: 0
   m_VolumeLayerMask:
     serializedVersion: 2
     m_Bits: 4887
   m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
   m_Antialiasing: 2
   m_AntialiasingQuality: 2
   m_StopNaN: 0
   m_Dithering: 1
   m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1001 &4356276885230071643
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2852575530868386596}
     m_Modifications:
     - target: {fileID: 2009442074312113665, guid: 8765e43b605cdb047a6ba6dac1036e13,
@@ -188,6 +211,9 @@ PrefabInstance:
       value: Blur UI Camera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8765e43b605cdb047a6ba6dac1036e13, type: 3}
 --- !u!4 &2852575529376862554 stripped
 Transform:
@@ -200,6 +226,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2852575530868386596}
     m_Modifications:
     - target: {fileID: 4749032694507437394, guid: 9b8f39c21366fe84d82dbc3d5678b8e4,
@@ -263,16 +290,19 @@ PrefabInstance:
       value: Live 2D Camera
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9b8f39c21366fe84d82dbc3d5678b8e4, type: 3}
---- !u!4 &2852575530281196415 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4749032694507437394, guid: 9b8f39c21366fe84d82dbc3d5678b8e4,
-    type: 3}
-  m_PrefabInstance: {fileID: 7381846492563449389}
-  m_PrefabAsset: {fileID: 0}
 --- !u!20 &2852575530281196409 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 4749032694507437396, guid: 9b8f39c21366fe84d82dbc3d5678b8e4,
+    type: 3}
+  m_PrefabInstance: {fileID: 7381846492563449389}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2852575530281196415 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4749032694507437394, guid: 9b8f39c21366fe84d82dbc3d5678b8e4,
     type: 3}
   m_PrefabInstance: {fileID: 7381846492563449389}
   m_PrefabAsset: {fileID: 0}
@@ -281,6 +311,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 2852575530868386596}
     m_Modifications:
     - target: {fileID: 6736967544796611540, guid: 70437f153e274554d8f4e12107275884,
@@ -344,6 +375,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70437f153e274554d8f4e12107275884, type: 3}
 --- !u!4 &2852575530132990601 stripped
 Transform:

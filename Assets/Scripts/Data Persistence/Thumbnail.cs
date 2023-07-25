@@ -12,6 +12,8 @@
 	using SixLabors.ImageSharp.Processing;
 	using System.Diagnostics;
 	using SixLabors.ImageSharp.Formats.Jpeg;
+	using Image = SixLabors.ImageSharp.Image;
+	using Size = SixLabors.ImageSharp.Size;
 
 	/// <summary>
 	/// A serializable image, typically for <see cref="SerializableSlot"/> to
@@ -94,23 +96,19 @@
 		}
 		public Thumbnail(Vector2Int thumbnailMaxSize, byte[] imageData)
 		{
-			using (Image image = Image.Load(imageData))
+			using Image image = Image.Load(imageData);
+			var options = new ResizeOptions()
 			{
-				var options = new ResizeOptions()
-				{
-					Size = new Size(thumbnailMaxSize.x, thumbnailMaxSize.y),
-					Mode = ResizeMode.Max,
-					Compand = true,
-					Sampler = KnownResamplers.Box,
-				};
-				image.Mutate(x => x.Resize(options));
-				using (var stream = new MemoryStream())
-				{
-					image.SaveAsJpeg(stream, new JpegEncoder() { Quality = 10 });
-					stream.Position = 0;
-					data = stream.ToArray();
-				}
-			}
+				Size = new Size(thumbnailMaxSize.x, thumbnailMaxSize.y),
+				Mode = ResizeMode.Max,
+				Compand = true,
+				Sampler = KnownResamplers.Box,
+			};
+			image.Mutate(x => x.Resize(options));
+			using var stream = new MemoryStream();
+			image.SaveAsJpeg(stream, new JpegEncoder() { Quality = 10 });
+			stream.Position = 0;
+			data = stream.ToArray();
 		}
 	}
 }

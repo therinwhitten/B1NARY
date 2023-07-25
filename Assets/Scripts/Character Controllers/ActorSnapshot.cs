@@ -9,7 +9,7 @@
 	[Serializable]
 	public struct ActorSnapshot
 	{
-		public static Dictionary<string, Func<ActorSnapshot, Character>> snapshot = new Dictionary<string, Func<ActorSnapshot, Character>>();
+		public static Dictionary<string, Func<ActorSnapshot, Character>> snapshot = new();
 		public static ActorSnapshot[] GetCurrentSnapshots()
 		{
 			ActorSnapshot[] characterSnapshots = new ActorSnapshot[CharacterManager.Instance.CharactersInScene.Count];
