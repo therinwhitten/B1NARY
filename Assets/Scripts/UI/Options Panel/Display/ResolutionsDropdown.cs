@@ -12,7 +12,7 @@
 			{
 				return Screen.resolutions
 					.OrderByDescending(resolution => (resolution.width * 100) + resolution.height)
-					.Select(resolution => new KeyValuePair<string, Resolution>(resolution.ToString(), resolution))
+					.Select(resolution => new KeyValuePair<string, Resolution>($"{resolution.width}p x {resolution.height}p", resolution))
 					.ToList();
 			}
 		}
