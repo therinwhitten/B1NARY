@@ -12,8 +12,8 @@
 	{
 		public TMP_Text text;
 
-		public List<string> languageKeys = new List<string>();
-		public List<string> languageValues = new List<string>();
+		public List<string> languageKeys = new();
+		public List<string> languageValues = new();
 
 		public string this[string language]
 		{
@@ -68,7 +68,7 @@
 			var existingLanguage = new Dictionary<string, string>(languageKeys.Count);
 			for (int i = 0; i < languageKeys.Count; i++)
 				existingLanguage.Add(languageKeys[i], languageValues[i]);
-			HashSet<string> preExistingLanguage = new HashSet<string>(Languages.Instance);
+			HashSet<string> preExistingLanguage = new(Languages.Instance);
 
 			// Adding newly added languages
 			for (int i = 0; i < Languages.Instance.Count; i++)

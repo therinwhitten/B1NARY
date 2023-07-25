@@ -17,7 +17,7 @@
 			SceneManagerSex.activeSceneChanged -= UpdateOnScene;
 		}
 		private void UpdateOnScene(Scene old, Scene @new) => _ = Blocking;
-		private readonly LinkedList<Object> Sources = new LinkedList<Object>();
+		private readonly LinkedList<Object> Sources = new();
 
 
 		public bool Blocking

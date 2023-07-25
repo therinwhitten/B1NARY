@@ -61,8 +61,8 @@
 		{
 			if (isDefault)
 			{
-				using (var stream = DefaultThemePath.Open(FileMode.Create, FileAccess.Write))
-					FormatSerializer.Serialize(stream, this, ROOT_NAME_DEFAULT);
+				using var stream = DefaultThemePath.Open(FileMode.Create, FileAccess.Write);
+				FormatSerializer.Serialize(stream, this, ROOT_NAME_DEFAULT);
 				return;
 			}
 			using (var stream = CustomThemePath.GetFile(fileName).OpenStream(FileMode.Create, FileAccess.Write))

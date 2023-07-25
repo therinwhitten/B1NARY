@@ -25,7 +25,7 @@ namespace B1NARY.Audio.Editor
 		private readonly static string[] BehaviourNames = Enum.GetNames(typeof(Behaviour))
 			.Select(@string => @string.Replace('_', ' ')).ToArray();
 
-		private static readonly HashSet<string> availibleAudioExtensions = new HashSet<string>()
+		private static readonly HashSet<string> availibleAudioExtensions = new()
 		{
 			".wav",
 			".mp3"

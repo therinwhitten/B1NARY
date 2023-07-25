@@ -35,12 +35,12 @@
 
 			// Getting Creator Name and File
 			string[] splitFileName = name.Split(' ');
-			HashSet<string> credit = new HashSet<string>() { "by", "By", "credit", "Credit" };
+			HashSet<string> credit = new() { "by", "By", "credit", "Credit" };
 
 			string outName;
 			string creator = null;
 
-			StringBuilder nameBuilder = new StringBuilder();
+			StringBuilder nameBuilder = new();
 
 			for (int i = splitFileName.Length - 1; i >= 0; i--)
 			{

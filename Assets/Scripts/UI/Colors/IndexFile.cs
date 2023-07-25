@@ -8,7 +8,7 @@
 	public class IndexFile : IXmlSerializable
 	{
 		public static FileInfo IndexPath => ColorFormat.RootPath.GetFile("PlayerThemeIndex.xml");
-		private static XmlSerializer<IndexFile> indexerFormatter = new XmlSerializer<IndexFile>();
+		private static XmlSerializer<IndexFile> indexerFormatter = new();
 		public static IndexFile LoadNew()
 		{
 			if (IndexPath.Exists)
@@ -16,7 +16,7 @@
 			else
 				return new IndexFile();
 		}
-		public List<string> files = new List<string>();
+		public List<string> files = new();
 
 		bool IXmlSerializable.ShouldWrite => true;
 		void IXmlSerializable.Read(XmlNode value)
@@ -36,8 +36,8 @@
 		}
 		public void Save()
 		{
-			using (var stream = IndexPath.Open(FileMode.Create, FileAccess.Write))
-				indexerFormatter.Serialize(stream, this);
+			using var stream = IndexPath.Open(FileMode.Create, FileAccess.Write);
+			indexerFormatter.Serialize(stream, this);
 		}
 	}
 }

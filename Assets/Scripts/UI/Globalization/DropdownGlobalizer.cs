@@ -16,9 +16,9 @@
 		// - array, using the split char to separate them to fit the unity's 
 		// - specific way to prevent it to whine like a little baby.
 		[SerializeField]
-		public List<string> languageKeys = new List<string>();
+		public List<string> languageKeys = new();
 		[SerializeField]
-		public List<string> languageValues = new List<string>();
+		public List<string> languageValues = new();
 
 		public string[] this[string language]
 		{
@@ -108,10 +108,10 @@
 
 		internal void UpdateLanguageList()
 		{
-			Dictionary<string, string> existingLanguage = new Dictionary<string, string>();
+			Dictionary<string, string> existingLanguage = new();
 			for (int i = 0; i < languageKeys.Count; i++)
 				existingLanguage.Add(languageKeys[i], languageValues[i]);
-			HashSet<string> preExistingLanguage = new HashSet<string>(Languages.Instance);
+			HashSet<string> preExistingLanguage = new(Languages.Instance);
 
 			// Adding newly added languages
 			for (int i = 0; i < Languages.Instance.Count; i++)

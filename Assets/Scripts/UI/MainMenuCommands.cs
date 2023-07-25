@@ -19,7 +19,7 @@
 		}
 		public void QuitToMainMenu()
 		{
-			CoroutineWrapper wrapper = new CoroutineWrapper(SceneManager.InstanceOrDefault, SceneManager.InstanceOrDefault.ReturnToMainMenu());
+			CoroutineWrapper wrapper = new(SceneManager.InstanceOrDefault, SceneManager.InstanceOrDefault.ReturnToMainMenu());
 			wrapper.AfterActions += (mono) =>
 			{
 				if (!ScriptHandler.TryGetInstance(out var handler))

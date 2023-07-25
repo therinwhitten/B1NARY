@@ -30,8 +30,7 @@
 		{
 			get
 			{
-				if (m_cachedComponents is null)
-					m_cachedComponents = new Dictionary<string, Component>();
+				m_cachedComponents ??= new Dictionary<string, Component>();
 				return m_cachedComponents;
 			}
 		}

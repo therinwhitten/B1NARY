@@ -26,14 +26,14 @@
 		public List<Document> CoreDocuments { get; }
 		public Dictionary<string, List<Document>> LanguagedDocuments { get; }
 
-		private readonly StringBuilder concerns = new StringBuilder();
+		private readonly StringBuilder concerns = new();
 
 		public DocumentExplorer()
 		{
 			CoreDocuments = new List<Document>();
 			LanguagedDocuments = new Dictionary<string, List<Document>>();
 
-			List<Document> allDocuments = new List<Document>();
+			List<Document> allDocuments = new();
 			RecursivelyGetFiles(ref allDocuments, DocumentFolder);
 			for (int i = 0; i < allDocuments.Count; i++)
 			{
@@ -56,8 +56,8 @@
 				concerns.AppendLine($"Although the selected language is '{defaultLanguage}', it couldn't find the folder containing it!");
 				return;
 			}
-			List<Document> comparingTo = new List<Document>(sex);
-			List<Document> newDocuments = new List<Document>(CoreDocuments.Count);
+			List<Document> comparingTo = new(sex);
+			List<Document> newDocuments = new(CoreDocuments.Count);
 			for (int i = 0; i < CoreDocuments.Count; i++)
 			{
 				Document newDoc = CoreDocuments[i].GetWithoutLanguage();
@@ -94,9 +94,9 @@
 			IEnumerable<DirectoryInfo> directories = currentPath.EnumerateDirectories();
 			if (!directories.Any())
 				return;
-			using (IEnumerator<DirectoryInfo> enumerator = directories.GetEnumerator())
-				while (enumerator.MoveNext())
-					RecursivelyGetFiles(ref documents, enumerator.Current);
+			using IEnumerator<DirectoryInfo> enumerator = directories.GetEnumerator();
+			while (enumerator.MoveNext())
+				RecursivelyGetFiles(ref documents, enumerator.Current);
 		}
 
 
@@ -110,7 +110,7 @@
 
 		public Document GetFromVisual(in string visualPath)
 		{
-			Document comparingTo = new Document(visualPath);
+			Document comparingTo = new(visualPath);
 			string currentLanguage = PlayerConfig.Instance.language.Value;
 			// First try to get the language version
 			Document target = comparingTo.GetWithLanguage(currentLanguage);

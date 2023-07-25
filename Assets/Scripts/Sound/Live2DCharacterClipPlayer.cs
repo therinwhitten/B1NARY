@@ -12,23 +12,25 @@
 
 	public class Live2DCharacterClipPlayer : StateMachineBehaviour
 	{
+		public record LoopablePlayer(IEnumerator<bool> Span, Live2DCharacterClipPlayer Player);
+
 		private static int lastFrame = -1;
 		private static CoroutineWrapper trueLoop;
-		private static readonly List<(IEnumerator<bool> span, Live2DCharacterClipPlayer player)> playerStates = new List<(IEnumerator<bool> span, Live2DCharacterClipPlayer player)>();
-		private static Queue<CubismAudioMouthInput> extraSources = new Queue<CubismAudioMouthInput>();
+		private static readonly List<LoopablePlayer> playerStates = new();
+		private static Queue<CubismAudioMouthInput> extraSources = new();
 		private static IEnumerator TrueRandom()
 		{
 			while (true)
 			{
 				for (int i = 0; i < playerStates.Count; i++)
 				{
-					playerStates[i].span.MoveNext();
-					bool giveNew = playerStates[i].span.Current;
+					playerStates[i].Span.MoveNext();
+					bool giveNew = playerStates[i].Span.Current;
 					if (giveNew)
 					{
-						IEnumerator<bool> enumerator = playerStates[i].player.PlayNewRandomClip();
+						IEnumerator<bool> enumerator = playerStates[i].Player.PlayNewRandomClip();
 						enumerator.MoveNext();
-						playerStates[i] = (enumerator, playerStates[i].player);
+						playerStates[i] = new(enumerator, playerStates[i].Player);
 					}
 				}
 				yield return new WaitForEndOfFrame();
@@ -71,16 +73,16 @@
 				lastFrame = Time.frameCount;
 				for (int i = 0; i < playerStates.Count; i++)
 				{
-					playerStates[i].player.TargetMouth.AudioInput.Stop();
-					extraSources.Enqueue(playerStates[i].player.TargetMouth);
-					playerStates[i].player.TargetMouth = null;
+					playerStates[i].Player.TargetMouth.AudioInput.Stop();
+					extraSources.Enqueue(playerStates[i].Player.TargetMouth);
+					playerStates[i].Player.TargetMouth = null;
 				}
 				playerStates.Clear();
 				trueLoop?.Stop();
 			}
 			IEnumerator<bool> clipPlayer = PlayNewRandomClip();
 			clipPlayer.MoveNext(); // start play
-			playerStates.Add((clipPlayer, this));
+			playerStates.Add(new(clipPlayer, this));
 			// This will cause all sounds to act if it is truly randomized if enabled,
 			// - but i dont think anyone sensible enough will actually do that.
 			if (CoroutineWrapper.IsNotRunningOrNull(trueLoop))
@@ -124,10 +126,10 @@ namespace B1NARY.Audio.Editor
 		{
 			Live2DCharacterClipPlayer clipPlayer = (Live2DCharacterClipPlayer)target;
 			DirtyAuto.Property(serializedObject, nameof(Live2DCharacterClipPlayer.playableClips));
-			clipPlayer.loop = DirtyAuto.Toggle(clipPlayer, new GUIContent("Loop"), clipPlayer.loop);
+			clipPlayer.loop = DirtyAuto.Toggle(clipPlayer, new("Loop"), clipPlayer.loop);
 			//clipPlayer.trueRandom = DirtyAuto.Toggle(clipPlayer, new GUIContent("True Randomization", "Instead of picking a random option at the start and continue moving forward, this will instead will try to select a new random item every time it is finished"), clipPlayer.trueRandom);
-			clipPlayer.randomType = DirtyAuto.Popup(clipPlayer, new GUIContent("Random Type", "Niche controlling option. Allows you to assign which randomization tool you want to apply when using multiple clips"), clipPlayer.randomType);
-			clipPlayer.TargetSpeaker = DirtyAuto.Field(clipPlayer, new GUIContent("Target Speaker (Multiple Mouths)", "An index or tag system to allow multiple mouths to play for a single character. If you have a single mouth, leave this blank."), clipPlayer.TargetSpeaker);
+			clipPlayer.randomType = DirtyAuto.Popup(clipPlayer, new("Random Type", "Niche controlling option. Allows you to assign which randomization tool you want to apply when using multiple clips"), clipPlayer.randomType);
+			clipPlayer.TargetSpeaker = DirtyAuto.Field(clipPlayer, new("Target Speaker (Multiple Mouths)", "An index or tag system to allow multiple mouths to play for a single character. If you have a single mouth, leave this blank."), clipPlayer.TargetSpeaker);
 		}
 	}
 }

@@ -8,7 +8,7 @@
 
 	public sealed class AbsoluteTextSpeedDropdown : DropdownPanel<int>
 	{
-		public override List<KeyValuePair<string, int>> DefinedPairs => new List<KeyValuePair<string, int>>
+		public override List<KeyValuePair<string, int>> DefinedPairs => new()
 		{
 			new KeyValuePair<string, int>("Slow", 45),
 			new KeyValuePair<string, int>("Normal", 30),

@@ -37,7 +37,7 @@ namespace B1NARY.Editor.Debugger
 		};
 
 
-		public override GUIContent Name => new GUIContent("Scripts");
+		public override GUIContent Name => new("Scripts");
 		public override bool ConstantlyRepaint => false;
 		public override void DisplayTab()
 		{
@@ -85,22 +85,13 @@ namespace B1NARY.Editor.Debugger
 				ScriptLine onLine =  scriptHandler.document.Lines[i].PrimaryLine;
 				if (onLine.Index == i)
 					GUI.color = assignedColors[1];
-				else switch (onLine.Type)
-					{
-						default:
-						case ScriptLine.LineType.Normal:
-							GUI.color = assignedColors[0];
-							break;
-						case ScriptLine.LineType.Entry:
-							GUI.color = assignedColors[2];
-							break;
-						case ScriptLine.LineType.Command:
-							GUI.color = assignedColors[3];
-							break;
-						case ScriptLine.LineType.Attribute:
-							GUI.color = assignedColors[4];
-							break;
-					}
+				else GUI.color = onLine.Type switch
+				{
+					ScriptLine.LineType.Entry => assignedColors[2],
+					ScriptLine.LineType.Command => assignedColors[3],
+					ScriptLine.LineType.Attribute => assignedColors[4],
+					_ => assignedColors[0],
+				};
 				GUI.Label(rect, $"{(onLine.Index == i && EditorPrefs.GetBool("Script B1NARY Pointer", true) ? ">" : (i + 1).ToString())}\t{onLine.RawLine}");
 			}
 			GUILayout.EndScrollView();
@@ -108,7 +99,7 @@ namespace B1NARY.Editor.Debugger
 
 
 		public override int Order => 5;
-		public override DebuggerPreferences DebuggerPreferences => new DebuggerPreferences()
+		public override DebuggerPreferences DebuggerPreferences => new()
 		{
 			[DebuggerPreferences.DataType.Bool] = new List<(string name, object @default)>()
 			{

@@ -24,7 +24,7 @@ namespace B1NARY.Editor.Debugger
 		}
 		public const string slotsLengthKey = "B1NARY Slots Debugger";
 
-		private static readonly Vector2Int defaultMinSize = new Vector2Int(300, 350);
+		private static readonly Vector2Int defaultMinSize = new(300, 350);
 
 
 		[MenuItem("B1NARY/Debugger", priority = 1)]

@@ -9,7 +9,7 @@
 	using UnityEngine.Audio;
 	using System.IO;
 
-	public class VoiceActorHandler : Multiton<VoiceActorHandler>, IAudioInfo
+	public class VoiceActorHandler : MonoBehaviour, IAudioInfo
 	{
 		public static CommandArray Commands = new()
 		{

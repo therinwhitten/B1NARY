@@ -17,7 +17,7 @@
 
 	public class TransitionManager : Singleton<TransitionManager>
 	{
-		public static readonly CommandArray Commands = new CommandArray()
+		public static readonly CommandArray Commands = new()
 		{
 			["changebg"] = (Action<string>)(backgroundName =>
 			{
@@ -89,7 +89,7 @@
 				queueWait -= Time.deltaTime;
 				return;
 			}
-			while (queuedActions.Count > 0 && !(queuedActions.Peek() is VideoClip))
+			while (queuedActions.Count > 0 && queuedActions.Peek() is not VideoClip)
 			{
 				object current = queuedActions.Dequeue();
 				if (current is Action action)
@@ -133,7 +133,7 @@
 			queuedActions.Clear();
 			queueWait = 0f;
 		}
-		private Queue<object> queuedActions = new Queue<object>();
+		private Queue<object> queuedActions = new();
 		public void AddQueueBackground(string resourcesPath)
 		{
 			var clip = Resources.Load<VideoClip>(resourcesPath);

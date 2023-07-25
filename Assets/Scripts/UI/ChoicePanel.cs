@@ -91,17 +91,17 @@
 				for (int i = 0; i < choiceButtons.Count; i++)
 					choiceButtons[i].gameObject.SetActive(false);
 			};
-			using (IEnumerator<ScriptLine> enumerator = choices.GetEnumerator())
-				for (int i = 0; enumerator.MoveNext(); i++)
-				{
-					GameObject obj = Instantiate(choiceButtonPrefab, transform);
-					choiceButtons.Add(obj.GetComponent<ChoiceButton>());
-					obj.SetActive(true);
-					choiceButtons[i].Text = enumerator.Current.RawLine;
-					choiceButtons[i].tiedPanel = this;
-					choiceButtons[i].VoiceActor = CharacterManager.Instance.ActiveCharacter.Value.controller.Mouths[0];
-					choiceButtons[i].currentLine = enumerator.Current;
-				}
+			using IEnumerator<ScriptLine> enumerator = choices.GetEnumerator();
+			for (int i = 0; enumerator.MoveNext(); i++)
+			{
+				GameObject obj = Instantiate(choiceButtonPrefab, transform);
+				choiceButtons.Add(obj.GetComponent<ChoiceButton>());
+				obj.SetActive(true);
+				choiceButtons[i].Text = enumerator.Current.RawLine;
+				choiceButtons[i].tiedPanel = this;
+				choiceButtons[i].VoiceActor = CharacterManager.Instance.ActiveCharacter.Value.controller.Mouths[0];
+				choiceButtons[i].currentLine = enumerator.Current;
+			}
 		}
 		/// <summary>
 		/// What the button sends out when pressed. Make sure you to not use 

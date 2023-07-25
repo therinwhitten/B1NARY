@@ -37,7 +37,7 @@
 		/// When the object is first initialized, and doesn't have any data to
 		/// start with.
 		/// </summary>
-		public virtual List<KeyValuePair<string, TValue>> DefinedPairs => new List<KeyValuePair<string, TValue>>();
+		public virtual List<KeyValuePair<string, TValue>> DefinedPairs => new();
 		/// <summary>
 		/// The Currently stored values.
 		/// </summary>

@@ -26,7 +26,7 @@
 		/// </summary>
 		public static uint UnityRandomIterations { get; private set; } = 0;
 		private static int m_currentSeed;
-		private static CRandom randomCSharp = new CRandom(SetNewRandomSeed());
+		private static CRandom randomCSharp = new(SetNewRandomSeed());
 		public static int CurrentSeed { get => m_currentSeed; set => randomCSharp = new CRandom(value); }
 
 		/// <summary>
@@ -136,16 +136,13 @@
 			maxPercent *= maxValue;
 			maxValue -= maxPercent - minPercent;
 			float difference = maxPercent - maxValue;
-			switch (randomType)
+			return randomType switch
 			{
-				case RandomType.CSharp:
-					return (NextFloat(RandomType.CSharp) * difference) + maxValue;
-				case RandomType.Unity:
-					return (NextFloat(RandomType.Unity) * difference) + maxValue;
-				case RandomType.Doom:
-					return (NextFloat(RandomType.Doom) * difference) + maxValue;
-			}
-			return float.NaN;
+				RandomType.CSharp => (NextFloat(RandomType.CSharp) * difference) + maxValue,
+				RandomType.Unity => (NextFloat(RandomType.Unity) * difference) + maxValue,
+				RandomType.Doom => (NextFloat(RandomType.Doom) * difference) + maxValue,
+				_ => float.NaN,
+			};
 		}
 
 		/// <summary> 

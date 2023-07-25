@@ -64,9 +64,9 @@
 		}
 		internal IEnumerator<ScriptNode> ElseEnumerate()
 		{
-			using (var enumerator = base.EnumerateThrough(0))
-				while (enumerator.MoveNext())
-					yield return enumerator.Current;
+			using var enumerator = base.EnumerateThrough(0);
+			while (enumerator.MoveNext())
+				yield return enumerator.Current;
 		}
 	}
 }

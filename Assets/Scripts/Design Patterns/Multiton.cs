@@ -34,12 +34,12 @@
 			 });
 		}
 		/// <summary> The data and their assigned keys. </summary>
-		private static Dictionary<int, T> instances = new Dictionary<int, T>();
+		private static Dictionary<int, T> instances = new();
 		/// <summary>
 		/// The keys of <see cref="instances"/>. Can be used as a list using
 		/// <see cref="Enumerable.ElementAt{TSource}(IEnumerable{TSource}, int)"/>
 		/// </summary>
-		private static IEnumerable<int> instancesKeys => instances.Keys;
+		private static IEnumerable<int> InstancesKeys => instances.Keys;
 		private static int nextIndex = 0;
 		public static T First => instances[instances.Keys.Min()];
 		public static T Last => instances[instances.Keys.Max()];

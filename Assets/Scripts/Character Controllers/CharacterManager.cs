@@ -241,7 +241,7 @@
 			{
 				if (components[i] is IActor controller)
 				{
-					character = new Character(this, gameObject, controller);
+					character = new Character(gameObject, controller);
 					gameObject.transform.SetParent(Transform);
 					m_charactersInScene.Add(character);
 					return true;
@@ -283,13 +283,10 @@
 	{
 		public GameObject characterObject;
 		public IActor controller;
-
-		private CharacterManager manager;
-		public Character(CharacterManager manager, GameObject characterObj, IActor controller)
+		public Character(GameObject characterObj, IActor controller)
 		{
 			this.characterObject = characterObj;
 			this.controller = controller;
-			this.manager = manager;
 		}
 		public void ChangeCharacterName(string newName) => controller.CharacterNames.CurrentName = newName;
 	}
