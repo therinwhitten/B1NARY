@@ -96,13 +96,13 @@ MonoBehaviour:
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 0
+  m_characterSpacing: 5
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -283,6 +283,7 @@ GameObject:
   - component: {fileID: 2358392355722654859}
   - component: {fileID: 1605016716638081628}
   - component: {fileID: 4612677636862758264}
+  - component: {fileID: 7010316484717176793}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -367,9 +368,9 @@ MonoBehaviour:
   m_fontSize: 30
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -406,6 +407,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7010316484717176793
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587333530311768430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 4612677636862758264}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - FPS
+  - FPS
+  - "\u30C6\u30A3\u30C3\u30AB\u30FC"
+  - FPS
 --- !u!1 &1091962293101533793
 GameObject:
   m_ObjectHideFlags: 0
@@ -461,6 +485,7 @@ GameObject:
   - component: {fileID: 4224655873481525145}
   - component: {fileID: 3035336626421707543}
   - component: {fileID: 8194286247912893888}
+  - component: {fileID: 946167960}
   m_Layer: 5
   m_Name: Text Speed Dropdown
   m_TagString: Untagged
@@ -893,6 +918,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropdown: {fileID: 0}
+--- !u!114 &946167960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607503566599230484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0eb0275dbe7114a9f98578df07a983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 6066682855781759503}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - 'Default
+
+    Slow
+
+    Fast
+
+    Instant'
+  - "Standard \nLangsam\nSchnell\nSofort"
+  - "\u30C7\u30D5\u30A9\u30EB\u30C8 \n\u3086\u3063\u304F\u308A\n\u901F\u3044\n\u30A4\u30F3\u30B9\u30BF\u30F3\u30C8"
+  - "Por defecto \nLento\nR\xE1pido\nInstant\xE1neo"
+  expectedLines: 4
 --- !u!1 &1610249542831773213
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,14 +1393,14 @@ MonoBehaviour:
   m_fontSize: 28
   m_fontSizeBase: 28
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 20
+  m_characterSpacing: 10
   m_wordSpacing: 0
   m_lineSpacing: 0.89
   m_lineSpacingMax: 0
@@ -2475,6 +2530,7 @@ GameObject:
   - component: {fileID: 1610249543248115355}
   - component: {fileID: 1610249543248115357}
   - component: {fileID: 1610249543248115354}
+  - component: {fileID: 3573648132030415478}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -2559,9 +2615,9 @@ MonoBehaviour:
   m_fontSize: 30
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -2598,6 +2654,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3573648132030415478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249543248115352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1610249543248115354}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Quality
+  - "Qualit\xE4t"
+  - "\u30AF\u30AA\u30EA\u30C6\u30A3"
+  - Calidad
 --- !u!1 &1610249543252281726
 GameObject:
   m_ObjectHideFlags: 0
@@ -2938,7 +3017,7 @@ MonoBehaviour:
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 10.21
+  m_characterSpacing: 10
   m_wordSpacing: 0
   m_lineSpacing: 0.89
   m_lineSpacingMax: 0
@@ -3222,8 +3301,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1.699997, y: -0.5}
-  m_SizeDelta: {x: -16.591675, y: -13}
+  m_AnchoredPosition: {x: 0.019996643, y: -0.06973076}
+  m_SizeDelta: {x: -28.921494, y: -20.583328}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1610249543292128973
 CanvasRenderer:
@@ -3283,14 +3362,14 @@ MonoBehaviour:
   m_fontSize: 28
   m_fontSizeBase: 28
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 20
+  m_characterSpacing: 10
   m_wordSpacing: 0
   m_lineSpacing: 0.89
   m_lineSpacingMax: 0
@@ -3881,14 +3960,14 @@ MonoBehaviour:
   m_fontSize: 28
   m_fontSizeBase: 28
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 28
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 20
+  m_characterSpacing: 10
   m_wordSpacing: 0
   m_lineSpacing: 0.89
   m_lineSpacingMax: 0
@@ -3896,7 +3975,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -4507,9 +4586,15 @@ MonoBehaviour:
     Japanese
 
     Spanish'
-  - "\n \n \n "
-  - "\n \n \n "
-  - "\n \n \n "
+  - 'Englisch
+
+    Deutsch
+
+    Japanisch
+
+    Spanisch'
+  - "\u82F1\u8A9E\n\u30C9\u30A4\u30C4\u8A9E\n\u65E5\u672C\u8A9E\n\u30B9\u30DA\u30A4\u30F3\u8A9E"
+  - "Ingl\xE9s\nAlem\xE1n\nJapon\xE9s\nEspa\xF1ol"
   expectedLines: 4
 --- !u!1 &1610249543424461770
 GameObject:
@@ -5342,6 +5427,7 @@ GameObject:
   - component: {fileID: 1610249543541166250}
   - component: {fileID: 1610249543541166251}
   - component: {fileID: 1610249543541166248}
+  - component: {fileID: 4025013584476544911}
   m_Layer: 5
   m_Name: Quality Drop Down
   m_TagString: Untagged
@@ -5772,6 +5858,48 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &4025013584476544911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249543541166229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0eb0275dbe7114a9f98578df07a983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 1610249543541166228}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - 'UwU
+
+    Normal
+
+    Meh
+
+    Potato'
+  - 'UwU
+
+    Normal
+
+    Mehr
+
+    Kartoffel'
+  - "UwU\n\u30CE\u30FC\u30DE\u30EB\n\u30E1\u30FC\n\u30DD\u30C6\u30C8"
+  - 'UwU
+
+    Normal
+
+    Yoh
+
+    Patata'
+  expectedLines: 4
 --- !u!1 &1610249543556395205
 GameObject:
   m_ObjectHideFlags: 0
@@ -6333,9 +6461,13 @@ MonoBehaviour:
   - 'Twitch
 
     Hentai'
-  - "\n "
-  - "\n "
-  - "\n "
+  - 'Zucken
+
+    Hentai'
+  - "\u5F15\u304D\u6523\u308A\n\u30D8\u30F3\u30BF\u30A4"
+  - 'Tic
+
+    Hentai'
   expectedLines: 2
 --- !u!1 &1610249543561675936
 GameObject:
@@ -7813,14 +7945,14 @@ MonoBehaviour:
   m_fontSize: 44
   m_fontSizeBase: 44
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 40
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 20
+  m_characterSpacing: 10
   m_wordSpacing: 0
   m_lineSpacing: 0.89
   m_lineSpacingMax: 0
@@ -8460,14 +8592,14 @@ MonoBehaviour:
   m_fontSize: 28
   m_fontSizeBase: 28
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 20
+  m_characterSpacing: 10
   m_wordSpacing: 0
   m_lineSpacing: 0.89
   m_lineSpacingMax: 0
@@ -9275,6 +9407,7 @@ GameObject:
   - component: {fileID: 1610249543898834696}
   - component: {fileID: 1610249543898834698}
   - component: {fileID: 1610249543898834699}
+  - component: {fileID: 3820155521774945567}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -9359,9 +9492,9 @@ MonoBehaviour:
   m_fontSize: 30
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -9374,7 +9507,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -9398,6 +9531,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3820155521774945567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249543898834697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1610249543898834699}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Language
+  - Sprache
+  - "\u8A00\u8A9E"
+  - Idioma
 --- !u!1 &1610249543902330342
 GameObject:
   m_ObjectHideFlags: 0
@@ -9631,6 +9787,7 @@ GameObject:
   - component: {fileID: 1610249543967491574}
   - component: {fileID: 1610249543967491336}
   - component: {fileID: 1610249543967491337}
+  - component: {fileID: 1195186922969946608}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -9715,9 +9872,9 @@ MonoBehaviour:
   m_fontSize: 30
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -9730,7 +9887,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -9754,6 +9911,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1195186922969946608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249543967491575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1610249543967491337}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Theme
+  - Thema
+  - "\u30C6\u30FC\u30DE"
+  - Tema
 --- !u!1 &1610249544037758806
 GameObject:
   m_ObjectHideFlags: 0
@@ -11331,6 +11511,7 @@ GameObject:
   - component: {fileID: 1610249544464852209}
   - component: {fileID: 1610249544464852211}
   - component: {fileID: 1610249544464852208}
+  - component: {fileID: 8259784355678946096}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -11415,9 +11596,9 @@ MonoBehaviour:
   m_fontSize: 30
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -11454,6 +11635,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8259784355678946096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249544464852222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1610249544464852208}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Resolution
+  - "Aufl\xF6sung"
+  - "\u3051\u3063\u3057\u3093"
+  - "Resoluci\xF3n"
 --- !u!1 &1610249544477848227
 GameObject:
   m_ObjectHideFlags: 0
@@ -11925,17 +12129,17 @@ MonoBehaviour:
     Borderless
 
     Windowed'
-  - 'Ganzer Bildschirm
+  - 'Vollbild
 
     Grenzenlos
 
-    Mit Fenster'
-  - "\u5168\u753B\u9762\u8868\u793A\n\u30DC\u30FC\u30C0\u30EC\u30B9\n\u7A93\u4ED8\u304D"
+    Fenstermodus'
+  - "\u30D5\u30EB\u30B9\u30AF\u30EA\u30FC\u30F3\n\u30DC\u30FC\u30C0\u30EC\u30B9\n\u30A6\u30A3\u30F3\u30C9\u30A6"
   - 'Pantalla completa
 
-    sin bordes
+    Sin bordes
 
-    con ventana'
+    Ventana'
   expectedLines: 3
 --- !u!1 &1610249544484048859
 GameObject:
@@ -12141,9 +12345,9 @@ MonoBehaviour:
   m_fontSize: 24
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 24
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -12156,7 +12360,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -12191,6 +12395,7 @@ GameObject:
   - component: {fileID: 1610249544569634543}
   - component: {fileID: 1610249544569634529}
   - component: {fileID: 1610249544569634542}
+  - component: {fileID: 5597740450211726866}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -12275,9 +12480,9 @@ MonoBehaviour:
   m_fontSize: 30
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -12314,6 +12519,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &5597740450211726866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249544569634540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1610249544569634542}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - UI Glow
+  - UI-Leuchten
+  - "UI \u30B0\u30ED\u30FC"
+  - Resplandecer
 --- !u!1 &1610249544574533509
 GameObject:
   m_ObjectHideFlags: 0
@@ -12573,6 +12801,7 @@ GameObject:
   - component: {fileID: 1610249544634138571}
   - component: {fileID: 1610249544634138573}
   - component: {fileID: 1610249544634138570}
+  - component: {fileID: 1353941363049894909}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -12657,9 +12886,9 @@ MonoBehaviour:
   m_fontSize: 30
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -12696,6 +12925,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1353941363049894909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249544634138568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1610249544634138570}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Display
+  - Zeigen
+  - "\u30C7\u30A3\u30B9\u30D7\u30EC\u30A4"
+  - Monitor
 --- !u!1 &1610249544638505202
 GameObject:
   m_ObjectHideFlags: 0
@@ -12881,6 +13133,7 @@ GameObject:
   - component: {fileID: 1610249544699156444}
   - component: {fileID: 1610249544699156446}
   - component: {fileID: 1610249544699156447}
+  - component: {fileID: 1038947782585001228}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -12965,9 +13218,9 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 30
+  m_fontSizeMax: 55
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -13004,6 +13257,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1038947782585001228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249544699156445}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 1610249544699156447}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Mode
+  - Modus
+  - "\u30E2\u30FC\u30C9"
+  - Modo
 --- !u!1 &1610249544720344751
 GameObject:
   m_ObjectHideFlags: 0
@@ -13656,7 +13932,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -13770,6 +14046,7 @@ GameObject:
   - component: {fileID: 1610249544925200634}
   - component: {fileID: 1610249544925200635}
   - component: {fileID: 5416156093049300391}
+  - component: {fileID: 560268733}
   m_Layer: 5
   m_Name: Theme Drop Down
   m_TagString: Untagged
@@ -13887,13 +14164,21 @@ MonoBehaviour:
     m_Options:
     - m_Text: Default
       m_Image: {fileID: 0}
+    - m_Text: Asterella
+      m_Image: {fileID: 0}
     - m_Text: Dark
+      m_Image: {fileID: 0}
+    - m_Text: Emerald
+      m_Image: {fileID: 0}
+    - m_Text: Fiberoptic
+      m_Image: {fileID: 0}
+    - m_Text: Fusia
       m_Image: {fileID: 0}
     - m_Text: Light
       m_Image: {fileID: 0}
-    - m_Text: Asterella
+    - m_Text: Virtue
       m_Image: {fileID: 0}
-    - m_Text: Szycrotic
+    - m_Text: Times
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -14204,6 +14489,62 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dropdown: {fileID: 0}
+--- !u!114 &560268733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1610249544925200614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc0eb0275dbe7114a9f98578df07a983, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 1610249544925200639}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - 'Default
+
+    Asterella
+
+    Dark
+
+    Emerald
+
+    Fiberoptic
+
+    Fusia
+
+    Light
+
+    Virtue
+
+    Times'
+  - 'Vorgabe
+
+    Asterella
+
+    Dunkel
+
+    Smaragd
+
+    Glasfaser
+
+    Fusia
+
+    Licht
+
+    Tugend
+
+    Mal'
+  - "\u30C7\u30D5\u30A9\u30EB\u30C8\n\u30A2\u30B9\u30C6\u30EC\u30E9\n\u30C0\u30FC\u30AF\n\u30A8\u30E1\u30E9\u30EB\u30C9\n\u5149\u30D5\u30A1\u30A4\u30D0\u30FC\n\u30D5\u30B7\u30A2\n\u30E9\u30A4\u30C8\n\u30F4\u30A1\u30FC\u30C1\u30E5\n\u30BF\u30A4\u30E0\u30BA"
+  - "Por defecto\nAsterella\nOscuro\nEsmeralda\nFibra \xF3ptica\nFusia\nLuz\nVirtud\nVeces"
+  expectedLines: 9
 --- !u!1 &1610249544932529959
 GameObject:
   m_ObjectHideFlags: 0
@@ -14743,6 +15084,7 @@ GameObject:
   - component: {fileID: 135476058601802489}
   - component: {fileID: 4293961721344455385}
   - component: {fileID: 7800427681002189014}
+  - component: {fileID: 6041468848974090953}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -14827,9 +15169,9 @@ MonoBehaviour:
   m_fontSize: 30
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 24
+  m_fontSizeMax: 30
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -14866,6 +15208,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6041468848974090953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2791720639994256785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 7800427681002189014}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Text Speed
+  - Textgeschwindigkeit
+  - "\u30C6\u30AD\u30B9\u30C8\u901F\u5EA6"
+  - Velocidad Texto
 --- !u!1 &2852327152530637849
 GameObject:
   m_ObjectHideFlags: 0
@@ -15103,14 +15468,14 @@ MonoBehaviour:
   m_fontSize: 28
   m_fontSizeBase: 28
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 28
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 20
+  m_characterSpacing: 10
   m_wordSpacing: 0
   m_lineSpacing: 0.89
   m_lineSpacingMax: 0
@@ -15118,7 +15483,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
