@@ -11,7 +11,7 @@
 
 	public class VoiceActorHandler : Multiton<VoiceActorHandler>, IAudioInfo
 	{
-		public static CommandArray Commands = new CommandArray()
+		public static CommandArray Commands = new()
 		{
 			["switchvoice"] = ((Action<string>)((intRaw) =>
 			{
@@ -53,7 +53,7 @@
 		};
 		public static AudioClip GetVoiceLine(int index, ScriptHandler handler)
 		{
-			Document current = new Document(handler.document.ReadFile);
+			Document current = new(handler.document.ReadFile);
 			string filePath = $"Voice\\{current.VisualPath}\\{index}";
 			AudioClip clip = Resources.Load<AudioClip>(filePath);
 			if (clip == null)

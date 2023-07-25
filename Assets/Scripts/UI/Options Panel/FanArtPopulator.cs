@@ -34,9 +34,9 @@
 			IEnumerable<DirectoryInfo> directories = currentPath.EnumerateDirectories();
 			if (directories.Any())
 			{
-				using (IEnumerator<DirectoryInfo> enumerator = directories.GetEnumerator())
-					while (enumerator.MoveNext())
-						output.AddRange(RecursivelyGetFiles(enumerator.Current));
+				using IEnumerator<DirectoryInfo> enumerator = directories.GetEnumerator();
+				while (enumerator.MoveNext())
+					output.AddRange(RecursivelyGetFiles(enumerator.Current));
 			}
 			return output;
 		}
@@ -68,8 +68,8 @@
 		}
 		private Thread loadingThread;
 		private bool stop = false;
-		private Queue<(Action<byte[]>, FileInfo)> images = new Queue<(Action<byte[]>, FileInfo)>();
-		private Queue<Action> others = new Queue<Action>();
+		private Queue<(Action<byte[]>, FileInfo)> images = new();
+		private Queue<Action> others = new();
 
 		// God, why the fuck is literally using ANYTHING WITH THREADS SO FUCKING HARD
 		private IEnumerator ImageLoader()

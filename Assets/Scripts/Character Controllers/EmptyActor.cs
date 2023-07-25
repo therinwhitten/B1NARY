@@ -81,7 +81,7 @@
 
 		ActorSnapshot IActor.Serialize()
 		{
-			ActorSnapshot snapshot = new ActorSnapshot(this);
+			ActorSnapshot snapshot = new(this);
 			return snapshot;
 		}
 		void IActor.Deserialize(ActorSnapshot snapshot)
@@ -115,7 +115,7 @@
 				return voices.ToDictionary(item => { i++; return i; });
 			}
 		}
-		private readonly List<VoiceActorHandler> voices = new List<VoiceActorHandler>();
+		private readonly List<VoiceActorHandler> voices = new();
 
 		string IActor.CurrentAnimation
 		{

@@ -8,7 +8,7 @@
 	[RequireComponent(typeof(RectTransform))]
 	public class FollowCube : MonoBehaviour
 	{
-		public static CommandArray Commands => new CommandArray()
+		public static CommandArray Commands => new()
 		{
 			["togglecube"] = (Action<string>)((booleanRaw) =>
 			{
@@ -19,7 +19,7 @@
 			}),
 			["movecube"] = (Action<string, string>)((x, y) =>
 			{
-				Vector2 localPosition = new Vector2(float.Parse(x), float.Parse(y));
+				Vector2 localPosition = new(float.Parse(x), float.Parse(y));
 				FollowCube[] cubes = FindObjectsOfType<FollowCube>();
 				for (int i = 0; i < cubes.Length; i++)
 					cubes[i].MoveToPosition(localPosition);
@@ -113,7 +113,7 @@
 		{
 			if (character == null)
 				return;
-			if (!(character.Value.controller is IFollowable))
+			if (character.Value.controller is not IFollowable)
 				return;
 			this.character = character;
 			followState = FollowState.FollowingHead;

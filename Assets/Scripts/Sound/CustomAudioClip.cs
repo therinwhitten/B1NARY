@@ -9,10 +9,8 @@ namespace B1NARY.Audio
 	[Serializable]
 	public class CustomAudioClip
 	{
-		public static explicit operator CustomAudioClip(AudioClip input)
-			=> new CustomAudioClip(input);
-		public static explicit operator AudioClip(CustomAudioClip input)
-			=> input.clip;
+		public static explicit operator CustomAudioClip(AudioClip input) => new(input);
+		public static explicit operator AudioClip(CustomAudioClip input) => input.clip;
 
 		public CustomAudioClip(AudioClip audioClip)
 		{

@@ -3,7 +3,6 @@
 	using B1NARY.CharacterManagement;
 	using B1NARY.Scripting;
 	using B1NARY.UI.Globalization;
-	using Codice.CM.Common;
 	using OVSXmlSerializer;
 	using System;
 	using System.Collections.Generic;
@@ -81,13 +80,13 @@
 
 		void IXmlSerializable.Write(XmlDocument sourceDocument, XmlNode currentNode)
 		{
-			using (var enumerator = _characterNames.GetEnumerator())
-				while (enumerator.MoveNext())
-				{
-					var element = sourceDocument.CreateElement(enumerator.Current.Key);
-					element.InnerText = enumerator.Current.Value.Value;
-					currentNode.AppendChild(element);
-				}
+			using var enumerator = _characterNames.GetEnumerator();
+			while (enumerator.MoveNext())
+			{
+				var element = sourceDocument.CreateElement(enumerator.Current.Key);
+				element.InnerText = enumerator.Current.Value.Value;
+				currentNode.AppendChild(element);
+			}
 		}
 	}
 }

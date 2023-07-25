@@ -63,20 +63,18 @@
 
 		public void Save()
 		{
-			using (var stream = XmlSerializer.Serialize(this, "PlayerConfig"))
-				using (var fileStream = ConfigLocation.Create())
-				{
-					stream.CopyTo(fileStream);
-					fileStream.Flush();
-				}
+			using var stream = XmlSerializer.Serialize(this, "PlayerConfig");
+			using var fileStream = ConfigLocation.Create();
+			stream.CopyTo(fileStream);
+			fileStream.Flush();
 		}
 
-		public ChangableValue<bool> quickSaveOverrides = new ChangableValue<bool>(false);
-		public ChangableValue<bool> hEnable = new ChangableValue<bool>(false);
-		public ChangableValue<int> dialogueSpeedTicks = new ChangableValue<int>(30);
-		public ChangableValue<string> language = new ChangableValue<string>(Languages.Instance.Count > 0 ? Languages.Instance[0] : "English");
-		public Audio audio = new Audio();
-		public Graphics graphics = new Graphics();
+		public ChangableValue<bool> quickSaveOverrides = new(false);
+		public ChangableValue<bool> hEnable = new(false);
+		public ChangableValue<int> dialogueSpeedTicks = new(30);
+		public ChangableValue<string> language = new(Languages.Instance.Count > 0 ? Languages.Instance[0] : "English");
+		public Audio audio = new();
+		public Graphics graphics = new();
 
 
 
@@ -87,19 +85,19 @@
 		/// </summary>
 		public sealed class Audio
 		{
-			public ChangableValue<float> master = new ChangableValue<float>(1f);
-			public ChangableValue<float> SFX = new ChangableValue<float>(1f);
-			public ChangableValue<float> music = new ChangableValue<float>(1f);
-			public ChangableValue<float> voices = new ChangableValue<float>(1f);
-			public ChangableValue<float> UI = new ChangableValue<float>(1f);
-			public Dictionary<string, float> characterVoices = new Dictionary<string, float>();
+			public ChangableValue<float> master = new(1f);
+			public ChangableValue<float> SFX = new(1f);
+			public ChangableValue<float> music = new(1f);
+			public ChangableValue<float> voices = new(1f);
+			public ChangableValue<float> UI = new(1f);
+			public Dictionary<string, float> characterVoices = new();
 		}
 		public sealed class Graphics
 		{
-			public ChangableValue<float> glow = new ChangableValue<float>(1f);
-			public ChangableValue<int> graphicSettingIndex = new ChangableValue<int>(0);
-			public ChangableValue<int> frameRate = new ChangableValue<int>(Math.Min(69, Screen.currentResolution.refreshRate));
-			public ChangableValue<string> currentFormat = new ChangableValue<string>(null);
+			public ChangableValue<float> glow = new(1f);
+			public ChangableValue<int> graphicSettingIndex = new(0);
+			public ChangableValue<int> refreshRate = new(69);
+			public ChangableValue<string> currentFormat = new(null);
 			public bool HasOverride => !string.IsNullOrEmpty(currentFormat.Value);
 		}
 	}

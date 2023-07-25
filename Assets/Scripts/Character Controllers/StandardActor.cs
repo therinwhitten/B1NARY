@@ -235,12 +235,12 @@
 
 		void IVoice.Stop()
 		{
-			using (var enumerator = mouths.GetEnumerator())
-				while (enumerator.MoveNext())
-					enumerator.Current.Value.Stop();
+			using var enumerator = mouths.GetEnumerator();
+			while (enumerator.MoveNext())
+				enumerator.Current.Value.Stop();
 		}
 		IReadOnlyDictionary<int, VoiceActorHandler> IVoice.Mouths => mouths;
-		private Dictionary<int, VoiceActorHandler> mouths = new Dictionary<int, VoiceActorHandler>();
+		private Dictionary<int, VoiceActorHandler> mouths = new();
 		int IVoice.CurrentMouth { get; set; } = 0;
 	}
 }
@@ -257,8 +257,8 @@ namespace B1NARY.CharacterManagement.Editor
 		public override void OnInspectorGUI()
 		{
 			StandardActor controller = (StandardActor)target;
-			controller.animator = DirtyAuto.Field(controller, new GUIContent("Animator"), controller.animator, true);
-			controller.FollowCubeParent = DirtyAuto.Field(controller, new GUIContent("Head Location"), controller.FollowCubeParent, true);
+			controller.animator = DirtyAuto.Field(controller, new("Animator"), controller.animator, true);
+			controller.FollowCubeParent = DirtyAuto.Field(controller, new("Head Location"), controller.FollowCubeParent, true);
 			EditorGUILayout.Space();
 			base.OnInspectorGUI();
 		}

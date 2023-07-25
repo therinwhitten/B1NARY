@@ -95,7 +95,7 @@
 			SaveSlot newSlot;
 			using (var stream = new MemoryStream())
 			{
-				XmlSerializer<SaveSlot> serializer = new XmlSerializer<SaveSlot>();
+				XmlSerializer<SaveSlot> serializer = new();
 				serializer.Serialize(stream, slot);
 				stream.Position = 0;
 				newSlot = serializer.Deserialize(stream);

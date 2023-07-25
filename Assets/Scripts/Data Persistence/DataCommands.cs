@@ -94,7 +94,7 @@ namespace B1NARY.DataPersistence.Editor
 			UpdateTab("Strings", SaveSlot.ActiveSlot.strings);
 			UpdateTab("Booleans", SaveSlot.ActiveSlot.booleans);
 
-			void UpdateTab<T>(string label, DataPersistence.Collection<T> data)
+			static void UpdateTab<T>(string label, DataPersistence.Collection<T> data)
 			{
 				EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;
@@ -102,8 +102,8 @@ namespace B1NARY.DataPersistence.Editor
 					while (keys.MoveNext())
 					{
 						Rect fullRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f)),
-							keyRect = new Rect(fullRect) { width = (fullRect.width / 2f) - 1f },
-							valueRect = new Rect(fullRect) { xMin = (fullRect.width / 2f) + 1f };
+							keyRect = new(fullRect) { width = (fullRect.width / 2f) - 1f },
+							valueRect = new(fullRect) { xMin = (fullRect.width / 2f) + 1f };
 						EditorGUI.LabelField(keyRect, keys.Current);
 						object value = data[keys.Current];
 						if (data.IsPointer(keys.Current) == true)

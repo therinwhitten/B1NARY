@@ -47,21 +47,13 @@
 		/// </exception>
 		public AudioClip GetRandomAudioClip(SoundType soundType, RandomForwarder.RandomType randomType = RandomForwarder.RandomType.Unity)
 		{
-			AudioClip[] selection;
-			switch (soundType) // This would work perfectly with a switch expression
+			AudioClip[] selection = soundType switch
 			{
-				case SoundType.Hover:
-					selection = hoverSounds;
-					break;
-				case SoundType.Pressed:
-					selection = pressedSounds;
-					break;
-				case SoundType.Any:
-					selection = AllSounds.Value;
-					break;
-				default:
-					throw new IndexOutOfRangeException();
-			}
+				SoundType.Hover => hoverSounds,
+				SoundType.Pressed => pressedSounds,
+				SoundType.Any => AllSounds.Value,
+				_ => throw new IndexOutOfRangeException(),
+			};
 			return selection[RandomForwarder.Next(selection.Length, randomType)];
 		}
 	}

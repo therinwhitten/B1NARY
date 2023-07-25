@@ -58,7 +58,7 @@
 				parsableText.Add((activeSlot.ToString(), false));
 			return parsableText;
 		}
-		public static CommandArray Commands = new CommandArray
+		public static CommandArray Commands = new()
 		{
 			["textspeed"] = (Action<string>)(speedMultRaw =>
 			{
@@ -81,7 +81,7 @@
 
 		public float TickMultiplier = 1f;
 		private float m_secondsChar;
-		public WaitForSeconds WaitSecondsPerChar => new WaitForSeconds(m_secondsChar);
+		public WaitForSeconds WaitSecondsPerChar => new(m_secondsChar);
 
 		/// <summary>
 		/// If the current dialogue should be added instead of skipping to a newString
@@ -147,7 +147,7 @@
 				if (value)
 					Instance.eventCoroutine = new CoroutineWrapper(Instance, AutoSkipCoroutine()).Start();
 
-				IEnumerator AutoSkipCoroutine()
+				static IEnumerator AutoSkipCoroutine()
 				{
 					while (AutoSkip)
 					{
@@ -187,7 +187,8 @@
 					Instance.eventCoroutine.Stop();
 				if (value)
 					Instance.eventCoroutine = new CoroutineWrapper(Instance, FastSkipCoroutine()).Start();
-				IEnumerator FastSkipCoroutine()
+
+				static IEnumerator FastSkipCoroutine()
 				{
 					while (FastSkip)
 					{

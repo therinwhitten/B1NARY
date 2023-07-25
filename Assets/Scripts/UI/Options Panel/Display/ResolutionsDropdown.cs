@@ -10,9 +10,8 @@
 		{
 			get
 			{
-				return B1NARYResolution.MonitorResolutions
-					.Where(resolution => resolution.RefreshRate == Screen.currentResolution.refreshRate)
-					.OrderByDescending(resolution => (resolution.Width * 100) + resolution.Height)
+				return Screen.resolutions
+					.OrderByDescending(resolution => (resolution.width * 100) + resolution.height)
 					.Select(resolution => new KeyValuePair<string, Resolution>(resolution.ToString(), resolution))
 					.ToList();
 			}
@@ -27,7 +26,7 @@
 		protected override void PickedChoice(int index)
 		{
 			base.PickedChoice(index);
-			B1NARYResolution.ActiveResolution = (B1NARYResolution)CurrentValue;
+			Screen.SetResolution(CurrentValue.width, CurrentValue.height, Screen.fullScreenMode, CurrentValue.refreshRateRatio);
 		}
 	}
 }

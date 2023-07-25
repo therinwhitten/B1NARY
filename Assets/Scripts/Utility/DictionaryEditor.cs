@@ -95,16 +95,16 @@ namespace B1NARY.Editor
 				Rect fullRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 22f));
 				fullRect.yMax -= 1f;
 				fullRect.yMin += 1f;
-				Rect keyRect = new Rect(fullRect)
+				Rect keyRect = new(fullRect)
 				{
 					xMax = (fullRect.xMax / 3f) + 24f,
 				},
-				removeButtonRect = new Rect(fullRect)
+				removeButtonRect = new(fullRect)
 				{
 					width = fullRect.width / 5f,
 					x = fullRect.xMax - (fullRect.width / 5f),
 				},
-				valueRect = new Rect(fullRect)
+				valueRect = new(fullRect)
 				{
 					xMin = keyRect.xMax - 14f,
 					xMax = removeButtonRect.xMin - 2f,

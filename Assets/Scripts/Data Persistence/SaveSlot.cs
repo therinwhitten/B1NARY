@@ -125,7 +125,7 @@
 					for (int i = 0; i < array.Length; i++)
 					{
 						FileInfo currentFile = array[i];
-						Lazy<SaveSlot> lazy = new Lazy<SaveSlot>(() => LoadIntoMemory(currentFile));
+						Lazy<SaveSlot> lazy = new(() => LoadIntoMemory(currentFile));
 						if (currentFile.Name.Contains(NAME_START) && currentFile.Extension.Contains(NAME_EXT))
 							files.Add(new KeyValuePair<FileInfo, Lazy<SaveSlot>>(currentFile, lazy));
 					}
@@ -227,9 +227,9 @@
 			Task.Run(() =>
 			{
 				metadata.thumbnail = new Thumbnail(new Vector2Int(128, 128), thumbnail);
-				using (var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write))
-					SlotSerializer.Serialize(stream, this);
-				
+				using var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write);
+				SlotSerializer.Serialize(stream, this);
+
 			}).ContinueWith((task) => 
 			{
 				completedTask = true;
@@ -252,7 +252,7 @@
 			if (!hasSaved)
 				throw new InvalidOperationException("Currently active save has not saved properly! Did you press quickload without saving?");
 			ActiveSlot = this;
-			CoroutineWrapper wrapper = new CoroutineWrapper(ScriptHandler.Instance, scriptPosition.LoadToPosition());
+			CoroutineWrapper wrapper = new(ScriptHandler.Instance, scriptPosition.LoadToPosition());
 			wrapper.AfterActions += (mono) =>
 			{
 				for (int i = 0; i < characterSnapshots.Length; i++)

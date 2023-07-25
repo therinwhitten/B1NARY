@@ -1,7 +1,5 @@
 ﻿namespace B1NARY.CharacterManagement
 {
-	using B1NARY.DataPersistence;
-	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
 	using B1NARY.UI;
 	using Live2D.Cubism.Framework.Expression;
@@ -163,7 +161,7 @@
 
 		int IVoice.CurrentMouth { get; set; } = 0;
 		IReadOnlyDictionary<int, VoiceActorHandler> IVoice.Mouths => mouths;
-		private readonly Dictionary<int, VoiceActorHandler> mouths = new Dictionary<int, VoiceActorHandler>();
+		private readonly Dictionary<int, VoiceActorHandler> mouths = new();
 
 		void IVoice.PlayClip(AudioClip clip, int mouth)
 		{
@@ -175,9 +173,9 @@
 
 		void IVoice.Stop()
 		{
-			using (var enumerator = mouths.GetEnumerator())
-				while (enumerator.MoveNext())
-					enumerator.Current.Value.Stop();
+			using var enumerator = mouths.GetEnumerator();
+			while (enumerator.MoveNext())
+				enumerator.Current.Value.Stop();
 		}
 
 		private bool m_selected = false;
@@ -256,7 +254,7 @@
 
 		ActorSnapshot IActor.Serialize()
 		{
-			ActorSnapshot snapshot = new ActorSnapshot(this);
+			ActorSnapshot snapshot = new(this);
 			return snapshot;
 		}
 		void IActor.Deserialize(ActorSnapshot snapshot)

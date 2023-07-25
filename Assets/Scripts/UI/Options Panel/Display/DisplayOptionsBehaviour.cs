@@ -42,9 +42,10 @@
 			glowSlider.value = PlayerConfig.Instance.graphics.glow.Value;
 			glowSlider.onValueChanged.AddListener((value) => PlayerConfig.Instance.graphics.glow.Value = value);
 			// FPS
-			PlayerConfig.Instance.graphics.frameRate.AttachValue((value) => fpsText.text = value.ToString("N0"));
-			fpsSlider.value = PlayerConfig.Instance.graphics.frameRate.Value;
-			fpsSlider.onValueChanged.AddListener((value) => PlayerConfig.Instance.graphics.frameRate.Value = (int)value);
+#warning TODO: Update to 2022 stuff
+			PlayerConfig.Instance.graphics.refreshRate.AttachValue((value) => fpsText.text = value.ToString("N0"));
+			fpsSlider.value = PlayerConfig.Instance.graphics.refreshRate.Value;
+			fpsSlider.onValueChanged.AddListener((value) => PlayerConfig.Instance.graphics.refreshRate.Value = (int)value);
 		}
 	}
 }

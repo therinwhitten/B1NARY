@@ -20,8 +20,7 @@
 				{
 					if (LanguagesInfo.Exists)
 						m_instance = XmlSerializer<Languages>.Default.Deserialize(LanguagesInfo);
-					if (m_instance is null)
-						m_instance = new Languages();
+					m_instance ??= new Languages();
 				}
 				return m_instance;
 			}

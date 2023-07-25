@@ -18,7 +18,7 @@
 	{
 		public const string RESOURCES_SOUND_LIBRARY = "Sounds/Sound Libraries";
 
-		public static readonly CommandArray Commands = new CommandArray()
+		public static readonly CommandArray Commands = new()
 		{
 			["fadeinsound"] = (Action<string, string>)((name, floatStr) =>
 			{
@@ -51,9 +51,9 @@
 		public SoundLibrary ActiveLibrary { get; internal set; } = null;
 		// List contains null values to reserve space
 		public IReadOnlyList<AudioTracker> ActiveAudio => audioTrackers;
-		private readonly List<AudioTracker> audioTrackers = new List<AudioTracker>();
-		public readonly Queue<int> otherValues = new Queue<int>();
-		internal List<Func<bool>> fadeSounds = new List<Func<bool>>();
+		private readonly List<AudioTracker> audioTrackers = new();
+		public readonly Queue<int> otherValues = new();
+		internal List<Func<bool>> fadeSounds = new();
 
 		private void Awake()
 		{
@@ -80,9 +80,9 @@
 			ActiveLibrary = newSoundLibrary;
 			if (newSoundLibrary.ContainsPlayOnAwakeCommands)
 			{
-				using (IEnumerator<CustomAudioClip> enumerator = newSoundLibrary.PlayOnAwakeCommands.GetEnumerator())
-					while (enumerator.MoveNext())
-						AddSound(enumerator.Current);
+				using IEnumerator<CustomAudioClip> enumerator = newSoundLibrary.PlayOnAwakeCommands.GetEnumerator();
+				while (enumerator.MoveNext())
+					AddSound(enumerator.Current);
 			}
 		}
 
@@ -182,7 +182,7 @@ namespace B1NARY.Audio.Editor
 		public static void DisplayAudioData(IAudioInfo audioInfo)
 		{
 			Rect fullNameRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f)),
-				toggleRect = new Rect(fullNameRect) { width = 20f };
+				toggleRect = new(fullNameRect) { width = 20f };
 			fullNameRect.xMin += toggleRect.xMax + 2;
 			audioInfo.IsPlaying = EditorGUI.Toggle(toggleRect, audioInfo.IsPlaying);
 			EditorGUI.LabelField(fullNameRect, audioInfo.ClipName, EditorStyles.boldLabel);

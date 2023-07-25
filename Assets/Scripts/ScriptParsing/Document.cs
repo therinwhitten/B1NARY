@@ -45,7 +45,7 @@
 		/// </summary>
 		public FileInfo FullPath
 		{
-			get => new FileInfo($"{DocumentExplorer.DocumentFolder.FullName}\\{VisualPath}.txt");
+			get => new($"{DocumentExplorer.DocumentFolder.FullName}\\{VisualPath}.txt");
 			set => VisualPath = value.FullName.Substring(DocumentExplorer.DocumentFolder.FullName.Length + 1).Replace(".txt", "");
 		}
 

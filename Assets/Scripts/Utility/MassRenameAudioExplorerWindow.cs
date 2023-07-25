@@ -15,11 +15,11 @@ namespace B1NARY.Audio.Editor
 		// https://stackoverflow.com/questions/9363145/regex-for-extracting-filename-from-savePath#comment85522328_9363293
 
 		// Regex if a string is only numbers
-		public static readonly Regex numberRegex = new Regex("^[0-9]*$");
+		public static readonly Regex numberRegex = new("^[0-9]*$");
 		// Regex for getting the fileData only
-		public static readonly Regex fileNameFilterRegex = new Regex(@"[ \w-]+?(?=\.)");
+		public static readonly Regex fileNameFilterRegex = new(@"[ \w-]+?(?=\.)");
 		// Regex for getting the fileData and extension
-		public static readonly Regex fileNameAndExtensionRegexFilter = new Regex(@"[^\\]+$");
+		public static readonly Regex fileNameAndExtensionRegexFilter = new(@"[^\\]+$");
 
 		public static MassRenameAudioExplorerWindow GetWindow(string[] fullFilePaths)
 		{
@@ -142,8 +142,7 @@ namespace B1NARY.Audio.Editor
 					break;
 			}
 
-
-			bool InRange(int value, int min, int max)
+			static bool InRange(int value, int min, int max)
 				=> value > max ? false : value < min ? false : true;
 		}
 

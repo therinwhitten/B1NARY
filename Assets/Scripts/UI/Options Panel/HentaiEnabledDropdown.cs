@@ -9,7 +9,7 @@
 	{
 		private static int HentaiEnabledToInt => Convert.ToInt32(PlayerConfig.Instance.hEnable.Value);
 		public override int InitialValue => HentaiEnabledToInt;
-		public override List<KeyValuePair<string, bool>> DefinedPairs => new List<KeyValuePair<string, bool>>()
+		public override List<KeyValuePair<string, bool>> DefinedPairs => new()
 		{
 			new KeyValuePair<string, bool>("Twitch", false),
 			new KeyValuePair<string, bool>("Hentai", true),

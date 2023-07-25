@@ -40,8 +40,7 @@
 		public const string MIXER_MUSIC = "Music";
 		public const string MIXER_SFX = "SFX";
 		public const string MIXER_UI = "UI";
-		public static Dictionary<string, ChangableValue<float>> GetConstantMixers() 
-			=> new Dictionary<string, ChangableValue<float>>()
+		public static Dictionary<string, ChangableValue<float>> GetConstantMixers() => new()
 		{
 			[MIXER_MASTER] = PlayerConfig.Instance.audio.master,
 			[MIXER_MUSIC] = PlayerConfig.Instance.audio.music,

@@ -22,7 +22,7 @@ namespace B1NARY.Editor
 					height = masterRect.height / lines,
 					yPos = masterRect.y + ((int)width * (currentLinePoint - 1)),
 					xPos = i % (xCount + 1) + masterRect.x;
-				Rect buttonRect = new Rect(xPos, yPos, width, height);
+				Rect buttonRect = new(xPos, yPos, width, height);
 				buttonData[i] = GUI.Button(buttonRect, data[i]);
 			}
 			int iterativeDictionary = -1;
@@ -39,8 +39,7 @@ namespace B1NARY.Editor
 
 
 
-		public static GUIContent ToGUIContent(this string input)
-			=> new GUIContent(input);
+		public static GUIContent ToGUIContent(this string input) => new(input);
 		public static GUIContent[] ToGUIContent(this IEnumerable<string> input)
 			=> input.Select(line => new GUIContent(line)).ToArray();
 	}

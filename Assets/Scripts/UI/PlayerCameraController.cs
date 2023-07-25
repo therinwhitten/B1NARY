@@ -29,8 +29,8 @@
 			get
 			{
 				float range = originalSizes[0] - targetedCameras[0].orthographicSize;
-				Vector2 range2 = new Vector2(range, range);
-				Rect output = new Rect(originalPoint, range2);
+				Vector2 range2 = new(range, range);
+				Rect output = new(originalPoint, range2);
 				return output;
 			} 
 		}
@@ -86,7 +86,7 @@
 		public void SetOriginPosition(Vector2 newOriginPosition)
 		{
 			Rect range = OriginRange;
-			Vector3 newPos = new Vector3(newOriginPosition.x, newOriginPosition.y, transform.position.z);
+			Vector3 newPos = new(newOriginPosition.x, newOriginPosition.y, transform.position.z);
 			newPos.x = Mathf.Clamp(newPos.x, range.x - range.width, range.x + range.width);
 			newPos.y = Mathf.Clamp(newPos.y, range.y - range.height, range.y + range.height);
 			transform.position = newPos;

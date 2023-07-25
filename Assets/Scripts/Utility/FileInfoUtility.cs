@@ -19,7 +19,7 @@
 		/// <returns> A fileinfo that doesn't have any files to it. </returns>
 		public static FileInfo GetFileIncremental(this DirectoryInfo source, string fileName, bool alwaysIncludeNumber = false)
 		{
-			HashSet<string> otherNames = new HashSet<string>(source.EnumerateFiles().Select(fileInfo => fileInfo.Name));
+			HashSet<string> otherNames = new(source.EnumerateFiles().Select(fileInfo => fileInfo.Name));
 			if (alwaysIncludeNumber || otherNames.Contains(fileName))
 				for (int i = alwaysIncludeNumber ? 0 : 1; true; i++)
 				{

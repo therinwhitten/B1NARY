@@ -33,7 +33,7 @@
 		/// <summary>
 		/// All script-based commands for <see cref="ScriptDocument"/>
 		/// </summary>
-		public static readonly CommandArray Commands = new CommandArray()
+		public static readonly CommandArray Commands = new()
 		{
 			["changescene"] = (Action<string>)ChangeSceneCommand,//["changescene"] = (Action<string>)ChangeSceneCommand,
 			["returntomainmenu"] = (Action)ReturnToMainMenuCommand,
@@ -46,7 +46,7 @@
 		[ForcePause]
 		internal static void ReturnToMainMenuCommand()
 		{
-			CoroutineWrapper wrapper = new CoroutineWrapper(InstanceOrDefault, InstanceOrDefault.ReturnToMainMenu());
+			CoroutineWrapper wrapper = new(InstanceOrDefault, InstanceOrDefault.ReturnToMainMenu());
 			wrapper.AfterActions += (mono) =>
 			{
 				if (!ScriptHandler.TryGetInstance(out var handler))
@@ -244,7 +244,8 @@ namespace B1NARY.Editor
 			DisplaySubCategory("Persistent Listeners", group.PersistentListeners);
 			DisplaySubCategory("Non-Persistent Listeners", group.NonPersistentListeners);
 			EditorGUI.indentLevel--;
-			void DisplaySubCategory(string subHeader, IReadOnlyList<Action> delegates)
+
+			static void DisplaySubCategory(string subHeader, IReadOnlyList<Action> delegates)
 			{
 				EditorGUILayout.LabelField(subHeader, EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;

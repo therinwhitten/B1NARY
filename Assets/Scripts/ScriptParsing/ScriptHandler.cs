@@ -115,7 +115,7 @@
 
 
 
-		public Pauser pauser = new Pauser();
+		public Pauser pauser = new();
 		internal ScriptDocument document;
 		public bool HasDocument => document != null;
 		public bool IsActive { get; private set; } = false;
@@ -154,7 +154,7 @@
 			if (documentWatcher == null || documentWatcher.EndOfDocument)
 				return;
 			int currentIndex = documentWatcher.CurrentNode.GlobalIndex;
-			Document newDocument = new Document(document.ReadFile);
+			Document newDocument = new(document.ReadFile);
 			newDocument = newDocument.GetWithLanguage(newLanguage);
 			FileInfo file = newDocument.FullPath;
 			if (!file.Exists)
@@ -303,8 +303,8 @@ namespace B1NARY.Editor
 				for (int i = 0; i < scriptHandler.nextLineButtons.Length; i++)
 				{
 					Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20),
-						textEditorRect = new Rect(fullRect) { xMax = fullRect.xMax / 5 * 4 },
-						deleteButtonRect = new Rect(fullRect) { xMin = textEditorRect.xMax + 2 };
+						textEditorRect = new(fullRect) { xMax = fullRect.xMax / 5 * 4 },
+						deleteButtonRect = new(fullRect) { xMin = textEditorRect.xMax + 2 };
 					try
 					{
 						scriptHandler.playerInput.actions

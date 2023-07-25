@@ -28,7 +28,7 @@
 		public static DirectoryInfo CustomThemePath => RootPath.GetSubdirectory("Custom");
 		public static FileInfo DefaultThemePath => RootPath.GetFile("Default.xml");
 		public readonly static IndexFile indexFile = IndexFile.LoadNew();
-		public static CommandArray Commands = new CommandArray()
+		public static CommandArray Commands = new()
 		{
 			["colorformat"] = (Action<string>)(newColorFormat =>
 			{
@@ -122,7 +122,7 @@
 		}
 
 		internal static List<(FileInfo fileInfo, ColorFormat format)> AllFormats =>
-			new List<(FileInfo fileInfo, ColorFormat format)>(AvailableFormats)
+			new(AvailableFormats)
 			{
 				(DefaultThemePath, DefaultFormat)
 			};
@@ -172,7 +172,7 @@
 				if (m_playerFormats is null)
 				{
 					m_playerFormats = new List<ColorFormat>();
-					HashSet<string> names = new HashSet<string>(indexFile.files);
+					HashSet<string> names = new(indexFile.files);
 					var allFormats = AllFormats;
 					for (int i = 0; i < allFormats.Count; i++)
 					{
@@ -222,7 +222,7 @@ namespace B1NARY.UI.Colors.Editor
 
 	public class ColorFormatWindow : EditorWindow
 	{
-		private static readonly Vector2Int defaultMinSize = new Vector2Int(300, 350);
+		private static readonly Vector2Int defaultMinSize = new(300, 350);
 		[MenuItem("B1NARY/Color Format Editor", priority = 1)]
 		public static void ShowWindow()
 		{
@@ -240,8 +240,8 @@ namespace B1NARY.UI.Colors.Editor
 		private void OnGUI()
 		{
 			Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20f);
-			Rect leftRect = new Rect(fullRect) { width = fullRect.width / 3 };
-			Rect rightRect = new Rect(fullRect) { xMin = leftRect.xMax + 2 };
+			Rect leftRect = new(fullRect) { width = fullRect.width / 3 };
+			Rect rightRect = new(fullRect) { xMin = leftRect.xMax + 2 };
 			List<(FileInfo fileInfo, ColorFormat format)> allFormats = ColorFormat.AllFormats;
 			newItemName = EditorGUI.TextField(rightRect, newItemName);
 			if (GUILayout.Button("Reset Metadata"))

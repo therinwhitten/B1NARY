@@ -22,7 +22,7 @@
 		/// </summary>
 		[field: NonSerialized, XmlIgnore]
 		public event UpdatedConstantValue<T> UpdatedValue;
-		private Dictionary<string, T> m_constants = new Dictionary<string, T>();
+		private Dictionary<string, T> m_constants = new();
 		public Dictionary<string, T> Constants
 		{
 			get
@@ -33,7 +33,7 @@
 			}
 		}
 		[field: NonSerialized, XmlIgnore]
-		private Dictionary<string, Func<T>> m_pointers = new Dictionary<string, Func<T>>();
+		private Dictionary<string, Func<T>> m_pointers = new();
 		public Dictionary<string, Func<T>> Pointers
 		{
 			get
@@ -91,7 +91,7 @@
 		{
 			get
 			{
-				List<string> keys = new List<string>(Constants.Keys);
+				List<string> keys = new(Constants.Keys);
 				keys.AddRange(Pointers.Keys);
 				return keys;
 			}
@@ -101,7 +101,7 @@
 		{
 			get
 			{
-				List<T> values = new List<T>(Constants.Values);
+				List<T> values = new(Constants.Values);
 				values.AddRange(Pointers.Values.Select(item => item.Invoke()));
 				return values;
 			}
@@ -158,9 +158,9 @@
 
 		public IEnumerator<KeyValuePair<string, T>> GetEnumerator()
 		{
-			using (var enumerator = Constants.AsEnumerable().GetEnumerator())
-				while (enumerator.MoveNext())
-					yield return enumerator.Current;
+			using var enumerator = Constants.AsEnumerable().GetEnumerator();
+			while (enumerator.MoveNext())
+				yield return enumerator.Current;
 			// XML parser doesn't like it
 			//using (var enumerator = pointers.AsEnumerable().GetEnumerator())
 			//	while (enumerator.MoveNext())
@@ -169,9 +169,9 @@
 
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			using (var enumerator = Constants.AsEnumerable().GetEnumerator())
-				while (enumerator.MoveNext())
-					yield return enumerator.Current;
+			using var enumerator = Constants.AsEnumerable().GetEnumerator();
+			while (enumerator.MoveNext())
+				yield return enumerator.Current;
 			// XML parser doesn't like it
 			//using (var enumerator = pointers.AsEnumerable().GetEnumerator())
 			//	while (enumerator.MoveNext())
@@ -235,7 +235,7 @@
 				floats = new Collection<float>()
 			};
 			@interface.bools.Add("henable", HentaiEnabled);
-			bool HentaiEnabled() => PlayerConfig.Instance.hEnable;
+			static bool HentaiEnabled() => PlayerConfig.Instance.hEnable;
 			return @interface;
 		}
 
@@ -268,7 +268,7 @@
 			bools.Add("henable", HentaiEnabled);
 			ints = new Collection<int>();
 			floats = new Collection<float>();
-			bool HentaiEnabled() => PlayerConfig.Instance.hEnable;
+			static bool HentaiEnabled() => PlayerConfig.Instance.hEnable;
 		}
 	}
 }
