@@ -31,7 +31,7 @@
 				// Switching names really, quirks n stuff
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.CurrentName = characterName;
 					return;
 				}
 				// Actual code
@@ -46,7 +46,7 @@
 				// Switching names really, quirks n stuff
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.CurrentName = characterName;
 					return;
 				}
 				// Actual code
@@ -70,7 +70,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.CurrentName = characterName;
 					return;
 				}
 				Character actor = EmptyActor.AddTo(Instance);
@@ -80,7 +80,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.CurrentName = characterName;
 					return;
 				}
 				Character emptyCharacter = EmptyActor.AddTo(Instance);
@@ -125,7 +125,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = newName;
+					CharacterNames.ChangingNameOf.CurrentName = newName;
 					return;
 				}
 				Instance.RenameCharacter(oldName, newName);
@@ -134,7 +134,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CharacterNames.CurrentName = newName;
+					CharacterNames.ChangingNameOf.CurrentName = newName;
 					return;
 				}
 				Instance.RenameCharacter(Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName, newName);

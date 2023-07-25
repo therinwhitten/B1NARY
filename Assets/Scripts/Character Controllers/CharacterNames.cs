@@ -13,14 +13,12 @@
 #warning TODO: With it using lazy classes, it may be helpful in the future to simply convert them to normal variables in .NET 5, around there.
 	public class CharacterNames : IXmlSerializable
 	{
-		public static IActor ChangingNameOf { get; private set; } = null;
+		public static CharacterNames ChangingNameOf { get; private set; } = null;
 		public static bool ChangingNames => ChangingNameOf != null;
 
 		private Dictionary<string, Lazy<string>> _characterNames;
-		public IActor TargetActor { get; }
-		public CharacterNames(IActor actor)
+		public CharacterNames()
 		{
-			TargetActor = actor;
 			_characterNames = new Dictionary<string, Lazy<string>>();
 			for (int i = 0; i < Languages.Instance.Count; i++)
 				_characterNames.Add(Languages.Instance[i], new Lazy<string>(() => ""));
@@ -54,7 +52,7 @@
 
 		private string GetAlternateName(string targetLanguage, int documentIndex)
 		{
-			ChangingNameOf = TargetActor;
+			ChangingNameOf = this;
 			Document newDocument = new Document(ScriptHandler.Instance.document.ReadFile);
 			newDocument = newDocument.GetWithLanguage(targetLanguage);
 			FileInfo info = newDocument.FullPath;

@@ -51,7 +51,6 @@
 
 		private void Awake()
 		{
-			CharacterNames = new CharacterNames(this);
 			allActors.AddLast(this);
 			voices.Add(gameObject.AddComponent<VoiceActorHandler>());
 			if (string.IsNullOrEmpty(CharacterNames.CurrentName))
@@ -61,7 +60,7 @@
 		{
 			allActors.Remove(this);
 		}
-		public CharacterNames CharacterNames { get; private set; }
+		public CharacterNames CharacterNames { get; private set; } = new CharacterNames();
 		string IActor.GameObjectName => gameObject.name;
 		public void SayLine(ScriptLine line)
 		{
