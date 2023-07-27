@@ -146,8 +146,8 @@ namespace B1NARY.UI.Colors.Editor
 	[CustomEditor(typeof(UIThemeHandler))]
 	public class UIThemeHandlerEditor : Editor
 	{
-		private static readonly ReadOnlyCollection<string> defaultValues =
-			new ReadOnlyCollection<string>(new string[]
+		private static readonly ReadOnlyCollection<string> defaultValues = 
+			new(new string[]
 			{
 				ColorFormat.COLOR_NAME_PRIMARY,
 				ColorFormat.COLOR_NAME_SECONDARY
@@ -226,7 +226,7 @@ namespace B1NARY.UI.Colors.Editor
 		public void ModifyColor(string label, Ref<string> colorName)
 		{
 			// Display warning message if its not present in all available formats
-			List<string> unsupportedFormats = new List<string>();
+			List<string> unsupportedFormats = new();
 			for (int i = 0; i < ColorFormat.AvailableFormats.Count; i++)
 				if (!ColorFormat.AvailableFormats[i].format.TryGetColor(colorName, out _))
 					unsupportedFormats.Add(ColorFormat.AvailableFormats[i].format.FormatName);

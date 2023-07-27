@@ -47,14 +47,14 @@
 					pair.target.deleteButton.onClick.AddListener(() =>
 					{
 						deletionActionPanel.gameObject.SetActive(true);
-						deletionActionPanel.text.text = "Delete Save?";
+						deletionActionPanel.text.text = "$DELETE";
 						deletionActionPanel.OnPress += (delete) => { if (delete) Delete(pair.source); };
 					});
 				// Adding override function
 				pair.target.button.onClick.AddListener(() =>
 				{
 					modifyActionPanel.gameObject.SetActive(true);
-					modifyActionPanel.text.text = "Override Save?";
+					modifyActionPanel.text.text = "$OVERRIDE";
 					modifyActionPanel.inputField.text = pair.source.SaveName;
 					modifyActionPanel.OnPress += (@override) => { if (@override) Override(pair.source, SaveSlot.ActiveSlot, modifyActionPanel.inputField.text); };
 				});
@@ -79,7 +79,7 @@
 			behaviour.button.onClick.AddListener(() =>
 			{
 				modifyActionPanel.gameObject.SetActive(true);
-				modifyActionPanel.text.text = "New Save?";
+				modifyActionPanel.text.text = "$NEW";
 				modifyActionPanel.inputField.text = "Quicksave";
 				modifyActionPanel.OnPress += (@override) => { if (@override) CreateNew(SaveSlot.ActiveSlot, modifyActionPanel.inputField.text); };
 			});

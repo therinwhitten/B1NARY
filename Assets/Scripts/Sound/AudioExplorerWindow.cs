@@ -305,7 +305,7 @@ namespace B1NARY.Audio.Editor
 		// https://stackoverflow.com/questions/6723487/how-to-sort-a-string-array-by-numeric-style
 		public static string[] NumericalSort(string[] array)
 		{
-			Regex rgx = new Regex("([^0-9]*)([0-9]+)");
+			Regex rgx = new("([^0-9]*)([0-9]+)");
 			Array.Sort(array, (a, b) =>
 			{
 				var ma = rgx.Matches(a);

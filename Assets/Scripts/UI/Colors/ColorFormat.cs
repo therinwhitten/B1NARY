@@ -24,18 +24,18 @@
 		/// default if something happens.
 		/// </summary>
 		[XmlNamedAs("Primary")]
-		public Color primaryUI = new Color(ToPercent(47), ToPercent(161), ToPercent(206));
+		public Color primaryUI = new(ToPercent(47), ToPercent(161), ToPercent(206));
 		/// <summary>
 		/// The secondary color to be used by all UI. The yang to the 
 		/// <see cref="primaryUI"/> ying.
 		/// </summary>
 		[XmlNamedAs("Secondary")]
-		public Color SecondaryUI = new Color(ToPercent(47), ToPercent(206), ToPercent(172));
+		public Color SecondaryUI = new(ToPercent(47), ToPercent(206), ToPercent(172));
 		/// <summary>
 		/// 
 		/// </summary>
 		[XmlNamedAs("Extras")]
-		public Dictionary<string, Color> ExtraUIColors = new Dictionary<string, Color>();
+		public Dictionary<string, Color> ExtraUIColors = new();
 
 		// OTHER STRUCTS -------------------
 

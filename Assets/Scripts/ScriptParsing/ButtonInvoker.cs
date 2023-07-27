@@ -8,7 +8,7 @@
 
 	public class ButtonInvoker : Singleton<ButtonInvoker>
 	{
-		public static CommandArray Commands = new CommandArray()
+		public static CommandArray Commands = new()
 		{
 			["pressbutton"] = ((Action<string>)((name) =>
 			{

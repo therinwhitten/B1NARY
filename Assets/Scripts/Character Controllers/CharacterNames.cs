@@ -1,6 +1,7 @@
 ﻿namespace B1NARY
 {
 	using B1NARY.CharacterManagement;
+	using B1NARY.DataPersistence;
 	using B1NARY.Scripting;
 	using B1NARY.UI.Globalization;
 	using OVSXmlSerializer;
@@ -12,33 +13,32 @@
 
 	public class CharacterNames : IXmlSerializable
 	{
-		public static CharacterNames ChangingNameOf { get; private set; } = null;
+		public static LanguagedName ChangingNameOf { get; private set; } = null;
 		public static bool ChangingNames => ChangingNameOf != null;
 
-		private Dictionary<string, Lazy<string>> _characterNames;
+		private Dictionary<string, LanguagedName> _characterNames = new();
 		public CharacterNames()
 		{
-			_characterNames = new Dictionary<string, Lazy<string>>();
 			for (int i = 0; i < Languages.Instance.Count; i++)
-				_characterNames.Add(Languages.Instance[i], new Lazy<string>(""));
+				_characterNames.Add(Languages.Instance[i], new LanguagedName(-1, Languages.Instance[i], ""));
 		}
 
 		public string this[string language]
 		{
-			get => _characterNames[language].Value;
+			get => _characterNames[language].Name;
 			set
 			{
-				_characterNames[language] = new Lazy<string>(() => value);
+				_characterNames[language] = new LanguagedName(-1, language, value);
 				// On value change, also reflect on the others
 				if (ChangingNames)
 					return;
+				int index = ScriptHandler.Instance.documentWatcher.CurrentNode.GlobalIndex;
 				for (int i = 0; i < Languages.Instance.Count; i++)
 				{
 					string targetLanguage = Languages.Instance[i];
 					if (targetLanguage == language)
 						continue;
-					int index = ScriptHandler.Instance.documentWatcher.CurrentNode.GlobalIndex;
-					_characterNames[targetLanguage] = new Lazy<string>(() => GetAlternateName(targetLanguage, index));
+					_characterNames[targetLanguage] = new LanguagedName(index, targetLanguage);
 				}
 			}
 		}
@@ -49,33 +49,18 @@
 			set => this[Languages.CurrentLanguage] = value;
 		}
 
-		private string GetAlternateName(string targetLanguage, int documentIndex)
-		{
-			ChangingNameOf = this;
-			Document newDocument = new(ScriptHandler.Instance.document.ReadFile);
-			newDocument = newDocument.GetWithLanguage(targetLanguage);
-			FileInfo info = newDocument.FullPath;
-			if (!info.Exists)
-			{
-				Debug.Log($"{info.FullName} doesn't exist, using core path instead");
-				info = newDocument.GetWithoutLanguage().FullPath;
-			}
-
-			ScriptHandler.config.stopOnAllLines = true;
-			var document = new ScriptDocument(ScriptHandler.config, info);
-			IDocumentWatcher watcher = document.StartAtLine(documentIndex);
-			watcher.NextNode(out _); // changes line here
-			ScriptHandler.config.stopOnAllLines = false;
-			ChangingNameOf = null;
-			return _characterNames[targetLanguage].Value;
-		}
-
 		bool IXmlSerializable.ShouldWrite => true;
 		void IXmlSerializable.Read(XmlNode value)
 		{
 			_characterNames.Clear();
 			for (int i = 0; i < value.ChildNodes.Count; i++)
-				_characterNames[value.ChildNodes[i].Name] = new Lazy<string>(() => value.ChildNodes[i].InnerText);
+			{
+				string language = value.ChildNodes[i].Name;
+				LanguagedName name = new(-1, language, value.ChildNodes[i].InnerText);
+				ChangingNameOf = name;
+				_characterNames[language] = name;
+				ChangingNameOf = null;
+			}
 		}
 
 		void IXmlSerializable.Write(XmlDocument sourceDocument, XmlNode currentNode)
@@ -84,8 +69,45 @@
 			while (enumerator.MoveNext())
 			{
 				var element = sourceDocument.CreateElement(enumerator.Current.Key);
-				element.InnerText = enumerator.Current.Value.Value;
+				element.InnerText = enumerator.Current.Value.Name;
 				currentNode.AppendChild(element);
+			}
+		}
+
+		public record LanguagedName(int DocumentIndex, string Language)
+		{
+			public string Name
+			{
+				get
+				{
+					if (m_name is null)
+					{
+						ChangingNameOf = this;
+						Document newDocument = new(ScriptHandler.Instance.document.ReadFile);
+						newDocument = newDocument.GetWithLanguage(Language);
+						FileInfo info = newDocument.FullPath;
+						if (!info.Exists)
+						{
+							Debug.Log($"{info.FullName} doesn't exist, using core path instead");
+							info = newDocument.GetWithoutLanguage().FullPath;
+						}
+
+						ScriptHandler.config.stopOnAllLines = true;
+						var document = new ScriptDocument(ScriptHandler.config, info);
+						IDocumentWatcher watcher = document.StartAtLine(DocumentIndex);
+						watcher.NextNode(out _); // changes line here
+						ScriptHandler.config.stopOnAllLines = false;
+						ChangingNameOf = null;
+					}
+					return m_name;
+				}
+				set => m_name = value;
+			}
+			private string m_name = null;
+
+			public LanguagedName(int DocumentIndex, string Language, string Name) : this(DocumentIndex, Language)
+			{
+				this.Name = Name;
 			}
 		}
 	}

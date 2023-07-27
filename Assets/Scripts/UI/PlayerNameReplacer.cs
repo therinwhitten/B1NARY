@@ -30,7 +30,7 @@
 			CharacterManager.Instance.ActiveCharacterChanged += ActiveCharacterChanged;
 			PlayerConfig.Instance.language.ValueChanged += ChangedLanguage;
 			if (displayOnlyPlayerName)
-				ChangeText(SaveSlot.ActiveSlot.strings[SaveSlot.KEY_PLAYER_NAME]);
+				ChangeText(SaveSlot.ActiveSlot.PlayerName);
 		}
 		private void OnDisable()
 		{

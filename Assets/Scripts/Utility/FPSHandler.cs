@@ -9,12 +9,12 @@
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
 		private static void Constructor()
 		{
-			PlayerConfig.Instance.graphics.refreshRate.AttachValue(count => Application.targetFrameRate = count);
+			PlayerConfig.Instance.graphics.frameRate.AttachValue(count => Application.targetFrameRate = count);
 		}
 
 		public void ChangeTarget(int frameRate)
 		{
-			PlayerConfig.Instance.graphics.refreshRate.Value = frameRate;
+			PlayerConfig.Instance.graphics.frameRate.Value = frameRate;
 		}
 	}
 }

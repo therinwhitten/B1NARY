@@ -43,14 +43,14 @@
 				pair.target.button.onClick.AddListener(() =>
 				{
 					actionPanel.gameObject.SetActive(true);
-					actionPanel.text.text = "Load Game?";
+					actionPanel.text.text = "$LOAD";
 					actionPanel.OnPress += shouldLoad => { if (shouldLoad) pair.source.Load(); };
 				});
 				if (pair.target.deleteButton != null)
 					pair.target.deleteButton.onClick.AddListener(() =>
 					{
 						actionPanel.gameObject.SetActive(true);
-						actionPanel.text.text = "Delete Save?";
+						actionPanel.text.text = "$DELETE";
 						actionPanel.OnPress += (delete) => { if (delete) Delete(pair.source); };
 					});
 				if (slotPair.Value.Value.metadata.thumbnail != null)
@@ -106,10 +106,10 @@ namespace B1NARY.UI.Editor
 		private void Awake() => panel = (LoadPanel)target;
 		public override void OnInspectorGUI()
 		{
-			panel.slotTemplate = DirtyAuto.Field(target, new GUIContent("Slot"), panel.slotTemplate, true);
-			panel.row = DirtyAuto.Field(target, new GUIContent("Row"), panel.row, true);
-			panel.actionPanel = DirtyAuto.Field(target, new GUIContent("Action Panel"), panel.actionPanel, true);
-			panel.objectsPerRow = DirtyAuto.Slider(target, new GUIContent("Columns"), panel.objectsPerRow, 1, 6);
+			panel.slotTemplate = DirtyAuto.Field(target, new("Slot"), panel.slotTemplate, true);
+			panel.row = DirtyAuto.Field(target, new("Row"), panel.row, true);
+			panel.actionPanel = DirtyAuto.Field(target, new("Action Panel"), panel.actionPanel, true);
+			panel.objectsPerRow = DirtyAuto.Slider(target, new("Columns"), panel.objectsPerRow, 1, 6);
 		}
 	}
 }

@@ -124,6 +124,6 @@
 		///		of creating a custom GameObject for it.
 		/// </summary>
 		public static bool ThrowErrorIfEmpty { get; set; } = true;
-		protected static object _lock = new object();
+		protected static object _lock = new();
 	}
 }

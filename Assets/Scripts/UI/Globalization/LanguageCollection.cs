@@ -29,8 +29,8 @@
 		 
 		public void Save()
 		{
-			using (var stream = LanguagesInfo.Open(FileMode.Create))
-				XmlSerializer<Languages>.Default.Serialize(stream, this, "Languages");
+			using var stream = LanguagesInfo.Open(FileMode.Create);
+			XmlSerializer<Languages>.Default.Serialize(stream, this, "Languages");
 		}
 
 #if UNITY_EDITOR
@@ -107,7 +107,7 @@ namespace B1NARY.UI.Globalization.Editor
 	{
 
 
-		private static readonly Vector2Int defaultMinSize = new Vector2Int(300, 350);
+		private static readonly Vector2Int defaultMinSize = new(300, 350);
 		[MenuItem("B1NARY/Language Selection", priority = 1)]
 		public static void ShowWindow()
 		{

@@ -9,7 +9,7 @@ namespace B1NARY.Editor.Debugger
 
 	public sealed class AudioTab : DebuggerTab
 	{
-		public override GUIContent Name => new GUIContent("Audio");
+		public override GUIContent Name => new("Audio");
 		public override bool ConstantlyRepaint => true;
 
 		public override void DisplayTab()

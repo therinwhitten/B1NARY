@@ -89,8 +89,7 @@ namespace B1NARY.Audio.Editor
 	[CustomEditor(typeof(SoundLibrary))]
 	public class SoundLibraryEditor : Editor
 	{
-		static Dictionary<string, List<bool>> headerGroupsToggledForMultiple
-			= new Dictionary<string, List<bool>>();
+		static Dictionary<string, List<bool>> headerGroupsToggledForMultiple = new();
 		string Name
 		{
 			get
