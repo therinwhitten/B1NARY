@@ -3,8 +3,10 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
+	using System.Text;
 	using TMPro;
 	using UnityEngine;
+	using LanguageValuePair = System.Collections.Generic.KeyValuePair<string, string>;
 
 	public class KeyedGlobalizer : MonoBehaviour
 	{
@@ -28,7 +30,7 @@
 				while (languageKeys.Count < value)
 				{
 					languageKeys.Add("");
-					languageValues.Add("");
+					languageValues.Add(string.Join(SPLIT_CHAR, Enumerable.Repeat("", languages.Count)));
 				}
 				while (languageKeys.Count > value)
 				{
@@ -47,7 +49,7 @@
 		/// </summary>
 		/// <param name="key"> The key to get the list of key-languages and value-texts. </param>
 		/// <exception cref="IndexOutOfRangeException"/>
-		public List<KeyValuePair<string, string>> this[string key]
+		public List<LanguageValuePair> this[string key]
 		{
 			get
 			{
@@ -56,8 +58,8 @@
 					if (languageKeys[i] != key)
 						continue;
 					string[] values = languageValues[i].Split(SPLIT_CHAR);
-					List<KeyValuePair<string, string>> output = values
-						.Zip(languages, (value, language) => new KeyValuePair<string, string>(language, value)).ToList();
+					List<LanguageValuePair> output = values
+						.Zip(languages, (value, language) => new LanguageValuePair(language, value)).ToList();
 					return output;
 				}
 				throw new IndexOutOfRangeException(key);
@@ -80,18 +82,19 @@
 				}
 				// Add leftover languages
 				for (var node = existingLanguages.First; node != null; node = node.Next)
-					value.Add(new KeyValuePair<string, string>(node.Value, ""));
+					value.Add(new LanguageValuePair(node.Value, ""));
 				// Finally, sort the list on order by the languages list
-				List<KeyValuePair<string, string>> sortedList = new(value.Count);
+				List<LanguageValuePair> sortedList = new(value.Count);
 				for (int i = 0; i < languages.Count; i++)
 				{
 					string language = languages[i];
 					int index = value.FindIndex(pair => pair.Key == language);
-					KeyValuePair<string, string> currentPair = value[index];
+					LanguageValuePair currentPair = value[index];
 					value.RemoveAt(index);
 					sortedList.Add(currentPair);
 				}
 				sortedList.AddRange(value);
+				//Debug.Log($"OLD: {string.Join("\n", value.Select(pair => $"{pair.Key}/{pair.Value}"))}, \nNEW: {string.Join("\n", sortedList.Select(pair => $"{pair.Key}/{pair.Value}"))}");
 				value = sortedList;
 
 				// Actually assign the values now lol
@@ -102,6 +105,7 @@
 					// ignoring the keys in the pairs
 					IEnumerable<string> unmerged = value.Select(pair => pair.Value);
 					languageValues[i] = string.Join(SPLIT_CHAR, unmerged);
+					return;
 				}
 				throw new IndexOutOfRangeException(key);
 			}
@@ -126,6 +130,21 @@
 			text = GetComponent<TMP_Text>();
 			UpdateLanguageList();
 		}
+
+		private LanguageValuePair oldValue;
+		private void Update()
+		{
+			if (text.text == oldValue.Value && Languages.CurrentLanguage == oldValue.Key)
+				return;
+			string newValue = this[Languages.CurrentLanguage, text.text];
+			text.text = newValue;
+			oldValue = new LanguageValuePair(Languages.CurrentLanguage, newValue);
+		}
+		private void OnDisable()
+		{
+			text.text = "";
+		}
+
 
 		internal void UpdateLanguageList()
 		{
@@ -175,10 +194,10 @@ namespace B1NARY.Globalization.Editor
 		{
 			KeyedGlobalizer globalizer = (KeyedGlobalizer)target;
 			globalizer.UpdateLanguageList();
-			if (enabled == null || enabled.Count != globalizer.languageKeys.Count)
-				enabled = new List<bool>(Enumerable.Repeat(true, globalizer.languageKeys.Count));
 			globalizer.text = DirtyAuto.Field(target, new("Text"), globalizer.text, true);
 			globalizer.ExpectedLines = DirtyAuto.Field(target, new("Expected Lines"), globalizer.ExpectedLines);
+			if (enabled == null || enabled.Count != globalizer.languageKeys.Count)
+				enabled = new List<bool>(Enumerable.Repeat(true, globalizer.languageKeys.Count));
 			EditorGUILayout.Space();
 			for (int i = 0; i < globalizer.languageKeys.Count; i++)
 			{
@@ -188,8 +207,10 @@ namespace B1NARY.Globalization.Editor
 				{
 					DirtyAuto.SetDirty(globalizer);
 					currentKey = newKey;
+					globalizer.languageKeys[i] = currentKey;
 				}
-				enabled[i] = EditorGUILayout.Foldout(enabled[i], globalizer.languageKeys[i]);
+				Rect copiedRect = GUILayoutUtility.GetLastRect();
+				enabled[i] = EditorGUI.Foldout(copiedRect, enabled[i], "");
 				if (!enabled[i])
 					continue;
 				EditorGUI.indentLevel++;
@@ -200,7 +221,7 @@ namespace B1NARY.Globalization.Editor
 					if (output != list[ii].Value)
 					{
 						DirtyAuto.SetDirty(globalizer);
-						list[i] = new KeyValuePair<string, string>(list[i].Key, output);
+						list[ii] = new KeyValuePair<string, string>(list[ii].Key, output);
 						globalizer[currentKey] = list;
 					}
 				}
