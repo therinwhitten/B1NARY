@@ -1985,7 +1985,7 @@ GameObject:
   - component: {fileID: 759374844800233038}
   - component: {fileID: 759374844800233032}
   - component: {fileID: 759374844800233033}
-  - component: {fileID: 3244408477274526654}
+  - component: {fileID: 5753493526584525310}
   m_Layer: 5
   m_Name: Name Question
   m_TagString: Untagged
@@ -2109,7 +2109,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &3244408477274526654
+--- !u!114 &5753493526584525310
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2118,20 +2118,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 759374844800233039}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Script: {fileID: 11500000, guid: c3a9f780bf66270499ee469f0a9582f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   text: {fileID: 759374844800233033}
-  languageKeys:
+  languages:
   - English
   - German
   - Japanese
   - Spanish
+  languageKeys:
+  - $LOAD
+  - $DELETE
   languageValues:
-  - Load?
-  - Laden?
-  - "\u30ED\u30FC\u30C9\uFF1F"
-  - "\xBFCargar?"
+  - "Load Save?\rSpeichern laden?\r\u30ED\u30FC\u30C9\u30FB\u30BB\u30FC\u30D6\uFF1F\r\xBFCargar
+    Guardar?"
+  - "Delete Save?\rSpeichern l\xF6schen?\r\u4FDD\u5B58\u3092\u524A\u9664\u3057\u307E\u3059\u304B\uFF1F\r\xBFBorrar
+    Guardar?"
 --- !u!1 &759374844811592114
 GameObject:
   m_ObjectHideFlags: 0
