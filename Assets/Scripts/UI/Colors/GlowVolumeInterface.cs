@@ -39,7 +39,7 @@
 		}
 		protected override void OnSingletonDestroy()
 		{
-			PlayerConfig.Instance.graphics.glow.ChangedValue -= ChangedValue;
+			PlayerConfig.Instance.graphics.glow.ValueChanged -= ChangedValue;
 		}
 
 		private void ChangedValue(float newValue)
