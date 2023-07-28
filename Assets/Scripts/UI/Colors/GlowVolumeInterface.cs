@@ -3,13 +3,13 @@
 	using B1NARY.DataPersistence;
 	using System;
 	using System.Linq;
+	using B1NARY.DesignPatterns;
 	using UnityEngine;
 	using UnityEngine.Rendering;
 	using static UnityEngine.InputSystem.Controls.AxisControl;
 
-	public sealed class GlowVolumeInterface : MonoBehaviour
+	public sealed class GlowVolumeInterface : Singleton<GlowVolumeInterface>
 	{
-		private string nameToSearch;
 		public Volume volume;
 		public float BloomIntensity
 		{
@@ -25,24 +25,26 @@
 			volume = GetComponent<Volume>();
 		}
 
-		private void Awake()
+		protected override void SingletonAwake()
 		{
 			if (volume == null)
-#warning TODO: Temporary fix, be sure to screw it in!
-				volume = GameObject.Find("UI Bloom").GetComponent<Volume>();
-			nameToSearch = volume.name;
-			PlayerConfig.Instance.graphics.glow.AttachValue((value) =>
-			{
-				if (this == null)
-					return;
-				BloomIntensity = value;
-			});
+				throw new MissingFieldException(nameof(volume));
+			PlayerConfig.Instance.graphics.glow.AttachValue(ChangedValue);
 			//SceneManager.Instance.SwitchedScenes.AddPersistentListener(() =>
 			//{
 			//	if (volume == null)
 			//		volume = GameObject.Find(nameToSearch).GetComponent<Volume>();
 			//	BloomIntensity = PlayerConfig.Instance.graphics.glow.Value;
 			//});
+		}
+		protected override void OnSingletonDestroy()
+		{
+			PlayerConfig.Instance.graphics.glow.ChangedValue -= ChangedValue;
+		}
+
+		private void ChangedValue(float newValue)
+		{
+			BloomIntensity = newValue;
 		}
 	}
 }
