@@ -31,7 +31,7 @@
 				// Switching names really, quirks n stuff
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.Name = characterName;
 					return;
 				}
 				// Actual code
@@ -46,7 +46,7 @@
 				// Switching names really, quirks n stuff
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.Name = characterName;
 					return;
 				}
 				// Actual code
@@ -70,7 +70,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.Name = characterName;
 					return;
 				}
 				Character actor = EmptyActor.AddTo(Instance);
@@ -80,7 +80,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CurrentName = characterName;
+					CharacterNames.ChangingNameOf.Name = characterName;
 					return;
 				}
 				Character emptyCharacter = EmptyActor.AddTo(Instance);
@@ -125,7 +125,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CurrentName = newName;
+					CharacterNames.ChangingNameOf.Name = newName;
 					return;
 				}
 				Instance.RenameCharacter(oldName, newName);
@@ -134,7 +134,7 @@
 			{
 				if (CharacterNames.ChangingNames)
 				{
-					CharacterNames.ChangingNameOf.CurrentName = newName;
+					CharacterNames.ChangingNameOf.Name = newName;
 					return;
 				}
 				Instance.RenameCharacter(Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName, newName);
@@ -241,7 +241,7 @@
 			{
 				if (components[i] is IActor controller)
 				{
-					character = new Character(this, gameObject, controller);
+					character = new Character(gameObject, controller);
 					gameObject.transform.SetParent(Transform);
 					m_charactersInScene.Add(character);
 					return true;
@@ -283,13 +283,10 @@
 	{
 		public GameObject characterObject;
 		public IActor controller;
-
-		private CharacterManager manager;
-		public Character(CharacterManager manager, GameObject characterObj, IActor controller)
+		public Character(GameObject characterObj, IActor controller)
 		{
 			this.characterObject = characterObj;
 			this.controller = controller;
-			this.manager = manager;
 		}
 		public void ChangeCharacterName(string newName) => controller.CharacterNames.CurrentName = newName;
 	}
