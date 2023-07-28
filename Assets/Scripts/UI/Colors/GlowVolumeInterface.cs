@@ -13,10 +13,10 @@
 		public Volume volume;
 		public float BloomIntensity
 		{
-			get => volume.profile.components.First().parameters[1].GetValue<float>();
+			get => volume.profile.components.First().parameters[2].GetValue<float>();
 			set
 			{
-				((VolumeParameter<float>)volume.profile.components.First().parameters[1]).value = value;
+				((VolumeParameter<float>)volume.profile.components.First().parameters[2]).value = value;
 			}
 		}
 
