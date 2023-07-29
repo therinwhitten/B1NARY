@@ -1264,7 +1264,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _localSortingOrder: 0
-  _color: {r: 1, g: 1, b: 1, a: 1}
+  _color: {r: 0.7075472, g: 0.5853832, b: 0.49728552, a: 1}
   _isOverwrittenDrawableMultiplyColors: 0
   _isOverwrittenDrawableScreenColors: 0
   _multiplyColor: {r: 1, g: 1, b: 1, a: 1}
@@ -4953,6 +4953,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7198ae67c7f9bd14b86134e395d11f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mouthType: 0
 --- !u!1 &5539914520957864121
 GameObject:
   m_ObjectHideFlags: 0
@@ -6839,7 +6840,7 @@ RectTransform:
   m_GameObject: {fileID: 5539914521429674480}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1000, y: 1000, z: 1}
+  m_LocalScale: {x: 1200, y: 1200, z: 1}
   m_Children:
   - {fileID: 5539914521557041237}
   - {fileID: 5539914521811018132}
@@ -7222,6 +7223,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BlendMode: 0
   MouthOpening: 1
+  <TargetMouth>k__BackingField: 0
 --- !u!114 &5539914521429674440
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7238,6 +7240,7 @@ MonoBehaviour:
   SamplingQuality: 2
   Gain: 7.98
   Smoothing: 0.477
+  <TargetMouth>k__BackingField: 0
 --- !u!114 &5539914521429674443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7312,6 +7315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedSizeIncreaseMultiplier: 1.1
   expressionController: {fileID: 5539914521429674434}
+  <FollowCubeParent>k__BackingField: {fileID: 0}
 --- !u!82 &5539914521429674486
 AudioSource:
   m_ObjectHideFlags: 0
