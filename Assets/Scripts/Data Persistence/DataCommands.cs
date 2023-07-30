@@ -30,16 +30,6 @@
 			}
 		}
 
-		private void OnEnable()
-		{
-			input.actions.FindAction(saveButton, true).performed += SaveGame;
-			input.actions.FindAction(loadButton, true).performed += LoadGame;
-		}
-		private void OnDisable()
-		{
-			input.actions.FindAction(saveButton, true).performed -= SaveGame;
-			input.actions.FindAction(loadButton, true).performed -= LoadGame;
-		}
 		public void SaveGame(InputAction.CallbackContext context)
 		{
 			StartCoroutine(ScreenshotDelay(Objects));

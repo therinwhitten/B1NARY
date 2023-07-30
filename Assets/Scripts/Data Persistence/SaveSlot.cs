@@ -210,41 +210,50 @@
 
 		public void Save()
 		{
-			bool completedTask = false;
-			SceneManager.Instance.StartCoroutine(MainThread());
-
-			hasSaved = true;
-			Stopwatch stopwatch = Stopwatch.StartNew();
-			metadata.lastSaved = DateTime.Now;
-			metadata.playedAmount += metadata.lastSaved - startPlay;
-			scriptPosition = ScriptPosition.Define();
-			startPlay = metadata.lastSaved;
-			characterSnapshots = ActorSnapshot.GetCurrentSnapshots();
-			audio = SerializedAudio.SerializeAudio();
-			formatName = ColorFormat.CurrentFormat.FormatName;
-
-			byte[] thumbnail = ScreenCapture.CaptureScreenshotAsTexture().EncodeToJPG();
-			Task.Run(() =>
+			try
 			{
-				metadata.thumbnail = new Thumbnail(new Vector2Int(128, 128), thumbnail);
-				using var stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write);
-				SlotSerializer.Serialize(stream, this);
+				bool completedTask = false;
+				SceneManager.Instance.StartCoroutine(MainThread());
 
-			}).ContinueWith((task) => 
-			{
-				completedTask = true;
-				if (task.IsFaulted) 
-					Debug.LogException(task.Exception); 
-				else 
-					Debug.Log($"Saved! \n{stopwatch.Elapsed}");
-				stopwatch.Stop();
-			});
+				hasSaved = true;
+				Stopwatch stopwatch = Stopwatch.StartNew();
+				metadata.lastSaved = DateTime.Now;
+				metadata.playedAmount += metadata.lastSaved - startPlay;
+				scriptPosition = ScriptPosition.Define();
+				startPlay = metadata.lastSaved;
+				characterSnapshots = ActorSnapshot.GetCurrentSnapshots();
+				audio = SerializedAudio.SerializeAudio();
+				formatName = ColorFormat.CurrentFormat.FormatName;
 
-			IEnumerator MainThread()
-			{
-				yield return new WaitUntil(() => completedTask);
-				EmptySaveCache();
+				byte[] thumbnail = ScreenCapture.CaptureScreenshotAsTexture().EncodeToJPG();
+				Task.Run(() =>
+				{
+					metadata.thumbnail = new Thumbnail(new Vector2Int(128, 128), thumbnail);
+					using MemoryStream tempStream = new();
+					SlotSerializer.Serialize(tempStream, this);
+					tempStream.Position = 0;
+					using FileStream stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write);
+					tempStream.CopyTo(stream);
+
+				}).ContinueWith((task) =>
+				{
+					completedTask = true;
+					if (task.IsFaulted)
+						DisplayException(task.Exception);
+					else
+						Debug.Log($"Saved! \n{stopwatch.Elapsed}");
+					stopwatch.Stop();
+				});
+
+				IEnumerator MainThread()
+				{
+					yield return new WaitUntil(() => completedTask);
+					EmptySaveCache();
+				}
 			}
+			catch (Exception ex) { DisplayException(ex); }
+
+			void DisplayException(Exception ex) => Debug.LogException(new InvalidProgramException("Unable to save!", ex));
 		}
 
 		public void Load()
@@ -253,6 +262,7 @@
 				throw new InvalidOperationException("Currently active save has not saved properly! Did you press quickload without saving?");
 			ActiveSlot = this;
 			CoroutineWrapper wrapper = new(ScriptHandler.Instance, scriptPosition.LoadToPosition());
+			metadata.lastSaved = DateTime.Now;
 			wrapper.AfterActions += (mono) =>
 			{
 				for (int i = 0; i < characterSnapshots.Length; i++)

@@ -143,6 +143,7 @@
 		private void OnDisable()
 		{
 			text.text = "";
+			oldValue = new LanguageValuePair();
 		}
 
 

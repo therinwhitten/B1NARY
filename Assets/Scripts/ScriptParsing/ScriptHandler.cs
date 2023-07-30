@@ -137,8 +137,6 @@
 		private void Awake()
 		{
 			DontDestroyOnLoad(transform.root);
-			for (int i = 0; i < nextLineButtons.Length; i++)
-				playerInput.actions.FindAction(nextLineButtons[i], true).performed += (context) => NextLine();
 			config.NormalLine += SayLine;
 			config.AttributeListeners += ChangeExpression;
 			config.EntryListeners += ChangeCharacter;

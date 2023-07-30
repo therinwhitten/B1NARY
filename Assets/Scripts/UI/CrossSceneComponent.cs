@@ -4,6 +4,8 @@
 	using System;
 	using System.Linq;
 	using UnityEngine;
+	using UnityEngine.EventSystems;
+	using UnityEngine.UI;
 
 	public sealed class CrossSceneComponent : GameObjectSingleton
 	{
@@ -12,6 +14,8 @@
 		{
 			GameObject instance = Resources.Load<GameObject>("Cross Scene");
 			instance = Instantiate(instance);
+			EventSystem eventSystem = instance.GetComponentInChildren<EventSystem>();
+			eventSystem.firstSelectedGameObject = FindFirstObjectByType<Button>().gameObject;
 		}
 	}
 }

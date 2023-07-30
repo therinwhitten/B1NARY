@@ -33,10 +33,23 @@
 			for (int i = 0; i < SaveSlot.AllSaves.Count; i++)
 			{
 				KeyValuePair<FileInfo, Lazy<SaveSlot>> slotPair = SaveSlot.AllSaves[i];
+				try
+				{
+					HandleSave(slotPair.Key, slotPair.Value);
+				} 
+				catch (Exception ex)
+				{
+					Debug.LogException(ex);
+				}
+			}
+			m_allObjects = newList;
+
+			void HandleSave(FileInfo fileInfo, Lazy<SaveSlot> saveSlot)
+			{
 				GameObject instance = AddEntry(slotTemplate);
 				var pair = new SaveSlotInstance()
 				{
-					source = slotPair.Value.Value,
+					source = saveSlot.Value,
 					target = instance.GetComponent<SavePanelBehaviour>(),
 				};
 				pair.source.hasSaved = true;
@@ -53,12 +66,12 @@
 						actionPanel.text.text = "$DELETE";
 						actionPanel.OnPress += (delete) => { if (delete) Delete(pair.source); };
 					});
-				if (slotPair.Value.Value.metadata.thumbnail != null)
-					pair.target.foregroundImage.sprite = slotPair.Value.Value.metadata.thumbnail.Sprite;
-				pair.target.tmpText.text = slotPair.Value.Value.DisplaySaveContents;
+				if (saveSlot.Value.metadata.thumbnail != null)
+					pair.target.foregroundImage.sprite = saveSlot.Value.metadata.thumbnail.Sprite;
+				pair.target.tmpText.text = saveSlot.Value.DisplaySaveContents;
 				newList.Add(pair);
+
 			}
-			m_allObjects = newList;
 		}
 
 		protected virtual void OnEnable()
