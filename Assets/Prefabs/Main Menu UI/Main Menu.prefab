@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 1194529603}
   - component: {fileID: 1194529605}
   - component: {fileID: 1194529604}
-  - component: {fileID: 2117309577}
+  - component: {fileID: 591755210972722856}
   m_Layer: 5
   m_Name: ChangeLog
   m_TagString: Untagged
@@ -320,30 +320,21 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '~New Loading Animation!
+  m_text: 'Polish Build and Steam Review Build
 
 
-    ~Main Menu Translations
+    ~Access H Scenes through Main
+    Menu Options
 
 
-    ~Some VA might
-    be interrupted in H Scenes. This is a known bug. Will be polished as we work
-    on Phase IV
+    ~Translations Work across the game.
 
 
-    ~To Zoom and Pan in H Scenes: Hold Right Click
-
-
-    ~Hentai
-    Scenes can only be accessed via the Main Menu or Finishing a Route. (WIP)
-
-
-    ~Auto
-    Skip in H Scenes and in Female Route Eyeblink stops working. Will be fixed in
-    Phase III.'
+    ~Lucas Model broke
+    right before build. Next build will fix it.'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9476861b6a9cdca409e8769907d1a9d0, type: 2}
-  m_sharedMaterial: {fileID: 9137770337806101678, guid: 9476861b6a9cdca409e8769907d1a9d0,
+  m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
+  m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -368,7 +359,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.95
+  m_fontSize: 30
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -386,7 +377,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -404,13 +395,13 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 15.521652, y: 0, z: 23.28244, w: 0}
+  m_margin: {x: 15.521652, y: 0, z: 22.088165, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &2117309577
+--- !u!114 &591755210972722856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -429,44 +420,29 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - '~New Loading Animation!
+  - 'Polish Build and Steam Review Build
 
 
-    ~Main Menu Translations
+    ~Access H Scenes through Main Menu
+    Options
 
 
-    ~Some VA might be
-    interrupted in H Scenes. This is a known bug. Will be polished as we work on
-    Phase IV
+    ~Translations Work across the game.
 
 
-    ~To Zoom and Pan in H Scenes: Hold Right Click
-
-
-    ~Hentai Scenes
-    can only be accessed via the Main Menu or Finishing a Route. (WIP)
-
-
-    ~Auto
-    Skip in H Scenes and in Female Route Eyeblink stops working. Will be fixed in
-    Phase III.'
-  - "~Neue Ladeanimation!  ~Hauptmen\xFC-\xDCbersetzungen  ~Einige VA k\xF6nnen in
-    H-Szenen unterbrochen werden. Dies ist ein bekannter Fehler. Wird mit der Arbeit
-    an Phase IV behoben.  ~Zum Zoomen und Schwenken in H-Szenen: Rechtsklick halten 
-    ~Hentai-Szenen k\xF6nnen nur \xFCber das Hauptmen\xFC oder das Beenden einer
-    Route erreicht werden. (WIP)  ~Auto Skip in H-Szenen und in Female Route Eyeblink
-    funktioniert nicht mehr. Wird in Phase III behoben."
-  - "~\u65B0\u3057\u3044\u30ED\u30FC\u30C7\u30A3\u30F3\u30B0\u30FB\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3 
-    ~\u30E1\u30A4\u30F3\u30E1\u30CB\u30E5\u30FC\u306E\u7FFB\u8A33  ~H\u30B7\u30FC\u30F3\u3067VA\u304C\u9014\u5207\u308C\u308B\u3053\u3068\u304C\u3042\u308A\u307E\u3059\u3002\u3053\u308C\u306F\u65E2\u77E5\u306E\u30D0\u30B0\u3067\u3059\u3002\u30D5\u30A7\u30FC\u30BAIV\u3067\u6539\u5584\u3055\u308C\u308B\u4E88\u5B9A\u3067\u3059\u3002 
-    ~H\u30B7\u30FC\u30F3\u3067\u30BA\u30FC\u30E0\u3068\u30D1\u30F3\u3092\u3059\u308B\u306B\u306F\uFF1A\u53F3\u30AF\u30EA\u30C3\u30AF\u3057\u305F\u307E\u307E\u3002 
-    ~HENTAI\u30B7\u30FC\u30F3\u306F\u30E1\u30A4\u30F3\u30E1\u30CB\u30E5\u30FC\u304B\u30EB\u30FC\u30C8\u7D42\u4E86\u304B\u3089\u306E\u307F\u30A2\u30AF\u30BB\u30B9\u3067\u304D\u307E\u3059\u3002(WIP) 
-    ~H\u30B7\u30FC\u30F3\u3068\u5973\u6027\u30EB\u30FC\u30C8\u306EEyeblink\u3067\u81EA\u52D5\u30B9\u30AD\u30C3\u30D7\u304C\u6A5F\u80FD\u3057\u306A\u304F\u306A\u308A\u307E\u3057\u305F\u3002\u30D5\u30A7\u30FC\u30BAIII\u3067\u4FEE\u6B63\u3055\u308C\u308B\u4E88\u5B9A\u3067\u3059\u3002"
-  - "~\xA1Nueva animaci\xF3n de carga!  ~Traducci\xF3n del men\xFA principal  ~Algunas
-    VA podr\xEDan interrumpirse en las Escenas H. Se trata de un error conocido.
-    Ser\xE1 pulido mientras trabajamos en la Fase IV.  ~Para Zoom y Pan en Escenas
-    H: Mantener Click Derecho  ~S\xF3lo se puede acceder a las Escenas Hentai a trav\xE9s
-    del Men\xFA Principal o Finalizando una Ruta. (WIP)  ~Auto Skip en Escenas H
-    y en Ruta Femenina Eyeblink deja de funcionar. Se arreglar\xE1 en la Fase III."
+    ~Lucas Model broke right
+    before build. Next build will fix it.'
+  - "Polnischer Build und Steam Review Build  ~Zugriff auf H-Szenen \xFCber Hauptmen\xFCoptionen 
+    ~Die \xDCbersetzungen funktionieren im ganzen Spiel.  ~Lucas Model ging kurz
+    vor dem Build kaputt. Der n\xE4chste Build wird es beheben."
+  - "\u30DD\u30FC\u30E9\u30F3\u30C9\u30D3\u30EB\u30C9\u3068Steam\u30EC\u30D3\u30E5\u30FC\u30D3\u30EB\u30C9 
+    ~\u30E1\u30A4\u30F3\u30E1\u30CB\u30E5\u30FC\u30AA\u30D7\u30B7\u30E7\u30F3\u304B\u3089H\u30B7\u30FC\u30F3\u306B\u30A2\u30AF\u30BB\u30B9\u53EF\u80FD 
+    ~\u30B2\u30FC\u30E0\u5168\u4F53\u3067\u7FFB\u8A33\u304C\u6A5F\u80FD\u3059\u308B\u3002 
+    ~\u30D3\u30EB\u30C9\u76F4\u524D\u306B\u30EB\u30FC\u30AB\u30B9\u306E\u30E2\u30C7\u30EB\u304C\u58CA\u308C\u307E\u3057\u305F\u3002\u6B21\u306E\u30D3\u30EB\u30C9\u3067\u4FEE\u6B63\u3057\u307E\u3059\u3002"
+  - "Polish Build y Steam Review Build  ~Acceso a las escenas H a trav\xE9s de las
+    opciones del men\xFA principal  ~Translations Trabajo en todo el juego.  ~El
+    modelo de Lucas se rompi\xF3 justo antes de la compilaci\xF3n. La pr\xF3xima
+    build lo arreglar\xE1."
 --- !u!1 &1996701403342450897
 GameObject:
   m_ObjectHideFlags: 0
@@ -478,7 +454,7 @@ GameObject:
   - component: {fileID: 2856876834438287494}
   - component: {fileID: 402505767438909959}
   - component: {fileID: 7116674988327568972}
-  - component: {fileID: 4234918375144726589}
+  - component: {fileID: 4757063995880071100}
   m_Layer: 5
   m_Name: Version Number
   m_TagString: Untagged
@@ -533,7 +509,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: P3 .1 Translations
+  m_text: P4 .1 Polish
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
   m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
@@ -603,7 +579,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &4234918375144726589
+--- !u!114 &4757063995880071100
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -622,10 +598,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - P3 .1 Translations
-  - "P3 .1 \xDCbersetzungen"
-  - "P3 .1 \u7FFB\u8A33"
-  - P3 .1 Traducciones
+  - P4 .1 Polish
+  - P4 .1 Polnisch
+  - "P4 .1 \u30DD\u30FC\u30E9\u30F3\u30C9\u8A9E"
+  - P4 .1 Polaco
 --- !u!1 &6094002358359024601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1020,7 +996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 96771996a85cbf94a948e900f8da64aa, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.16470589}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -10905,6 +10881,7 @@ GameObject:
   - component: {fileID: 8623014724245925098}
   - component: {fileID: 8623014724245925096}
   - component: {fileID: 8623014724245925099}
+  - component: {fileID: 1518425686013645688}
   m_Layer: 5
   m_Name: Credits Text TMP
   m_TagString: Untagged
@@ -11000,7 +10977,7 @@ MonoBehaviour:
     MIcah,  LumiereNox, RPG!, SinnamonDust, Tinko, Killashandra Lane, Vin Sama\n\nClosed
     Beta Team: \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9476861b6a9cdca409e8769907d1a9d0, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
     type: 2}
   m_fontSharedMaterials: []
@@ -11065,9 +11042,202 @@ MonoBehaviour:
   m_margin: {x: 0.000025862782, y: 2.1976917, z: 3.410234, w: -3.8406374}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1518425686013645688
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8623014724245925109}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 8623014724245925099}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - "\nDevelopment Team and Cast:\r\n\r\nProject Manager / Writer / Director / Unity
+    Engine/ Live 2D:\r\n\nTherinWhitten:\n https://twitter.com/gameb1nary\r\n\n\n\r\nDev
+    Team:\r\n\n\n\r\nAnOddDoorKnight :\nUnity work / Game Design\n\nhttps://twitter.com/AnOddDoorKnight\r\n\r\nOwildy:\nLive
+    2d Graphical Artist / Game Design\r\n\nhttps://twitter.com/Owlidy\r\n\nXplicit
+    : \nUnity Design / Game Design\r\n\nhttps://twitter.com/Xplicit3437\r\n\n\n\r\r\nCharacter
+    Artists:\r\n\n\r\nLittleChaos: \nMain Character Artist (Female), Lead Artist
+    Advisor\r\n\nhttps://twitter.com/littlechaos_1\r\n\r\nPuri (Kuru):\n Main Character
+    Artist (Male)\n\nhttps://twitter.com/Puri_Okada\r\n\n\n\r\n\r\nHentai Artist:\r\n\r\n\r\nAlfyria
+    : \nHentai Main Character Artist\r\n\nhttps://twitter.com/Alfyria\r\n\r\nHelbite:\nCo-Artist
+    , Colorist. Background Artist\r\n\nhttps://twitter.com/helbite\r\n\n\n\r\nBackground
+    Art:\r\n\n\r\nTaku :\n Main Background Artist\r\n\nhttps://twitter.com/Taku_Artworks\r\n\n\n\r\nPromotional
+    Artist:\r\n\n\r\nPtolevian: \nPromotion and Concept Artist\r\n\nhttps://twitter.com/mamayokonadito\r\n\n\n\n\r\nNarrator:\r\n\n\r\nComrade
+    Del: \nRoute Design, Voice Actor, Vtuber / Narrating\r\n\nhttps://twitter.com/Comrade_Del\r\n\n\nAsterella
+    Star:\nRoute Design, Voice Actress, Vtuber\r\n\nhttps://twitter.com/AsterellaS\r\n\n\n\r\nWriting
+    Editor In Chief\r\n\r\nShalen-Found: \nWriting Advisor, and overall evil editor
+    of death. 8P\r\n\nhttps://twitter.com/Shalen55129929\n\n\n\r\n\r\nMain Character(s):\r\n\r\nVincentHeart
+    SN:\n Route Design ,Male MC, Voice Actor, Vtuber\r\n\nhttps://twitter.com/ShinNagawa\r\n\r\n\n\r\nWaifus:\r\n\nAsterella
+    Star:\nRoute Design, Voice Actress, Vtuber\r\n\nhttps://twitter.com/AsterellaS\r\n\n\n\r\nFeFe:\nRoute
+    Design, Voice Actress, Vtuber, Music Advisorand Ambient Effects\r\n\nhttps://twitter.com/CovfefeChan\r\n\n\n\n\r\nHusbandos:\r\n\n\r\nComrade
+    Del: \nRoute Design, Voice Actor, Vtuber / Narrating\n\r\nhttps://twitter.com/Comrade_Del\r\n\n\n\r\nBenosphere:\nRoute
+    Design, Voice Actor, Vtuber\r\n\nhttps://twitter.com/BenosphereVT\r\n\n\n\r\r\n\r\nWatching
+    Lizard:\n Route Design, Voice Actor, Vtuber /Video Editor and Memelord\r\n\nhttps://twitter.com/LizardWatching\r\n\n\n\n\r\r\nSupporting
+    Cast:\r\n\n\r\nSzycrotic:\nRoute Design, Voice Actor, Vtuber\r\n\nhttps://twitter.com/Szycrotic\r\n\n\r\nNatsumi
+    Moe: \nRoute Design, Voice Actress, Vtuber\r\n\nhttps://twitter.com/Vtuber_Moe\r\n\n\n\r\nDoctor
+    Tokyo, (John) :\n Voice Acting\r\n\nhttps://twitter.com/DoctorTokyo\r\n\n\n\r\nRachi,
+    (Cindy)\nVoice Acting\r \n Cameo\n\nhttps://twitter.com/rachichu_\r\n\n\n\r\nMaeowi,
+    (Becks) : \nVA\r    / Cameo\n\nhttps://twitter.com/Maeowi\r\n\n\n\r\nHouse of
+    Cthulhu:\n Voice Acting\r\n\nhttps://twitter.com/house_cthulhu\r\n\n\n\r\nCameos:\r\n\n\n\r\nPapi:
+    \nLich King\r\n\nhttps://twitter.com/PapiTheLichKing\r\n\n\n\r\nVirtuallyLewd:
+    \nSuccubus in Training\r\n\nhttps://twitter.com/virtuallylewd\r\n\n\n\r\nOnigiri:\nFood
+    Chef Tutor\r\n\nhttps://twitter.com/OnigiriEn_\r\n\n\r\r\n\r\nStrawtorii, \n9-Tail
+    Fox Spirit\r\n\nhttps://twitter.com/Strawtorii\r\n\n\n\r\nSavory Nugget,\nNugget
+    Snack\r\n\nhttps://twitter.com/SavoryNugget\r\n\n\n\r\nAmayaa Blank,\nHost of
+    \u201CSinful\u201D\r\n\nhttps://twitter.com/AmayaBlankVT\r\n\n\n\r\nKota\nDemon/human
+    Hybrid\r\n\nhttps://twitter.com/KotaTheDemonVT\n\n\n\r\nCiel Dark Rose,\n Full
+    Demon Changeling\r\n\nhttps://twitter.com/CielDarkrose\n\n\n\n\nPatreon Contributors:\n\nFounders:\n\nKusinwolf,
+    MauPunch, Atomic, RandomHero, Tunguska, Ricin, Amelea Tan, Yuri Yumite, FrostyDaHomeboy,
+    Keyton Alexander, Roxanne Switch, Pyroflaze, BIRB, Odyn, Micah Owen, Ephraim
+    MIcah,  LumiereNox, RPG!, SinnamonDust, Tinko, Killashandra Lane, Vin Sama\n\nClosed
+    Beta Team: \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n"
+  - "Entwicklerteam und Besetzung:  Projektmanager / Autor / Regisseur / Unity Engine
+    / Live 2D:  TherinWhitten:  https://twitter.com/gameb1nary    Entwickler-Team:   
+    AnOddDoorKnight : Unity-Arbeit / Game Design  https://twitter.com/AnOddDoorKnight 
+    Owildy: Live 2D Grafiker / Game Design  https://twitter.com/Owlidy  Xplicit : 
+    Unity Design / Game Design  https://twitter.com/Xplicit3437   Charakter-K\xFCnstler:  
+    LittleChaos:  Main Character Artist (weiblich), Lead Artist Advisor  https://twitter.com/littlechaos_1 
+    Puri (Kuru):  Hauptfigur K\xFCnstler (m\xE4nnlich)  https://twitter.com/Puri_Okada    
+    Hentai-K\xFCnstler:   Alfyria :  Hentai-Hauptfigur-K\xFCnstler  https://twitter.com/Alfyria 
+    Helbite: Co-K\xFCnstler , Kolorist. Hintergrund K\xFCnstler  https://twitter.com/helbite   
+    Hintergrundgrafik:   Taku:  Haupt-Background-K\xFCnstler  https://twitter.com/Taku_Artworks   
+    Werbek\xFCnstler:   Ptolevian:  Promotion- und Konzeptk\xFCnstler  https://twitter.com/mamayokonadito    
+    Erz\xE4hler:   Genosse Del:  Routendesign, Synchronsprecher, Vtuber / Sprecher 
+    https://twitter.com/Comrade_Del   Asterella-Stern: Routendesign, Synchronsprecherin,
+    Vtuber  https://twitter.com/AsterellaS    Schreibender Chefredakteur  Schiefer-Fund:
+    Schreibberater und insgesamt b\xF6ser Redakteur des Todes. 8P  https://twitter.com/Shalen55129929    
+    Hauptfigur(en):  VincentHeart SN:  Routendesign, m\xE4nnlicher MC, Synchronsprecher,
+    Vtuber  https://twitter.com/ShinNagawa    Waifus:  Asterella-Stern: Routendesign,
+    Synchronsprecherin, Vtuber  https://twitter.com/AsterellaS    FeFe: Routendesign,
+    Synchronsprecherin, Vtuber, Musikberater und Umgebungseffekte  https://twitter.com/CovfefeChan    
+    Ehem\xE4nner:   Genosse Del:  Routendesign, Synchronsprecher, Vtuber / Sprecher 
+    https://twitter.com/Comrade_Del    Benosph\xE4re: Routendesign, Synchronsprecher,
+    Vtuber  https://twitter.com/BenosphereVT    Lizard beobachten:  Routendesign,
+    Synchronsprecher, Vtuber/Video-Editor und Memelord  https://twitter.com/LizardWatching   
+    Nebendarsteller:   Szycrotic: Routendesign, Synchronsprecher, Vtuber  https://twitter.com/Szycrotic  
+    Natsumi Moe:  Routendesign, Synchronsprecherin, Vtuber  https://twitter.com/Vtuber_Moe   
+    Doktor Tokio, (John) :  Sprachausgabe  https://twitter.com/DoctorTokyo    Rachi,
+    (Cindy) Sprachausgabe    Kamee  https://twitter.com/rachichu_    Maeowi, (Becks)
+    :  VA     /Kamee  https://twitter.com/Maeowi    Haus von Cthulhu:  Sprachausgabe
+    https://twitter.com/house_cthulhu    Kameen:    Papi:  K\xF6nig des Lichs  https://twitter.com/PapiTheLichKing   
+    Virtuell unz\xFCchtig:  Sukkubus in der Ausbildung  https://twitter.com/virtuallylewd   
+    Onigiri: Food Chef Tutor  https://twitter.com/OnigiriEn_   Strawtorii,  9-schw\xE4nziger
+    Fuchsgeist  https://twitter.com/Strawtorii    Herzhaftes Nugget, Nugget-Snack 
+    https://twitter.com/SavoryNugget    Amayaa Blank, Moderator von \"Sinful\"  https://twitter.com/AmayaBlankVT   
+    Kota D\xE4mon/Mensch-Hybrid  https://twitter.com/KotaTheDemonVT    Ciel Dunkle
+    Rose,  Voller D\xE4monen-Wechselbalg  https://twitter.com/CielDarkrose     Patreon-Mitwirkende: 
+    Gr\xFCnder:  Kusinwolf, MauPunch, Atomic, RandomHero, Tunguska, Ricin, Amelea
+    Tan, Yuri Yumite, FrostyDaHomeboy, Keyton Alexander, Roxanne Switch, Pyroflaze,
+    BIRB, Odyn, Micah Owen, Ephraim MIcah, LumiereNox, RPG!, SinnamonDust, Tinko,
+    Killashandra Lane, Vin Sama  Geschlossenes Beta-Team:"
+  - "\u958B\u767A\u30C1\u30FC\u30E0\u30FB\u30AD\u30E3\u30B9\u30C8:  \u30D7\u30ED\u30B8\u30A7\u30AF\u30C8\u30DE\u30CD\u30FC\u30B8\u30E3\u30FC
+    / \u30E9\u30A4\u30BF\u30FC / \u30C7\u30A3\u30EC\u30AF\u30BF\u30FC / Unity \u30A8\u30F3\u30B8\u30F3
+    / \u30E9\u30A4\u30D6 2D:  \u30C6\u30EA\u30F3\u30A6\u30A3\u30C3\u30C6\u30F3: https://twitter.com/gameb1nary   
+    \u958B\u767A\u30C1\u30FC\u30E0:    AnOddDoorKnight : \u30E6\u30CB\u30C6\u30A3\u4F5C\u54C1/\u30B2\u30FC\u30E0\u30C7\u30B6\u30A4\u30F3 
+    https://twitter.com/AnOddDoorKnight  \u30AA\u30A6\u30A3\u30EB\u30C7\u30A3: \u30E9\u30A4\u30D62D\u30B0\u30E9\u30D5\u30A3\u30AB\u30EB\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8/\u30B2\u30FC\u30E0\u30C7\u30B6\u30A4\u30F3 
+    https://twitter.com/Owlidy  \u30A8\u30AF\u30B9\u30D7\u30EA\u30B7\u30C3\u30C8
+    : \u30E6\u30CB\u30C6\u30A3\u30C7\u30B6\u30A4\u30F3/\u30B2\u30FC\u30E0\u30C7\u30B6\u30A4\u30F3 
+    https://twitter.com/Xplicit3437   \u30AD\u30E3\u30E9\u30AF\u30BF\u30FC\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8:  
+    \u30EA\u30C8\u30EB\u30AB\u30AA\u30B9: \u30E1\u30A4\u30F3\u30AD\u30E3\u30E9\u30AF\u30BF\u30FC\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8(\u5973\u6027)\u3001\u30EA\u30FC\u30C9\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8\u30A2\u30C9\u30D0\u30A4\u30B6\u30FC 
+    https://twitter.com/littlechaos_1  \u30D7\u30EA(\u30AF\u30EB): \u30E1\u30A4\u30F3\u30AD\u30E3\u30E9\u30AF\u30BF\u30FC\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8(\u7537\u6027) 
+    https://twitter.com/Puri_Okada     \u5909\u614B\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8:  
+    \u30A2\u30EB\u30D5\u30A3\u30EA\u30A2 : \u5909\u614B\u4E3B\u4EBA\u516C\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8 
+    https://twitter.com/Alfyria  \u30D8\u30EB\u30D0\u30A4\u30C8: \u5171\u540C\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8\u3001\u30AB\u30E9\u30FC\u30EA\u30B9\u30C8\u3002\u80CC\u666F\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8 
+    https://twitter.com/helbite    \u80CC\u666F\u30A2\u30FC\u30C8:   \u5353\uFF1A
+    \u4E3B\u306A\u80CC\u666F\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8  https://twitter.com/Taku_Artworks   
+    \u30D7\u30ED\u30E2\u30FC\u30B7\u30E7\u30F3\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8:  
+    \u30D7\u30C8\u30EC\u30D3\u30A2\u30F3: \u30D7\u30ED\u30E2\u30FC\u30B7\u30E7\u30F3\u3068\u30B3\u30F3\u30BB\u30D7\u30C8\u30A2\u30FC\u30C6\u30A3\u30B9\u30C8 
+    https://twitter.com/mamayokonadito     \u30CA\u30EC\u30FC\u30BF\u30FC\uFF1A  
+    \u540C\u5FD7\u30C7\u30EB: \u30EB\u30FC\u30C8\u30C7\u30B6\u30A4\u30F3\u3001\u58F0\u512A\u3001Vtuber
+    / \u30CA\u30EC\u30FC\u30B7\u30E7\u30F3  https://twitter.com/Comrade_Del   \u30A2\u30B9\u30C6\u30EC\u30E9\u30B9\u30BF\u30FC:
+    \u30EB\u30FC\u30C8\u30C7\u30B6\u30A4\u30F3\u3001\u58F0\u512A\u3001Vtuber  https://twitter.com/AsterellaS   
+    \u30E9\u30A4\u30C6\u30A3\u30F3\u30B0\u7DE8\u96C6\u9577  \u30B7\u30E3\u30EC\u30F3\u30D5\u30A1\u30A6\u30F3\u30C9:\u57F7\u7B46\u30A2\u30C9\u30D0\u30A4\u30B6\u30FC\u3001\u305D\u3057\u3066\u6B7B\u306E\u5168\u4F53\u7684\u306A\u90AA\u60AA\u306A\u7DE8\u96C6\u8005\u30028P 
+    https://twitter.com/Shalen55129929     \u30E1\u30A4\u30F3\u30AD\u30E3\u30E9\u30AF\u30BF\u30FC: 
+    \u30F4\u30A3\u30F3\u30BB\u30F3\u30C8\u30CF\u30FC\u30C8SN: \u30EB\u30FC\u30C8\u30C7\u30B6\u30A4\u30F3\u3001\u7537\u6027MC\u3001\u58F0\u512A\u3001Vtuber 
+    https://twitter.com/ShinNagawa    \u30EF\u30A4\u30D5\u30B9:  \u30A2\u30B9\u30C6\u30EC\u30E9\u30B9\u30BF\u30FC:
+    \u30EB\u30FC\u30C8\u30C7\u30B6\u30A4\u30F3\u3001\u58F0\u512A\u3001Vtuber  https://twitter.com/AsterellaS   
+    \u30D5\u30A7\u30D5\u30A7: \u30EB\u30FC\u30C8\u30C7\u30B6\u30A4\u30F3\u3001\u58F0\u512A\u3001Vtuber\u3001\u97F3\u697D\u30A2\u30C9\u30D0\u30A4\u30B6\u30FC\u3001\u30A2\u30F3\u30D3\u30A8\u30F3\u30C8\u30A8\u30D5\u30A7\u30AF\u30C8 
+    https://twitter.com/CovfefeChan     \u30CF\u30BA\u30D0\u30F3\u30C9:   \u540C\u5FD7\u30C7\u30EB:
+    \u30EB\u30FC\u30C8\u30C7\u30B6\u30A4\u30F3\u3001\u58F0\u512A\u3001Vtuber / \u30CA\u30EC\u30FC\u30B7\u30E7\u30F3 
+    https://twitter.com/Comrade_Del    \u30D9\u30CE\u30B9\u30D5\u30A3\u30A2: \u30EB\u30FC\u30C8\u30C7\u30B6\u30A4\u30F3\u3001\u58F0\u512A\u3001Vtuber 
+    https://twitter.com/BenosphereVT    \u30C8\u30AB\u30B2\u3092\u898B\u308B: \u30EB\u30FC\u30C8\u30C7\u30B6\u30A4\u30F3\u3001\u58F0\u512A\u3001Vtuber/\u30D3\u30C7\u30AA\u30A8\u30C7\u30A3\u30BF\u30FC\u3001\u30DF\u30FC\u30E0\u30ED\u30FC\u30C9 
+    https://twitter.com/LizardWatching    \u30B5\u30DD\u30FC\u30C8\u30AD\u30E3\u30B9\u30C8:  
+    \u30B7\u30AF\u30ED\u30C6\u30A3\u30C3\u30AF: \u30EB\u30FC\u30C8\u30C7\u30B6\u30A4\u30F3\u3001\u58F0\u512A\u3001Vtuber 
+    https://twitter.com/Szycrotic   \u840C\u3048\u590F\u7F8E: \u30EB\u30FC\u30C8\u30C7\u30B6\u30A4\u30F3\u3001\u58F0\u512A\u3001Vtuber 
+    https://twitter.com/Vtuber_Moe    \u30C9\u30AF\u30BF\u30FC\u6771\u4EAC(\u30B8\u30E7\u30F3):
+    \u58F0\u512A  https://twitter.com/DoctorTokyo    \u30E9\u30C1\u3001(\u30B7\u30F3\u30C7\u30A3)
+    \u58F0\u512A   \u30AB\u30E1\u30AA  https://twitter.com/rachichu_    \u30DE\u30A8\u30AA\u30A6\u30A3\u3001(\u30D9\u30C3\u30AF\u30B9):
+    \u30D0\u30FC\u30B8\u30CB\u30A2\u5DDE /\u30AB\u30E1\u30AA  https://twitter.com/Maeowi   
+    \u30AF\u30C8\u30A5\u30EB\u30D5\u306E\u5BB6: \u58F0\u512A https://twitter.com/house_cthulhu   
+    \u30AB\u30E1\u30AA\uFF1A    \u30D1\u30D4: \u30EA\u30C3\u30C1 \u30AD\u30F3\u30B0 
+    https://twitter.com/PapiTheLichKing    \u4E8B\u5B9F\u4E0A\u30B9\u30B1\u30D9:
+    \u30C8\u30EC\u30FC\u30CB\u30F3\u30B0\u4E2D\u306E\u30B5\u30AD\u30E5\u30D0\u30B9 
+    https://twitter.com/virtuallylewd    \u304A\u306B\u304E\u308A: \u30D5\u30FC\u30C9\u30B7\u30A7\u30D5\u30C1\u30E5\u30FC\u30BF\u30FC 
+    https://twitter.com/OnigiriEn_   \u30B9\u30C8\u30ED\u30C9\u30EA\u30A4\u3001 9\u30C6\u30FC\u30EB\u30D5\u30A9\u30C3\u30AF\u30B9\u30B9\u30D4\u30EA\u30C3\u30C8 
+    https://twitter.com/Strawtorii    \u30BB\u30A4\u30DC\u30EA\u30FC\u30CA\u30B2\u30C3\u30C8\u3001
+    \u30CA\u30B2\u30C3\u30C8\u30B9\u30CA\u30C3\u30AF  https://twitter.com/SavoryNugget   
+    \u30A2\u30DE\u30E4\u30D6\u30E9\u30F3\u30AF\u3001 \u300C\u7F6A\u6DF1\u3044\u300D\u306E\u30DB\u30B9\u30C8 
+    https://twitter.com/AmayaBlankVT    \u592A \u60AA\u9B54/\u4EBA\u9593\u306E\u30CF\u30A4\u30D6\u30EA\u30C3\u30C9 
+    https://twitter.com/KotaTheDemonVT    \u30B7\u30A8\u30EB\u30C0\u30FC\u30AF\u30ED\u30FC\u30BA\u3001
+    \u30D5\u30EB\u30C7\u30FC\u30E2\u30F3\u30C1\u30A7\u30F3\u30B8\u30EA\u30F3\u30B0 
+    https://twitter.com/CielDarkrose     \u30D1\u30C8\u30EC\u30AA\u30F3\u5BC4\u7A3F\u8005: 
+    \u5275\u8A2D \u8005\uFF1A  \u30AF\u30B7\u30F3\u30A6\u30EB\u30D5\u3001\u30DE\u30A6\u30D1\u30F3\u30C1\u3001\u30A2\u30C8\u30DF\u30C3\u30AF\u3001\u30E9\u30F3\u30C0\u30E0\u30D2\u30FC\u30ED\u30FC\u3001\u30C4\u30F3\u30B0\u30FC\u30B9\u30AB\u3001\u30EA\u30B7\u30F3\u3001\u30A2\u30E1\u30EC\u30A2\u30BF\u30F3\u3001\u30E6\u30EA\u30E6\u30DF\u30C6\u3001\u30D5\u30ED\u30B9\u30C6\u30A3\u30C0\u30DB\u30FC\u30E0\u30DC\u30FC\u30A4\u3001\u30AD\u30FC\u30C8\u30F3\u30A2\u30EC\u30AF\u30B5\u30F3\u30C0\u30FC\u3001\u30ED\u30AF\u30B5\u30FC\u30CC\u30B9\u30A4\u30C3\u30C1\u3001\u30D4\u30ED\u30D5\u30EC\u30A4\u30BA\u3001BIRB\u3001\u30AA\u30FC\u30C7\u30A3\u30F3\u3001\u30DE\u30A4\u30AB\u30AA\u30FC\u30A6\u30A7\u30F3\u3001\u30A8\u30D5\u30E9\u30A4\u30E0\u30DF\u30AB\u3001\u30EB\u30DF\u30A8\u30FC\u30EB\u30CE\u30C3\u30AF\u30B9\u3001RPG!\u3001\u30B7\u30F3\u30CA\u30E2\u30F3\u30C0\u30B9\u30C8\u3001\u30C6\u30A3\u30F3\u30B3\u3001\u30AD\u30E9\u30B7\u30E3\u30F3\u30C9\u30E9\u30EC\u30FC\u30F3\u3001\u30F4\u30A3\u30F3\u30B5\u30DE 
+    \u30AF\u30ED\u30FC\u30BA\u30C9\u30D9\u30FC\u30BF\u30C1\u30FC\u30E0:"
+  - "Equipo de desarrollo y elenco:  Gerente de Proyecto / Escritor / Director /
+    Unity Engine / Live 2D:  TherinWhitten:  https://twitter.com/gameb1nary    Equipo
+    de desarrollo:    AnOddDoorKnight : Trabajo de Unity / Dise\xF1o de juegos  https://twitter.com/AnOddDoorKnight 
+    Owildy: Artista gr\xE1fico 2d en vivo / Dise\xF1o de juegos  https://twitter.com/Owlidy 
+    Xplicit :  Unity Design / Dise\xF1o de juegos  https://twitter.com/Xplicit3437  
+    Artistas de personajes:   LittleChaos:  Artista del personaje principal (mujer),
+    Asesor principal del artista  https://twitter.com/littlechaos_1  Puri (Kuru): 
+    Artista del personaje principal (masculino)  https://twitter.com/Puri_Okada    
+    Artista Hentai:   Alfyria :  Artista del personaje principal Hentai  https://twitter.com/Alfyria 
+    Helbita: Co-artista, colorista. Artista de fondo  https://twitter.com/helbite   
+    Arte de fondo:   Taku:  Artista de fondo principal  https://twitter.com/Taku_Artworks   
+    Artista Promocional:   Ptolevian:  Promoci\xF3n y Concept Artist  https://twitter.com/mamayokonadito    
+    Narrador:   Camarada Del:  Dise\xF1o de ruta, Actor de voz, Vtuber / Narraci\xF3n 
+    https://twitter.com/Comrade_Del   Estrella Asterella: Dise\xF1o de ruta, Actriz
+    de voz, Vtuber  https://twitter.com/AsterellaS    Editor en Jefe de Redacci\xF3n 
+    Shalen-encontrado: Asesor de escritura, y editor malvado general de la muerte.
+    8P  https://twitter.com/Shalen55129929     Personaje(s) principal(es):  VincentHeart
+    SN:  Dise\xF1o de ruta, MC masculino, actor de voz, Vtuber  https://twitter.com/ShinNagawa   
+    Waifus:  Estrella Asterella: Dise\xF1o de ruta, Actriz de voz, Vtuber  https://twitter.com/AsterellaS   
+    FeFe: Dise\xF1o de ruta, actriz de voz, vtuber, asesor musical y efectos ambientales 
+    https://twitter.com/CovfefeChan     Maridos:   Camarada Del:  Dise\xF1o de ruta,
+    Actor de voz, Vtuber / Narraci\xF3n  https://twitter.com/Comrade_Del    Benosfera:
+    Dise\xF1o de ruta, actor de voz, Vtuber  https://twitter.com/BenosphereVT   
+    Viendo a Lizard:  Dise\xF1o de rutas, actor de voz, Vtuber / editor de video
+    y memelord  https://twitter.com/LizardWatching    Elenco secundario:   Escincr\xF3tico:
+    Dise\xF1o de ruta, actor de voz, Vtuber  https://twitter.com/Szycrotic   Natsumi
+    Moe:  Dise\xF1o de ruta, Actriz de voz, Vtuber  https://twitter.com/Vtuber_Moe   
+    Doctor Tokyo, (John) :  Actuaci\xF3n de voz  https://twitter.com/DoctorTokyo   
+    Rachi, (Cindy) Actuaci\xF3n de voz    Camafeo  https://twitter.com/rachichu_   
+    Maeowi, (Becks) :  VA     /Camafeo  https://twitter.com/Maeowi    Casa de Cthulhu: 
+    Actuaci\xF3n de voz https://twitter.com/house_cthulhu    Camafeos:    Papi: 
+    Rey Ex\xE1nime  https://twitter.com/PapiTheLichKing    VirtuallyLewd:  S\xFAcubo
+    en entrenamiento  https://twitter.com/virtuallylewd    Onigiri: Tutor de Chef
+    de Comida  https://twitter.com/OnigiriEn_   Strawtorii,  Esp\xEDritu de zorro
+    de 9 colas  https://twitter.com/Strawtorii    Pepita sabrosa, Nugget Snack  https://twitter.com/SavoryNugget   
+    Amayaa en blanco, Anfitri\xF3n de \"Pecaminoso\"  https://twitter.com/AmayaBlankVT   
+    Kota H\xEDbrido demonio/humano  https://twitter.com/KotaTheDemonVT    Ciel Rosa
+    Oscura,  Cambiador de demonios completo  https://twitter.com/CielDarkrose    
+    Colaboradores de Patreon:  Fundadores:  Kusinwolf, MauPunch, Atomic, RandomHero,
+    Tunguska, Ricin, Amelea Tan, Yuri Yumite, FrostyDaHomeboy, Keyton Alexander,
+    Roxanne Switch, Pyroflaze, BIRB, Odyn, Micah Owen, Ephraim MIcah, LumiereNox,
+    RPG!, SinnamonDust, Tinko, Killashandra Lane, Vin Sama  Equipo beta cerrado:"
 --- !u!1 &8623014724299340293
 GameObject:
   m_ObjectHideFlags: 0

@@ -80,7 +80,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6766259557989913510}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 4ca7417688bc7a64c8a8daeb51ca7d1c, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: c07b177968ccc0a40bd5d2440f756dc7, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
@@ -1560,6 +1560,7 @@ GameObject:
   - component: {fileID: 6766259558648025141}
   - component: {fileID: 6766259558648025147}
   - component: {fileID: 6766259558648025146}
+  - component: {fileID: 7189239686660015426}
   m_Layer: 5
   m_Name: Binary Text
   m_TagString: Untagged
@@ -1644,14 +1645,14 @@ MonoBehaviour:
   m_fontSize: 22
   m_fontSizeBase: 22
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 22
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 10.84
+  m_characterSpacing: 5
   m_wordSpacing: -0.9
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1659,7 +1660,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -1683,6 +1684,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7189239686660015426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6766259558648025140}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 6766259558648025146}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Binary
+  - "Bin\xE4r"
+  - "\u30D0\u30A4\u30CA\u30EA"
+  - Binario
 --- !u!1 &6766259558775921385
 GameObject:
   m_ObjectHideFlags: 0
@@ -1795,7 +1819,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3273463222210048741
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2074,6 +2098,7 @@ GameObject:
   - component: {fileID: 6766259558895763105}
   - component: {fileID: 6766259558895763111}
   - component: {fileID: 6766259558895763110}
+  - component: {fileID: 8742348738131162638}
   m_Layer: 5
   m_Name: Non Binary Text
   m_TagString: Untagged
@@ -2158,14 +2183,14 @@ MonoBehaviour:
   m_fontSize: 22
   m_fontSizeBase: 22
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 15
+  m_fontSizeMax: 22
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 10.84
+  m_characterSpacing: 5
   m_wordSpacing: -0.9
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2197,6 +2222,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8742348738131162638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6766259558895763104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 6766259558895763110}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Non Binary
+  - "Nicht bin\xE4r"
+  - "\u30D0\u30A4\u30CA\u30EA\u30FC"
+  - No binario
 --- !u!1 &6766259558897114194
 GameObject:
   m_ObjectHideFlags: 0
@@ -2762,6 +2810,7 @@ GameObject:
   - component: {fileID: 6766259559494605481}
   - component: {fileID: 6766259559494605487}
   - component: {fileID: 6766259559494605486}
+  - component: {fileID: 4303865088981754791}
   m_Layer: 5
   m_Name: Name Question
   m_TagString: Untagged
@@ -2846,14 +2895,14 @@ MonoBehaviour:
   m_fontSize: 22
   m_fontSizeBase: 22
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 15
+  m_fontSizeMax: 22
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
-  m_characterSpacing: 10.84
+  m_characterSpacing: 5
   m_wordSpacing: -0.9
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -2861,7 +2910,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -2879,12 +2928,35 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 1
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -1.6757812, y: -2.019936, z: -0.0099487305, w: -0.5757041}
+  m_margin: {x: 18.735062, y: -2.019936, z: -0.0099487305, w: -0.5757041}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4303865088981754791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6766259559494605480}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 6766259559494605486}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Binary or nonbinary?
+  - "Bin\xE4r oder nicht-bin\xE4r?"
+  - "\u30D0\u30A4\u30CA\u30EA\u30FC\u304B\u30CE\u30F3\u30D0\u30A4\u30CA\u30EA\u30FC\u304B\uFF1F"
+  - "\xBFBinario o no binario?"
 --- !u!1 &6766259559694222130
 GameObject:
   m_ObjectHideFlags: 0
@@ -3242,7 +3314,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6766259559965193094}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 060a3d543a0ea1742bad2011cb20a884, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: f5c8fe898abb0ec46902965493b6ff17, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}

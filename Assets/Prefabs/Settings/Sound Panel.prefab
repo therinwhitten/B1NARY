@@ -177,6 +177,7 @@ GameObject:
   - component: {fileID: 3477914024984837049}
   - component: {fileID: 3477914024984837051}
   - component: {fileID: 3477914024984837048}
+  - component: {fileID: 2095551311}
   m_Layer: 5
   m_Name: Voices Text
   m_TagString: Untagged
@@ -261,9 +262,9 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 35
+  m_fontSizeMax: 50
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -276,7 +277,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -300,6 +301,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2095551311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477914024984837054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 3477914024984837048}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Voices
+  - Stimmen
+  - "\u30F4\u30A9\u30A4\u30B9"
+  - Voces
 --- !u!1 &3477914024991894460
 GameObject:
   m_ObjectHideFlags: 0
@@ -1289,7 +1313,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Szycrotic
+  m_text: Lucas
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
   m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
@@ -2490,7 +2514,7 @@ GameObject:
   - component: {fileID: 3477914025124092006}
   - component: {fileID: 3477914025124092007}
   m_Layer: 5
-  m_Name: Szycrotic
+  m_Name: Lucas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2725,7 +2749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UISounds: {fileID: 3477914025124092001}
-  hoverSound: {fileID: 8300000, guid: 380f98136677a9840a84e8a2349f3db0, type: 3}
+  hoverSound: {fileID: 8300000, guid: dfa8285e47b39c4438bc614b335224cb, type: 3}
   clickSound: {fileID: 0}
   releaseSound: {fileID: 0}
 --- !u!114 &3477914025124092007
@@ -3808,7 +3832,7 @@ GameObject:
   - component: {fileID: 3477914025235148447}
   - component: {fileID: 3477914025235148446}
   m_Layer: 5
-  m_Name: Szycrotic Slider
+  m_Name: Lucas Slider
   m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5182,6 +5206,7 @@ GameObject:
   - component: {fileID: 3477914025371660304}
   - component: {fileID: 3477914025371660306}
   - component: {fileID: 3477914025371660307}
+  - component: {fileID: 3528900291976739525}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -5266,9 +5291,9 @@ MonoBehaviour:
   m_fontSize: 42
   m_fontSizeBase: 42
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 35
+  m_fontSizeMax: 42
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -5281,7 +5306,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -5305,6 +5330,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &3528900291976739525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477914025371660305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 3477914025371660307}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Music
+  - Musik
+  - "\u30DF\u30E5\u30FC\u30B8\u30C3\u30AF"
+  - "M\xFAsica"
 --- !u!1 &3477914025374646532
 GameObject:
   m_ObjectHideFlags: 0
@@ -5894,7 +5942,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UISounds: {fileID: 3477914025451325860}
-  hoverSound: {fileID: 8300000, guid: acd641f132f894f4386f4899ea846689, type: 3}
+  hoverSound: {fileID: 8300000, guid: 4d61ed59152b4114eb91e2986015ea6b, type: 3}
   clickSound: {fileID: 0}
   releaseSound: {fileID: 0}
 --- !u!114 &3477914025451325866
@@ -6100,7 +6148,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e003f41fb49ada44c891077bea24a8ed, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 76c79de6263aa7e4c98bb19b76a7e012, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6920,6 +6968,7 @@ GameObject:
   - component: {fileID: 3477914025585699315}
   - component: {fileID: 3477914025585699277}
   - component: {fileID: 3477914025585699314}
+  - component: {fileID: 735282957747312738}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -7004,9 +7053,9 @@ MonoBehaviour:
   m_fontSize: 42
   m_fontSizeBase: 42
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 35
+  m_fontSizeMax: 42
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -7043,6 +7092,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &735282957747312738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477914025585699312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 3477914025585699314}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Cameos
+  - Kameen
+  - "\u30AB\u30E1\u30AA"
+  - Cameos
 --- !u!1 &3477914025590047468
 GameObject:
   m_ObjectHideFlags: 0
@@ -7567,7 +7639,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3477914025656316692
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10729,6 +10801,7 @@ GameObject:
   - component: {fileID: 3477914026013784287}
   - component: {fileID: 3477914026013784281}
   - component: {fileID: 3477914026013784286}
+  - component: {fileID: 6529902270324313815}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -10813,9 +10886,9 @@ MonoBehaviour:
   m_fontSize: 55
   m_fontSizeBase: 55
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 30
+  m_fontSizeMax: 55
   m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -10828,7 +10901,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -10852,6 +10925,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6529902270324313815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477914026013784284}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 3477914026013784286}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Master
+  - Meister
+  - "\u30DE\u30B9\u30BF\u30FC"
+  - Maestro
 --- !u!1 &3477914026023865394
 GameObject:
   m_ObjectHideFlags: 0
@@ -10863,6 +10959,7 @@ GameObject:
   - component: {fileID: 3477914026023865357}
   - component: {fileID: 3477914026023865359}
   - component: {fileID: 3477914026023865356}
+  - component: {fileID: 7846758690226586603}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -10947,9 +11044,9 @@ MonoBehaviour:
   m_fontSize: 42
   m_fontSizeBase: 42
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 35
+  m_fontSizeMax: 42
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -10986,6 +11083,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7846758690226586603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477914026023865394}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 3477914026023865356}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Player
+  - Spieler
+  - "\u3042\u306A\u305F"
+  - Jugador
 --- !u!1 &3477914026024844671
 GameObject:
   m_ObjectHideFlags: 0
@@ -11723,6 +11843,7 @@ GameObject:
   - component: {fileID: 3477914026040358283}
   - component: {fileID: 3477914026040358277}
   - component: {fileID: 3477914026040358282}
+  - component: {fileID: 789460191055391822}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -11807,9 +11928,9 @@ MonoBehaviour:
   m_fontSize: 42
   m_fontSizeBase: 42
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 35
+  m_fontSizeMax: 42
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -11822,7 +11943,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -11846,6 +11967,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &789460191055391822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477914026040358280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 3477914026040358282}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - NPCS
+  - NPCs
+  - "\u6027\u683C"
+  - PNJs
 --- !u!1 &3477914026045914942
 GameObject:
   m_ObjectHideFlags: 0
@@ -12589,7 +12733,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f4b085f414c26f041bd3f6e0189766a3, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 616eb0491bcaa0647b2c208fc3d5aefe, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -15166,6 +15310,7 @@ GameObject:
   - component: {fileID: 3477914026443315555}
   - component: {fileID: 3477914026443315581}
   - component: {fileID: 3477914026443315554}
+  - component: {fileID: 1454793742}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -15250,9 +15395,9 @@ MonoBehaviour:
   m_fontSize: 42
   m_fontSizeBase: 42
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 35
+  m_fontSizeMax: 42
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -15289,6 +15434,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1454793742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477914026443315552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 3477914026443315554}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - SFX
+  - SFX
+  - "\u30B5\u30A6\u30F3\u30C9"
+  - SFX
 --- !u!1 &3477914026470264217
 GameObject:
   m_ObjectHideFlags: 0
@@ -15311,7 +15479,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3477914026470264216
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19290,6 +19458,7 @@ GameObject:
   - component: {fileID: 3477914026870001984}
   - component: {fileID: 3477914026870001986}
   - component: {fileID: 3477914026870001987}
+  - component: {fileID: 8843159563291063089}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -19374,9 +19543,9 @@ MonoBehaviour:
   m_fontSize: 42
   m_fontSizeBase: 42
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 35
+  m_fontSizeMax: 42
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -19389,7 +19558,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -19413,6 +19582,29 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8843159563291063089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477914026870001985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 3477914026870001987}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - HFX
+  - HFX
+  - "\u30D8\u30F3\u30BF\u30A4 "
+  - HFX
 --- !u!1 &3477914026870183697
 GameObject:
   m_ObjectHideFlags: 0
@@ -19977,7 +20169,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 76c79de6263aa7e4c98bb19b76a7e012, type: 3}
+  m_Sprite: {fileID: 21300000, guid: e003f41fb49ada44c891077bea24a8ed, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -20459,7 +20651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3477914026989770063
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21046,6 +21238,7 @@ GameObject:
   - component: {fileID: 3477914027076536019}
   - component: {fileID: 3477914027076535853}
   - component: {fileID: 3477914027076536018}
+  - component: {fileID: 619085679}
   m_Layer: 5
   m_Name: Text Prefab
   m_TagString: Untagged
@@ -21130,9 +21323,9 @@ MonoBehaviour:
   m_fontSize: 42
   m_fontSizeBase: 42
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 35
+  m_fontSizeMax: 42
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -21145,7 +21338,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
@@ -21169,3 +21362,26 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &619085679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3477914027076536016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 3477914027076536018}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - UI
+  - UI
+  - "\u30E6\u30FC\u30A2\u30A4"
+  - UI
