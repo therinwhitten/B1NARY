@@ -18,7 +18,7 @@
 			get => volume.profile.components[targetComponent].parameters[optionIndex].GetValue<float>();
 			set
 			{
-				((VolumeParameter<float>)volume.profile.components.First().parameters[optionIndex]).value = value;
+				((VolumeParameter<float>)volume.profile.components[targetComponent].parameters[optionIndex]).value = value;
 			}
 		}
 

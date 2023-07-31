@@ -21,13 +21,25 @@
 		protected override void Awake()
 		{
 			base.Awake();
+			PlayerConfig.Instance.language.ValueChanged += UpdatedLanguage;
+		}
+		private void OnDestroy()
+		{
+			PlayerConfig.Instance.language.ValueChanged -= UpdatedLanguage;
 		}
 		public override int InitialValue => Values.ToList().IndexOf(PlayerConfig.Instance.language);
 
+		private void UpdatedLanguage(string newLanguage)
+		{
+			int index = dropdown.options.FindIndex(option => option.text.Contains(newLanguage));
+			PickedChoice(index);
+		}
 		protected override void PickedChoice(int index)
 		{
+			PlayerConfig.Instance.language.ValueChanged -= UpdatedLanguage;
 			base.PickedChoice(index);
 			PlayerConfig.Instance.language.Value = CurrentValue;
+			PlayerConfig.Instance.language.ValueChanged += UpdatedLanguage;
 		}
 	}
 }
