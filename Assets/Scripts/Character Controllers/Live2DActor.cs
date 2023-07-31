@@ -51,10 +51,13 @@
 			{
 				if (m_expressions is null)
 				{
-					if (expressionController != null && expressionController.ExpressionsList != null)
-						m_expressions = expressionController.ExpressionsList.ToNames();
-					else
+					if (expressionController == null || expressionController.ExpressionsList == null)
+					{
+						Debug.LogWarning($"The expression controller or list is missing!");
 						m_expressions = Array.Empty<string>();
+					}
+					else
+						m_expressions = expressionController.ExpressionsList.ToNames();
 				}
 				return m_expressions;
 			}
@@ -95,7 +98,7 @@
 			}
 			set
 			{
-				int expressionIndex = Array.IndexOf(Expressions, value);
+				int expressionIndex = Array.FindIndex(Expressions, expression => expression.StartsWith(value));
 				if (expressionIndex == -1)
 				{
 					Debug.LogException(new IndexOutOfRangeException($"'{value}' " +
