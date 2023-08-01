@@ -20,6 +20,7 @@ namespace Live2D.Cubism.Framework.Expression
 #warning Added Values Here!
         public string[] ToNames()
         {
+            Debug.Log(CubismExpressionObjects.Length);
 			var expressions = new string[CubismExpressionObjects.Length];
 			for (int i = 0; i < expressions.Length; i++)
 			{

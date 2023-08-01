@@ -62,6 +62,7 @@
 				return m_expressions;
 			}
 		}
+		[NonSerialized]
 		private string[] m_expressions;
 		public float selectedSizeIncreaseMultiplier = 1.1f;
 		public CubismExpressionController expressionController;
@@ -221,7 +222,25 @@
 			}
 		}
 
-
+		protected virtual void Reset()
+		{
+			expressionController = GetComponent<CubismExpressionController>();
+			
+			
+			Transform drawables = transform.Find("Drawables");
+			if (drawables == null)
+				return;
+			int count = drawables.childCount;
+			for (int i = 0; i < count; i++)
+			{
+				Transform child = drawables.GetChild(i);
+				if (child.name.ToLower().Contains("head"))
+				{
+					FollowCubeParent = child;
+					return;
+				}
+			}
+		}
 		protected virtual void Awake()
 		{
 			animator = GetComponent<Animator>();
@@ -289,6 +308,7 @@ namespace B1NARY.CharacterManagement.Editor
 			Live2DActor controller = (Live2DActor)target;
 			controller.FollowCubeParent = DirtyAuto.Field(controller, new GUIContent("Head Location"), controller.FollowCubeParent, true);
 			controller.selectedSizeIncreaseMultiplier = DirtyAuto.Field(target, new GUIContent("Selected Size Mult."), controller.selectedSizeIncreaseMultiplier);
+			controller.expressionController = DirtyAuto.Field(target, new("Expression Controller"), controller.expressionController, true);
 			EditorGUILayout.Space();
 			base.OnInspectorGUI();
 		}
