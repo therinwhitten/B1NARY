@@ -11,10 +11,14 @@
 		// Buttons
 		public void NewGame()
 		{
+			ScriptHandler.Instance.pauser?.Dispose();
+			ScriptHandler.Instance.pauser = new Pauser();
 			SceneManager.Instance.InitializeGame();
 		}
 		public void NewGame(string streamingAssetsFilePath)
 		{
+			ScriptHandler.Instance.pauser?.Dispose();
+			ScriptHandler.Instance.pauser = new Pauser();
 			SceneManager.Instance.InitializeScript(streamingAssetsFilePath);
 		}
 		public void QuitToMainMenu()

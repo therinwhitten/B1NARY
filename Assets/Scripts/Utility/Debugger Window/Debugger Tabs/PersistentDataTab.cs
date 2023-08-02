@@ -9,7 +9,7 @@ namespace B1NARY.Editor.Debugger
 	using UnityEngine;
 	public sealed class PersistentDataTab : DebuggerTab
 	{
-		public override GUIContent Name => new GUIContent("Persistent Data");
+		public override GUIContent Name => new("Persistent Data");
 		public override bool ConstantlyRepaint => true;
 
 		private Vector2 scroll = Vector2.zero;
