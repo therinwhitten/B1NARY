@@ -1,28 +1,42 @@
 ﻿{changeScene: Star Bedroom Night}
 {colorformat: Default}
 {spawnEmpty: Narrator, NPC}
-{spawnChar: star nightgown, .5, Asterella}
-{spawnChar: lucas butler, .2, Lucas}
-{spawnChar: lucas sex dungeon, .8, Lucas Sexy}
 Narrator::
-Spawning Eye Track Object
-Now checking to see if she looks. 
-Tracking left....
-{movecube: .3, .9}
-Moving Right...
-{movecube: .9, .5}
-Now looking at you you bad bad guh!
-{movecube: .5, .1}
-Asterella::
-Testing
-[Horny]
-Lucas::
-[OWO]
-Testing OWO
-Testing Angry
-[Angry]
-Lucas Sexy::
-Lewd Mode ON!
-[Lewd]
-It doesn't work then.
-End of Script.
+{choice: AnOddDoorKnight's Test Or Therin's?}
+{
+	[AnOddDoorKnight]
+	{
+		Testing achievement...
+		{setachievement: nut_cracker}
+		Finished!
+	}
+	[Therinwhitten]
+	{
+		{spawnChar: star nightgown, .5, Asterella}
+		{spawnChar: lucas butler, .2, Lucas}
+		{spawnChar: lucas sex dungeon, .8, Lucas Sexy}
+		Narrator::
+		Spawning Eye Track Object
+		Now checking to see if she looks. 
+		Tracking left....
+		{movecube: .3, .9}
+		Moving Right...
+		{movecube: .9, .5}
+		Now looking at you you bad bad guh!
+		{movecube: .5, .1}
+		Asterella::
+		Testing
+		[Horny]
+		Lucas::
+		[OWO]
+		Testing OWO
+		Testing Angry
+		[Angry]
+		Lucas Sexy::
+		Lewd Mode ON!
+		[Lewd]
+		It doesn't work then.
+		End of Script.
+	}
+}
+

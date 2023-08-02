@@ -6,14 +6,16 @@
 
 	public sealed class ResolutionsDropdown : DropdownPanel<Resolution>
 	{
+		public static KeyValuePair<string, Resolution> ResolutionDisplay(Resolution resolution)
+			=> new($"{resolution.width}p x {resolution.height}p", resolution);
 		public override List<KeyValuePair<string, Resolution>> DefinedPairs
 		{
 			get
 			{
-				return Screen.resolutions
-					.OrderByDescending(resolution => (resolution.width * 100) + resolution.height)
-					.Select(resolution => new KeyValuePair<string, Resolution>($"{resolution.width}p x {resolution.height}p", resolution))
-					.ToList();
+				List<KeyValuePair<string, Resolution>> pairs = new(ResolutionUtility.OrderedResolutions.Count);
+				for (int i = 0; i < ResolutionUtility.OrderedResolutions.Count; i++)
+					pairs.Add(ResolutionDisplay(ResolutionUtility.OrderedResolutions[i]));
+				return pairs;
 			}
 		}
 

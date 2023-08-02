@@ -4,6 +4,7 @@
 	using B1NARY.CharacterManagement;
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
+	using B1NARY.Steamworks;
 	using B1NARY.UI;
 	using B1NARY.UI.Colors;
 	using B1NARY.UI.Globalization;
@@ -62,6 +63,7 @@
 					FollowCube.Commands,
 					ButtonInvoker.Commands,
 					VoiceActorHandler.Commands,
+					AchievementManager.Commands,
 				}.SelectMany<CommandArray, OverloadableCommand>(commands => commands));
 		}
 		[ForcePause]
