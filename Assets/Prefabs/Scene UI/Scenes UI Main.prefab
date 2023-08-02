@@ -5953,7 +5953,7 @@ MonoBehaviour:
   - Spanish
   languageValues:
   - 'Quit? '
-  - "K\xFCndigen? "
+  - Beenden?
   - "\u8F9E\u3081\u308B\u306E\u304B\uFF1F"
   - "\xBFRenunciar? "
 --- !u!1 &3643117769825689243
@@ -6112,7 +6112,7 @@ MonoBehaviour:
   - Spanish
   languageValues:
   - Resume
-  - Lebenslauf
+  - Weiter
   - "\u30EC\u30B8\u30E5\u30E1"
   - "Curr\xEDculum"
 --- !u!1 &3643117769857560206
@@ -14315,7 +14315,7 @@ MonoBehaviour:
   - Spanish
   languageValues:
   - Desktop
-  - Schreibtisch
+  - Ende
   - "\u30C7\u30B9\u30AF\u30C8\u30C3\u30D7"
   - Escritorio
 --- !u!1 &3643117770769573665
@@ -14329,6 +14329,7 @@ GameObject:
   - component: {fileID: 3643117770769573670}
   - component: {fileID: 3643117770769573668}
   - component: {fileID: 3643117770769573671}
+  - component: {fileID: 6664460070320191800}
   m_Layer: 5
   m_Name: Backdrop (1)
   m_TagString: Untagged
@@ -14376,7 +14377,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.23529412}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -14393,6 +14394,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6664460070320191800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3643117770769573665}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05f8fd09de1234840bdfdb7b138a2eef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imageThemeName: Backdrop
+  buttonHighlightedName: Primary
+  buttonPressedName: Primary
+  buttonSelectedName: Primary
+  buttonDisabledName: Primary
 --- !u!1 &3643117770839803433
 GameObject:
   m_ObjectHideFlags: 0
@@ -15291,11 +15309,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 739224384683782399, guid: de0a2523e5c4e8a45934f17889b63fb6,
         type: 3}
-      propertyPath: m_RootOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 739224384683782399, guid: de0a2523e5c4e8a45934f17889b63fb6,
-        type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.5
       objectReference: {fileID: 0}
@@ -15384,9 +15397,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 7553344197429821261, guid: de0a2523e5c4e8a45934f17889b63fb6, type: 3}
-    - {fileID: 7952549671618235647, guid: de0a2523e5c4e8a45934f17889b63fb6, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -15437,11 +15448,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7018574987260809642, guid: f0c9ed86b34f6fa4588ad78a9de46220,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7018574987260809642, guid: f0c9ed86b34f6fa4588ad78a9de46220,
         type: 3}
