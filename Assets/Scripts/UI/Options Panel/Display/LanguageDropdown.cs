@@ -31,7 +31,7 @@
 
 		private void UpdatedLanguage(string newLanguage)
 		{
-			int index = dropdown.options.FindIndex(option => option.text.Contains(newLanguage));
+			int index = Pairs.FindIndex(pair => pair.Key.Contains(newLanguage));
 			PickedChoice(index);
 		}
 		protected override void PickedChoice(int index)
