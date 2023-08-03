@@ -1,5 +1,8 @@
 ﻿namespace B1NARY.UI
 {
+	using B1NARY.DataPersistence;
+	using B1NARY.Globalization;
+	using B1NARY.UI.Globalization;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
@@ -8,7 +11,8 @@
 	using UnityEngine;
 	using UnityEngine.UI;
 
-	public class FanartInspector : MonoBehaviour
+	[DisallowMultipleComponent]
+	public class FanartInspector : TextboxGlobalizer
 	{
 		public static (bool hEnable, string creator, string name) ParseName(string name)
 		{
@@ -58,6 +62,29 @@
 		}
 
 
+		protected override void Reset()
+		{
+			UpdateLanguageList();
+			if (languageValues.Count > 0)
+				languageValues[0] = "Title:|Artist:";
+		}
+
+		protected override void OnEnable()
+		{
+			//if (fileName == null || authorName == null)
+			//	throw new MissingFieldException();
+			//PlayerConfig.Instance.language.AttachValue(UpdateLanguage);
+		}
+		protected override void OnDisable()
+		{
+			//PlayerConfig.Instance.language.ValueChanged -= UpdateLanguage;
+		}
+		protected override void UpdateLanguage(string newLanguage)
+		{
+			//string[] split = this[Languages.CurrentLanguage].Split('|');
+			//fileName.text 
+		}
+
 
 
 		public TMP_Text fileName;
@@ -68,9 +95,47 @@
 		{
 			(_, string creator, string name) = ParseName(image.sprite.name);
 			this.image.sprite = image.sprite;
-			fileName.text = $"Title: {name}";
-			authorName.text = $"Artist: {creator}";
+			string unparsedPair = this[Languages.CurrentLanguage];
+			string[] pairs = unparsedPair.Split('|');
+			fileName.text = $"{pairs[0]} {name}";
+			authorName.text = $"{pairs[1]} {creator}";
 			gameObject.SetActive(true);
 		}
 	}
 }
+#if UNITY_EDITOR
+namespace B1NARY.UI.Editor
+{
+	using B1NARY.Editor;
+	using B1NARY.Globalization;
+	using B1NARY.UI.Globalization;
+	using System;
+	using UnityEditor;
+	using UnityEngine;
+
+	[CustomEditor(typeof(FanartInspector))]
+	public class FanartInspectorEditor : Editor
+	{
+		public override void OnInspectorGUI()
+		{
+			FanartInspector inspector = (FanartInspector)target;
+			inspector.UpdateLanguageList();
+			inspector.fileName = DirtyAuto.Field(target, new("File Name"), inspector.fileName, true);
+			inspector.authorName = DirtyAuto.Field(target, new("Author Name"), inspector.authorName, true);
+			inspector.image = DirtyAuto.Field(target, new("Image"), inspector.image, true);
+			EditorGUILayout.Space();
+			for (int i = 0; i < inspector.languageKeys.Count; i++)
+			{
+				string[] split = inspector.languageValues[i].Split('|');
+				if (split.Length != 2)
+					split = new string[2];
+				split[0] = DirtyAuto.Field(target, new(inspector.languageKeys[i]), split[0]);
+				split[1] = DirtyAuto.Field(target, new(" "), split[1]);
+				inspector.languageValues[i] = string.Join('|', split);
+				EditorGUILayout.Space(1);
+			}
+			Languages.Instance.Editor_OnGUI();
+		}
+	}
+}
+#endif
