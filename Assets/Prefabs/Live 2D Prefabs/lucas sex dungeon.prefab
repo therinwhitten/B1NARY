@@ -7480,6 +7480,7 @@ GameObject:
   - component: {fileID: 7622775101687969832}
   - component: {fileID: 4665071939017364175}
   - component: {fileID: 6008557774788626756}
+  - component: {fileID: 2231483402135248776}
   - component: {fileID: 5008373386573272083}
   - component: {fileID: 1516467701781943593}
   m_Layer: 10
@@ -7902,7 +7903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AudioInput: {fileID: 1516467701781943593}
   SamplingQuality: 2
-  Gain: 7.65
+  Gain: 9.52
   Smoothing: 0.216
   <TargetMouth>k__BackingField: 0
 --- !u!114 &6008557774788626756
@@ -7920,6 +7921,22 @@ MonoBehaviour:
   selectedSizeIncreaseMultiplier: 1.1
   expressionController: {fileID: 2434941062675755166}
   <FollowCubeParent>k__BackingField: {fileID: 0}
+--- !u!114 &2231483402135248776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194111653202959401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f73d28c5e3e468f4ead9ebd0ac07ef09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BlendMode: 0
+  _target: {fileID: 0}
+  Center: {fileID: 0}
+  Damping: 0.15
 --- !u!114 &5008373386573272083
 MonoBehaviour:
   m_ObjectHideFlags: 0

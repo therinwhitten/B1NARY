@@ -1,4 +1,4 @@
-{changeScene: Scenes/Star/Star Outside Night}
+{changeScene: Star Outside Night}
 {colorformat: Asterella}
 {fadeoutsound: Normal Heartbeat Prologue, 5}
 {fadeinsound: Star Piano, 10}
@@ -480,12 +480,12 @@ Lucas::
 "Better yet, wait until you meet Her."
 MC::
 And with those words, we saunter into the largest mansion I have ever seen...
-{changeScene: Scenes/Star/Star Bedroom Night}
+{changeScene: Star Bedroom Night}
 {colorformat: Asterella}
 {fadeinsound: Star Dinner, 1}
 {fadeinsound: fireplace, 1}
 {spawnEmpty: MC, Player}
-{spawnChar: , -1, Lucas}
+{spawnChar: lucas butler, -1, Lucas}
 {spawnChar: star nightgown, 2, Asterella}
 {movecube: .5, .1}
 {moveChar: Lucas, .3}
@@ -622,7 +622,7 @@ Lucas::
 "I'm weak compared to her. My advice? Don't piss her off."
 {moveChar: Lucas, -1}
 {moveChar: Asterella, .5}
-{movecube: .8, .4}
+{movecube: .1, .4}
 {anim: Asterella, Smug}
 Asterella::
 [Happy]
