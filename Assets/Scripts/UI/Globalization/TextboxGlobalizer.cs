@@ -39,7 +39,7 @@
 			}
 		}
 
-		private void Reset()
+		protected virtual void Reset()
 		{
 			text = GetComponent<TMP_Text>();
 			UpdateLanguageList();
@@ -47,18 +47,18 @@
 				languageValues[0] = text.text;
 		}
 
-		private void OnEnable()
+		protected virtual void OnEnable()
 		{
 			if (text == null)
 				throw new MissingFieldException(nameof(TMP_Text), nameof(text));
 			PlayerConfig.Instance.language.AttachValue(UpdateLanguage);
 		}
-		private void OnDisable()
+		protected virtual void OnDisable()
 		{
 			PlayerConfig.Instance.language.ValueChanged -= UpdateLanguage;
 		}
 
-		private void UpdateLanguage(string newLanguage)
+		protected virtual void UpdateLanguage(string newLanguage)
 		{
 			text.text = this[newLanguage];
 		}
