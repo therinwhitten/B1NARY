@@ -90,12 +90,12 @@
 		/// </summary>
 		public static bool Additive
 		{
-			get => SaveSlot.ActiveSlot.Additive;
+			get => SaveSlot.ActiveSlot.Slot.Additive;
 			set
 			{
 				if (Additive == value)
 					return;
-				SaveSlot.ActiveSlot.Additive = value;
+				SaveSlot.ActiveSlot.Slot.Additive = value;
 				if (value)
 					Instance.CurrentText = string.Empty;
 			}
@@ -286,7 +286,7 @@
 		{
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
-			FinalText = FinalText.Replace(SaveSlot.DEFAULT_NAME, SaveSlot.ActiveSlot.PlayerName);
+			FinalText = FinalText.Replace(SaveSlot.DEFAULT_NAME, SaveSlot.ActiveSlot.Slot.PlayerName);
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];
@@ -316,7 +316,7 @@
 		}
 		public void QuickLoad()
 		{
-			SaveSlot.ActiveSlot.Load();
+			SaveSlot.ActiveSlot.Slot.Load();
 		}
 		public void NextLine()
 		{

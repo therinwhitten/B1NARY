@@ -69,7 +69,7 @@
 					modifyActionPanel.gameObject.SetActive(true);
 					modifyActionPanel.text.text = "$OVERRIDE";
 					modifyActionPanel.inputField.text = pair.source.SaveName;
-					modifyActionPanel.OnPress += (@override) => { if (@override) Override(pair.source, SaveSlot.ActiveSlot, modifyActionPanel.inputField.text); };
+					modifyActionPanel.OnPress += (@override) => { if (@override) Override(pair.source, SaveSlot.ActiveSlot.Slot, modifyActionPanel.inputField.text); };
 				});
 				if (saveSlot.Value.metadata.thumbnail != null)
 					pair.target.foregroundImage.sprite = saveSlot.Value.metadata.thumbnail.Sprite;
@@ -93,7 +93,7 @@
 				modifyActionPanel.gameObject.SetActive(true);
 				modifyActionPanel.text.text = "$NEW";
 				modifyActionPanel.inputField.text = "Quicksave";
-				modifyActionPanel.OnPress += (@override) => { if (@override) CreateNew(SaveSlot.ActiveSlot, modifyActionPanel.inputField.text); };
+				modifyActionPanel.OnPress += (@override) => { if (@override) CreateNew(SaveSlot.ActiveSlot.Slot, modifyActionPanel.inputField.text); };
 			});
 			SaveSlot.EmptiedSaveCache += UpdateSaves;
 		}
@@ -113,7 +113,6 @@
 				newSlot = serializer.Deserialize(stream);
 			}
 			newSlot.metadata.ChangeFileTo(null);
-			newSlot.metadata.lastSaved = slot.metadata.lastSaved;
 			newSlot.SaveName = saveName;
 			newSlot.Save();
 		}

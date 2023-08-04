@@ -55,7 +55,7 @@
 		public static IReadOnlyList<SteamAchievement> AllAchievements { get; } = new SteamAchievement[]
 		{
 			new SteamAchievement(AchievementIndex.nut_cracker, "Nut Cracker", ""),
-			new SteamAchievement(AchievementIndex.second_swallow, "Second Swallow", "")
+			new SteamAchievement(AchievementIndex.second_swallow, "Second Swallow", ""),
 		};
 
 

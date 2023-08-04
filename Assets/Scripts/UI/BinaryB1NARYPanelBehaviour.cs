@@ -17,7 +17,7 @@
 			nonBinaryButton.onClick.AddListener(() => Commit(false));
 			void Commit(bool isBinary)
 			{
-				SaveSlot.ActiveSlot.IsBinary = isBinary;
+				SaveSlot.ActiveSlot.Slot.IsBinary = isBinary;
 				gameObject.SetActive(false);
 			}
 		}

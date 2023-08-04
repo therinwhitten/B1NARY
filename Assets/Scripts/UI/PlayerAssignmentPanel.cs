@@ -17,8 +17,8 @@
 		}
 		public void OnDisable()
 		{
-			SaveSlot.ActiveSlot.PlayerName = nameInput.text;
-			SaveSlot.ActiveSlot.Gender = gender;
+			SaveSlot.ActiveSlot.Slot.PlayerName = nameInput.text;
+			SaveSlot.ActiveSlot.Slot.Gender = gender;
 		}
 	}
 }

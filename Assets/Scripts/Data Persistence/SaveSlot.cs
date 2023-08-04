@@ -84,7 +84,7 @@
 			IgnoreUndefinedValues = true,
 		});
 
-		public static SaveSlot ActiveSlot
+		public static RunningSaveSlot ActiveSlot
 		{
 			get => m_activeSlot;
 			set
@@ -92,16 +92,16 @@
 				m_activeSlot = value;
 				if (m_activeSlot != null)
 				{
-					if (!m_activeSlot.booleans.ContainsKey("henable"))
-						m_activeSlot.booleans.Add("henable", () => PlayerConfig.Instance.hEnable.Value);
+					if (!m_activeSlot.Slot.booleans.ContainsKey("henable"))
+						m_activeSlot.Slot.booleans.Add("henable", () => PlayerConfig.Instance.hEnable.Value);
 				}
 			}
 		}
-		private static SaveSlot m_activeSlot;
+		private static RunningSaveSlot m_activeSlot;
 		public void Quicksave()
 		{
 			if (!PlayerConfig.Instance.quickSaveOverrides.Value)
-				ActiveSlot.metadata.ChangeFileTo(null);
+				ActiveSlot.Slot.metadata.ChangeFileTo(null);
 			ActiveSlot.Save();
 		}
 
@@ -110,7 +110,6 @@
 			loadSlot.Refresh();
 			SaveSlot slot = SlotSerializer.Deserialize(loadSlot);
 			slot.metadata.ChangeFileTo(loadSlot);
-			slot.metadata.lastSaved = loadSlot.LastWriteTime;
 			return slot;
 		}
 
@@ -193,13 +192,12 @@
 		public ScriptPosition scriptPosition;
 		public ActorSnapshot[] characterSnapshots;
 		public List<SerializedAudio> audio;
-		private DateTime startPlay = DateTime.Now;
+
 		[XmlIgnore]
 		public bool hasSaved = false;
 
 		public SaveSlot()
 		{
-			startPlay = DateTime.Now;
 			metadata = new Metadata()
 			{
 				playedAmount = TimeSpan.Zero,
@@ -216,11 +214,9 @@
 				SceneManager.Instance.StartCoroutine(MainThread());
 
 				hasSaved = true;
-				Stopwatch stopwatch = Stopwatch.StartNew();
 				metadata.lastSaved = DateTime.Now;
-				metadata.playedAmount += metadata.lastSaved - startPlay;
+				Stopwatch stopwatch = Stopwatch.StartNew();
 				scriptPosition = ScriptPosition.Define();
-				startPlay = metadata.lastSaved;
 				characterSnapshots = ActorSnapshot.GetCurrentSnapshots();
 				audio = SerializedAudio.SerializeAudio();
 				formatName = ColorFormat.CurrentFormat.FormatName;
@@ -260,9 +256,8 @@
 		{
 			if (!hasSaved)
 				throw new InvalidOperationException("Currently active save has not saved properly! Did you press quickload without saving?");
-			ActiveSlot = this;
+			ActiveSlot = new RunningSaveSlot(this);
 			CoroutineWrapper wrapper = new(ScriptHandler.Instance, scriptPosition.LoadToPosition());
-			metadata.lastSaved = DateTime.Now;
 			wrapper.AfterActions += (mono) =>
 			{
 				for (int i = 0; i < characterSnapshots.Length; i++)
@@ -318,9 +313,8 @@
 			//}
 			[XmlIgnore]
 			private string m_directoryInfo;
-			[XmlIgnore]
-			public DateTime lastSaved;
 			public TimeSpan playedAmount;
+			public DateTime lastSaved;
 			public Thumbnail thumbnail;
 		}
 	}
@@ -349,5 +343,16 @@
 			ScriptHandler.Instance.NewDocument(StreamingAssetsPath, Line - 1);
 		}
 	}
-	
+	public record RunningSaveSlot(SaveSlot Slot)
+	{
+		public DateTime StartPlayTime { get; private set; } = DateTime.Now;
+		public TimeSpan GetPlayedSpan() => DateTime.Now - StartPlayTime;
+		public void Save()
+		{
+			TimeSpan added = GetPlayedSpan();
+			Slot.metadata.playedAmount += added;
+			Slot.Save();
+			StartPlayTime = DateTime.Now;
+		}
+	}
 }
