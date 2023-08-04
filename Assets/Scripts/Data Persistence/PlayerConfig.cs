@@ -97,6 +97,7 @@
 			public ChangableValue<float> glow = new(1f);
 			public ChangableValue<int> graphicSettingIndex = new(0);
 			public ChangableValue<int> frameRate = new(69);
+			public ChangableValue<int> thumbnailQuality = new(30);
 			public ChangableValue<string> currentFormat = new(null);
 			public bool HasOverride => !string.IsNullOrEmpty(currentFormat.Value);
 		}

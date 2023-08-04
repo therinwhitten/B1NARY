@@ -106,7 +106,7 @@
 			};
 			image.Mutate(x => x.Resize(options));
 			using var stream = new MemoryStream();
-			image.SaveAsJpeg(stream, new JpegEncoder() { Quality = 10 });
+			image.SaveAsJpeg(stream, new JpegEncoder() { Quality = PlayerConfig.Instance.graphics.thumbnailQuality.Value });
 			stream.Position = 0;
 			data = stream.ToArray();
 		}
