@@ -12,12 +12,12 @@
 
 		private void Start()
 		{
-			input.actions.FindAction(saveButton, true).started += SaveGame;
-			input.actions.FindAction(loadButton, true).started += LoadGame;
+			Debug.Log("gersgersrdhtdrytjdthrhrdtr6utrdytj5hrdtyt");
+			input.actions.FindAction(saveButton, true).performed += SaveGame;
+			input.actions.FindAction(loadButton, true).performed += LoadGame;
 		}
 		public void SaveGame(InputAction.CallbackContext context)
 		{
-			Debug.Log("gersgersrdhtdrytjdthrhrdtr6utrdytj5hrdtyt");
 			SaveSlot.ActiveSlot.Save();
 		}
 		public void LoadGame(InputAction.CallbackContext context)
