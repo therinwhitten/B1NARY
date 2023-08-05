@@ -52,6 +52,12 @@
 						instance = instFind;
 						return instFind;
 					}
+					T toughFind = Resources.FindObjectsOfTypeAll(typeof(T)).FirstOrDefault() as T;
+					if (toughFind != null)
+					{
+						instance = toughFind;
+						return toughFind;
+					}
 					if (ThrowErrorIfEmpty)
 						throw new MissingComponentException($"{typeof(T)} does not " +
 							"have an instance created!");

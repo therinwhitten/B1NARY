@@ -273,6 +273,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c397af289b492e4db7c0217668a431a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  input: {fileID: 1427849293}
-  saveButton: Quicksave
-  loadButton: Quickload
+  Save:
+    m_Name: Save
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: df7766fa-29f4-4a6d-9857-12ae91c7816b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 31d152af-72af-4f06-84c7-fe68fdd7e99b
+      m_Path: <Keyboard>/f7
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Save
+      m_Flags: 0
+    m_Flags: 0
+  Load:
+    m_Name: Load
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 099e5598-57c1-4996-8417-ff9ab0ad8416
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: f19006e6-e8b8-4b87-8d95-96a3127dd34a
+      m_Path: <Keyboard>/f9
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Load
+      m_Flags: 0
+    m_Flags: 0
+  Escape:
+    m_Name: Escape
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 4b042f7f-4f40-48db-8007-3cfcdd30986c
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 64505644-4dc1-4086-91d9-389b079efff1
+      m_Path: <Keyboard>/escape
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Escape
+      m_Flags: 0
+    m_Flags: 0

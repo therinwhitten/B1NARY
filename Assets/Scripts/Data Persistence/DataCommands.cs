@@ -1,20 +1,26 @@
 ﻿namespace B1NARY.DataPersistence
 {
 	using B1NARY.DesignPatterns;
+	using B1NARY.Scripting;
+	using B1NARY.UI;
+	using System.Linq;
 	using UnityEngine;
 	using UnityEngine.InputSystem;
 
 	public sealed class DataCommands : Singleton<DataCommands>
 	{
-		public PlayerInput input;
-		public string saveButton = "QuickSave";
-		public string loadButton = "LoadSave";
+		public InputAction Save;
+		public InputAction Load;
+		public InputAction Escape;
 
 		private void Start()
 		{
-			Debug.Log("gersgersrdhtdrytjdthrhrdtr6utrdytj5hrdtyt");
-			input.actions.FindAction(saveButton, true).performed += SaveGame;
-			input.actions.FindAction(loadButton, true).performed += LoadGame;
+			Save.performed += SaveGame;
+			Save.Enable();
+			Load.performed += LoadGame;
+			Load.Enable();
+			Escape.performed += EscapeGame;
+			Escape.Enable();
 		}
 		public void SaveGame(InputAction.CallbackContext context)
 		{
@@ -23,6 +29,13 @@
 		public void LoadGame(InputAction.CallbackContext context)
 		{
 			SaveSlot.ActiveSlot.Slot.Load();
+		}
+		public void EscapeGame(InputAction.CallbackContext context)
+		{
+			if (ScriptHandler.Instance.documentWatcher == null)
+				return;
+			GameObject options = OptionsMenuPauser.Instance.gameObject;
+			options.SetActive(!options.activeSelf);
 		}
 	}
 }
@@ -44,9 +57,9 @@ namespace B1NARY.DataPersistence.Editor
 		public override void OnInspectorGUI()
 		{
 			serializedObject.Update();
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.input)));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.loadButton)));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.saveButton)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.Save)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.Load)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.Escape)));
 			serializedObject.ApplyModifiedProperties();
 			EditorGUILayout.Separator();
 			if (!Application.isPlaying)

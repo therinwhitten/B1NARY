@@ -1,11 +1,12 @@
 ﻿namespace B1NARY.UI
 {
 	using B1NARY.DataPersistence;
+	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
 	using System;
 	using UnityEngine;
 
-	public class OptionsMenuPauser : MonoBehaviour
+	public class OptionsMenuPauser : Singleton<OptionsMenuPauser>
 	{
 		public void OnEnable()
 		{
