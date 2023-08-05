@@ -144,11 +144,16 @@
 			config.EntryListeners += ChangeCharacter;
 			DocumentExplorer.PrintConcerns();
 			PlayerConfig.Instance.language.ValueChanged += UpdateDocumentViaLanguage;
+			for (int i = 0; i < nextLineButtons.Length; i++)
+				playerInput.actions.FindAction(nextLineButtons[i], true).performed += NextLineKey;
 		}
 		private void OnDestroy()
 		{
 			PlayerConfig.Instance.language.ValueChanged -= UpdateDocumentViaLanguage;
+			for (int i = 0; i < nextLineButtons.Length; i++)
+				playerInput.actions.FindAction(nextLineButtons[i], false).performed -= NextLineKey;
 		}
+		private void NextLineKey(InputAction.CallbackContext context) => NextLine();
 		private void UpdateDocumentViaLanguage(string newLanguage)
 		{
 			if (documentWatcher == null || documentWatcher.EndOfDocument)

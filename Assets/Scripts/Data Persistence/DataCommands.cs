@@ -1,11 +1,6 @@
 ﻿namespace B1NARY.DataPersistence
 {
 	using B1NARY.DesignPatterns;
-	using System;
-	using System.Collections;
-	using System.Collections.Generic;
-	using System.Linq;
-	using System.Xml.Linq;
 	using UnityEngine;
 	using UnityEngine.InputSystem;
 
@@ -14,32 +9,16 @@
 		public PlayerInput input;
 		public string saveButton = "QuickSave";
 		public string loadButton = "LoadSave";
-		public List<string> toggledGameObjectNames;
-		private List<GameObject> Objects
-		{
-			get
-			{
-				var objects = new List<GameObject>(toggledGameObjectNames.Count);
-				for (int i = 0; i < toggledGameObjectNames.Count; i++)
-				{
-					GameObject obj = GameObject.Find(name);
-					if (obj != null)
-						objects.Add(obj);
-				}
-				return objects;
-			}
-		}
 
+		private void Start()
+		{
+			input.actions.FindAction(saveButton, true).started += SaveGame;
+			input.actions.FindAction(loadButton, true).started += LoadGame;
+		}
 		public void SaveGame(InputAction.CallbackContext context)
 		{
-			StartCoroutine(ScreenshotDelay(Objects));
-		}
-		private IEnumerator ScreenshotDelay(List<GameObject> objects)
-		{
-			objects.ForEach(obj => obj.SetActive(!obj.activeSelf));
-			yield return new WaitForEndOfFrame();
+			Debug.Log("gersgersrdhtdrytjdthrhrdtr6utrdytj5hrdtyt");
 			SaveSlot.ActiveSlot.Save();
-			objects.ForEach(obj => obj.SetActive(!obj.activeSelf));
 		}
 		public void LoadGame(InputAction.CallbackContext context)
 		{
@@ -68,7 +47,6 @@ namespace B1NARY.DataPersistence.Editor
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.input)));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.loadButton)));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.saveButton)));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.toggledGameObjectNames)));
 			serializedObject.ApplyModifiedProperties();
 			EditorGUILayout.Separator();
 			if (!Application.isPlaying)

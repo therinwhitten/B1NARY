@@ -10,7 +10,6 @@
 	using System.Threading.Tasks;
 	using SixLabors.ImageSharp;
 	using SixLabors.ImageSharp.Processing;
-	using System.Diagnostics;
 	using SixLabors.ImageSharp.Formats.Jpeg;
 	using Image = SixLabors.ImageSharp.Image;
 	using Size = SixLabors.ImageSharp.Size;
@@ -27,6 +26,7 @@
 		/// including 2k ones.
 		/// </summary>
 		public const int typicalThumbnailSize = 512;
+		public static JpegEncoder Encoder { get; } = new JpegEncoder() { Quality = PlayerConfig.Instance.graphics.thumbnailQuality.Value };
 
 		/// <summary>
 		/// Creates a new <see cref="Thumbnail"/> by using the player's current
@@ -106,7 +106,7 @@
 			};
 			image.Mutate(x => x.Resize(options));
 			using var stream = new MemoryStream();
-			image.SaveAsJpeg(stream, new JpegEncoder() { Quality = PlayerConfig.Instance.graphics.thumbnailQuality.Value });
+			image.SaveAsJpeg(stream, Encoder);
 			stream.Position = 0;
 			data = stream.ToArray();
 		}

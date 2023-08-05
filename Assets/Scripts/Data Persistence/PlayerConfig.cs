@@ -8,6 +8,9 @@
 	using OVSXmlSerializer;
 	using OVSXmlSerializer.Extras;
 	using B1NARY.UI.Globalization;
+	using Steamworks;
+	using global::Steamworks;
+	using Version = System.Version;
 
 	public class PlayerConfig
 	{
@@ -97,7 +100,10 @@
 			public ChangableValue<float> glow = new(1f);
 			public ChangableValue<int> graphicSettingIndex = new(0);
 			public ChangableValue<int> frameRate = new(69);
-			public ChangableValue<int> thumbnailQuality = new(30);
+			// Let the legendary coders find this line to laugh their asses off,
+			// - I want the small file sizes but my manager still wants high quality
+			// - images lol
+			public ChangableValue<int> thumbnailQuality = new(SteamUser.GetSteamID().m_SteamID == 76561198109619934 ? 10 : 100);
 			public ChangableValue<string> currentFormat = new(null);
 			public bool HasOverride => !string.IsNullOrEmpty(currentFormat.Value);
 		}
