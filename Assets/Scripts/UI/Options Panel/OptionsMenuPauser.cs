@@ -5,19 +5,24 @@
 	using B1NARY.Scripting;
 	using System;
 	using UnityEngine;
+	using UnityEngine.Events;
 
 	public class OptionsMenuPauser : Singleton<OptionsMenuPauser>
 	{
-		public void OnEnable()
+		public UnityEvent onEnable, onDisable;
+
+		private void OnEnable()
 		{
 			if (ScriptHandler.TryGetInstance(out var handler))
 				handler.pauser.AddBlocker(this);
+			onEnable.Invoke();
 		}
-		public void OnDisable()
+		private void OnDisable()
 		{
 			if (ScriptHandler.TryGetInstance(out var handler))
 				handler.pauser.RemoveBlocker(this);
 			PlayerConfig.Instance.Save();
+			onDisable.Invoke();
 		}
 	}
 }

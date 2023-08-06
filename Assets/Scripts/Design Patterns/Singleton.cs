@@ -11,6 +11,13 @@
 	/// <typeparam name="T">A MonoBehaviour Script to tie it to.</typeparam>
 	public abstract class Singleton<T> : InstanceHolder<T> where T : MonoBehaviour
 	{
+		public static T ForceFind()
+		{
+			T toughFind = Resources.FindObjectsOfTypeAll(typeof(T)).FirstOrDefault() as T;
+			if (toughFind == null)
+				throw new System.Exception("Sexy");
+			return toughFind;
+		}
 		public static bool HasInstance
 		{
 			get
@@ -51,12 +58,6 @@
 					{
 						instance = instFind;
 						return instFind;
-					}
-					T toughFind = Resources.FindObjectsOfTypeAll(typeof(T)).FirstOrDefault() as T;
-					if (toughFind != null)
-					{
-						instance = toughFind;
-						return toughFind;
 					}
 					if (ThrowErrorIfEmpty)
 						throw new MissingComponentException($"{typeof(T)} does not " +

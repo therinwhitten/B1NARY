@@ -6,6 +6,7 @@
 	using System.Linq;
 	using UnityEngine;
 	using UnityEngine.InputSystem;
+	using UnityEngine.UI;
 
 	public sealed class DataCommands : Singleton<DataCommands>
 	{
@@ -34,6 +35,10 @@
 		{
 			if (ScriptHandler.Instance.documentWatcher == null)
 				return;
+			FindObjectsOfType<Button>().First(button => button.name == "Settings").onClick.Invoke();
+			return;
+			if (!OptionsMenuPauser.HasInstance)
+				OptionsMenuPauser.Instance = OptionsMenuPauser.ForceFind();
 			GameObject options = OptionsMenuPauser.Instance.gameObject;
 			options.SetActive(!options.activeSelf);
 		}
