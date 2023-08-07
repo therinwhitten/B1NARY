@@ -118,6 +118,7 @@ Johnは片方の手を耳に当て、オートトーク機能をアクティブ�
 CliffCliffは自信を持ってまっすぐに立ち、プレスウィンドウに向きを変えます。
 劇的な喉の清算で、彼は話し、声を出します。 
 {additive: on}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 クリフ::
 "地球の住人に。
 MCのデジタル領域への移行が成功したことを正式に発表できます。"
@@ -144,6 +145,7 @@ MCのデジタル領域への移行が成功したことを正式に発表でき
  "彼らが自分の位置を認識し、完全に認知していることを確認するためのテストはまだ行なわれている" 
 }
 ナレーター::
+{disableChar: Live 2D Bokeh}
 {fadeinsound: Press Conference Long, 1}
 {fadeinsound: smallgroupwhisper, 1}
 彼が世界に向けて発表すると、カメラのシャッターのシンフォニーとライトの点滅が噴出します。
@@ -157,6 +159,7 @@ MCのデジタル領域への移行が成功したことを正式に発表でき
 手を上げることは、波そのもののように、Cliffの注意を促します。  
 Cliffは、ある若い記者、別のニュースチャンネルの女性を指しています。
 {anim: クリフ, kime1}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 クリフ::
 "はい、あなたはそこにいます。質問を進めてください。"
 {anim: クリフ, kime2}
@@ -187,11 +190,13 @@ Cliffは数秒間一時停止し、彼の顔は感情を裏切っていません
 }
 このため、最初の4日間のテストは非公開にする予定です。"
 {additive: off}
+{disableChar: Live 2D Bokeh}
 ナレーター::
 {fadeinsound: smallgroupwhisper, 1}
 記者たちは、あたかも彼らが再び小学生であるかのように、手をさらに高く、より緊急に上げます。 
 は目に見えてため息をつき、イライラ感が彼の通常は穏やかなファサードを割っています。
 クリフ::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "これは非常にリスクの高い実験であると、会議の前にすでに警告していることを理解してください。"
 "私たちは、世界が発展するにつれて、もっと知りたいと望んでいることを理解しています。 そして、私たちはあなたに情報を提供するよう努めます。"
 {if: !n-b}
@@ -219,6 +224,7 @@ Cliffは数秒間一時停止し、彼の顔は感情を裏切っていません
 クリフ::
 "現時点では、これ以上質問はありません。"
 "あなたは世界の残りの部分で待つ必要があります。。。"
+{disableChar: Live 2D Bokeh}
 ナレーター::
 {additive: on}
 ジョン は、窓を吸うためにラボテックにクリフが動くのを見て、何かがおかしいと感じています。 
@@ -232,4 +238,4 @@ Johnはヘッドセットをタップしてマイクをオンにします。
 窓が固い壁に変わり、真実を遮っているので、Cliffの額の汗に誰も気づいていないようです。。。
 {fadeoutsound: smallgroupwhisper, 1}
 {fadeoutsound: Lab Tension, .2}
-{changeScript: Language Packs/Japanese/Female/Prologue/Prologue III}
+{changeScript: Female/Prologue/Prologue III}

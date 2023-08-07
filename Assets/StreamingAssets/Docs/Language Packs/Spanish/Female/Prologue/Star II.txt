@@ -37,6 +37,7 @@ Ella es más baja de lo que pensé que sería. Sin embargo, sus curvas.
 Ara Ara...
 {fadeinsound: Heart Thump, .1}
 Abre la boca, una impresión de impaciencia y ligera molestia colorea su discurso.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella::
 [Annoyed]
 "Bruh."
@@ -281,6 +282,7 @@ MC::
            {moveChar: Lucas, -1}
            {moveChar: Asterella, .45}
            {movecube: .45, .2}
+           {disableChar: Live 2D Bokeh}
            Con Lucas fuera, estamos solos. Star y yo.
            El beso en la frente arde más que el aguijón a mi orgullo, o el movimiento del dedo.
            Ella es tan cautivadora.
@@ -288,6 +290,7 @@ MC::
            ¿Todas las cosas que debería ser un Señor Demonio?
            Me toco la frente ligeramente.
            Asterella::
+           {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
            [Default]
            "¿Dolió?"
            MC::
@@ -295,7 +298,7 @@ MC::
            "No fue el movimiento del dedo ..."
            Asterella::
            "Bueno, MC. Tenemos algunas cosas de qué hablar".
-           {changeScript: Female/Prologue/Star II, 378}
+           {changeScript: Female/Prologue/Star II, 386}
         ]
         No importa, ¡no puedo hacer esto!
         [
@@ -341,6 +344,7 @@ Lucas::
 {moveChar: Asterella, .45}
 {movecube: .45, .2}
 MC::
+{disableChar: Live 2D Bokeh}
 Estamos solos. Star y yo.
 Como si estuviera en el momento justo, ella camina con confianza hacia mí.
 A pocos metros de distancia, ella me estudia. 
@@ -349,6 +353,7 @@ A pesar de mí mismo, siento que quiero rendirme a ella.
 Ella es cada centímetro un Señor.
 Asterella::
 {anim: Asterella, Thinking}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "Entonces, ¿tienes un nombre?"
 MC::
 Ella deja que la pregunta cuelgue allí abierta. 
@@ -358,6 +363,7 @@ Ella deja que la pregunta cuelgue allí abierta.
 {
  "Mi pronombre es ellos ..."
 }
+{disableChar: Live 2D Bokeh}
 Tartamudeo. 
 Gimiendo internamente.
 Estoy arruinando mi primera impresión. 
@@ -369,6 +375,7 @@ Ella está así de cerca.
 {anim: Asterella, Pouting}
 Ella asiente y sonríe con una sonrisa genuina.
 Asterella::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 [Happy]
 "Ese es un nombre muy bonito, MC".
 {if: n-b}
@@ -400,6 +407,7 @@ Asterella::
 "Sabes, como intruso, me imagino que no esperarías este tipo de hospitalidad".
 "Realmente no te veo como un intruso, MC".
 MC::
+{disableChar: Live 2D Bokeh}
 "Sabes, como intruso, me imagino que no esperarías este tipo de hospitalidad".
 "Realmente no te veo como un intruso, MC".
 {additive: on}
@@ -417,6 +425,7 @@ Tal vez un poco demasiado desesperadamente.
 Ella me mira con una expresión ilegible.
 {fadeinsound: woodwine1, .1}
 Asterella::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "Lo supuse". 
 "Pero eso no te aclara. Todavía no".
 {movecube: .8, .3}
@@ -491,6 +500,7 @@ Ella lleva su copa hacia la mía, y brindamos.
 {fadeinsound: Wine Toast, .1} 
 MC::
 "Relaciones futuras".
+{disableChar: Live 2D Bokeh}
 {movecube: .45, 0}
 {anim: Asterella, Impatient}
 Tomamos el primer sorbo en silencio. El sabor es muy ahumado y limpio. 
@@ -500,6 +510,7 @@ Una pequeña sonrisa toca sus labios.
 Asterella::
 {movecube: .45, .3}
 {additive:on}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "Directo al grano. 
 Eso me gusta".
 {additive:off}
@@ -571,10 +582,12 @@ MC::
 No puedo creer lo que estoy escuchando.
 ¿Está pidiendo ...
 "¿Yo?"
+{disableChar: Live 2D Bokeh}
 Fue todo lo que puedo decir.
 Tomo un tirón profundo del vino, cubriendo mi cara sonrojada detrás de la acción.
 Asterella Star me pide que "pase la noche" con ella. 
 Ella me mira, con la pregunta en sus ojos.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {choice: Que no cunda el pánico...}
 {
     Sí, estoy de acuerdo con esto.
@@ -585,9 +598,10 @@ Ella me mira, con la pregunta en sus ojos.
         "Será mi primera vez con una mujer".
         "Sé gentil".
         MC:: 
+        {setachievement: female_route}
         {usegameobject: Hentai Warning Panel, true}
         {fadeoutsound: fireplace, 1}
-        {fadeoutsound: Lucas and Star Dinner, 1} 
+        {fadeoutsound: Star Dinner, 1} 
         {changeScript: Female/Prologue/Star II Hentai}
     ]
     No. ¡Esto va demasiado rápido!

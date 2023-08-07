@@ -5,16 +5,17 @@
 {spawnEmpty: ナレーター, NPC}
 {spawnChar: star nightgown, .5, Asterella}
 {spawnEmpty: MC, Player}
-{movecube: .4, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{movecube: .5, .2}
 Asterella::
 [Confusion]
 "ええと...私は正直にそれを期待していませんでした。"
-{movecube: .4, 0}
+{movecube: .5, 0}
 MC::
 彼女は官能的に唇を噛みる。
 Asterella::
 [Disgust]
-{movecube: .4, .4}
+{movecube: .5, .4}
 "私が欲しいものを否定する神経を持っている人はそれほど多くありません, MC."
 MC::
 彼女は僕をひどく見ている.
@@ -53,4 +54,7 @@ Asterella::
 これは注意して行ってください。
 ただし、堅実な友達がいると、他の人に勝つことができる場合があります。 
 デモを楽しんでいただけたでしょうか。
+{setachievement: male_route}
 終わり
+{colorformat: Default}
+{changeScene: Scenes/Main Menu}

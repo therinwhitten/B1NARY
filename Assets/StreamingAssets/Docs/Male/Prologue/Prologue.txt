@@ -69,6 +69,7 @@ The light erases my distractions, and I attempt to blink away the brightness.
 {spawnChar: malesilo, 2, Smug Reporter}
 {anim: Smug Reporter, kime1}
 {moveChar: Smug Reporter, .75}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Smug Reporter::
 "MC! 
 Are you ok? You look unsteady."
@@ -100,6 +101,7 @@ Oh... Right...
 I open my mouth.
 "Knowing that Digital Horizons is in control is the <i>only</i> reason I'm 'just' nervous." 
 "I know they will bring me back in one piece. Of that, you can be assured."
+{disableChar: Live 2D Bokeh}
 Hopefully I come back with all of my memories.
 So many things to forget: my internship, my parents, my hentai collection...
 Would I even be the same person if I lost my memories?
@@ -120,6 +122,7 @@ Damn lights!
 {moveChar: Smug Reporter, 2}
 {moveChar: Shirobi, .55}
 Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {anim: Shirobi, Glasses} 
 {if: !n-b}
 {
@@ -147,6 +150,7 @@ Shirobi::
 "You know... I wouldn't let you get near this chair unless it's safe. Right?" 
 "Four days. Then we will pull you out. Ok?"
 MC::
+{disableChar: Live 2D Bokeh}
 I nod, taking in the room.
 The press are being guided outside of the room. The only people inside were me, the lab techs, and Cliff. 
 {fadeinsound: slowfootsteps, .3}
@@ -161,6 +165,7 @@ My body won't do anything weird
 like have a zombie stiffy... right?
 {additive: off}
 Oh please no. Maybe I should ask...
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Shirobi snorts, obviously stifling laughter.
 Shirobi::
 {additive: on}

@@ -118,6 +118,7 @@ versteift sich die Spannung Cliffs Rücken.
 Cliff steht dann mit Überzeugung auf, dreht sich zu dem Pressenfenster.
 Mit einer dramatischen Befreiung seiner Kehle spricht er, und projiziert seine Stimme. 
 {additive: on}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff::
 „Zu den Einwohnern der Erde.
 Ich kann offiziell ankündigen, dass der Transfer in die Digitale Welt des MCs geglückt ist."
@@ -144,6 +145,7 @@ Cliff::
 }
 „In diesem Sinne verkünde ich, dass dieses Experiment ein gewaltiger Erfolg ist!"
 Erzähler::
+{disableChar: Live 2D Bokeh}
 {fadeinsound: Press Conference Long, 1}
 {fadeinsound: smallgroupwhisper, 1}
 Die Symphonie der Kamerablenden und das Strahlen der Lichter brechen aus, als er seine Ankündigung an die Welt macht.
@@ -157,6 +159,7 @@ Erzähler::
 Die Anhebung der Hände, wie eine Welle, flehen um Cliffs Aufmerksamkeit.  
 Cliff zeigt zu einem jungen Reporter, eine Dame von einem anderen Nachrichtensender.
 {anim: Cliff, kime1}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff::
 „Ja, du dort. Stelle mir deine Frage."
 {anim: Cliff, kime2}
@@ -187,11 +190,13 @@ sowie der Druck sich mit einer völlig neuen Grenze auseinanderzusetzen,
 }
 Deswegen, planen wir die ersten vier Tage im privaten zu halten."
 {additive: off}
+{disableChar: Live 2D Bokeh}
 Erzähler::
 {fadeinsound: smallgroupwhisper, 1}
 Die Reporter heben ihre Hände immer höher, immer dringender, als ob sie wieder Grundschüler wären.
 Cliff seufzt ersichtlich, ein Hauch von Reizbarkeit bricht seine normalerweise ruhige Fassade.
 Cliff::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 „Bitte versteht, wir haben euch vor der Konferenz gewarnt, dass dies ein Experiment von sehr <i>hohem Risiko</i> ist."
 „Wir verstehen, dass die Welt mehr über die Entwicklung wissen will. Und wir werden uns bemühen euch auf dem Laufenden zu halten." 
 {if: !n-b}
@@ -219,6 +224,7 @@ Mit einem Hauch der Endgültigkeit, winkt er der Presse zum Abschied zu.
 Cliff::
 „Wir werden keine weiteren Fragen annehmen."
 „Ihr werdet mit dem Rest der Welt warten müssen..."
+{disableChar: Live 2D Bokeh}
 Erzähler::
 {additive: on}
 John fühlt, dass irgendwas nicht stimmt, als er sieht wie Cliff sich zu den Labortechnikern bewegt, um aus dem Fenster zu rauchen. 
@@ -232,4 +238,4 @@ Erzähler::
 Keiner scheint den Schweiß auf Cliffs Stirn zu bemerken, als das Fenster zu einer soliden Wand wird, um die Wahrheit zu blockieren...
 {fadeoutsound: smallgroupwhisper, 1}
 {fadeoutsound: Lab Tension, .2}
-{changeScript: Language Packs/German/Female/Prologue/Prologue III}
+{changeScript: Female/Prologue/Prologue III}

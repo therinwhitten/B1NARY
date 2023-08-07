@@ -117,6 +117,7 @@ John lo observa atentamente.
 {spawnChar: malesilo, -1, Cliff}
 {anim: Cliff, kime2}
 {moveChar: Cliff, .50}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff se levanta con confianza y se vuelve hacia la ventana de la prensa.
 Con un dramático carraspeo, habla proyectando su voz. 
 {additive: on}
@@ -162,6 +163,7 @@ Cliff señala a una joven reportera, una señora de otro canal de noticias.
 Cliff::
 "Sí, tú ahí. Adelante, haz tu pregunta".
 {anim: Cliff, kime2}
+{disableChar: Live 2D Bokeh}
 Narrador::
 Frunce los labios, nerviosa.
 Mujer reportera::
@@ -171,7 +173,8 @@ Mujer reportera::
 Narrador::
 Los demás periodistas dejan de cuchichear. Todas las miradas se fijan en Cliff.
 {fadeoutsound: smallgroupwhisper, 1} 
-Cliff pauses for a few seconds, his face betraying no emotion.
+Cliff hace una pausa por unos segundos, su rostro no delata ninguna emoción.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff::
 "Bueno, eso todavía está en el aire. Debemos permanecer en alerta máxima durante esta primera prueba".
 {additive: on}
@@ -225,6 +228,7 @@ Una vez pronunciadas sus últimas palabras, Cliff se despide de la prensa con ai
 Cliff::
 "No aceptaremos más preguntas en este momento".
 "Tendrán que esperar con el resto del mundo".
+{disableChar: Live 2D Bokeh}
 Narrador::
 {additive: on}
 John siente que algo va mal cuando ve a Cliff pedir a los técnicos del laboratorio que ahumen la ventana. 

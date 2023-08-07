@@ -59,6 +59,7 @@ Ich versuche die blendende Helligkeit wegzublinzeln, und erhebe meine Hand um me
 Alter Reporter::
 {anim: Alter Reporter, kime1}
 {moveChar: Alter Reporter, .85}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {if: !n-b}
 {
  „Da ist sie! MC?"
@@ -90,6 +91,7 @@ Ich schau in die Kamera, welche am nächsten zu mir ist.
 Cliff::
 {moveChar: Cliff, .25}  
 {anim: Cliff, kime2}
+{disableChar: Live 2D Bokeh}
 MC::
 Meine Augen beginnen sich anzupassen. Ich bemerke Cliff, den anführenden Projektmanager, hinter der Presse, seine Arme verrenkt und mit einem Blick der Besorgnis in seinem Gesicht.
 Warum sagt niemand irgendwas?
@@ -158,6 +160,7 @@ Er nickt schlauerweise, ein leichtes Lächeln krümmt seine Lippen.
 Er bewegt sich zu dem DIHI. 
 {anim: Shirobi, Thisway}
 Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {additive: on}
 „Ich bin verantwortlich für die Überwachung deiner Vitalwerte.
 {anim: Shirobi, Bow}
@@ -167,7 +170,8 @@ Also bitte... nimm das Ernst?
 „Versuche nicht, in den Servern zu bleiben, MC. Okay?"
 MC::
 Meine Augenbrauen erheben sich aus eigenem Antrieb. 
-„Es wird mir gut gehen, ich verspreche es. Möchte nicht das du dir Sorgen machst."  
+„Es wird mir gut gehen, ich verspreche es. Möchte nicht das du dir Sorgen machst." 
+{disableChar: Live 2D Bokeh} 
 Ich bemerke indirekt wie die Presse aus dem DIHI Raum hinaus eskortiert wird.
 {fadeinsound: LabCrewLeavingFootsteps, .3}
 {fadeinsound: openclosedoor, .5}
@@ -181,6 +185,7 @@ Für eine Sekunde, ich zögere.
 Okay, <i>das</i> bringt mich zurück zu meinem Fluchtdrang.
 Shibi spricht lauter, sein Ton zwangsweise lässig.
 Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 „Der Prozess ist eigentlich ziemlich banal." 
 {additive: on}
 „Dein Körper wird inaktiv sein,
@@ -274,4 +279,4 @@ Oh mein Gott, ich glaube ich bin...
 {fadeoutsound: Laptop-Lab,.1}
 Dann, mit einer fast herzzerreißende Erschütterung, alles verschwindet aus meinem Kopf...
 {fadeinsound: Brain Sucking Chair Activate, .5}
-{changeScript: Language Packs/German/Female/Prologue/Prologue II}
+{changeScript: Female/Prologue/Prologue II}

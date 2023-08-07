@@ -68,6 +68,7 @@ Masked Punk::
 {fadeoutsound: Star Piano, 2}
 {fadeinsound: Flash Step, .3}
 {moveChar: Masked Punk, .50}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "マジ? 俺はここに来るのは敗者が忍び寄るのを見つけるためだけ？"
 MC::
 非人間的なスピードで、この悪魔は樹木限界線から飛び出してくる。
@@ -148,6 +149,8 @@ MC::
 彼は俺の手をつかみ、一気に俺を引き寄る。
 マスクがほとんど俺の鼻に触れている。
 よく考えて飲み込む。
+{fadeinsound: no_one_expects_whisper, .1}
+{setachievement: second_swallow}
 これを閉じると、硫黄の匂いが俺の鼻の穴を満たす。 
 Lucas::
 "あんたがこの領域を傷つけたら、俺はあんたを豚のように切る。分かる?"
@@ -165,6 +168,7 @@ Lucas::
 "それは要求ではなかった。あんたは俺と一緒に来る。" 
 "Starはあなたをどうするかを理解する。"
 "結局、あんたは侵入してる。"
+{disableChar: Live 2D Bokeh}
 MC::
 ここではほんの数秒の反応しかない。
 彼は速い。 
@@ -196,6 +200,7 @@ MC::
        鉄のように固い手が肩を掴んでいるのを感じる。 
        {anim: Lucas, Wind Idle}
        {moveChar: Lucas, .5}
+       {disableChar: Live 2D Bokeh}
        Lucas::
        [Lewd]
        "じゃ. あんたはこれを難しい方法でやりたい、な?"
@@ -329,6 +334,7 @@ MC::
        Lucas::
        [Default]
        MC::
+       {disableChar: Live 2D Bokeh}
        {fadeinsound: Lucas Laugh 1, .2}
        彼はロープをぐいと動かし、再び動き始めると笑う。
        俺は自分の状況をコントロールできない。 
@@ -364,6 +370,7 @@ MC::
        {movecube: .5, .3}
        {anim: Lucas, Idle}
        高さ10フィートの古代の木製のドアの前に立ち寄る。 
+       {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
        Lucas::
        "あんたがその理由を賞賛しているのに気づいた。あんたはそれが美しいと思う、あんたが中に入るまで待って。"
        MC::
@@ -391,7 +398,8 @@ Lucasは振り返り、歩き始める。
 {fadeinsound: Walking on Gravel, 1}
 {fadeoutsound: Lucas Dark, 5}
 {fadeinsound: Star Piano, 5}
-Lucasは彼の肩越しに見て、俺がまだフォローしていることを確認する。 
+Lucasは彼の肩越しに見て、俺がまだフォローしていることを確認する。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh} 
 Lucas::
 "あのさ、あんたはラッキーだ、Starは俺がする前にあんたを感じました。"
 "俺は一般的に、彼女のように「招待されていないゲスト」を容認しない。"
@@ -430,6 +438,7 @@ Lucas::
 "おまえ, 彼女は, これまでで最もセクシーな魔王。
 MC::
 彼は公然と笑う。
+{disableChar: Live 2D Bokeh}
 MC::
 私は何に足を踏み入れたのだろう？多くの疑問が浮かんでくる。
 ロールプレイング？ライブストリームイベント？
@@ -444,8 +453,10 @@ MC::
 俺たちの前には、古代の石で切り刻まれた外壁が迫っている。
 亀裂や隙間に植生が生えている。 
 Lucasが手を振ると、正門が開く。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 "第69回地獄サークルへようこそ, MC."
+{disableChar: Live 2D Bokeh}
 MC::
 {additive:on}
 静かに入り口を通り抜ける。 
@@ -466,7 +477,8 @@ MC::
 {fadeoutsound: Walking on Gravel, 1}
 {moveChar: Lucas, .50}
 {movecube: .5, .3}
-高さ10フィートの古代の木製のドアの前に立ち寄る。 
+高さ10フィートの古代の木製のドアの前に立ち寄る。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh} 
 Lucas::
 "あんたがその理由を賞賛しているのに気づいた。あんたはそれが美しいと思う、あんたが中に入るまで待って。"
 MC::
@@ -517,7 +529,8 @@ Lucasはずっと彼の息を呑んで歌をハミングしてきた。
 {additive: off} 
 画面なしで、彼女に直接会う。障壁はない。。。
 {fadeinsound: Heart Thump, .1}
-それに応えて俺の心はドキドキする。 
+それに応えて俺の心はドキドキする。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh} 
 Lucas::
 "こんにちは、主よ。要求に応じて、侵入者を連れ戻しました。"
 MC::
@@ -552,6 +565,7 @@ Lucas::
 [Default]
 Asterella::
 "ただし、それを再度行わないで。あなたがそれをするとき、それは私をびっくりさせる。"
+{disableChar: Live 2D Bokeh}
 MC::
 彼女の声の驚きは私のものを反映している。
 彼女は本を最後の空気で閉じ、テーブルに置く。
@@ -562,6 +576,7 @@ MC::
 声がそれを確認した。これはTwatchのAsterella Starだ。
 俺はその声をよく知っている。彼女の小川は時々陽気に呪われている。
 彼女の聴衆はそれを愛している。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 "マスターから報酬をもらえるか？"
 MC::
@@ -605,6 +620,7 @@ Asterella::
 "ええ, 君は報われるかもしれない。
 "さ。 毎晩の罰については、ダンジョンマスターに相談してください。"
 "私はこれに出席する...侵入者。"
+{disableChar: Live 2D Bokeh}
 MC::
 毎晩の罰？
 ヤバい。 
@@ -628,4 +644,4 @@ MC::
 {fadeinsound: openclosedoor, 1}
 Starは、彼女の顔に満足の表情を浮かべて、Lucasがドアを閉めるのを見ている。 
 ドアが閉まると、彼女はため息をつき、少しの間目を閉じた。
-{changeScript: Language Packs/Japanese/Male/Prologue/Star II, 170}
+{changeScript: Male/Prologue/Star II, 173}

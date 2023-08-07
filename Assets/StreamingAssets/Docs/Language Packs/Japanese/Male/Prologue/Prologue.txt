@@ -69,6 +69,7 @@ MC::
 {spawnChar: malesilo, 2, Smug Reporter}
 {anim: Smug Reporter, kime1}
 {moveChar: Smug Reporter, .75}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Smug Reporter::
 "MC! 
 大丈夫ですか。? あなたは不安定に見えます。"
@@ -100,6 +101,7 @@ MC::
 口を開ける。
 「Digital Horizonsが管理していることを知っていることが、俺が「ただ」緊張している唯一の理由だ。」 
 "彼らが俺を一枚に戻すことを俺は知っている。その中で、あなたは安心することができる。"
+{disableChar: Live 2D Bokeh}
 うまくいけば、俺のすべての思い出を持って戻ってくる。
 忘れてしまうことがたくさんある: 俺のインターンシップ、俺の両親、俺の変態コレクション。。。
 思い出を失ったら、俺も同じ人になる？
@@ -120,6 +122,7 @@ MC::
 {moveChar: Smug Reporter, 2}
 {moveChar: Shirobi, .55}
 Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {anim: Shirobi, Glasses} 
 {if: !n-b}
 {
@@ -147,6 +150,7 @@ Shirobi::
 "あのね... 安全でない限り、この椅子には近づかせない。そうだろ？" 
 "四日. その後、私たちはあなたを引き出す. いい?"
 MC::
+{disableChar: Live 2D Bokeh}
 俺はうなずいて、部屋を取る。
 プレスは部屋の外に案内されている。 中にいるのは俺、ラボテック達、そしてCliffだけだった。
 {fadeinsound: slowfootsteps, .3}
@@ -161,6 +165,7 @@ DIHIの音が急変し、空気中の電離感が増する。
 ゾンビがこわばっているような…そうか？
 {additive: off}
 ないかな. 多分尋ねるべき。。。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Shirobiは鼻を鳴らし、明らかに息苦しい笑い声を上げる。
 Shirobi::
 {additive: on}

@@ -117,6 +117,7 @@ John watches closely.
 {spawnChar: malesilo, -1, Cliff}
 {anim: Cliff, kime2}
 {moveChar: Cliff, .50}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff then stands up straight with confidence, turning to the press window.
 With a dramatic clearing of his throat, he speaks, projecting his voice. 
 {additive: on}
@@ -162,6 +163,7 @@ Cliff points to one young reporter, a lady from another news channel.
 Cliff::
 "Yes, you there. Go ahead and ask your question."
 {anim: Cliff, kime2}
+{disableChar: Live 2D Bokeh}
 Narrator::
 She purses her lips, nervous.
 Female Reporter::
@@ -172,6 +174,7 @@ Narrator::
 The other news reporters stop whispering. All eyes lock on Cliff.
 {fadeoutsound: smallgroupwhisper, 1} 
 Cliff pauses for a few seconds, his face betraying no emotion.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff::
 "Well that is still up in the air. We must remain on high alert through this first test."
 {additive: on}
@@ -225,6 +228,7 @@ With his final words spoken, Cliff waves goodbye to the press with an air of fin
 Cliff::
 "We won't take any more questions at this time."
 "You'll have to wait with the rest of the world."
+{disableChar: Live 2D Bokeh}
 Narrator::
 {additive: on}
 John feels something wrong as he watches Cliff motion to the lab techs to smoke the window. 

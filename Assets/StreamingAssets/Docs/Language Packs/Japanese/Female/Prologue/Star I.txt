@@ -77,6 +77,7 @@ MC::
 {fadeinsound: Flash Step, .3}
 {moveChar: マスクド・パンク, .50}
 MC::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 突然、目の前1メートルに仮面の男が立った。
 彼はただそこにいる。  
 圧縮空気が私を顔に叩きつく。 
@@ -105,6 +106,7 @@ MC::
       MC::
       当然、パニックになる。
       私は彼の鼠径部にしっかりとしたキックを送る。 
+      {setachievement: nut_cracker}
       {fadeinsound: body punch hard, .2}
       彼はかろうじて私の足を捕まえる。彼のグリップは鋼のようにしっかりしている。
       彼は感謝の気持ちで口笛を吹く。
@@ -123,7 +125,7 @@ MC::
       "そのキックは俺に二度考えさせている。"
       MC::
       "それはどういう意味？!"
-      {changeScript: Language Packs/Japanese/Female/Prologue/Star I, 152}
+      {changeScript: Female/Prologue/Star I, 154}
     ]
    クソ! 叫べ!!
     [
@@ -162,8 +164,9 @@ MC::
 Lucas::
 "いいえ! あんたはこれを始めた、あんたは最初に止まる！"
 MC::
-{fadeinsound: Lucas Breath Hard, .2}
-{fadeinsound: Min Sigh Extreme, .2}
+{fadeinsound: Lucas Breathing, .2}
+{fadeinsound: Female MC Breathing, .2}
+{disableChar: Live 2D Bokeh}
 私たちは両方とも立ち止まり、ハフとパフをする。  
 私はちょうどここに着いた、そして私はすでに私が準備ができていない何かに対処しなければならない。
 この男を傷つけることはできない。彼は強すぎる。速すぎる。 
@@ -193,6 +196,7 @@ MC::
 彼は突然心から笑い始める。
 私は彼を見て、数回まばたきをし、何を言うか、何をすべきかわからない。
 Lucas::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {additive:on}
 "お。マイ。ゴッド, MC.
 おい, すげいいい!"
@@ -218,6 +222,7 @@ Lucas::
  MC::
  "あなたは夜に歩き回っている女性を怖がらせることについては行くな！"
 }
+{disableChar: Live 2D Bokeh}
 Lucasという名前は知っている。
 雪崩のように、名前の認識は私の意識的な考えにぶつかる。
 私は彼が誰であるか知っている。でも信じられない。 
@@ -226,6 +231,7 @@ Lucasという名前は知っている。
 "ドメイン."
 その言葉を注意深く試す。
 Lucasは、私が物事を熟考しているのを見ているようだ。彼は頭を少し左に傾ける。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 "待て. 待て. 待て. あんたは俺が誰であるか知っている？"
 MC::
@@ -278,6 +284,7 @@ Lucas::
 "第69回地獄サークルへようこそ, MC.
 滞在をお楽しみ。"
 {additive:off}
+{disableChar: Live 2D Bokeh}
 MC::
 署名の挨拶は私の背骨に震えを送る。
 これは現実!
@@ -296,10 +303,12 @@ MC::
 そして、Lucas，彼は本当にロールプレイング？それとも。。。
 彼はいつも悪魔だったか？それとも、彼らはこの仮想世界での役割を果たしているだけか？
 外力が作用せずに古い門が開いている入り口に着く。 
-Syzcrotic::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Lucas::
 "おい MC, あんたは私たちが行くように見ることができる。後でそのための十分な時間。"
 "最初にStarを見る必要がある、分かる？"
 MC::
+{disableChar: Live 2D Bokeh}
 うなずき。
 私は誰に反対するか？彼はすぐに私を縛ることができる。 
 私は彼に望んでいないというわけではない。。。
@@ -312,7 +321,8 @@ MC::
 風が彼らの葉を愛撫する。 
 明るい月明かりが、入念に選ばれた黒い大理石のベンチを浴びて反射する。
 {additive:off}
-邸宅の前には大きな噴水があり、月明かりから水がきらめき。 
+邸宅の前には大きな噴水があり、月明かりから水がきらめき。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh} 
 Lucas::
 {movecube: .5, .1}
 [OWO]
@@ -346,4 +356,4 @@ Lucasはハンドルを引っ張る
 Lucas::
 "邸宅の残りの部分が見えるまで待って, MC."
 "それはあなたの心を吹き飛ばす。"
-{changeScript: Language Packs/Japanese/Female/Prologue/Star II}
+{changeScript: Female/Prologue/Star II}

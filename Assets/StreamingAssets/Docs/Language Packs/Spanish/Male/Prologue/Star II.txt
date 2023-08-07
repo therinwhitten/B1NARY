@@ -20,6 +20,7 @@ Mah Heart...
 Y.
 Lucas ha estado tarareando canciones en voz baja todo el camino. 
 {moveChar: Asterella, .65}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {additive: on}
 Al entrar, 
 una joven despampanante, 
@@ -128,6 +129,7 @@ Lucas::
 {
  "Si se vuelven hostiles no me culpes, ¿de acuerdo?"
 }
+{disableChar: Live 2D Bokeh}
 {moveChar: Lucas, -1}
 {moveChar: Asterella, .5}
 {movecube: .2, .4}
@@ -143,6 +145,7 @@ MC::
 La ligera risita que se le escapa de la garganta no le sorprende. 
 Parecen estar muy cerca el uno del otro.
 Como si estuviera decidiendo algo, me mira con ojos compungidos.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {movecube: .5, .1}
 Asterella::
 [Default]
@@ -162,12 +165,14 @@ Asterella::
 MC::
 Me mira con un gesto irónico en los labios.
 {movecube: .5, 0}
+{disableChar: Live 2D Bokeh}
 Extiende una uña y me corta las cuerdas de las muñecas y la garganta. 
 La uña corta como un cuchillo. 
 No me extraña que Lucas no estuviera preocupado. 
 Espera, ¿eso fue una advertencia? 
 Pienso tomarlo como tal.
 {movecube: .5, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella Star, a menos de un metro de mi cara.
 En carne y hueso. 
 {if: henable}
@@ -374,6 +379,7 @@ Asterella::
  "No te hagas el tonto conmigo, MC. Pareces un elfo muy amable y atractivo, y yo estoy un poco 'sediento'..."
 }
 "Y no es por más vino".
+{disableChar: Live 2D Bokeh}
 MC::
 La expresión de su rostro dice mucho de cuáles eran sus verdaderas intenciones.
 {if: henable}
@@ -414,6 +420,7 @@ La expresión de su rostro dice mucho de cuáles eran sus verdaderas intenciones
 	{additive:off} 
 }
 Una sonrisa segura envuelve lentamente su rostro: una sonrisa de satisfacción.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella::
 "Tu cuerpo no puede mentirme, MC. Sé que tú también me quieres".
 MC:: 
@@ -424,6 +431,7 @@ Asterella::
 {movecube: .4, .1}
 "Como un intruso para arrancar".
 MC:: 
+{disableChar: Live 2D Bokeh}
 ¿Qué digo?
 Ella es impresionante: suave en todos los lugares correctos. 
 Dejando a un lado el papel de Demon Lord, como mujer: es elegante, segura y atrevida.
@@ -435,6 +443,7 @@ Estoy en una situación desconocida, con pozos oscuros a mi alrededor.
 Sin mencionar que el demonio "disfrutando" en la mazmorra esta noche puede causar problemas con cualquiera de las decisiones que tome. 
 ¿Estoy lastimando el reino si lastimo sus sentimientos?
 ¿Se enfurecerá Lucas si sigo la sugerencia de Star?
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {movecube: .4, .3}
 {choice: ¿Qué debo hacer?}
 {
@@ -495,7 +504,7 @@ Sin mencionar que el demonio "disfrutando" en la mazmorra esta noche puede causa
 				Puse muy suavemente su mano en su regazo.
 				"Lo siento, Star".
 				"No te conozco. Simplemente no me parece bien".
-				{changeScript: Language Packs/Spanish/Male/Prologue/Star II FriendZoned}
+				{changeScript: Male/Prologue/Star II FriendZoned}
 			]
 			¡A la! ¡No puedo negar esos ojos!
 			[
@@ -542,5 +551,6 @@ Sin mencionar que el demonio "disfrutando" en la mazmorra esta noche puede causa
 MC::
 {usegameobject: Hentai Warning Panel, true}
 {fadeoutsound: fireplace, 1}
-{fadeoutsound: Lucas and Star Dinner, 1}
-{changeScript: Language Packs/Spanish/Male/Prologue/Star II Hentai}
+{fadeoutsound: Star Dinner, 1}
+{setachievement: male_route}
+{changeScript: Male/Prologue/Star II Hentai}

@@ -2,6 +2,7 @@
 {fadeinsound: Times Square Crowd, 1}
 {colorformat: Times Square}
 {spawnEmpty: ナレーター, NPC}
+{setachievement: intern_UwU}
 ナレーター::
 ニューヨークのタイムズスクウェア:2040年. 猛烈な夏の日の正午。
 通常の日, ほとんどの人が歩いているのを見ることができます。仕事に向かって, 車両の不協和音, 歩行者, そしてビートと完全に調和した広告。
@@ -17,6 +18,7 @@
 {spawnChar: malesilo1, -1, 男性傍観者}
 {anim: 男性傍観者, Thinking}
 {moveChar: 男性傍観者, 0.27}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 男性傍観者::
 "彼らがこれを経験しているなんて信じられない！"
 "誰がこのプロジェクトを起こさせたのか？"
@@ -78,6 +80,7 @@ Female Bystanderは憤慨してMale Bystanderを見ます。
 {moveChar: 男性傍観者, -1}
 {moveChar: 女性傍観者, -1}
 {moveChar: 男性傍観者 2, 2}
+{disableChar: Live 2D Bokeh}
 {loopBG: false}
 {playBG: Prologue/Times Square Pan Up}
 {spawnChar: femalesilo, 2, シンディ}
@@ -122,6 +125,7 @@ Female Bystanderは憤慨してMale Bystanderを見ます。
 画面の前には、濃い灰色のスーツを着た40代の男性がいて、片方の手でイアピースをいじっています。
 ニュース特派員が耳を傾けると、彼は素っ気なくうなずきます。 
 Johnさんはカメラに向かって大きく笑います。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 ジョン::
 "ありがとう、 Cindyさん! お元気でしたか?"
 シンディ::
@@ -220,6 +224,7 @@ Johnさんの表情がカメラで変わる. フォーカスは彼の目の後�
 "その本来の目的は、癌患者の心をサイボーグに移すこと、または宇宙飛行士が凍結静止の新しいスキルを学ぶ時間を与えることでした。"
 "しかし、このテクノロジーを使用できるアプリケーションはたくさんあります。" 
 "したがって、名前は。デジタルイメージングヒューマンインタフェース。人間全体のイメージを転送します。"
+{disableChar: Live 2D Bokeh}
 ナレーター::
 The female bystanderは通りを公然と嘲笑し、境界線の恐怖を見つめています。
 女性傍観者::
@@ -273,6 +278,7 @@ Johnは現在、ラボテックの隣に立っています。
 画面上では、まるでカメラのすべての視線に押しつぶされているかのように、彼の肩は少し落ち込んでいます。 しかし、彼の声はその印象に逆らいます。
 ラボテックは彼の大きな眼鏡を彼の鼻に戻します。
 {anim: ラボテック, Glasses}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 ラボテック::
 "転送されると、受験者は約4日間、閉じたサーバーに留まります。" 
 "彼らがそこにいる間、被験者の体は暖かい空気のうっ滞の形のままになります。 これは、化学組成の急激な変化を防ぐためです。" 
@@ -340,6 +346,7 @@ Shirobiはカメラを直視し、真面目であるが自信を持っている�
 {anim: シロビ, Thisway}
 シロビ::
 "さ、勇気ある開拓者精神。。。"
+{disableChar: Live 2D Bokeh}
 ナレーター:: 
 いよいよ最初の選択です。また、この時点で自分の名前を入れたり、二者択一でない選択肢を追加することができるようになります。
 あなたは、バイナリまたはノンバイナリとして識別することを好みますか？この選択により、キャラクターはあなたの人物を性別に関係なく呼ぶことができます。
@@ -349,10 +356,10 @@ Shirobiはカメラを直視し、真面目であるが自信を持っている�
 {if: MalePath}
 {
 	"男性ルートだ！"
-	{changeScript: Language Packs/Japanese/Male/Prologue/Prologue}
+	{changeScript: Male/Prologue/Prologue}
 }	
 {if: !MalePath}
 {
 	"女性ルートだ！"
-	{changeScript: Language Packs/Japanese/Female/Prologue/Prologue}
+	{changeScript: Female/Prologue/Prologue}
 }

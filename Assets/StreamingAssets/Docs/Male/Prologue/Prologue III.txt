@@ -19,6 +19,7 @@ On the screen, a diagnostic runs on the DIHI.
 Shirobi, pale as a ghost, just stares at the screen without really looking at it. 
 {moveChar: Shirobi, .75}
 {moveChar: Cliff, .20}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Shirobi::
 {if: !n-b}
 {
@@ -101,6 +102,7 @@ The supervisor looks at Shirobi.
 Cliff::
 "Verify that test for me Shirobi, will you? I'm tired...
 So tired."
+{disableChar: Live 2D Bokeh}
 {additive: off}
 Narrator::
 Cliff rubs the bridge of his nose in frustration.
@@ -119,6 +121,7 @@ A young lab tech, fresh out of internship,
 looks up from the laptop from across the room, 
 her auburn hair a mess, betraying the long hours of preparation for this experiment.
 {additive: off}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Becks::
 "Sir... I think I found the problem."
 Narrator::
@@ -281,6 +284,7 @@ Cliff's path clear, his confidence comes back.
 Cliff::
 "And get someone to do a complete diagnostic on the DIHI. Ensure the report is..."
 Narrator::
+{disableChar: Live 2D Bokeh}
 As Cliff continues to push out instructions to his team, he can't help but feel a pang of incredible sadness. 
 The kid is fresh out of college.
 {if: !n-b}

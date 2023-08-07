@@ -2,6 +2,7 @@
 {fadeinsound: Times Square Crowd, 1}
 {colorformat: Times Square}
 {spawnEmpty: Narrador, NPC}
+{setachievement: intern_UwU}
 Narrador::
 Nueva York en Times Square: es el año 2040. Mediodía de un abrasador día de verano.
 En cualquier día normal, se puede ver a la mayoría de la gente arremolinada, dirigiéndose al trabajo, con la cacofonía de vehículos, peatones y anuncios acompasando sus ritmos en perfecta armonía.
@@ -17,6 +18,7 @@ Hoy es el primer intento del hombre de digitalizar a uno de los suyos.
 {spawnChar: malesilo1, -1, Hombre espectador}
 {anim: Hombre espectador, Thinking}
 {moveChar: Hombre espectador, 0.27}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Hombre espectador::
 "¡No puedo creer que sigan adelante con esto!".
 "¿Quién dio luz azul a este proyecto?"
@@ -78,6 +80,7 @@ Imagina la presión de sentarse en esa silla, delante de millones..."
 {moveChar: Hombre espectador, -1}
 {moveChar: Mujer espectadora, -1}
 {moveChar: Hombre espectador 2, 2}
+{disableChar: Live 2D Bokeh}
 {loopBG: false}
 {playBG: Prologue/Times Square Pan Up}
 {spawnChar: femalesilo, 2, Cindy}
@@ -122,6 +125,7 @@ Narrador::
 Delante de la pantalla hay un hombre de unos 40 años, vestido con un elegante traje gris oscuro, con una mano jugueteando con su auricular.
 Mientras el corresponsal escucha, asiente con la cabeza. 
 John sonríe ampliamente a la cámara.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 John::
 "¡Gracias Cindy! ¿Cómo has estado?"
 Cindy::
@@ -220,6 +224,7 @@ John::
 "Su propósito original era transferir la mente de un paciente de cáncer a un cyborg, o dar tiempo a los astronautas para aprender nuevas habilidades en criostasis".
 "Pero hay muchas aplicaciones para las que se puede utilizar esta tecnología". 
 "De ahí el nombre. Interfaz Humana de Imagen Digital. Transfiere la imagen de un humano como un todo".
+{disableChar: Live 2D Bokeh}
 Narrador::
 La transeúnte se burla abiertamente en la calle, mirando hacia arriba al borde del horror.
 Mujer espectadora::
@@ -273,6 +278,7 @@ Lleva el pelo oscuro despeinado, como si llevara días en el laboratorio sin dor
 En la pantalla, sus hombros están un poco caídos, como si le aplastaran todas las miradas de la cámara. Su voz, sin embargo, desafía esa impresión.
 El técnico de laboratorio se lleva las gafas a la nariz.
 {anim: Lab Tech, Glasses}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lab Tech::
 "Una vez transferido, el sujeto permanecerá en nuestros servidores cerrados durante un periodo de unos cuatro días, más o menos". 
 "Mientras estén allí, el cuerpo del sujeto permanecerá en una forma de estasis de aire caliente. Esto es para prevenir cualquier cambio abrupto en la composición química". 
@@ -340,6 +346,7 @@ Comienza a guiar a toda la prensa fuera del laboratorio con aire de excitación.
 {anim: Shirobi, Thisway}
 Shirobi::
 "El espíritu valiente y pionero..."
+{disableChar: Live 2D Bokeh}
 Narrador:: 
 Es el momento de hacer tu primera elección. También podrás poner tu propio nombre, y añadir la opción no binario en este punto.
 ¿Prefieres identificarte como binario o no binario? Esta opción permitirá que los personajes se refieran a tu persona de forma neutra en cuanto al género.
@@ -354,5 +361,5 @@ Entonces... ¿qué camino le gustaría seguir?
 {if: !MalePath}
 {
 	"¡Ruta Femenina es!"
-	{changeScript: Language Packs/Spanish/Female/Prologue/Prologue}
+	{changeScript: Female/Prologue/Prologue}
 }

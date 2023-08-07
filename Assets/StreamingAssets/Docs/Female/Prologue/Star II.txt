@@ -37,6 +37,7 @@ She is shorter than I thought she would be. Her curves though.
 Ara Ara...
 {fadeinsound: Heart Thump, .1}
 She opens her mouth, an impression of impatience and light annoyance coloring her speech.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella::
 [Annoyed]
 "Bruh."
@@ -281,6 +282,7 @@ What am I doing?
            {moveChar: Lucas, -1}
            {moveChar: Asterella, .45}
            {movecube: .45, .2}
+           {disableChar: Live 2D Bokeh}
            With Lucas gone, we are alone. Star and I.
            The kiss on the forehead burns more than the sting to my pride, or the finger flick.
            She is so captivating.
@@ -288,6 +290,7 @@ What am I doing?
            All the things a Demon Lord should be?
            I touch my forehead lightly.
            Asterella::
+           {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
            [Default]
            "Did it hurt?"
            MC::
@@ -295,7 +298,7 @@ What am I doing?
            "It wasn't the finger flick..."
            Asterella::
            "Well, MC. We do have some things to talk about."
-           {changeScript: Female/Prologue/Star II, 378}
+           {changeScript: Female/Prologue/Star II, 386} 
         ]
         Never mind, I can't do this!
         [
@@ -341,6 +344,7 @@ Lucas::
 {moveChar: Asterella, .45}
 {movecube: .45, .2}
 MC::
+{disableChar: Live 2D Bokeh}
 We are alone. Star and I.
 As if on cue, she strides confidently to me.
 Merely feet away, she studies me. 
@@ -349,6 +353,7 @@ Despite myself, I feel myself wanting to surrender to her.
 She is every inch a Lord. 
 Asterella::
 {anim: Asterella, Thinking}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "So, do you have a name?"
 MC::
 She lets the question hang there open. 
@@ -358,6 +363,7 @@ Oh!
 {
  "My pronoun is they..."
 }
+{disableChar: Live 2D Bokeh}
 I stammer it. 
 I groan internally.
 I'm wrecking my first impression. 
@@ -369,6 +375,7 @@ She's that close.
 {anim: Asterella, Pouting}
 She nods and smiles a genuine smile. 
 Asterella::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 [Happy]
 "That's a very nice name, MC."
 {if: n-b}
@@ -400,6 +407,7 @@ Asterella::
 "You know, as an intruder, I imagine you wouldn't expect this kind of hospitality."
 "I don't really see you as an intruder, MC."
 MC::
+{disableChar: Live 2D Bokeh}
 I sit down on one side, giving her plenty of room. The book she was reading.
 I can't read the title. 
 {additive: on}
@@ -417,6 +425,7 @@ Maybe a bit too desperately.
 She looks back at me with an unreadable expression.
 {fadeinsound: woodwine1, .1}
 Asterella::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "I surmised as much." 
 "But that doesn't clear you. Not yet."
 {movecube: .8, .3}
@@ -491,6 +500,7 @@ She brings her glass towards mine, and we toast.
 {fadeinsound: Wine Toast, .1} 
 MC::
 "Future relationships."
+{disableChar: Live 2D Bokeh}
 {movecube: .45, 0}
 {anim: Asterella, Impatient}
 We take the first sip in silence. The taste is very smokey, and clean. 
@@ -500,6 +510,7 @@ A small smile touches her lips.
 Asterella::
 {movecube: .45, .3}
 {additive:on}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "Straight to the point. 
 I like that."
 {additive:off}
@@ -571,10 +582,12 @@ MC::
 I can't believe what I'm hearing.
 Is she asking for...
 "Me?"
+{disableChar: Live 2D Bokeh}
 It was all I can say.
 I take a deep pull of the wine, covering my blushing face behind the action.
 Asterella Star is asking me to "spend the night" with her. 
 She looks up at me, with the question in her eyes. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {choice: Don't Panic...}
 {
     Yes, I'm ok with this.
@@ -585,9 +598,10 @@ She looks up at me, with the question in her eyes.
         "It will be my first time with a woman."
         "Be Gentle."
         MC:: 
+        {setachievement: female_route}
         {usegameobject: Hentai Warning Panel, true}
         {fadeoutsound: fireplace, 1}
-        {fadeoutsound: Lucas and Star Dinner, 1} 
+        {fadeoutsound: Star Dinner, 1} 
         {changeScript: Female/Prologue/Star II Hentai}
     ]
     Nope. This is going too fast!

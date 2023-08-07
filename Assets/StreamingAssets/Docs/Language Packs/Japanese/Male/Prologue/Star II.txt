@@ -20,6 +20,7 @@ MC::
 そして。。。
 Lucasはずっと彼の息を呑んで歌をハミングしてきた。 
 {moveChar: Asterella, .65}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {additive: on}
 入ると、
 見事な若い女性、
@@ -128,6 +129,7 @@ Lucas::
 {
  「彼らが敵対的になっても、私を責めないでくれ。
 }
+{disableChar: Live 2D Bokeh}
 {moveChar: Lucas, -1}
 {moveChar: Asterella, .5}
 {movecube: .2, .4}
@@ -143,6 +145,7 @@ MC::
 彼女の喉から逃げる軽いクスクス笑いは奇妙なことに驚くべきことではない。 
 それらは互いに非常に近いようだ。
 何かを決めるかのように、彼女は俺に焦点を合わせ、彼女の目は謝罪する。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {movecube: .5, .1}
 Asterella::
 [Default]
@@ -162,12 +165,14 @@ Asterella::
 MC::
 彼女は唇をひねって俺を見ている。
 {movecube: .5, 0}
+{disableChar: Live 2D Bokeh}
 1本の指の爪を伸ばし、手首と喉からロープをスライスする。 
 ネイルはナイフのようにカットされた。
 Lucasが心配していなかったのも不思議ではない。
 待って、それは警告だったか？ 
 俺はそれを一つにするつもり。
 {movecube: .5, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella Star,俺の顔から足ではない。
 本物。 
 {if: henable}
@@ -374,6 +379,7 @@ Asterella::
  「とぼけるな、MC。あなたはとても親切で魅力的なエルフのようだし、私はちょっと "のどが渇いている"..."
 }
 "そして、それはより多くのワインのためではない。"
+{disableChar: Live 2D Bokeh}
 MC::
 彼女の顔の表情は、彼女の本当の意図が何であったかについてのボリュームを物語っている。
 {if: henable}
@@ -414,6 +420,7 @@ MC::
     {additive:off} 
 }
 確かな笑顔がゆっくりと彼女の顔を包み込む：満足の笑顔。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella::
 "あなたの体は私に嘘をつくことはできない, MC. あなたも私を欲しがっているのは知っている"
 MC:: 
@@ -424,6 +431,7 @@ Asterella::
 {movecube: .4, .1}
 "侵入者としても。"
 MC:: 
+{disableChar: Live 2D Bokeh}
 俺は何と言う？
 彼女は息を呑むほどだ：すべての適切な場所で柔らかい。 
 女性としての魔王の役割はさておき、彼女は優雅で、自信があり、大胆だ。
@@ -435,6 +443,7 @@ MC::
 言うまでもなく、今夜のダンジョンで悪魔が自分自身を「楽しんでいる」と、俺が下したどちらの決定にも問題が生じる可能性がある。 
 彼女の気持ちを傷つけたら、俺は領域を傷つける？
 Starの提案に従えば、Lucasは激怒する？
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {movecube: .4, .3}
 {choice: 何をすべきか？}
 {
@@ -542,5 +551,6 @@ Starの提案に従えば、Lucasは激怒する？
 MC::
 {usegameobject: Hentai Warning Panel, true}
 {fadeoutsound: fireplace, 1}
-{fadeoutsound: Lucas and Star Dinner, 1}
+{fadeoutsound: Star Dinner, 1}
+{setachievement: male_route}
 {changeScript: Male/Prologue/Star II Hentai}

@@ -77,6 +77,7 @@ Maskierter Punk::
 {fadeinsound: Flash Step, .3}
 {moveChar: Maskierter Punk, .50}
 MC::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Plötzlich, zwei Meter vor mir entfernt, steht dort ein maskierter Mann.
 Er ist einfach da.  
 Druckluft schlägt mir ins Gesicht.  smacks me in the face. 
@@ -105,6 +106,7 @@ MC::
        MC::
        Ich gerate in Panik.
        Ich sende einen soliden Tritt in seine Unterleibregion. 
+       {setachievement: nut_cracker}
        {fadeinsound: body punch hard, .2}
        Er fängt gerade noch meinen Fuß. Sein Griff ist so fest wie Stahl.
        Er pfeift zu der Anerkennung.
@@ -123,7 +125,7 @@ MC::
        „Dieser Tritt lässt mich zweimal denken."
        MC::
        „Was hat das zu bedeuten?!"
-       {changeScript: Language Packs/German/Female/Prologue/Star I, 152}
+       {changeScript: Female/Prologue/Star I, 154}
     ]
     Scheiß drauf! Schrei!!
     [
@@ -162,8 +164,9 @@ MC::
 Lucas::
 „Nein! Du hast damit angefangen, also hörst du zuerst auf!"
 MC::
-{fadeinsound: Lucas Breath Hard, .2}
-{fadeinsound: Min Sigh Extreme, .2}
+{fadeinsound: Lucas Breathing, .2}
+{fadeinsound: Female MC Breathing, .2}
+{disableChar: Live 2D Bokeh}
 Wir stoppen beide, während wir schnaufen und pusten.  
 Ich kam erst gerade hier an und muss mich mit etwas auseinandersetzen, wofür ich nicht bereit bin.
 Ich kann diesen Mann nicht verletzen. Er ist zu stark. Zu schnell.
@@ -193,6 +196,7 @@ Er entspannt seine Haltung mit einem riesigen Grinsen, welches sein „Gesicht" 
 Plötzlich beginnt er herzlich zu lachen.
 Ich schaue ihm zu, blinzle ein paar mal und ich bin mir unsicher was ich sagen, beziehungsweise machen soll.
 Lucas::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {additive:on}
 „Oh mein Gott, MC.
 Yo, das ist genial!"
@@ -218,6 +222,7 @@ Lucas::
  MC::
  „Man erschreckt keine Frauen die nachts herumlaufen!"
 }
+{disableChar: Live 2D Bokeh}
 Deinen Namen Lucas, den <i>kenne</i> ich.
 Wie eine Lawine kommt die Erkenntnis seines Namen in meinen bewussten Gedanken.
 Ich <i>weiß</i> wer er ist. Ich kann es nur nicht glauben. 
@@ -226,6 +231,7 @@ Nun habe ich keine Ahnung wo ich eigentlich bin.
 „Reich."
 Ich probiere das Wort vorsichtig aus.
 Lucas scheint mir zuzusehen, wie ich über Sachen nachdenke. Er neigt seinen Kopf ein wenig nach links.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 „Warte. Warte. Warte. Du weißt wer ich bin, richtig?"
 MC::
@@ -278,6 +284,7 @@ interessiert es mich nicht was du tust."
 „Willkommen zu dem 69. Kreis der Hölle, MC.
 Ich hoffe du genießt deinen Aufenthalt."
 {additive:off}
+{disableChar: Live 2D Bokeh}
 MC::
 Diese Begrüßung jagt mir einen Schauer über den Rücken.
 Das ist <i>real</i>!
@@ -296,10 +303,12 @@ Es schockiert mich. Das alles fühlt sich real an. Alles zu real.
 Und Lucas, ist er wirklich nur am Rollenspielen? Oder ist er...
 War er schon immer ein Dämon? Oder sind sie nur in ihren Rollen in dieser virtuellen Welt?
 Wir gelangen an einem Eingang, das alte Tor öffnet sich ohne, dass irgendeine Kraft es berührt. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 „Hey MC, du kannst dir alles anschauen, während wir gehen. Später ist dafür mehr als genug Zeit."
 „Wir müssen Star als erstes sehen, alles klar?"
 MC::
+{disableChar: Live 2D Bokeh}
 Ich nicke.
 Wer bin ich, wenn ich sowas ablehnen würde? Er könnte mich einfach in einem Moment fesseln. 
 Nicht dass ich das von ihm wollen würde...
@@ -313,6 +322,7 @@ Der Wind der die Blätter trägt.
 Das helle Mondlicht badet und reflektiert sich von den schwarzen Mamorbänken, der Platz wurde sorgfältig ausgewählt. 
 {additive:off}
 Vor der Villa ist ein großer Springbrunnen, das Wasser funkelt von dem Mondlicht. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 {movecube: .5, .1}
 [OWO]
@@ -346,4 +356,4 @@ Lucas zieht am Griff.
 Lucas::
 „Warte bis du den Rest der Villa siehst, MC."
 „Es wird dich umhauen."
-{changeScript: Language Packs/German/Female/Prologue/Star II}
+{changeScript: Female/Prologue/Star II}

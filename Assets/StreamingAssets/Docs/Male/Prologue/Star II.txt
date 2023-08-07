@@ -20,6 +20,7 @@ Mah Heart...
 And.
 Lucas has been humming songs under his breath the entire way. 
 {moveChar: Asterella, .65}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {additive: on}
 As we enter, 
 a stunning young lady, 
@@ -40,7 +41,7 @@ Seeing her in person, with no screen. No barriers...
 My heart thumps in response. 
 Asterella::
 [Annoyed]
-"Lucas!" 
+"Lucas." 
 MC::
 That dulcet voice is full of exasperation.
 Asterella::
@@ -128,6 +129,7 @@ Lucas::
 {
  "If they become hostile don't blame me, alright?"
 }
+{disableChar: Live 2D Bokeh}
 {moveChar: Lucas, -1}
 {moveChar: Asterella, .5}
 {movecube: .2, .4}
@@ -143,6 +145,7 @@ MC::
 The light giggle that escapes her throat is oddly not surprising. 
 They seem to be very close to each other.
 As if deciding something, she focuses on me, her eyes apologetic.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {movecube: .5, .1}
 Asterella::
 [Default]
@@ -162,12 +165,14 @@ Asterella::
 MC::
 She looks at me with a wry twist of her lips.
 {movecube: .5, 0}
+{disableChar: Live 2D Bokeh}
 Extends one fingernail and slices the ropes off my wrists and throat. 
 The nail cuts like a knife. 
 No wonder Lucas wasn't worried. 
 Wait, was that a warning? 
 I intend to take it as one.
 {movecube: .5, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella Star, not a foot from my face.
 In the flesh. 
 {if: henable}
@@ -374,6 +379,7 @@ Asterella::
  "Don't play dumb with me, MC. You seem to be a very kind, attractive elf, and I am a bit 'thirsty'..."
 }
 "And it's not for more wine."
+{disableChar: Live 2D Bokeh}
 MC::
 The look on her face speaks volumes on what her true intentions were.
 {if: henable}
@@ -414,6 +420,7 @@ The look on her face speaks volumes on what her true intentions were.
 	{additive:off} 
 }
 A sure smile slowly envelopes her face: a smile of satisfaction.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella::
 "Your body cannot lie to me, MC. I know you want me as well."
 MC:: 
@@ -424,6 +431,7 @@ Asterella::
 {movecube: .4, .1}
 "As an intruder to boot."
 MC:: 
+{disableChar: Live 2D Bokeh}
 What do I say?
 She is breathtaking: soft in all the right places. 
 Demon Lord role aside, as a woman: she is graceful, confident, and daring.
@@ -435,6 +443,7 @@ I am in an unknown situation, with dark pits all around me.
 Not to mention that demon "enjoying" himself in the dungeon tonight can cause problems with either decision I make. 
 Am I hurting the realm if I hurt her feelings?
 Will Lucas be enraged if I go with Star's suggestion?
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {movecube: .4, .3}
 {choice: What should I do?}
 {
@@ -542,5 +551,6 @@ Will Lucas be enraged if I go with Star's suggestion?
 MC::
 {usegameobject: Hentai Warning Panel, true}
 {fadeoutsound: fireplace, 1}
-{fadeoutsound: Lucas and Star Dinner, 1}
+{fadeoutsound: Star Dinner, 1}
+{setachievement: male_route}
 {changeScript: Male/Prologue/Star II Hentai}

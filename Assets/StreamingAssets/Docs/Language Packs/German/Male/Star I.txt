@@ -68,6 +68,7 @@ Und wer zum <i>Teufel</i> bist du?"
 {fadeoutsound: Star Piano, 2}
 {fadeinsound: Flash Step, .3}
 {moveChar: Maskierter Punk, .50}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 „Bist du dir sicher? Ich komme nur hierher um einen Loser finden der herumschleicht?"
 MC::
 Mit unmenschlicher Geschwindigkeit, fliegt dieser Dämon, aus der Baumgrenze.
@@ -148,6 +149,8 @@ Whew!
 Er greift meine Hand, zieht mich in einer Bewegung nah zu sich.
 Die Maske berührt fast meine Nase. 
 Ich schlucke mit vorsichtiger Überlegung.
+{fadeinsound: no_one_expects_whisper, .1}
+{setachievement: second_swallow}
 So nah, der Geruch von Schwefel füllt meine Nasenlöcher. 
 Lucas::
 „Wenn du diesem Reich Schaden zufügst, werde ich dich wie ein Schwein zerschneiden. Verstanden?"
@@ -165,6 +168,7 @@ Lucas::
 „Es war keine Anfrage. Du <i>wirst</i> mit mir kommen."
 „Star wird herausfinden, was wir mit dir machen."
 „Immerhin bist du ein <i>Eindringling</i>."
+{disableChar: Live 2D Bokeh}
 MC::
 Ich habe nur einige Sekunden zu reagieren. 
 Der Typ ist schnell.
@@ -196,6 +200,7 @@ Wir haben ungefähr 10 Fuß Abstand zwischen uns. Ich <i>könnte</i> gerade in d
        Ich fühle meine Hand, stabil wie Eisen, greife meine Schulter. 
        {anim: Lucas, Wind Idle}
        {moveChar: Lucas, .5}
+       {disableChar: Live 2D Bokeh}
        Lucas::
        [Lewd]
        „Also. Du möchtest es den schweren Weg, eh?"
@@ -329,6 +334,7 @@ Wir haben ungefähr 10 Fuß Abstand zwischen uns. Ich <i>könnte</i> gerade in d
        Lucas::
        [Default]
        MC::
+       {disableChar: Live 2D Bokeh}
        {fadeinsound: Lucas Laugh 1, .2}
        Er lacht, als er an dem Seil ruckelt und wieder anfängt sich zu bewegen.
        Ich habe keine Kontrolle über meine Situation. 
@@ -364,6 +370,7 @@ Wir haben ungefähr 10 Fuß Abstand zwischen uns. Ich <i>könnte</i> gerade in d
        {movecube: .5, .3}
        {anim: Lucas, Idle}
        Wir stoppen vor den 10 Fuß hohen antiken Holztüren.
+       {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
        Lucas::
        „Ich bemerkte, dass du die Böden bewunderst. Du glaubst, <i>dass</i> dies schon schön ist, warte bist du hineingehst."
        MC::
@@ -392,6 +399,7 @@ Lucas dreht sich um und beginnt zu gehen.
 {fadeoutsound: Lucas Dark, 5}
 {fadeinsound: Star Piano, 5}
 Lucas schaut über seine Schulter um sicher zu gehen, dass ich ihm noch folge. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 „Du weißt, du hast Glück, dass Star dich bemerkt hat, bevor ich es tat."
 „Ich toleriere normalerweise keine 'uneingeladenen Gäste', so wie sie es tut."
@@ -430,6 +438,7 @@ Lucas::
 „Bruh, sie ist wie, der heißeste Dämonenlord aller Zeiten."
 MC::
 Er lacht offen.
+{disableChar: Live 2D Bokeh}
 MC::
 In was bin ich hineingeraten? Das bringt so viele Fragen auf.
 Vielleicht spielen sie in Rollen? Ein live stream Event?
@@ -444,8 +453,10 @@ Ich denke darüber nach.
 Vor uns, erhebt sich eine Außenwand, welche aus antiken Steinen hergestellt ist. 
 Die Vegetation wächst in Risse und Spalten. 
 Lucas schüttelt eine Hand und die Haupttore öffnen sich.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 „Willkommen zu dem 69sten Kreis der Hölle, MC."
+{disableChar: Live 2D Bokeh}
 MC::
 {additive:on}
 Wir durchqueren den Eingang mit Ruhe. 
@@ -467,6 +478,7 @@ Wie der <i>massive,</i> hüfthohe Brunnen direkt in der Mitte des Haupteingangs 
 {moveChar: Lucas, .50}
 {movecube: .5, .3}
 Wir stoppen vor den 10 Fuß hohen antiken Holztüren. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 „Ich bemerkte, dass du die Böden bewunderst. Du glaubst, <i>dass</i> dies schon schön ist, warte bist du hineingehst."
 MC::
@@ -518,6 +530,7 @@ und schmiegt sich auf sehr sinnliche Weise an ihre Form.
 Sie persönlich zu sehen, ohne irgendeinen Bildschirm. Keine Barrieren...
 {fadeinsound: Heart Thump, .1}
 Mein Herz schlägt, als Reaktion darauf. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 „Hallo, mein Lord. Ich bringe den Eindringling zurück, wie befohlen."
 MC::
@@ -552,6 +565,7 @@ Lucas::
 [Default]
 Asterella::
 „Mach das jedoch nicht nochmal. Es macht mir Angst wenn <i>du</i> das machst."
+{disableChar: Live 2D Bokeh}
 MC::
 Das überraschte in ihrer Stimme reflektiert meine.
 Sie schließt das Buch mit einem Hauch von Endgültigkeit und platziert es auf dem Tisch.
@@ -562,6 +576,7 @@ Ich stehe in der halb gebeugten Position mit Lucas.
 Die Stimme stimmt dem zu. Das ist die Asterella Star von Twatch.
 Ich kenne diese Stimme zu gut. Ihre streams sind manchmal wahnsinnig verflucht. 
 Ihre Publikum liebt es. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 „Bekomme ich meine Belohnung <i>Meisterin</i>?"
 MC::
@@ -605,6 +620,7 @@ Asterella::
 „Ja, du kannst belohnt werden."
 „Geh. Sieh den Kerkermeister für deine nächtliche Bestrafung."
 „Ich werde mich um diesen Eindringling...kümmern." 
+{disableChar: Live 2D Bokeh}
 MC::
 Nächtliche Bestrafung?
 Uh oh. 
@@ -628,4 +644,4 @@ MC::
 {fadeinsound: openclosedoor, 1}
 Star schaut, mit einem Blick der Zufriedenheit in ihrem Gesicht, wie Lucas die Tür schließt. 
 Als die Tür sich schließt, seufzt sie und schließt ihre Augen für einen kurzen Moment.
-{changeScript: Language Packs/German/Male/Prologue/Star II, 170}
+{changeScript: Male/Prologue/Star II, 173}

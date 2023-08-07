@@ -37,6 +37,7 @@ Asterella Star,
 あら　あら。。。
 {fadeinsound: Heart Thump, .1}
 彼女は口を開け、焦りと軽い不快感が彼女のスピーチを彩る。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella::
 [Annoyed]
 "オイ"
@@ -281,6 +282,7 @@ MC::
            {moveChar: Lucas, -1}
            {moveChar: Asterella, .45}
            {movecube: .45, .2}
+           {disableChar: Live 2D Bokeh}
            Lucasがいなくなったので、私たちは一人。Starと私。
           額へのキスは、私のプライドへの刺し傷や指のフリック以上に燃える。
            彼女はとても魅力的だ。
@@ -288,6 +290,7 @@ MC::
            魔王がすべきことはすべて？
            額に軽く触れる。
            Asterella::
+           {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
            [Default]
            "痛かった?"
            MC::
@@ -295,7 +298,7 @@ MC::
            "それは指のフリックではなかった。。。"
            Asterella::
            "じゃ, MC.話し合うことがいくつかある。"
-           {changeScript: Female/Prologue/Star II, 378}
+           {changeScript: Female/Prologue/Star II, 386}
         ]
        むり、私はこれを行うことはできない！
         [
@@ -341,6 +344,7 @@ Lucas::
 {moveChar: Asterella, .45}
 {movecube: .45, .2}
 MC::
+{disableChar: Live 2D Bokeh}
 私たちは一人。 Starと私。
 まるで合図のように、彼女は自信を持って私に向かって歩く。
 ほんの数フィート離れて、彼女は私を研究する。
@@ -349,6 +353,7 @@ MC::
 彼女は隅々まで主。 
 Asterella::
 {anim: Asterella, Thinking}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "さ, 名前がある?"
 MC::
 彼女は質問をそこに開いたままにする。 
@@ -358,6 +363,7 @@ MC::
 {
  "私の代名詞は彼らだ..."
 }
+{disableChar: Live 2D Bokeh}
 吃音する。
 私は内部でうめく。
 第一印象を壊している。
@@ -369,6 +375,7 @@ MC::
 {anim: Asterella, Pouting}
 彼女はうなずき、本物の笑顔を浮かべる。 
 Asterella::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 [Happy]
 "それはいい名前, MC."
 {if: n-b}
@@ -400,6 +407,7 @@ Asterella::
 "あのさ、侵入者として、このようなおもてなしは期待できないと思う。"
 "私はあなたを侵入者とは見ていない, MC."
 MC::
+{disableChar: Live 2D Bokeh}
 私は片側に座り、彼女に十分なスペースを与える。彼女が読んでいた本。
 タイトルが読めない。 
 {additive: on}
@@ -417,6 +425,7 @@ MC::
 彼女は読めない表情で私を振り返る。
 {fadeinsound: woodwine1, .1}
 Asterella::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "私も同じように推測した。" 
 "しかし、それはあなたをクリアしない。まだ。"
 {movecube: .8, .3}
@@ -491,6 +500,7 @@ MC::
 {fadeinsound: Wine Toast, .1} 
 MC::
 "将来の関係。"
+{disableChar: Live 2D Bokeh}
 {movecube: .45, 0}
 {anim: Asterella, Impatient}
 私たちは沈黙の中で最初の一口を取る。味はとてもスモーキーでクリーンだ。 
@@ -500,6 +510,7 @@ MC::
 Asterella::
 {movecube: .45, .3}
 {additive:on}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "ポイントにまっすぐ。
 私はすきだ。"
 {additive:off}
@@ -571,10 +582,12 @@ MC::
 聞いていることが信じられない。
 彼女は求めているか...
 "私？"
+{disableChar: Live 2D Bokeh}
 私が言えるのはそれだけだった。
 アクションの背後にある顔を赤らめながら、ワインを深く引っ張る。
 Asterella Starは私に彼女と「夜を過ごす」ように頼んでいる。 
-彼女は質問を目にして私を見上げる。 
+彼女は質問を目にして私を見上げる。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh} 
 {choice: パニックにならないで...}
     {
         ええ、それがいい。
@@ -585,9 +598,10 @@ Asterella Starは私に彼女と「夜を過ごす」ように頼んでいる。
             "女性との出会いは初めて。"
             "穏やかな。"
             MC:: 
+            {setachievement: female_route}
             {usegameobject: Hentai Warning Panel, true}
             {fadeoutsound: fireplace, 1}
-            {fadeoutsound: Lucas and Star Dinner, 1} 
+            {fadeoutsound: Star Dinner, 1} 
             {changeScript: Female/Prologue/Star II Hentai}
         ]
         いいえ。 早すぎるよ。 

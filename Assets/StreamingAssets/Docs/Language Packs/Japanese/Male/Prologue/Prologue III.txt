@@ -19,6 +19,7 @@ CliffはShirobiの椅子の後ろに寄りかかって、木の後ろを焦っ�
 幽霊のように青白いShirobiは、画面を見ずに見つめているだけです。
 {moveChar: Shirobi, .75}
 {moveChar: Cliff, .20}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Shirobi::
 {if: !n-b}
 {
@@ -101,6 +102,7 @@ Cliff::
 Cliff::
 "Shirobiさん、テストを確認してくれませんか？つかれました...
 すごく疲れました。"
+{disableChar: Live 2D Bokeh}
 {additive: off}
 ナレーター::
 Cliffは欲求不満で彼の鼻の橋をこすります。
@@ -119,6 +121,7 @@ Shirobi,
 部屋の向こう側からラップトップから見上げる、
 彼女の赤褐色の髪は、この実験のための長い時間の準備を裏切って、混乱しました。
 {additive: off}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Becks::
 "私は問題を見つけたと思います。"
 ナレーター::
@@ -281,6 +284,7 @@ Cliffの道は明確で、彼の自信が戻ってきます。
 Cliff::
 "そして、誰かにDIHIの完全なスキャンをしてもらいます。レポートが。。。"
 ナレーター::
+{disableChar: Live 2D Bokeh}
 Cliffがチームに指示を出し続けている間、彼は信じられないほどの悲しみの痛みを感じずにはいられませんでした。
 その子供は大学を卒業したばかりです。
 {if: !n-b}

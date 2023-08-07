@@ -117,6 +117,7 @@ Johnは注意深く見守っています。
 {spawnChar: malesilo, -1, Cliff}
 {anim: Cliff, kime2}
 {moveChar: Cliff, .50}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliffは自信を持ってまっすぐに立ち、プレスウィンドウに向きを変えます。
 劇的な喉の清算で、彼は話し、声を出します。 
 {additive: on}
@@ -162,6 +163,7 @@ Cliffは、ある若い記者、別のニュースチャンネルの女性を指
 Cliff::
 "はい、あなたはそこにいます。質問を進めてください。"
 {anim: Cliff, kime2}
+{disableChar: Live 2D Bokeh}
 ナレーター::
 彼女は緊張して唇をすぼめる。
 女性記者::
@@ -172,6 +174,7 @@ Cliff::
 他の報道記者はささやきをやめます。 すべての目がCliffに固定されます。
 {fadeoutsound: smallgroupwhisper, 1} 
 Cliffは数秒間一時停止し、彼の顔は感情を裏切っていません。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff::
 "まあ、それはまだ空中にあります。この最初のテストを通じて、私たちは高い警戒を怠らない必要があります。"
 {additive: on}
@@ -225,6 +228,7 @@ Cliff::
 Cliff::
 "現時点では、これ以上質問はありません。"
 "あなたは世界の残りの部分で待つ必要があります。"
+{disableChar: Live 2D Bokeh}
 ナレーター::
 {additive: on}
 Johnは、窓を吸うためにラボテックにクリフが動くのを見て、何かがおかしいと感じています。 

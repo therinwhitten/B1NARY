@@ -59,6 +59,7 @@ Intento parpadear el brillo deslumbrante, levantando la mano para sombrear mis o
 Reportero antiguo::
 {anim: Reportero antiguo, kime1}
 {moveChar: Reportero antiguo, .85}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {if: !n-b}
 {
  "¡Ahí está! MC?"
@@ -90,6 +91,7 @@ Miro a la cámara más cercana a mí.
 Cliff::
 {moveChar: Cliff, .25}  
 {anim: Cliff, kime2}
+{disableChar: Live 2D Bokeh}
 MC::
 Mis ojos comienzan a ajustarse. Noto a Cliff, el gerente principal del proyecto, detrás de la prensa, con los brazos cruzados y una expresión de preocupación en su rostro.
 ¿Por qué nadie dice nada?
@@ -158,6 +160,7 @@ También odia cuando lo llamo Shibi. A veces se toma demasiado en serio.
 Él hace un gesto hacia el DIHI.
 {anim: Shirobi, Thisway}
 Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {additive: on}
 "Estoy a cargo de vigilar todos tus signos vitales.
 {anim: Shirobi, Bow}
@@ -168,6 +171,7 @@ Así que por favor... ¿Tomar esto en serio?
 MC::
 Mis cejas se levantan por su propia cuenta. 
 "Seré bueno, lo prometo. No querría que te preocupes".  
+{disableChar: Live 2D Bokeh}
 Oblicuamente noto que la prensa es escoltada fuera de la sala DIHI.
 {fadeinsound: LabCrewLeavingFootsteps, .3}
 {fadeinsound: openclosedoor, .5}
@@ -181,6 +185,7 @@ Por un breve segundo, dudo.
 Ok, <i>eso</i> está trayendo de vuelta mi impulso de huir.
 Shibi habla, su tono es forzosamente casual.
 Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "El proceso es bastante mundano en realidad".
 {additive: on}
 "Tu cuerpo estará inerte,
@@ -274,4 +279,4 @@ Oh, Dios mío, creo que estoy ...
 {fadeoutsound: Laptop-Lab,.1}
 Luego, con una sacudida casi desgarradora, todo se escapa de la parte superior de mi cabeza ...
 {fadeinsound: Brain Sucking Chair Activate, .5}
-{changeScript: Language Packs/Spanish/Female/Prologue/Prologue II}
+{changeScript: Female/Prologue/Prologue II}

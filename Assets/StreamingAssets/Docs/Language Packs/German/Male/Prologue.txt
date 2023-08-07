@@ -69,6 +69,7 @@ Das Licht löscht meine Ablenkung und ich versuche die Helligkeit weg zu blinken
 {spawnChar: malesilo, 2, Sumg Reporter}
 {anim: Sumg Reporter, kime1}
 {moveChar: Sumg Reporter, .75}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Sumg Reporter::
 „MC! 
 Bist du okay? Du siehst unsicher aus."
@@ -100,6 +101,7 @@ Oh... Richtig...
 Ich öffne meinen Mund.
 „Zu wissen das Digital Horizons in Kontrolle ist, ist der <i>einzige</i> Grund weshalb ich 'nur' nervös bin." 
 „Ich weiß, dass sie mich wieder in einem Stück zurückbringen werden. Darüber, kannst du dir sicher sein."
+{disableChar: Live 2D Bokeh}
 Hoffnungsvoll, komme ich mit all meinen Erinnerungen zurück.
 So viele Sachen zum Vergessen: Mein Praktikum, Meine Eltern, Meine Hentai Kollektion...
 Wäre ich noch dieselbe Person, wenn ich meine Erinnerungen verlieren würde?
@@ -120,6 +122,7 @@ Scheiß Lichter!
 {moveChar: Smug Reporter, 2}
 {moveChar: Shirobi, .55}
 Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {anim: Shirobi, Glasses} 
 {if: !n-b}
 {
@@ -147,6 +150,7 @@ Shirobi::
 „Du weißt... Ich würde dich nicht in die Nähe dieses Stuhls lassen, es sei denn es ist sicher. Richtig?" 
 „Vier Tage. Dann werden wir dich zurückholen. Ok?"
 MC::
+{disableChar: Live 2D Bokeh}
 Ich nicke, nehme es in den Raum auf.
 Die Presse wird nach draußen begleitet, außerhalb des Raumes. Die einzigen Personen im Raum waren die Laboranten, CLiff und Ich. 
 {fadeinsound: slowfootsteps, .3}
@@ -161,6 +165,7 @@ Mein Körper wird nichts komisches machen
 wie ein Zombie steif zu sein... richtig?
 {additive: off}
 Oh bitte nicht. Vielleicht sollte ich fragen... 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Shirobi schnaubt, offensichtlich erstickendes Gelächter.
 Shirobi::
 {additive: on}

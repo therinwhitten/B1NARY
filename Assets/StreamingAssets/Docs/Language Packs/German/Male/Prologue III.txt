@@ -19,6 +19,7 @@ Auf dem Bildschirm, läuft eine Diagnose durch den DIHI.
 Shirobi, blass wie ein Geist, starrt auf den Bildschirm ohne wirklich darauf zu schauen. 
 {moveChar: Shirobi, .75}
 {moveChar: Cliff, .20}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Shirobi::
 {if: !n-b}
 {
@@ -101,6 +102,7 @@ Der Supervisor schaut zu Shirobi.
 Cliff::
 „Bestätige den Test für mich Shirobi, würdest du? Ich bin so müde...
 So müde."
+{disableChar: Live 2D Bokeh}
 {additive: off}
 Erzähler::
 Cliff reibt seinen Nasenrücken in Frustration.
@@ -119,6 +121,7 @@ Ein junger Labortechniker, frisch raus aus dem Praktikum,
 schaut nach oben vom Laptop von der anderen Seite des Raumes, 
 Ihr rotbraunes Haar, ein Durcheinander, verrät die langen Stunden der Vorbereitung für das Experiment.
 {additive: off}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Becks::
 „Sir... Ich glaube ich habe das Problem gefunden."
 Erzähler::
@@ -281,6 +284,7 @@ Cliffs Weg ist klar, seine Zuversicht kommt zurück.
 Cliff::
 „Und einer von euch holt einen vollständigen Scan des DIHI. Stellt sicher, dass der Report..."
 Erzähler::
+{disableChar: Live 2D Bokeh}
 Als Cliff fortfährt die Anweisungen an seinem Team zu verteilen, kann er nicht helfen, aber bekommt einen Stich von unglaublicher Traurigkeit. 
 Das Kind ist frisch aus dem College.
 {if: !n-b}

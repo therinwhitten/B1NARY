@@ -118,6 +118,7 @@ Podías ver la tensión endureciendo su espalda.
 Cliff se pone de pie con confianza, girando hacia la ventana de prensa.
 Con un dramático aclaramiento de su garganta, habla, proyectando su voz.
 {additive: on}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff::
 "A los habitantes de la Tierra,
 Puedo anunciar oficialmente la transferencia exitosa de MC al ámbito digital".
@@ -144,6 +145,7 @@ Cliff::
 }
 "Dicho esto, ¡oficialmente pronuncio este experimento como un éxito rotundo!"
 Narrador::
+{disableChar: Live 2D Bokeh}
 {fadeinsound: Press Conference Long, 1}
 {fadeinsound: smallgroupwhisper, 1}
 La sinfonía de los obturadores de las cámaras y el parpadeo de las luces estalla cuando hace su anuncio al mundo.
@@ -157,6 +159,7 @@ Narrador::
 El levantamiento de manos, como una ola ellos mismos, suplican la atención de Cliff.  
 Cliff señala a una joven reportera, una señora de otro canal de noticias.
 {anim: Cliff, kime1}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff::
 "Sí, tú ahí. Adelante con tu pregunta".
 {anim: Cliff, kime2}
@@ -187,11 +190,13 @@ y la presión de lidiar con una frontera completamente nueva,
 }
 Debido a esto, planeamos mantener la primera prueba de cuatro días en privado".
 {additive: off}
+{disableChar: Live 2D Bokeh}
 Narrador::
 {fadeinsound: smallgroupwhisper, 1}
 Los reporteros levantan la mano aún más alto, más urgentes, como si volvieran a ser niños de primaria. 
 Cliff suspira visiblemente, un toque de irritabilidad agrieta su fachada normalmente tranquila.
 Cliff::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "Por favor, comprenda que ya le hemos advertido antes de la conferencia que este es un experimento de muy <i>alto riesgo</i>".
 "Entendemos que el mundo quiere saber más a medida que se desarrolla. Y nos esforzaremos por mantenerlos informados".
 {if: !n-b}
@@ -219,6 +224,7 @@ Con un aire de finalidad, se despide de la prensa.
 Cliff::
 "No aceptaremos más preguntas en este momento".
 "Tendrás que esperar con el resto del mundo ..."
+{disableChar: Live 2D Bokeh}
 Narrador::
 {additive: on}
 John siente que algo anda mal mientras observa a Cliff moverse hacia los técnicos del laboratorio para fumar la ventana. 
@@ -232,4 +238,4 @@ Narrador::
 Nadie parece notar el sudor en la frente de Cliff cuando la ventana se convierte en una pared sólida, bloqueando la verdad ...
 {fadeoutsound: smallgroupwhisper, 1}
 {fadeoutsound: Lab Tension, .2}
-{changeScript: Language Packs/Spanish/Female/Prologue/Prologue III}
+{changeScript: Female/Prologue/Prologue III}

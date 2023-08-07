@@ -118,6 +118,7 @@ you could see the tension stiffening his back.
 Cliff stands up straight with confidence, turning to the press window.
 With a dramatic clearing of his throat, he speaks, projecting his voice. 
 {additive: on}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff::
 "To the denizens of Earth,
 I can officially announce the successful transfer of MC into the digital realm."
@@ -144,6 +145,7 @@ Cliff::
 }
 "With that being said, I officially pronounce this experiment a resounding success!"
 Narrator::
+{disableChar: Live 2D Bokeh}
 {fadeinsound: Press Conference Long, 1}
 {fadeinsound: smallgroupwhisper, 1}
 The symphony of camera shutters, and the flashing of lights, erupts as he makes his announcement to the world.
@@ -157,6 +159,7 @@ Narrator::
 The raising of hands, like a wave themselves, plead for Cliff's attention.  
 Cliff points to one young reporter, a lady from another news channel.
 {anim: Cliff, kime1}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Cliff::
 "Yes, you there. Go ahead with your question."
 {anim: Cliff, kime2}
@@ -187,11 +190,13 @@ and the pressure of dealing with a whole new frontier,
 }
 Because of this, we plan to keep the first four-day test private."
 {additive: off}
+{disableChar: Live 2D Bokeh}
 Narrator::
 {fadeinsound: smallgroupwhisper, 1}
 The reporters raise their hands even higher, more urgent, as if they were grade school kids again. 
 Cliff sighs visibly, a touch of irritability cracking his normally calm facade.
 Cliff::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "Please understand, that we already have warned you prior to the conference that this is a very <i>high risk</i> experiment."
 "We understand the world wants to know more as it develops. And we will endeavor to keep you informed."
 {if: !n-b}
@@ -219,6 +224,7 @@ With an air of finality, he waves goodbye to the press.
 Cliff::
 "We won't take any more questions at this time."
 "You will have to wait with the rest of the world..."
+{disableChar: Live 2D Bokeh}
 Narrator::
 {additive: on}
 John feels something's wrong as he watches Cliff motion to the lab techs to smoke the window. 

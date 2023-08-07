@@ -68,6 +68,7 @@ Masked Punk::
 {fadeoutsound: Star Piano, 2}
 {fadeinsound: Flash Step, .3}
 {moveChar: Masked Punk, .50}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "¿Hablas en serio? ¿Vengo aquí sólo para encontrar a un perdedor a escondidas?"
 MC::
 Con una velocidad inhumana, este demonio sale volando de la arboleda.
@@ -148,6 +149,8 @@ MC::
 Me agarra de la mano y me acerca con un solo movimiento.
 La máscara casi me toca la nariz. 
 Trago con cuidadosa deliberación.
+{fadeinsound: no_one_expects_whisper, .1}
+{setachievement: second_swallow}
 Tan cerca, el olor a azufre me llena las fosas nasales. 
 Lucas::
 "Si haces daño a este reino, te cortaré como a un cerdo. ¿Entendido?"
@@ -165,6 +168,7 @@ Lucas::
 "No fue una petición. Vendrás conmigo". 
 "Star pensará qué hacer contigo."
 "Estás invadiendo después de todo."
+{disableChar: Live 2D Bokeh}
 MC::
 Sólo tengo unos segundos de reacción aquí. 
 El tipo es rápido. 
@@ -196,6 +200,7 @@ Tenemos unos 3 metros de distancia entre nosotros. Tal vez pueda llegar a toda v
        Siento que una mano, sólida como el hierro, me agarra el hombro. 
        {anim: Lucas, Wind Idle}
        {moveChar: Lucas, .5}
+       {disableChar: Live 2D Bokeh}
        Lucas::
        [Lewd]
        "Así que. ¿Quieres hacer esto de la manera difícil ¿eh?"
@@ -329,6 +334,7 @@ Tenemos unos 3 metros de distancia entre nosotros. Tal vez pueda llegar a toda v
        Lucas::
        [Default]
        MC::
+       {disableChar: Live 2D Bokeh}
        {fadeinsound: Lucas Laugh 1, .2}
        Se ríe mientras tira de la cuerda y empieza a moverse de nuevo.
        No controlo mi situación. 
@@ -363,7 +369,8 @@ Tenemos unos 3 metros de distancia entre nosotros. Tal vez pueda llegar a toda v
        {moveChar: Lucas, .50}
        {movecube: .5, .3}
        {anim: Lucas, Idle}
-       Nos detenemos ante las antiguas puertas de madera de tres metros de altura. 
+       Nos detenemos ante las antiguas puertas de madera de tres metros de altura.
+       {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh} 
        Lucas::
        "Te he visto admirando los jardines. Si crees que es bonito, espera a entrar".
        MC::
@@ -392,6 +399,7 @@ Lucas se da la vuelta y empieza a caminar.
 {fadeoutsound: Lucas Dark, 5}
 {fadeinsound: Star Piano, 5}
 Lucas mira por encima del hombro para asegurarse de que le sigo. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 "Sabes, tienes suerte de que Star te sintiera antes que yo".
 "Generalmente no tolero a los 'huéspedes no invitados' tan bien como ella".
@@ -430,6 +438,7 @@ Lucas::
 "Bruh, ella es como, el señor demonio más sexy de la historia."
 MC::
 Se ríe abiertamente.
+{disableChar: Live 2D Bokeh}
 MC::
 ¿En qué me he metido? Esto plantea muchas preguntas.
 ¿Quizás sólo están jugando a rol? ¿Un evento en directo?
@@ -444,8 +453,10 @@ Reflexiono sobre esto.
 Frente a nosotros se alza un muro exterior, tallado en piedra antigua.
 La vegetación crece en las grietas y hendiduras. 
 Lucas agita una mano y la puerta principal se abre.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 "Bienvenido al 69º Círculo del Infierno, MC".
+{disableChar: Live 2D Bokeh}
 MC::
 {additive:on}
 Atravesamos la entrada en silencio. 
@@ -467,6 +478,7 @@ Como la <i>enorme, </i>fuente hasta la cintura, directamente en el centro de las
 {moveChar: Lucas, .50}
 {movecube: .5, .3}
 Nos detenemos ante las antiguas puertas de madera de tres metros de altura. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 "Te he visto admirando los jardines. Si crees que es bonito, espera a entrar".
 MC::
@@ -518,6 +530,7 @@ hugging her form in a very sensual way.
 Verla en persona, sin pantalla. Sin barreras...
 {fadeinsound: Heart Thump, .1}
 Mi corazón palpita en respuesta. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 "Hola, mi Señor. Traigo de vuelta al intruso, como me pidió".
 MC::
@@ -552,6 +565,7 @@ Lucas::
 [Default]
 Asterella::
 "Pero no vuelvas a hacerlo. Me asusta cuando lo haces".
+{disableChar: Live 2D Bokeh}
 MC::
 Su voz refleja mi sorpresa.
 Cierra el libro con aire definitivo y lo deja sobre la mesa.
@@ -562,6 +576,7 @@ Yo permanezco en posición de media reverencia con Lucas.
 La voz lo confirma. Es la Asterella Star de Twatch.
 Conozco muy bien esa voz. Sus flujos son a veces hilarantemente malditos. 
 A su público le encanta. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lucas::
 "¿Recibo mi recompensa entonces <i>Maestro</i>?".
 MC::
@@ -605,6 +620,7 @@ Asterella::
 "Sí, puedes ser recompensado."
 "Ve. Ve a ver al Amo del Calabozo para tu castigo nocturno."
 "Atenderé a este... intruso."
+{disableChar: Live 2D Bokeh}
 MC::
 ¿Castigo nocturno?
 Oh, oh. 
@@ -628,4 +644,4 @@ MC::
 {fadeinsound: openclosedoor, 1}
 Star observa a Lucas cerrar la puerta, con una expresión de satisfacción en el rostro. 
 Cuando la puerta se cierra, ella suspira, cerrando los ojos durante un breve instante.
-{changeScript: Language Packs/Spanish/Male/Prologue/Star II, 170}
+{changeScript: Male/Prologue/Star II, 173}

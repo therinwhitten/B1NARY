@@ -20,6 +20,7 @@ Mein Herz!
 Und.
 Lucas hat den ganzen Weg lang, Lieder unter seinem Atem gesummt. 
 {moveChar: Asterella, .65}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {additive: on}
 Als wir eintreten, 
 eine atemberaubende junge Lady, 
@@ -128,6 +129,7 @@ Lucas::
 {
  "Wenn sie feindselig werden, geben Sie mir nicht die Schuld, okay?"
 }
+{disableChar: Live 2D Bokeh}
 {moveChar: Lucas, -1}
 {moveChar: Asterella, .5}
 {movecube: .2, .4}
@@ -143,6 +145,7 @@ MC::
 Das leichte Kichern, welches aus ihrer Kehle entkommt, ist merkwürdigerweise nicht überraschend. 
 Sie scheinen sich nah zu sein.
 Als ob sie etwas zu entscheiden hätte, blickt sie mich mit entschuldigendem Blick an.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {movecube: .5, .1}
 Asterella::
 [Default]
@@ -162,12 +165,14 @@ Asterella::
 MC::
 Sie schaut zu mir mit einem schiefen Zucken ihrer Lippen.
 {movecube: .5, 0}
+{disableChar: Live 2D Bokeh}
 Erweitert einen Fingernagel und schneidet die Seile von meinen Handgelenken und Hals. 
 Der Nagel schneidet wie ein Messer. 
 Kein Wunder, dass Lucas nicht besorgt war. 
 Warte, war das eine Warnung?
 Ich beabsichtige es, als eine zu nehmen.
 {movecube: .5, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella Star, keinen Zentimeter von meinem Gesicht entfernt.
 Höchstpersönlich. 
 {if: henable}
@@ -374,6 +379,7 @@ Asterella::
  "Stell dich nicht dumm, MC. Du scheinst ein sehr freundlicher, attraktiver Elf zu sein, und ich bin ein bisschen 'durstig'..."
 }
 „Und es ist nicht für mehr Wein."
+{disableChar: Live 2D Bokeh}
 MC::
 Der Blick in ihrem Gesicht spricht Bände was ihre wahren Ziele sind.
 {if: henable}
@@ -414,6 +420,7 @@ Der Blick in ihrem Gesicht spricht Bände was ihre wahren Ziele sind.
     {additive:off} 
 }
 Ein sicheres Lächeln umhüllt ihr Gesicht: Ein Lächeln der Zufriedenheit.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella::
 „Dein Körper kann mich nicht anlügen, MC. Ich weiß du willst mich auch."
 MC:: 
@@ -424,6 +431,7 @@ Asterella::
 {movecube: .4, .1}
 „Als einen Eindringling noch dazu."
 MC:: 
+{disableChar: Live 2D Bokeh}
 Was soll ich sagen?
 Sie ist unglaublich: weich in allen richtigen Stellen. 
 Dämonenlord Rolle beiseite, als eine Frau: Sie ist anmutig, selbstbewusst und kühn.
@@ -435,6 +443,7 @@ Ich bin in einer unbekannten Situation, wo dunklen Stellen mich umstellen.
 Ganz zu schweigen davon, dass der Dämon, der sich heute Abend im Kerker "vergnügt", bei jeder Entscheidung, die ich treffe, Probleme verursachen kann. 
 Werde ich das Reich verletzen, wenn ich ihre Gefühle verletze?
 Wird Lucas wütend sein, wenn ich mit Stars Vorschlägen gehe?
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {movecube: .4, .3}
 {choice: Was sollte ich tun?}
 {
@@ -495,7 +504,7 @@ Wird Lucas wütend sein, wenn ich mit Stars Vorschlägen gehe?
                 Ich platziere ihre Hand sehr sanft auf ihren Schoß.
                 „Es tut mir leid, Star."
                 „Ich kenne dich nicht. Es fühlt sich einfach nicht richtig für mich an."
-                {changeScript: Language Packs/German/Male/Prologue/Star II FriendZoned}
+                {changeScript: Prologue/Star II FriendZoned}
             ]
             Vergiss es! Ich kann diese Augen nicht ablehnen!
             [
@@ -542,7 +551,8 @@ Wird Lucas wütend sein, wenn ich mit Stars Vorschlägen gehe?
 MC::
 {usegameobject: Hentai Warning Panel, true}
 {fadeoutsound: fireplace, 1}
-{fadeoutsound: Lucas and Star Dinner, 1}
+{fadeoutsound: Star Dinner, 1}
+{setachievement: male_route}
 {changeScript: Male/Prologue/Star II Hentai}
 
 

@@ -59,6 +59,7 @@ MC::
 オールド・レポーター::
 {anim: オールド・レポーター, kime1}
 {moveChar: オールド・レポーター, .85}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {if: !n-b}
 {
  "彼女はそこです! MC?"
@@ -90,6 +91,7 @@ MC::
 Cliff::
 {moveChar: Cliff, .25}  
 {anim: Cliff, kime2}
+{disableChar: Live 2D Bokeh}
 MC::
 私の目は調整し始める. プレスの後ろにいるリードプロジェクトマネージャーのクリフが腕を組んで、彼の顔に心配そうな顔をしているのに気づいた。
 なぜ誰も何も言わないのか？
@@ -158,6 +160,7 @@ MC::
 彼はDIHIに向かって動く. 
 {anim: シロビ, Thisway}
 シロビ::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {additive: on}
 "私はあなたのすべてのバイタルを監視する責任があります。
 {anim: シロビ, Bow}
@@ -168,6 +171,7 @@ MC::
 MC::
 私の眉毛は勝手に上がる。 
 "私はいいです, 約束します。 心配してほしくないです。"  
+{disableChar: Live 2D Bokeh}
 プレスがDIHIの部屋からエスコートされているのに斜めに気づいた。
 {fadeinsound: LabCrewLeavingFootsteps, .3}
 {fadeinsound: openclosedoor, .5}
@@ -181,6 +185,7 @@ DIHIの音が急変し、空気中の電離感が増する。
 よし, それはボルトへの私の衝動を取り戻している。
 Shibiが声を上げ、彼の口調は無理矢理カジュアル。
 シロビ::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "プロセスは実際にはかなり平凡です。" 
 {additive: on}
 "あなたの体は不活性になります、
@@ -274,4 +279,4 @@ MC::
 {fadeoutsound: Laptop-Lab,.1}
 それから、ほとんど腸を痛めつけるような腰を下ろして、すべてが私の頭のてっぺんから逃げる。。。
 {fadeinsound: Brain Sucking Chair Activate, .5}
-{changeScript: Language Packs/Japanese/Female/Prologue/Prologue II}
+{changeScript: Female/Prologue/Prologue II}

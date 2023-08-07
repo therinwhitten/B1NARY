@@ -5,16 +5,17 @@
 {spawnEmpty: Narrador, NPC}
 {spawnChar: star nightgown, .5, Asterella}
 {spawnEmpty: MC, Player}
-{movecube: .4, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{movecube: .5, .2}
 Asterella::
 [Confusion]
 "Bueno ... Honestamente, no esperaba eso".
-{movecube: .4, 0}
+{movecube: .5, 0}
 MC::
 Se muerde el labio sensualmente.
 Asterella::
 [Disgust]
-{movecube: .4, .4}
+{movecube: .5, .4}
 "No muchos tienen el descaro de negarme lo que quiero, MC".
 MC::
 Ella me mira seriamente.
@@ -53,4 +54,7 @@ En el juego principal, estas decisiones pueden afectar profundamente a otras rut
 Haga esto con cuidado. 
 Aunque, a veces, tener un amigo sólido puede ayudarte a ganarte a los demás. 
 ¡Espero que os haya gustado la demo!
+{setachievement: male_route}
 FIN
+{colorformat: Default}
+{changeScene: Scenes/Main Menu}

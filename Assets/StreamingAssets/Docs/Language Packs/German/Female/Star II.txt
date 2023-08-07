@@ -37,6 +37,7 @@ Sie ist kleiner, als ich dachte. Ihre Kurven jedoch.
 Ara Ara...
 {fadeinsound: Heart Thump, .1}
 Sie öffnet ihren Mund, ein Eindruck von Ungeduld und leichter Verärgerung färbt ihre Rede.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Asterella::
 [Annoyed]
 „Bruh."
@@ -281,6 +282,7 @@ Was mache ich gerade?
            {moveChar: Lucas, -1}
            {moveChar: Asterella, .45}
            {movecube: .45, .2}
+           {disableChar: Live 2D Bokeh}
            Als Lucas geht, sind wir alleine. Star und ich.
            Der Kuss auf meiner Stirn brennt mehr, als der Stich in meinen Stolz oder der Fingerschnipser.
            She is so captivating.
@@ -288,6 +290,7 @@ Was mache ich gerade?
            Alles Eigenschaften die ein Dämonenlord haben soll?
            Ich berühre meine Stirn sanft.
            Asterella::
+           {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
            [Default]
            „Hat es geschmerzt?"
            MC::
@@ -295,7 +298,7 @@ Was mache ich gerade?
            „Es war nicht der Fingerschnipser..."
            Asterella::
            „Naja, MC. Wir müssen uns über einiges reden."
-           {changeScript: Female/Prologue/Star II, 378}
+           {changeScript: Female/Prologue/Star II, 386}
         ]
         Vergiss es, ich kann das nicht!
         [
@@ -341,6 +344,7 @@ Lucas::
 {moveChar: Asterella, .45}
 {movecube: .45, .2}
 MC::
+{disableChar: Live 2D Bokeh}
 Wir sind alleine.Star und ich.
 Wie aufs Stichwort schreitet sie selbstbewusst auf mich zu.
 Wenige Schritte entfernt, studiert sie mich. 
@@ -349,6 +353,7 @@ Trotz meiner selbst spüre ich, dass ich mich ihr hingeben möchte.
 Sie ist ganz und gar ein Lord. 
 Asterella::
 {anim: Asterella, Thinking}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 „Also, hast du einen Namen?"
 MC::
 Sie lässt die Frage offen stehen. 
@@ -358,6 +363,7 @@ Oh!
 {
  "Mein Pronomen ist sie..."
 }
+{disableChar: Live 2D Bokeh}
 Ich stottere es.  
 Innerlich bin ich am stöhnen.
 Damit hab ich meinen ersten Eindruck zerstört.
@@ -369,6 +375,7 @@ Sie ist so nah.
 {anim: Asterella, Pouting}
 Sie nickt und lächelt in einem aufrichtigem Lächeln.  
 Asterella::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 [Happy]
 „Das ist ein sehr toller Name, MC."
 {if: n-b}
@@ -400,6 +407,7 @@ Asterella::
 „Du weißt, als ein Einbrecher, hätte ich nicht diese Art von Gastfreundschaft erwartet."
 „Ich sehe dich nicht wirklich als einen Einbrecher, MC."
 MC::
+{disableChar: Live 2D Bokeh}
 Ich setze mich auf eine Seite, damit sie viel Platz hat. Das Buch das sie las.
 Ich kann den Titel nicht lesen. 
 {additive: on}
@@ -417,6 +425,7 @@ Vielleicht ein wenig zu verzweifelt.
 Sie schaut zurück mit einem unlesbaren Ausdruck.
 {fadeinsound: woodwine1, .1}
 Asterella::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 „Ich hatte so viel schon vermutet." 
 „Aber, dass rettet dich nicht. Noch nicht."
 {movecube: .8, .3}
@@ -491,6 +500,7 @@ Sie bringt ihr Glas an meines und wir stoßen an.
 {fadeinsound: Wine Toast, .1} 
 MC::
 „Zukünftige Beziehungen."
+{disableChar: Live 2D Bokeh}
 {movecube: .45, 0}
 {anim: Asterella, Impatient}
 Wir nehmen die ersten Schluck in Stille. Der Geschmack ist sehr rauchig und rein. 
@@ -500,6 +510,7 @@ Ein kleines Lächeln berührt ihre Lippen.
 Asterella::
 {movecube: .45, .3}
 {additive:on}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 „Direkt auf den Punkt. 
 Ich mag das."
 {additive:off}
@@ -571,10 +582,12 @@ MC::
 Ich kann nicht glauben was ich höre.
 Fragt sie für... 
 „Ich?"
+{disableChar: Live 2D Bokeh}
 Es ist alles was ich sagen kann.
 Ich nehme einen tiefen Schluck, um mein errötetes Gesicht, hinter der Aktion zu azulcken.
 Asterella Star fragt mich, mit ihr „die Nacht zu verbringen." 
 Sie schaut mich an, mit den Fragen in ihren Augen. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {choice: Keine Panik...} 
 {
     Ja, ich bin damit einverstanden.
@@ -585,9 +598,10 @@ Sie schaut mich an, mit den Fragen in ihren Augen.
         „Es wird mein erstes Mal mit einer Frau sein."
         „Sei zahm."          
         MC:: 
+        {setachievement: female_route}
         {usegameobject: Hentai Warning Panel, true}
         {fadeoutsound: fireplace, 1}
-        {fadeoutsound: Lucas and Star Dinner, 1} 
+        {fadeoutsound: Star Dinner, 1} 
         {changeScript: Female/Prologue/Star II Hentai}
     ]
     Nein. Das geht zu schnell. 

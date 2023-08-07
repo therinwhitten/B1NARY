@@ -69,6 +69,7 @@ La luz borra mis distracciones e intento parpadear para alejar el brillo.
 {spawnChar: malesilo, 2, Reportero engreído}
 {anim: Reportero engreído, kime1}
 {moveChar: Reportero engreído, .75}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Reportero engreído::
 "¡MC! 
 ¿Estás bien? Pareces inestable".
@@ -100,6 +101,7 @@ Ah... vale...
 Abro la boca.
 "Saber que Digital Horizons tiene el control es la única razón por la que estoy 'sólo' nervioso". 
 "Sé que me traerán de vuelta de una pieza. De eso puedes estar seguro".
+{disableChar: Live 2D Bokeh}
 Espero volver con todos mis recuerdos.
 Tantas cosas que olvidar: mis prácticas, mis padres, mi colección de hentai...
 ¿Sería la misma persona si perdiera mis recuerdos?
@@ -120,6 +122,7 @@ Oigo una risita en alguna parte... La voz me suena.
 {moveChar: Reportero engreído, 2}
 {moveChar: Shirobi, .55}
 Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {anim: Shirobi, Glasses} 
 {if: !n-b}
 {
@@ -147,6 +150,7 @@ Shirobi::
 "Sabes... No te dejaría acercarte a esta silla a menos que sea seguro. ¿Verdad?" 
 "Cuatro días. Entonces te sacaremos. ¿De acuerdo?"
 MC::
+{disableChar: Live 2D Bokeh}
 Asiento con la cabeza, observando la sala.
 La prensa es guiada fuera de la sala. Los únicos que estamos dentro somos Cliff, los técnicos y yo. 
 {fadeinsound: slowfootsteps, .3}
@@ -161,6 +165,7 @@ Mi cuerpo no hará nada raro
 como tener una erección zombi... ¿verdad?
 {additive: off}
 Oh, por favor, no. Quizá debería preguntar...
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Shirobi resopla, obviamente conteniendo la risa.
 Shirobi::
 {additive: on}

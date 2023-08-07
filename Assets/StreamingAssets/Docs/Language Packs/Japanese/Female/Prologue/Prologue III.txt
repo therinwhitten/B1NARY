@@ -16,6 +16,7 @@ CliffはShirobiの椅子の後ろに寄りかかって、木の後ろを焦っ�
 幽霊のように青白いShirobiは、画面を見ずに見つめているだけです。 
 {moveChar: シロビ, .75}
 {moveChar: クリフ, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 シロビ::
 {if: !n-b}
 {
@@ -101,6 +102,7 @@ Cliffは欲求不満で彼の鼻の橋をこすります。
 シロビ, 
 淡く、明らかに彼の友人を心配している、
 目に見えて頭を振って仕事に戻ります。
+{disableChar: Live 2D Bokeh}
 {anim: シロビ: Checktime}
 {additive: off} 
 技術者がポート、DIHIの設定、およびラップトップを体系的にチェックするとき、沈黙が支配します。
@@ -112,6 +114,7 @@ Cliffは欲求不満で彼の鼻の橋をこすります。
 彼女の赤褐色の髪は、この実験のための長い時間の準備を裏切って、混乱しました。
 {additive: off}
 {anim: ベックス, Pensive}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 ベックス::
 "私は問題を見つけたと思います。"
 ナレーター::
@@ -268,6 +271,7 @@ Cliffの道は明確で、彼の自信が戻ってきます。
 クリフ::
 "そして、誰かにDIHIの完全な診断をしてもらいます。レポートが。。。"
 ナレーター::
+{disableChar: Live 2D Bokeh}
 {if: !n-b}
 {
  Cliffがチームに指示を出し続けている間、彼は信じられないほどの悲しみの痛みを感じずにはいられませんでした。
@@ -297,4 +301,4 @@ Cliffの道は明確で、彼の自信が戻ってきます。
 {usegameobject: Flashing Warning Panel, true}
 {fadeoutsound: Discovery Music, 5}
 {fadeoutsound: Laptop Lab Scene, 5}
-{changeScript: Language Packs/Japanese/Female/Prologue/Denizen}
+{changeScript: Female/Prologue/Denizen}

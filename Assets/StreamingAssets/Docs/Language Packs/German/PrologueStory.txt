@@ -2,6 +2,7 @@
 {fadeinsound: Times Square Crowd, 1}
 {colorformat: Times Square}
 {spawnEmpty: Erzähler, NPC}
+{setachievement: intern_UwU}
 Erzähler:: 
 New York City in der Times Square: Das Jahr 2040. In mitten des Tages an einem glühendem Sommertag. 
 Ein normaler Tag, an dem die meisten Menschen herum laufen, zur Arbeit gehen, den Missklang der Fahrzeuge, Fußgänger, sowie der Beat hören, der in einer perfekten Harmonie zu der Werbung erklingt. 
@@ -17,6 +18,7 @@ Heute ist der erste Versuch des Menschens sich selber zu digitalisieren.
 {spawnChar: malesilo1, -1, Männlicher Bystander}
 {anim: Männlicher Bystander, Thinking}
 {moveChar: Männlicher Bystander, 0.27}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Männlicher Bystander::
 „Ich kann nicht glauben das sie damit durchkommen!“ 
 „Wer gab diesem Projekt ein grünes Licht?“ 
@@ -78,6 +80,7 @@ Stell dir den Druck vor, nur in diesem Stuhl zu sitzen, vor Millionen Menschen..
 {moveChar: Männlicher Bystander, -1}
 {moveChar: Weiblicher Bystander, -1}
 {moveChar: Männlicher Bystander 2, 2}
+{disableChar: Live 2D Bokeh}
 {loopBG: false}
 {playBG: Prologue/Times Square Pan Up}
 {spawnChar: femalesilo, 2, Cindy}
@@ -122,6 +125,7 @@ Erzähler::
 Vor der Kamera ist ein Mann in seinen 40ern, angezogen in einem scharfen dunkelgrauen Anzug, eine Hand spielt an seinem Ohrhörer. 
 Als der Nachrichtenkorrespodent zuhört, nickt er leicht. 
 John lächelt zu der Kamera.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 John::  
 „Danke Cindy! Wie erging es dir?“ 
 Cindy:: 
@@ -220,6 +224,7 @@ John::
 „Der eigentliche Zweck war den Verstand eines Krebserkrankten in einen Cyborg zu transferieren, oder Astronauten Zeit geben neue Techniken der Kryostase zu erlernen.“ 
 „Es gibt jedoch viele Anwendungen, für die diese Technologie angewendet werden kann." 
 „Daher der Name. Digital Imaging Human Interface. Es überträgt das Bild eines Menschen also ganzes.“ 
+{disableChar: Live 2D Bokeh}
 Erzähler:: 
 Die weibliche Zuschauerin spottet offen auf der Straße, und blickt im grenzenlosem Entsetzen auf. 
 Weiblicher Bystander:: 
@@ -273,6 +278,7 @@ Sein dunkles Haar ist zerzaust, als ob er einige Tage im Labor war, ohne ein ric
 In dem Bildschirm, sacken seine Schultern zusammen, als ob er von dem Blick der Kameras zerquetscht wird. Seine Stimme aber, trotzt diesem Eindruck. 
 Der Labortechniker schiebt seine Brille wieder auf die Nase.
 {anim: Labortechniker, Glasses} 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Labortechniker:: 
 „Nach der Übertragung, verbleibt der Tester für einen Zeitraum von etwa vier Tagen auf unseren geschlossenen Servern." 
 „Während sie dort drin sind, wird der Körper des Subjektes in der Form einer Warmluftstasis sein. Dies soll abrupte Veränderungen in der chemischen Zusammensetzung verhindern.“ 
@@ -340,6 +346,7 @@ Er fängt an, die ganze Presse voller Aufregung aus dem Labor zu führen.
 {anim: Shirobi, Thisway}
 Shirobi:: 
 „Warum, der mutige Pioniergeist...“ 
+{disableChar: Live 2D Bokeh}
 Erzähler:: 
 Es ist Zeit deine erste Entscheidung zu treffen. Sie können auch Ihren eigenen Namen eingeben und an dieser Stelle die nicht-binäre Option hinzufügen.
 Ziehen Sie es vor, sich als binär oder nicht-binär zu identifizieren? Diese Auswahl ermöglicht es den Charakteren, sich geschlechtsneutral auf Ihre Person zu beziehen.
@@ -349,10 +356,10 @@ Welchen Weg möchten Sie also einschlagen?
 {if: MalePath}
 {
 	"Die männliche Route ist es!"
-	{changeScript: Language Packs/German/Male/Prologue/Prologue}
+	{changeScript: Male/Prologue/Prologue}
 }	
 {if: !MalePath}
 {
 	"Die weibliche Route ist es!"
-	{changeScript: Language Packs/German/Female/Prologue/Prologue}
+	{changeScript: Female/Prologue/Prologue}
 }

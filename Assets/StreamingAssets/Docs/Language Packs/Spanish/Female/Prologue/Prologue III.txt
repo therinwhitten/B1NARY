@@ -16,6 +16,7 @@ En la pantalla, se ejecuta un diagnóstico en el DIHI.
 Shirobi, pálido como un fantasma, solo mira la pantalla sin mirarla.
 {moveChar: Shirobi, .75}
 {moveChar: Cliff, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Shirobi::
 {if: !n-b}
 {
@@ -101,6 +102,7 @@ Cliff se frota el puente de la nariz con frustración.
 Shirobi, 
 pálido, y obviamente preocupado por su amigo, 
 Visiblemente sacude la cabeza y vuelve al trabajo.
+{disableChar: Live 2D Bokeh}
 {anim: Shirobi: Checktime}
 {additive: off} 
 El silencio reina mientras los técnicos verifican sistemáticamente los puertos, la configuración del DIHI y las computadoras portátiles.
@@ -112,6 +114,7 @@ mira hacia arriba desde la computadora portátil desde el otro lado de la habita
 Su cabello castaño es un desastre, traicionando las largas horas de preparación para este experimento.
 {additive: off}
 {anim: Becks, Pensive}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Becks::
 "Señor, creo que encontré el problema".
 Narrador::
@@ -268,6 +271,7 @@ El camino de Cliff se despeja, su confianza vuelve.
 Cliff::
 "Y conseguir que alguien haga un diagnóstico completo sobre el DIHI. Asegúrese de que el informe sea ..."
 Narrador::
+{disableChar: Live 2D Bokeh}
 {if: !n-b}
 {
  Mientras Cliff continúa enviando instrucciones a su equipo, no pudo evitar sentir una punzada de tristeza increíble. 
@@ -297,4 +301,4 @@ Narrador::
 {usegameobject: Flashing Warning Panel, true}
 {fadeoutsound: Discovery Music, 5}
 {fadeoutsound: Laptop Lab Scene, 5}
-{changeScript: Language Packs/Spanish/Female/Prologue/Denizen}
+{changeScript: Female/Prologue/Denizen}

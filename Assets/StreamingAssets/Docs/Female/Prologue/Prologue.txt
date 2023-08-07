@@ -59,6 +59,7 @@ I attempt to blink away the glaring brightness, raising my hand to shade my eyes
 Old Reporter::
 {anim: Old Reporter, kime1}
 {moveChar: Old Reporter, .85}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {if: !n-b}
 {
  "There she is! MC?"
@@ -90,6 +91,7 @@ I look at the camera closest to me.
 Cliff::
 {moveChar: Cliff, .25}  
 {anim: Cliff, kime2}
+{disableChar: Live 2D Bokeh}
 MC::
 My eyes start to adjust. I notice Cliff, the lead project manager, behind the press, arms crossed and a look of concern on his face.
 Why is no one saying anything?
@@ -158,6 +160,7 @@ He nods sagely, a slight smile curving his lips.
 He motions towards the DIHI. 
 {anim: Shirobi, Thisway}
 Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 {additive: on}
 "I'm in charge of watching all your vitals.
 {anim: Shirobi, Bow}
@@ -168,6 +171,7 @@ So please... take this seriously?
 MC::
 My eyebrows raise on their own accord. 
 "I'll be good, I promise. Wouldn't want you to get worried."  
+{disableChar: Live 2D Bokeh}
 I obliquely notice the press being escorted out of the DIHI room.
 {fadeinsound: LabCrewLeavingFootsteps, .3}
 {fadeinsound: openclosedoor, .5}
@@ -181,6 +185,7 @@ For a brief second, I hesitate.
 Ok, <i>that</i> is bringing back my urge to bolt.
 Shibi speaks up, his tone forcibly casual.
 Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "The process is pretty mundane actually." 
 {additive: on}
 "Your body will be inert,

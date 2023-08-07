@@ -5,16 +5,17 @@
 {spawnEmpty: Erzähler, NPC}
 {spawnChar: star nightgown, .5, Asterella}
 {spawnEmpty: MC, Player}
-{movecube: .4, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{movecube: .5, .2}
 Asterella::
 [Confusion]
 „Also... ich habe das wirklich nicht erwartet."
-{movecube: .4, 0}
+{movecube: .5, 0}
 MC::
 Sie beißt ihre Lippe sinnlich. 
 Asterella::
 [Disgust]
-{movecube: .4, .4}
+{movecube: .5, .4}
 „Nicht viele haben die Nerven, mir zu verweigern, was ich will, MC."
 MC::
 Sie schaut ernst zu mir.
@@ -53,4 +54,7 @@ Im Hauptspiel, werden diese Entscheidungen die anderen Routen zutiefst beeinflus
 Entscheide mit Bedacht. 
 Trotzdem, manchmal einen Freund zu haben kann dir helfen andere zu gewinnen. 
 Ich hoffe du hast die Demo genossen!
+{setachievement: male_route}
 DAS ENDE
+{colorformat: Default}
+{changeScene: Scenes/Main Menu}
