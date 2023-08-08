@@ -226,11 +226,13 @@
 			{
 				FastSkip = false;
 				FastSkip = true;
+				GameObject.Find("Fast Forward").GetComponent<Toggle>().isOn = true;
 			}
 			if (AutoSkip)
 			{
 				AutoSkip = false;
 				AutoSkip = true;
+				GameObject.Find("Autoskip").GetComponent<Toggle>().isOn = true;
 			}
 		}
 
