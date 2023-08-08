@@ -320,8 +320,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Fixed:\n~Fonts\n~ Save States Testing\n~Monitor Bugs\n~Color Themes Adjustments\n\nAdded:
-    \nSteam Integration\nAdditional Sounds\n\n"
+  m_text: '
+
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -410,15 +412,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 'Fixed: ~Fonts ~ Save States Testing ~Monitor Bugs ~Color Themes Adjustments 
-    Added:  Steam Integration Additional Sounds'
-  - "Behoben: ~Fonts ~ Save States Testing ~Bugs auf dem Monitor ~Color Themes Anpassungen 
-    Hinzugef\xFCgt:  Steam-Integration Zus\xE4tzliche Sounds"
-  - "\u4FEE\u6B63\u3057\u307E\u3057\u305F\uFF1A ~\u30D5\u30A9\u30F3\u30C8 ~ \u4FDD\u5B58\u72B6\u614B\u306E\u30C6\u30B9\u30C8
-    ~\u30E2\u30CB\u30BF\u30FC\u306E\u30D0\u30B0 ~\u30AB\u30E9\u30FC\u30C6\u30FC\u30DE\u306E\u8ABF\u6574 
-    \u8FFD\u52A0  Steam\u3068\u306E\u7D71\u5408 \u8FFD\u52A0\u30B5\u30A6\u30F3\u30C9"
-  - "Corregido: ~Fonts ~ Pruebas de estados de guardado ~Bugs de Monitor ~Ajustes
-    de Temas de Color  A\xF1adido:  Integraci\xF3n con Steam Sonidos adicionales"
+  - 
+  - 
+  - 
+  - 
 --- !u!1 &1996701403342450897
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,7 +482,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: P4 .3 Polish
+  m_text: Demo
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
   m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
@@ -574,10 +571,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - P4 .3 Polish
-  - P4 .3 Polnisch
-  - "P4 .3 \u30DD\u30FC\u30E9\u30F3\u30C9\u8A9E"
-  - P4 .3 Polaco
+  - Demo
+  - Demo
+  - "\u30C7\u30E2"
+  - Demo
 --- !u!1 &6094002358359024601
 GameObject:
   m_ObjectHideFlags: 0
@@ -3324,6 +3321,7 @@ GameObject:
   - component: {fileID: 6094002359253956816}
   - component: {fileID: 3873256181765315505}
   - component: {fileID: 4220234520875885685}
+  - component: {fileID: 7552237545405931435}
   m_Layer: 5
   m_Name: Hentai Gallery
   m_TagString: Untagged
@@ -3750,6 +3748,19 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 7552237545405931435}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 8
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -3762,6 +3773,23 @@ MonoBehaviour:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 7552237545405931435}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: -1
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -3915,6 +3943,19 @@ MonoBehaviour:
   - Hentai
   - "\u30D8\u30F3\u30BF\u30A4"
   - hentai
+--- !u!114 &7552237545405931435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094002359253956822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b3134664b501f48874af8b222e799e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actor: {fileID: 0}
 --- !u!1 &6094002359311917975
 GameObject:
   m_ObjectHideFlags: 0
@@ -11709,7 +11750,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Demo
+  m_text: 1.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -11811,7 +11852,7 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - Demo
-  - Demo
-  - "\u30C7\u30E2"
-  - Demo
+  - 1.0
+  - 1.0
+  - 1.0
+  - 1.0
