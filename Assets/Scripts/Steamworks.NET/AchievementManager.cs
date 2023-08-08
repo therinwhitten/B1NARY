@@ -20,9 +20,9 @@
 			{
 				if (!SteamManager.HasInstance)
 					return;
-				SteamAchievement target = AllAchievements.First(achievement => achievement.AchievementIndex == key);
+				SteamAchievement target = FromKey(key);
 				if (!target.Exists)
-					Debug.Log("s");
+					Debug.Log($"{key} is not real");
 				target.Unlock();
 			}),
 		};
@@ -51,8 +51,14 @@
 			new SteamAchievement("demo_complete", "Cultured", ""),
 			new SteamAchievement("closed_beta_demo", "Beta Tester", ""),
 		};
-		//public static IReadOnlyList<SteamAchievement> CompletedAchievements { get; } = m_completedAchivements;
-		//private static List<SteamAchievement> m_completedAchivements = new();
+		public static SteamAchievement FromKey(string achievementKey)
+		{
+			int index = Array.FindIndex(AllAchievements as SteamAchievement[],
+				achievement => achievement.AchievementIndex.Contains(achievementKey));
+			if (index == -1)
+				return new SteamAchievement("null", "null", "unknown achievement") { m_exists = false, m_achieved = false };
+			return AllAchievements[index];
+		}
 
 		public bool Exists
 		{

@@ -32,6 +32,8 @@
 				// On value change, also reflect on the others
 				if (ChangingNames)
 					return;
+				if (!ScriptHandler.HasInstance || ScriptHandler.Instance.documentWatcher == null)
+					return;
 				int index = ScriptHandler.Instance.documentWatcher.CurrentNode.GlobalIndex;
 				for (int i = 0; i < Languages.Instance.Count; i++)
 				{
