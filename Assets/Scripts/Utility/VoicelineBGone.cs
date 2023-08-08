@@ -8,18 +8,19 @@
 	using System.Threading.Tasks;
 	using UnityEngine;
 
-	public class VoicelineBGone
+	public class VoicelineBGone : MonoBehaviour
 	{
-		public static bool Enabled { get => PlayerConfig.Instance.voicelineBGone; set => PlayerConfig.Instance.voicelineBGone.Value = value; }
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-		public static void Start()
+		public static bool Enabled { get => !PlayerConfig.Instance.voicelineBGone; set => PlayerConfig.Instance.voicelineBGone.Value = !value; }
+		public AudioSource source;
+		private void Reset()
+		{
+			source = GetComponent<AudioSource>();
+		}
+		public void OnEnable()
 		{
 			if (Enabled)
 				return;
-			GameObject obj = GameObject.Find("star default");
-			if (obj == null)
-				return;
-			obj.GetComponent<AudioSource>().Stop();
+			source.Stop();
 		}
 	}
 }

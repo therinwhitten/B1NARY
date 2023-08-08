@@ -76,8 +76,8 @@
 		public ChangableValue<bool> hEnable = new(false);
 		public ChangableValue<int> dialogueSpeedTicks = new(30);
 		public ChangableValue<string> language = new(Languages.Instance.Count > 0 ? Languages.Instance[0] : "English");
-		[XmlNamedAs("startingVoiceline")]
-		public ChangableValue<bool> voicelineBGone = new(true);
+		[XmlNamedAs("voicelineBGone")]
+		public ChangableValue<bool> voicelineBGone = new(false);
 		public Audio audio = new();
 		public Graphics graphics = new();
 
