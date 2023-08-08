@@ -18,60 +18,41 @@
 		{
 			["setachievement"] = (Action<string>)((key) =>
 			{
-				if (!SteamManager.Initialized)
+				if (!SteamManager.HasInstance)
 					return;
-				AchievementIndex index = Enum.Parse<AchievementIndex>(key);
-				SteamAchievement target = AllAchievements.First(achievement => achievement.Index == index);
+				SteamAchievement target = AllAchievements.First(achievement => achievement.AchievementIndex == key);
 				if (!target.Exists)
 					Debug.Log("s");
 				target.Unlock();
 			}),
 		};
 
-		public void SetAchievement(AchievementIndex index)
+		public void SetAchievement(string indexKey)
 		{
-			if (!SteamManager.Initialized)
+			if (!SteamManager.HasInstance)
 				return;
-			SteamAchievement target = AllAchievements.First(achievement => achievement.Index == index);
+			SteamAchievement target = AllAchievements.First(achievement => achievement.AchievementIndex == indexKey);
 			target.Unlock();
-		}
-		public void SetAchievement(string keyIndex)
-		{
-			if (!SteamManager.Initialized)
-				return;
-			AchievementIndex index = Enum.Parse<AchievementIndex>(keyIndex);
-			SetAchievement(index);
 		}
 	}
 
 
-	public record SteamAchievement(AchievementIndex Index, string Name, string Description)
+	public record SteamAchievement(string AchievementIndex, string Name, string Description)
 	{
-		public enum AchievementIndex : int
-		{
-			nut_cracker,
-			second_swallow,
-			intern_UwU,
-			male_route,
-			female_route, 
-			demo_female_hscene, 
-			demo_male_hscene,
-			demo_complete,
-			closed_beta_demo,
-		}
 		public static IReadOnlyList<SteamAchievement> AllAchievements { get; } = new SteamAchievement[]
 		{
-			new SteamAchievement(AchievementIndex.nut_cracker, "Nut Cracker", ""),
-			new SteamAchievement(AchievementIndex.second_swallow, "Second Swallow", ""),
-			new SteamAchievement(AchievementIndex.intern_UwU, "Intern", ""),
-			new SteamAchievement(AchievementIndex.male_route, "I REALLY want a cup of Coffee...", ""),
-			new SteamAchievement(AchievementIndex.female_route, "Jujitsu Training did NOT Pay off...", ""),
-			new SteamAchievement(AchievementIndex.demo_female_hscene, "Yuri between the sheets.", ""),
-			new SteamAchievement(AchievementIndex.demo_male_hscene, "Hentai Protag.", ""),
-			new SteamAchievement(AchievementIndex.demo_complete, "Cultured", ""),
-			new SteamAchievement(AchievementIndex.closed_beta_demo, "Beta Tester", ""),
+			new SteamAchievement("nut_cracker", "Nut Cracker", ""),
+			new SteamAchievement("second_swallow", "Second Swallow", ""),
+			new SteamAchievement("intern_UwU", "Intern", ""),
+			new SteamAchievement("male_route", "I REALLY want a cup of Coffee...", ""),
+			new SteamAchievement("female_route", "Jujitsu Training did NOT Pay off...", ""),
+			new SteamAchievement("demo_female_hscene", "Yuri between the sheets.", ""),
+			new SteamAchievement("demo_male_hscene", "Hentai Protag.", ""),
+			new SteamAchievement("demo_complete", "Cultured", ""),
+			new SteamAchievement("closed_beta_demo", "Beta Tester", ""),
 		};
-
+		//public static IReadOnlyList<SteamAchievement> CompletedAchievements { get; } = m_completedAchivements;
+		//private static List<SteamAchievement> m_completedAchivements = new();
 
 		public bool Exists
 		{
@@ -79,7 +60,7 @@
 			{
 				if (m_exists is null)
 				{
-					m_exists = SteamUserStats.GetAchievement(Index.ToString(), out bool outset);
+					m_exists = SteamUserStats.GetAchievement(AchievementIndex, out bool outset);
 					m_achieved = outset;
 				}
 				return m_exists.Value;
@@ -92,7 +73,7 @@
 			{
 				if (m_achieved is null)
 				{
-					m_exists = SteamUserStats.GetAchievement(Index.ToString(), out bool outset);
+					m_exists = SteamUserStats.GetAchievement(AchievementIndex, out bool outset);
 					m_achieved = outset;
 				}
 				return m_achieved.Value;
@@ -105,10 +86,10 @@
 		{
 			if (Achieved)
 				return;
-			if (!SteamManager.Initialized)
+			if (!SteamManager.HasInstance)
 				return;
 			Achieved = true;
-			SteamUserStats.SetAchievement(Index.ToString());
+			SteamUserStats.SetAchievement(AchievementIndex);
 		}
 	}
 }
