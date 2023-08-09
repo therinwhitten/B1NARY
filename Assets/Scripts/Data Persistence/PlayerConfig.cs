@@ -105,7 +105,13 @@
 			// Let the legendary coders find this line to laugh their asses off,
 			// - I want the small file sizes but my manager still wants high quality
 			// - images lol
-			public ChangableValue<int> thumbnailQuality = new(SteamUser.GetSteamID().m_SteamID == 76561198109619934 ? 10 : 100);
+			public ChangableValue<int> thumbnailQuality = new(GetThumbnail());
+
+			private static int GetThumbnail()
+			{
+				try { return SteamUser.GetSteamID().m_SteamID == 76561198109619934 ? 10 : 100; }
+				catch { return 10; }
+			}
 			public ChangableValue<string> currentFormat = new(null);
 			public bool HasOverride => !string.IsNullOrEmpty(currentFormat.Value);
 		}

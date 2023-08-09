@@ -22,35 +22,14 @@ namespace B1NARY.Steamworks
 	using B1NARY.DesignPatterns;
 #endif
 
-	public class SteamManager : MonoBehaviour
+	//
+	// The SteamManager provides a base implementation of Steamworks.NET on which you can build upon.
+	// It handles the basics of starting up and shutting down the SteamAPI for use.
+	//
+	[DisallowMultipleComponent]
+	public class SteamManager : Singleton<SteamManager>
 	{
 #if !DISABLESTEAMWORKS
-		protected static bool s_EverInitialized = false;
-
-		protected static SteamManager s_instance;
-		protected static SteamManager Instance
-		{
-			get
-			{
-				if (s_instance == null)
-				{
-					return new GameObject("SteamManager").AddComponent<SteamManager>();
-				}
-				else
-				{
-					return s_instance;
-				}
-			}
-		}
-
-		protected bool m_bInitialized = false;
-		public static bool Initialized
-		{
-			get
-			{
-				return Instance.m_bInitialized;
-			}
-		}
 
 		protected SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
 
@@ -60,35 +39,15 @@ namespace B1NARY.Steamworks
 			Debug.LogWarning(pchDebugText);
 		}
 
-#if UNITY_2019_3_OR_NEWER
 		// In case of disabled Domain Reload, reset static members before entering Play Mode.
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void InitOnPlayMode()
 		{
-			s_EverInitialized = false;
-			s_instance = null;
+			SteamManager.ThrowErrorIfEmpty = false;
 		}
-#endif
 
-		protected virtual void Awake()
+		protected override void SingletonAwake()
 		{
-			// Only one instance of SteamManager at a time!
-			if (s_instance != null)
-			{
-				Destroy(gameObject);
-				return;
-			}
-			s_instance = this;
-
-			if (s_EverInitialized)
-			{
-				// This is almost always an error.
-				// The most common case where this happens is when SteamManager gets destroyed because of Application.Quit(),
-				// and then some Steamworks code in some other OnDestroy gets called afterwards, creating a new SteamManager.
-				// You should never call Steamworks functions in OnDestroy, always prefer OnDisable if possible.
-				throw new System.Exception("Tried to InitializeGame the SteamAPI twice in one session!");
-			}
-
 			// We want our SteamManager Instance to persist across scenes.
 			DontDestroyOnLoad(gameObject);
 
@@ -112,7 +71,7 @@ namespace B1NARY.Steamworks
 				// Once you get a Steam AppID assigned by Valve, you need to replace AppId_t.Invalid with it and
 				// remove steam_appid.txt from the game depot. eg: "(AppId_t)480" or "new AppId_t(480)".
 				// See the Valve documentation for more information: https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
-				if (SteamAPI.RestartAppIfNecessary(AppId_t.Invalid))
+				if (SteamAPI.RestartAppIfNecessary(GameInfo.AppID))
 				{
 					Debug.Log("[Steamworks.NET] Shutting down because RestartAppIfNecessary returned true. Steam will restart the application.");
 
@@ -137,30 +96,17 @@ namespace B1NARY.Steamworks
 			// [*] Your App ID is not completely set up, i.e. in Release State: Unavailable, or it's missing default packages.
 			// Valve's documentation for this is located here:
 			// https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
-			m_bInitialized = SteamAPI.Init();
-			if (!m_bInitialized)
+			if (!SteamAPI.Init())
 			{
 				Debug.LogError("[Steamworks.NET] SteamAPI_Init() failed. Refer to Valve's documentation or the comment above this line for more information.", this);
 
 				return;
 			}
-
-			s_EverInitialized = true;
 		}
 
 		// This should only ever get called on first load and after an Assembly reload, You should never Disable the Steamworks Manager yourself.
 		protected virtual void OnEnable()
 		{
-			if (s_instance == null)
-			{
-				s_instance = this;
-			}
-
-			if (!m_bInitialized)
-			{
-				return;
-			}
-
 			if (m_SteamAPIWarningMessageHook == null)
 			{
 				// Set up our callback to receive warning messages from Steam.
@@ -173,39 +119,18 @@ namespace B1NARY.Steamworks
 		// OnApplicationQuit gets called too early to shutdown the SteamAPI.
 		// Because the SteamManager should be persistent and never disabled or destroyed we can shutdown the SteamAPI here.
 		// Thus it is not recommended to perform any Steamworks work in other OnDestroy functions as the order of execution can not be garenteed upon Shutdown. Prefer OnDisable().
-		protected virtual void OnDestroy()
+		protected override void OnSingletonDestroy()
 		{
-			if (s_instance != this)
-			{
-				return;
-			}
-
-			s_instance = null;
-
-			if (!m_bInitialized)
-			{
-				return;
-			}
-
 			SteamAPI.Shutdown();
 		}
 
 		protected virtual void Update()
 		{
-			if (!m_bInitialized)
-			{
-				return;
-			}
-
 			// Run Steam client callbacks
 			SteamAPI.RunCallbacks();
 		}
 #else
-	public static bool Initialized {
-		get {
-			return false;
-		}
-	}
+		public static bool HasInstance => false;
 #endif // !DISABLESTEAMWORKS
 	}
 }
