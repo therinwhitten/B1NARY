@@ -31,6 +31,7 @@ namespace B1NARY.Steamworks
 	{
 #if !DISABLESTEAMWORKS
 
+
 		protected SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
 
 		[AOT.MonoPInvokeCallback(typeof(SteamAPIWarningMessageHook_t))]
@@ -40,7 +41,7 @@ namespace B1NARY.Steamworks
 		}
 
 		// In case of disabled Domain Reload, reset static members before entering Play Mode.
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
 		private static void InitOnPlayMode()
 		{
 			SteamManager.ThrowErrorIfEmpty = false;
@@ -130,7 +131,7 @@ namespace B1NARY.Steamworks
 			SteamAPI.RunCallbacks();
 		}
 #else
-		public static bool HasInstance => false;
+		public new static bool HasInstance => false;
 #endif // !DISABLESTEAMWORKS
 	}
 }

@@ -27,6 +27,16 @@
 				return instance != null;
 			}
 		}
+		public static bool HasInstanceOrInitialize()
+		{
+			bool output = HasInstance;
+			if (output == false && !ThrowErrorIfEmpty)
+			{
+				_ = InstanceOrDefault;
+				return true;
+			}
+			return output;
+		}
 
 		private static T instance;
 
