@@ -11,6 +11,8 @@
 		{
 			if (RandomForwarder.Next(0, 1000) == 0)
 				title.text = "B1NARDY";
+			else if (RandomForwarder.Next(0, 1000) == 0)
+				title.text = "HEX6DEC1MAL";
 		}
 	}
 }

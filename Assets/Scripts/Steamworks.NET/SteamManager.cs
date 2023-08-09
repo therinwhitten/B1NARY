@@ -39,11 +39,10 @@ namespace B1NARY.Steamworks
 			Debug.LogWarning(pchDebugText);
 		}
 
-		// In case of disabled Domain Reload, reset static members before entering Play Mode.
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
 		private static void InitOnPlayMode()
 		{
-			Instance = new GameObject("SteamManager").AddComponent<SteamManager>();
+			Singleton<SteamManager>.ThrowErrorIfEmpty = false;
 		}
 
 		protected override void SingletonAwake()
@@ -130,11 +129,7 @@ namespace B1NARY.Steamworks
 			SteamAPI.RunCallbacks();
 		}
 #else
-	public static bool Initialized {
-		get {
-			return false;
-		}
-	}
+
 #endif // !DISABLESTEAMWORKS
 	}
 }
