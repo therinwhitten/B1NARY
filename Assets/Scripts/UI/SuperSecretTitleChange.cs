@@ -16,5 +16,5 @@
 			else if (RandomForwarder.Next(0, 1000) == 0)
 				title.text = "HEX6DEC1MAL";
 		}
-	}
+	} 
 }

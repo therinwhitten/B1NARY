@@ -98,7 +98,7 @@
 			Achieved = true;
 			SteamUserStats.SetAchievement(AchievementIndex);
 			SteamUserStats.StoreStats();
-			if (!AllAchievements.Any(achievement => achievement.Achieved))
+			if (!AllAchievements.Any(achievement => achievement.Achieved && !ReferenceEquals(achievement, AllAchievementsCompleted)))
 				AllAchievementsCompleted.Unlock();
 		}
 	}
