@@ -9,6 +9,8 @@
 		public TMP_Text title;
 		private void Awake()
 		{
+			if (title == null || title.text != "B1NARY")
+				return;
 			if (RandomForwarder.Next(0, 1000) == 0)
 				title.text = "B1NARDY";
 			else if (RandomForwarder.Next(0, 1000) == 0)
