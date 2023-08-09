@@ -1202,7 +1202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 0
-  Factor: 10
+  Factor: 4
 --- !u!1 &1332269118349711257
 GameObject:
   m_ObjectHideFlags: 0
@@ -1400,7 +1400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 1
-  Factor: 10
+  Factor: 15
 --- !u!1 &1504407284906876233
 GameObject:
   m_ObjectHideFlags: 0
@@ -4646,7 +4646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 1
-  Factor: 10
+  Factor: 4
 --- !u!1 &5191959894372180606
 GameObject:
   m_ObjectHideFlags: 0
@@ -6487,7 +6487,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 0
-  Factor: 10
+  Factor: 15
 --- !u!1 &6546557214254539807
 GameObject:
   m_ObjectHideFlags: 0
@@ -8532,7 +8532,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AudioInput: {fileID: 7657697247985769013}
   SamplingQuality: 2
-  Gain: 9.22
+  Gain: 9.53
   Smoothing: 0.329
   <TargetMouth>k__BackingField: 0
 --- !u!114 &6594530506055024339
@@ -8609,7 +8609,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedSizeIncreaseMultiplier: 1.1
   expressionController: {fileID: 2485345393249161624}
-  <FollowCubeParent>k__BackingField: {fileID: 3209748845493759462}
+  <FollowCubeParent>k__BackingField: {fileID: 0}
 --- !u!82 &7657697247985769013
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9830,6 +9830,7 @@ GameObject:
   - component: {fileID: 7559134934298007301}
   - component: {fileID: 2662360435849597748}
   - component: {fileID: 4135414220052718916}
+  - component: {fileID: 1217892835283464240}
   m_Layer: 10
   m_Name: ParamEyeRSmile
   m_TagString: Untagged
@@ -9880,3 +9881,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: EyeR Smile
   DisplayName: 
+--- !u!114 &1217892835283464240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9222352523918929904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2101f97e0e368014cba8f91aa17db33a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
