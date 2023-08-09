@@ -48,10 +48,10 @@
 			new SteamAchievement("female_route", "Jujitsu Training did NOT Pay off...", ""),
 			new SteamAchievement("demo_female_hscene", "Yuri between the sheets.", ""),
 			new SteamAchievement("demo_male_hscene", "Hentai Protag.", ""),
-			new SteamAchievement("demo_complete", "Cultured", ""),
+			new SteamAchievement("closed_beta_demo", "Beta Tester", ""),
 			AllAchievementsCompleted,
 		};
-		private static SteamAchievement AllAchievementsCompleted = new("closed_beta_demo", "Beta Tester", "");
+		private static SteamAchievement AllAchievementsCompleted = new("demo_complete", "Cultured", "");
 		public static SteamAchievement FromKey(string achievementKey)
 		{
 			int index = Array.FindIndex(AllAchievements as SteamAchievement[],
