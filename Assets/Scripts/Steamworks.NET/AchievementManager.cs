@@ -18,7 +18,7 @@
 		{
 			["setachievement"] = (Action<string>)((key) =>
 			{
-				if (!SteamManager.HasInstance)
+				if (!SteamManager.Initialized)
 					return;
 				SteamAchievement target = FromKey(key);
 				if (!target.Exists)
@@ -29,7 +29,7 @@
 
 		public void SetAchievement(string indexKey)
 		{
-			if (!SteamManager.HasInstance)
+			if (!SteamManager.Initialized)
 				return;
 			SteamAchievement target = AllAchievements.First(achievement => achievement.AchievementIndex == indexKey);
 			target.Unlock();
@@ -92,7 +92,7 @@
 		{
 			if (Achieved)
 				return;
-			if (!SteamManager.HasInstance)
+			if (!SteamManager.Initialized)
 				return;
 			Achieved = true;
 			SteamUserStats.SetAchievement(AchievementIndex);
