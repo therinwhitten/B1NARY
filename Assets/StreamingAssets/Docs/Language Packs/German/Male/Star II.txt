@@ -553,6 +553,11 @@ MC::
 {fadeoutsound: fireplace, 1}
 {fadeoutsound: Star Dinner, 1}
 {setachievement: male_route}
+{if: !henable}
+{
+	{colorformat: Default}
+	{changeScene: Main Menu}
+}
 {changeScript: Male/Prologue/Star II Hentai}
 
 
