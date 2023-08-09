@@ -863,6 +863,42 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &878872329408757533
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2804879096308131148}
+  m_Layer: 5
+  m_Name: Translators
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2804879096308131148
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 878872329408757533}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 544254442645288496}
+  m_Father: {fileID: 8623014724245925098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1043995648798404782
 GameObject:
   m_ObjectHideFlags: 0
@@ -1088,7 +1124,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Sal: Voice of Female Bystander'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -1177,10 +1213,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'Sal: Voice of Female Bystander'
+  - 'Sal: Stimme des weiblichen Betrachters'
+  - "\u30B5\u30EB\uFF1A\u5973\u6027\u508D\u89B3\u8005\u306E\u58F0"
+  - 'Sal: Voz de la mujer espectadora'
 --- !u!1 &1164940461006777910
 GameObject:
   m_ObjectHideFlags: 0
@@ -1796,10 +1832,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Waifus
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
-  m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
+  m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
+  m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -1824,13 +1860,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 22
-  m_fontStyle: 0
+  m_fontSizeMax: 30
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1885,10 +1921,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Waifus
+  - Waifus
+  - "\u30EF\u30A4\u30D5\u30A1\u30B9"
+  - Waifus
 --- !u!1 &1794974993382436170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2663,7 +2699,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Rachichu: Voice of Cindy and Future Cameo'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -2752,10 +2788,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'Rachichu: Voice of Cindy and Future Cameo'
+  - "Rachichu: Stimme von Cindy und zuk\xFCnftiges Cameo"
+  - "\u30E9\u30C1\u30C1\u30E5\u30A6\uFF1A\u30B7\u30F3\u30C7\u30A3\u306E\u58F0\u3068\u5C06\u6765\u306E\u30AB\u30E1\u30AA\u51FA\u6F14"
+  - 'Rachichu: Voz de Cindy y futuro cameo'
 --- !u!1 &2602216913165969579
 GameObject:
   m_ObjectHideFlags: 0
@@ -2792,6 +2828,165 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &2690361308553628126
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1039929986721066872}
+  - component: {fileID: 4368522252126138404}
+  - component: {fileID: 4421622296830974001}
+  - component: {fileID: 7011065533405961705}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1039929986721066872
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690361308553628126}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 82689745047971017}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.001503, y: 0.000041962}
+  m_SizeDelta: {x: 521.05, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &4368522252126138404
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690361308553628126}
+  m_CullTransparentMesh: 1
+--- !u!114 &4421622296830974001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690361308553628126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Translators
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
+  m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
+    type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 30
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 18
+  m_fontSizeMax: 30
+  m_fontStyle: 1
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 4
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7011065533405961705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2690361308553628126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 4421622296830974001}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - Translators
+  - "\xDCbersetzer"
+  - "\u7FFB\u8A33\u8005"
+  - Traductores
 --- !u!1 &2867989443492392307
 GameObject:
   m_ObjectHideFlags: 0
@@ -3026,6 +3221,165 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &3360584083230769247
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7704001835493650629}
+  - component: {fileID: 2779059578498859203}
+  - component: {fileID: 5810925101894256414}
+  - component: {fileID: 2121015323183485700}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7704001835493650629
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3360584083230769247}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7688994694137286316}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.001503, y: 0.000041962}
+  m_SizeDelta: {x: 521.05, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2779059578498859203
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3360584083230769247}
+  m_CullTransparentMesh: 1
+--- !u!114 &5810925101894256414
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3360584083230769247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Flamefist360: Voice of Lucas'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
+  m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
+    type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 22
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 18
+  m_fontSizeMax: 22
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 4
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &2121015323183485700
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3360584083230769247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 5810925101894256414}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - 'Flamefist360: Voice of Lucas'
+  - 'Flamefist360: Die Stimme von Lucas'
+  - "\u30D5\u30EC\u30A4\u30E0\u30D5\u30A3\u30B9\u30C8360 \u30EB\u30FC\u30AB\u30B9\u306E\u58F0"
+  - 'Flamefist360: Voz de Lucas'
 --- !u!1 &3492836151888157410
 GameObject:
   m_ObjectHideFlags: 0
@@ -3055,6 +3409,42 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4986102057212170989}
+  m_Father: {fileID: 8623014724245925098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &3526501786046607854
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 82689745047971017}
+  m_Layer: 5
+  m_Name: Translators Title
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &82689745047971017
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3526501786046607854}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1039929986721066872}
   m_Father: {fileID: 8623014724245925098}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3128,7 +3518,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Arclock: Voice of Male Bystander'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -3217,10 +3607,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'Arclock: Voice of Male Bystander'
+  - "Arclock: Stimme des m\xE4nnlichen Betrachters"
+  - "\u30A2\u30FC\u30AF\u30ED\u30C3\u30AF \u7537\u6027\u508D\u89B3\u8005\u306E\u58F0"
+  - 'Arclock: Voz del espectador masculino'
 --- !u!1 &3801704224851303463
 GameObject:
   m_ObjectHideFlags: 0
@@ -3395,10 +3785,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Fan Voice Acting
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
-  m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
+  m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
+  m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -3423,13 +3813,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 22
-  m_fontStyle: 0
+  m_fontSizeMax: 30
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -3484,10 +3874,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Fan Voice Acting
+  - Fan-Voice Acting
+  - "\u30D5\u30A1\u30F3\u306E\u58F0\u512A"
+  - "Actuaci\xF3n de voz de fans"
 --- !u!1 &4234808049286389151
 GameObject:
   m_ObjectHideFlags: 0
@@ -3590,7 +3980,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Isabella Electrum, Pyroflaze, BIRB, Odyn, Micah Owen, Ephraim MIcah,  LumiereNox,
+    RPG!, SinnamonDust, Tinko, Killashandra Lane, Vin Sama
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -3679,10 +4070,13 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Isabella Electrum, Pyroflaze, BIRB, Odyn, Micah Owen, Ephraim MIcah,  LumiereNox,
+    RPG!, SinnamonDust, Tinko, Killashandra Lane, Vin Sama
+  - Isabella Electrum, Pyroflaze, BIRB, Odyn, Micah Owen, Ephraim MIcah, LumiereNox,
+    RPG!, SinnamonDust, Tinko, Killashandra Lane, Vin Sama
+  - "\u30A4\u30B6\u30D9\u30E9\u30FB\u30A8\u30EC\u30AF\u30C8\u30E9\u30E0\u3001\u30D1\u30A4\u30ED\u30D5\u30EC\u30A4\u30BA\u3001BIRB\u3001\u30AA\u30FC\u30C7\u30A3\u30F3\u3001\u30DF\u30AB\u30FB\u30AA\u30FC\u30A6\u30A7\u30F3\u3001\u30A8\u30D5\u30E9\u30A4\u30E0\u30FB\u30DF\u30AB\u3001\u30EA\u30E5\u30DF\u30A8\u30FC\u30EB\u30CE\u30C3\u30AF\u30B9\u3001RPG\uFF01\u3001\u30B7\u30CA\u30E2\u30F3\u30C0\u30B9\u30C8\u3001\u30C6\u30A3\u30F3\u30B3\u3001\u30AD\u30E9\u30B7\u30E3\u30F3\u30C9\u30E9\u30FB\u30EC\u30FC\u30F3\u3001\u30F4\u30A3\u30F3\u30FB\u30B5\u30DE"
+  - Isabella Electrum, Pyroflaze, BIRB, Odyn, Micah Owen, Ephraim MIcah, LumiereNox,
+    RPG!, SinnamonDust, Tinko, Killashandra Lane, Vin Sama
 --- !u!1 &4490227498613366926
 GameObject:
   m_ObjectHideFlags: 0
@@ -3821,7 +4215,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Boshidoblasta: Voice Actor for Male Bystander 2'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -3910,10 +4304,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'Boshidoblasta: Voice Actor for Male Bystander 2'
+  - "Boshidoblasta: Synchronsprecher f\xFCr Male Bystander 2"
+  - "\u30DC\u30B7\u30C9\u30D6\u30E9\u30B9\u30BF \u7537\u6027\u508D\u89B3\u80052\u300D\u58F0\u512A"
+  - 'Boshidoblasta: Actor de voz para Male Bystander 2'
 --- !u!1 &4766011819800215044
 GameObject:
   m_ObjectHideFlags: 0
@@ -4149,6 +4543,166 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &4827261681016341369
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 544254442645288496}
+  - component: {fileID: 2061393493707656404}
+  - component: {fileID: 2125117791762016182}
+  - component: {fileID: 855266782733787288}
+  m_Layer: 5
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &544254442645288496
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4827261681016341369}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2804879096308131148}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.001503, y: 0.000041962}
+  m_SizeDelta: {x: 521.05, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2061393493707656404
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4827261681016341369}
+  m_CullTransparentMesh: 1
+--- !u!114 &2125117791762016182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4827261681016341369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Ria: (German), Mizu Usagi: (Japanese), TherinWhitten: (Spanish via DeepL)'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
+  m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
+    type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 22
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 18
+  m_fontSizeMax: 22
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 4
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &855266782733787288
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4827261681016341369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad07be330008fea4fa1861cc93418640, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  text: {fileID: 2125117791762016182}
+  languageKeys:
+  - English
+  - German
+  - Japanese
+  - Spanish
+  languageValues:
+  - 'Ria: (German), Mizu Usagi: (Japanese), TherinWhitten: (Spanish via DeepL)'
+  - "Ria: (Deutsch), Mizu Usagi: (Japanisch), TherinWhitten: (Spanisch \xFCber DeepL)"
+  - "\u308A\u3042\uFF1A(\u30C9\u30A4\u30C4\u8A9E)\u3001\u6C34\u3046\u3055\u304E\uFF1A(\u65E5\u672C\u8A9E)\u3001TherinWhitten\uFF1A(DeepL\u7D4C\u7531\u30B9\u30DA\u30A4\u30F3\u8A9E)"
+  - "Ria: (alem\xE1n), Mizu Usagi: (japon\xE9s), TherinWhitten: (espa\xF1ol v\xEDa
+    DeepL)"
 --- !u!1 &4876001528501719085
 GameObject:
   m_ObjectHideFlags: 0
@@ -4251,7 +4805,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'House of Cthulhu: Future Cameo and Voice Actor'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -4340,10 +4894,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'House of Cthulhu: Future Cameo and Voice Actor'
+  - "House of Cthulhu: Zuk\xFCnftiger Cameo und Synchronsprecher"
+  - "\u30AF\u30C8\u30A5\u30EB\u30D5\u306E\u5BB6\uFF1A\u672A\u6765\u306E\u30AB\u30E1\u30AA\u3068\u58F0\u512A"
+  - 'House of Cthulhu: futuro cameo y actor de doblaje'
 --- !u!1 &5024451106171384029
 GameObject:
   m_ObjectHideFlags: 0
@@ -4446,7 +5000,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Asterella Star: DemonLord of the 69th Circle of Hell'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -4535,10 +5089,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'Asterella Star: DemonLord of the 69th Circle of Hell'
+  - "Asterella Star: D\xE4monenf\xFCrst des 69. Kreises der H\xF6lle"
+  - "\u30A2\u30B9\u30C6\u30E9\u30B9\u30BF\u30FC \u5730\u7344\u7B2C69\u570F\u306E\u30C7\u30FC\u30E2\u30F3\u30ED\u30FC\u30C9"
+  - "Estrella Asterella: DemonLord del 69\xBA C\xEDrculo del Infierno"
 --- !u!1 &5153323444516066914
 GameObject:
   m_ObjectHideFlags: 0
@@ -4872,10 +5426,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Patreon Contributors
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
-  m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
+  m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
+  m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -4900,13 +5454,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 22
-  m_fontStyle: 0
+  m_fontSizeMax: 30
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -4961,10 +5515,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Patreon Contributors
+  - Patreon-Mitwirkende
+  - "\u30D1\u30C8\u30ED\u30F3"
+  - Patreon-Mitwirkende
 --- !u!1 &5523338776551428998
 GameObject:
   m_ObjectHideFlags: 0
@@ -5693,10 +6247,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Supporting Cast
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
-  m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
+  m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
+  m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -5721,13 +6275,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 22
-  m_fontStyle: 0
+  m_fontSizeMax: 30
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -5782,10 +6336,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Supporting Cast
+  - Nebendarsteller
+  - "\u52A9\u6F14\u30AD\u30E3\u30B9\u30C8"
+  - Reparto
 --- !u!1 &6075555078125799029
 GameObject:
   m_ObjectHideFlags: 0
@@ -10453,6 +11007,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6094002360275936319}
   m_CullTransparentMesh: 0
+--- !u!1 &6114377945171722994
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7688994694137286316}
+  m_Layer: 5
+  m_Name: Lucas
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &7688994694137286316
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6114377945171722994}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7704001835493650629}
+  m_Father: {fileID: 8623014724245925098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &6156317283611416968
 GameObject:
   m_ObjectHideFlags: 0
@@ -10591,7 +11181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Comrade Del: Gas Man of the Wilderness'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -10680,10 +11270,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'Comrade Del: Gas Man of the Wilderness'
+  - 'Genosse Del: Der Gasmann der Wildnis'
+  - "\u540C\u5FD7\u30C7\u30EB \u8352\u91CE\u306E\u30AC\u30B9\u4EBA\u9593"
+  - 'Camarada Del: Gas Man of the Wilderness'
 --- !u!1 &6360334851515605620
 GameObject:
   m_ObjectHideFlags: 0
@@ -10786,7 +11376,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Dr. Tokyo: Cameo and Voice of John '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -10875,10 +11465,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'Dr. Tokyo: Cameo and Voice of John '
+  - 'Dr. Tokio: Cameo und Stimme von John '
+  - "\u30C9\u30AF\u30BF\u30FC\u6771\u4EAC \u30AB\u30E1\u30AA\u51FA\u6F14\u3001\u30B8\u30E7\u30F3\u306E\u58F0 "
+  - 'Dr. Tokio: Cameo y voz de John '
 --- !u!1 &6570851200475866358
 GameObject:
   m_ObjectHideFlags: 0
@@ -11104,7 +11694,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Gia: Voice of Female Reporter'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -11193,10 +11783,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'Gia: Voice of Female Reporter'
+  - 'Gia: Stimme der Reporterin'
+  - "\u30B8\u30A2 \u5973\u6027\u30EC\u30DD\u30FC\u30BF\u30FC\u306E\u58F0"
+  - 'Gia: Voz de reportera'
 --- !u!1 &6844921872298849041
 GameObject:
   m_ObjectHideFlags: 0
@@ -11494,7 +12084,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'NMPopscicle: Voice of Cliff '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -11583,10 +12173,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'NMPopscicle: Voice of Cliff '
+  - 'NMPopscicle: Die Stimme von Cliff '
+  - "NMPopscicle \u30AF\u30EA\u30D5\u306E\u58F0 "
+  - 'NMPopscicle: La voz de Cliff '
 --- !u!1 &7241947969323052954
 GameObject:
   m_ObjectHideFlags: 0
@@ -11848,7 +12438,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Maeowi: Voice of Becks, and Future Cameo'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -11937,10 +12527,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'Maeowi: Voice of Becks, and Future Cameo'
+  - "Maeowi: Stimme von Becks und zuk\xFCnftiger Cameo"
+  - "\u30DE\u30A8\u30AA\u30A6\u30A3 \u30D9\u30C3\u30AF\u30B9\u306E\u58F0\u3001\u305D\u3057\u3066\u5C06\u6765\u306E\u30AB\u30E1\u30AA\u51FA\u6F14"
+  - 'Maeowi: Voz de Becks, y futuro cameo'
 --- !u!1 &7556458732791681117
 GameObject:
   m_ObjectHideFlags: 0
@@ -12838,7 +13428,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Atomic, Blazing, Blobby, Cadogan, Carois, Celestines, Count Julius, District
+    Z, Flamefist 360, ForecasterWeatherwax, FrostyDaHomeboy, Gia, Jadetailia, JSGPlayz,
+    Kathiel, KotatheDemon, Kuli9, Lara, Lonoxmont
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -12866,7 +13458,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -12927,10 +13519,17 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Atomic, Blazing, Blobby, Cadogan, Carois, Celestines, Count Julius, District
+    Z, Flamefist 360, ForecasterWeatherwax, FrostyDaHomeboy, Gia, Jadetailia, JSGPlayz,
+    Kathiel, KotatheDemon, Kuli9, Lara, Lonoxmont
+  - Atomic, Blazing, Blobby, Cadogan, Carois, Celestines, Count Julius, District
+    Z, Flamefist 360, ForecasterWeatherwax, FrostyDaHomeboy, Gia, Jadetailia, JSGPlayz,
+    Kathiel, KotatheDemon, Kuli9, Lara, Lonoxmont
+  - "Atomic\u3001Blazing\u3001Blobby\u3001Cadogan\u3001Carois\u3001Celestines\u3001Count
+    Julius\u3001District Z\u3001Flamefist 360\u3001ForecasterWeatherwax\u3001FrostyDaHomeboy\u3001Gia\u3001Jadetailia\u3001JSGPlayz\u3001Kathiel\u3001KotatheDemon\u3001Kuli9\u3001Lara\u3001Lonoxmont"
+  - Atomic, Blazing, Blobby, Cadogan, Carois, Celestines, Count Julius, District
+    Z, Flamefist 360, ForecasterWeatherwax, FrostyDaHomeboy, Gia, Jadetailia, JSGPlayz,
+    Kathiel, KotatheDemon, Kuli9, Lara, Lonoxmont
 --- !u!1 &8048944323845315704
 GameObject:
   m_ObjectHideFlags: 0
@@ -13069,10 +13668,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Closed Beta Team
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
-  m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
+  m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
+  m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -13097,13 +13696,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 22
-  m_fontStyle: 0
+  m_fontSizeMax: 30
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -13158,10 +13757,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Closed Beta Team
+  - Geschlossenes Beta-Team
+  - "\u30AF\u30ED\u30FC\u30BA\u30C9\u03B2\u30C1\u30FC\u30E0"
+  - Equipo de la beta cerrada
 --- !u!1 &8453882168981051373
 GameObject:
   m_ObjectHideFlags: 0
@@ -13387,7 +13986,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Kusinwolf, MauPunch, Atomic, RandomHero, Tunguska, Ricin, Amelea Tan, Yuri
+    Yumite, FrostyDaHomeboy, Keyton Alexander, Roxanne Switch,
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -13476,10 +14076,13 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Kusinwolf, MauPunch, Atomic, RandomHero, Tunguska, Ricin, Amelea Tan, Yuri Yumite,
+    FrostyDaHomeboy, Keyton Alexander, Roxanne Switch,
+  - Kusinwolf, MauPunch, Atomic, RandomHero, Tunguska, Ricin, Amelea Tan, Yuri Yumite,
+    FrostyDaHomeboy, Keyton Alexander, Roxanne Switch,
+  - "\u30AF\u30B8\u30F3\u30A6\u30EB\u30D5\u3001\u30DE\u30A6\u30D1\u30F3\u30C1\u3001\u30A2\u30C8\u30DF\u30C3\u30AF\u3001\u30E9\u30F3\u30C0\u30E0\u30D2\u30FC\u30ED\u30FC\u3001\u30C4\u30F3\u30B0\u30FC\u30B9\u30AB\u3001\u30EA\u30B7\u30F3\u3001\u30A2\u30E1\u30EA\u30A2\u30FB\u30BF\u30F3\u3001\u30E6\u30FC\u30EA\u30FB\u30E6\u30DF\u30C6\u3001\u30D5\u30ED\u30B9\u30C6\u30A3\u30C0\u30FB\u30DB\u30FC\u30E0\u30DC\u30FC\u30A4\u3001\u30AD\u30FC\u30C8\u30F3\u30FB\u30A2\u30EC\u30AF\u30B5\u30F3\u30C0\u30FC\u3001\u30ED\u30AF\u30B5\u30F3\u30FB\u30B9\u30A4\u30C3\u30C1"
+  - Kusinwolf, MauPunch, Atomic, RandomHero, Tunguska, Ricin, Amelea Tan, Yuri Yumite,
+    FrostyDaHomeboy, Keyton Alexander, Roxanne Switch,
 --- !u!1 &8623014722218452576
 GameObject:
   m_ObjectHideFlags: 0
@@ -19254,6 +19857,7 @@ RectTransform:
   - {fileID: 3944118373188256915}
   - {fileID: 5101876369897215536}
   - {fileID: 2634761993539313022}
+  - {fileID: 7688994694137286316}
   - {fileID: 683891708710387166}
   - {fileID: 4551746703613158235}
   - {fileID: 2914536901902537699}
@@ -19265,6 +19869,8 @@ RectTransform:
   - {fileID: 925911561094658053}
   - {fileID: 3094267139132731859}
   - {fileID: 3485450490111493118}
+  - {fileID: 82689745047971017}
+  - {fileID: 2804879096308131148}
   - {fileID: 1154650051112780380}
   - {fileID: 6832423749502988157}
   - {fileID: 947143488912108927}
@@ -19910,7 +20516,6 @@ GameObject:
   - component: {fileID: 8433372187188091379}
   - component: {fileID: 907494933211049319}
   - component: {fileID: 6228188901973884209}
-  - component: {fileID: 1509912419166812020}
   - component: {fileID: 333623318}
   m_Layer: 5
   m_Name: Demo Logo
@@ -20036,19 +20641,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &1509912419166812020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8763496828309772963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c14d23a9af2d994a89147f777073825, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  title: {fileID: 6228188901973884209}
 --- !u!114 &333623318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20138,7 +20730,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 'Natsumi Moe: Train Conductor'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -20227,10 +20819,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - 'Natsumi Moe: Train Conductor'
+  - 'Natsumi Moe: Zugbegleiter'
+  - "\u590F\u7F8E\u3082\u3048\uFF1A\u8ECA\u638C"
+  - 'Natsumi Moe: Conductor de tren'
 --- !u!1 &8806524287860024544
 GameObject:
   m_ObjectHideFlags: 0
@@ -20297,7 +20889,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Look_A_Random_Hero, Meow34, MommaPunKitty, Phantasma, Piper, Pure Lil Hemp
+    Bean, Rellimkram, ShadowHyena1015, Sinistersable, Strawbirb, TheCrimsonCount,
+    TheKeeperofStories, Touma, VincentHeartSN, Yuri Theorist.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -20325,7 +20919,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -20386,10 +20980,18 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Look_A_Random_Hero, Meow34, MommaPunKitty, Phantasma, Piper, Pure Lil Hemp Bean,
+    Rellimkram, ShadowHyena1015, Sinistersable, Strawbirb, TheCrimsonCount, TheKeeperofStories,
+    Touma, VincentHeartSN, Yuri Theorist.
+  - Look_A_Random_Hero, Meow34, MommaPunKitty, Phantasma, Piper, Pure Lil Hemp Bean,
+    Rellimkram, ShadowHyena1015, Sinistersable, Strawbirb, TheCrimsonCount, TheKeeperofStories,
+    Touma, VincentHeartSN, Yuri Theorist.
+  - Look_A_Random_Hero, Meow34, MommaPunKitty, Phantasma, Piper, Pure Lil Hemp Bean,
+    Rellimkram, ShadowHyena1015, Sinistersable, Strawbirb, TheCrimsonCount, TheKeeperofStories,
+    Touma, VincentHeartSN, Yuri Theorist.
+  - Look_A_Random_Hero, Meow34, MommaPunKitty, Phantasma, Piper, Pure Lil Hemp Bean,
+    Rellimkram, ShadowHyena1015, Sinistersable, Strawbirb, TheCrimsonCount, TheKeeperofStories,
+    Touma, VincentHeartSN, Yuri Theorist.
 --- !u!1 &8836031131576730824
 GameObject:
   m_ObjectHideFlags: 0
@@ -20651,10 +21253,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Husbandos
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
-  m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
+  m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
+  m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
     type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -20679,13 +21281,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 22
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 22
-  m_fontStyle: 0
+  m_fontSizeMax: 30
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -20740,10 +21342,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Husbandos
+  - Husbandos
+  - "\u30D5\u30B9\u30D0\u30F3\u30C9\u30B9"
+  - Maridos
 --- !u!1 &9211010437309250992
 GameObject:
   m_ObjectHideFlags: 0
