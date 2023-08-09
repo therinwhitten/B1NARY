@@ -26,6 +26,11 @@
 		}
 		private void OnEnable()
 		{
+			if (SaveSlot.ActiveSlot == null)
+			{
+				gameObject.SetActive(false);
+				return;
+			}
 			SaveSlot.ActiveSlot.Slot.strings.UpdatedValue += UpdateMCName;
 			CharacterManager.Instance.ActiveCharacterChanged += ActiveCharacterChanged;
 			PlayerConfig.Instance.language.ValueChanged += ChangedLanguage;

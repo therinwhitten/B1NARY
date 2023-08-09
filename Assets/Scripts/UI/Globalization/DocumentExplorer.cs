@@ -91,12 +91,11 @@
 				}
 				documents.Add(new Document(files[i]));
 			}
-			IEnumerable<DirectoryInfo> directories = currentPath.EnumerateDirectories();
-			if (!directories.Any())
+			DirectoryInfo[] directories = currentPath.GetDirectories();
+			if (directories.Length <= 0)
 				return;
-			using IEnumerator<DirectoryInfo> enumerator = directories.GetEnumerator();
-			while (enumerator.MoveNext())
-				RecursivelyGetFiles(ref documents, enumerator.Current);
+			for (int i = 0; i < directories.Length; i++)
+				RecursivelyGetFiles(ref documents, directories[i]);
 		}
 
 
@@ -106,6 +105,7 @@
 				return;
 			Debug.LogWarning($"Here are some concerns: \n{concerns}");
 			concerns.Clear();
+			concerns.Capacity = 0;
 		}
 
 		public Document GetFromVisual(in string visualPath)

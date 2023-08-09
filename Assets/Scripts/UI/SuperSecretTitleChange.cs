@@ -7,14 +7,16 @@
 	public sealed class SuperSecretTitleChange : MonoBehaviour
 	{
 		public TMP_Text title;
-		private void Awake()
+		private void Start()
 		{
-			if (title == null || title.text != "B1NARY")
-				return;
 			if (RandomForwarder.Next(0, 1000) == 0)
 				title.text = "B1NARDY";
 			else if (RandomForwarder.Next(0, 1000) == 0)
 				title.text = "HEX6DEC1MAL";
+		}
+		private void Reset()
+		{
+			title = GetComponent<TMP_Text>();
 		}
 	} 
 }
