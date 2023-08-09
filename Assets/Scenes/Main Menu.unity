@@ -6256,7 +6256,7 @@ PrefabInstance:
     - target: {fileID: 2989915599178063610, guid: 249eff61dd5a433438c3dc4658b2d5c8,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -351.365
+      value: -351.36496
       objectReference: {fileID: 0}
     - target: {fileID: 2989915599178063610, guid: 249eff61dd5a433438c3dc4658b2d5c8,
         type: 3}
@@ -6341,7 +6341,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2989915599178063613, guid: 249eff61dd5a433438c3dc4658b2d5c8,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1781350679}
   m_SourcePrefab: {fileID: 100100000, guid: 249eff61dd5a433438c3dc4658b2d5c8, type: 3}
 --- !u!114 &748960357 stripped
 MonoBehaviour:
@@ -6349,12 +6353,24 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 748960356}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 748960358}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6a17cf993df9fb848981f506d270195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &748960358 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2989915599178063613, guid: 249eff61dd5a433438c3dc4658b2d5c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 748960356}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &748960359 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 2989915599178063611, guid: 249eff61dd5a433438c3dc4658b2d5c8,
+    type: 3}
+  m_PrefabInstance: {fileID: 748960356}
+  m_PrefabAsset: {fileID: 0}
 --- !u!43 &753522995
 Mesh:
   m_ObjectHideFlags: 0
@@ -16670,6 +16686,19 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 748960356}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1781350679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748960358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ac18d9a5a060b947b0798d85cb6a1e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  source: {fileID: 748960359}
 --- !u!43 &1814456847
 Mesh:
   m_ObjectHideFlags: 0
