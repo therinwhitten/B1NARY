@@ -602,6 +602,11 @@ Ella me mira, con la pregunta en sus ojos.
         {usegameobject: Hentai Warning Panel, true}
         {fadeoutsound: fireplace, 1}
         {fadeoutsound: Star Dinner, 1} 
+        {if: !henable}
+        {
+	        {colorformat: Default}
+	        {changeScene: Main Menu}
+        }
         {changeScript: Female/Prologue/Star II Hentai}
     ]
     No. ¡Esto va demasiado rápido!

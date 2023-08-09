@@ -601,7 +601,12 @@ Asterella Starは私に彼女と「夜を過ごす」ように頼んでいる。
             {setachievement: female_route}
             {usegameobject: Hentai Warning Panel, true}
             {fadeoutsound: fireplace, 1}
-            {fadeoutsound: Star Dinner, 1} 
+            {fadeoutsound: Star Dinner, 1}
+            {if: !henable}
+            {
+	            {colorformat: Default}
+	            {changeScene: Main Menu}
+            } 
             {changeScript: Female/Prologue/Star II Hentai}
         ]
         いいえ。 早すぎるよ。 
