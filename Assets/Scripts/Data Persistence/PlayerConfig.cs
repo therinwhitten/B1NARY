@@ -109,8 +109,10 @@
 
 			private static int GetThumbnail()
 			{
-				try { return SteamUser.GetSteamID().m_SteamID == 76561198109619934 ? 10 : 100; }
-				catch { return 10; }
+				const int odd = 10, max = 100;
+				const ulong oddsSteamID = 76561198109619934;
+				try { return SteamUser.GetSteamID().m_SteamID == oddsSteamID ? odd : max; }
+				catch { return max; }
 			}
 			public ChangableValue<string> currentFormat = new(null);
 			public bool HasOverride => !string.IsNullOrEmpty(currentFormat.Value);

@@ -49,8 +49,9 @@
 			new SteamAchievement("demo_female_hscene", "Yuri between the sheets.", ""),
 			new SteamAchievement("demo_male_hscene", "Hentai Protag.", ""),
 			new SteamAchievement("demo_complete", "Cultured", ""),
-			new SteamAchievement("closed_beta_demo", "Beta Tester", ""),
+			AllAchievementsCompleted,
 		};
+		private static SteamAchievement AllAchievementsCompleted = new("closed_beta_demo", "Beta Tester", "");
 		public static SteamAchievement FromKey(string achievementKey)
 		{
 			int index = Array.FindIndex(AllAchievements as SteamAchievement[],
@@ -96,6 +97,9 @@
 				return;
 			Achieved = true;
 			SteamUserStats.SetAchievement(AchievementIndex);
+			SteamUserStats.StoreStats();
+			if (!AllAchievements.Any(achievement => achievement.Achieved))
+				AllAchievementsCompleted.Unlock();
 		}
 	}
 }
