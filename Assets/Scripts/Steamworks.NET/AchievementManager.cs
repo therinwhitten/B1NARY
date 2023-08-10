@@ -52,6 +52,7 @@
 			AllAchievementsCompleted,
 		};
 		private static SteamAchievement AllAchievementsCompleted = new("demo_complete", "Cultured", "");
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void CheckAllAchievements()
 		{
 			for (int i = 0; i < AllAchievements.Count; i++)
