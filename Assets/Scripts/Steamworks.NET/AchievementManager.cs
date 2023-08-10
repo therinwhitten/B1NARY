@@ -52,6 +52,18 @@
 			AllAchievementsCompleted,
 		};
 		private static SteamAchievement AllAchievementsCompleted = new("demo_complete", "Cultured", "");
+		private static void CheckAllAchievements()
+		{
+			for (int i = 0; i < AllAchievements.Count; i++)
+			{
+				if (ReferenceEquals(AllAchievements[i], AllAchievementsCompleted))
+					continue;
+				if (!AllAchievements[i].Achieved)
+					continue;
+				return;
+			}
+			AllAchievementsCompleted.Unlock();
+		}
 		public static SteamAchievement FromKey(string achievementKey)
 		{
 			int index = Array.FindIndex(AllAchievements as SteamAchievement[],
@@ -98,8 +110,7 @@
 			Achieved = true;
 			SteamUserStats.SetAchievement(AchievementIndex);
 			SteamUserStats.StoreStats();
-			if (!AllAchievements.Any(achievement => achievement.Achieved && !ReferenceEquals(achievement, AllAchievementsCompleted)))
-				AllAchievementsCompleted.Unlock();
+			CheckAllAchievements();
 		}
 	}
 }
