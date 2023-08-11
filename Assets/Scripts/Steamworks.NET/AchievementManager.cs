@@ -1,4 +1,7 @@
-﻿namespace B1NARY.Steamworks
+﻿#if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)
+#define DISABLESTEAMWORKS
+#endif
+namespace B1NARY.Steamworks
 {
 	using B1NARY.Scripting;
 	using global::Steamworks;
@@ -44,27 +47,36 @@
 			new SteamAchievement("nut_cracker", "Nut Cracker", ""),
 			new SteamAchievement("second_swallow", "Second Swallow", ""),
 			new SteamAchievement("intern_UwU", "Intern", ""),
-			new SteamAchievement("male_route", "I REALLY want a cup of Coffee...", ""),
-			new SteamAchievement("female_route", "Jujitsu Training did NOT Pay off...", ""),
-			new SteamAchievement("demo_female_hscene", "Yuri between the sheets.", ""),
-			new SteamAchievement("demo_male_hscene", "Hentai Protag.", ""),
 			new SteamAchievement("closed_beta_demo", "Beta Tester", ""),
+			MaleRoute,
+			FemaleRoute,
+			FemaleRouteHScene,
+			MaleRouteHScene,
 			AllAchievementsCompleted,
 		};
-		private static SteamAchievement AllAchievementsCompleted = new("demo_complete", "Cultured", "");
+
+		private static readonly SteamAchievement 
+			MaleRoute = new("male_route", "I REALLY want a cup of Coffee...", ""),
+			FemaleRoute = new("female_route", "Jujitsu Training did NOT Pay off...", ""),
+			FemaleRouteHScene = new("demo_female_hscene", "Yuri between the sheets.", ""),
+			MaleRouteHScene = new("demo_male_hscene", "Hentai Protag.", ""),
+			AllAchievementsCompleted = new("demo_complete", "Cultured", "");
+
+#if !DISABLESTEAMWORKS
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-		private static void CheckAllAchievements()
+		private static void TryUnlockCompleteDemo()
 		{
-			for (int i = 0; i < AllAchievements.Count; i++)
-			{
-				if (ReferenceEquals(AllAchievements[i], AllAchievementsCompleted))
-					continue;
-				if (!AllAchievements[i].Achieved)
-					continue;
+			if (!MaleRoute.Achieved)
 				return;
-			}
+			if (!FemaleRoute.Achieved)
+				return;
+			if (!FemaleRouteHScene.Achieved)
+				return;
+			if (!MaleRouteHScene.Achieved)
+				return;
 			AllAchievementsCompleted.Unlock();
 		}
+#endif
 		public static SteamAchievement FromKey(string achievementKey)
 		{
 			int index = Array.FindIndex(AllAchievements as SteamAchievement[],
@@ -76,6 +88,9 @@
 
 		public bool Exists
 		{
+#if DISABLESTEAMWORKS
+			get => false;
+#else
 			get
 			{
 				if (m_exists is null)
@@ -85,10 +100,14 @@
 				}
 				return m_exists.Value;
 			}
+#endif
 		}
 		private bool? m_exists = null;
 		public bool Achieved 
 		{
+#if DISABLESTEAMWORKS
+			get => false;
+#else
 			get
 			{
 				if (m_achieved is null)
@@ -98,12 +117,14 @@
 				}
 				return m_achieved.Value;
 			}
+#endif
 			private set => m_achieved = value; 
 		}
 		private bool? m_achieved = null;
 
 		public void Unlock()
 		{
+#if !DISABLESTEAMWORKS
 			if (Achieved)
 				return;
 			if (!SteamManager.HasInstanceOrInitialize())
@@ -111,7 +132,8 @@
 			Achieved = true;
 			SteamUserStats.SetAchievement(AchievementIndex);
 			SteamUserStats.StoreStats();
-			CheckAllAchievements();
+			TryUnlockCompleteDemo();
+#endif
 		}
 	}
 }

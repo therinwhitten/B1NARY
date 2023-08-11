@@ -9,6 +9,11 @@
 
 	public static class GeneralOSPathUtility
 	{
+		public static OSFile ToOSFile(this FileInfo fileInfo)
+		{
+			string path = fileInfo.FullName;
+			return new OSFile(path);
+		}
 		public static OSPath ToOSPath(this FileInfo fileInfo)
 		{
 			string path = fileInfo.FullName;
@@ -18,7 +23,11 @@
 		{
 			return info.ToOSPath().Open(mode, access);
 		}
-		public static OSDirectory ToOSFolder(this DirectoryInfo directoryInfo)
+		public static bool ExistsInOSFile(this FileInfo fileInfo)
+		{
+			return fileInfo.ToOSFile().Exists;
+		}
+		public static OSDirectory ToOSDirectory(this DirectoryInfo directoryInfo)
 		{
 			string path = directoryInfo.FullName;
 			return new OSDirectory(path);

@@ -2,6 +2,7 @@
 {
 	using B1NARY.CharacterManagement;
 	using B1NARY.DataPersistence;
+	using B1NARY.IO;
 	using B1NARY.Scripting;
 	using B1NARY.UI.Globalization;
 	using OVSXmlSerializer;
@@ -88,9 +89,9 @@
 						Document newDocument = new(ScriptHandler.Instance.document.ReadFile);
 						newDocument = newDocument.GetWithLanguage(Language);
 						FileInfo info = newDocument.FullPath;
-						if (!info.Exists)
+						if (!info.ToOSFile().Exists)
 						{
-							Debug.Log($"{info.FullName} doesn't exist, using core path instead");
+							Debug.Log($"{info.FullName} doesn't exist, using core path instead for replacement of name");
 							info = newDocument.GetWithoutLanguage().FullPath;
 						}
 
