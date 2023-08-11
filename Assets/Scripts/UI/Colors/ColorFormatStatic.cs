@@ -8,6 +8,7 @@
 	using System.IO;
 	using FormatSerializer = OVSXmlSerializer.XmlSerializer<ColorFormat>;
 	using B1NARY.DataPersistence;
+	using B1NARY.IO;
 
 
 	// Have it change formats per scene if it exists.

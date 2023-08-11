@@ -70,14 +70,14 @@
 	/// </summary>
 	public static class FileInfoUtility
 	{
-		public static FileStream OpenStream(this FileInfo info, FileMode mode, FileAccess fileAccess)
-		{
-			if (Environment.OSVersion.Platform != PlatformID.Unix)
-				return info.Open(mode, fileAccess);
-			string path = info.FullName;
-			path = path.Replace('/', '\\');
-			return File.Open(path, mode, fileAccess);
-		}
+		//public static FileStream OpenStream(this FileInfo info, FileMode mode, FileAccess fileAccess)
+		//{
+		//	if (Environment.OSVersion.Platform != PlatformID.Unix)
+		//		return info.Open(mode, fileAccess);
+		//	string path = info.FullName;
+		//	path = path.Replace('/', '\\');
+		//	return File.Open(path, mode, fileAccess);
+		//}
 		/// <summary>
 		/// Gets the name without the extension.
 		/// </summary>

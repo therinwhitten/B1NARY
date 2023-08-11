@@ -1,3 +1,6 @@
+#if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX) || UNITY_EDITOR
+#define DISABLESTEAMWORKS
+#endif
 namespace B1NARY.Steamworks
 {
 	// The SteamManager is designed to work with Steamworks.NET
@@ -7,19 +10,16 @@ namespace B1NARY.Steamworks
 	//
 	// Version: 1.0.13
 
-#if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)
-#define DISABLESTEAMWORKS
-#endif
 
 	using UnityEngine;
-#if !DISABLESTEAMWORKS
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
 	using System.Threading.Tasks;
-	using global::Steamworks;
 	using B1NARY.DesignPatterns;
+#if !DISABLESTEAMWORKS
+	using global::Steamworks;
 #endif
 
 	//
