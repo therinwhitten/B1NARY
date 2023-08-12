@@ -62,7 +62,7 @@
 		{
 			if (isDefault)
 			{
-				using var stream = DefaultThemePath.Open(FileMode.Create, FileAccess.Write);
+				using var stream = DefaultThemePath.OpenStream(FileMode.Create, FileAccess.Write);
 				FormatSerializer.Serialize(stream, this, ROOT_NAME_DEFAULT);
 				return;
 			}

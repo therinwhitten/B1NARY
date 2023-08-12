@@ -43,7 +43,7 @@
 			{
 				if (m_defaultFormat is null)
 				{
-					if (DefaultThemePath.Exists)
+					if (DefaultThemePath.ExistsInOSFile())
 					{
 						ColorFormat format;
 						using (var stream = DefaultThemePath.OpenStream(FileMode.Open, FileAccess.Read))
