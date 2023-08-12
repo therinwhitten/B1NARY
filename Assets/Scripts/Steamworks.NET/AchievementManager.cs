@@ -66,6 +66,8 @@ namespace B1NARY.Steamworks
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
 		private static void TryUnlockCompleteDemo()
 		{
+			if (!SteamManager.HasInstanceOrInitialize())
+				return;
 			if (!MaleRoute.Achieved)
 				return;
 			if (!FemaleRoute.Achieved)

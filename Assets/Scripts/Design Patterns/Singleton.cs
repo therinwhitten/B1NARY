@@ -38,7 +38,7 @@
 			return output;
 		}
 
-		private static T instance;
+		protected static T instance;
 
 		/// <summary> A Single instance. </summary>
 		public static T InstanceOrDefault

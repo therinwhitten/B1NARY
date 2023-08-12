@@ -11,6 +11,7 @@
 	using Steamworks;
 	using global::Steamworks;
 	using Version = System.Version;
+	using B1NARY.IO;
 
 	public class PlayerConfig
 	{
@@ -37,7 +38,7 @@
 				if (m_Instance is null)
 				{
 					if (ConfigLocation.Exists)
-						using (var fileStream = ConfigLocation.OpenRead())
+						using (var fileStream = ConfigLocation.OpenStream(FileMode.Open, FileAccess.Read))
 							m_Instance = XmlSerializer.Deserialize(fileStream);
 					else
 						m_Instance = new PlayerConfig();

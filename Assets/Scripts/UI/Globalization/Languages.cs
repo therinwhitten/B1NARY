@@ -1,6 +1,7 @@
 ﻿namespace B1NARY.UI.Globalization
 {
 	using B1NARY.DataPersistence;
+	using B1NARY.IO;
 	using OVSXmlSerializer;
 	using System.Collections.Generic;
 	using System.IO;
@@ -18,18 +19,18 @@
 			{
 				if (m_instance is null)
 				{
-					if (LanguagesInfo.Exists)
-						m_instance = XmlSerializer<Languages>.Default.Deserialize(LanguagesInfo);
+					if (LanguagesInfo.ExistsInOSFile())
+						using (FileStream stream = LanguagesInfo.OpenStream(FileMode.Open, FileAccess.Read))
+							m_instance = XmlSerializer<Languages>.Default.Deserialize(stream);
 					m_instance ??= new Languages();
 				}
 				return m_instance;
 			}
 		}
 
-		 
 		public void Save()
 		{
-			using var stream = LanguagesInfo.Open(FileMode.Create);
+			using var stream = LanguagesInfo.OpenStream(FileMode.Create, FileAccess.Write);
 			XmlSerializer<Languages>.Default.Serialize(stream, this, "Languages");
 		}
 

@@ -31,7 +31,6 @@ namespace B1NARY.Steamworks
 	{
 #if !DISABLESTEAMWORKS
 
-
 		protected SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
 
 		[AOT.MonoPInvokeCallback(typeof(SteamAPIWarningMessageHook_t))]
