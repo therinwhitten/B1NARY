@@ -589,28 +589,31 @@ Asterella Starは私に彼女と「夜を過ごす」ように頼んでいる。
 彼女は質問を目にして私を見上げる。
 {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh} 
 {choice: パニックにならないで...}
-    {
-        ええ、それがいい。
-        [
-            MC::
-            暫定的に、私は手を伸ばし、彼女の手に触れ、それを私の足に閉じ込めた。
-            彼女は柔らかい目で私を見ている。
-            "女性との出会いは初めて。"
-            "穏やかな。"
-            MC:: 
-            {setachievement: female_route}
-            {usegameobject: Hentai Warning Panel, true}
+{
+    ええ、それがいい。
+    [
+        MC::
+        暫定的に、私は手を伸ばし、彼女の手に触れ、それを私の足に閉じ込めた。
+        彼女は柔らかい目で私を見ている。
+        "女性との出会いは初めて。"
+        "穏やかな。"
+        MC:: 
+        {if: !henable}
+        {
+	        {setachievement: female_route}
+            {colorformat: Default}
             {fadeoutsound: fireplace, 1}
-            {fadeoutsound: Star Dinner, 1}
-            {if: !henable}
-            {
-	            {colorformat: Default}
-	            {changeScene: Main Menu}
-            } 
-            {changeScript: Female/Prologue/Star II Hentai}
-        ]
-        いいえ。 早すぎるよ。 
-        [
-            {changeScript: Female/Prologue/Star II FriendZoned}
-        ]
-    }
+            {fadeoutsound: Star Dinner, 1} 
+	        {changeScene: Main Menu}
+        }
+        {setachievement: female_route}
+        {usegameobject: Hentai Warning Panel, true}
+        {fadeoutsound: fireplace, 1}
+        {fadeoutsound: Star Dinner, 1}
+        {changeScript: Female/Prologue/Star II Hentai}
+    ]
+    いいえ。 早すぎるよ。 
+    [
+        {changeScript: Female/Prologue/Star II FriendZoned}
+    ]
+ }

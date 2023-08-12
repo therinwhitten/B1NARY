@@ -598,15 +598,18 @@ Sie schaut mich an, mit den Fragen in ihren Augen.
         „Es wird mein erstes Mal mit einer Frau sein."
         „Sei zahm."          
         MC:: 
+        {if: !henable}
+        {
+	        {setachievement: female_route}
+            {colorformat: Default}
+            {fadeoutsound: fireplace, 1}
+            {fadeoutsound: Star Dinner, 1} 
+	        {changeScene: Main Menu}
+        }
         {setachievement: female_route}
         {usegameobject: Hentai Warning Panel, true}
         {fadeoutsound: fireplace, 1}
         {fadeoutsound: Star Dinner, 1} 
-        {if: !henable}
-        {
-	        {colorformat: Default}
-	        {changeScene: Main Menu}
-        }
         {changeScript: Female/Prologue/Star II Hentai}
     ]
     Nein. Das geht zu schnell. 

@@ -598,19 +598,22 @@ She looks up at me, with the question in her eyes.
         "It will be my first time with a woman."
         "Be Gentle."
         MC:: 
+        {if: !henable}
+        {
+	        {setachievement: female_route}
+            {colorformat: Default}
+            {fadeoutsound: fireplace, 1}
+            {fadeoutsound: Star Dinner, 1} 
+	        {changeScene: Main Menu}
+        }
         {setachievement: female_route}
         {usegameobject: Hentai Warning Panel, true}
         {fadeoutsound: fireplace, 1}
         {fadeoutsound: Star Dinner, 1} 
-        {if: !henable}
-        {
-	        {colorformat: Default}
-	        {changeScene: Main Menu}
-        }
         {changeScript: Female/Prologue/Star II Hentai}
     ]
     Nope. This is going too fast!
     [
         {changeScript: Female/Prologue/Star II FriendZoned}
     ]
- }
+}
