@@ -7,6 +7,7 @@
 	using UnityEngine;
 	using System.IO;
 	using System.Linq;
+	using B1NARY.IO;
 
 	public class ScriptDocument : ScriptElement
 	{
@@ -41,9 +42,14 @@
 		}
 		private IReadOnlyList<ScriptElement> m_allElements;
 
-		public ScriptDocument(ScriptDocumentConfig config, FileInfo file) : this(config, File.ReadAllText(file.FullName))
+		public ScriptDocument(ScriptDocumentConfig config, FileInfo file) : this(config, ReadAllText(file))
 		{
 			ReadFile = file;
+		}
+		private static string ReadAllText(FileInfo target)
+		{
+			using FileStream stream = target.OpenStream(FileMode.Open, FileAccess.Read);
+			return new StreamReader(stream).ReadToEnd();
 		}
 		public ScriptDocument(ScriptDocumentConfig config, string contents) : base(config, Init(contents))
 		{
