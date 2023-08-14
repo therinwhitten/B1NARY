@@ -100,7 +100,7 @@
 		{
 			if (concerns.Length <= 0)
 				return;
-			Debug.LogWarning($"Here are some concerns: \n{concerns}");
+			Debug.LogWarning($"Here are some concerns in the document explorer: \n{concerns}");
 			concerns.Clear();
 			concerns.Capacity = 0;
 		}
