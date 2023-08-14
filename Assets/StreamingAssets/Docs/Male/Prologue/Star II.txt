@@ -549,13 +549,16 @@ Will Lucas be enraged if I go with Star's suggestion?
 	}
 }
 MC::
+{if: !henable}
+{
+	{colorformat: Default}
+	{setachievement: male_route}
+	{fadeoutsound: fireplace, 1}
+	{fadeoutsound: Star Dinner, 1}
+	{changeScene: Main Menu}
+}
 {usegameobject: Hentai Warning Panel, true}
 {fadeoutsound: fireplace, 1}
 {fadeoutsound: Star Dinner, 1}
 {setachievement: male_route}
-{if: !henable}
-{
-	{colorformat: Default}
-	{changeScene: Main Menu}
-}
 {changeScript: Male/Prologue/Star II Hentai}

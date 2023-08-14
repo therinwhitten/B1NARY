@@ -598,15 +598,18 @@ Ella me mira, con la pregunta en sus ojos.
         "Será mi primera vez con una mujer".
         "Sé gentil".
         MC:: 
+        {if: !henable}
+        {
+	        {setachievement: female_route}
+            {colorformat: Default}
+            {fadeoutsound: fireplace, 1}
+            {fadeoutsound: Star Dinner, 1} 
+	        {changeScene: Main Menu}
+        }
         {setachievement: female_route}
         {usegameobject: Hentai Warning Panel, true}
         {fadeoutsound: fireplace, 1}
         {fadeoutsound: Star Dinner, 1} 
-        {if: !henable}
-        {
-	        {colorformat: Default}
-	        {changeScene: Main Menu}
-        }
         {changeScript: Female/Prologue/Star II Hentai}
     ]
     No. ¡Esto va demasiado rápido!

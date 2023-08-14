@@ -1,0 +1,41 @@
+{changeScene: Scenes/Star/Star Bedroom Night}
+{colorformat: Asterella}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{fadeinsound: fireplace, 1}
+{fadeinsound: Star Dinner, 1}
+{spawnChar: star nightgown, .5, Asterella}
+{spawnEmpty: Erzähler, NPC}
+{spawnEmpty: MC, Player}
+Asterella::
+{anim: Asterella, Woozy}
+[Confusion]
+MC::
+"Tut mir leid, Star, ich fühle mich dabei nicht wohl."
+MC, warum? 
+{additive:on}
+Weil, 
+du bist gerade erst angekommen! 
+Du kennst sie nicht, 
+oder die Situation, in der du dich befindest.
+Das ist der Grund!
+{additive:off} 
+Asterella setzt sich aufrecht hin, um ihre Enttäuschung zu verbergen.
+Asterella::
+[Happy]
+"Na ja, das war unerwartet, aber okay."
+"Wir können immer noch reden."
+[Default]
+{disableChar: Live 2D Bokeh}
+Erzähler::
+Die ganze Nacht hindurch wurde über Jungs, Spiele und verschiedene Dinge, die sie gerne streamen, gesprochen.
+Es war eine Pyjamaparty für Mädchen, und Lucas gesellte sich bald darauf zu ihnen, um ein paar Kartenspiele zu spielen. 
+Friendzoned zu sein muss keine schlechte Sache sein. 
+Es kann Zeiten geben, in denen es für deine Situation von Vorteil sein kann. 
+Manchmal kann es aber auch einfach nur ein "böses Ende" nehmen.
+Nun... worauf wartest du noch?
+Gehen Sie zurück in die H-Szene!
+Viel Spaß mit dem Rest der Demo. XD
+{setachievement: female_route}
+DOT
+{colorformat: Default}
+{changeScene: Scenes/Main Menu}
