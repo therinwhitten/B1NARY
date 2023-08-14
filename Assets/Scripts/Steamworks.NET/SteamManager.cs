@@ -20,6 +20,7 @@ namespace B1NARY.Steamworks
 	using B1NARY.DesignPatterns;
 #if !DISABLESTEAMWORKS
 	using global::Steamworks;
+	using HDConsole;
 #endif
 
 	//
@@ -27,9 +28,37 @@ namespace B1NARY.Steamworks
 	// It handles the basics of starting up and shutting down the SteamAPI for use.
 	//
 	[DisallowMultipleComponent]
-	public class SteamManager : Singleton<SteamManager>
+	public class SteamManager : DesignPatterns.Singleton<SteamManager>
 	{
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		private static void InitOnPlayMode()
+		{
+#if DISABLESTEAMWORKS
+			Debug.Log($"Steamworks CANNOT be loaded this session.\nBe sure to remove 'DISABLESTEAMWORKS' in player project settings if you want it");
+#else
+			Debug.Log($"Steamworks CAN be loaded this session!\nNote that non-steam installers will be bugged, be sure to type in 'DISABLESTEAMWORKS' in player settings contraint in project settings");
+#endif
+		}
+
 #if !DISABLESTEAMWORKS
+		[return: CommandToConsole]
+		private static HDCommand[] GetHDCommands() => new HDCommand[]
+		{
+			new HDCommand("steam_achievements", (args) =>
+			{
+				StringBuilder builder = new($"<b>All {SteamAchievement.AllAchievements.Count} Achievements:</b>\n");
+				for (int i = 0; i < SteamAchievement.AllAchievements.Count; i++)
+					builder.AppendLine($"{SteamAchievement.AllAchievements[i].Name}: {SteamAchievement.AllAchievements[i].Description}");
+				HDConsole.WriteLine(builder.ToString());
+
+			}) { description = "Displays all commands into the console." },
+
+			new HDCommand("steam_set_achievement", (args) =>
+			{
+				HDConsole.WriteLine("no lol");
+			}),
+		};
+
 
 		protected SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
 
@@ -41,7 +70,7 @@ namespace B1NARY.Steamworks
 
 		// In case of disabled Domain Reload, reset static members before entering Play Mode.
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-		private static void InitOnPlayMode()
+		private static void InitOnPlayMode2()
 		{
 			SteamManager.ThrowErrorIfEmpty = false;
 		}

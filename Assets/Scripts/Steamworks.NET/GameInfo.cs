@@ -1,4 +1,9 @@
-﻿namespace B1NARY.Steamworks
+﻿#if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)
+#define DISABLESTEAMWORKS
+#endif
+
+#if !DISABLESTEAMWORKS
+namespace B1NARY.Steamworks
 {
 	using global::Steamworks;
 	using Steamworks;
@@ -13,3 +18,4 @@
 		public static AppId_t AppID => new(1577930);
 	}
 }
+#endif

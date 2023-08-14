@@ -44,6 +44,8 @@
 			// FPS
 			PlayerConfig.Instance.graphics.frameRate.AttachValue((value) => fpsText.text = value.ToString("N0"));
 			fpsSlider.value = PlayerConfig.Instance.graphics.frameRate.Value;
+			try { fpsSlider.maxValue = (float)resolutionDropdown.GetComponent<ResolutionsDropdown>().Pairs[0].Value.refreshRateRatio.value; }
+			catch { }
 			fpsSlider.onValueChanged.AddListener((value) => PlayerConfig.Instance.graphics.frameRate.Value = (int)value);
 		}
 	}

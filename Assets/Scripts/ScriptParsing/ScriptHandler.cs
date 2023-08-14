@@ -4,23 +4,59 @@
 	using B1NARY.CharacterManagement;
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
+	using B1NARY.IO;
 	using B1NARY.Steamworks;
 	using B1NARY.UI;
 	using B1NARY.UI.Colors;
 	using B1NARY.UI.Globalization;
+	using HDConsole;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
+	using System.Text;
 	using UnityEngine;
 	using UnityEngine.InputSystem;
 	using UnityEngine.InputSystem.UI;
 	using CharacterManager = CharacterManagement.CharacterManager;
 
 	[AddComponentMenu("B1NARY/Script Handler")]
-	public sealed class ScriptHandler : Singleton<ScriptHandler>
+	public sealed class ScriptHandler : DesignPatterns.Singleton<ScriptHandler>
 	{
+		[return: CommandToConsole]
+		private static HDCommand[] GetHDCommands() => new HDCommand[]
+		{
+			new HDCommand("script", (args) =>
+			{
+				ScriptHandler handler = Instance;
+				handler.NewDocument(args[0]);
+				Debug.Log($"Next document to line: {handler.NextLine()}");
+
+			}) { description = "Switches the script via name." },
+
+			new HDCommand("scripts_all", (args) =>
+			{
+				StringBuilder allScripts = new("<b><size=135%>Default/Core:</size></b>\n");
+				for (int i = 0; i < DocumentExplorer.CoreDocuments.Count; i++)
+				{
+					Document document = DocumentExplorer.CoreDocuments[i];
+					allScripts.AppendLine($"\t{document.FullPath.ToOSFile().FullPath.Normalized}");
+				}
+				using var enumerator = DocumentExplorer.LanguagedDocuments.GetEnumerator();
+				while (enumerator.MoveNext())
+				{
+					string language = enumerator.Current.Key;
+					IList<Document> documents = enumerator.Current.Value;
+					allScripts.AppendLine($"<b><size=135%>{language}:</size></b>");
+					for (int i = 0; i < documents.Count; i++)
+						allScripts.AppendLine($"\t{documents[i].FullPath.ToOSFile().FullPath.Normalized}");
+				}
+				HDConsole.WriteLine(allScripts.ToString());
+			}) { description = "Prints of all detected documents to console." },
+		};
+
+
 		internal static readonly ScriptDocumentConfig config;
 		static ScriptHandler()
 		{

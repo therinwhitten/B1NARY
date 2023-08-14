@@ -1,4 +1,7 @@
-﻿namespace B1NARY.DataPersistence
+﻿#if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)
+#define DISABLESTEAMWORKS
+#endif
+namespace B1NARY.DataPersistence
 {
 	using System;
 	using System.Collections.Generic;
@@ -9,7 +12,9 @@
 	using OVSXmlSerializer.Extras;
 	using B1NARY.UI.Globalization;
 	using Steamworks;
+#if !DISABLESTEAMWORKS
 	using global::Steamworks;
+#endif
 	using Version = System.Version;
 	using B1NARY.IO;
 
@@ -111,9 +116,13 @@
 			private static int GetThumbnail()
 			{
 				const int odd = 10, max = 100;
+#if !DISABLESTEAMWORKS
 				const ulong oddsSteamID = 76561198109619934;
 				try { return SteamUser.GetSteamID().m_SteamID == oddsSteamID ? odd : max; }
 				catch { return max; }
+#else
+				return max;
+#endif
 			}
 			public ChangableValue<string> currentFormat = new(null);
 			public bool HasOverride => !string.IsNullOrEmpty(currentFormat.Value);

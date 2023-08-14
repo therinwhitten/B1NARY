@@ -4,7 +4,9 @@
 namespace B1NARY.Steamworks
 {
 	using B1NARY.Scripting;
+#if !DISABLESTEAMWORKS
 	using global::Steamworks;
+#endif
 	using Steamworks;
 	using System;
 	using System.Collections.Generic;

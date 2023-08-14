@@ -85,10 +85,7 @@
 			for (int i = 0; i < files.Length; i++)
 			{
 				if (!files[i].Extension.Contains("txt"))
-				{
-					concerns.AppendLine($"Although the system filters out non-text files, it is recommended to remove '{files[i].FullName}' from the folders to slightly increase performance.");
 					continue;
-				}
 				documents.Add(new Document(files[i]));
 			}
 			DirectoryInfo[] directories = currentPath.GetDirectories();
