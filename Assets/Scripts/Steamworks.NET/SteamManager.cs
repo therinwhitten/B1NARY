@@ -58,7 +58,7 @@ namespace B1NARY.Steamworks
 
 			}) { description = "Displays all commands into the console." },
 
-			new HDCommand("steam_set_achievement", new string[] { "Achievement Index"}, (args) =>
+			new HDCommand("bny_achievement_set", new string[] { "Achievement Index"}, (args) =>
 			{
 				HDConsole.WriteLine("no lol");
 			}),
