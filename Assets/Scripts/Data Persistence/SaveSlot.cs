@@ -343,16 +343,19 @@
 			ScriptHandler.Instance.NewDocument(StreamingAssetsPath, Line - 1);
 		}
 	}
-	public record RunningSaveSlot(SaveSlot Slot)
+	public record RunningSaveSlot(SaveSlot Slot) : IDisposable
 	{
-		public DateTime StartPlayTime { get; private set; } = DateTime.Now;
-		public TimeSpan GetPlayedSpan() => DateTime.Now - StartPlayTime;
+		public Stopwatch StartPlayTime { get; private set; } = Stopwatch.StartNew();
 		public void Save()
 		{
-			TimeSpan added = GetPlayedSpan();
-			Slot.metadata.playedAmount += added;
+			StartPlayTime.Stop();
+			Slot.metadata.playedAmount += StartPlayTime.Elapsed;
+			StartPlayTime.Restart();
 			Slot.Save();
-			StartPlayTime = DateTime.Now;
+		}
+		public void Dispose()
+		{
+			StartPlayTime.Stop();
 		}
 	}
 }

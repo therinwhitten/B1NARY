@@ -83,11 +83,13 @@ namespace B1NARY.Steamworks
 #endif
 		public static SteamAchievement FromKey(string achievementKey)
 		{
-			int index = Array.FindIndex(AllAchievements as SteamAchievement[],
-				achievement => achievement.AchievementIndex.Contains(achievementKey));
-			if (index == -1)
-				return new SteamAchievement("null", "null", "unknown achievement") { m_exists = false, m_achieved = false };
-			return AllAchievements[index];
+			for (int i = 0; i < AllAchievements.Count; i++)
+			{
+				if (!AllAchievements[i].AchievementIndex.Contains(achievementKey))
+					continue;
+				return AllAchievements[i];
+			}
+			return new SteamAchievement("null", "null", "unknown achievement") { m_exists = false, m_achieved = false };
 		}
 
 		public bool Exists
