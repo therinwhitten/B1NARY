@@ -50,9 +50,9 @@ namespace B1NARY.Steamworks
 				for (int i = 0; i < Achievement.AllAchievements.Count; i++) 
 				{
 					Achievement achievement = Achievement.AllAchievements[i];
-					builder.AppendLine($"<i>{{{achievement.AchievementIndex}}}</i> <b>{achievement.Name}<b>: {achievement.Description}");
-					if (achievement.Achieved)
-						builder.Insert(builder.Length - 2, " {Achieved! Nice Job!}");
+					builder.AppendLine($"<i>{{{achievement.AchievementIndex}}}</i> <b>{achievement.Name}</b>{(achievement.Achieved ? " <size=65%>{Achieved! Nice Job!}</size>" : "")}");
+					if (!string.IsNullOrWhiteSpace(achievement.Description))
+						builder.AppendLine("\n\t {achievement.Description}");
 				} 
 				HDConsole.WriteLine(builder.ToString());
 
