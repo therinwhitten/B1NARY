@@ -249,7 +249,7 @@
 			}
 			if (document is null || documentWatcher is null)
 			{
-				throw new MissingReferenceException("There is no document created in the system!");
+				return null;
 			}
 			if (!forceContinue && DialogueSystem.TryGetInstance(out var system))
 				if (system.IsSpeaking && !DateTimeTracker.IsAprilFools)

@@ -46,14 +46,19 @@ namespace B1NARY.Steamworks
 		{
 			new HDCommand("steam_achievements", (args) =>
 			{
-				StringBuilder builder = new($"<b>All {SteamAchievement.AllAchievements.Count} Achievements:</b>\n");
-				for (int i = 0; i < SteamAchievement.AllAchievements.Count; i++)
-					builder.AppendLine($"{SteamAchievement.AllAchievements[i].Name}: {SteamAchievement.AllAchievements[i].Description}");
+				StringBuilder builder = new($"<b>All {Achievement.AllAchievements.Count} Achievements:</b>\n");
+				for (int i = 0; i < Achievement.AllAchievements.Count; i++) 
+				{
+					Achievement achievement = Achievement.AllAchievements[i];
+					builder.AppendLine($"{{{achievement.AchievementIndex}}} {achievement.Name}: {achievement.Description}");
+					if (achievement.Achieved)
+						builder.Insert(builder.Length - 2, " {Achieved! Nice Job!}");
+				} 
 				HDConsole.WriteLine(builder.ToString());
 
 			}) { description = "Displays all commands into the console." },
 
-			new HDCommand("steam_set_achievement", (args) =>
+			new HDCommand("steam_set_achievement", new string[] { "Achievement Index"}, (args) =>
 			{
 				HDConsole.WriteLine("no lol");
 			}),

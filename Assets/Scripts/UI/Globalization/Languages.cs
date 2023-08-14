@@ -14,7 +14,7 @@
 		[return: CommandToConsole]
 		private static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
-			new HDCommand("lang_current", new string[] { "language" }, (args) =>
+			new HDCommand("lang_current", (args) =>
 			{
 				if (args.Length <= 0)
 				{
@@ -24,7 +24,7 @@
 				if (!Instance.Contains(args[0]))
 					throw new InvalidDataException(args[0]);
 				PlayerConfig.Instance.language.Value = args[0];
-			}) { description = "Gets (into console) or Sets the current language." },
+			}) { description = "Gets (into console) or Sets the current language.", optionalArguments = new string[] { "language" } },
 		};
 		private static FileInfo LanguagesInfo => SaveSlot.StreamingAssets.GetFile("languages.xml");
 		public static string CurrentLanguage { get => PlayerConfig.Instance.language; set => PlayerConfig.Instance.language.Value = value; }
