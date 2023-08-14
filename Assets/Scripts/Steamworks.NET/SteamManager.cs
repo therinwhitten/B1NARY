@@ -44,13 +44,13 @@ namespace B1NARY.Steamworks
 		[return: CommandToConsole]
 		private static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
-			new HDCommand("steam_achievements", (args) =>
+			new HDCommand("bny_achievements", (args) =>
 			{
-				StringBuilder builder = new($"<b>All {Achievement.AllAchievements.Count} Achievements:</b>\n");
+				StringBuilder builder = new($"<b><size=135%>All {Achievement.AllAchievements.Count} Achievements:</size></b>\n");
 				for (int i = 0; i < Achievement.AllAchievements.Count; i++) 
 				{
 					Achievement achievement = Achievement.AllAchievements[i];
-					builder.AppendLine($"{{{achievement.AchievementIndex}}} {achievement.Name}: {achievement.Description}");
+					builder.AppendLine($"<i>{{{achievement.AchievementIndex}}}</i> <b>{achievement.Name}<b>: {achievement.Description}");
 					if (achievement.Achieved)
 						builder.Insert(builder.Length - 2, " {Achieved! Nice Job!}");
 				} 
