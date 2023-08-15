@@ -46,10 +46,10 @@ namespace B1NARY.Steamworks
 	{
 		public static IReadOnlyList<SteamAchievement> AllAchievements { get; } = new SteamAchievement[]
 		{
-			new SteamAchievement("nut_cracker", "Nut Cracker", ""),
-			new SteamAchievement("second_swallow", "Second Swallow", ""),
-			new SteamAchievement("intern_UwU", "Intern", ""),
-			new SteamAchievement("closed_beta_demo", "Beta Tester", ""),
+			new SteamAchievement("nut_cracker", "Nut Cracker", "Defend against Lucas"),
+			new SteamAchievement("second_swallow", "Second Swallow", "Make the Male Player say Swallow Twice in Game"),
+			new SteamAchievement("intern_UwU", "Intern", "FIrst New Game"),
+			new SteamAchievement("closed_beta_demo", "Beta Tester", "Performed Beta Testing for the Demo!"),
 			MaleRoute,
 			FemaleRoute,
 			FemaleRouteHScene,
@@ -58,11 +58,11 @@ namespace B1NARY.Steamworks
 		};
 
 		private static readonly SteamAchievement 
-			MaleRoute = new("male_route", "I REALLY want a cup of Coffee...", ""),
-			FemaleRoute = new("female_route", "Jujitsu Training did NOT Pay off...", ""),
-			FemaleRouteHScene = new("demo_female_hscene", "Yuri between the sheets.", ""),
-			MaleRouteHScene = new("demo_male_hscene", "Hentai Protag.", ""),
-			AllAchievementsCompleted = new("demo_complete", "Cultured", "");
+			MaleRoute = new("male_route", "I REALLY want a cup of Coffee...", "Male Route Complete"),
+			FemaleRoute = new("female_route", "Jujitsu Training did NOT Pay off...", "Female Route Complete"),
+			FemaleRouteHScene = new("demo_female_hscene", "Yuri between the sheets.", "Female H Scene First Time"),
+			MaleRouteHScene = new("demo_male_hscene", "Hentai Protag.", "Male H Scene First Time"),
+			AllAchievementsCompleted = new("demo_complete", "Cultured", "Demo Complete");
 
 #if !DISABLESTEAMWORKS
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]

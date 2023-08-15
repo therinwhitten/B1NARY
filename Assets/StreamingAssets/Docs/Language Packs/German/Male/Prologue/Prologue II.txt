@@ -4,11 +4,11 @@
 {fadeinsound: Lab Tension, .2}
 {fadeinsound: Laptop Lab Scene, 2}
 {fadeinsound: Lab Computer Room Beeps 2, 1}
-{spawnEmpty: Erzähler, NPC}
+{spawnEmpty: Narrator, NPC}
 {spawnEmpty: John, NPC}
 {spawnEmpty: Cindy, NPC}
 {spawnEmpty: Weibliche Reporterin, NPC}
-Erzähler::
+Narrator::
 {additive: on}
 Endlich,
 nachdem es sich anfühlte wie eine Ewigkeit,
@@ -102,11 +102,11 @@ Wir schneiden die Neuigkeiten zu euch bis zur Ankündigung.
 Und lass mich dir etwas sagen, 
 dass war gutes Material... Was passiert nun?" 
 {additive: off}
-Erzähler::
+Narrator::
 John fasst eine Hand an sein Ohr, um die Automatische Sprechfunktion zu aktivieren.
 John::
 „Halte dich bereit, Cindy. Ich glaube der Projekt Supervisor ist dabei zu sprechen."
-Erzähler::
+Narrator::
 Er beobachtet genau weiter. Etwas ist anders.
 Cliff, der Projektchef, beugt sich über den Laptop des Labortechnikers, und steht mit seinem Rücken zu dem Raum.  
 {additive: on}
@@ -125,7 +125,7 @@ Cliff::
 „Zu den Einwohnern der Erde.
 Ich kann offiziell ankündigen, dass der Transfer in die Digitale Welt des MCs geglückt ist."
 {additive: off}
-Erzähler::
+Narrator::
 Er pausiert für den Effekt, während er Augenkontakt zu der Presse durch das Überwachungsfenster hält, einen nach dem anderen. 
 Als er die überwacht die miteinander reden, fährt er fort, seine Stimme kräftig und stetig.
 Cliff::
@@ -146,7 +146,7 @@ Cliff::
  "Es werden noch Tests durchgeführt, um sicherzustellen, dass sie sich ihres Aufenthaltsortes bewusst sind und bei vollem Bewusstsein sind." 
 }
 "Ich erkläre dieses Experiment offiziell zu einem durchschlagenden Erfolg!"
-Erzähler::
+Narrator::
 {fadeinsound: Press Conference Long, 1}
 {fadeinsound: smallgroupwhisper, 1}
 Die Symphonie der Kamerablenden und das Strahlen der Lichter brechen aus, als er seine Ankündigung an die Welt macht.
@@ -156,7 +156,7 @@ Die aufgestaute Spannung kräuselt sich durch die Reporter, wie Wellen in einem 
 {additive: off}
 John::
 <i>Was versteckst du, Cliff?</i>
-Erzähler::
+Narrator::
 Die Anhebung der Hände, wie eine Welle, flehen um Cliffs Aufmerksamkeit.  
 Cliff zeigt zu einem jungen Reporter, eine Dame von einem anderen Nachrichtensender.
 {anim: Cliff, kime1}
@@ -164,13 +164,13 @@ Cliff::
 „Ja, du dort. Stelle mir deine Frage."
 {anim: Cliff, kime2}
 {disableChar: Live 2D Bokeh}
-Erzähler::
+Narrator::
 Sie spitzt ihren Lippen, nervös. 
 Weibliche Reporterin::
 „Es gibt viele Bedenken über die Risiken, die in solch einem Experiment wie diesem involviert sind."
 „Wir würden gerne von diesen Risiken hören, <i>persönlich</i>, wenn es möglich wäre..."
 „Wann können wir zu ihnen reden? Vielleicht sogar etwas mehr... wie ein Interview während sie in den Servern sind?" 
-Erzähler::
+Narrator::
 Die anderen Nachrichtenreporter stoppen ihr flüstern. Alle Augen sind auf Cliff fokussiert.
 {fadeoutsound: smallgroupwhisper, 1} 
 Cliff pausiert für einige Sekunden, sein Gesicht hintergeht keine Emotion.
@@ -192,7 +192,7 @@ Betreffend zu den Informationen des ersten Experimentes. Vorerst, hielt Digital 
 {additive: off}
 John::
 <i>Dort ist es. Etwas ist los. Wenn alles gut gelaufen wäre, dann würden sie fröhlich sein die Ergebnisse zu teilen.</i>
-Erzähler::
+Narrator::
 {fadeinsound: smallgroupwhisper, 1}
 Die Reporter heben ihre Hände immer höher, immer dringender, als ob sie wieder Grundschüler wären.
 Cliff seufzt ersichtlich, ein Hauch von Reizbarkeit bricht seine normalerweise ruhige Fassade.
@@ -223,13 +223,13 @@ Wir haben euch alle vor der Konferenz gewarnt, dass dies ein Experiment mit hohe
  und nachdem MC aus der Quarantäne entlassen worden ist, werden wir ihm erlauben, mit der Presse zu sprechen."
  {additive: off}
 }
-Erzähler::
+Narrator::
 Mit seinen letzten gesprochenen Worten, winkt Cliff zu der Presse um sich zu verabschieden mit dem Hauch der Endgültigkeit.
 Cliff::
 „Wir werden keine weiteren Fragen mehr annehmen."
 „Ihr werdet wie der Rest der Welt warten müssen."
 {disableChar: Live 2D Bokeh}
-Erzähler::
+Narrator::
 {additive: on}
 John fühlt etwas falsches, als er Cliff sieht wie er zum Technischem Labor geht, um die Fenster zu vernebeln. 
 Seine Journalistenkollegen scheinen enttäuscht, als ob er erwarten würde, dass sie es sind. 
@@ -238,7 +238,7 @@ Nichts ist außerhalb des Gewöhnlichen.
 John tippt auf seinem Kopfhörer um das Mikrofon einzuschalten.
 John::
 „Du hast es selber gesehen, Cindy. Wir warten." 
-Erzähler::
+Narrator::
 Keiner scheint den Schweiß auf Cliffs Stirn bemerkt zu haben, als die Wände eine stabile Wand bilden, um die Wahrheit zu blockieren...
 {fadeoutsound: smallgroupwhisper, 1}
 {fadeoutsound: Lab Tension, .2}
