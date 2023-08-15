@@ -86,7 +86,9 @@ namespace B1NARY.DataPersistence
 		public ChangableValue<bool> voicelineBGone = new(false);
 		public Audio audio = new();
 		public Graphics graphics = new();
-
+#if DISABLESTEAMWORKS
+		public HashSet<string> savedAchievements = new();
+#endif
 
 
 		/// <summary>
