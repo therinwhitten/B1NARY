@@ -1,9 +1,9 @@
 {changeScene: Times Square}
 {fadeinsound: Times Square Crowd, 1}
 {colorformat: Times Square}
-{spawnEmpty: Erzähler, NPC}
+{spawnEmpty: Narrator, NPC}
 {setachievement: intern_UwU}
-Erzähler:: 
+Narrator:: 
 New York City in der Times Square: Das Jahr 2040. In mitten des Tages an einem glühendem Sommertag. 
 Ein normaler Tag, an dem die meisten Menschen herum laufen, zur Arbeit gehen, den Missklang der Fahrzeuge, Fußgänger, sowie der Beat hören, der in einer perfekten Harmonie zu der Werbung erklingt. 
 Nicht heute... 
@@ -32,7 +32,7 @@ Weiblicher Bystander::
 Ist VR nicht gut genug für uns Menschen?“ 
 {additive: off} 
 „Kannst du dir vorstellen die Eltern dieses Kindes zu sein? Ich frage mich was sie darüber denken?“ 
-Erzähler::
+Narrator::
 Sie schüttelt ihren Kopf und seufzt.
 {anim: Weiblicher Bystander, Noarmscrossed}
 {spawnChar: malesilo2, 2, Männlicher Bystander 2}
@@ -49,7 +49,7 @@ Denk an den coolen Scheiß den du machen kannst.“
 „Und der erste zu sein der das erlebt? 
 Es schauert mich nur daran zu denken!“
 {additive:off}
-Erzähler::
+Narrator::
 Männlicher Zuschauer spottet hörbar und schaut nach oben zur Übertragung.
 Männlicher Bystander::
 {anim: Männlicher Bystander, Thisway} 
@@ -60,14 +60,14 @@ Männlicher Bystander::
 Laut der Schutzbrille erscheint es, dass es noch nicht einmal richtig funktioniert hat.“
 {additive:off} 
 „Es sei denn, sie haben es im Geheimen schon einmal ausprobiert...“ 
-Erzähler::
+Narrator::
 Die Weibliche Zuschauerin schaut verzweifelt zu dem Männlichen Zuschauer.
 Weiblicher Bystander::  
 {anim: Weiblicher Bystander, Thinking}
 „Das kann nicht die Wahrheit sein.“ 
 „Sie würden niemals einen Menschen in die Nähe dieses Dinges lassen, es sei denn es funktioniert.“ 
 „Ich stimme diesem Experiment nicht zu, aber selbst ich weiß, das ein gescheitertes Experiment in einer weltweiten Übertragung reiner Selbstmord der Öffentlichkeitsarbeit ist.“ 
-Erzähler::
+Narrator::
 Ihre Stimme senkt sich, als würde sie zu sich selber sprechen. 
 Weiblicher Bystander::
 {additive: on} 
@@ -86,7 +86,7 @@ Stell dir den Druck vor, nur in diesem Stuhl zu sitzen, vor Millionen Menschen..
 {spawnChar: femalesilo, 2, Cindy}
 {moveChar: Cindy, .75}
 {anim: Cindy, Excited}
-Erzähler:: 
+Narrator:: 
 Der Holo-Zuschauer, der sich zuvor in einer kurzen Werbepause befand, wechselt abrupt zum Bild einer scharf gekleideten Moderatorin. 
 Sie lächelt süß außerhalb des Bildschirmes. 
 Doch wenn sie in die Kamera blickt, nimmt ihr Gesicht einen ernsten Ausdruck an.
@@ -118,10 +118,10 @@ Lass es uns zusammen herausfinden. LIVE!“
 {spawnEmpty: Männlicher Bystander, NPC}
 {spawnEmpty: Männlicher Bystander 2, NPC} 
 {spawnEmpty: Weiblicher Bystander, NPC}
-{spawnEmpty: Erzähler, NPC}
+{spawnEmpty: Narrator, NPC}
 {anim: John, kime2}
 {moveChar: John, .30}
-Erzähler:: 
+Narrator:: 
 Vor der Kamera ist ein Mann in seinen 40ern, angezogen in einem scharfen dunkelgrauen Anzug, eine Hand spielt an seinem Ohrhörer. 
 Als der Nachrichtenkorrespodent zuhört, nickt er leicht. 
 John lächelt zu der Kamera.
@@ -142,7 +142,7 @@ John::
 „Bei der Gelegenheit, dass sie nicht mit dem Rest der Welt zuschaut, werde ich ihr mit Sicherheit Bescheid geben.“ 
 Cindy:: 
 „Wer würde heute, <i>von allen Tagen</i>, nicht zuschauen?“ 
-Erzähler:: 
+Narrator:: 
 Die beiden Nachrichtensprecher kichern ein wenig. 
 Cindy:: 
 {additive: on} 
@@ -151,7 +151,7 @@ Die Zuschauer haben keine Ahnung auf was sie hier schauen.
 Alles was ich hinter dir sehe, ist ein schrecklicher Stuhl... 
 ist es das woran ich denke?“
 {additive: off}
-Erzähler::
+Narrator::
 {anim: John, kime1}
 Ein kurzes Nicken.
 John:: 
@@ -168,11 +168,11 @@ Begleite uns durch."
 John:: 
 „Wie du sehen kannst, bin ich an der Tür des Hauptlabors.“ 
 „Sehr bald werden wir den ersten auserwählten Menschen sehen, der digitalisiert wird.“
-Erzähler:: 
+Narrator:: 
 John gestikuliert außerhalb des Bildschirms.
 John::
 „Und sie werden durch diese <i>Tür</i> kommen.“
-Erzähler:: 
+Narrator:: 
 John tritt unbeholfen aus dem Weg, als sich einige Labortechniker vor der Kamera an ihm vorbeischieben.
 {spawnChar: malesilo2, 1.4, LabTech0}
 {spawnChar: malesilo1, 1.4, LabTech1}
@@ -201,20 +201,20 @@ John::
 „Ja?" 
 Cindy:: 
 „Um... wir habe schon Synthgene. Was macht die Maschine so verschieden?“ 
-Erzähler::
+Narrator::
 John wackelt seinen Finger zu der Kamera also ob er mit einem unschuldigem Kind schimpft.
 John::  
 „Dazu wollte ich gerade kommen.“ 
 „Die Standard-Synthgene haben einen großen Nachteil.“ 
 „Die Kopien brechen nach einiger Zeit zusammen. Es gibt kein Gehirn, dass das Muster zusammen hält.“ 
-Erzähler::
+Narrator::
 Johns Ausdruck ändert sich in der Kamera. Der Fokus sitzt hinter seinen Augen. 
 John::
 „Also, wie jedes Gemüse oder Obst mit der Zeit verrottet. Es läuft natürlich ab.“ 
 „Dann müssen neue Kopien aufgenommen und verwendet werden um die verschlechterten alten zu ersetzen.“ 
 „Es ist weit entfernt von einer perfekten Lösung.“ 
 „So, woran Digital Horizons so lange gearbeitet hat, ist den Menschlichen Verstand komplett ins Internet zu <i>transferieren</i>.“ 
-Erzähler:: 
+Narrator:: 
 Die Ruhe wächst unangenehm auf der anderen Seite der Übertragung. 
 Cindy:: 
 „Warte eine Sekunde. Lass mich das klarstellen...“ 
@@ -225,14 +225,14 @@ John::
 „Es gibt jedoch viele Anwendungen, für die diese Technologie angewendet werden kann." 
 „Daher der Name. Digital Imaging Human Interface. Es überträgt das Bild eines Menschen also ganzes.“ 
 {disableChar: Live 2D Bokeh}
-Erzähler:: 
+Narrator:: 
 Die weibliche Zuschauerin spottet offen auf der Straße, und blickt im grenzenlosem Entsetzen auf. 
 Weiblicher Bystander:: 
 {additive: on} 
 „Sag uns was es wirklich ist, John. 
 Ein Gehirn saugender Stuhl.“
 {additive: off} 
-Erzähler:: 
+Narrator:: 
 Laut genug damit es die anderen hören können, versuchen die Umstehenden, über die Oohs und Ahhs der sie umgebenden Menge zu sprechen. 
 Männlicher Bystander:: 
 „WOW! Das ist... unglaublich“ 
@@ -243,12 +243,12 @@ Männlicher Bystander 2::
 „Innovationen, und bahnbrechend... und weiteres Zeug.“ 
 „Mann ich würde es lieben digitalisiert zu werden“ 
 „Ich könnte mit dem bahnbrechenden Zeug helfen und so. Nicht zu erwähnen die Erfahrung mit mehr... interessanten Teilen des Internets.“ 
-Erzähler::
+Narrator::
 Die weibliche Zuschauerin lässt einen ermüdeten Seufzer von sich.
 Weiblicher Bystander::  
 „So typisch..." 
 „Lass mich raten... Pornos?" 
-Erzähler::
+Narrator::
 Der Männliche Zuschauer 2 kichert wissend.
 Männlicher Bystander 2::  
 {additive: on} 
@@ -266,12 +266,12 @@ Der Himmel ist das Limit, mein Freund!“
 {additive: off} 
 Weiblicher Bystander:: 
 „Ihr beide übertönt die Übertragung.“ 
-Erzähler::
+Narrator::
 Der Witz ist scharf...
 {spawnChar: malesilo3, 1.3, Labortechniker} 
 {moveChar: Labortechniker, .70}
 {anim: Labortechniker, Checktime}
-Erzähler:: 
+Narrator:: 
 John steht jetzt neben einem Technischem Labor. 
 Der Techniker is groß und schlank gebaut, seine Brille ist zu groß für den Nasenrücken.  
 Sein dunkles Haar ist zerzaust, als ob er einige Tage im Labor war, ohne ein richtiges Bett. 
@@ -285,11 +285,11 @@ Labortechniker::
 „Diese Chemischen Veränderungen können eine ‘Konfusion‘ im Gehirn erzeugen.“ 
 „Wir nennen dieses Phänomen ‘Gehirnentladung‘. Wir wollen diesem Effekt ausweichen, bis wir die langfristigen Auswirkungen besser verstanden haben.“ 
 „Der Prozess-“ 
-Erzähler::
+Narrator::
 Der Korrespondent runzelt leicht die Stirn.
 John::  
 „Warte... ‘Gehirnentladungen‘?“ 
-Erzähler::
+Narrator::
 Der Labortechniker schaut verwelkt in die Kamera und schüttelt seinen Kopf.  
 Labortechniker:: 
 {additive: on} 
@@ -298,7 +298,7 @@ Eine Gehirnentladung.
 Es ist ziemlich schwer das Live zu erklären. 
 Lass uns weiter gehen. Ich muss mich bald darum kümmern.“
 {additive: off} 
-Erzähler:: 
+Narrator:: 
 Der Labortechniker weist die Verwirrung des Reporters zurück.
 {anim: Labortechniker, Thinking} 
 Labortechniker:: 
@@ -312,12 +312,12 @@ Labortechniker::
 „Nach rund 4 Tagen, werden wir ihren Körper wiederbeleben, setzen ihre Gehirnmuster wieder zurück in ihr fleischiges Gefäß ein, und packen sie in Quarantäne für einige Monate um sicherzustellen, dass kein dauerhafter Schaden entstanden ist.“ 
 Cindy:: 
 „Frage ihn ob die Synthgene vom ersten Test immer noch in Ordnung sind John. John?“ 
-Erzähler::
+Narrator::
 {anim: John, kime1}
 John tippt auf den Hörer und schaut zum Labortechniker.
 John::  
 „Eine Frage uhm...“ 
-Erzähler::
+Narrator::
 Der Labortechniker nimmt einen Schluck vom Wasser und schließt den Deckel fest. 
 Labortechniker:: 
 „Der Name ist Shirobi." 
@@ -326,12 +326,12 @@ John::
 „Shirobi. Was passiert wenn etwas fehlschlägt wenn sie immer noch im Server sind?“ 
 „Was ist, wenn Sie eine Verschlechterung feststellen und diese so schnell wie möglich beseitigen müssen?“ 
 „Was sind die Schritte zu diesem Prozess?“ 
-Erzähler::
+Narrator::
  Shirobi zuckt lässig mit den Schultern. 
 Shirobi::
 "Wenn es irgendwelche Probleme geben sollte, werden wir sie sofort in ihren Körper zurückversetzen.“ 
 „Es wird eine Besatzung geben die 24/7 den Körper und den Geist in dem Server überwachen.“
-Erzähler:: 
+Narrator:: 
 Shirobi schaut direkt in die Kamera, das Gesicht ist ernst, aber zuversichtlich. 
 Shirobi::
 „Das Subjekt dieses Tests ist der Gefahren des Risikos bewusst und es ist bereit, ein Pionier auf diesem Gebiet zu sein, um damit Geschichte zu schreiben.“ 
@@ -340,14 +340,14 @@ Shirobi::
 John:: 
 "Und wer ist der Pionier der Zukunft? Die Person, die beschlossen hat, dem Unbekannten des Internets zu trotzen.“
 {fadeinsound: openclosedoor, 0.1}
-Erzähler:: 
+Narrator:: 
 Der Labortechniker lächelt das erste Mal beim Geräusch der Tür. 
 Er fängt an, die ganze Presse voller Aufregung aus dem Labor zu führen. 
 {anim: Shirobi, Thisway}
 Shirobi:: 
 „Warum, der mutige Pioniergeist...“ 
 {disableChar: Live 2D Bokeh}
-Erzähler:: 
+Narrator:: 
 Es ist Zeit deine erste Entscheidung zu treffen. Sie können auch Ihren eigenen Namen eingeben und an dieser Stelle die nicht-binäre Option hinzufügen.
 Ziehen Sie es vor, sich als binär oder nicht-binär zu identifizieren? Diese Auswahl ermöglicht es den Charakteren, sich geschlechtsneutral auf Ihre Person zu beziehen.
 {usegameobject: Binary Selection Panel}

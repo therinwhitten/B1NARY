@@ -5,11 +5,11 @@
 {spawnChar: malesilo1, 2, Shirobi}
 {spawnChar: malesilo, -1, Cliff}
 {spawnChar: femalesilo, -1.5, Becks}
-{spawnEmpty: Erzähler, NPC}
+{spawnEmpty: Narrator, NPC}
 {anim: Cliff, idle}
 {anim: Shirobi, Thinking}
 {anim: Becks, Denial}
-Erzähler::
+Narrator::
 Das Fenster wird dunkel. 
 Keiner traut sich ein Geräusch zu machen. 
 Das schnelle Rattern der Laptops verrät die Dringlichkeit und Spannung, die den Raum durchdringt. 
@@ -29,7 +29,7 @@ Shirobi::
 {
  "Ich habe es ihnen versprochen, Sir. Dass es ihnen gut gehen würde... Ich sagte ihnen, es würde nur vier Tage dauern. Und..."
 }
-Erzähler::
+Narrator::
 Shirobi seufzt in der Niederlage.
 {anim: Shirobi, Bow}
 Shirobi::
@@ -52,7 +52,7 @@ Ist es möglich, dass das DIHI einfach nur...
  sie verschlüsseln?"
 }
 {additive: off}
-Erzähler::
+Narrator::
 Cliff schüttelt seinen Kopf. Er weigert sich dieses Schicksal zu akzeptieren.
 Cliff::
 „Wir können das nicht ausschließen, aber ich bin mir sicher das DIHI arbeitet wie gewollt."
@@ -61,7 +61,7 @@ Cliff::
 Sechs Monate an der Vorbereitung an dem Stuhl. 
 Sechs ganze Monate..."
 {additive: off}
-Erzähler::
+Narrator::
 Cliff spurt ab, sein Körper beginnt zu zittern.  
 Cliff::
 {if: !n-b}
@@ -74,7 +74,7 @@ Cliff::
 }
 {fadeinsound: Cliff Fist Wood, 1}
 {additive: off}
-Erzähler::
+Narrator::
 {additive: on}
 Das Geräusch einer Faust,  
 laut in dem eigentlich leisen Raum, 
@@ -82,7 +82,7 @@ lässt das Team aufspringen.
 {additive: off}
 Cliff::
 „Wenn die Presse auch nur vermutet hätte, dass etwas nicht stimmte..." 
-Erzähler::
+Narrator::
 Cliff schaut runter zu seiner Faust, zwingt sich sie zu entspannen.
 <i>Ruhe. Ich brauche Ruhe.</i> , sagt er sich selber.
 Cliff::
@@ -97,14 +97,14 @@ Cliff::
  Wir haben vier Tage Zeit, sie zu finden."
 }
 {additive: off}
-Erzähler::
+Narrator::
 Der Supervisor schaut zu Shirobi.
 Cliff::
 „Bestätige den Test für mich Shirobi, würdest du? Ich bin so müde...
 So müde."
 {disableChar: Live 2D Bokeh}
 {additive: off}
-Erzähler::
+Narrator::
 Cliff reibt seinen Nasenrücken in Frustration.
 {additive: on}
 Shirobi, 
@@ -124,20 +124,20 @@ Ihr rotbraunes Haar, ein Durcheinander, verrät die langen Stunden der Vorbereit
 {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Becks::
 „Sir... Ich glaube ich habe das Problem gefunden."
-Erzähler::
+Narrator::
 Sie lehnt sich in ihrem Stuhl zurück, dreht sich, ihnen zugewandt.
 Becks::
 „Es ist ein großes."
-Erzähler::
+Narrator::
 Cliff kann die Ungeduld und Erschöpfung in seiner Stimme kaum zurückhalten.
 Cliff::
 „Becks sag es einfach. Was hast du gefunden?"
-Erzähler::
+Narrator::
 Becks öffnet ihren Mund, stoppt, und schließt es wieder.
 {anim: Becks, Shy}
 Becks::
 "Sir, du musst das selber sehen."
-Erzähler::
+Narrator::
 {additive: on}
 Cliff nähert sich,
 unsicher was er sehen wird. 
@@ -148,38 +148,38 @@ Cliff::
 „Becks?"
 Becks::
 „Cliff, schau auf den Lan Status."
-Erzähler::
+Narrator::
 Becks bewegt die Maus rüber und klickt auf die Interneteinstellungen.
 Becks::
 „Hier."
 {anim: Becks, Headbow}
-Erzähler::
+Narrator::
 Als Becks auf den Internetstatus klickt, sehen beide das Problem.
 Keine lokalen Server... keine. Einer von Zehn sollten da sein... 
 Eine Sache fängt Cliffs Aufmerksamkeit, bringt ihm tief einzuatmen.
 Der Laborsupervisor schaut fraglich plötzlich zu Becks, und Becks nickt.
 Becks::
 „Es war schon das ganze Experiment lang verbunden."
-Erzähler::
+Narrator::
 Cliff startet Tempo, murmelt zu sich selber, die Worte nicht erkennbar nicht mal für die Laborgruppe. 
 Er pausiert mit seinem Gemurmel und fokussiert seine Aufmerksamkeit auf Shirobi.
 Panik, Wut und eine leichte Brise Verzweiflung malen seine Gesichtszüge klar. 
 Cliff::
 „Gute Nachrichten, das DIHI ist in Ordnung. MC wurde zumindest noch nicht gemixt."
-Erzähler::
+Narrator::
 {fadeoutsound: Fast Keyboard Typing, .5}
 Shirobi stoppt zu schreiben und schaut hoch. 
 Shirobi::
 "Warte... was ist dann passiert?"
 Cliff::
 „Ich kann nicht glauben, dass ich nicht... Das DIHI ist nicht mit den Server verbunden, sondern mit dem Internet."
-Erzähler::
+Narrator::
 {anim: Shirobi, Bow}
 {anim: Cliff, kime2}
 Shirobi stöhnt als er seinen Kopf zwischen seinen Händen legt.
 Shirobi::
 „Ohhhhhh FUCK!"
-Erzähler::
+Narrator::
 Die Realisierung trifft den Raum schwer.  
 Ruhe. Einige Sekunden laufen in Toter Stille.
 Seine Stirn massierend, hebt Shirobis Stimme ab.
@@ -193,7 +193,7 @@ Shirobi::
 {
  "Sir, haben wir überhaupt eine Chance, sie zu finden? Ich meine, sie sind die <i>einzige</i> Mensch im Internet, aber..."
 }
-Erzähler::
+Narrator::
 Der alte Mann, schauend auf den Bildschirm des Laptops, seufzt und antwortet.
 Cliff::
 {if: !n-b}
@@ -215,7 +215,7 @@ Cliff::
  "Ich bete, dass sie irgendwo landen, wo sie halbwegs sicher sind."
  "Wird Ransomware oder Malware MC schaden? Es gibt so viele unbekannte Gefahren, über die wir nicht Bescheid wissen..." 
 }
-Erzähler::
+Narrator::
 Shirobi, hört aufmerksam zu und hellt auf. 
 {anim: Shirobi, Thisway}
 Shirobi::
@@ -226,7 +226,7 @@ Wie hört sich das an Chef?
 Fokussieren auf unserem Bestreben. Es grenzt die Dinge dramatisch ein. Aber... YouTube ist nun so <i>groß</i>...
 Wir würden nicht wissen wo eine KI wirklich verweilen würde, ohne ein Stück des wirklichen Codes zu sein."
 {additive: off}
-Erzähler::
+Narrator::
 Cliff nickt, seine Augen verlassen niemals den Bildschirm, seine grimmige Entschlossenheit ersetzen Panik.
 Cliff::
 „MC braucht uns, Team." 
@@ -246,7 +246,7 @@ Cliff::
  Ich <i>hoffe</i>, das ist genug, um sie zu finden."
 }
 {additive: off} 
-Erzähler::
+Narrator::
 Seine Augen sind auf Shirobi fokussiert. Sein Befehl in starker Stimme.
 Cliff::
 {if: !n-b}
@@ -261,12 +261,12 @@ Cliff::
 Becks::
 {anim: Becks, Thiswayleft}
 „Was ist mit der Presse Sir?"
-Erzähler::
+Narrator::
 Cliff blickt rüber zu Becks.
 Cliff::
 „Wir haben vier Tage. Vier Tage eine Antwort zu finden."
 „Vorerst, spielen wir es als typische verschwiegene Labortechniker in Unternehmen aus."
-Erzähler::
+Narrator::
 Er endet den Satz mit ein wenig Ironie.
 Cliff::
 „Wir können diesen Stereotypen nutzen um uns Zeit zu verschaffen."
@@ -279,11 +279,11 @@ Cliff::
 {
  "Wenn wir sie bis dahin nicht gefunden haben, wird es eine ernsthafte Gegenreaktion in dieser Sache geben.
 } 
-Erzähler::
+Narrator::
 Cliffs Weg ist klar, seine Zuversicht kommt zurück.
 Cliff::
 „Und einer von euch holt einen vollständigen Scan des DIHI. Stellt sicher, dass der Report..."
-Erzähler::
+Narrator::
 {disableChar: Live 2D Bokeh}
 Als Cliff fortfährt die Anweisungen an seinem Team zu verteilen, kann er nicht helfen, aber bekommt einen Stich von unglaublicher Traurigkeit. 
 Das Kind ist frisch aus dem College.
