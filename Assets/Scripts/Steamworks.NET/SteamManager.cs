@@ -30,15 +30,17 @@ namespace B1NARY.Steamworks
 	[DisallowMultipleComponent]
 	public class SteamManager : DesignPatterns.Singleton<SteamManager>
 	{
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+#if UNITY_EDITOR
+		[UnityEditor.InitializeOnLoadMethod]
 		private static void InitOnPlayMode()
 		{
 #if DISABLESTEAMWORKS
-			Debug.Log($"Steamworks CANNOT be loaded this session.\nBe sure to remove 'DISABLESTEAMWORKS' in player project settings if you want it");
+			Debug.Log($"Steamworks CANNOT be loaded in this unity build.\nBe sure to remove 'DISABLESTEAMWORKS' in player project settings of 'Script Compilation/Script Define Symbols' if you want it enabled.");
 #else
-			Debug.Log($"Steamworks CAN be loaded this session!\nNote that non-steam installers will be bugged, be sure to type in 'DISABLESTEAMWORKS' in player settings contraint in project settings");
+			Debug.Log($"Steamworks CAN be loaded this unity build.\nNote that non-steam installers will be bugged, be sure to type in 'DISABLESTEAMWORKS' in player settings of 'Script Compilation/Script Define Symbols' in project settings");
 #endif
 		}
+#endif
 
 #if !DISABLESTEAMWORKS
 		[return: CommandToConsole]
