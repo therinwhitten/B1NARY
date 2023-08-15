@@ -42,11 +42,11 @@ namespace B1NARY.Steamworks
 	public record Achievement(string AchievementIndex, string Name, string Description)
 	{
 		private static readonly Achievement
-			MaleRoute = new("male_route", "I REALLY want a cup of Coffee...", ""),
-			FemaleRoute = new("female_route", "Jujitsu Training did NOT Pay off...", ""),
-			FemaleRouteHScene = new("demo_female_hscene", "Yuri between the sheets.", ""),
-			MaleRouteHScene = new("demo_male_hscene", "Hentai Protag.", ""),
-			AllAchievementsCompleted = new("demo_complete", "Cultured", "");
+			MaleRoute = new("male_route", "I REALLY want a cup of Coffee...", "Male Route Complete"),
+			FemaleRoute = new("female_route", "Jujitsu Training did NOT Pay off...", "Female Route Complete"),
+			FemaleRouteHScene = new("demo_female_hscene", "Yuri between the sheets.", "Female H Scene First Time"),
+			MaleRouteHScene = new("demo_male_hscene", "Hentai Protag.", "Male H Scene First Time"),
+			AllAchievementsCompleted = new("demo_complete", "Cultured", "Demo Complete");
 
 		public static IReadOnlyList<Achievement> AllAchievements { get; } = new Achievement[]
 		{
@@ -55,10 +55,10 @@ namespace B1NARY.Steamworks
 			FemaleRouteHScene,
 			MaleRouteHScene,
 			AllAchievementsCompleted,
-			new Achievement("nut_cracker", "Nut Cracker", ""),
-			new Achievement("second_swallow", "Second Swallow", ""),
-			new Achievement("intern_UwU", "Intern", ""),
-			new Achievement("closed_beta_demo", "Beta Tester", ""),
+			new Achievement("nut_cracker", "Nut Cracker", "Defend against Lucas"),
+			new Achievement("second_swallow", "Second Swallow", "Make the Male Player say Swallow Twice in Game"),
+			new Achievement("intern_UwU", "Intern", "FIrst New Game"),
+			new Achievement("closed_beta_demo", "Beta Tester", "Performed Beta Testing for the Demo!"),
 		};
 
 
