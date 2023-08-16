@@ -77,7 +77,7 @@
 						["stoponline"] = (Action)(StopOnLine),
 						["setbool"] = (Action<string, string>)((name, value) =>
 						{
-							SaveSlot.ActiveSlot.Slot.booleans[name] = bool.Parse(value);
+							SaveSlot.ActiveSlot.booleans[name] = bool.Parse(value);
 						}),
 						["callremote"] = (Action<string>)((call) =>
 						{

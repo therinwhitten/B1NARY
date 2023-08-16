@@ -29,7 +29,7 @@
 		}
 		public void LoadGame(InputAction.CallbackContext context)
 		{
-			SaveSlot.ActiveSlot.Slot.Load();
+			SaveSlot.ActiveSlot.Load();
 		}
 		public void EscapeGame(InputAction.CallbackContext context)
 		{
@@ -77,8 +77,8 @@ namespace B1NARY.DataPersistence.Editor
 				EditorGUILayout.HelpBox("Save slot not created yet!", MessageType.Error);
 				return;
 			}
-			UpdateTab("Strings", SaveSlot.ActiveSlot.Slot.strings);
-			UpdateTab("Booleans", SaveSlot.ActiveSlot.Slot.booleans);
+			UpdateTab("Strings", SaveSlot.ActiveSlot.strings);
+			UpdateTab("Booleans", SaveSlot.ActiveSlot.booleans);
 
 			static void UpdateTab<T>(string label, DataPersistence.Collection<T> data)
 			{

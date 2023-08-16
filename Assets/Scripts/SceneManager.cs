@@ -168,7 +168,7 @@
 		/// </summary>
 		public void InitializeGame()
 		{
-			SaveSlot.ActiveSlot = new RunningSaveSlot(new SaveSlot());
+			SaveSlot.ActiveSlot =new SaveSlot();
 			ScriptHandler.Instance.NewDocument();
 			ScriptHandler.Instance.NextLine();
 		}
@@ -178,7 +178,7 @@
 		/// </summary>
 		public void InitializeScript(string docPath)
 		{
-			SaveSlot.ActiveSlot = new RunningSaveSlot(new SaveSlot());
+			SaveSlot.ActiveSlot = new SaveSlot();
 			ScriptHandler.Instance.NewDocument(docPath);
 			ScriptHandler.Instance.NextLine();
 		}

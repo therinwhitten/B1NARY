@@ -84,7 +84,7 @@
 			IgnoreUndefinedValues = true,
 		});
 
-		public static RunningSaveSlot ActiveSlot
+		public static SaveSlot ActiveSlot
 		{
 			get => m_activeSlot;
 			set
@@ -92,16 +92,16 @@
 				m_activeSlot = value;
 				if (m_activeSlot != null)
 				{
-					if (!m_activeSlot.Slot.booleans.ContainsKey("henable"))
-						m_activeSlot.Slot.booleans.Add("henable", () => PlayerConfig.Instance.hEnable.Value);
+					if (!m_activeSlot.booleans.ContainsKey("henable"))
+						m_activeSlot.booleans.Add("henable", () => PlayerConfig.Instance.hEnable.Value);
 				}
 			}
 		}
-		private static RunningSaveSlot m_activeSlot;
+		private static SaveSlot m_activeSlot;
 		public void Quicksave()
 		{
 			if (!PlayerConfig.Instance.quickSaveOverrides.Value)
-				ActiveSlot.Slot.metadata.ChangeFileTo(null);
+				ActiveSlot.metadata.ChangeFileTo(null);
 			ActiveSlot.Save();
 		}
 
@@ -149,7 +149,7 @@
 		public string DisplaySaveContents =>
 			$"<size=125%><b>{SaveName}</b></size>\n" +
 			$"{PlayerName} : {scriptPosition.SceneName}\n" +
-			$"{metadata.lastSaved.ToShortDateString()} : {(metadata.playedAmount.TotalMinutes < 120d ? $"{metadata.playedAmount.TotalMinutes:N1} min" : $"{metadata.playedAmount.TotalHours:N1} hrs")}";
+			$"{metadata.lastSaved.ToShortDateString()}";
 
 		[field: XmlAttribute("name")]
 		public string SaveName { get; set; } = "QuickSave";
@@ -198,10 +198,7 @@
 
 		public SaveSlot()
 		{
-			metadata = new Metadata()
-			{
-				playedAmount = TimeSpan.Zero,
-			};
+			metadata = new Metadata();
 			booleans = new Collection<bool>();
 			strings = new Collection<string>();
 		}
@@ -256,7 +253,7 @@
 		{
 			if (!hasSaved)
 				throw new InvalidOperationException("Currently active save has not saved properly! Did you press quickload without saving?");
-			ActiveSlot = new RunningSaveSlot(this);
+			ActiveSlot = this;
 			CoroutineWrapper wrapper = new(ScriptHandler.Instance, scriptPosition.LoadToPosition());
 			wrapper.AfterActions += (mono) =>
 			{
@@ -313,7 +310,6 @@
 			//}
 			[XmlIgnore]
 			private string m_directoryInfo;
-			public TimeSpan playedAmount;
 			public DateTime lastSaved;
 			public Thumbnail thumbnail;
 		}
@@ -341,21 +337,6 @@
 			while (changeSceneEnumerator.MoveNext())
 				yield return changeSceneEnumerator.Current;
 			ScriptHandler.Instance.NewDocument(StreamingAssetsPath, Line - 1);
-		}
-	}
-	public record RunningSaveSlot(SaveSlot Slot) : IDisposable
-	{
-		public Stopwatch StartPlayTime { get; private set; } = Stopwatch.StartNew();
-		public void Save()
-		{
-			StartPlayTime.Stop();
-			Slot.metadata.playedAmount += StartPlayTime.Elapsed;
-			StartPlayTime.Restart();
-			Slot.Save();
-		}
-		public void Dispose()
-		{
-			StartPlayTime.Stop();
 		}
 	}
 }

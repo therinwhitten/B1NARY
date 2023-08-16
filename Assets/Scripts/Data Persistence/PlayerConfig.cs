@@ -86,9 +86,7 @@ namespace B1NARY.DataPersistence
 		public ChangableValue<bool> voicelineBGone = new(false);
 		public Audio audio = new();
 		public Graphics graphics = new();
-#if DISABLESTEAMWORKS
 		public HashSet<string> savedAchievements = new();
-#endif
 
 
 		/// <summary>
@@ -104,6 +102,12 @@ namespace B1NARY.DataPersistence
 			public ChangableValue<float> voices = new(1f);
 			public ChangableValue<float> UI = new(1f);
 			public Dictionary<string, float> characterVoices = new();
+
+			[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+			private static void Constructor()
+			{
+
+			}
 		}
 		public sealed class Graphics
 		{

@@ -59,19 +59,37 @@
 		private static string ToStringConsole(string input, Color color) =>
 			$"<color=#{ColorUtility.ToHtmlStringRGBA(color)}>{input}</color>";
 
+		#region Constructors
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+		private static void Preconstructor() => Application.logMessageReceived += PreQueue;
+		private static void PreQueue(string condition, string stackTrace, LogType type) => preQueueLogs.Enqueue((condition, stackTrace, type));
+		private static Queue<(string condition, string stackTrace, LogType type)> preQueueLogs = new();
+
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void Constructor()
 		{
 			if (HasInstance)
 				return;
-			Instantiate(Resources.Load<GameObject>("HDConsole"));
-			Application.logMessageReceived += (condition, stackTrace, type) =>
+			GameObject @object = Instantiate(Resources.Load<GameObject>("HDConsole"));
+			if (@object.TryGetComponent(out HDConsole console))
+				Instance = console;
+			Application.logMessageReceived -= PreQueue;
+			Application.logMessageReceived += WriteToConsole;
+			while (preQueueLogs.Count > 0)
+			{
+				var (condition, stackTrace, type) = preQueueLogs.Dequeue();
+				WriteToConsole(condition, stackTrace, type);
+			}
+			preQueueLogs = null;
+
+			static void WriteToConsole(string condition, string stackTrace, LogType type)
 			{
 				WriteLine(type, condition);
 				if (type != LogType.Log)
 					Write(type, stackTrace);
-			};
+			}
 		}
+		#endregion
 
 
 		/// <summary> Action that controls if the console opens or closes. </summary>
@@ -167,8 +185,8 @@
 			activeButtons = new List<ActiveButton>(displayOtherCommandAmount);
 			commands = new List<HDCommand>(commands.OrderBy(command => command.command));
 			commandDict = commands.ToDictionary(command => command.command);
+			openClose.started += OnOpenClose;
 			openClose.Enable();
-			openClose.performed += OnOpenClose;
 		}
 
 		private void OnEnable()
@@ -176,13 +194,12 @@
 			consoleUI.SetActive(true);
 			inputField.onValueChanged.AddListener(ChangedInputField);
 			inputField.onSubmit.AddListener(OnSubmit);
+			up.started += MoveUp;
+			down.started += MoveDown;
+			tab.started += OnTab;
 			up.Enable();
 			down.Enable();
 			tab.Enable();
-			// controls are inverted for some reason
-			up.performed += MoveUp;
-			down.performed += MoveDown;
-			tab.performed += OnTab;
 			UpdateOtherCommandList();
 			UpdateDescriptivePanel();
 			StartCoroutine(RenableDelay(description.transform.parent.gameObject, true));
@@ -192,16 +209,16 @@
 			consoleUI.SetActive(false);
 			inputField.onValueChanged.RemoveListener(ChangedInputField);
 			inputField.onSubmit.RemoveListener(OnSubmit);
-			up.performed -= MoveUp;
-			down.performed -= MoveDown;
-			tab.performed -= OnTab;
+			up.started -= MoveUp;
+			down.started -= MoveDown;
+			tab.started -= OnTab;
 			up.Disable();
 			down.Disable();
 			tab.Disable();
 		}
 		protected override void OnSingletonDestroy()
 		{
-			openClose.performed -= OnOpenClose;
+			openClose.started -= OnOpenClose;
 			PlayerPrefs.SetString(MEM_CMD, string.Join(MEM_SPLIT_KEY, consoleCommandMemory));
 			PlayerPrefs.Save();
 		}
