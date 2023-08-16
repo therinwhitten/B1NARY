@@ -11,7 +11,7 @@
 		public static string ReplaceText(in string text)
 		{
 			if (text == SaveSlot.DEFAULT_NAME)
-				return SaveSlot.ActiveSlot.Slot.PlayerName;
+				return SaveSlot.ActiveSlot.PlayerName;
 			if (string.IsNullOrWhiteSpace(text))
 				return "Indescribable Horror";
 			return text;
@@ -31,16 +31,16 @@
 				gameObject.SetActive(false);
 				return;
 			}
-			SaveSlot.ActiveSlot.Slot.strings.UpdatedValue += UpdateMCName;
+			SaveSlot.ActiveSlot.strings.UpdatedValue += UpdateMCName;
 			CharacterManager.Instance.ActiveCharacterChanged += ActiveCharacterChanged;
 			PlayerConfig.Instance.language.ValueChanged += ChangedLanguage;
 			if (displayOnlyPlayerName)
-				ChangeText(SaveSlot.ActiveSlot.Slot.PlayerName);
+				ChangeText(SaveSlot.ActiveSlot.PlayerName);
 		}
 		private void OnDisable()
 		{
 			CharacterManager.Instance.ActiveCharacterChanged -= ActiveCharacterChanged;
-			SaveSlot.ActiveSlot.Slot.strings.UpdatedValue -= UpdateMCName;
+			SaveSlot.ActiveSlot.strings.UpdatedValue -= UpdateMCName;
 			PlayerConfig.Instance.language.ValueChanged -= ChangedLanguage;
 		}
 		public void ChangeText(string unfilteredName)
