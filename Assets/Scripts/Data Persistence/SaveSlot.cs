@@ -149,7 +149,7 @@
 		public string DisplaySaveContents =>
 			$"<size=125%><b>{SaveName}</b></size>\n" +
 			$"{PlayerName} : {scriptPosition.SceneName}\n" +
-			$"{metadata.lastSaved.ToString()}";
+			$"{metadata.lastSaved}";
 
 		[field: XmlAttribute("name")]
 		public string SaveName { get; set; } = "QuickSave";

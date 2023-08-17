@@ -17,6 +17,8 @@ namespace B1NARY.DataPersistence
 #endif
 	using Version = System.Version;
 	using B1NARY.IO;
+	using HDConsole;
+	using UnityEngine.Rendering;
 
 	public class PlayerConfig
 	{
@@ -102,17 +104,11 @@ namespace B1NARY.DataPersistence
 			public ChangableValue<float> voices = new(1f);
 			public ChangableValue<float> UI = new(1f);
 			public Dictionary<string, float> characterVoices = new();
-
-			[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-			private static void Constructor()
-			{
-
-			}
 		}
 		public sealed class Graphics
 		{
 			public ChangableValue<float> glow = new(1f);
-			public ChangableValue<int> graphicSettingIndex = new(0);
+			public ChangableValue<int> graphicSettingIndex = new(QualitySettings.GetQualityLevel());
 			public ChangableValue<int> frameRate = new(69);
 			// Let the legendary coders find this line to laugh their asses off,
 			// - I want the small file sizes but my manager still wants high quality
@@ -133,5 +129,22 @@ namespace B1NARY.DataPersistence
 			public ChangableValue<string> currentFormat = new(null);
 			public bool HasOverride => !string.IsNullOrEmpty(currentFormat.Value);
 		}
+
+		[return: CommandToConsole]
+		private static HDCommand[] GetHDCommands() => new HDCommand[]
+		{
+			new HDCommand("cl_glow", new string[] { "intensity (float)" }, (args) =>
+			{
+				Instance.graphics.glow.Value = float.Parse(args[0]);
+			}) { description = "Adjusts glow intensity." },
+
+			new HDCommand("cl_graphic_index", new string[] { "graphic index" }, (args) => 
+			{
+				int level = int.Parse(args[0]);
+				if (level > QualitySettings.count || level < 0)
+					throw new IndexOutOfRangeException(QualitySettings.count.ToString());
+				Instance.graphics.graphicSettingIndex.Value = level;
+			}),
+		};
 	}
 }

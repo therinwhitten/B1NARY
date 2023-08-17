@@ -1,6 +1,7 @@
 ﻿namespace B1NARY.Scripting
 {
 	using B1NARY.DataPersistence;
+	using B1NARY.IO;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
@@ -111,11 +112,11 @@
 			string currentLanguage = PlayerConfig.Instance.language.Value;
 			// First try to get the language version
 			Document target = comparingTo.GetWithLanguage(currentLanguage);
-			if (target.FullPath.Exists)
+			if (target.FullPath.ExistsInOSFile())
 				return target;
 			// trying to get the core version instead.
 			target = comparingTo.GetWithoutLanguage();
-			if (target.FullPath.Exists)
+			if (target.FullPath.ExistsInOSFile())
 			{
 				Debug.LogWarning($"Document '{visualPath}' doesn't lead to the specified document; using the core version instead.");
 				return target;

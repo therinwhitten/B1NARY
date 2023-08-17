@@ -8,9 +8,16 @@
 	using UnityEngine.Rendering;
 	using System;
 	using B1NARY.DataPersistence;
+	using HDConsole;
 
 	public sealed class DisplayOptionsBehaviour : MonoBehaviour
 	{
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+		private static void QualityConstructor()
+		{
+
+		}
+
 		public TMP_Dropdown hentaiDropdown;
 		public FullScreenDropdown fullScreenDropdown;
 		public RenderPipelineAsset[] qualityLevels;

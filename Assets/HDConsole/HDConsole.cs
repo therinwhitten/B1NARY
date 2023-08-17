@@ -15,7 +15,7 @@
 
 	public class HDConsole : Singleton<HDConsole>
 	{
-		internal record ActiveButton(HDOtherCommand @Object, string changesTo);
+		internal record ActiveButton(HDOtherCommand @Object, string ChangesTo);
 
 		public static void WriteLine(LogType type, object input)
 		{
@@ -55,6 +55,15 @@
 			}
 			Instance.InvokeFromString(string.Join(" ", arguments));
 		}
+
+		public static event Func<bool> InvokingModeratorCommand
+		{
+			add => allModActions.Add(value);
+			remove => allModActions.Remove(value);
+		}
+		private static readonly List<Func<bool>> allModActions = new();
+		private static bool CanInvokeModCommand() => allModActions.Any(action => action.Invoke() == false) == false;
+		public static Func<bool> CheatsEnabled { get; set; } = () => false;
 
 		private static string ToStringConsole(string input, Color color) =>
 			$"<color=#{ColorUtility.ToHtmlStringRGBA(color)}>{input}</color>";
@@ -321,7 +330,7 @@
 			else
 				for (int i = 0; i < activeButtons.Count; i++)
 				{
-					if (queuedCommands[i] == activeButtons[i].changesTo)
+					if (queuedCommands[i] == activeButtons[i].ChangesTo)
 						continue;
 					revampButtons = true;
 					break;
@@ -336,7 +345,7 @@
 			{
 				ActiveButton newButton = new(template.DuplicateTo(otherCommandListLocation), queuedCommands[i]);
 				newButton.Object.text.text = queuedCommands[i];
-				newButton.Object.button.onClick.AddListener(() => FinishCommandFromClick(newButton.changesTo));
+				newButton.Object.button.onClick.AddListener(() => FinishCommandFromClick(newButton.ChangesTo));
 				activeButtons.Add(newButton);
 			}
 
@@ -401,6 +410,16 @@
 			if (!commandDict.TryGetValue(splitCommand[0], out HDCommand command))
 			{
 				WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' is not found");
+				return false;
+			}
+			if (command.mainTags.HasFlag(HDCommand.MainTags.ServerModOnly) && !CanInvokeModCommand())
+			{
+				WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' cannot be invoked by a non-moderator.");
+				return false;
+			}
+			if (command.mainTags.HasFlag(HDCommand.MainTags.Cheat) && !CheatsEnabled.Invoke())
+			{
+				WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' is a cheat, but cheats are not enabled.");
 				return false;
 			}
 			int argumentCount = splitCommand.Length - 1;

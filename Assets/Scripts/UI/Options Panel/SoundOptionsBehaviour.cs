@@ -9,6 +9,7 @@
 	using OVSXmlSerializer.Extras;
 	using B1NARY.DataPersistence;
 	using Microsoft.Win32;
+	using HDConsole;
 
 	public class SoundOptionsBehaviour : MonoBehaviour 
 	{

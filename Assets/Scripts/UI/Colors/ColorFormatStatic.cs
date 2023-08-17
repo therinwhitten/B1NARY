@@ -45,9 +45,8 @@
 				{
 					if (DefaultThemePath.ExistsInOSFile())
 					{
-						ColorFormat format;
-						using (var stream = DefaultThemePath.OpenStream(FileMode.Open, FileAccess.Read))
-							format = FormatSerializer.Default.Deserialize(stream);
+						using var stream = DefaultThemePath.OpenStream(FileMode.Open, FileAccess.Read);
+						ColorFormat format = FormatSerializer.Default.Deserialize(stream);
 						if (format != null)
 							return m_defaultFormat = format;
 					}
@@ -148,9 +147,8 @@
 							continue;
 						try
 						{
-							ColorFormat format;
-							using (var stream = fileInfo.OpenStream(FileMode.Open, FileAccess.Read))
-								format = FormatSerializer.Default.Deserialize(stream);
+							using var stream = fileInfo.OpenStream(FileMode.Open, FileAccess.Read);
+							ColorFormat format = FormatSerializer.Default.Deserialize(stream);
 							m_availableFormats.Add((fileInfo, format));
 						}
 						catch (Exception ex)

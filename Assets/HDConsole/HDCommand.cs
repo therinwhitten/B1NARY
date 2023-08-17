@@ -1,13 +1,47 @@
 ﻿namespace HDConsole
 {
 	using System;
+	using System.Linq;
 	using System.Collections.Generic;
 	using System.Text;
 	using TMPro;
 	using UnityEngine;
 
+	/// <summary>
+	/// A command to invoke or change various aspects for the game. Perhaps acting
+	/// as a way to change config files from the console, or actually testing the 
+	/// game quickly without creating custom scenes. Maybe you or your friends on
+	/// your own game server wants to dick around with 50,000 bosses sitting in the
+	/// spawn room.
+	/// <para>
+	/// There are multiple types of commands; which usually has the snake case
+	/// of the main command and 0-1 for enum/boolean implementation. Here are a few
+	/// starting tags to make finding tags generally easier:
+	/// </para>
+	/// <list type="bullet">
+	/// <item>sv_ = Server, usually gated by cheats or mod-only commands, as these impact the server themselves. </item>
+	/// <item>cons_ = Console, typically impacting the console or the console's memory itself. </item>
+	/// <item>cl_ = Impacts the client, usually has to do with graphics or visual effects. </item>
+	/// <item>obj_ = Impacts existing gameobjects. Barebones typically. </item>
+	/// </list>
+	/// <para>
+	/// Note that some commands that can be most frequently used dont have to follow
+	/// the 'starting abbreviation' rule.
+	/// </para>
+	/// </summary>
 	public struct HDCommand
 	{
+		public const string CONSOLE_PREFIX = "cons";
+		public const string SERVER_PREFIX = "sv";
+		public const string CLIENT_PREFIX = "cl";
+		public const string GAMEOBJECT_PREFIX = "obj";
+
+		public enum MainTags : byte
+		{
+			None = 0,
+			ServerModOnly = 1,
+			Cheat = 2,
+		}
 		public static string[] SplitWithQuotations(string input)
 		{
 			List<string> modified = new(input.Length);
@@ -36,15 +70,84 @@
 			return modified.ToArray();
 		}
 
+		#region Auto-Complete
+		internal static object lastObjectGet = null;
+		public static HDCommand AutoCompleteBool(string command, Func<bool> getBool, Action<bool> setBool, MainTags tags = MainTags.None, string description = "") => new()
+		{
+			command = command,
+			requiredArguments = Array.Empty<string>(),
+			optionalArguments = new string[] { "0-1" },
+			description = description,
+			mainTags = tags,
+			invoke = (args) =>
+			{
+				if (args.Length <= 0)
+				{
+					bool value = getBool.Invoke();
+					lastObjectGet = value;
+					if (HDConsole.Instance.enabled)
+						HDConsole.WriteLine($"{command} {(value ? "1" : "0")}");
+					return;
+				}
+				bool setTo = args[0] switch { "0" => false, "1" => true, _ => throw new InvalidCastException(args[0]) };
+				setBool.Invoke(setTo);
+			},
+		};
+		public static HDCommand AutoCompleteFloat(string command, Func<float> getFloat, Action<float> setFloat, float min, float max, MainTags tags = MainTags.None, string description = "") => new()
+		{
+			command = command,
+			requiredArguments = Array.Empty<string>(),
+			optionalArguments = new string[] { $"{min}-{max}" },
+			description = description,
+			mainTags = tags,
+			invoke = (args) =>
+			{
+				if (args.Length <= 0)
+				{
+					float value = getFloat.Invoke();
+					lastObjectGet = value;
+					if (HDConsole.Instance.enabled)
+						HDConsole.WriteLine($"{command} {value}");
+					return;
+				}
+				float setTo = float.Parse(args[0]);
+				setTo = Math.Clamp(setTo, min, max);
+				setFloat.Invoke(setTo);
+			},
+		};
+		public static HDCommand AutoCompleteEnum<TEnum>(string command, Func<TEnum> getEnum, Action<TEnum> setEnum, MainTags tags = MainTags.None, string description = "") where TEnum : Enum => new()
+		{
+			command = command,
+			requiredArguments = Array.Empty<string>(),
+			optionalArguments = new string[] { string.Join('/', ((TEnum[])Enum.GetValues(typeof(TEnum))).Select(@enum => @enum.GetHashCode())) },
+			description = description,
+			mainTags = tags,
+			invoke = (args) =>
+			{
+				if (args.Length <= 0)
+				{
+					TEnum value = getEnum.Invoke();
+					lastObjectGet = value;
+					if (HDConsole.Instance.enabled)
+						HDConsole.WriteLine($"{command} {value}");
+					return;
+				}
+				TEnum outEnum = (TEnum)Enum.Parse(typeof(TEnum), args[0]);
+				setEnum.Invoke(outEnum);
+			},
+		};
+		#endregion
+
 		public string command;
 		public string description;
 		public string[] requiredArguments;
 		public string[] optionalArguments;
-
-		private readonly Action<string[]> invoke;
+		public MainTags mainTags;
+		private Action<string[]> invoke;
 
 		public HDCommand(string command, Action<string[]> invoke)
 		{
+			mainTags = MainTags.None;
 			this.command = command;
 			description = string.Empty;
 			requiredArguments = Array.Empty<string>();
@@ -53,6 +156,7 @@
 		}
 		public HDCommand(string command, string[] requiredArguments, Action<string[]> invoke)
 		{
+			mainTags = MainTags.None;
 			this.command = command;
 			description = string.Empty;
 			this.requiredArguments = requiredArguments;
@@ -61,6 +165,7 @@
 		}
 		public HDCommand(string command, string[] requiredArguments, string[] optionalArguments, Action<string[]> invoke)
 		{
+			mainTags = MainTags.None;
 			this.command = command;
 			description = string.Empty;
 			this.requiredArguments = requiredArguments;
