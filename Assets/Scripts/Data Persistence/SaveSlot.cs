@@ -13,6 +13,7 @@
 	using System.Threading.Tasks;
 	using Stopwatch = System.Diagnostics.Stopwatch;
 	using System.Linq;
+	using B1NARY.IO;
 
 	public enum Gender : byte
 	{
@@ -71,7 +72,7 @@
 		public const string KEY_PLAYER_NAME = "Player Name";
 		public const string KEY_ADDITIVE = "Additive";
 		public const int MAX_SAVES = 69;
-		public static DirectoryInfo SavesDirectory => PersistentData.GetSubdirectory("Saves");
+		public static DirectoryInfo SavesDirectory => PersistentData.OpenSubdirectory("Saves");
 		
 		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
 		new XmlSerializer<SaveSlot>(new XmlSerializerConfig()

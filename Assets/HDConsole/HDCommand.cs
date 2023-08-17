@@ -115,6 +115,70 @@
 				setFloat.Invoke(setTo);
 			},
 		};
+		public static HDCommand AutoCompleteFloat(string command, Func<float> getFloat, Action<float> setFloat, MainTags tags = MainTags.None, string description = "") => new()
+		{
+			command = command,
+			requiredArguments = Array.Empty<string>(),
+			optionalArguments = new string[] { $"value" },
+			description = description,
+			mainTags = tags,
+			invoke = (args) =>
+			{
+				if (args.Length <= 0)
+				{
+					float value = getFloat.Invoke();
+					lastObjectGet = value;
+					if (HDConsole.Instance.enabled)
+						HDConsole.WriteLine($"{command} {value}");
+					return;
+				}
+				float setTo = float.Parse(args[0]);
+				setFloat.Invoke(setTo);
+			},
+		};
+		public static HDCommand AutoCompleteInt(string command, Func<int> getInt, Action<int> setInt, int min, int max, MainTags tags = MainTags.None, string description = "") => new()
+		{
+			command = command,
+			requiredArguments = Array.Empty<string>(),
+			optionalArguments = new string[] { $"{min}-{max}" },
+			description = description,
+			mainTags = tags,
+			invoke = (args) =>
+			{
+				if (args.Length <= 0)
+				{
+					int value = getInt.Invoke();
+					lastObjectGet = value;
+					if (HDConsole.Instance.enabled)
+						HDConsole.WriteLine($"{command} {value}");
+					return;
+				}
+				int setTo = int.Parse(args[0]);
+				setTo = Math.Clamp(setTo, min, max);
+				setInt.Invoke(setTo);
+			},
+		};
+		public static HDCommand AutoCompleteInt(string command, Func<int> getInt, Action<int> setInt,  MainTags tags = MainTags.None, string description = "") => new()
+		{
+			command = command,
+			requiredArguments = Array.Empty<string>(),
+			optionalArguments = new string[] { $"value" },
+			description = description,
+			mainTags = tags,
+			invoke = (args) =>
+			{
+				if (args.Length <= 0)
+				{
+					int value = getInt.Invoke();
+					lastObjectGet = value;
+					if (HDConsole.Instance.enabled)
+						HDConsole.WriteLine($"{command} {value}");
+					return;
+				}
+				int setTo = int.Parse(args[0]);
+				setInt.Invoke(setTo);
+			},
+		};
 		public static HDCommand AutoCompleteEnum<TEnum>(string command, Func<TEnum> getEnum, Action<TEnum> setEnum, MainTags tags = MainTags.None, string description = "") where TEnum : Enum => new()
 		{
 			command = command,
@@ -134,6 +198,27 @@
 				}
 				TEnum outEnum = (TEnum)Enum.Parse(typeof(TEnum), args[0]);
 				setEnum.Invoke(outEnum);
+			},
+		};
+		public static HDCommand AutoCompleteString(string command, Func<string> getString, Action<string> setString, string argumentName, MainTags tags = MainTags.None, string description = "") => new()
+		{
+			command = command,
+			requiredArguments = Array.Empty<string>(),
+			optionalArguments = new string[] { argumentName },
+			description = description,
+			mainTags = tags,
+			invoke = (args) =>
+			{
+				if (args.Length <= 0)
+				{
+					string value = getString.Invoke();
+					lastObjectGet = value;
+					if (HDConsole.Instance.enabled)
+						HDConsole.WriteLine($"{command} {value}");
+					return;
+				}
+				string outString = args[0];
+				setString.Invoke(outString);
 			},
 		};
 		#endregion

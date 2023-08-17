@@ -10,6 +10,7 @@
 	using System.Collections;
 	using System.Threading;
 	using B1NARY.DataPersistence;
+	using B1NARY.IO;
 
 	[DisallowMultipleComponent]
 	public class FanArtPopulator : AutoPagePopulator
@@ -24,8 +25,7 @@
 
 		public static List<FileInfo> GetAllImages(string subFolderName)
 		{
-			return RecursivelyGetFiles(SaveSlot.StreamingAssets.GetSubdirectory("Fanart")
-				.GetSubdirectory(subFolderName));
+			return RecursivelyGetFiles(SaveSlot.StreamingAssets.OpenSubdirectory("Fanart", subFolderName));
 		}
 		private static List<FileInfo> RecursivelyGetFiles(DirectoryInfo currentPath)
 		{

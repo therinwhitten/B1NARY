@@ -2,6 +2,7 @@
 {
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
+	using HDConsole;
 	using OVSXmlSerializer.Extras;
 	using System;
 	using System.Collections.Generic;
@@ -11,7 +12,7 @@
 	using UnityEngine;
 	using UnityEngine.Audio;
 
-	internal class SoundSyncer : Singleton<SoundSyncer>
+	internal class SoundSyncer : DesignPatterns.Singleton<SoundSyncer>
 	{
 		public const string MIXER_MASTER = "Master";
 		public const string MIXER_MUSIC = "Music";
@@ -24,6 +25,27 @@
 			[MIXER_SFX] = PlayerConfig.Instance.audio.SFX,
 			[MIXER_UI] = PlayerConfig.Instance.audio.UI
 		};
+		[return: CommandToConsole]
+		private static HDCommand[] GetHDCommands() => new HDCommand[]
+		{
+			HDCommand.AutoCompleteFloat("snd_master", () => PlayerConfig.Instance.audio.master, (set) => PlayerConfig.Instance.audio.master.Value = set, 0, 1, HDCommand.MainTags.None),
+			HDCommand.AutoCompleteFloat("snd_music", () => PlayerConfig.Instance.audio.music, (set) => PlayerConfig.Instance.audio.music.Value = set, 0, 1, HDCommand.MainTags.None),
+			HDCommand.AutoCompleteFloat("snd_sfx", () => PlayerConfig.Instance.audio.SFX, (set) => PlayerConfig.Instance.audio.SFX.Value = set, 0, 1, HDCommand.MainTags.None),
+			HDCommand.AutoCompleteFloat("snd_ui", () => PlayerConfig.Instance.audio.UI, (set) => PlayerConfig.Instance.audio.UI.Value = set, 0, 1, HDCommand.MainTags.None),
+			new HDCommand("snd_custom", new string[] { "sound name" }, new string[] { "0-1" }, (args) =>
+			{
+				string soundName = args[0];
+				if (PlayerConfig.Instance.audio.characterVoices.TryGetValue(soundName, out float value) == false)
+					value = 1f;
+				if (args.Length <= 1)
+				{
+					HDConsole.WriteLine($"snd_custom {soundName} {value}");
+					return;
+				}
+				PlayerConfig.Instance.audio.characterVoices[soundName] = float.Parse(args[1]);
+			})
+		};
+
 
 
 		/// <summary>

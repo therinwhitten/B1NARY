@@ -133,18 +133,8 @@ namespace B1NARY.DataPersistence
 		[return: CommandToConsole]
 		private static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
-			new HDCommand("cl_glow", new string[] { "intensity (float)" }, (args) =>
-			{
-				Instance.graphics.glow.Value = float.Parse(args[0]);
-			}) { description = "Adjusts glow intensity." },
-
-			new HDCommand("cl_graphic_index", new string[] { "graphic index" }, (args) => 
-			{
-				int level = int.Parse(args[0]);
-				if (level > QualitySettings.count || level < 0)
-					throw new IndexOutOfRangeException(QualitySettings.count.ToString());
-				Instance.graphics.graphicSettingIndex.Value = level;
-			}),
+			HDCommand.AutoCompleteFloat("cl_glow", () => Instance.graphics.glow, (set) => Instance.graphics.glow.Value = set, 0, 10, HDCommand.MainTags.None, "Adjusts glow intensity"),
+			HDCommand.AutoCompleteInt("cl_graphic_index", () => Instance.graphics.graphicSettingIndex, (set) => Instance.graphics.graphicSettingIndex.Value = set, 0, QualitySettings.count, HDCommand.MainTags.None),
 		};
 	}
 }

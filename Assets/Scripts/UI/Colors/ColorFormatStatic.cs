@@ -25,8 +25,8 @@
 			Unknown,
 		}
 		public const string DEFAULT_THEME_NAME = "Default";
-		public static DirectoryInfo RootPath => SaveSlot.StreamingAssets.GetSubdirectory("Color Themes");
-		public static DirectoryInfo CustomThemePath => RootPath.GetSubdirectory("Custom");
+		public static DirectoryInfo RootPath => SaveSlot.StreamingAssets.OpenSubdirectory("Color Themes");
+		public static DirectoryInfo CustomThemePath => RootPath.OpenSubdirectory("Custom");
 		public static FileInfo DefaultThemePath => RootPath.GetFile("Default.xml");
 		public readonly static IndexFile indexFile = IndexFile.LoadNew();
 		public static CommandArray Commands = new()

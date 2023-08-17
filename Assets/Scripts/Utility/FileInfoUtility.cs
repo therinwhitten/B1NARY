@@ -46,24 +46,24 @@
 
 
 
-		public static DirectoryInfo GetSubdirectory(this DirectoryInfo directoryInfo, string directoryName)
-		{
-			if (!directoryInfo.Exists)
-				throw new IOException($"Directory '{directoryInfo.FullName}' does not exist!");
-			var newPath = new DirectoryInfo($"{directoryInfo.FullName}\\{directoryName}");
-			if (!newPath.Exists)
-			{
-				newPath.Create();
-				newPath.Refresh();
-			}
-			return newPath;
-		}
-		public static DirectoryInfo GetPathing(this DirectoryInfo directoryInfo, params string[] subDirectories)
-		{
-			for (int i = 0; i < subDirectories.Length; i++)
-				directoryInfo = GetSubdirectory(directoryInfo, subDirectories[i]);
-			return directoryInfo;
-		}
+		//public static DirectoryInfo GetSubdirectory(this DirectoryInfo directoryInfo, string directoryName)
+		//{
+		//	if (!directoryInfo.Exists)
+		//		throw new IOException($"Directory '{directoryInfo.FullName}' does not exist!");
+		//	var newPath = new DirectoryInfo($"{directoryInfo.FullName}\\{directoryName}");
+		//	if (!newPath.Exists)
+		//	{
+		//		newPath.Create();
+		//		newPath.Refresh();
+		//	}
+		//	return newPath;
+		//}
+		//public static DirectoryInfo GetPathing(this DirectoryInfo directoryInfo, params string[] subDirectories)
+		//{
+		//	for (int i = 0; i < subDirectories.Length; i++)
+		//		directoryInfo = GetSubdirectory(directoryInfo, subDirectories[i]);
+		//	return directoryInfo;
+		//}
 	}
 	/// <summary>
 	/// Manages <see cref="FileInfo"/> and <see cref="DirectoryInfo"/> as well.

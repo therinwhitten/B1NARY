@@ -27,6 +27,13 @@
 		{
 			return fileInfo.ToOSFile().Exists;
 		}
+		public static DirectoryInfo OpenSubdirectory(this DirectoryInfo info, params string[] folderNames)
+		{
+			DirectoryInfo output = info;
+			for (int i = 0; i < folderNames.Length; i++)
+				output = new(output.ToOSDirectory().GetSubdirectory(folderNames[i]).FullPath);
+			return output;
+		}
 		public static OSDirectory ToOSDirectory(this DirectoryInfo directoryInfo)
 		{
 			string path = directoryInfo.FullName;
