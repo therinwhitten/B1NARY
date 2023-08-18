@@ -7,6 +7,9 @@
 	using System.Text;
 	using static System.IO.Path;
 
+	/// <summary>
+	/// Combines the usage of both <see cref="FileInfo"/> and <see cref="OSPath"/>s
+	/// </summary>
 	public static class GeneralOSPathUtility
 	{
 		/// <summary>
