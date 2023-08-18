@@ -64,8 +64,8 @@
 
 		public OSDirectory GetSubdirectory(string subDirectory)
 		{
-			string newPath = Combine(Path, subDirectory);
-			OSDirectory output = new(new OSPath(newPath));
+			string newPath = Combine(FullPath.Normalized, subDirectory);
+			OSDirectory output = new(newPath);
 			Debug.Log($"Combining existing '{Path}' with subDirectory '{subDirectory}' into '{newPath}' or '{output.FullPath.Normalized}'");
 			if (!output.Exists)
 				output.Create();
