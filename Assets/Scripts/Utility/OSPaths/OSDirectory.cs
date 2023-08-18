@@ -64,9 +64,7 @@
 
 		public OSDirectory GetSubdirectory(string subDirectory)
 		{
-			string newPath = Combine(FullPath.Normalized, subDirectory);
-			OSDirectory output = new(newPath);
-			Debug.Log($"Combining existing '{Path}' with subDirectory '{subDirectory}' into '{newPath}' or '{output.FullPath.Normalized}'");
+			OSDirectory output = new(Combine(FullPath.Normalized, subDirectory));
 			if (!output.Exists)
 				output.Create();
 			return output;
@@ -98,6 +96,10 @@
 			for (int i = 0; i < files.Length; i++)
 				result[i] = new OSFile(FullPath, files[i]);
 			return result;
+		}
+		public OSFile GetFile(string fileNameAndExtension)
+		{
+			return new OSFile(Combine(FullPath, fileNameAndExtension));
 		}
 	}
 }
