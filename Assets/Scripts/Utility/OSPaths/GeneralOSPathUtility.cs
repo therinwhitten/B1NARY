@@ -9,16 +9,27 @@
 
 	public static class GeneralOSPathUtility
 	{
+		/// <summary>
+		/// Returns a <see cref="FileInfo"/> to an <see cref="OSFile"/> to make sure
+		/// it syncs with both windows and unix systems.
+		/// </summary>
 		public static OSFile ToOSFile(this FileInfo fileInfo)
 		{
 			string path = fileInfo.FullName;
 			return new OSFile(path);
 		}
+		/// <summary>
+		/// Returns a <see cref="FileInfo"/> to an <see cref="OSPath"/> (not a file!)
+		/// to make sure it syncs with both windows and unix systems.
+		/// </summary>
 		public static OSPath ToOSPath(this FileInfo fileInfo)
 		{
 			string path = fileInfo.FullName;
 			return new OSPath(path);
 		}
+		/// <summary>
+		/// Opens a stream while considering unix and windows systems.
+		/// </summary>
 		public static FileStream OpenStream(this FileInfo info, FileMode mode, FileAccess access)
 		{
 			return info.ToOSPath().Open(mode, access);

@@ -64,7 +64,7 @@
 
 		public OSDirectory GetSubdirectory(string subDirectory)
 		{
-			OSDirectory output = new(Combine(Path, subDirectory));
+			OSDirectory output = new(Path + new OSPath(subDirectory));
 			if (!output.Exists)
 				output.Create();
 			return output;
