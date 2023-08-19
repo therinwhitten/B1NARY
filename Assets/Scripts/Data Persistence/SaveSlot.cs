@@ -33,28 +33,28 @@
 		/// from the appdata; causing it to not display any directory location 
 		/// at all.
 		/// </remarks>
-		public static DirectoryInfo PersistentData
+		public static OSDirectory PersistentData
 		{
 			get
 			{
-				try { return m_persist = new DirectoryInfo(Application.persistentDataPath); }
+				try { return m_persist = new OSDirectory(Application.persistentDataPath); }
 				catch { return m_persist; }
 			}
 		}
-		private static DirectoryInfo m_persist;
+		private static OSDirectory m_persist;
 
 		/// <summary>
 		/// Gets the streaming assets folder with a <see cref="DirectoryInfo"/>.
 		/// </summary>
-		public static DirectoryInfo StreamingAssets
+		public static OSDirectory StreamingAssets
 		{
 			get
 			{
-				try { return m_streaming = new DirectoryInfo(Application.streamingAssetsPath); }
+				try { return m_streaming = new OSDirectory(Application.streamingAssetsPath); }
 				catch { return m_streaming; }
 			}
 		}
-		private static DirectoryInfo m_streaming;
+		private static OSDirectory m_streaming;
 
 		public enum QuicksaveType
 		{
@@ -72,7 +72,7 @@
 		public const string KEY_PLAYER_NAME = "Player Name";
 		public const string KEY_ADDITIVE = "Additive";
 		public const int MAX_SAVES = 69;
-		public static DirectoryInfo SavesDirectory => PersistentData.OpenSubdirectory("Saves");
+		public static OSDirectory SavesDirectory => PersistentData.GetSubdirectories("Saves");
 		
 		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
 		new XmlSerializer<SaveSlot>(new XmlSerializerConfig()
@@ -106,35 +106,35 @@
 			ActiveSlot.Save();
 		}
 
-		public static SaveSlot LoadIntoMemory(FileInfo loadSlot)
+		public static SaveSlot LoadIntoMemory(OSFile loadSlot)
 		{
-			loadSlot.Refresh();
-			SaveSlot slot = SlotSerializer.Deserialize(loadSlot);
+			using FileStream fileStream = loadSlot.OpenRead();
+			SaveSlot slot = SlotSerializer.Deserialize(fileStream);
 			slot.metadata.ChangeFileTo(loadSlot);
 			return slot;
 		}
 
-		public static IReadOnlyList<KeyValuePair<FileInfo, Lazy<SaveSlot>>> AllSaves
+		public static IReadOnlyList<KeyValuePair<OSFile, Lazy<SaveSlot>>> AllSaves
 		{
 			get
 			{
 				if (m_saves == null)
 				{
-					FileInfo[] array = SavesDirectory.GetFiles();
-					var files = new List<KeyValuePair<FileInfo, Lazy<SaveSlot>>>(array.Length);
+					OSFile[] array = SavesDirectory.GetFiles();
+					var files = new List<KeyValuePair<OSFile, Lazy<SaveSlot>>>(array.Length);
 					for (int i = 0; i < array.Length; i++)
 					{
-						FileInfo currentFile = array[i];
+						OSFile currentFile = array[i];
 						Lazy<SaveSlot> lazy = new(() => LoadIntoMemory(currentFile));
 						if (currentFile.Name.Contains(NAME_START) && currentFile.Extension.Contains(NAME_EXT))
-							files.Add(new KeyValuePair<FileInfo, Lazy<SaveSlot>>(currentFile, lazy));
+							files.Add(new KeyValuePair<OSFile, Lazy<SaveSlot>>(currentFile, lazy));
 					}
 					m_saves = files;
 				}
 				return m_saves;
 			}
 		}
-		private static IReadOnlyList<KeyValuePair<FileInfo, Lazy<SaveSlot>>> m_saves;
+		private static IReadOnlyList<KeyValuePair<OSFile, Lazy<SaveSlot>>> m_saves;
 		public static void EmptySaveCache()
 		{
 			m_saves = null;
@@ -285,30 +285,25 @@
 		/// </summary>
 		public class Metadata
 		{
-			public FileInfo DirectoryInfo
+			public OSFile DirectoryInfo
 			{
 				get
 				{
 					if (string.IsNullOrEmpty(m_directoryInfo))
 					{
-						FileInfo returnVal = SavesDirectory.GetFileIncremental(NAME_START + NAME_EXT, true);
+						OSFile returnVal = SavesDirectory.GetFileIncremental(NAME_START + NAME_EXT, true);
 						m_directoryInfo = returnVal.FullName;
 						return returnVal;
 					}
-					return new FileInfo(m_directoryInfo);
+					return new OSFile(m_directoryInfo);
 				}
 			}
-			public void ChangeFileTo(FileInfo fileInfo, bool deleteOnMove = false)
+			public void ChangeFileTo(OSFile fileInfo, bool deleteOnMove = false)
 			{
 				if (deleteOnMove && File.Exists(m_directoryInfo))
 					File.Delete(m_directoryInfo);
 				m_directoryInfo = fileInfo?.FullName;
 			}
-			//public void Rename(in string newName)
-			//{
-			//	FileInfo dir = DirectoryInfo;
-			//	m_directoryInfo = dir.FullName.Replace(dir.NameWithoutExtension(), newName);
-			//}
 			[XmlIgnore]
 			private string m_directoryInfo;
 			public DateTime lastSaved;

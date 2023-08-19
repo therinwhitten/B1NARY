@@ -1,5 +1,6 @@
 ﻿namespace B1NARY.Scripting
 {
+	using B1NARY.IO;
 	using System;
 	using System.IO;
 	using System.Linq;
@@ -43,10 +44,10 @@
 		/// <summary>
 		/// The full path that leads to the document. 
 		/// </summary>
-		public FileInfo FullPath
+		public OSFile FullPath
 		{
 			get => new($"{DocumentExplorer.DocumentFolder.FullName}\\{VisualPath}.txt");
-			set => VisualPath = value.FullName.Substring(DocumentExplorer.DocumentFolder.FullName.Length + 1).Replace(".txt", "");
+			set => VisualPath = value.FullName.Normalized.Substring(DocumentExplorer.DocumentFolder.FullName.Normalized.Length + 1).Replace(".txt", "");
 		}
 
 
@@ -55,7 +56,7 @@
 			this.m_visualPath = visualPath;
 			this.VisualPath = visualPath;
 		}
-		public Document(FileInfo documentPath)
+		public Document(OSFile documentPath)
 		{
 			this.m_visualPath = null;
 			this.FullPath = documentPath;

@@ -16,12 +16,12 @@
 		/// The documents folder that has all the playable scripts the system
 		/// can access.
 		/// </summary>
-		public static DirectoryInfo DocumentFolder => SaveSlot.StreamingAssets.OpenSubdirectory("Docs");
+		public static OSDirectory DocumentFolder => SaveSlot.StreamingAssets.GetSubdirectories("Docs");
 		/// <summary>
 		/// All the documents that are divided into languages, located within the
 		/// original <see cref="DocumentFolder"/>.
 		/// </summary>
-		public static DirectoryInfo LanguagePacks => DocumentFolder.OpenSubdirectory("Language Packs");
+		public static OSDirectory LanguagePacks => DocumentFolder.GetSubdirectories("Language Packs");
 		
 
 		public List<Document> CoreDocuments { get; }
@@ -80,16 +80,16 @@
 		/// <returns> 
 		/// All the file paths that start with .txt within the directory.
 		/// </returns>
-		private void RecursivelyGetFiles(ref List<Document> documents, DirectoryInfo currentPath)
+		private void RecursivelyGetFiles(ref List<Document> documents, OSDirectory currentPath)
 		{
-			FileInfo[] files = currentPath.GetFiles();
+			OSFile[] files = currentPath.GetFiles();
 			for (int i = 0; i < files.Length; i++)
 			{
 				if (!files[i].Extension.Contains("txt"))
 					continue;
 				documents.Add(new Document(files[i]));
 			}
-			DirectoryInfo[] directories = currentPath.GetDirectories();
+			OSDirectory[] directories = currentPath.GetDirectories();
 			if (directories.Length <= 0)
 				return;
 			for (int i = 0; i < directories.Length; i++)
@@ -112,11 +112,11 @@
 			string currentLanguage = PlayerConfig.Instance.language.Value;
 			// First try to get the language version
 			Document target = comparingTo.GetWithLanguage(currentLanguage);
-			if (target.FullPath.ExistsInOSFile())
+			if (target.FullPath.Exists)
 				return target;
 			// trying to get the core version instead.
 			target = comparingTo.GetWithoutLanguage();
-			if (target.FullPath.ExistsInOSFile())
+			if (target.FullPath.Exists)
 			{
 				Debug.LogWarning($"Document '{visualPath}' doesn't lead to the specified document; using the core version instead.");
 				return target;

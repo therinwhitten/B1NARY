@@ -19,7 +19,7 @@
 		/// <summary>
 		/// The file location it was read off of. May be <see langword="null"/>.
 		/// </summary>
-		public virtual FileInfo ReadFile { get; set; }
+		public virtual OSFile ReadFile { get; set; }
 		public ScriptDocumentConfig DocumentConfig { get; }
 		public IReadOnlyList<ScriptElement> AllElements
 		{
@@ -42,14 +42,9 @@
 		}
 		private IReadOnlyList<ScriptElement> m_allElements;
 
-		public ScriptDocument(ScriptDocumentConfig config, FileInfo file) : this(config, ReadAllText(file))
+		public ScriptDocument(ScriptDocumentConfig config, OSFile file) : this(config, file.ReadAllText())
 		{
 			ReadFile = file;
-		}
-		private static string ReadAllText(FileInfo target)
-		{
-			using FileStream stream = target.OpenStream(FileMode.Open, FileAccess.Read);
-			return new StreamReader(stream).ReadToEnd();
 		}
 		public ScriptDocument(ScriptDocumentConfig config, string contents) : base(config, Init(contents))
 		{
@@ -58,7 +53,7 @@
 		private static List<ScriptLine> Init(string fileContents)
 		{
 			string[] contentsArray = fileContents.Split('\n');
-			List<ScriptLine> allLines = new List<ScriptLine>(contentsArray.Length + 3);
+			List<ScriptLine> allLines = new(contentsArray.Length + 3);
 			allLines.Add(new ScriptLine("Document", -1));
 			allLines.Add(new ScriptLine("::start", 0));
 			for (int i = 0; i < contentsArray.Length; i++)

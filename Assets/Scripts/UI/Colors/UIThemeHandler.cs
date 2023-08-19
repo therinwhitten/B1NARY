@@ -156,11 +156,11 @@ namespace B1NARY.UI.Colors.Editor
 		{
 			var hashSet = new HashSet<string>();
 			var list = new List<string>(defaultValues);
-			List<(FileInfo, ColorFormat)> allFormats = ColorFormat.AllFormats;
+			List<ColorFormat.FormatFile> allFormats = ColorFormat.AllFormats;
 			for (int i = 0; i < allFormats.Count; i++)
 			{
-				string[] allKeys = new string[allFormats[i].Item2.ExtraUIColors.Count];
-				allFormats[i].Item2.ExtraUIColors.Keys.CopyTo(allKeys, 0);
+				string[] allKeys = new string[allFormats[i].Format.ExtraUIColors.Count];
+				allFormats[i].Format.ExtraUIColors.Keys.CopyTo(allKeys, 0);
 				for (int ii = 0; ii < allKeys.Length; ii++)
 					if (!hashSet.Contains(allKeys[ii]))
 					{
@@ -228,8 +228,8 @@ namespace B1NARY.UI.Colors.Editor
 			// Display warning message if its not present in all available formats
 			List<string> unsupportedFormats = new();
 			for (int i = 0; i < ColorFormat.AvailableFormats.Count; i++)
-				if (!ColorFormat.AvailableFormats[i].format.TryGetColor(colorName, out _))
-					unsupportedFormats.Add(ColorFormat.AvailableFormats[i].format.FormatName);
+				if (!ColorFormat.AvailableFormats[i].Format.TryGetColor(colorName, out _))
+					unsupportedFormats.Add(ColorFormat.AvailableFormats[i].Format.FormatName);
 			if (unsupportedFormats.Count > 0)
 				EditorGUILayout.HelpBox($"There are some available color themes that does not support the assigned color: {string.Join(", ", unsupportedFormats)}", MessageType.Warning, true);
 			// Starting here normally

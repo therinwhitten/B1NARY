@@ -88,8 +88,8 @@
 						ChangingNameOf = this;
 						Document newDocument = new(ScriptHandler.Instance.document.ReadFile);
 						newDocument = newDocument.GetWithLanguage(Language);
-						FileInfo info = newDocument.FullPath;
-						if (!info.ToOSFile().Exists)
+						OSFile info = newDocument.FullPath;
+						if (!info.Exists)
 						{
 							Debug.Log($"{info.FullName} doesn't exist, using core path instead for replacement of name");
 							info = newDocument.GetWithoutLanguage().FullPath;

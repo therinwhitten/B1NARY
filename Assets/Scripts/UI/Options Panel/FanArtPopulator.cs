@@ -23,21 +23,17 @@
 		public TMP_Text textCredit;
 		public GameObject fanArtPreview;
 
-		public static List<FileInfo> GetAllImages(string subFolderName)
+		public static List<OSFile> GetAllImages(string subFolderName)
 		{
-			return RecursivelyGetFiles(SaveSlot.StreamingAssets.OpenSubdirectory("Fanart", subFolderName));
+			return RecursivelyGetFiles(SaveSlot.StreamingAssets.GetSubdirectories("Fanart", subFolderName));
 		}
-		private static List<FileInfo> RecursivelyGetFiles(DirectoryInfo currentPath)
+		private static List<OSFile> RecursivelyGetFiles(OSDirectory currentPath)
 		{
-			var output = new List<FileInfo>(currentPath.EnumerateFiles()
+			List<OSFile> output = new(currentPath.EnumerateFiles()
 				.Where(path => path.Extension == ".png" || path.Extension == ".jpg"));
-			IEnumerable<DirectoryInfo> directories = currentPath.EnumerateDirectories();
-			if (directories.Any())
-			{
-				using IEnumerator<DirectoryInfo> enumerator = directories.GetEnumerator();
-				while (enumerator.MoveNext())
-					output.AddRange(RecursivelyGetFiles(enumerator.Current));
-			}
+			OSDirectory[] directories = currentPath.GetDirectories();
+			for (int i = 0; i < directories.Length; i++)
+				output.AddRange(RecursivelyGetFiles(directories[i]));
 			return output;
 		}
 
@@ -51,11 +47,11 @@
 				{
 					if (images.Count > 0)
 					{
-						(Action<byte[]> action, FileInfo info) = images.Dequeue();
+						ImageReader info = images.Dequeue();
 						var memoryStream = new MemoryStream();
-						using (FileStream stream = info.OpenRead())
-							stream.CopyTo(memoryStream);
-						action.Invoke(memoryStream.ToArray());
+						using FileStream stream = info.FileInfo.OpenRead();
+						stream.CopyTo(memoryStream);
+						info.Action.Invoke(memoryStream.ToArray());
 						memoryStream.Dispose();
 					}
 					else if (others.Count > 0)
@@ -68,22 +64,23 @@
 		}
 		private Thread loadingThread;
 		private bool stop = false;
-		private Queue<(Action<byte[]>, FileInfo)> images = new();
-		private Queue<Action> others = new();
+		private record ImageReader(Action<byte[]> Action, OSFile FileInfo);
+		private readonly Queue<ImageReader> images = new();
+		private readonly Queue<Action> others = new();
 
 		// God, why the fuck is literally using ANYTHING WITH THREADS SO FUCKING HARD
 		private IEnumerator ImageLoader()
 		{
-			List<FileInfo> list = GetAllImages(subFolder);
+			List<OSFile> list = GetAllImages(subFolder);
 			for (int i = 0; i < list.Count; i++)
 			{
-				(bool hEnable, string creator, string name) = FanartInspector.ParseName(list[i].NameWithoutExtension());
+				(bool hEnable, string creator, string name) = FanartInspector.ParseName(list[i].NameWithoutExtension);
 				if (hEnable && PlayerConfig.Instance.hEnable.Value == false)
 					continue;
 
-				FileInfo imageInfo = list[i];
+				OSFile imageInfo = list[i];
 				byte[] array = null;
-				images.Enqueue((bytes => array = bytes, imageInfo));
+				images.Enqueue(new ImageReader(bytes => array = bytes, imageInfo));
 				// Expensive stuff here
 				while (array == null)
 					yield return new WaitForEndOfFrame();

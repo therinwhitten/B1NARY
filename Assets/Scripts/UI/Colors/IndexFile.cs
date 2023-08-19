@@ -8,13 +8,13 @@
 
 	public class IndexFile : IXmlSerializable
 	{
-		public static OSFile IndexPath => ColorFormat.RootPath.ToOSDirectory().GetFile("PlayerThemeIndex.xml");
+		public static OSFile IndexPath => ColorFormat.RootPath.GetFile("PlayerThemeIndex.xml");
 		private static XmlSerializer<IndexFile> indexerFormatter = new();
 		public static IndexFile LoadNew()
 		{
 			if (IndexPath.Exists)
-				using (FileStream stream = IndexPath.FullPath.Open(FileMode.Open, FileAccess.Read))
-				return indexerFormatter.Deserialize(stream);
+				using (FileStream stream = IndexPath.OpenRead())
+					return indexerFormatter.Deserialize(stream);
 			else
 				return new IndexFile();
 		}
@@ -38,7 +38,7 @@
 		}
 		public void Save()
 		{
-			using var stream = IndexPath.FullPath.Open(FileMode.Create, FileAccess.Write);
+			using FileStream stream = IndexPath.Create();
 			indexerFormatter.Serialize(stream, this);
 		}
 	}

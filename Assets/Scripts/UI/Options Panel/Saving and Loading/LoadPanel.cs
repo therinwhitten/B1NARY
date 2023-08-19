@@ -1,6 +1,7 @@
 ﻿namespace B1NARY.UI.Saving
 {
 	using B1NARY.DataPersistence;
+	using B1NARY.IO;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
@@ -32,7 +33,7 @@
 			var newList = new List<SaveSlotInstance>();
 			for (int i = 0; i < SaveSlot.AllSaves.Count; i++)
 			{
-				KeyValuePair<FileInfo, Lazy<SaveSlot>> slotPair = SaveSlot.AllSaves[i];
+				KeyValuePair<OSFile, Lazy<SaveSlot>> slotPair = SaveSlot.AllSaves[i];
 				try
 				{
 					HandleSave(slotPair.Key, slotPair.Value);
@@ -44,7 +45,7 @@
 			}
 			m_allObjects = newList;
 
-			void HandleSave(FileInfo fileInfo, Lazy<SaveSlot> saveSlot)
+			void HandleSave(OSFile fileInfo, Lazy<SaveSlot> saveSlot)
 			{
 				GameObject instance = AddEntry(slotTemplate);
 				var pair = new SaveSlotInstance()

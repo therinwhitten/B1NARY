@@ -25,7 +25,7 @@ namespace B1NARY.DataPersistence
 		public const string PRE_GRAPHICS = "gra_";
 		public const string PRE_SOUND = "snd_";
 
-		public static FileInfo ConfigLocation => SaveSlot.PersistentData.GetFile("config.xml");
+		public static OSFile ConfigLocation => SaveSlot.PersistentData.GetFile("config.xml");
 		private static XmlSerializer<PlayerConfig> XmlSerializer { get; }
 			= new XmlSerializer<PlayerConfig>(new XmlSerializerConfig
 			{
@@ -45,7 +45,7 @@ namespace B1NARY.DataPersistence
 				if (m_Instance is null)
 				{
 					if (ConfigLocation.Exists)
-						using (var fileStream = ConfigLocation.OpenStream(FileMode.Open, FileAccess.Read))
+						using (FileStream fileStream = ConfigLocation.Open(FileMode.Open, FileAccess.Read))
 							m_Instance = XmlSerializer.Deserialize(fileStream);
 					else
 						m_Instance = new PlayerConfig();
@@ -74,8 +74,8 @@ namespace B1NARY.DataPersistence
 
 		public void Save()
 		{
-			using var stream = XmlSerializer.Serialize(this, "PlayerConfig");
-			using var fileStream = ConfigLocation.Create();
+			using MemoryStream stream = XmlSerializer.Serialize(this, "PlayerConfig");
+			using FileStream fileStream = ConfigLocation.Create();
 			stream.CopyTo(fileStream);
 			fileStream.Flush();
 		}

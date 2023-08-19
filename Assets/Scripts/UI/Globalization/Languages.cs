@@ -26,7 +26,7 @@
 				PlayerConfig.Instance.language.Value = args[0];
 			}) { description = "Gets (into console) or Sets the current language.", optionalArguments = new string[] { "language" } },
 		};
-		private static FileInfo LanguagesInfo => SaveSlot.StreamingAssets.GetFile("languages.xml");
+		private static OSFile LanguagesInfo => SaveSlot.StreamingAssets.GetFile("languages.xml");
 		public static string CurrentLanguage { get => PlayerConfig.Instance.language; set => PlayerConfig.Instance.language.Value = value; }
 		private static Languages m_instance;
 		public static Languages Instance
@@ -35,8 +35,8 @@
 			{
 				if (m_instance is null)
 				{
-					if (LanguagesInfo.ExistsInOSFile())
-						using (FileStream stream = LanguagesInfo.OpenStream(FileMode.Open, FileAccess.Read))
+					if (LanguagesInfo.Exists)
+						using (FileStream stream = LanguagesInfo.OpenRead())
 							m_instance = XmlSerializer<Languages>.Default.Deserialize(stream);
 					m_instance ??= new Languages();
 				}
@@ -46,7 +46,7 @@
 
 		public void Save()
 		{
-			using var stream = LanguagesInfo.OpenStream(FileMode.Create, FileAccess.Write);
+			using FileStream stream = LanguagesInfo.Create();
 			XmlSerializer<Languages>.Default.Serialize(stream, this, "Languages");
 		}
 

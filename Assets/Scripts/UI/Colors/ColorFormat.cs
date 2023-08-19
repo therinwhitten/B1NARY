@@ -62,12 +62,12 @@
 		{
 			if (isDefault)
 			{
-				using var stream = DefaultThemePath.OpenStream(FileMode.Create, FileAccess.Write);
-				FormatSerializer.Serialize(stream, this, ROOT_NAME_DEFAULT);
+				using FileStream defaultStream = DefaultThemePath.Create();
+				FormatSerializer.Serialize(defaultStream, this, ROOT_NAME_DEFAULT);
 				return;
 			}
-			using (var stream = CustomThemePath.GetFile(fileName).OpenStream(FileMode.Create, FileAccess.Write))
-				FormatSerializer.Serialize(stream, this, ROOT_NAME_CUSTOM);
+			using FileStream stream = CustomThemePath.GetFile(fileName).Create();
+			FormatSerializer.Serialize(stream, this, ROOT_NAME_CUSTOM);
 		}
 	}
 }

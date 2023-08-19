@@ -8,9 +8,17 @@
 	using static System.IO.Path;
 
 
-	public class OSPath
+
+	/// <summary>
+	/// A highly complicated 'string' that purely only cares about the path.
+	/// Do not use this as an actual class that can do stuff!
+	/// </summary>
+	/// <remarks> 
+	/// Prints the path that can be used and is the same as <see cref="Normalized"/>. 
+	/// </remarks>
+	public struct OSPath
 	{
-		public static readonly OSPath Empty = "";
+		public static readonly OSPath Empty = new("");
 
 		public static bool IsWindows => DirectorySeparatorChar == '\\';
 
@@ -20,10 +28,10 @@
 		}
 
 		public static implicit operator OSPath(string text) => text == null ? null : new OSPath(text);
-		public static implicit operator string(OSPath path) => path?.Normalized;
+		public static implicit operator string(OSPath path) => path.Normalized;
 		public override string ToString() => Normalized;
 
-		protected string Text { get; }
+		private string Text { get; }
 
 		public string Normalized => IsWindows ? Windows : Unix;
 		public string Windows => Text.Replace('/', '\\');
@@ -41,11 +49,6 @@
 
 		public bool Contains(OSPath path) =>
 			Normalized.StartsWith(path);
-
-		public FileStream Open(FileMode fileMode, FileAccess fileAccess)
-		{
-			return File.Open(Normalized, fileMode, fileAccess);
-		}
 
 		public static OSPath operator +(OSPath left, OSPath right) =>
 			new OSPath(Combine(left, right.Relative));

@@ -41,7 +41,7 @@
 				for (int i = 0; i < DocumentExplorer.CoreDocuments.Count; i++)
 				{
 					Document document = DocumentExplorer.CoreDocuments[i];
-					allScripts.AppendLine($"\t{document.FullPath.ToOSFile().FullPath.Normalized}");
+					allScripts.AppendLine($"\t{document.FullPath.FullName}");
 				}
 				using var enumerator = DocumentExplorer.LanguagedDocuments.GetEnumerator();
 				while (enumerator.MoveNext())
@@ -50,7 +50,7 @@
 					IList<Document> documents = enumerator.Current.Value;
 					allScripts.AppendLine($"<b><size=135%>{language}:</size></b>");
 					for (int i = 0; i < documents.Count; i++)
-						allScripts.AppendLine($"\t{documents[i].FullPath.ToOSFile().FullPath.Normalized}");
+						allScripts.AppendLine($"\t{documents[i].FullPath.FullName}");
 				}
 				HDConsole.WriteLine(allScripts.ToString());
 			}) { description = "Prints of all detected documents to console." },
@@ -195,7 +195,7 @@
 			int currentIndex = documentWatcher.CurrentNode.GlobalIndex;
 			Document newDocument = new(document.ReadFile);
 			newDocument = newDocument.GetWithLanguage(newLanguage);
-			FileInfo file = newDocument.FullPath;
+			OSFile file = newDocument.FullPath;
 			if (!file.Exists)
 			{
 				Debug.LogWarning($"File '{file.FullName}' doesn't exist, using core path instead.");

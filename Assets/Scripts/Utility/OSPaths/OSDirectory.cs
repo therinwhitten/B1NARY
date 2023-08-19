@@ -9,7 +9,7 @@
 	using static System.IO.Path;
 	using UnityEngine;
 
-	public class OSDirectory : OSFolderEntry
+	public class OSDirectory : OSSystemInfo
 	{
 		/// <summary>
 		/// Gets the local appdata folder for saving settings, configs, etc.
@@ -52,54 +52,80 @@
 		{
 		}
 
-		public OSDirectory AsRoot() => new OSDirectory(FullPath, FullPath);
+		public OSDirectory AsRoot() => new OSDirectory(FullName, FullName);
 
-		public OSDirectory Up() => new(FullPath.Parent, Root);
+		public OSDirectory Up() => new(FullName.Parent, Root);
 
-		public OSDirectory Down(string folder) => new(FullPath + folder, Root);
+		public OSDirectory Down(string folder) => new(FullName + folder, Root);
 
-		public bool Exists => Directory.Exists(FullPath);
-		public void Create() => Directory.CreateDirectory(FullPath);
-		public OSFile File(OSPath path) => new OSFile(FullPath + path, Root);
+		public bool Exists => Directory.Exists(FullName);
+		public void Create() => Directory.CreateDirectory(FullName);
+		public OSFile File(OSPath path) => new OSFile(FullName + path, Root);
 
-		public OSDirectory GetSubdirectory(string subDirectory)
+		public OSDirectory GetSubdirectories(params string[] subDirectories)
 		{
-			OSDirectory output = new(Combine(FullPath.Normalized, subDirectory));
-			if (!output.Exists)
-				output.Create();
+			OSDirectory output = this;
+			for (int i = 0; i < subDirectories.Length; i++)
+			{
+				output = new OSDirectory(Combine(FullName.Normalized, subDirectories[i]));
+				if (!output.Exists)
+					output.Create();
+			}
 			return output;
 		}
 
 		public IEnumerable<OSDirectory> EnumerateDirectories()
 		{
-			return	from fullPath in Directory.EnumerateDirectories(FullPath)
+			return	from fullPath in Directory.EnumerateDirectories(FullName)
 					select new OSDirectory(fullPath, Root);
 		}
 		public OSDirectory[] GetDirectories()
 		{
-			string[] directories = Directory.GetDirectories(FullPath);
+			string[] directories = Directory.GetDirectories(FullName);
 			OSDirectory[] result = new OSDirectory[directories.Length];
 			for (int i = 0; i < directories.Length; i++)
-				result[i] = new OSDirectory(FullPath, directories[i]);
+				result[i] = new OSDirectory(FullName, directories[i]);
 			return result;
 		}
 
 		public IEnumerable<OSFile> EnumerateFiles()
 		{
-			return	from fullPath in Directory.EnumerateFiles(FullPath)
+			return	from fullPath in Directory.EnumerateFiles(FullName)
 					select new OSFile(fullPath, Root);
 		}
 		public OSFile[] GetFiles()
 		{
-			string[] files = Directory.GetFiles(FullPath);
+			string[] files = Directory.GetFiles(FullName);
 			OSFile[] result = new OSFile[files.Length];
 			for (int i = 0; i < files.Length; i++)
-				result[i] = new OSFile(FullPath, files[i]);
+				result[i] = new OSFile(FullName, files[i]);
 			return result;
 		}
 		public OSFile GetFile(string fileNameAndExtension)
 		{
-			return new OSFile(Combine(FullPath, fileNameAndExtension));
+			return new OSFile(Combine(FullName, fileNameAndExtension));
+		}
+
+		/// <summary>
+		/// Creates a new file, increases number incrementally if there are any
+		/// files that are existant in the name.
+		/// </summary>
+		/// <param name="source"> The source of the new file. </param>
+		/// <param name="fileName"> The file name with the extension. </param>
+		/// <param name="alwaysIncludeNumber"> If the filename should always include the number at the end. </param>
+		/// <returns> A fileinfo that doesn't have any files to it. </returns>
+		public OSFile GetFileIncremental(string fileName, bool alwaysIncludeNumber = false)
+		{
+			HashSet<string> otherNames = new(EnumerateFiles().Select(fileInfo => fileInfo.Name));
+			if (alwaysIncludeNumber || otherNames.Contains(fileName))
+				for (int i = alwaysIncludeNumber ? 0 : 1; true; i++)
+				{
+					string incrementalName = fileName.Insert(fileName.LastIndexOf('.'), $"_{i}");
+					if (otherNames.Contains(incrementalName))
+						continue;
+					return GetFile(incrementalName);
+				}
+			return GetFile(fileName);
 		}
 	}
 }
