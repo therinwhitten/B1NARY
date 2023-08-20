@@ -41,7 +41,7 @@
 				string name = Name;
 				int index = name.LastIndexOf(".");
 				if (index == -1)
-					return null;
+					return string.Empty;
 				return name.Substring(index);
 			}
 			set

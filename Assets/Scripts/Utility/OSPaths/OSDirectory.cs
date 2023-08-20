@@ -84,7 +84,7 @@
 			string[] directories = Directory.GetDirectories(FullName);
 			OSDirectory[] result = new OSDirectory[directories.Length];
 			for (int i = 0; i < directories.Length; i++)
-				result[i] = new OSDirectory(FullName, directories[i]);
+				result[i] = new OSDirectory(directories[i], FullName);
 			return result;
 		}
 
@@ -98,7 +98,7 @@
 			string[] files = Directory.GetFiles(FullName);
 			OSFile[] result = new OSFile[files.Length];
 			for (int i = 0; i < files.Length; i++)
-				result[i] = new OSFile(FullName, files[i]);
+				result[i] = new OSFile(files[i], FullName);
 			return result;
 		}
 		public OSFile GetFile(string fileNameAndExtension)
