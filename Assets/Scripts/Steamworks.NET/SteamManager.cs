@@ -20,7 +20,6 @@ namespace B1NARY.Steamworks
 	using B1NARY.DesignPatterns;
 #if !DISABLESTEAMWORKS
 	using global::Steamworks;
-	using HDConsole;
 #endif
 
 	//
@@ -28,7 +27,7 @@ namespace B1NARY.Steamworks
 	// It handles the basics of starting up and shutting down the SteamAPI for use.
 	//
 	[DisallowMultipleComponent]
-	public class SteamManager : DesignPatterns.Singleton<SteamManager>
+	public class SteamManager : Singleton<SteamManager>
 	{
 #if UNITY_EDITOR
 		[UnityEditor.InitializeOnLoadMethod]
@@ -43,30 +42,6 @@ namespace B1NARY.Steamworks
 #endif
 
 #if !DISABLESTEAMWORKS
-		[return: CommandToConsole]
-		private static HDCommand[] GetHDCommands() => new HDCommand[]
-		{
-			new HDCommand("bny_achievements", (args) =>
-			{
-				StringBuilder builder = new($"<b><size=135%>All {Achievement.AllAchievements.Count} Achievements:</size></b>\n");
-				for (int i = 0; i < Achievement.AllAchievements.Count; i++) 
-				{
-					Achievement achievement = Achievement.AllAchievements[i];
-					builder.AppendLine($"<i>{{{achievement.AchievementIndex}}}</i> <b>{achievement.Name}</b>{(achievement.Achieved ? " <size=65%>{Achieved! Nice Job!}</size>" : "")}");
-					if (!string.IsNullOrWhiteSpace(achievement.Description))
-						builder.AppendLine($"\t {achievement.Description}");
-				} 
-				HDConsole.WriteLine(builder.ToString());
-
-			}) { description = "Displays all commands into the console." },
-
-			new HDCommand("bny_achievement_set", new string[] { "Achievement Index"}, (args) =>
-			{
-				HDConsole.WriteLine("no lol");
-			}),
-		};
-
-
 		protected SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
 
 		[AOT.MonoPInvokeCallback(typeof(SteamAPIWarningMessageHook_t))]

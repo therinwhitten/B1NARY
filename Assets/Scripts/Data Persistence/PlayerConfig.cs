@@ -6,6 +6,7 @@ namespace B1NARY.DataPersistence
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
+	using System.Linq;
 	using System.Xml.Serialization;
 	using UnityEngine;
 	using OVSXmlSerializer;
@@ -109,7 +110,7 @@ namespace B1NARY.DataPersistence
 		{
 			public ChangableValue<float> glow = new(1f);
 			public ChangableValue<int> graphicSettingIndex = new(QualitySettings.GetQualityLevel());
-			public ChangableValue<int> frameRate = new(69);
+			public ChangableValue<int> frameRate = new(Math.Min(69, (int)Screen.resolutions.Max(res => res.refreshRateRatio.value)));
 			// Let the legendary coders find this line to laugh their asses off,
 			// - I want the small file sizes but my manager still wants high quality
 			// - images lol
