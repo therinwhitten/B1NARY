@@ -5,6 +5,7 @@ namespace B1NARY.Steamworks
 {
 	using B1NARY.DataPersistence;
 	using B1NARY.Scripting;
+	using HDConsole;
 #if !DISABLESTEAMWORKS
 	using global::Steamworks;
 #endif
@@ -27,26 +28,69 @@ namespace B1NARY.Steamworks
 				Achievement target = FromKey(key);
 				if (!target.Exists)
 					Debug.Log($"{key} is not real");
-				target.Unlock();
+				target.Achieved = true;
 			}),
+		};
+
+		[return: CommandToConsole]
+		private static HDCommand[] GetHDCommands() => new HDCommand[]
+		{
+			new HDCommand("bny_achievements", (args) =>
+			{
+				StringBuilder builder = new($"<b><size=135%>All {AllAchievements.Count} Achievements:</size></b>\n");
+				for (int i = 0; i < AllAchievements.Count; i++)
+				{
+					Achievement achievement = AllAchievements[i];
+					builder.AppendLine($"<i>{{{achievement.AchievementIndex}}}</i> <b>{achievement.Name}</b>{(achievement.Achieved ? " <size=65%>{Achieved! Nice Job!}</size>" : "")}");
+					if (!string.IsNullOrWhiteSpace(achievement.Description))
+						builder.AppendLine($"\t {achievement.Description}");
+				}
+				HDConsole.WriteLine(builder.ToString());
+
+			}) { description = "Displays all commands into the console." },
+
+			new HDCommand("bny_achivements_reset", (args) =>
+			{
+				for (int i = 0; i < AllAchievements.Count; i++)
+					AllAchievements[i].Achieved = false;
+
+			}) { description = "Resets all achievements to default." },
+
+			new HDCommand("bny_achievement_set", new string[] { "Achievement Index", "0-1" }, (args) =>
+			{
+				Achievement target = FromKey(args[0]);
+				bool enabled = HDCommand.ParseFrom01(args[1]);
+				target.Achieved = enabled;
+			}) { description = "Sets a specific achievement via key in true or false." },
 		};
 
 		public void SetAchievement(string indexKey)
 		{
 			Achievement target = AllAchievements.First(achievement => achievement.AchievementIndex == indexKey);
-			target.Unlock();
+			target.Achieved = true;
 		}
 	}
 
 
 	public record Achievement(string AchievementIndex, string Name, string Description)
 	{
+		// Primary Achievements
 		private static readonly Achievement
 			MaleRoute = new("male_route", "I REALLY want a cup of Coffee...", "Male Route Complete"),
 			FemaleRoute = new("female_route", "Jujitsu Training did NOT Pay off...", "Female Route Complete"),
 			FemaleRouteHScene = new("demo_female_hscene", "Yuri between the sheets.", "Female H Scene First Time"),
 			MaleRouteHScene = new("demo_male_hscene", "Hentai Protag.", "Male H Scene First Time"),
 			AllAchievementsCompleted = new("demo_complete", "Cultured", "Demo Complete");
+
+		// Secondary Achievements
+		private static readonly Achievement
+			NutCracker = new("nut_cracker", "Nut Cracker", "Defend against Lucas"),
+			SecondSwallow = new("second_swallow", "Second Swallow", "Make the Male Player say Swallow Twice in Game"),
+			InternUWU = new("intern_UwU", "Intern", "First New Game"),
+			ClosedBetaDemo = new("closed_beta_demo", "Beta Tester", "Performed Beta Testing for the Demo!");
+
+		// The Best Achievement
+		private static readonly Achievement VeryCool = new("very_cool", "Very Cool", "Very Cool");
 
 		public static IReadOnlyList<Achievement> AllAchievements { get; } = new Achievement[]
 		{
@@ -55,14 +99,19 @@ namespace B1NARY.Steamworks
 			FemaleRouteHScene,
 			MaleRouteHScene,
 			AllAchievementsCompleted,
-			new Achievement("nut_cracker", "Nut Cracker", "Defend against Lucas"),
-			new Achievement("second_swallow", "Second Swallow", "Make the Male Player say Swallow Twice in Game"),
-			new Achievement("intern_UwU", "Intern", "FIrst New Game"),
-			new Achievement("closed_beta_demo", "Beta Tester", "Performed Beta Testing for the Demo!"),
+			NutCracker,
+			SecondSwallow,
+			InternUWU,
+			ClosedBetaDemo,
 		};
 
-
 		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+		private static void Constructor()
+		{
+			TryUnlockCompleteDemo();
+			for (int i = 0; i < AllAchievements.Count; i++)
+				AllAchievements[i].AchievedAchievement += TryUnlockCompleteDemo;
+		}
 		private static void TryUnlockCompleteDemo()
 		{
 #if !DISABLESTEAMWORKS
@@ -77,7 +126,7 @@ namespace B1NARY.Steamworks
 				return;
 			if (!MaleRouteHScene.Achieved)
 				return;
-			AllAchievementsCompleted.Unlock();
+			AllAchievementsCompleted.Achieved = true;
 		}
 		public static Achievement FromKey(string achievementKey)
 		{
@@ -87,11 +136,7 @@ namespace B1NARY.Steamworks
 					continue;
 				return AllAchievements[i];
 			}
-#if !DISABLESTEAMWORKS
-			return new Achievement("null", "null", "unknown achievement") { m_exists = false, m_achieved = false };
-#else
-			return new Achievement("null", "null", "unknown achievement");
-#endif
+			throw new IndexOutOfRangeException(achievementKey);
 		}
 
 		public bool Exists
@@ -114,6 +159,7 @@ namespace B1NARY.Steamworks
 #if !DISABLESTEAMWORKS
 		private bool? m_exists = null;
 #endif
+		public event Action AchievedAchievement;
 		public bool Achieved
 		{
 #if DISABLESTEAMWORKS
@@ -121,9 +167,14 @@ namespace B1NARY.Steamworks
 			set
 			{
 				if (value)
+				{
 					PlayerConfig.Instance.savedAchievements.Add(AchievementIndex);
+					AchievedAchievement?.Invoke();
+				}
 				else
+				{
 					PlayerConfig.Instance.savedAchievements.Remove(AchievementIndex);
+				}
 			}
 #else
 			get
@@ -135,27 +186,33 @@ namespace B1NARY.Steamworks
 				}
 				return m_achieved.Value;
 			}
-			private set => m_achieved = value; 
+			set
+			{
+				if (value == m_achieved)
+					return;
+				m_achieved = value;
+				if (!SteamManager.HasInstanceOrInitialize())
+					return;
+
+				if (value)
+				{
+					PlayerConfig.Instance.savedAchievements.Add(AchievementIndex);
+					if (Exists)
+						SteamUserStats.SetAchievement(AchievementIndex);
+					AchievedAchievement?.Invoke();
+				}
+				else
+				{
+					PlayerConfig.Instance.savedAchievements.Remove(AchievementIndex);
+					if (Exists)
+						SteamUserStats.ClearAchievement(AchievementIndex);
+				}
+				SteamUserStats.StoreStats();
+			}
 #endif
 		}
 #if !DISABLESTEAMWORKS
 		private bool? m_achieved = null;
 #endif
-
-		public void Unlock()
-		{
-			if (Achieved)
-				return;
-#if !DISABLESTEAMWORKS
-			if (!SteamManager.HasInstanceOrInitialize())
-				return;
-#endif
-			Achieved = true;
-#if !DISABLESTEAMWORKS
-			SteamUserStats.SetAchievement(AchievementIndex);
-			SteamUserStats.StoreStats();
-			TryUnlockCompleteDemo();
-#endif
-		}
 	}
 }

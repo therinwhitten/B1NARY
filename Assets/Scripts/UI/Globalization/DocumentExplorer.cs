@@ -90,8 +90,6 @@
 				documents.Add(new Document(files[i]));
 			}
 			OSDirectory[] directories = currentPath.GetDirectories();
-			if (directories.Length <= 0)
-				return;
 			for (int i = 0; i < directories.Length; i++)
 				RecursivelyGetFiles(ref documents, directories[i]);
 		}

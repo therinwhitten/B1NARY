@@ -89,10 +89,11 @@
 						HDConsole.WriteLine($"{command} {(value ? "1" : "0")}");
 					return;
 				}
-				bool setTo = args[0] switch { "0" => false, "1" => true, _ => throw new InvalidCastException(args[0]) };
+				bool setTo = ParseFrom01(args[0]);
 				setBool.Invoke(setTo);
 			},
 		};
+		public static bool ParseFrom01(string line) => line switch { "0" => false, "1" => true, _ => throw new InvalidCastException(line) };
 		public static HDCommand AutoCompleteFloat(string command, Func<float> getFloat, Action<float> setFloat, float min, float max, MainTags tags = MainTags.None, string description = "") => new()
 		{
 			command = command,
