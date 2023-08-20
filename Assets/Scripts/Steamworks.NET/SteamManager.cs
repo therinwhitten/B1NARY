@@ -42,6 +42,7 @@ namespace B1NARY.Steamworks
 #endif
 
 #if !DISABLESTEAMWORKS
+		public static AppId_t AppID => new(1577930);
 		protected SteamAPIWarningMessageHook_t m_SteamAPIWarningMessageHook;
 
 		[AOT.MonoPInvokeCallback(typeof(SteamAPIWarningMessageHook_t))]
@@ -55,6 +56,7 @@ namespace B1NARY.Steamworks
 		private static void InitOnPlayMode2()
 		{
 			SteamManager.ThrowErrorIfEmpty = false;
+			_ = SteamManager.Instance;
 		}
 
 		protected override void SingletonAwake()
@@ -82,7 +84,7 @@ namespace B1NARY.Steamworks
 				// Once you get a Steam AppID assigned by Valve, you need to replace AppId_t.Invalid with it and
 				// remove steam_appid.txt from the game depot. eg: "(AppId_t)480" or "new AppId_t(480)".
 				// See the Valve documentation for more information: https://partner.steamgames.com/doc/sdk/api#initialization_and_shutdown
-				if (SteamAPI.RestartAppIfNecessary(GameInfo.AppID))
+				if (SteamAPI.RestartAppIfNecessary(AppID))
 				{
 					Debug.Log("[Steamworks.NET] Shutting down because RestartAppIfNecessary returned true. Steam will restart the application.");
 

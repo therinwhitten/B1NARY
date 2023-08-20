@@ -26,8 +26,10 @@ namespace B1NARY.Steamworks
 			["setachievement"] = (Action<string>)((key) =>
 			{
 				Achievement target = FromKey(key);
+#if !DISABLESTEAMWORKS
 				if (!target.Exists)
 					Debug.Log($"{key} is not real");
+#endif
 				target.Achieved = true;
 			}),
 		};
@@ -37,11 +39,20 @@ namespace B1NARY.Steamworks
 		{
 			new HDCommand("bny_achievements", (args) =>
 			{
+#if DISABLESTEAMWORKS
 				StringBuilder builder = new($"<b><size=135%>All {AllAchievements.Count} Achievements:</size></b>\n");
+#else
+				StringBuilder builder = new($"<b><size=135%>All {AllAchievements.Count} Achievements, with gameID {SteamManager.AppID.m_AppId}:</size></b>\n");
+#endif
 				for (int i = 0; i < AllAchievements.Count; i++)
 				{
 					Achievement achievement = AllAchievements[i];
-					builder.AppendLine($"<i>{{{achievement.AchievementIndex}}}</i> <b>{achievement.Name}</b>{(achievement.Achieved ? " <size=65%>{Achieved! Nice Job!}</size>" : "")}");
+					StringBuilder mainLine = new($"<i>{{{achievement.AchievementIndex}}}</i> <b>{achievement.Name}</b>");
+					if (achievement.Achieved == true)
+						mainLine.Append(" <size=70%>{Achieved! Nice Job!}</size>");
+					if (achievement.Exists == false)
+						mainLine.Append(" <size=70%><i>And it doesn't exist!...</i></size>");
+					builder.AppendLine(mainLine.ToString());
 					if (!string.IsNullOrWhiteSpace(achievement.Description))
 						builder.AppendLine($"\t {achievement.Description}");
 				}
@@ -132,18 +143,16 @@ namespace B1NARY.Steamworks
 		{
 			for (int i = 0; i < AllAchievements.Count; i++)
 			{
-				if (!AllAchievements[i].AchievementIndex.Contains(achievementKey))
+				if (AllAchievements[i].AchievementIndex != achievementKey)
 					continue;
 				return AllAchievements[i];
 			}
 			throw new IndexOutOfRangeException(achievementKey);
 		}
 
+#if !DISABLESTEAMWORKS
 		public bool Exists
 		{
-#if DISABLESTEAMWORKS
-			get => true;
-#else
 			get
 			{
 				if (m_exists is null)
@@ -153,12 +162,10 @@ namespace B1NARY.Steamworks
 				}
 				return m_exists.Value;
 			}
-
-#endif
 		}
-#if !DISABLESTEAMWORKS
 		private bool? m_exists = null;
 #endif
+
 		public event Action AchievedAchievement;
 		public bool Achieved
 		{
