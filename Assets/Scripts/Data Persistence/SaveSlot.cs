@@ -99,7 +99,7 @@
 			}
 		}
 		private static SaveSlot m_activeSlot;
-		public void Quicksave()
+		public static void Quicksave()
 		{
 			if (!PlayerConfig.Instance.quickSaveOverrides.Value)
 				ActiveSlot.metadata.ChangeFileTo(null);
@@ -217,7 +217,7 @@
 				scriptPosition = ScriptPosition.Define();
 				characterSnapshots = ActorSnapshot.GetCurrentSnapshots();
 				audio = SerializedAudio.SerializeAudio();
-				formatName = ColorFormat.CurrentFormat.FormatName;
+				formatName = ColorFormat.ActiveFormat.FormatName;
 
 				byte[] thumbnail = ScreenCapture.CaptureScreenshotAsTexture().EncodeToJPG();
 				Task.Run(() =>
@@ -275,7 +275,7 @@
 			};
 			wrapper.AfterActions += (mono) =>
 			{
-				ColorFormat.Set(formatName);
+				ColorFormat.SetFormat(formatName);
 			};
 			wrapper.AfterActions += (mono) => ScriptHandler.Instance.NextLine();
 			wrapper.Start();

@@ -6,7 +6,7 @@
 
 	public class FPSHandler
 	{
-		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
 		private static void Constructor()
 		{
 			PlayerConfig.Instance.graphics.frameRate.AttachValue(count => Application.targetFrameRate = count);

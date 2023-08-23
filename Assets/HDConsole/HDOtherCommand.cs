@@ -22,6 +22,7 @@
 			GameObject duplicate = Instantiate(gameObject);
 			duplicate.SetActive(true);
 			duplicate.transform.SetParent(transform);
+			duplicate.transform.localScale = Vector3.one;
 			return duplicate.GetComponent<HDOtherCommand>();
 		}
 

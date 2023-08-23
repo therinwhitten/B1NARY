@@ -28,7 +28,11 @@
 
 			new HDCommand($"quit", (args) =>
 			{
-				Application.Quit();
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.ExitPlaymode();
+#else
+			Application.Quit();
+#endif
 			}),
 
 			new HDCommand($"{HDCommand.CONSOLE_PREFIX}_credits", (args) =>

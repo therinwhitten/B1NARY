@@ -50,8 +50,10 @@ namespace B1NARY.Steamworks
 					StringBuilder mainLine = new($"<i>{{{achievement.AchievementIndex}}}</i> <b>{achievement.Name}</b>");
 					if (achievement.Achieved == true)
 						mainLine.Append(" <size=70%>{Achieved! Nice Job!}</size>");
+#if !DISABLESTEAMWORKS
 					if (achievement.Exists == false)
 						mainLine.Append(" <size=70%><i>And it doesn't exist!...</i></size>");
+#endif
 					builder.AppendLine(mainLine.ToString());
 					if (!string.IsNullOrWhiteSpace(achievement.Description))
 						builder.AppendLine($"\t {achievement.Description}");

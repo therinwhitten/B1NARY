@@ -10,8 +10,16 @@
 	[AttributeUsage(AttributeTargets.ReturnValue | AttributeTargets.Field, AllowMultiple = false)]
 	public class CommandToConsoleAttribute : Attribute
 	{
+		private static List<HDCommand> commands = null;
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSplashScreen)]
+		private static void Constructor()
+		{
+			GetList();
+		}
 		public static List<HDCommand> GetList()
 		{
+			if (commands != null)
+				return commands;
 			List<HDCommand> Commands = new();
 			HashSet<string> commandNames = new();
 			Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -29,7 +37,7 @@
 				}
 				commandNames.Add(currentCommand.command);
 			}
-			return Commands;
+			return commands = Commands;
 		}
 		private static IList<HDCommand> GetFromAssembly(Assembly assembly)
 		{

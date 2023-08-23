@@ -1,5 +1,6 @@
 ﻿namespace HDConsole
 {
+	using global::HDConsole.IO;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
@@ -12,6 +13,7 @@
 	using UnityEngine.Diagnostics;
 	using UnityEngine.InputSystem;
 	using UnityEngine.SocialPlatforms.Impl;
+	using UnityEngine.UI;
 
 	public class HDConsole : Singleton<HDConsole>
 	{
@@ -93,7 +95,7 @@
 
 			static void WriteToConsole(string condition, string stackTrace, LogType type)
 			{
-				WriteLine(type, condition);
+				WriteLine(type, $"<b>{condition}</b>");
 				if (type != LogType.Log)
 					Write(type, stackTrace);
 			}
@@ -115,6 +117,7 @@
 
 		[Space]
 		public TMP_Text consoleText;
+		public Scrollbar slider;
 		public TMP_InputField inputField;
 		public TMP_Text description;
 		[Tooltip("The amount of lines that the console can potentially remember and callback.")]
@@ -147,9 +150,13 @@
 		};
 
 		internal readonly LinkedList<string> consoleTextMemory = new();
+		internal event Action<string> AddedLine;
 		internal LinkedList<string> consoleCommandMemory;
 		internal const string MEM_CMD = "HDConsole Command Memory";
 		internal const char MEM_SPLIT_KEY = '\r';
+
+		internal static OSFile HDLogPath => new(Path.Combine(Application.persistentDataPath, "HDConsole.log"));
+		internal LogAutoSyncer syncer;
 
 		internal List<HDCommand> commands;
 		internal Dictionary<string, HDCommand> commandDict;
@@ -196,6 +203,8 @@
 			commandDict = commands.ToDictionary(command => command.command);
 			openClose.started += OnOpenClose;
 			openClose.Enable();
+			
+			//syncer = new(HDLogPath, this, TimeSpan.FromSeconds(10f));
 		}
 
 		private void OnEnable()
@@ -230,10 +239,13 @@
 			openClose.started -= OnOpenClose;
 			PlayerPrefs.SetString(MEM_CMD, string.Join(MEM_SPLIT_KEY, consoleCommandMemory));
 			PlayerPrefs.Save();
+			//syncer.Dispose();
 		}
 
 		private void AddText(string input)
 		{
+			//if (slider != null && slider.value < 0.05f)
+			//	StartCoroutine(SetToEnd());
 			consoleTextMemory.AddLast(input);
 			while (consoleTextMemory.Count > lineCapacity)
 				consoleTextMemory.RemoveFirst();
@@ -241,6 +253,13 @@
 			for (LinkedListNode<string> node = consoleTextMemory.First; node != null; node = node.Next)
 				builder.Append(node.Value);
 			consoleText.text = builder.ToString();
+			AddedLine?.Invoke(input);
+
+			//IEnumerator SetToEnd()
+			//{
+			//	yield return new WaitForEndOfFrame();
+			//	slider.value = 0f;
+			//}
 		}
 
 		// Player Input

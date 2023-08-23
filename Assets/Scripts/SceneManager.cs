@@ -149,18 +149,17 @@
 			var async = UnitySceneManager.LoadSceneAsync(MainMenuSceneIndex);
 			if (async == null)
 			{
-				if (Application.isEditor)
-				{
-					Debug.LogException(new MissingReferenceException($"'{MainMenuSceneIndex}' does not exist as a scene index, fix this before production! IT WILL BREAK YOUR SHIT!"));
-					ScriptHandler.Instance.pauser.Break();
-				}
-				else
-					Utils.ForceCrash(ForcedCrashCategory.FatalError);
+#if UNITY_EDITOR
+				Debug.LogException(new MissingReferenceException($"'{MainMenuSceneIndex}' does not exist as a scene index, fix this before production! IT WILL BREAK YOUR SHIT!"));
+				UnityEditor.EditorApplication.ExitPlaymode();
+#else
+				Utils.ForceCrash(ForcedCrashCategory.FatalError);
+#endif
 			}
 			ScriptHandler.Instance.pauser.RemoveBlocker(this);
 			ScriptHandler.Instance.Clear();
 			AudioController.Instance.RemoveAllSounds();
-			ColorFormat.Set(ColorFormat.DefaultFormat);
+			ColorFormat.SetFormat(ColorFormat.DefaultFormat, false);
 		}
 		/// <summary>
 		/// Initializes the <see cref="ScriptHandler"/>, the system expects the
