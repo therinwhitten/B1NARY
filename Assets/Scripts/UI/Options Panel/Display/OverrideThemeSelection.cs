@@ -28,7 +28,7 @@
 		{
 			get
 			{
-				IReadOnlyList<ColorFormat> list = ColorFormat.GetPlayerFormats();
+				IReadOnlyList<ColorFormat> list = ColorFormat.GetPlayableFormats();
 				List<KeyValuePair<string, ColorFormat>> pairs = new(list.Count);
 				for (int i = 0; i < list.Count; i++)
 					pairs.Add(new KeyValuePair<string, ColorFormat>(list[i].FormatName, list[i]));

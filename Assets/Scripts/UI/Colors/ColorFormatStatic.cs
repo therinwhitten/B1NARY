@@ -47,12 +47,18 @@
 						HDConsole.WriteLine(LogType.Error, $"{set} format is not found");
 				}, "format", HDCommand.MainTags.None, "Gets or Sets the overrided (or active) color format."),
 
+			new HDCommand("bny_format_default", (args) => SetFormat(DefaultFormat, true))
+			{ description = "Sets format to default." },
+
 			new HDCommand("bny_format_playable", (args) =>
 			{
 				StringBuilder builder = new();
-				IReadOnlyList<ColorFormat> playableFormats = GetPlayerFormats();
+				IReadOnlyList<ColorFormat> playableFormats = GetPlayableFormats();
 				for (int i = 0; i < playableFormats.Count; i++)
 					builder.AppendLine($"\t{playableFormats[i]}");
+				IReadOnlyList<ColorFormat> playerFormats = GetAllFormats().playerFormats;
+				for (int i = 0; i < playerFormats.Count; i++)
+					builder.AppendLine($"\t{playerFormats[i]}");
 				HDConsole.WriteLine(builder.ToString());
 			}) { description = "Gets all playable formats, or you can select through the options menu." },
 
@@ -246,7 +252,7 @@
 		/// <summary>
 		/// Gets all formats that can be overrided by the player.
 		/// </summary>
-		public static IReadOnlyList<ColorFormat> GetPlayerFormats()
+		public static IReadOnlyList<ColorFormat> GetPlayableFormats()
 		{
 			if (m_playerFormats is not null)
 				return m_playerFormats;
