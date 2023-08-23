@@ -10,7 +10,7 @@
 
 	public class OverrideThemeSelection : DropdownPanel<ColorFormat>
 	{
-		public override int InitialValue => Values.ToList().IndexOf(ColorFormat.CurrentFormat);
+		public override int InitialValue => Values.ToList().FindIndex(format => format.FormatName == ColorFormat.ActiveFormat.FormatName);
 		
 		protected override void Awake()
 		{
@@ -18,18 +18,13 @@
 		}
 
 		public override List<KeyValuePair<string, ColorFormat>> DefinedPairs =>
-			ColorFormat.PlayerFormats
+			ColorFormat.GetPlayerFormats()
 			.Select(format => new KeyValuePair<string, ColorFormat>(format.FormatName, format)).ToList();
 		protected override void PickedChoice(int index)
 		{
 			base.PickedChoice(index);
 			ColorFormat currentFormat = Pairs[index].Value;
-			if (ReferenceEquals(ColorFormat.CurrentFormat, currentFormat))
-			{
-				ColorFormat.SetToDefault();
-				return;
-			}
-			ColorFormat.Set(currentFormat, true);
+			ColorFormat.SetFormat(currentFormat, true);
 		}
 	}
 }

@@ -9,7 +9,7 @@
 	{
 		public static Color Parse(string hexadecimal)
 		{
-			hexadecimal = hexadecimal.TrimStart('#').Trim();
+			hexadecimal = hexadecimal.Trim();
 			if (UnityColorUtility.TryParseHtmlString(hexadecimal, out Color color))
 				return color;
 			else

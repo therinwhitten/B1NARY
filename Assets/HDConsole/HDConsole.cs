@@ -1,5 +1,6 @@
 ﻿namespace HDConsole
 {
+	using global::HDConsole.IO;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
@@ -147,9 +148,13 @@
 		};
 
 		internal readonly LinkedList<string> consoleTextMemory = new();
+		internal event Action<string> AddedLine;
 		internal LinkedList<string> consoleCommandMemory;
 		internal const string MEM_CMD = "HDConsole Command Memory";
 		internal const char MEM_SPLIT_KEY = '\r';
+
+		internal static OSFile HDLogPath => new(Path.Combine(Application.persistentDataPath, "HDConsole.log"));
+		internal LogAutoSyncer syncer;
 
 		internal List<HDCommand> commands;
 		internal Dictionary<string, HDCommand> commandDict;
@@ -196,6 +201,8 @@
 			commandDict = commands.ToDictionary(command => command.command);
 			openClose.started += OnOpenClose;
 			openClose.Enable();
+			
+			//syncer = new(HDLogPath, this, TimeSpan.FromSeconds(10f));
 		}
 
 		private void OnEnable()
@@ -230,6 +237,7 @@
 			openClose.started -= OnOpenClose;
 			PlayerPrefs.SetString(MEM_CMD, string.Join(MEM_SPLIT_KEY, consoleCommandMemory));
 			PlayerPrefs.Save();
+			//syncer.Dispose();
 		}
 
 		private void AddText(string input)
@@ -241,6 +249,7 @@
 			for (LinkedListNode<string> node = consoleTextMemory.First; node != null; node = node.Next)
 				builder.Append(node.Value);
 			consoleText.text = builder.ToString();
+			AddedLine.Invoke(input);
 		}
 
 		// Player Input
