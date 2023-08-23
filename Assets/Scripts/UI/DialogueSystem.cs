@@ -314,7 +314,7 @@
 
 		public void QuickSave()
 		{
-			SaveSlot.ActiveSlot.Save();
+			SaveSlot.Quicksave();
 		}
 		public void QuickLoad()
 		{

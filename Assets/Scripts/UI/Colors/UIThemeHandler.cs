@@ -57,6 +57,12 @@
 		private void UpdateColorsDelegate(ColorFormat format) => UpdateColors();
 		internal bool CheckForColor(out PropertyInfo info)
 		{
+			if (TargetComponent == null)
+			{
+				Debug.LogWarning($"Target graphic is null!", this);
+				info = null;
+				return false;
+			}
 			Type componentType = TargetComponent.GetType();
 			if (!string.IsNullOrEmpty(cacheColor))
 			{
@@ -83,6 +89,12 @@
 		}
 		internal bool CheckForColorBlock(out PropertyInfo info)
 		{
+			if (TargetComponent == null)
+			{
+				Debug.LogWarning($"Target graphic is null!", this);
+				info = null;
+				return false;
+			}
 			Type componentType = TargetComponent.GetType();
 			if (!string.IsNullOrEmpty(cacheColorblock))
 			{
@@ -173,6 +185,11 @@
 #endif
 		private void Start()
 		{
+			if (TargetComponent == null)
+			{
+				Debug.LogWarning($"Target graphic is null!", this);
+				return;
+			}
 			UpdateColors();
 		}
 		private void OnEnable()

@@ -225,12 +225,6 @@
 			if (m_availableFormats is not null)
 				return m_availableFormats.Value;
 			List<ColorFormat> developerFormats = GetFormats(RootPath.GetFiles());
-			for (int i = 0; i < developerFormats.Count; i++)
-				if (developerFormats[i].IsDefault)
-				{
-					developerFormats.RemoveAt(i);
-					break;
-				}
 			List<ColorFormat> playerFormats = GetFormats(PlayerThemePath.GetFiles());
 			return (m_availableFormats = (developerFormats, playerFormats)).Value;
 
@@ -256,10 +250,10 @@
 		{
 			if (m_playerFormats is not null)
 				return m_playerFormats;
-			var (developerFormats, playerFormats) = GetAllFormats();
-			List<ColorFormat> playableFormats = new(playerFormats);
+			IReadOnlyList<ColorFormat> developerFormats = GetAllFormats().developerFormats;
+			List<ColorFormat> playableFormats = new(developerFormats.Count);
 			for (int i = 0; i < developerFormats.Count; i++)
-				if (developerFormats[i].playerControlled)
+				if (developerFormats[i].IsPlayableFormat)
 					playableFormats.Add(developerFormats[i]);
 			return m_playerFormats = playableFormats;
 		}

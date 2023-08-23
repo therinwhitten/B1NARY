@@ -10,16 +10,33 @@
 
 	public class OverrideThemeSelection : DropdownPanel<ColorFormat>
 	{
-		public override int InitialValue => Values.ToList().FindIndex(format => format.FormatName == ColorFormat.ActiveFormat.FormatName);
-		
+		public override int InitialValue
+		{
+			get
+			{
+				int index = Values.ToList().FindIndex(format => format.FormatName == ColorFormat.ActiveFormat.FormatName);
+				return index == -1 ? 0 : index;
+			}
+		}
+
 		protected override void Awake()
 		{
 			base.Awake();
 		}
 
-		public override List<KeyValuePair<string, ColorFormat>> DefinedPairs =>
-			ColorFormat.GetPlayerFormats()
-			.Select(format => new KeyValuePair<string, ColorFormat>(format.FormatName, format)).ToList();
+		public override List<KeyValuePair<string, ColorFormat>> DefinedPairs
+		{
+			get
+			{
+				IReadOnlyList<ColorFormat> list = ColorFormat.GetPlayerFormats();
+				List<KeyValuePair<string, ColorFormat>> pairs = new(list.Count);
+				for (int i = 0; i < list.Count; i++)
+					pairs.Add(new KeyValuePair<string, ColorFormat>(list[i].FormatName, list[i]));
+				return pairs;
+			}
+		}
+
+
 		protected override void PickedChoice(int index)
 		{
 			base.PickedChoice(index);

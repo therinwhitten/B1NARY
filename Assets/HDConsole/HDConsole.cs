@@ -13,6 +13,7 @@
 	using UnityEngine.Diagnostics;
 	using UnityEngine.InputSystem;
 	using UnityEngine.SocialPlatforms.Impl;
+	using UnityEngine.UI;
 
 	public class HDConsole : Singleton<HDConsole>
 	{
@@ -94,7 +95,7 @@
 
 			static void WriteToConsole(string condition, string stackTrace, LogType type)
 			{
-				WriteLine(type, condition);
+				WriteLine(type, $"<b>{condition}</b>");
 				if (type != LogType.Log)
 					Write(type, stackTrace);
 			}
@@ -116,6 +117,7 @@
 
 		[Space]
 		public TMP_Text consoleText;
+		public Scrollbar slider;
 		public TMP_InputField inputField;
 		public TMP_Text description;
 		[Tooltip("The amount of lines that the console can potentially remember and callback.")]
@@ -242,6 +244,8 @@
 
 		private void AddText(string input)
 		{
+			//if (slider != null && slider.value < 0.05f)
+			//	StartCoroutine(SetToEnd());
 			consoleTextMemory.AddLast(input);
 			while (consoleTextMemory.Count > lineCapacity)
 				consoleTextMemory.RemoveFirst();
@@ -249,7 +253,13 @@
 			for (LinkedListNode<string> node = consoleTextMemory.First; node != null; node = node.Next)
 				builder.Append(node.Value);
 			consoleText.text = builder.ToString();
-			AddedLine.Invoke(input);
+			AddedLine?.Invoke(input);
+
+			//IEnumerator SetToEnd()
+			//{
+			//	yield return new WaitForEndOfFrame();
+			//	slider.value = 0f;
+			//}
 		}
 
 		// Player Input

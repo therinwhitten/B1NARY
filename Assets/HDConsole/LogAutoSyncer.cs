@@ -11,18 +11,30 @@
 	{
 		private readonly HDConsole console;
 		private readonly OSFile targetFile;
-		private readonly Timer timer;
+		private readonly Thread thread;
 		private readonly List<string> newLines = new();
+		private bool disposed = false;
 		public LogAutoSyncer(OSFile fileInfo, HDConsole console, TimeSpan timerDelay)
 		{
 			this.console = console;
 			this.targetFile = fileInfo;
-			timer = new Timer(Update, null, timerDelay, timerDelay);
+			thread = new(Loop) { Priority = ThreadPriority.Lowest };
 			console.AddedLine += NewLine;
 			File.WriteAllText(targetFile.FullName, "");
+			thread.Start();
+
+			void Loop()
+			{
+			loopbreak:
+				Thread.Sleep(timerDelay);
+				if (disposed)
+					return;
+				Update();
+				goto loopbreak;
+			}
 		}
 		private void NewLine(string line) => newLines.Add(line);
-		public void Update(object state = null)
+		public void Update()
 		{
 			if (newLines.Count == 0)
 				return;
@@ -32,8 +44,8 @@
 		public void Dispose()
 		{
 			console.AddedLine -= NewLine;
+			disposed = true;
 			Update();
-			timer.Dispose();
 		}
 	}
 }

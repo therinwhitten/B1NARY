@@ -99,7 +99,7 @@
 			}
 		}
 		private static SaveSlot m_activeSlot;
-		public void Quicksave()
+		public static void Quicksave()
 		{
 			if (!PlayerConfig.Instance.quickSaveOverrides.Value)
 				ActiveSlot.metadata.ChangeFileTo(null);

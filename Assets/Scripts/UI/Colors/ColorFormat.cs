@@ -21,12 +21,13 @@
 		/// </summary>
 		[XmlAttribute("name")]
 		public string FormatName;
+		public bool IsPlayableFormat => playerControlled || IsDefault;
 		/// <summary>
 		/// If the value can be controlled by the player. This is always true for
 		/// player-customized formats.
 		/// </summary>
 		[XmlNamedAs("PlayerControlled")]
-		public bool playerControlled = false;
+		internal bool playerControlled = false;
 		/// <summary>
 		/// The primary color to be used by all UI. Defaulted to this color by
 		/// default if something happens.
