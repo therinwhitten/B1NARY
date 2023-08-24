@@ -36,7 +36,7 @@
 					Debug.LogWarning($"format '{newColorFormat}' is not found.");
 			}),
 		};
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		private static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
 			HDCommand.AutoCompleteString("bny_format", 

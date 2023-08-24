@@ -9,7 +9,7 @@
 
 	public static partial class CoreCommands
 	{
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		public static HDCommand[] ConsoleCommands() => new HDCommand[]
 		{
 			new HDCommand($"{HDCommand.CONSOLE_PREFIX}_display_all_commands", (args) =>
@@ -75,7 +75,7 @@
 			}) { description = "Clears all commands written by the player that is saved in memory." },
 
 			HDCommand.AutoCompleteBool($"{HDCommand.SERVER_PREFIX}_cheats", HDConsole.CheatsEnabled, (@bool) => HDConsole.CheatsEnabled = () => @bool,
-				HDCommand.MainTags.ServerModOnly, "Enables or disables cheats on a server, or during ingame.")
+				HDCommand.MainTags.ServerModOnly, "Enables or disables cheats on a server, or during ingame."),
 		};
 	}
 }

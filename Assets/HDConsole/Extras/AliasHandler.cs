@@ -17,7 +17,7 @@
 		public record BoundAliasValue(IList<string> Commands);
 
 
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		public static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
 			new HDCommand("alias_set", new string[] { "name" }, new string[] { "commands" }, (args) =>

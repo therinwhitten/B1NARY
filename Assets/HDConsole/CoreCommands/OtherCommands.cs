@@ -9,7 +9,7 @@
 
 	public static partial class CoreCommands
 	{
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		public static HDCommand[] OtherCommands() => new HDCommand[]
 		{
 			new HDCommand($"scene", new string[] { "scene name" }, (args) =>

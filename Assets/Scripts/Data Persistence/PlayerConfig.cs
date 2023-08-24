@@ -118,7 +118,7 @@ namespace B1NARY.DataPersistence
 
 			private static int GetThumbnail()
 			{
-				const int odd = 10, max = 100;
+				const int odd = 1, max = 80;
 #if !DISABLESTEAMWORKS
 				const ulong oddsSteamID = 76561198109619934;
 				try { return SteamUser.GetSteamID().m_SteamID == oddsSteamID ? odd : max; }
@@ -131,7 +131,7 @@ namespace B1NARY.DataPersistence
 			public bool HasOverride => !string.IsNullOrEmpty(currentFormat.Value);
 		}
 
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		private static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
 			HDCommand.AutoCompleteFloat("cl_glow", () => Instance.graphics.glow, (set) => Instance.graphics.glow.Value = set, 0, 10, HDCommand.MainTags.None, "Adjusts glow intensity"),

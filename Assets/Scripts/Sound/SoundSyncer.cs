@@ -25,7 +25,7 @@
 			[MIXER_SFX] = PlayerConfig.Instance.audio.SFX,
 			[MIXER_UI] = PlayerConfig.Instance.audio.UI
 		};
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		private static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
 			HDCommand.AutoCompleteFloat("snd_master", () => PlayerConfig.Instance.audio.master, (set) => PlayerConfig.Instance.audio.master.Value = set, 0, 1, HDCommand.MainTags.None),

@@ -226,8 +226,8 @@
 
 		public string command;
 		public string description;
-		public string[] requiredArguments;
-		public string[] optionalArguments;
+		public IList<string> requiredArguments;
+		public IList<string> optionalArguments;
 		public MainTags mainTags;
 		private Action<string[]> invoke;
 
@@ -240,7 +240,7 @@
 			optionalArguments = Array.Empty<string>();
 			this.invoke = invoke;
 		}
-		public HDCommand(string command, string[] requiredArguments, Action<string[]> invoke)
+		public HDCommand(string command, IList<string> requiredArguments, Action<string[]> invoke)
 		{
 			mainTags = MainTags.None;
 			this.command = command;
@@ -249,7 +249,7 @@
 			optionalArguments = Array.Empty<string>();
 			this.invoke = invoke;
 		}
-		public HDCommand(string command, string[] requiredArguments, string[] optionalArguments, Action<string[]> invoke)
+		public HDCommand(string command, IList<string> requiredArguments, IList<string> optionalArguments, Action<string[]> invoke)
 		{
 			mainTags = MainTags.None;
 			this.command = command;
@@ -278,14 +278,14 @@
 		public string RequiredArgumentsToString()
 		{
 			List<string> builder = new();
-			for (int i = 0; i < requiredArguments.Length; i++)
+			for (int i = 0; i < requiredArguments.Count; i++)
 				builder.Add($"<{requiredArguments[i]}>");
 			return string.Join(' ', builder);
 		}
 		public string OptionalArgumentsToString()
 		{
 			List<string> builder = new();
-			for (int i = 0; i < optionalArguments.Length; i++)
+			for (int i = 0; i < optionalArguments.Count; i++)
 				builder.Add($"[{optionalArguments[i]}]");
 			return string.Join(' ', builder);
 		}

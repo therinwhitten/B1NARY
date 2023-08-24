@@ -35,7 +35,7 @@
 			}
 		}
 
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		public static HDCommand GetHDCommand() =>
 			new("bind_toggle", new string[] { "key", "command", "enable", "disable" }, (args) =>
 			{

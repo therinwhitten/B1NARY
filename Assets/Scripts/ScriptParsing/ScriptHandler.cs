@@ -24,7 +24,7 @@
 	[AddComponentMenu("B1NARY/Script Handler")]
 	public sealed class ScriptHandler : DesignPatterns.Singleton<ScriptHandler>
 	{
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		private static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
 			new HDCommand("script", (args) =>
@@ -87,6 +87,24 @@
 						{
 							throw new Exception(message);
 						}),
+						// Invokes script commands through console; dont need commas so extra args doesn't do much.
+						["invokeconsolecommand"] = (Action<string>)((arg1) => HDConsole.InvokeThoughConsole(arg1)),
+						// Keeping these here for the hell of it lol
+						["invokeconsolecommand"] = (Action<string, string>)((arg1, arg2) => HDConsole.InvokeThoughConsole(arg1, arg2)),
+						["invokeconsolecommand"] = (Action<string, string, string>)((arg1, arg2, arg3) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3)),
+						["invokeconsolecommand"] = (Action<string, string, string, string>)((arg1, arg2, arg3, arg4) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6, arg7)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15)),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16) => HDConsole.InvokeThoughConsole(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16)),
 					},
 					DialogueSystem.Commands,
 					AudioController.Commands,

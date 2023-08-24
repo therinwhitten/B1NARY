@@ -11,7 +11,7 @@
 
 	public class Languages : List<string>, IXmlSerializable
 	{
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		private static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
 			new HDCommand("lang_current", (args) =>

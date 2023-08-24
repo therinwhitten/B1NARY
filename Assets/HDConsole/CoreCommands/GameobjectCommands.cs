@@ -9,7 +9,7 @@
 
 	public  static partial class CoreCommands
 	{
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		public static HDCommand[] GameObjectCommands() => new HDCommand[]
 		{
 			new HDCommand($"{HDCommand.GAMEOBJECT_PREFIX}_fire", new string[] { "Gameobject Name" }, (args) =>

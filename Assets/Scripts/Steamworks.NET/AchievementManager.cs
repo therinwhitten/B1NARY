@@ -34,7 +34,7 @@ namespace B1NARY.Steamworks
 			}),
 		};
 
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		private static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
 			new HDCommand("bny_achievements", (args) =>

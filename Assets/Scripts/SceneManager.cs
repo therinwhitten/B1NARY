@@ -35,7 +35,7 @@
 		/// </summary>
 		public static readonly CommandArray Commands = new()
 		{
-			["changescene"] = (Action<string>)ChangeSceneCommand,//["changescene"] = (Action<string>)ChangeSceneCommand,
+			["changescene"] = (Action<string>)ChangeSceneCommand,
 			["returntomainmenu"] = (Action)ReturnToMainMenuCommand,
 		};
 		[ForcePause]

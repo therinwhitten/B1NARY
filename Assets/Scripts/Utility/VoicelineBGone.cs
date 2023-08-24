@@ -11,7 +11,7 @@
 
 	public class VoicelineBGone : MonoBehaviour
 	{
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		public static HDCommand GetHDCommand() => HDCommand.AutoCompleteBool("bny_voiceline_b_gone", () => Enabled, (set) =>
 		{
 			if (Enabled == set)

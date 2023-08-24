@@ -12,12 +12,14 @@
 	using UnityEngine.InputSystem.Controls;
 	using UnityEngine.InputSystem.LowLevel;
 
+	// This class was implemented before multi-command commands were a thing,
+	// - dont think about it too hard.
 	internal static class KeybindHandler
 	{
 		public record BoundCommandValue(IList<string> Commands, InputAction Action);
 
 
-		[return: CommandToConsole]
+		[return: CommandsFromGetter]
 		public static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
 			new HDCommand("bind", new string[] { "key" }, new string[] { "commands" }, (args) =>

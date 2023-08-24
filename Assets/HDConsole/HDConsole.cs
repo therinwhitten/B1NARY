@@ -118,7 +118,6 @@
 		[Space]
 		public TMP_Text consoleText;
 		public Scrollbar slider;
-		public TMP_InputField inputField;
 		public TMP_Text description;
 		[Tooltip("The amount of lines that the console can potentially remember and callback.")]
 		public int lineCapacity = byte.MaxValue;
@@ -179,6 +178,12 @@
 
 
 
+		public TMP_InputField inputField;
+		public IReadOnlyList<string> CommandLine
+		{
+			get => inputField.text.Split(';');
+			set => inputField.text = string.Join(';', value);
+		}
 
 		private void Reset()
 		{
@@ -197,7 +202,7 @@
 				for (int i = 0; i < splitCommands.Length; i++)
 					consoleCommandMemory.AddLast(splitCommands[i]);
 			}
-			commands = CommandToConsoleAttribute.GetList();
+			commands = CommandsFromGetterAttribute.GetList();
 			activeButtons = new List<ActiveButton>(displayOtherCommandAmount);
 			commands = new List<HDCommand>(commands.OrderBy(command => command.command));
 			commandDict = commands.ToDictionary(command => command.command);
@@ -220,7 +225,7 @@
 			tab.Enable();
 			UpdateOtherCommandList();
 			UpdateDescriptivePanel();
-			StartCoroutine(RenableDelay(description.transform.parent.gameObject, true));
+			//StartCoroutine(RenableDelay(description.transform.parent.gameObject, true));
 		}
 		private void OnDisable()
 		{
@@ -328,12 +333,12 @@
 			if (m_allowUpdateList == false)
 				return;
 			queuedCommands.Clear();
-			bool isCommands = inputField.text != string.Empty;
+			bool isCommands = !string.IsNullOrWhiteSpace(CommandLine[^1]);
 			if (isCommands)
 				// Existing commands that match closest
 				for (int i = 0; i < commands.Count; i++)
 				{
-					if (!commands[i].command.StartsWith(inputField.text.Split(' ')[0]))
+					if (!commands[i].command.StartsWith(CommandLine[^1].TrimStart().Split(' ')[0]))
 						continue;
 					queuedCommands.Add(commands[i].ToString());
 				}
@@ -368,7 +373,7 @@
 				activeButtons.Add(newButton);
 			}
 
-			StartCoroutine(RenableDelay(otherCommandListLocation.gameObject));
+			//StartCoroutine(RenableDelay(otherCommandListLocation.gameObject));
 			UpdateDescriptivePanel();
 		}
 		/// <summary>
@@ -376,7 +381,7 @@
 		/// </summary>
 		internal void UpdateDescriptivePanel()
 		{
-			if (queuedCommands.Count <= 0 || string.IsNullOrWhiteSpace(inputField.text))
+			if (queuedCommands.Count <= 0 || string.IsNullOrWhiteSpace(CommandLine[^1]))
 			{
 				description.text = "";
 				description.gameObject.SetActive(false);
@@ -398,12 +403,12 @@
 				builder.Append($"{closestRelative.description}\n");
 			builder.Append(closestRelative.ToString());
 			string output = builder.ToString();
-			bool changed = description.text == output;
+			//bool changed = description.text == output;
 			description.text = output;
-			if (changed)
-				description.gameObject.SetActive(true);
-			else
-				StartCoroutine(RenableDelay(description.gameObject));
+			//if (changed)
+			description.gameObject.SetActive(true);
+			//else
+			//	StartCoroutine(RenableDelay(description.gameObject));
 		}
 
 
@@ -414,7 +419,9 @@
 				changesTo = changesTo.Split(' ')[0];
 
 			inputField.ActivateInputField();
-			inputField.text = changesTo;
+			List<string> set = new(CommandLine);
+			set[^1] = set.Count > 1 ? $" {changesTo}" : changesTo;
+			CommandLine = set;
 			inputField.stringPosition = changesTo.Length;
 		}
 
@@ -425,46 +432,42 @@
 		{
 			if (fullCommand.Length <= 0)
 				return false;
-			string[] splitCommand = HDCommand.SplitWithQuotations(fullCommand);
-			if (!commandDict.TryGetValue(splitCommand[0], out HDCommand command))
+			string[] allCommands = fullCommand.Split(';');
+			for (int i = 0; i < allCommands.Length; i++)
 			{
-				WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' is not found");
-				return false;
-			}
-			if (command.mainTags.HasFlag(HDCommand.MainTags.ServerModOnly) && !CanInvokeModCommand())
-			{
-				WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' cannot be invoked by a non-moderator.");
-				return false;
-			}
-			if (command.mainTags.HasFlag(HDCommand.MainTags.Cheat) && !CheatsEnabled.Invoke())
-			{
-				WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' is a cheat, but cheats are not enabled.");
-				return false;
-			}
-			int argumentCount = splitCommand.Length - 1;
-			if (command.requiredArguments.Length > argumentCount)
-			{
-				WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' has missing required arguments not fullfilled");
-				return false;
-			}
-			try
-			{
-				command.Invoke(splitCommand.Skip(1).ToArray());
-			}
-			catch (Exception ex)
-			{
-				WriteLine(LogType.Exception, ex.ToString());
-				return false;
+				string[] splitCommand = HDCommand.SplitWithQuotations(allCommands[i]);
+				if (!commandDict.TryGetValue(splitCommand[0], out HDCommand command))
+				{
+					WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' is not found");
+					return false;
+				}
+				if (command.mainTags.HasFlag(HDCommand.MainTags.ServerModOnly) && !CanInvokeModCommand())
+				{
+					WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' cannot be invoked by a non-moderator.");
+					return false;
+				}
+				if (command.mainTags.HasFlag(HDCommand.MainTags.Cheat) && !CheatsEnabled.Invoke())
+				{
+					WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' is a cheat, but cheats are not enabled.");
+					return false;
+				}
+				int argumentCount = splitCommand.Length - 1;
+				if (command.requiredArguments.Count > argumentCount)
+				{
+					WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' has missing required arguments not fullfilled");
+					return false;
+				}
+				try
+				{
+					command.Invoke(splitCommand.Skip(1).ToArray());
+				}
+				catch (Exception ex)
+				{
+					WriteLine(LogType.Exception, ex.ToString());
+					return false;
+				}
 			}
 			return true;
-		}
-		private static IEnumerator RenableDelay(GameObject obj, bool waitFirstFrame = false)
-		{
-			if (waitFirstFrame)
-				yield return new WaitForEndOfFrame();
-			obj.SetActive(false);
-			yield return new WaitForEndOfFrame();
-			obj.SetActive(true);
 		}
 	}
 }

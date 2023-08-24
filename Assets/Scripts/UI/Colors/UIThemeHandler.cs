@@ -44,7 +44,10 @@
 				};
 				return;
 			}
-			Debug.LogException(new IndexOutOfRangeException($"The graphic {TargetComponent} doesn't contain a color"), this);
+			if (TargetComponent != null)
+				Debug.LogException(new IndexOutOfRangeException($"The graphic {TargetComponent} doesn't contain a color"), this);
+			else
+				Debug.LogException(new IndexOutOfRangeException($"Graphic component isn't assigned!"), this);
 
 			static Color GetColor(string key)
 			{
