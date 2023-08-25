@@ -57,7 +57,11 @@
 					$"equipped format: {ColorFormat.ActiveFormat.FormatName}.");
 			}
 		}
-		private void UpdateColorsDelegate(ColorFormat format) => UpdateColors();
+		private void UpdateColorsDelegate(ColorFormat format)
+		{
+			try { UpdateColors(); } catch (Exception ex) { Debug.LogException(ex); }
+		}
+
 		internal bool CheckForColor(out PropertyInfo info)
 		{
 			if (TargetComponent == null)
