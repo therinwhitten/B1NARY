@@ -67,7 +67,7 @@
 			OSDirectory output = this;
 			for (int i = 0; i < subDirectories.Length; i++)
 			{
-				output = new OSDirectory(Combine(FullName.Normalized, subDirectories[i]));
+				output = new OSDirectory(Combine(FullName, subDirectories[i]));
 				if (!output.Exists)
 					output.Create();
 			}

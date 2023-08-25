@@ -119,8 +119,11 @@
 		public TMP_Text consoleText;
 		public Scrollbar slider;
 		public TMP_Text description;
-		[Tooltip("The amount of lines that the console can potentially remember and callback.")]
-		public int lineCapacity = byte.MaxValue;
+		public static int LineCapacity
+		{
+			get => PlayerPrefs.GetInt("HDConsole Line Capacity", byte.MaxValue);
+			set => PlayerPrefs.SetInt("HDConsole Line Capacity", value);
+		}
 
 		[Space]
 		public RectTransform otherCommandListLocation;
@@ -252,7 +255,7 @@
 			//if (slider != null && slider.value < 0.05f)
 			//	StartCoroutine(SetToEnd());
 			consoleTextMemory.AddLast(input);
-			while (consoleTextMemory.Count > lineCapacity)
+			while (consoleTextMemory.Count > LineCapacity)
 				consoleTextMemory.RemoveFirst();
 			StringBuilder builder = new();
 			for (LinkedListNode<string> node = consoleTextMemory.First; node != null; node = node.Next)

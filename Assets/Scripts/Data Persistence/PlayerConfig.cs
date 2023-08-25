@@ -90,6 +90,7 @@ namespace B1NARY.DataPersistence
 		public Audio audio = new();
 		public Graphics graphics = new();
 		public HashSet<string> savedAchievements = new();
+		public Dictionary<string, float> savedProgressionAchievements = new();
 
 
 		/// <summary>
@@ -136,6 +137,19 @@ namespace B1NARY.DataPersistence
 		{
 			HDCommand.AutoCompleteFloat("cl_glow", () => Instance.graphics.glow, (set) => Instance.graphics.glow.Value = set, 0, 10, HDCommand.MainTags.None, "Adjusts glow intensity"),
 			HDCommand.AutoCompleteInt("cl_graphic_index", () => Instance.graphics.graphicSettingIndex, (set) => Instance.graphics.graphicSettingIndex.Value = set, 0, QualitySettings.count, HDCommand.MainTags.None),
+			new HDCommand("cl_clear_config", (args) =>
+			{
+				HashSet<string> achievements = Instance.savedAchievements;
+				Dictionary<string, float> progAchievements = Instance.savedProgressionAchievements;
+				m_Instance = new PlayerConfig() { savedAchievements = achievements, savedProgressionAchievements = progAchievements };
+#if UNITY_EDITOR
+				UnityEditor.EditorApplication.ExitPlaymode();
+#else
+
+				Application.Quit();
+#endif
+
+			}) { description = "Deletes and creates a new config. Quits and relaunches the game to apply settings." },
 		};
 	}
 }

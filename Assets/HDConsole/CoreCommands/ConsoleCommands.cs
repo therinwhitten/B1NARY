@@ -76,6 +76,8 @@
 
 			HDCommand.AutoCompleteBool($"{HDCommand.SERVER_PREFIX}_cheats", HDConsole.CheatsEnabled, (@bool) => HDConsole.CheatsEnabled = () => @bool,
 				HDCommand.MainTags.ServerModOnly, "Enables or disables cheats on a server, or during ingame."),
+
+			HDCommand.AutoCompleteInt($"{HDCommand.SERVER_PREFIX}_line_capacity", () => HDConsole.LineCapacity, set => HDConsole.LineCapacity = set, description: "how many lines the console can store/display."),
 		};
 	}
 }
