@@ -332,28 +332,25 @@ namespace B1NARY.UI.Colors.Editor
 				new ColorFormat() { FormatName = newItemName, }.Save();
 				ColorFormat.ResetCache();
 			}
-			if (bruh = EditorGUILayout.BeginFoldoutHeaderGroup(bruh, "Player-Defined Themes"))
-			{
-				EditorGUI.indentLevel++;
-				for (int i = 0; i < allFormats.Count; i++)
-				{
-					ColorFormat format = allFormats[i];
-					bool oldValue = format.playerControlled;
-					if (EditorGUILayout.Toggle(format.FormatName, format.playerControlled) != format.playerControlled)
-					{
-						format.playerControlled = !oldValue;
-						format.Save();
-						ColorFormat.ResetCache();
-					}
-				}
-				EditorGUI.indentLevel--;
-			}
 			EditorGUILayout.EndFoldoutHeaderGroup();
 			selection = EditorGUILayout.Popup(selection, allFormats.Select(pair => pair.FormatName).ToArray());
 			ColorFormat currentFormat = allFormats[selection];
 			if (!ReferenceEquals(currentFormat, ColorFormat.DefaultFormat))
-				currentFormat.FormatName = EditorGUILayout.TextField("Name", currentFormat.FormatName);
+			{
+				string @new = EditorGUILayout.DelayedTextField("Name", currentFormat.FormatName);
+				if (@new != currentFormat.FormatName)
+				{
+					currentFormat.Delete();
+					currentFormat.FormatName = @new;
+					currentFormat.Save();
+					ColorFormat.ResetCache();
+					return;
+				}
+			}
+
 			EditorGUI.indentLevel++;
+			if (!currentFormat.IsDefault)
+				currentFormat.playerControlled = EditorGUILayout.Toggle("Is Playable Theme", currentFormat.playerControlled);
 			currentFormat.PrimaryUI = EditorGUILayout.ColorField("Primary Color", currentFormat.PrimaryUI);
 			currentFormat.SecondaryUI = EditorGUILayout.ColorField("Secondary Color", currentFormat.SecondaryUI);
 			DictionaryEditor<string, Color> editable = new(currentFormat.ExtraUIColors)

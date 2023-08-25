@@ -57,7 +57,11 @@
 					$"equipped format: {ColorFormat.ActiveFormat.FormatName}.");
 			}
 		}
-		private void UpdateColorsDelegate(ColorFormat format) => UpdateColors();
+		private void UpdateColorsDelegate(ColorFormat format)
+		{
+			try { UpdateColors(); } catch (Exception ex) { Debug.LogException(ex); }
+		}
+
 		internal bool CheckForColor(out PropertyInfo info)
 		{
 			if (TargetComponent == null)
@@ -127,7 +131,7 @@
 			if (TargetComponent == null)
 				return false;
 			if (Color is not null || ColorBlock is not null)
-				return false;
+				return true;
 			if (CheckForColor(out PropertyInfo info))
 			{
 				Color = new Ref<Color>(() => (Color)info.GetValue(TargetComponent), set => info.SetValue(TargetComponent, set));
@@ -260,7 +264,15 @@ namespace B1NARY.UI.Colors.Editor
 			//	TestSwitch();
 			currentHandler.TargetComponent = DirtyAuto.Field(target, new("Target Component"), currentHandler.TargetComponent, true);
 			if (!currentHandler.DefineReferences())
+			{
+				if (currentHandler.TargetComponent == null)
+					return;
+				else if (currentHandler.Color is null && currentHandler.ColorBlock is null)
+					EditorGUILayout.HelpBox("The graphic has no customizable colors", MessageType.Warning);
+				else
+					EditorGUILayout.HelpBox("what is going on", MessageType.Warning);
 				return;
+			}
 			// Update variables
 
 			EditorGUILayout.Space();
@@ -287,7 +299,7 @@ namespace B1NARY.UI.Colors.Editor
 		{
 			// Display warning message if its not present in all available formats
 			List<string> unsupportedFormats = new();
-			IReadOnlyList<ColorFormat> available = ColorFormat.GetCombinedAllFormats();
+			IReadOnlyList<ColorFormat> available = ColorFormat.GetAllFormats().developerFormats;
 			for (int i = 0; i < available.Count; i++)
 				if (!available[i].TryGetColor(colorName, out _))
 					unsupportedFormats.Add(available[i].FormatName);
