@@ -7,7 +7,9 @@
 	using System.Linq;
 	using OVSXmlSerializer;
 	using B1NARY.UI.Colors;
+	using B1NARY.UI.Globalization;
 
+	[RequireComponent(typeof(DropdownGlobalizer))]
 	public class OverrideThemeSelection : DropdownPanel<ColorFormat>
 	{
 		public override int InitialValue
@@ -18,7 +20,6 @@
 				return index == -1 ? 0 : index;
 			}
 		}
-
 		protected override void Awake()
 		{
 			base.Awake();
@@ -28,10 +29,18 @@
 		{
 			get
 			{
-				IReadOnlyList<ColorFormat> list = ColorFormat.GetPlayableFormats();
-				List<KeyValuePair<string, ColorFormat>> pairs = new(list.Count);
-				for (int i = 0; i < list.Count; i++)
-					pairs.Add(new KeyValuePair<string, ColorFormat>(list[i].FormatName, list[i]));
+				Dictionary<string, ColorFormat> dictionary = ColorFormat.GetPlayableFormats().ToDictionary(format => format.FormatName);
+				List<KeyValuePair<string, ColorFormat>> pairs = new(dictionary.Count);
+				string[] languageKeys = GetComponent<DropdownGlobalizer>()[Languages.Instance[0]];
+				for (int i = 0; i < languageKeys.Length; i++)
+				{
+					string key = languageKeys[i];
+					if (dictionary.TryGetValue(key, out ColorFormat format))
+						pairs.Add(new KeyValuePair<string, ColorFormat>(key, format));
+					else
+						Debug.LogWarning($"{key} format doesn't exist in player formats!");
+				}
+
 				return pairs;
 			}
 		}

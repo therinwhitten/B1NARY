@@ -428,46 +428,59 @@
 
 
 
-		public bool InvokeFromString(string fullCommand)
+		public void InvokeFromString(string fullCommand)
 		{
 			if (fullCommand.Length <= 0)
-				return false;
+				return;
 			string[] allCommands = fullCommand.Split(';');
-			for (int i = 0; i < allCommands.Length; i++)
+			string[][] splitCommands = allCommands.Select(str => HDCommand.SplitWithQuotations(str)).ToArray();
+			StartCoroutine(CommandStream());
+
+			IEnumerator CommandStream()
 			{
-				string[] splitCommand = HDCommand.SplitWithQuotations(allCommands[i]);
-				if (!commandDict.TryGetValue(splitCommand[0], out HDCommand command))
+				for (int i = 0; i < allCommands.Length; i++)
 				{
-					WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' is not found");
-					return false;
-				}
-				if (command.mainTags.HasFlag(HDCommand.MainTags.ServerModOnly) && !CanInvokeModCommand())
-				{
-					WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' cannot be invoked by a non-moderator.");
-					return false;
-				}
-				if (command.mainTags.HasFlag(HDCommand.MainTags.Cheat) && !CheatsEnabled.Invoke())
-				{
-					WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' is a cheat, but cheats are not enabled.");
-					return false;
-				}
-				int argumentCount = splitCommand.Length - 1;
-				if (command.requiredArguments.Count > argumentCount)
-				{
-					WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' has missing required arguments not fullfilled");
-					return false;
-				}
-				try
-				{
-					command.Invoke(splitCommand.Skip(1).ToArray());
-				}
-				catch (Exception ex)
-				{
-					WriteLine(LogType.Exception, ex.ToString());
-					return false;
+					string[] splitCommand = splitCommands[i];
+					if (!commandDict.TryGetValue(splitCommand[0], out HDCommand command))
+					{
+						WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' is not found");
+						yield break;
+					}
+					if (command.mainTags.HasFlag(HDCommand.MainTags.ServerModOnly) && !CanInvokeModCommand())
+					{
+						WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' cannot be invoked by a non-moderator.");
+						yield break;
+					}
+					if (command.mainTags.HasFlag(HDCommand.MainTags.Cheat) && !CheatsEnabled.Invoke())
+					{
+						WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' is a cheat, but cheats are not enabled.");
+						yield break;
+					}
+					int argumentCount = splitCommand.Length - 1;
+					if (command.requiredArguments.Count > argumentCount)
+					{
+						WriteLine(LogErrorColor, $"Command '{splitCommand[0]}' has missing required arguments not fullfilled");
+						yield break;
+					}
+
+					if (KeybindHandler.Delay.command == splitCommand[0])
+					{
+						if (float.TryParse(splitCommand[1], out float seconds))
+							yield return new WaitForSecondsRealtime(seconds);
+						continue;
+					}
+
+					try
+					{
+						command.Invoke(splitCommand.Skip(1).ToArray());
+					}
+					catch (Exception ex)
+					{
+						WriteLine(LogType.Exception, ex.ToString());
+						yield break;
+					}
 				}
 			}
-			return true;
 		}
 	}
 }

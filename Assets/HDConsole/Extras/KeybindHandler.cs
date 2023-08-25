@@ -52,7 +52,7 @@
 		};
 		internal static HDCommand Delay =
 			new("delay", new string[] { "delay (seconds)" }, (args) => { })
-			{ description = "Does nothing outside of keybinds, delays in seconds." };
+			{ description = "delays in seconds. Only useful for multiple commands." };
 
 		public static SortedList<string, BoundCommandValue> boundCommands = new();
 

@@ -14,6 +14,8 @@
 	using Stopwatch = System.Diagnostics.Stopwatch;
 	using System.Linq;
 	using B1NARY.IO;
+	using HDConsole;
+	using System.Text;
 
 	public enum Gender : byte
 	{
@@ -23,6 +25,33 @@
 	
 	public class SaveSlot
 	{
+		[return: CommandsFromGetter]
+		private static HDCommand[] GetHDCommands() => new HDCommand[]
+		{
+			new HDCommand("save_active", (args) =>
+			{
+				if (args.Length == 0)
+				{
+					SaveSlot mainSlot = ActiveSlot;
+					StringBuilder line = new($"<b>{mainSlot.SaveName}</b>");
+					line.AppendLine($"\n\tpath: {mainSlot.metadata.DirectoryInfo.FullName}");
+					if (mainSlot.strings.Count > 0)
+					{
+						line.AppendLine("strings:\n\t");
+						line.AppendJoin("\n\t", mainSlot.strings.Keys);
+					}
+					if (mainSlot.booleans.Count > 0)
+					{
+						line.AppendLine("booleans:\n\t");
+						line.AppendJoin("\n\t", mainSlot.booleans.Keys);
+					}
+					return;
+				}
+				throw new NotImplementedException();
+
+			}) { description = "Gets the existing save slot, or sets a new saveslot from an existing save list.", optionalArguments = { "save name" } },
+		};
+
 		/// <summary>
 		/// Gets the local appdata folder for saving settings, configs, etc.
 		/// </summary>
