@@ -50,6 +50,8 @@
 				throw new NotImplementedException();
 
 			}) { description = "Gets the existing save slot, or sets a new saveslot from an existing save list.", optionalArguments = { "save name" } },
+
+			new HDCommand("save_quicksave", args => Quicksave()) { description = "Saves the save into the saved saves list" },
 		};
 
 		/// <summary>
@@ -238,25 +240,28 @@
 			try
 			{
 				bool completedTask = false;
+				Debug.Log($"Starting save '{SaveName}' into {metadata.DirectoryInfo.FullName}..");
 				SceneManager.Instance.StartCoroutine(MainThread());
 
 				hasSaved = true;
+				Debug.Log($"Defining metadata of {SaveName}..");
 				metadata.lastSaved = DateTime.Now;
 				Stopwatch stopwatch = Stopwatch.StartNew();
+				Debug.Log($"Now retrieving scene data for {SaveName}..");
 				scriptPosition = ScriptPosition.Define();
 				characterSnapshots = ActorSnapshot.GetCurrentSnapshots();
 				audio = SerializedAudio.SerializeAudio();
 				formatName = ColorFormat.ActiveFormat.FormatName;
 
+				Debug.Log($"Getting thumbnail for {SaveName}..");
 				byte[] thumbnail = ScreenCapture.CaptureScreenshotAsTexture().EncodeToJPG();
 				Task.Run(() =>
 				{
+					Debug.Log($"Thumbnail created for {SaveName}, now encrypting & compressing..");
 					metadata.thumbnail = new Thumbnail(new Vector2Int(128, 128), thumbnail);
-					using MemoryStream tempStream = new();
-					SlotSerializer.Serialize(tempStream, this);
-					tempStream.Position = 0;
-					using FileStream stream = metadata.DirectoryInfo.Open(FileMode.Create, FileAccess.Write);
-					tempStream.CopyTo(stream);
+					Debug.Log($"Serializing '{SaveName}' filepath {metadata.DirectoryInfo.FullName}..");
+					using FileStream fileStream = metadata.DirectoryInfo.Create();
+					SlotSerializer.Serialize(fileStream, this);
 
 				}).ContinueWith((task) =>
 				{
@@ -271,6 +276,7 @@
 				IEnumerator MainThread()
 				{
 					yield return new WaitUntil(() => completedTask);
+					Debug.Log("Clearing save cache..");
 					EmptySaveCache();
 				}
 			}
