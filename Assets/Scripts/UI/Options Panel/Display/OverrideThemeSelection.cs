@@ -29,18 +29,19 @@
 		{
 			get
 			{
-				Dictionary<string, ColorFormat> dictionary = ColorFormat.GetPlayableFormats().ToDictionary(format => format.FormatName);
-				List<KeyValuePair<string, ColorFormat>> pairs = new(dictionary.Count);
+				ColorFormat[] dictionary = ColorFormat.GetPlayableFormats().ToArray();
+				List<KeyValuePair<string, ColorFormat>> pairs = new(dictionary.Length);
 				string[] languageKeys = GetComponent<DropdownGlobalizer>()[Languages.Instance[0]];
+				Debug.Log(string.Join('|', languageKeys), this);
 				for (int i = 0; i < languageKeys.Length; i++)
 				{
 					string key = languageKeys[i];
-					if (dictionary.TryGetValue(key, out ColorFormat format))
+					ColorFormat format = Array.Find(dictionary, format => format.FormatName == key);
+					if (format != null)
 						pairs.Add(new KeyValuePair<string, ColorFormat>(key, format));
 					else
 						Debug.LogWarning($"{key} format doesn't exist in player formats!");
 				}
-
 				return pairs;
 			}
 		}

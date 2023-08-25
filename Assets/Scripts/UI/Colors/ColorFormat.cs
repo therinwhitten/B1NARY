@@ -80,6 +80,11 @@
 			FormatSerializer.Serialize(stream, this, ROOT_NAME_CUSTOM);
 			ResetCache();
 		}
+		public void Delete()
+		{
+			File.Delete(RootPath.GetFile($"{FormatName}.xml").FullName);
+			ResetCache();
+		}
 		public string SaveFromPlayer()
 		{
 			OSFile file = PlayerThemePath.GetFile($"{FormatName}.xml");
