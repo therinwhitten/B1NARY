@@ -10,7 +10,7 @@
 	using System.Collections;
 	using System.Threading;
 	using B1NARY.DataPersistence;
-	using B1NARY.IO;
+	using HDConsole.IO;
 
 	[DisallowMultipleComponent]
 	public class FanArtPopulator : AutoPagePopulator

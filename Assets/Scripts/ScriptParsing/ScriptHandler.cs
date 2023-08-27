@@ -4,7 +4,7 @@
 	using B1NARY.CharacterManagement;
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
-	using B1NARY.IO;
+	using HDConsole.IO;
 	using B1NARY.Steamworks;
 	using B1NARY.UI;
 	using B1NARY.UI.Colors;
@@ -41,7 +41,7 @@
 				for (int i = 0; i < DocumentExplorer.CoreDocuments.Count; i++)
 				{
 					Document document = DocumentExplorer.CoreDocuments[i];
-					allScripts.AppendLine($"\t{document.FullPath.FullName}");
+					allScripts.AppendLine($"\t{document.FullPath.FullPath}");
 				}
 				using var enumerator = DocumentExplorer.LanguagedDocuments.GetEnumerator();
 				while (enumerator.MoveNext())
@@ -50,7 +50,7 @@
 					IList<Document> documents = enumerator.Current.Value;
 					allScripts.AppendLine($"<b><size=135%>{language}:</size></b>");
 					for (int i = 0; i < documents.Count; i++)
-						allScripts.AppendLine($"\t{documents[i].FullPath.FullName}");
+						allScripts.AppendLine($"\t{documents[i].FullPath.FullPath}");
 				}
 				HDConsole.WriteLine(allScripts.ToString());
 			}) { description = "Prints of all detected documents to console." },
@@ -217,7 +217,7 @@
 			OSFile file = newDocument.FullPath;
 			if (!file.Exists)
 			{
-				Debug.LogWarning($"File '{file.FullName}' doesn't exist, using core path instead.");
+				Debug.LogWarning($"File '{file.FullPath}' doesn't exist, using core path instead.");
 				file = newDocument.GetWithoutLanguage().FullPath;
 			}
 			document = new ScriptDocument(config, file);
@@ -336,7 +336,7 @@ namespace B1NARY.Editor
 					EditorUtility.SetDirty(scriptHandler);
 				}
 				if (GUILayout.Button("Open File"))
-					Process.Start(ScriptHandler.DocumentExplorer.CoreDocuments[newIndex].FullPath.FullName);
+					Process.Start(ScriptHandler.DocumentExplorer.CoreDocuments[newIndex].FullPath.FullPath);
 			}
 			else
 			{

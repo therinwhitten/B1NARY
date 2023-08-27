@@ -20,7 +20,7 @@
 			this.targetFile = fileInfo;
 			thread = new(Loop) { Priority = ThreadPriority.Lowest };
 			console.AddedLine += NewLine;
-			File.WriteAllText(targetFile.FullName, "");
+			File.WriteAllText(targetFile.FullPath, "");
 			thread.Start();
 
 			void Loop()
@@ -38,7 +38,7 @@
 		{
 			if (newLines.Count == 0)
 				return;
-			_ = File.AppendAllLinesAsync(targetFile.FullName, newLines.ToArray());
+			_ = File.AppendAllLinesAsync(targetFile.FullPath, newLines.ToArray());
 			newLines.Clear();
 		}
 		public void Dispose()

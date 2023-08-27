@@ -1,99 +1,52 @@
 ﻿namespace B1NARY.Scripting
 {
-	using B1NARY.IO;
+	using HDConsole.IO;
 	using System;
+	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
+	using UnityEngine;
 
 	public struct Document
 	{
-		// nullable
+		public static OSDirectory CoreFolder => DocumentExplorer.DocumentFolder;
+		public static OSDirectory LanguageFolders => DocumentExplorer.LanguagePacks;
 		/// <summary>
-		/// What language the visual path targets. <see langword="null"/> if it
-		/// has no language i.e in the core folder.
+		/// The ending path
 		/// </summary>
-		public string Language
-		{
-			get
-			{
-				string fullPath = FullPath.FullName;
-				string packName = DocumentExplorer.LanguagePacks.Name;
-				if (!fullPath.Contains(packName))
-					return null;
-				string result = fullPath.Substring(fullPath.IndexOf(packName) + packName.Length + 1);
-				if (fullPath.Contains('\\'))
-					result = result.Remove(result.IndexOf('\\'));
-				return result;
-			}
-		}
-		/// <summary>
-		/// The path that is purely part of <see cref="DocumentExplorer.DocumentFolder"/>.
-		/// </summary>
-		public string VisualPath
-		{
-			get => m_visualPath;
-			set
-			{
-				m_visualPath = value.Replace('/', '\\');
-				// Probably not even efficient, but .NET doesn't have this built in for some reason.
-				while (m_visualPath.Contains("\\\\"))
-					m_visualPath = m_visualPath.Replace("\\\\", "\\");
-			}
-		}
-		private string m_visualPath;
-		/// <summary>
-		/// The full path that leads to the document. 
-		/// </summary>
-		public OSFile FullPath
-		{
-			get => new($"{DocumentExplorer.DocumentFolder.FullName}\\{VisualPath}.txt");
-			set => VisualPath = value.FullName.Normalized.Substring(DocumentExplorer.DocumentFolder.FullName.Normalized.Length + 1).Replace(".txt", "");
-		}
+		public string VisualPath { get; }
+		public OSFile FullPath { get; }
+		public string Language { get; }
 
-
-		public Document(string visualPath)
+		public Document(OSFile fullFile)
 		{
-			this.m_visualPath = visualPath;
+			this.FullPath = fullFile;
+
+			bool isLanguaged = fullFile.FullPath.Contains(LanguageFolders.FullPath);
+			if (isLanguaged)
+			{
+				Language = fullFile.FullPath.ToString().Substring(LanguageFolders.FullPath.Length + 1);
+				Language = Language.Remove(Language.IndexOf(OSPath.DirectorySeparatorChar));
+				OSPath removal = OSPath.Combine(LanguageFolders.FullPath, Language);
+				VisualPath = fullFile.FullPath - removal;
+				return;
+			}
+			Language = null;
+			VisualPath = fullFile.FullPath - CoreFolder.FullPath;
+		}
+		public Document(string visualPath, string language = null)
+		{
 			this.VisualPath = visualPath;
-		}
-		public Document(OSFile documentPath)
-		{
-			this.m_visualPath = null;
-			this.FullPath = documentPath;
+			this.Language = language;
+
+			bool isLanguaged = !string.IsNullOrEmpty(language);
+			if (isLanguaged)
+				FullPath = new OSFile(OSPath.Combine(LanguageFolders.FullPath, Language, VisualPath));
+			else
+				FullPath = new OSFile(OSPath.Combine(CoreFolder.FullPath, Language, VisualPath));
 		}
 
-		/// <summary>
-		/// Creates a new document that has no language variable. Having the actual
-		/// document itself existing is not guaranteed.
-		/// </summary>
-		/// <exception cref="InvalidCastException"/>
-		public Document GetWithoutLanguage()
-		{
-			if (string.IsNullOrEmpty(Language))
-				return this;
-			string fullPath = FullPath.FullName;
-			string packName = $"{DocumentExplorer.LanguagePacks.Name}\\{Language}";
-			if (!fullPath.Contains(packName))
-				throw new InvalidCastException($"pack '{packName}' does not exist in existing path '{fullPath}'!");
-			string result = fullPath.Substring(fullPath.IndexOf(packName) + packName.Length + 1)
-				.Replace(".txt", "").Replace('/', '\\');
-			return new Document(result);
-		}
-
-		/// <summary>
-		/// Adds or Replaces to a new language.
-		/// </summary>
-		/// <param name="language"> The new language to replace to. </param>
-		/// <returns></returns>
-		public Document GetWithLanguage(string language)
-		{
-			string currentLanguage = this.Language;
-			if (currentLanguage == language)
-				return this;
-			string visualPath = VisualPath;
-			if (!string.IsNullOrEmpty(currentLanguage))
-				visualPath = GetWithoutLanguage().VisualPath;
-			return new Document($"{DocumentExplorer.LanguagePacks.Name}/{language}/{visualPath}");
-		}
+		public Document GetWithoutLanguage() => new(VisualPath, null);
+		public Document GetWithLanguage(string newLanguage) => new(VisualPath, newLanguage);
 	}
 }

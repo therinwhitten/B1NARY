@@ -17,7 +17,7 @@ namespace B1NARY.DataPersistence
 	using global::Steamworks;
 #endif
 	using Version = System.Version;
-	using B1NARY.IO;
+	using HDConsole.IO;
 	using HDConsole;
 	using UnityEngine.Rendering;
 

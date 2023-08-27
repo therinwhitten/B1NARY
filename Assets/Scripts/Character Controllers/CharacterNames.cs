@@ -2,7 +2,7 @@
 {
 	using B1NARY.CharacterManagement;
 	using B1NARY.DataPersistence;
-	using B1NARY.IO;
+	using HDConsole.IO;
 	using B1NARY.Scripting;
 	using B1NARY.UI.Globalization;
 	using OVSXmlSerializer;
@@ -91,7 +91,7 @@
 						OSFile info = newDocument.FullPath;
 						if (!info.Exists)
 						{
-							Debug.Log($"{info.FullName} doesn't exist, using core path instead for replacement of name");
+							Debug.Log($"{info.FullPath} doesn't exist, using core path instead for replacement of name");
 							info = newDocument.GetWithoutLanguage().FullPath;
 						}
 

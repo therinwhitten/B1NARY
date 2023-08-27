@@ -7,7 +7,7 @@
 	using UnityEngine;
 	using System.IO;
 	using System.Linq;
-	using B1NARY.IO;
+	using HDConsole.IO;
 
 	public class ScriptDocument : ScriptElement
 	{

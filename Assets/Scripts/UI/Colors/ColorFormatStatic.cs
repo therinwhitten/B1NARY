@@ -8,7 +8,7 @@
 	using System.IO;
 	using FormatSerializer = OVSXmlSerializer.XmlSerializer<ColorFormat>;
 	using B1NARY.DataPersistence;
-	using B1NARY.IO;
+	using HDConsole.IO;
 	using HDConsole;
 	using System.Text;
 	using ColorUtility = DataPersistence.ColorUtility;
@@ -299,7 +299,7 @@ namespace B1NARY.UI.Colors.Editor
 	using System.Linq;
 	using System.Collections.Generic;
 	using System.IO;
-	using B1NARY.IO;
+	using HDConsole.IO;
 
 	public class ColorFormatWindow : EditorWindow
 	{
