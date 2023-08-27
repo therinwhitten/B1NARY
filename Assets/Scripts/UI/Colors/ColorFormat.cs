@@ -1,6 +1,6 @@
 ﻿namespace B1NARY.UI.Colors
 {
-	using B1NARY.IO;
+	using HDConsole.IO;
 	using OVSXmlSerializer;
 	using System.Collections.Generic;
 	using System.IO;
@@ -82,7 +82,7 @@
 		}
 		public void Delete()
 		{
-			File.Delete(RootPath.GetFile($"{FormatName}.xml").FullName);
+			File.Delete(RootPath.GetFile($"{FormatName}.xml").FullPath);
 			ResetCache();
 		}
 		public string SaveFromPlayer()
@@ -91,7 +91,7 @@
 			using FileStream stream = file.Create();
 			FormatSerializer.Serialize(stream, this, ROOT_NAME_CUSTOM);
 			ResetCache();
-			return file.FullName;
+			return file.FullPath;
 		}
 
 

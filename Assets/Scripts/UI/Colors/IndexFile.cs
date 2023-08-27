@@ -3,7 +3,7 @@
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
-	using B1NARY.IO;
+	using HDConsole.IO;
 	using OVSXmlSerializer;
 
 	public class IndexFile : IXmlSerializable

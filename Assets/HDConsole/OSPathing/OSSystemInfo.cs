@@ -1,45 +1,46 @@
 ﻿namespace HDConsole.IO
 {
 	using System;
-	using static System.IO.Path;
+	using System.IO;
+	using System.Threading.Tasks;
+	using SystemPath = System.IO.Path;
 
+	/// <summary>
+	/// Information about a folder or file.
+	/// </summary>
 	public abstract class OSSystemInfo
 	{
-		protected OSSystemInfo(OSPath fullPath, OSPath root)
+		protected OSSystemInfo(OSPath fullPath)
 		{
-			FullName = fullPath;
-			Root = root;
+			FullPath = fullPath;
 		}
 
-		public OSPath FullName { get; protected set; }
-		public string Name
-		{
-			get
-			{
-				string fullName = FullName.ToString();
-				string[] splitName = fullName.Split(PathSeparator);
-				if (string.IsNullOrEmpty(splitName[^1]))
-					return splitName[^2];
-				return splitName[^1];
-			}
-			set
-			{
-				string oldName = Name;
-				string fullPath = (string)FullName;
-				if (Name.Length == 0)
-				{
-					if (fullPath.EndsWith(PathSeparator))
-						FullName = fullPath.Insert(fullPath.Length - 1, value);
-					else
-						FullName = fullPath + value;
-					return;
-				}
-				int startIndex = fullPath.LastIndexOf(oldName);
-				FullName = fullPath.Remove(startIndex, oldName.Length)
-					.Insert(startIndex, value);
-			}
-		}
-		public OSPath Path => FullName - Root;
-		protected OSPath Root { get; }
+		/// <summary>
+		/// The full path, regards Unix-based and windows systems.
+		/// </summary>
+		public virtual OSPath FullPath { get; set; }
+		/// <summary>
+		/// The name of the ending path. Setting only changes <see cref="FullPath"/>;
+		/// use <see cref="Rename"/> for such.
+		/// </summary>
+		public abstract string Name { get; set; }
+		/// <summary>
+		/// If the path exists. Setting impacts the files.
+		/// </summary>
+		public abstract bool Exists { get; set; }
+		/// <summary>
+		/// To delete the path.
+		/// </summary>
+		/// <returns>If the path used to exist.</returns>
+		public abstract bool Delete();
+		/// <summary>
+		/// Moves the path and its contents to another directory.
+		/// </summary>
+		public abstract void MoveTo(OSDirectory directory);
+		/// <summary>
+		/// Moves the path and its contents to another directory.
+		/// </summary>
+		public abstract OSSystemInfo CopyTo(OSDirectory directory);
+		public OSDirectory Parent => new(FullPath.Parent);
 	}
 }

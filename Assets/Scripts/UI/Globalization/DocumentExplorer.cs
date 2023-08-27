@@ -1,7 +1,7 @@
 ﻿namespace B1NARY.Scripting
 {
 	using B1NARY.DataPersistence;
-	using B1NARY.IO;
+	using HDConsole.IO;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
@@ -106,7 +106,7 @@
 
 		public Document GetFromVisual(in string visualPath)
 		{
-			Document comparingTo = new(visualPath);
+			Document comparingTo = new($"{visualPath}.txt");
 			string currentLanguage = PlayerConfig.Instance.language.Value;
 			// First try to get the language version
 			Document target = comparingTo.GetWithLanguage(currentLanguage);

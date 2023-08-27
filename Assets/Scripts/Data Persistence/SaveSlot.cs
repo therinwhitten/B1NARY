@@ -13,7 +13,7 @@
 	using System.Threading.Tasks;
 	using Stopwatch = System.Diagnostics.Stopwatch;
 	using System.Linq;
-	using B1NARY.IO;
+	using HDConsole.IO;
 	using HDConsole;
 	using System.Text;
 
@@ -34,7 +34,7 @@
 				{
 					SaveSlot mainSlot = ActiveSlot;
 					StringBuilder line = new($"<b>{mainSlot.SaveName}</b>");
-					line.AppendLine($"\n\tpath: {mainSlot.metadata.DirectoryInfo.FullName}");
+					line.AppendLine($"\n\tpath: {mainSlot.metadata.DirectoryInfo.FullPath}");
 					if (mainSlot.strings.Count > 0)
 					{
 						line.AppendLine("strings:\n\t");
@@ -240,7 +240,7 @@
 			try
 			{
 				bool completedTask = false;
-				Debug.Log($"Starting save '{SaveName}' into {metadata.DirectoryInfo.FullName}..");
+				Debug.Log($"Starting save '{SaveName}' into {metadata.DirectoryInfo.FullPath}..");
 				SceneManager.Instance.StartCoroutine(MainThread());
 
 				hasSaved = true;
@@ -259,7 +259,7 @@
 				{
 					Debug.Log($"Thumbnail created for {SaveName}, now encrypting & compressing..");
 					metadata.thumbnail = new Thumbnail(new Vector2Int(128, 128), thumbnail);
-					Debug.Log($"Serializing '{SaveName}' filepath {metadata.DirectoryInfo.FullName}..");
+					Debug.Log($"Serializing '{SaveName}' filepath {metadata.DirectoryInfo.FullPath}..");
 					using FileStream fileStream = metadata.DirectoryInfo.Create();
 					SlotSerializer.Serialize(fileStream, this);
 
@@ -327,7 +327,7 @@
 					if (string.IsNullOrEmpty(m_directoryInfo))
 					{
 						OSFile returnVal = SavesDirectory.GetFileIncremental(NAME_START + NAME_EXT, true);
-						m_directoryInfo = returnVal.FullName;
+						m_directoryInfo = returnVal.FullPath;
 						return returnVal;
 					}
 					return new OSFile(m_directoryInfo);
@@ -337,7 +337,7 @@
 			{
 				if (deleteOnMove && File.Exists(m_directoryInfo))
 					File.Delete(m_directoryInfo);
-				m_directoryInfo = fileInfo?.FullName;
+				m_directoryInfo = fileInfo?.FullPath;
 			}
 			[XmlIgnore]
 			private string m_directoryInfo;

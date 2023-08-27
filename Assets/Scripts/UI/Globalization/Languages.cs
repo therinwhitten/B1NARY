@@ -1,7 +1,7 @@
 ﻿namespace B1NARY.UI.Globalization
 {
 	using B1NARY.DataPersistence;
-	using B1NARY.IO;
+	using HDConsole.IO;
 	using HDConsole;
 	using OVSXmlSerializer;
 	using System.Collections.Generic;

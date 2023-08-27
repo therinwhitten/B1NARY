@@ -1,11 +1,9 @@
 ﻿namespace HDConsole.IO
 {
-	using SixLabors.ImageSharp.PixelFormats;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Text;
-	using static System.IO.Path;
 
 
 
@@ -19,6 +17,14 @@
 	public struct OSPath
 	{
 		public static readonly OSPath Empty = new("");
+		public static OSPath Combine(string left, params string[] extras) => Combine(new OSPath(left), extras);
+		public static OSPath Combine(OSPath result, params string[] extras)
+		{
+			for (int i = 0; i < extras.Length; i++)
+				result += extras[i];
+			return result;
+		}
+		public static char DirectorySeparatorChar => Path.DirectorySeparatorChar;
 
 		public static bool IsWindows => DirectorySeparatorChar == '\\';
 
@@ -27,7 +33,7 @@
 			Text = text.Trim();
 		}
 
-		public static implicit operator OSPath(string text) => text == null ? null : new OSPath(text);
+		public static implicit operator OSPath(string text) => text == null ? Empty : new OSPath(text);
 		public static implicit operator string(OSPath path) => path.Normalized;
 		public override string ToString() => Normalized;
 
@@ -45,17 +51,21 @@
 		public bool HasVolume => Text.Length >= 2 && Text[1] == ':';
 		public OSPath Simplified => HasVolume ? Text.Substring(2) : Text;
 
-		public OSPath Parent => GetDirectoryName(Text);
+		public string[] Split => Normalized.Split(DirectorySeparatorChar);
+		public OSPath Parent => Path.GetDirectoryName(Text);
 
 		public bool Contains(OSPath path) =>
 			Normalized.StartsWith(path);
 
 		public static OSPath operator +(OSPath left, OSPath right) =>
-			new OSPath(Combine(left, right.Relative));
+			new OSPath(Path.Combine(left, right.Relative));
 
 		public static OSPath operator -(OSPath left, OSPath right) =>
 			left.Contains(right)
 			? new OSPath(left.Normalized.Substring(right.Normalized.Length)).Relative
 			: left;
+
+		// Extras relating to strings
+		public int Length => ToString().Length;
 	}
 }
