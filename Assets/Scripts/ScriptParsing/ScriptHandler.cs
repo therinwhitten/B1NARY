@@ -166,7 +166,7 @@
 				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
 			@object.SetActive(true);
 		}
-		public static DocumentExplorer DocumentExplorer { get; } = new DocumentExplorer(Languages.Instance.FirstOrDefault());
+		public static DocumentExplorer DocumentExplorer { get; } = new DocumentExplorer();
 
 
 
@@ -195,7 +195,6 @@
 			config.NormalLine += SayLine;
 			config.AttributeListeners += ChangeExpression;
 			config.EntryListeners += ChangeCharacter;
-			DocumentExplorer.PrintConcerns();
 			PlayerConfig.Instance.language.ValueChanged += UpdateDocumentViaLanguage;
 			for (int i = 0; i < nextLineButtons.Length; i++)
 				playerInput.actions.FindAction(nextLineButtons[i], true).performed += NextLineKey;
@@ -255,7 +254,7 @@
 		}
 		public void NewDocument(string streamingAssetsDocument, int index = 0)
 		{
-			document = new ScriptDocument(config, DocumentExplorer.GetFromVisual(streamingAssetsDocument).FullPath);
+			document = new ScriptDocument(config, DocumentExplorer.GetDocumentFromVisual(streamingAssetsDocument).FullPath);
 			documentWatcher = document.StartAtLine(index);
 		}
 

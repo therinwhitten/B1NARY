@@ -16,18 +16,15 @@
 		/// The documents folder that has all the playable scripts the system
 		/// can access.
 		/// </summary>
-		public static OSDirectory DocumentFolder => SaveSlot.StreamingAssets.GetSubdirectories("Docs");
+		public static OSDirectory DocumentFolder { get; } = SaveSlot.StreamingAssets.GetSubdirectories("Docs");
 		/// <summary>
 		/// All the documents that are divided into languages, located within the
 		/// original <see cref="DocumentFolder"/>.
 		/// </summary>
-		public static OSDirectory LanguagePacks => DocumentFolder.GetSubdirectories("Language Packs");
-		
+		public static OSDirectory LanguagePacks { get; } = DocumentFolder.GetSubdirectories("Language Packs");
 
 		public List<Document> CoreDocuments { get; }
 		public Dictionary<string, List<Document>> LanguagedDocuments { get; }
-
-		private readonly StringBuilder concerns = new();
 
 		public DocumentExplorer()
 		{
@@ -35,85 +32,46 @@
 			LanguagedDocuments = new Dictionary<string, List<Document>>();
 
 			List<Document> allDocuments = new();
-			RecursivelyGetFiles(ref allDocuments, DocumentFolder);
+			RecursivelyGetFiles(DocumentFolder);
 			for (int i = 0; i < allDocuments.Count; i++)
 			{
 				Document document = allDocuments[i];
 				string language = document.Language;
-				if (!string.IsNullOrEmpty(language))
+				if (string.IsNullOrEmpty(language))
 				{
-					if (!LanguagedDocuments.TryGetValue(language, out List<Document> languagedDocuments))
-						languagedDocuments = LanguagedDocuments[language] = new List<Document>();
-					languagedDocuments.Add(document);
-				}
-				else
 					CoreDocuments.Add(document);
-			}
-		}
-		public DocumentExplorer(string defaultLanguage) : this()
-		{
-			if (!LanguagedDocuments.TryGetValue(defaultLanguage, out List<Document> sex))
-			{
-				concerns.AppendLine($"Although the selected language is '{defaultLanguage}', it couldn't find the folder containing it!");
-				return;
-			}
-			List<Document> comparingTo = new(sex);
-			List<Document> newDocuments = new(CoreDocuments.Count);
-			for (int i = 0; i < CoreDocuments.Count; i++)
-			{
-				Document newDoc = CoreDocuments[i].GetWithoutLanguage();
-				for (int ii = 0; ii < comparingTo.Count; ii++)
-					if (newDoc.VisualPath == comparingTo[ii].VisualPath)
-					{
-						newDocuments.Add(newDoc);
-						continue;
-					}
-				newDocuments.Add(CoreDocuments[i]);
-				concerns.AppendLine($"Document '{CoreDocuments[i].VisualPath}' doesn't have a {defaultLanguage} variation.");
-			}
-		}
-		/// <summary>
-		/// Uses recursion to get all the documents as a full path, including
-		/// the drive and such.
-		/// </summary>
-		/// <param name="currentPath"> The directory to interact with. </param>
-		/// <returns> 
-		/// All the file paths that start with .txt within the directory.
-		/// </returns>
-		private void RecursivelyGetFiles(ref List<Document> documents, OSDirectory currentPath)
-		{
-			OSFile[] files = currentPath.GetFiles();
-			for (int i = 0; i < files.Length; i++)
-			{
-				if (!files[i].Extension.Contains("txt"))
 					continue;
-				documents.Add(new Document(files[i]));
+				}
+				if (!LanguagedDocuments.TryGetValue(language, out List<Document> languagedDocuments))
+					languagedDocuments = LanguagedDocuments[language] = new List<Document>();
+				languagedDocuments.Add(document);
 			}
-			OSDirectory[] directories = currentPath.GetDirectories();
-			for (int i = 0; i < directories.Length; i++)
-				RecursivelyGetFiles(ref documents, directories[i]);
+
+			void RecursivelyGetFiles(OSDirectory currentPath)
+			{
+				OSFile[] files = currentPath.GetFiles();
+				for (int i = 0; i < files.Length; i++)
+				{
+					if (files[i].Extension != ".txt")
+						continue;
+					allDocuments.Add(new Document(files[i]));
+				}
+				OSDirectory[] directories = currentPath.GetDirectories();
+				for (int i = 0; i < directories.Length; i++)
+					RecursivelyGetFiles(directories[i]);
+			}
 		}
 
-
-		public void PrintConcerns()
+		public Document GetDocumentFromVisual(string visualPath)
 		{
-			if (concerns.Length <= 0)
-				return;
-			Debug.LogWarning($"Here are some concerns in the document explorer: \n{concerns}");
-			concerns.Clear();
-			concerns.Capacity = 0;
-		}
-
-		public Document GetFromVisual(in string visualPath)
-		{
-			Document comparingTo = new($"{visualPath}.txt");
+			visualPath = OSPath.AddExtension(visualPath, ".txt");
 			string currentLanguage = PlayerConfig.Instance.language.Value;
 			// First try to get the language version
-			Document target = comparingTo.GetWithLanguage(currentLanguage);
+			Document target = new(visualPath, currentLanguage);
 			if (target.FullPath.Exists)
 				return target;
 			// trying to get the core version instead.
-			target = comparingTo.GetWithoutLanguage();
+			target = new Document(visualPath);
 			if (target.FullPath.Exists)
 			{
 				Debug.LogWarning($"Document '{visualPath}' doesn't lead to the specified document; using the core version instead.");

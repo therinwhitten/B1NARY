@@ -10,7 +10,7 @@
 	using UnityEngine;
 	using System.Threading.Tasks;
 
-	public sealed class OSDirectory : OSSystemInfo
+	public sealed class OSDirectory : OSSystemInfo, IEquatable<OSDirectory>, IEquatable<string>
 	{
 		public static explicit operator DirectoryInfo(OSDirectory file) => new DirectoryInfo(file.FullPath);
 		public static explicit operator OSDirectory(DirectoryInfo file) => new OSDirectory(file);
@@ -199,6 +199,18 @@
 					allDirectories[i].CopyTo(output);
 			}
 			return output;
+		}
+
+		public bool Equals(OSDirectory other)
+		{
+			return Equals(other.FullPath);
+		}
+
+		public bool Equals(string other)
+		{
+			string left = FullPath.ToString();
+			string right = new OSPath(other).ToString();
+			return left == right;
 		}
 	}
 }

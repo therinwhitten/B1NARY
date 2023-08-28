@@ -16,7 +16,36 @@
 	/// </remarks>
 	public struct OSPath
 	{
-		public static readonly OSPath Empty = new("");
+		public static string RemoveExtension(in string input)
+		{
+			string trimmed = input.Trim();
+			// its a directory
+			if (trimmed.EndsWith(DirectorySeparatorChar))
+				return trimmed;
+
+			int fileIndex = trimmed.LastIndexOf('.');
+			if (fileIndex == -1)
+				return trimmed;
+			string removed = trimmed.Remove(fileIndex);
+			return removed;
+		}
+		public static string AddExtension(string input, string extension)
+		{
+			string trimmed = input.Trim();
+			// its a directory
+			if (trimmed.EndsWith(DirectorySeparatorChar))
+				throw new InvalidCastException($"'{input}' is not a file path!");
+			
+			int fileIndex = trimmed.LastIndexOf('.');
+			if (fileIndex != -1)
+				trimmed = trimmed.Remove(fileIndex);
+
+			if (!extension.StartsWith('.'))
+				extension = '.' + extension;
+
+			string output = trimmed + extension;
+			return output;
+		}
 		public static OSPath Combine(string left, params string[] extras) => Combine(new OSPath(left), extras);
 		public static OSPath Combine(OSPath result, params string[] extras)
 		{
@@ -24,6 +53,7 @@
 				result += extras[i];
 			return result;
 		}
+		public static readonly OSPath Empty = new("");
 		public static char DirectorySeparatorChar => Path.DirectorySeparatorChar;
 
 		public static bool IsWindows => DirectorySeparatorChar == '\\';
