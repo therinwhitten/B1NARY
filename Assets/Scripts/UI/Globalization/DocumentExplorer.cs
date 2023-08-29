@@ -64,7 +64,7 @@
 
 		public Document GetDocumentFromVisual(string visualPath)
 		{
-			visualPath = OSPath.AddExtension(visualPath, ".txt");
+			visualPath = OSExtension.AddExtension(visualPath, ".txt");
 			string currentLanguage = PlayerConfig.Instance.language.Value;
 			// First try to get the language version
 			Document target = new(visualPath, currentLanguage);
