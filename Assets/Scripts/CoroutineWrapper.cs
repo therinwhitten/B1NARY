@@ -110,6 +110,8 @@
 		/// <param name="enumerator"> The coroutine enumerator itself. </param>
 		public CoroutineWrapper(MonoBehaviour tiedMonoBehaviour, params IEnumerator[] enumerators)
 		{
+			if (tiedMonoBehaviour == null)
+				throw new ArgumentNullException(nameof(tiedMonoBehaviour));
 			this.tiedMonoBehaviour = tiedMonoBehaviour;
 			enumCopy = new List<IEnumerator>(enumerators.Length);
 			enumCopy.AddRange(enumerators);

@@ -102,7 +102,7 @@
 			Instance = @object.AddComponent<T>();
 		}
 
-		private void Awake()
+		protected void Awake()
 		{
 			if (instance != null && instance != this)
 			{
@@ -115,7 +115,7 @@
 			SingletonAwake();
 		}
 
-		private void OnDestroy()
+		protected void OnDestroy()
 		{
 			instance = null;
 			OnSingletonDestroy();

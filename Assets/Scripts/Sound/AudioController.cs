@@ -55,7 +55,7 @@
 		public readonly Queue<int> otherValues = new();
 		internal List<Func<bool>> fadeSounds = new();
 
-		private void Awake()
+		protected override void SingletonAwake()
 		{
 			SceneManager.activeSceneChanged += OnSceneChange;
 			OnSceneChange(default, SceneManager.GetActiveScene());

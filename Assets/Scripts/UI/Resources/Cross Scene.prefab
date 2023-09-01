@@ -55,6 +55,7 @@ GameObject:
   - component: {fileID: 1427849295}
   - component: {fileID: 1427849294}
   - component: {fileID: 1427849296}
+  - component: {fileID: 1100063781796182788}
   m_Layer: 0
   m_Name: Input Modules
   m_TagString: Untagged
@@ -133,6 +134,22 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+--- !u!114 &1100063781796182788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427849292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e94e3361103063e4099c596daf954c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventSystem: {fileID: 1427849294}
+  module: {fileID: 1427849296}
+  playerInput: {fileID: 2934814918228199763}
+  gamepadScheme: Gamepad
 --- !u!1 &4227418926354388459
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be746c934432f224b858271dcca6ed27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultStreamingAssetsDocumentPath: PrologueStory
+  defaultStreamingAssetsDocumentPath: PrologueStory.txt
   input: {fileID: 0}
   playerInput: {fileID: 2934814918228199763}
   nextLineButtons:
@@ -243,57 +260,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c397af289b492e4db7c0217668a431a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Save:
-    m_Name: Save
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: df7766fa-29f4-4a6d-9857-12ae91c7816b
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 31d152af-72af-4f06-84c7-fe68fdd7e99b
-      m_Path: <Keyboard>/f7
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Save
-      m_Flags: 0
-    m_Flags: 0
-  Load:
-    m_Name: Load
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 099e5598-57c1-4996-8417-ff9ab0ad8416
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: f19006e6-e8b8-4b87-8d95-96a3127dd34a
-      m_Path: <Keyboard>/f9
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Load
-      m_Flags: 0
-    m_Flags: 0
-  Escape:
-    m_Name: Escape
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 4b042f7f-4f40-48db-8007-3cfcdd30986c
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 64505644-4dc1-4086-91d9-389b079efff1
-      m_Path: <Keyboard>/escape
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Escape
-      m_Flags: 0
-    m_Flags: 0
+  input: {fileID: 2934814918228199763}
+  save: Quicksave
+  load: Quickload
+  escape: Escape
+  exitPopupTag: Quit Game Popup
 --- !u!114 &5170814466597879097
 MonoBehaviour:
   m_ObjectHideFlags: 0

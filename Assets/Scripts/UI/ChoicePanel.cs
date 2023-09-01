@@ -65,7 +65,7 @@
 		/// </summary>
 		public bool HasPickedChoice => CurrentlyPickedChoice.HasValue;
 
-		private void Awake()
+		protected override void SingletonAwake()
 		{
 			choiceButtons = new List<ChoiceButton>(2);
 		}
@@ -130,8 +130,7 @@
 			choiceButtons.Clear();
 			PickedChoice = null;
 		}
-
-		private void OnDestroy()
+		protected override void OnSingletonDestroy()
 		{
 			Dispose();
 		}

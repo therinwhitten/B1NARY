@@ -10,18 +10,19 @@
 
 	public sealed class DataCommands : Singleton<DataCommands>
 	{
-		public InputAction Save;
-		public InputAction Load;
-		public InputAction Escape;
+		public PlayerInput input;
+		public string save;
+		public string load;
+		public string escape;
+
+		[Space]
+		public string exitPopupTag;
 
 		private void Start()
 		{
-			Save.performed += SaveGame;
-			Save.Enable();
-			Load.performed += LoadGame;
-			Load.Enable();
-			Escape.performed += EscapeGame;
-			Escape.Enable();
+			input.actions.FindAction(save, true).performed += SaveGame;
+			input.actions.FindAction(load, true).performed += LoadGame;
+			input.actions.FindAction(escape, true).performed += EscapeGame;
 		}
 		public void SaveGame(InputAction.CallbackContext context)
 		{
@@ -31,12 +32,17 @@
 		{
 			SaveSlot.ActiveSlot.Load();
 		}
+		
 		public void EscapeGame(InputAction.CallbackContext context)
 		{
 			if (ScriptHandler.Instance.documentWatcher == null)
+			{
+				GameObject obj = GameObject.FindWithTag(exitPopupTag);
+				obj.SetActive(!obj.activeSelf);
 				return;
-			FindObjectsOfType<Button>().First(button => button.name == "Settings").onClick.Invoke();
-			return;
+			}
+			//FindObjectsOfType<Button>().First(button => button.name == "Settings").onClick.Invoke();
+			//return;
 			if (!OptionsMenuPauser.HasInstance)
 				OptionsMenuPauser.Instance = OptionsMenuPauser.ForceFind();
 			GameObject options = OptionsMenuPauser.Instance.gameObject;
@@ -62,9 +68,11 @@ namespace B1NARY.DataPersistence.Editor
 		public override void OnInspectorGUI()
 		{
 			serializedObject.Update();
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.Save)));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.Load)));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.Escape)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.input)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.save)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.load)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.escape)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.exitPopupTag)));
 			serializedObject.ApplyModifiedProperties();
 			EditorGUILayout.Separator();
 			if (!Application.isPlaying)

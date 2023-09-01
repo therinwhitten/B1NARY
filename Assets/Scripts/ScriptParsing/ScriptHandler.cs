@@ -189,7 +189,7 @@
 		/// </summary>
 		public string[] nextLineButtons;
 
-		private void Awake()
+		protected override void SingletonAwake()
 		{
 			DontDestroyOnLoad(transform.root);
 			config.NormalLine += SayLine;
@@ -199,7 +199,7 @@
 			for (int i = 0; i < nextLineButtons.Length; i++)
 				playerInput.actions.FindAction(nextLineButtons[i], true).performed += NextLineKey;
 		}
-		private void OnDestroy()
+		protected override void OnSingletonDestroy()
 		{
 			PlayerConfig.Instance.language.ValueChanged -= UpdateDocumentViaLanguage;
 			for (int i = 0; i < nextLineButtons.Length; i++)

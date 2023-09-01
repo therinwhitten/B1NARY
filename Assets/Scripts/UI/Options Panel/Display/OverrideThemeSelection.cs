@@ -32,7 +32,7 @@
 				ColorFormat[] dictionary = ColorFormat.GetPlayableFormats().ToArray();
 				List<KeyValuePair<string, ColorFormat>> pairs = new(dictionary.Length);
 				string[] languageKeys = GetComponent<DropdownGlobalizer>()[Languages.Instance[0]];
-				Debug.Log(string.Join('|', languageKeys), this);
+				//Debug.Log(string.Join('|', languageKeys), this);
 				for (int i = 0; i < languageKeys.Length; i++)
 				{
 					string key = languageKeys[i];

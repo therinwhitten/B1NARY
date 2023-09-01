@@ -9,7 +9,7 @@
 	///<summary> 
 	/// A list of multiple <see cref="MonoBehaviour"/>s, usage as such.
 	/// </summary>
-	public class Multiton<T> : MonoBehaviour where T : MonoBehaviour
+	public class SoftMultiton<T> : MonoBehaviour where T : MonoBehaviour
 	{
 		private static readonly LinkedList<T> instances = new();
 		public static T[] GetNewInstancesList() => instances.ToArray();
@@ -20,25 +20,25 @@
 
 		private LinkedListNode<T> ID;
 
-		protected void Awake()
+		protected void OnEnable()
 		{
 			ID = instances.AddLast(this as T);
-			MultitonAwake();
+			MultitonEnable();
 		}
-		protected void OnDestroy()
+		protected void OnDisable()
 		{
 			instances.Remove(ID);
-			OnMultitonDestroy();
+			MultitonDisable();
 		}
 
 
 		/// <summary>
 		/// Alternate Awake since the original start is taken.
 		/// </summary>
-		protected virtual void MultitonAwake() { /* do nothing unless overrided */ }
+		protected virtual void MultitonEnable() { /* do nothing unless overrided */ }
 		/// <summary>
 		/// Alternate OnDestroy since the original start is taken.
 		/// </summary>
-		protected virtual void OnMultitonDestroy() { /* do nothing unless overrided */ }
+		protected virtual void MultitonDisable() { /* do nothing unless overrided */ }
 	}
 }

@@ -195,7 +195,7 @@
 				Debug.LogWarning($"Was called to fade scene, but there are no {nameof(TransitionObject)}s to transition with!\n{nameof(SceneManager)}");
 				yield break;
 			}
-			IEnumerator transition = TransitionObject.First.SetToOpaqueEnumerator();
+			IEnumerator transition = TransitionObject.Youngest.SetToOpaqueEnumerator();
 			while (transition.MoveNext())
 				yield return transition.Current;
 		}

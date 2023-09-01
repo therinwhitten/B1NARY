@@ -216,7 +216,7 @@
 		private CoroutineWrapper speakCoroutine;
 		public bool IsSpeaking => !CoroutineWrapper.IsNotRunningOrNull(speakCoroutine);
 
-		private void Awake()
+		protected override void SingletonAwake()
 		{
 			PlayerConfig.Instance.dialogueSpeedTicks.AttachValue((integer) =>
 			{

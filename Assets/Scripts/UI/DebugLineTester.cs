@@ -10,7 +10,7 @@
 	{
 		public int lineLimit = 8;
 		private TMP_Text text;
-		private void Awake()
+		protected override void SingletonAwake()
 		{
 			text = GetComponent<TMP_Text>();
 			text.text = new string('\n', lineLimit);
