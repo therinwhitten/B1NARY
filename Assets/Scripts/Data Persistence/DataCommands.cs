@@ -18,7 +18,7 @@
 		[Space]
 		public string exitPopupTag;
 
-		private void Start()
+		protected override void SingletonAwake()
 		{
 			input.actions.FindAction(save, true).performed += SaveGame;
 			input.actions.FindAction(load, true).performed += LoadGame;
@@ -41,8 +41,6 @@
 				obj.SetActive(!obj.activeSelf);
 				return;
 			}
-			//FindObjectsOfType<Button>().First(button => button.name == "Settings").onClick.Invoke();
-			//return;
 			if (!OptionsMenuPauser.HasInstance)
 				OptionsMenuPauser.Instance = OptionsMenuPauser.ForceFind();
 			GameObject options = OptionsMenuPauser.Instance.gameObject;
