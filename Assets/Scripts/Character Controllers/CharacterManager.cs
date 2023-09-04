@@ -288,6 +288,6 @@
 			this.characterObject = characterObj;
 			this.controller = controller;
 		}
-		public void ChangeCharacterName(string newName) => controller.CharacterNames.CurrentName = newName;
+		public readonly void ChangeCharacterName(string newName) => controller.CharacterNames.CurrentName = newName;
 	}
 }

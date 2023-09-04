@@ -240,7 +240,7 @@
 				enumerator.Current.Value.Stop();
 		}
 		IReadOnlyDictionary<int, VoiceActorHandler> IVoice.Mouths => mouths;
-		private Dictionary<int, VoiceActorHandler> mouths = new();
+		private readonly Dictionary<int, VoiceActorHandler> mouths = new();
 		int IVoice.CurrentMouth { get; set; } = 0;
 	}
 }

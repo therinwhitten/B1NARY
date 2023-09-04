@@ -20,9 +20,15 @@
 
 		protected override void SingletonAwake()
 		{
-			input.actions.FindAction(save, true).performed += SaveGame;
-			input.actions.FindAction(load, true).performed += LoadGame;
-			input.actions.FindAction(escape, true).performed += EscapeGame;
+			InputAction action = input.actions.FindAction(save, true);
+			action.performed += SaveGame;
+			action.Enable();
+			action = input.actions.FindAction(load, true);
+			action.performed += LoadGame;
+			action.Enable();
+			action = input.actions.FindAction(escape, true);
+			action.performed += EscapeGame;
+			action.Enable();
 		}
 		public void SaveGame(InputAction.CallbackContext context)
 		{
@@ -90,7 +96,7 @@ namespace B1NARY.DataPersistence.Editor
 			{
 				EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;
-				using (var keys = data.Keys.GetEnumerator())
+				using (IEnumerator<string> keys = data.Keys.GetEnumerator())
 					while (keys.MoveNext())
 					{
 						Rect fullRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f)),

@@ -71,15 +71,19 @@
 
 			command = new HDCommand(commandName, required, optional, (args) =>
 			{
-				object[] values = new object[args.Length];
+				object[] arguments = new object[parameters.Length];
 				for (int i = 0; i < args.Length; i++)
 				{
 					if (parseTo[i] == typeof(string))
-						values[i] = args[i];
+						arguments[i] = args[i];
 					else
-						values[i] = Convert.ChangeType(args[i], parseTo[i]);
+						arguments[i] = Convert.ChangeType(args[i], parseTo[i]);
 				}
-				object output = info.Invoke(null, values);
+				for (int i = args.Length; i < arguments.Length; i++)
+				{
+					arguments[i] = parameters[i].DefaultValue;
+				}
+				object output = info.Invoke(null, arguments);
 				if (hasReturns)
 				{
 					HDCommand.lastObjectGet = output;
@@ -90,8 +94,7 @@
 		}
 		public static bool TryParseProperty(PropertyInfo info, out HDCommand command)
 		{
-			MethodInfo firstMethod = info.GetMethod ?? info.SetMethod;
-			if (firstMethod.IsStatic == false)
+			if ((info.GetMethod ?? info.SetMethod).IsStatic == false)
 			{
 				command = default;
 				return false;

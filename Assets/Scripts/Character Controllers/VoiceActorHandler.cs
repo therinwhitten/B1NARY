@@ -126,10 +126,10 @@
 
 			AudioSource GetSource()
 			{
-				if (gameObject.TryGetComponent<AudioSource>(out var audioSource))
+				if (gameObject.TryGetComponent(out AudioSource audioSource))
 					return audioSource;
 				AudioSource output;
-				if (gameObject.TryGetComponent<CubismAudioMouthInput>(out var cubismAudioMouthInput) && cubismAudioMouthInput.AudioInput != null)
+				if (gameObject.TryGetComponent(out CubismAudioMouthInput cubismAudioMouthInput) && cubismAudioMouthInput.AudioInput != null)
 					return cubismAudioMouthInput.AudioInput;
 				output = gameObject.AddComponent<AudioSource>();
 				if (cubismAudioMouthInput != null)

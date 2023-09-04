@@ -7,7 +7,7 @@
 	using System.Linq;
 	using UnityEngine;
 
-	public struct Document
+	public readonly struct Document
 	{
 		public static OSDirectory CoreFolder => DocumentExplorer.DocumentFolder;
 		public static OSDirectory LanguageFolders => DocumentExplorer.LanguagePacks;
@@ -46,7 +46,7 @@
 				FullPath = new OSFile(OSPath.Combine(CoreFolder.FullPath, Language, VisualPath));
 		}
 
-		public Document GetWithoutLanguage() => new(VisualPath, null);
-		public Document GetWithLanguage(string newLanguage) => new(VisualPath, newLanguage);
+		public readonly Document GetWithoutLanguage() => new(VisualPath, null);
+		public readonly Document GetWithLanguage(string newLanguage) => new(VisualPath, newLanguage);
 	}
 }

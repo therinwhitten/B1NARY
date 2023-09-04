@@ -29,7 +29,7 @@
 		}
 		public void OnEnable()
 		{
-			if (Enabled)
+			if (!Enabled)
 				return;
 			source.Stop();
 		}
