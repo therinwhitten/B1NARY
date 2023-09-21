@@ -6,7 +6,7 @@
 	using System;
 	using B1NARY.Scripting;
 	using System.Runtime.Serialization;
-	using OVSXmlSerializer;
+	using OVSSerializer;
 
 	/// <summary>
 	/// A delegate that is treated as an event, sending out the new value and 
@@ -14,13 +14,13 @@
 	/// </summary>
 	public delegate void UpdatedConstantValue<T>(string key, T oldValue, T newValue, Collection<T> source);
 
-	[Serializable, XMLIgnoreEnumerable]
+	[Serializable, OVSXmlIgnoreConfigs]
 	public sealed class Collection<T> : IDictionary<string, T>
 	{
 		/// <summary>
 		/// Sends out an event that happens when a value is changed.
 		/// </summary>
-		[field: NonSerialized, XmlIgnore]
+		[field: NonSerialized, OVSXmlIgnore]
 		public event UpdatedConstantValue<T> UpdatedValue;
 		private Dictionary<string, T> m_constants = new();
 		public Dictionary<string, T> Constants
@@ -32,7 +32,7 @@
 				return m_constants;
 			}
 		}
-		[field: NonSerialized, XmlIgnore]
+		[field: NonSerialized, OVSXmlIgnore]
 		private Dictionary<string, Func<T>> m_pointers = new();
 		public Dictionary<string, Func<T>> Pointers
 		{

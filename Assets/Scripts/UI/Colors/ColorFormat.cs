@@ -1,7 +1,7 @@
 ﻿namespace B1NARY.UI.Colors
 {
-	using HDConsole.IO;
-	using OVSXmlSerializer;
+	using OVSSerializer.IO;
+	using OVSSerializer;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Linq;
@@ -15,35 +15,35 @@
 		public const string COLOR_NAME_PRIMARY = "Primary",
 			COLOR_NAME_SECONDARY = "Secondary";
 
-		public static XmlSerializer<ColorFormat> FormatSerializer => XmlSerializer<ColorFormat>.Default;
+		public static OVSXmlSerializer<ColorFormat> FormatSerializer => OVSXmlSerializer<ColorFormat>.Shared;
 		/// <summary>
 		/// 
 		/// </summary>
-		[XmlAttribute("name")]
+		[OVSXmlAttribute("name")]
 		public string FormatName;
 		public bool IsPlayableFormat => playerControlled || IsDefault;
 		/// <summary>
 		/// If the value can be controlled by the player. This is always true for
 		/// player-customized formats.
 		/// </summary>
-		[XmlNamedAs("PlayerControlled")]
+		[OVSXmlNamedAs("PlayerControlled")]
 		internal bool playerControlled = false;
 		/// <summary>
 		/// The primary color to be used by all UI. Defaulted to this color by
 		/// default if something happens.
 		/// </summary>
-		[XmlNamedAs("Primary")]
+		[OVSXmlNamedAs("Primary")]
 		public Color PrimaryUI = new(ToPercent(47), ToPercent(161), ToPercent(206));
 		/// <summary>
 		/// The secondary color to be used by all UI. The yang to the 
 		/// <see cref="PrimaryUI"/> ying.
 		/// </summary>
-		[XmlNamedAs("Secondary")]
+		[OVSXmlNamedAs("Secondary")]
 		public Color SecondaryUI = new(ToPercent(47), ToPercent(206), ToPercent(172));
 		/// <summary>
 		/// 
 		/// </summary>
-		[XmlNamedAs("Extras")]
+		[OVSXmlNamedAs("Extras")]
 		public Dictionary<string, Color> ExtraUIColors = new();
 		public bool IsDefault => FormatName == DEFAULT_THEME_NAME;
 
@@ -77,7 +77,7 @@
 		public void Save()
 		{
 			using FileStream stream = RootPath.GetFile($"{FormatName}.xml").Create();
-			FormatSerializer.Serialize(stream, this, ROOT_NAME_CUSTOM);
+			FormatSerializer.Serialize(stream, this);
 			ResetCache();
 		}
 		public void Delete()
@@ -89,7 +89,7 @@
 		{
 			OSFile file = PlayerThemePath.GetFile($"{FormatName}.xml");
 			using FileStream stream = file.Create();
-			FormatSerializer.Serialize(stream, this, ROOT_NAME_CUSTOM);
+			FormatSerializer.Serialize(stream, this);
 			ResetCache();
 			return file.FullPath;
 		}

@@ -4,7 +4,7 @@
 	using B1NARY.CharacterManagement;
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
-	using HDConsole.IO;
+	using OVSSerializer.IO;
 	using B1NARY.Steamworks;
 	using B1NARY.UI;
 	using B1NARY.UI.Colors;

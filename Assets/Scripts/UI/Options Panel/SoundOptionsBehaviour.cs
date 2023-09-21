@@ -6,7 +6,7 @@
 	using UnityEngine.Audio;
 	using B1NARY.Audio;
 	using System.Collections.Generic;
-	using OVSXmlSerializer.Extras;
+	using OVSSerializer.Extras;
 	using B1NARY.DataPersistence;
 	using Microsoft.Win32;
 	using HDConsole;

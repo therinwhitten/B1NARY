@@ -3,7 +3,7 @@
 	using System;
 	using System.Collections.Generic;
 	using B1NARY.UI.Globalization;
-	using OVSXmlSerializer;
+	using OVSSerializer;
 	using UnityEngine;
 
 	[Serializable]
@@ -24,7 +24,7 @@
 		public string animation;
 		public Vector2 screenPosition;
 		public bool selected;
-		[XmlAttribute("type")]
+		[OVSXmlAttribute("type")]
 		public string characterTypeKey;
 
 		public ActorSnapshot(IActor controller)

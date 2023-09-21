@@ -1,6 +1,6 @@
 ﻿namespace B1NARY.Audio
 {
-	using OVSXmlSerializer;
+	using OVSSerializer;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
@@ -24,7 +24,7 @@
 
 		public TimeSpan PlayedSeconds => TimeSpan.FromTicks(ticks);
 		private readonly long ticks;
-		[field: XmlAttribute("clipName")]
+		[field: OVSXmlAttribute("clipName")]
 		public string ClipName { get; }
 		public string SceneName { get; }
 		public SerializedAudio(AudioTracker tracker)

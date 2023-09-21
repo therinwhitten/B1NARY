@@ -6,9 +6,9 @@
 	using UnityEngine;
 	using B1NARY.Scripting;
 	using System.IO;
-	using FormatSerializer = OVSXmlSerializer.XmlSerializer<ColorFormat>;
+	using FormatSerializer = OVSSerializer.OVSXmlSerializer<ColorFormat>;
 	using B1NARY.DataPersistence;
-	using HDConsole.IO;
+	using OVSSerializer.IO;
 	using HDConsole;
 	using System.Text;
 	using ColorUtility = DataPersistence.ColorUtility;
@@ -182,7 +182,7 @@
 					if (DefaultThemePath.Exists)
 					{
 						using FileStream stream = DefaultThemePath.OpenRead();
-						ColorFormat format = FormatSerializer.Default.Deserialize(stream);
+						ColorFormat format = FormatSerializer.Shared.Deserialize(stream);
 						if (format != null)
 							return m_defaultFormat = format;
 					}
@@ -299,7 +299,7 @@ namespace B1NARY.UI.Colors.Editor
 	using System.Linq;
 	using System.Collections.Generic;
 	using System.IO;
-	using HDConsole.IO;
+	using OVSSerializer.IO;
 
 	public class ColorFormatWindow : EditorWindow
 	{

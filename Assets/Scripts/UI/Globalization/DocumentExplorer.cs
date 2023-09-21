@@ -1,7 +1,7 @@
 ﻿namespace B1NARY.Scripting
 {
 	using B1NARY.DataPersistence;
-	using HDConsole.IO;
+	using OVSSerializer.IO;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
@@ -64,7 +64,7 @@
 
 		public Document GetDocumentFromVisual(string visualPath)
 		{
-			visualPath = OSExtension.AddExtension(visualPath, ".txt");
+			visualPath = AddExtension(visualPath, ".txt");
 			string currentLanguage = PlayerConfig.Instance.language.Value;
 			// First try to get the language version
 			Document target = new(visualPath, currentLanguage);
@@ -79,6 +79,38 @@
 			}
 			// ripperonis
 			throw new IndexOutOfRangeException($"'{visualPath}' does not lead to a valid '{currentLanguage}' language or core document!");
+		}
+
+		public static string AddExtension(string input, string extension)
+		{
+			string trimmed = input.Trim();
+			if (trimmed.EndsWith(OSPath.DirectorySeparatorChar.ToString()))
+				throw new InvalidCastException($"'{input}' is not a file path!");
+			trimmed = RemoveExtension(trimmed);
+			if (!extension.StartsWith("."))
+				extension = '.' + extension;
+			string output = trimmed + extension;
+			return output;
+		}
+		public static string RemoveExtension(in string input)
+		{
+			string trimmed = input.Trim();
+			if (HasExtension(trimmed, out int index))
+				trimmed = trimmed.Remove(index);
+			return trimmed;
+		}
+		public static bool HasExtension(in string inputPath) =>
+			HasExtension(inputPath, out _);
+		public static bool HasExtension(in string inputPath, out int startExtension)
+		{
+			string trimmed = inputPath.Trim();
+			if (trimmed.EndsWith(OSPath.DirectorySeparatorChar.ToString()))
+			{
+				startExtension = -1;
+				return false;
+			}
+			startExtension = trimmed.LastIndexOf('.');
+			return startExtension != -1;
 		}
 	}
 }

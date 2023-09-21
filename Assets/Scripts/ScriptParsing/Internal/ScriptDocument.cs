@@ -7,7 +7,7 @@
 	using UnityEngine;
 	using System.IO;
 	using System.Linq;
-	using HDConsole.IO;
+	using OVSSerializer.IO;
 
 	public class ScriptDocument : ScriptElement
 	{

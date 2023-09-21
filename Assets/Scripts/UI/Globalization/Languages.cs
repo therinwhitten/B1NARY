@@ -1,15 +1,15 @@
 ﻿namespace B1NARY.UI.Globalization
 {
 	using B1NARY.DataPersistence;
-	using HDConsole.IO;
+	using OVSSerializer.IO;
 	using HDConsole;
-	using OVSXmlSerializer;
+	using OVSSerializer;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
 	using UnityEngine;
 
-	public class Languages : List<string>, IXmlSerializable
+	public class Languages : List<string>, IOVSXmlSerializable
 	{
 		[return: CommandsFromGetter]
 		private static HDCommand[] GetHDCommands() => new HDCommand[]
@@ -37,7 +37,7 @@
 				{
 					if (LanguagesInfo.Exists)
 						using (FileStream stream = LanguagesInfo.OpenRead())
-							m_instance = XmlSerializer<Languages>.Default.Deserialize(stream);
+							m_instance = OVSXmlSerializer<Languages>.Shared.Deserialize(stream);
 					m_instance ??= new Languages();
 				}
 				return m_instance;
@@ -47,7 +47,7 @@
 		public void Save()
 		{
 			using FileStream stream = LanguagesInfo.Create();
-			XmlSerializer<Languages>.Default.Serialize(stream, this, "Languages");
+			OVSXmlSerializer<Languages>.Shared.Serialize(stream, this);
 		}
 
 #if UNITY_EDITOR
@@ -92,20 +92,20 @@
 		}
 #endif
 
-		bool IXmlSerializable.ShouldWrite => true;
-		void IXmlSerializable.Read(XmlNode value)
+		bool IOVSXmlSerializable.ShouldWrite => true;
+		void IOVSXmlSerializable.Read(XmlNode value)
 		{
 			for (int i = 0; i < value.ChildNodes.Count; i++)
 			{
 				Add(value.ChildNodes[i].Attributes[0].Value);
 			}
 		}
-		void IXmlSerializable.Write(XmlDocument sourceDocument, XmlNode currentNode)
+		void IOVSXmlSerializable.Write(XmlNode currentNode)
 		{
 			for (int i = 0; i < Count; i++)
 			{
-				XmlElement element = sourceDocument.CreateElement("Language");
-				XmlAttribute attribute = sourceDocument.CreateAttribute("data");
+				XmlElement element = currentNode.OwnerDocument.CreateElement("Language");
+				XmlAttribute attribute = currentNode.OwnerDocument.CreateAttribute("data");
 				attribute.Value = this[i];
 				element.Attributes.Append(attribute);
 				currentNode.AppendChild(element);

@@ -1,11 +1,11 @@
 ﻿namespace HDConsole
 {
+	using OVSSerializer.IO;
 	using System;
 	using System.Collections.Generic;
 	using System.Diagnostics;
 	using System.IO;
 	using System.Threading;
-	using IO;
 
 	public class LogAutoSyncer : IDisposable
 	{

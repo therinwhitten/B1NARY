@@ -2,17 +2,17 @@
 {
 	using B1NARY.CharacterManagement;
 	using B1NARY.DataPersistence;
-	using HDConsole.IO;
+	using OVSSerializer.IO;
 	using B1NARY.Scripting;
 	using B1NARY.UI.Globalization;
-	using OVSXmlSerializer;
+	using OVSSerializer;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Xml;
 	using UnityEngine;
 
-	public class CharacterNames : IXmlSerializable
+	public class CharacterNames : IOVSXmlSerializable
 	{
 		public static LanguagedName ChangingNameOf { get; private set; } = null;
 		public static bool ChangingNames => ChangingNameOf != null;
@@ -52,8 +52,8 @@
 			set => this[Languages.CurrentLanguage] = value;
 		}
 
-		bool IXmlSerializable.ShouldWrite => true;
-		void IXmlSerializable.Read(XmlNode value)
+		bool IOVSXmlSerializable.ShouldWrite => true;
+		void IOVSXmlSerializable.Read(XmlNode value)
 		{
 			_characterNames.Clear();
 			for (int i = 0; i < value.ChildNodes.Count; i++)
@@ -66,12 +66,12 @@
 			}
 		}
 
-		void IXmlSerializable.Write(XmlDocument sourceDocument, XmlNode currentNode)
+		void IOVSXmlSerializable.Write(XmlNode currentNode)
 		{
 			using var enumerator = _characterNames.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
-				var element = sourceDocument.CreateElement(enumerator.Current.Key);
+				var element = currentNode.OwnerDocument.CreateElement(enumerator.Current.Key);
 				element.InnerText = enumerator.Current.Value.Name;
 				currentNode.AppendChild(element);
 			}

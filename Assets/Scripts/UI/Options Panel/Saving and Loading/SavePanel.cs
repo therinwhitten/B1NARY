@@ -1,9 +1,9 @@
 ﻿namespace B1NARY.UI.Saving
 {
 	using B1NARY.DataPersistence;
-	using HDConsole.IO;
+	using OVSSerializer.IO;
 	using B1NARY.Scripting;
-	using OVSXmlSerializer;
+	using OVSSerializer;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
@@ -108,7 +108,7 @@
 			SaveSlot newSlot;
 			using (var stream = new MemoryStream())
 			{
-				XmlSerializer<SaveSlot> serializer = new();
+				OVSXmlSerializer<SaveSlot> serializer = new();
 				serializer.Serialize(stream, slot);
 				stream.Position = 0;
 				newSlot = serializer.Deserialize(stream);

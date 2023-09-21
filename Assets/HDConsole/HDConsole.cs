@@ -1,6 +1,6 @@
 ﻿namespace HDConsole
 {
-	using global::HDConsole.IO;
+	using OVSSerializer.IO;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;

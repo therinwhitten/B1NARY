@@ -6,7 +6,7 @@
 	using System.Xml;
 	using UnityEngine;
 	using System.Linq;
-	using OVSXmlSerializer;
+	using OVSSerializer;
 	using System.Threading.Tasks;
 	using SixLabors.ImageSharp;
 	using SixLabors.ImageSharp.Processing;
@@ -19,7 +19,7 @@
 	/// handle textures and images.
 	/// </summary>
 	[Serializable]
-	public sealed class Thumbnail : IXmlSerializable
+	public sealed class Thumbnail : IOVSXmlSerializable
 	{
 		/// <summary>
 		/// The size of a typical 1:1 thumbnail, can be nicely seen by most monitors,
@@ -43,12 +43,12 @@
 			return new Thumbnail(new Vector2Int(maxWidth, maxHeight), texture);
 		}
 
-		void IXmlSerializable.Read(XmlNode value)
+		void IOVSXmlSerializable.Read(XmlNode value)
 		{
 			data = Convert.FromBase64String(value.InnerText);
 		}
 
-		void IXmlSerializable.Write(XmlDocument document, XmlNode node)
+		void IOVSXmlSerializable.Write(XmlNode node)
 		{
 			node.InnerText = Convert.ToBase64String(data);
 		}
@@ -68,7 +68,7 @@
 			}
 		}
 
-		bool IXmlSerializable.ShouldWrite => true;
+		bool IOVSXmlSerializable.ShouldWrite => true;
 
 		// Private constructor for xml serialization
 		private Thumbnail()

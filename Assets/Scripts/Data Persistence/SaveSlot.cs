@@ -6,14 +6,14 @@
 	using System.Collections.Generic;
 	using System.IO;
 	using UnityEngine;
-	using OVSXmlSerializer;
+	using OVSSerializer;
 	using B1NARY.CharacterManagement;
 	using B1NARY.Audio;
 	using B1NARY.UI.Colors;
 	using System.Threading.Tasks;
 	using Stopwatch = System.Diagnostics.Stopwatch;
 	using System.Linq;
-	using HDConsole.IO;
+	using OVSSerializer.IO;
 	using HDConsole;
 	using System.Text;
 
@@ -105,8 +105,8 @@
 		public const int MAX_SAVES = 69;
 		public static OSDirectory SavesDirectory => PersistentData.GetSubdirectories("Saves");
 		
-		public static XmlSerializer<SaveSlot> SlotSerializer { get; } =
-		new XmlSerializer<SaveSlot>(new XmlSerializerConfig()
+		public static OVSXmlSerializer<SaveSlot> SlotSerializer { get; } =
+		new OVSXmlSerializer<SaveSlot>(new OVSConfig()
 		{
 			TypeHandling = IncludeTypes.SmartTypes,
 			VersionLeniency = Versioning.Leniency.Minor,
@@ -183,7 +183,7 @@
 			$"{PlayerName} : {scriptPosition.SceneName}\n" +
 			$"{metadata.lastSaved}";
 
-		[field: XmlAttribute("name")]
+		[field: OVSXmlAttribute("name")]
 		public string SaveName { get; set; } = "QuickSave";
 		public Metadata metadata;
 		public Collection<bool> booleans;
@@ -225,7 +225,7 @@
 		public ActorSnapshot[] characterSnapshots;
 		public List<SerializedAudio> audio;
 
-		[XmlIgnore]
+		[OVSXmlIgnore]
 		public bool hasSaved = false;
 
 		public SaveSlot()
@@ -339,7 +339,7 @@
 					File.Delete(m_directoryInfo);
 				m_directoryInfo = fileInfo?.FullPath;
 			}
-			[XmlIgnore]
+			[OVSXmlIgnore]
 			private string m_directoryInfo;
 			public DateTime lastSaved;
 			public Thumbnail thumbnail;

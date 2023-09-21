@@ -3,7 +3,7 @@
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
 	using HDConsole;
-	using OVSXmlSerializer.Extras;
+	using OVSSerializer.Extras;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;

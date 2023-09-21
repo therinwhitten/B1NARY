@@ -9,15 +9,15 @@ namespace B1NARY.DataPersistence
 	using System.Linq;
 	using System.Xml.Serialization;
 	using UnityEngine;
-	using OVSXmlSerializer;
-	using OVSXmlSerializer.Extras;
+	using OVSSerializer;
+	using OVSSerializer.Extras;
 	using B1NARY.UI.Globalization;
 	using Steamworks;
 #if !DISABLESTEAMWORKS
 	using global::Steamworks;
 #endif
 	using Version = System.Version;
-	using HDConsole.IO;
+	using OVSSerializer.IO;
 	using HDConsole;
 	using UnityEngine.Rendering;
 
@@ -27,13 +27,13 @@ namespace B1NARY.DataPersistence
 		public const string PRE_SOUND = "snd_";
 
 		public static OSFile ConfigLocation => SaveSlot.PersistentData.GetFile("config.xml");
-		private static XmlSerializer<PlayerConfig> XmlSerializer { get; }
-			= new XmlSerializer<PlayerConfig>(new XmlSerializerConfig
+		private static OVSXmlSerializer<PlayerConfig> XmlSerializer { get; }
+			= new OVSXmlSerializer<PlayerConfig>(new OVSConfig
 			{
 				TypeHandling = IncludeTypes.SmartTypes,
 				Indent = true,
 				IndentChars = "\t",
-				Version = new Version(1, 0),
+				Version = new Version(2, 0),
 				VersionLeniency = Versioning.Leniency.Minor,
 				IgnoreUndefinedValues = true,
 			});
@@ -85,7 +85,7 @@ namespace B1NARY.DataPersistence
 		public ChangableValue<bool> hEnable = new(false);
 		public ChangableValue<int> dialogueSpeedTicks = new(30);
 		public ChangableValue<string> language = new(Languages.Instance.Count > 0 ? Languages.Instance[0] : "English");
-		[XmlNamedAs("voicelineBGone")]
+		[OVSXmlNamedAs("voicelineBGone")]
 		public ChangableValue<bool> voicelineBGone = new(false);
 		public Audio audio = new();
 		public Graphics graphics = new();
