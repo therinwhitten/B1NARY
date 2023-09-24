@@ -27,16 +27,15 @@ namespace B1NARY.DataPersistence
 		public const string PRE_SOUND = "snd_";
 
 		public static OSFile ConfigLocation => SaveSlot.PersistentData.GetFile("config.xml");
-		private static OVSXmlSerializer<PlayerConfig> XmlSerializer { get; }
-			= new OVSXmlSerializer<PlayerConfig>(new OVSConfig
-			{
-				TypeHandling = IncludeTypes.SmartTypes,
-				Indent = true,
-				IndentChars = "\t",
-				Version = new Version(2, 0),
-				VersionLeniency = Versioning.Leniency.Minor,
-				IgnoreUndefinedValues = true,
-			});
+		private static OVSXmlSerializer<PlayerConfig> XmlSerializer { get; } = new()
+		{
+			TypeHandling = IncludeTypes.SmartTypes,
+			Indent = true,
+			IndentChars = "\t",
+			Version = new Version(2, 0),
+			VersionLeniency = Versioning.Leniency.Minor,
+			IgnoreUndefinedValues = true,
+		};
 
 
 		public static PlayerConfig Instance

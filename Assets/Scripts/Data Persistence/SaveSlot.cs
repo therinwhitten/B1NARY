@@ -106,15 +106,15 @@
 		public static OSDirectory SavesDirectory => PersistentData.GetSubdirectories("Saves");
 		
 		public static OVSXmlSerializer<SaveSlot> SlotSerializer { get; } =
-		new OVSXmlSerializer<SaveSlot>(new OVSConfig()
+		new OVSXmlSerializer<SaveSlot>()
 		{
 			TypeHandling = IncludeTypes.SmartTypes,
 			VersionLeniency = Versioning.Leniency.Minor,
-			Version = new Version(1, 0, 0),
+			Version = new Version(2, 0, 0),
 			IndentChars = "\t",
 			Indent = true,
 			IgnoreUndefinedValues = true,
-		});
+		};
 
 		public static SaveSlot ActiveSlot
 		{
