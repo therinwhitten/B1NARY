@@ -109,7 +109,7 @@
 		new OVSXmlSerializer<SaveSlot>()
 		{
 			TypeHandling = IncludeTypes.SmartTypes,
-			VersionLeniency = Versioning.Leniency.Minor,
+			VersionLeniency = Versioning.Leniency.All,
 			Version = new Version(2, 0, 0),
 			IndentChars = "\t",
 			Indent = true,

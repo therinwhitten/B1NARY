@@ -33,7 +33,7 @@ namespace B1NARY.DataPersistence
 			Indent = true,
 			IndentChars = "\t",
 			Version = new Version(2, 0),
-			VersionLeniency = Versioning.Leniency.Minor,
+			VersionLeniency = Versioning.Leniency.All,
 			IgnoreUndefinedValues = true,
 		};
 
