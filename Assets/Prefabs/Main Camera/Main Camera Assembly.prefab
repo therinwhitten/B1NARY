@@ -82,7 +82,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -209,6 +209,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Live 2D Camera
       objectReference: {fileID: 0}
+    - target: {fileID: 4749032694507437396, guid: 9b8f39c21366fe84d82dbc3d5678b8e4,
+        type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4749032694507437397, guid: 9b8f39c21366fe84d82dbc3d5678b8e4,
         type: 3}
       propertyPath: m_RendererIndex
@@ -239,6 +244,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2852575530868386596}
     m_Modifications:
+    - target: {fileID: 6736967544796611528, guid: 70437f153e274554d8f4e12107275884,
+        type: 3}
+      propertyPath: m_AllowDynamicResolution
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6736967544796611540, guid: 70437f153e274554d8f4e12107275884,
         type: 3}
       propertyPath: m_Name
