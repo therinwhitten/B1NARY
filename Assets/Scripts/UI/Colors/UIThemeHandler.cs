@@ -105,13 +105,13 @@
 			Type componentType = TargetComponent.GetType();
 			if (!string.IsNullOrEmpty(cacheColorblock))
 			{
-				PropertyInfo suspected = componentType.GetProperty(cacheColor, BindingFlags.Public | BindingFlags.Instance);
+				PropertyInfo suspected = componentType.GetProperty(cacheColorblock, BindingFlags.Public | BindingFlags.Instance);
 				if (suspected != null)
 				{
 					info = suspected;
 					return true;
 				}
-				cacheColor = null;
+				cacheColorblock = null;
 			}
 			PropertyInfo[] properties = componentType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
 			for (int ii = 0; ii < properties.Length; ii++)
