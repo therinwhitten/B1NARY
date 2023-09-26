@@ -145,7 +145,7 @@
 			return false;
 		}
 
-		public Graphic TargetComponent
+		public Component TargetComponent
 		{
 			get
 			{
@@ -160,8 +160,8 @@
 				{
 					m_savedComponent = null;
 					return;
-				}	
-				Graphic savedGraphic = m_savedComponent;
+				}
+				Component savedGraphic = m_savedComponent;
 				m_savedComponent = value;
 				if (CheckForColor(out _) || CheckForColorBlock(out _))
 					return;
@@ -170,7 +170,7 @@
 			}
 		}
 		[SerializeField]
-		private Graphic m_savedComponent;
+		private Component m_savedComponent;
 
 		private void Reset()
 		{
@@ -366,7 +366,7 @@ namespace B1NARY.UI.Colors.Editor
 
 					if (!targetTransform.TryGetComponent(out UIThemeHandler handler))
 						return falseOut;
-					Graphic old = handler.TargetComponent;
+					Component old = handler.TargetComponent;
 					if (old == null && targetTransform.TryGetComponent(out Graphic graphic))
 					{
 						handler.TargetComponent = graphic;
