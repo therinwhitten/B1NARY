@@ -1,8 +1,6 @@
 ﻿namespace B1NARY.UI.Gamepads
 {
 	using B1NARY.DesignPatterns;
-	using MEC;
-	using PlasticPipe.PlasticProtocol.Messages;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
