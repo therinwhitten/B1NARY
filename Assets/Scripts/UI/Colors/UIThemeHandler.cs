@@ -10,7 +10,6 @@
 	[DisallowMultipleComponent]
 	public class UIThemeHandler : MonoBehaviour
 	{
-
 		public string imageThemeName = ColorFormat.COLOR_NAME_SECONDARY,
 			buttonHighlightedName = ColorFormat.COLOR_NAME_PRIMARY,
 			buttonPressedName = ColorFormat.COLOR_NAME_PRIMARY,
