@@ -81,10 +81,9 @@
 			SetVolume(MIXER_MUSIC, PlayerConfig.Instance.audio.music);
 			SetVolume(MIXER_SFX, PlayerConfig.Instance.audio.SFX);
 			SetVolume(MIXER_UI, PlayerConfig.Instance.audio.UI);
-			// shut up loser
-			using var enumerator = PlayerConfig.Instance.audio.characterVoices.GetEnumerator();
-			while (enumerator.MoveNext())
-				SetVolume(enumerator.Current.Key, enumerator.Current.Value);
+			KeyValuePair<string, float>[] pairs = PlayerConfig.Instance.audio.characterVoices.ToArray();
+			for (int i = 0; i < pairs.Length; i++)
+				SetVolume(pairs[i].Key, pairs[i].Value);
 		}
 	}
 }

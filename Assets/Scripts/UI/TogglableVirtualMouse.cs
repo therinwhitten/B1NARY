@@ -12,21 +12,27 @@ namespace B1NARY.UI
 		[Header("Toggle Settings")]
 		public PlayerInput inputSystem;
 		public string gamepadTag = "Gamepad";
+
+		private GameObject thisObj;
+		CoroutineWrapper wrapper = null;
+
 		private void Start()
 		{
-			inputSystem.StartCoroutine(Coroutine());
-			IEnumerator Coroutine()
-			{
-				while (this != null)
-				{
-					ToggleFromGamepadCheck();
-					yield return new WaitForEndOfFrame();
-				}
-			}
+			thisObj = gameObject;
 		}
 		protected new void OnEnable()
 		{
 			base.OnEnable();
+			if (CoroutineWrapper.IsNotRunningOrNull(wrapper))
+				wrapper = new CoroutineWrapper(inputSystem, Coroutine()).Start();
+			IEnumerator Coroutine()
+			{
+				while (this != null)
+				{
+					yield return new WaitForEndOfFrame();
+					ToggleFromGamepadCheck();
+				}
+			}
 		}
 		protected new void OnDisable()
 		{
@@ -34,7 +40,10 @@ namespace B1NARY.UI
 		}
 		protected void ToggleFromGamepadCheck()
 		{
-			this.enabled = inputSystem.currentControlScheme == gamepadTag;
+			bool output = inputSystem.currentControlScheme == gamepadTag;
+			if (output == thisObj.activeSelf)
+				return;
+			thisObj.SetActive(output);
 		}
 	}
 }
