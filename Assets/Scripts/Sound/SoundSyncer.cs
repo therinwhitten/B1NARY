@@ -81,6 +81,7 @@
 			SetVolume(MIXER_MUSIC, PlayerConfig.Instance.audio.music);
 			SetVolume(MIXER_SFX, PlayerConfig.Instance.audio.SFX);
 			SetVolume(MIXER_UI, PlayerConfig.Instance.audio.UI);
+			// shut up loser
 			using var enumerator = PlayerConfig.Instance.audio.characterVoices.GetEnumerator();
 			while (enumerator.MoveNext())
 				SetVolume(enumerator.Current.Key, enumerator.Current.Value);
