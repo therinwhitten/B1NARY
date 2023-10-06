@@ -337,7 +337,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!1 &7417771796132724063
@@ -351,15 +351,14 @@ GameObject:
   - component: {fileID: 1112018249067017279}
   - component: {fileID: 4628295130250842299}
   - component: {fileID: 5234453017657316270}
-  - component: {fileID: 6828475888311278991}
-  - component: {fileID: 3192876276591879370}
+  - component: {fileID: 7670129690893448108}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1112018249067017279
 RectTransform:
   m_ObjectHideFlags: 0
@@ -426,7 +425,7 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &6828475888311278991
+--- !u!114 &7670129690893448108
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -435,30 +434,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 7417771796132724063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Script: {fileID: 11500000, guid: 01177bd454f1eec48a4c903c4be04f4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
---- !u!114 &3192876276591879370
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7417771796132724063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 424b6720ff5999446843ba414e58a907, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_CursorMode: 1
+  m_CursorMode: 0
   m_CursorGraphic: {fileID: 4701649727778890914}
   m_CursorTransform: {fileID: 2580813459516991254}
-  m_CursorSpeed: 900
+  m_CursorSpeed: 400
   m_ScrollSpeed: 45
   m_StickAction:
     m_UseReference: 1
@@ -466,7 +448,7 @@ MonoBehaviour:
       m_Name: Stick
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: cf40b125-f9d5-413b-ae1f-50fb456883da
+      m_Id: 238349cf-e88b-4cb8-8d9b-7d1ab6322930
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -479,12 +461,12 @@ MonoBehaviour:
       m_Name: Left Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 8796bc7d-eb54-43f2-8caa-f49cf5f48c41
+      m_Id: 647c6a4a-f426-489f-8107-1cc862a20697
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 369013516619838602, guid: 130e638908e1343488d66b7861adc776,
+    m_Reference: {fileID: 3001919216989983466, guid: 130e638908e1343488d66b7861adc776,
       type: 3}
   m_MiddleButtonAction:
     m_UseReference: 1
@@ -492,7 +474,7 @@ MonoBehaviour:
       m_Name: Middle Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 23e4c3b5-b06d-4ede-b790-24d4c17ad599
+      m_Id: 0ed0bff3-1593-4860-a8ca-54febbe2f699
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -505,7 +487,7 @@ MonoBehaviour:
       m_Name: Right Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 68aff182-90d0-4f89-b7a3-d56aaf971fff
+      m_Id: 78fd6841-424e-4848-92b7-c33c823f604b
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -518,18 +500,10 @@ MonoBehaviour:
       m_Name: Forward Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: bea25998-6a6a-4355-9f9f-17c306182a0c
+      m_Id: d17d0c78-0132-483d-a527-439316c6961d
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings:
-      - m_Name: 
-        m_Id: 6d6fb987-5a43-4069-8663-4fc06b927135
-        m_Path: 
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Forward Button
-        m_Flags: 0
+      m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_BackButtonAction:
@@ -538,7 +512,7 @@ MonoBehaviour:
       m_Name: Back Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: cd1e1250-2768-4dad-a24e-850a37d1c9e1
+      m_Id: b28a424b-31cd-4347-9bf7-0d07410ff631
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -550,13 +524,15 @@ MonoBehaviour:
       m_Name: Scroll Wheel
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: b1544982-8ca1-4e0f-bd60-f7dc17247f59
+      m_Id: 7378438d-a076-47e7-b594-8eb43456fbef
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 6240969308177333660, guid: 130e638908e1343488d66b7861adc776,
       type: 3}
+  inputSystem: {fileID: 2934814918228199763}
+  gamepadTag: Gamepad
 --- !u!1 &8874474533732385982
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,13 +592,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 24ad097c823f52f42a6907624b7da414, type: 3}
+  m_Sprite: {fileID: 0}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
