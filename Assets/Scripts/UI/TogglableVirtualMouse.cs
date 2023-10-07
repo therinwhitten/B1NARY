@@ -23,16 +23,16 @@ namespace B1NARY.UI
 		protected new void OnEnable()
 		{
 			base.OnEnable();
-			//if (CoroutineWrapper.IsNotRunningOrNull(wrapper))
-			//	wrapper = new CoroutineWrapper(inputSystem, Coroutine()).Start();
-			//IEnumerator Coroutine()
-			//{
-			//	while (this != null)
-			//	{
-			//		yield return new WaitForEndOfFrame();
-			//		ToggleFromGamepadCheck();
-			//	}
-			//}
+			if (CoroutineWrapper.IsNotRunningOrNull(wrapper))
+				wrapper = new CoroutineWrapper(inputSystem, Coroutine()).Start();
+			IEnumerator Coroutine()
+			{
+				while (this != null)
+				{
+					yield return new WaitForEndOfFrame();
+					ToggleFromGamepadCheck();
+				}
+			}
 		}
 		protected new void OnDisable()
 		{

@@ -475,10 +475,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1112018249067017279}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 60, y: 60}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 885, y: 400.5}
+  m_SizeDelta: {x: 60, y: 61}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6242782629845451943
 CanvasRenderer:
@@ -502,7 +502,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -530,39 +530,55 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 424b6720ff5999446843ba414e58a907, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CursorMode: 0
+  m_CursorMode: 1
   m_CursorGraphic: {fileID: 4701649727778890914}
   m_CursorTransform: {fileID: 2580813459516991254}
   m_CursorSpeed: 900
   m_ScrollSpeed: 45
   m_StickAction:
-    m_UseReference: 1
+    m_UseReference: 0
     m_Action:
       m_Name: Stick
       m_Type: 0
-      m_ExpectedControlType: 
+      m_ExpectedControlType: Vector2
       m_Id: d514901e-ef56-44ec-8f62-5b7aa4b0fa21
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 36f56035-25a3-47f4-8466-38c84a9a9b18
+        m_Path: <Gamepad>/leftStick
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Stick
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 2800817948444978514, guid: 130e638908e1343488d66b7861adc776,
       type: 3}
   m_LeftButtonAction:
-    m_UseReference: 1
+    m_UseReference: 0
     m_Action:
       m_Name: Left Button
-      m_Type: 0
-      m_ExpectedControlType: 
+      m_Type: 1
+      m_ExpectedControlType: Button
       m_Id: 785b64f3-b9da-4f33-8221-3b7980a14df3
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 724624c2-af3e-43d0-90ad-f6e29428e651
+        m_Path: <Gamepad>/rightTrigger
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Left Button
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 3001919216989983466, guid: 130e638908e1343488d66b7861adc776,
       type: 3}
   m_MiddleButtonAction:
-    m_UseReference: 1
+    m_UseReference: 0
     m_Action:
       m_Name: Middle Button
       m_Type: 0
@@ -575,7 +591,7 @@ MonoBehaviour:
     m_Reference: {fileID: -2185481485913320682, guid: 130e638908e1343488d66b7861adc776,
       type: 3}
   m_RightButtonAction:
-    m_UseReference: 1
+    m_UseReference: 0
     m_Action:
       m_Name: Right Button
       m_Type: 0
@@ -588,7 +604,7 @@ MonoBehaviour:
     m_Reference: {fileID: -4090225696740746782, guid: 130e638908e1343488d66b7861adc776,
       type: 3}
   m_ForwardButtonAction:
-    m_UseReference: 1
+    m_UseReference: 0
     m_Action:
       m_Name: Forward Button
       m_Type: 0
@@ -601,7 +617,7 @@ MonoBehaviour:
     m_Reference: {fileID: 392368643174621059, guid: 130e638908e1343488d66b7861adc776,
       type: 3}
   m_BackButtonAction:
-    m_UseReference: 1
+    m_UseReference: 0
     m_Action:
       m_Name: Back Button
       m_Type: 0
@@ -614,7 +630,7 @@ MonoBehaviour:
     m_Reference: {fileID: 7727032971491509709, guid: 130e638908e1343488d66b7861adc776,
       type: 3}
   m_ScrollWheelAction:
-    m_UseReference: 1
+    m_UseReference: 0
     m_Action:
       m_Name: Scroll Wheel
       m_Type: 0
@@ -622,7 +638,47 @@ MonoBehaviour:
       m_Id: 57d6593b-045a-425f-b986-75d9db33eab1
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 2D Vector
+        m_Id: a3f28806-afea-449f-901e-aa0e959cc7f6
+        m_Path: 2DVector
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Scroll Wheel
+        m_Flags: 4
+      - m_Name: up
+        m_Id: c1e3544e-3da2-4baf-92d3-9675dcc832d0
+        m_Path: <Gamepad>/rightStick/up
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Scroll Wheel
+        m_Flags: 8
+      - m_Name: down
+        m_Id: 91ffdf7b-542f-428f-801a-99aa40447d9d
+        m_Path: <Gamepad>/rightStick/down
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Scroll Wheel
+        m_Flags: 8
+      - m_Name: left
+        m_Id: 45fdf8e6-9ef6-47b0-8490-fb565b0d089f
+        m_Path: 
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Scroll Wheel
+        m_Flags: 8
+      - m_Name: right
+        m_Id: a93df6f1-e0d7-4571-9310-9a325c186d95
+        m_Path: 
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Scroll Wheel
+        m_Flags: 8
       m_Flags: 0
     m_Reference: {fileID: 6240969308177333660, guid: 130e638908e1343488d66b7861adc776,
       type: 3}
