@@ -400,7 +400,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 255
   m_TargetDisplay: 0
 --- !u!114 &5234453017657316270
 MonoBehaviour:
@@ -453,7 +453,7 @@ GameObject:
   - component: {fileID: 2580813459516991254}
   - component: {fileID: 6242782629845451943}
   - component: {fileID: 4701649727778890914}
-  - component: {fileID: 2514389003111820663}
+  - component: {fileID: 152357796338638768}
   m_Layer: 0
   m_Name: Cursor
   m_TagString: Untagged
@@ -518,7 +518,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2514389003111820663
+--- !u!114 &152357796338638768
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -527,26 +527,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 8874474533732385982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 424b6720ff5999446843ba414e58a907, type: 3}
+  m_Script: {fileID: 11500000, guid: 01177bd454f1eec48a4c903c4be04f4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_CursorMode: 1
+  m_CursorMode: 0
   m_CursorGraphic: {fileID: 4701649727778890914}
   m_CursorTransform: {fileID: 2580813459516991254}
-  m_CursorSpeed: 900
+  m_CursorSpeed: 400
   m_ScrollSpeed: 45
   m_StickAction:
     m_UseReference: 0
     m_Action:
       m_Name: Stick
       m_Type: 0
-      m_ExpectedControlType: Vector2
-      m_Id: d514901e-ef56-44ec-8f62-5b7aa4b0fa21
+      m_ExpectedControlType: 
+      m_Id: 9c2b7b02-ae33-4640-8399-2cd2a91b3384
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 36f56035-25a3-47f4-8466-38c84a9a9b18
+        m_Id: 781495bf-aef9-4170-9db3-0893566d8aad
         m_Path: <Gamepad>/leftStick
         m_Interactions: 
         m_Processors: 
@@ -554,93 +554,87 @@ MonoBehaviour:
         m_Action: Stick
         m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: 2800817948444978514, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_LeftButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Left Button
-      m_Type: 1
-      m_ExpectedControlType: Button
-      m_Id: 785b64f3-b9da-4f33-8221-3b7980a14df3
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: d24070b8-6105-4353-b20d-cb44d06c6abb
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 724624c2-af3e-43d0-90ad-f6e29428e651
-        m_Path: <Gamepad>/rightTrigger
+        m_Id: b51dcdc3-a835-4a4b-a293-dab977d7c8ed
+        m_Path: <Gamepad>/buttonWest
         m_Interactions: 
         m_Processors: 
         m_Groups: 
         m_Action: Left Button
         m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: 3001919216989983466, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_MiddleButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Middle Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 44acab6a-3158-46d8-9fb2-f6b8f1cc5909
+      m_Id: e60aab0c-62ff-48d0-979c-e1728cb0115a
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -2185481485913320682, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_RightButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Right Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 6a168cc9-eec7-42db-bfad-cc5f570c831c
+      m_Id: 526a2a47-e379-4ffc-b712-5dfa5408cdbc
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: -4090225696740746782, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_ForwardButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Forward Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 8a8f1447-51cf-42f9-a0c8-c8ebe913cea3
+      m_Id: 46e77b23-a1cb-4e50-b642-ec3171f98477
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 392368643174621059, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_BackButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Back Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 624f9337-cf02-4c9f-834e-0568f049e582
+      m_Id: 690a80af-9bc0-4abe-9802-e6f1388f68c9
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 7727032971491509709, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_ScrollWheelAction:
     m_UseReference: 0
     m_Action:
       m_Name: Scroll Wheel
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 57d6593b-045a-425f-b986-75d9db33eab1
+      m_Id: 329a89a5-230f-4702-95bf-c26bd50b83cb
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 2D Vector
-        m_Id: a3f28806-afea-449f-901e-aa0e959cc7f6
+        m_Id: 55a50663-ed53-4fa2-af32-9cd007197821
         m_Path: 2DVector
         m_Interactions: 
         m_Processors: 
@@ -648,7 +642,7 @@ MonoBehaviour:
         m_Action: Scroll Wheel
         m_Flags: 4
       - m_Name: up
-        m_Id: c1e3544e-3da2-4baf-92d3-9675dcc832d0
+        m_Id: aa862df4-6ce8-486a-a3c2-569da3da2015
         m_Path: <Gamepad>/rightStick/up
         m_Interactions: 
         m_Processors: 
@@ -656,7 +650,7 @@ MonoBehaviour:
         m_Action: Scroll Wheel
         m_Flags: 8
       - m_Name: down
-        m_Id: 91ffdf7b-542f-428f-801a-99aa40447d9d
+        m_Id: fc9c5b35-8bdf-4511-88c2-2e127102b2c9
         m_Path: <Gamepad>/rightStick/down
         m_Interactions: 
         m_Processors: 
@@ -664,7 +658,7 @@ MonoBehaviour:
         m_Action: Scroll Wheel
         m_Flags: 8
       - m_Name: left
-        m_Id: 45fdf8e6-9ef6-47b0-8490-fb565b0d089f
+        m_Id: 640f0008-0006-4ebe-a7f3-72b55b77e203
         m_Path: 
         m_Interactions: 
         m_Processors: 
@@ -672,7 +666,7 @@ MonoBehaviour:
         m_Action: Scroll Wheel
         m_Flags: 8
       - m_Name: right
-        m_Id: a93df6f1-e0d7-4571-9310-9a325c186d95
+        m_Id: 3945b6d5-dcda-42ad-9c51-8bc7add9aca3
         m_Path: 
         m_Interactions: 
         m_Processors: 
@@ -680,5 +674,6 @@ MonoBehaviour:
         m_Action: Scroll Wheel
         m_Flags: 8
       m_Flags: 0
-    m_Reference: {fileID: 6240969308177333660, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
+  inputSystem: {fileID: 2934814918228199763}
+  gamepadTag: Gamepad

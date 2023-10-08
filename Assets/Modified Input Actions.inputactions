@@ -229,22 +229,11 @@
                 },
                 {
                     "name": "",
-                    "id": "f814ee07-05f2-43ab-af3a-40c295a323d8",
-                    "path": "<VirtualMouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Keyboard&Mouse;Touch;Joystick;XR",
-                    "action": "Point",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "c52c8e0b-8179-41d3-b8a1-d149033bbe86",
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;Gamepad;Joystick",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -277,7 +266,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;Gamepad;Joystick",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -306,22 +295,11 @@
                 },
                 {
                     "name": "",
-                    "id": "5a928a25-1864-4156-973b-cbf529f617af",
-                    "path": "<VirtualMouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Keyboard&Mouse;Touch;Joystick;XR",
-                    "action": "Click",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "38c99815-14ea-4617-8627-164d27641299",
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;Gamepad;Joystick",
                     "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -380,17 +358,6 @@
                     "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "ce11cf03-0b76-4b37-98ec-bdbc1de27b6b",
-                    "path": "<VirtualMouse>/scroll",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad;Keyboard&Mouse;XR;Joystick;Touch",
-                    "action": "ScrollWheel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -1083,6 +1050,11 @@
                 {
                     "devicePath": "<Gamepad>",
                     "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<VirtualMouse>",
+                    "isOptional": true,
                     "isOR": false
                 }
             ]
