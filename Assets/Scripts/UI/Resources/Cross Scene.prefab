@@ -497,7 +497,7 @@ GameObject:
   - component: {fileID: 2580813459516991254}
   - component: {fileID: 6242782629845451943}
   - component: {fileID: 4701649727778890914}
-  - component: {fileID: 163636881611399927}
+  - component: {fileID: 2561662967744376734}
   m_Layer: 5
   m_Name: Cursor
   m_TagString: UI
@@ -562,7 +562,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &163636881611399927
+--- !u!114 &2561662967744376734
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -571,26 +571,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 8874474533732385982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 424b6720ff5999446843ba414e58a907, type: 3}
+  m_Script: {fileID: 11500000, guid: 1972a790c0e2e034eabfd6b9d347598c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_CursorMode: 1
   m_CursorGraphic: {fileID: 4701649727778890914}
   m_CursorTransform: {fileID: 2580813459516991254}
   m_CursorSpeed: 1700
-  m_ScrollSpeed: 30
+  m_ScrollSpeed: 45
   m_StickAction:
     m_UseReference: 0
     m_Action:
       m_Name: Stick
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: bcc41f4c-18fa-4848-9ffd-fdb98c0a2f48
+      m_Id: 55b628c4-445d-45d7-94c3-2eb91cf85f7b
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: e0924bad-8b3d-40b9-ae75-6d2b24128366
+        m_Id: b3f57be6-c360-44d0-a30f-9d0c60bd82d6
         m_Path: <Gamepad>/leftStick
         m_Interactions: 
         m_Processors: 
@@ -598,20 +598,19 @@ MonoBehaviour:
         m_Action: Stick
         m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: -1654692200621890270, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_LeftButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Left Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: d16f3c3f-eb57-4cef-81b1-9a5025344fe4
+      m_Id: 9bd6d691-6671-4793-ad52-132d3cfdbd07
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: be06e45f-50f9-4b52-85f8-bad9cf805577
+        m_Id: 8258aa49-b5cf-4d72-ae2a-810fa24e4cb6
         m_Path: <Gamepad>/buttonSouth
         m_Interactions: 
         m_Processors: 
@@ -619,15 +618,14 @@ MonoBehaviour:
         m_Action: Left Button
         m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: 3001919216989983466, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_MiddleButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Middle Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: d93a878a-68aa-4993-9bfb-2fa9e8d76c8a
+      m_Id: 8989d4b9-94b7-4030-b57b-6ad307cc6fb6
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -639,12 +637,12 @@ MonoBehaviour:
       m_Name: Right Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 8f1686d3-b240-472d-94df-2c402886fd5d
+      m_Id: 1795edd2-eac3-4f53-9781-0f7d579e3771
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: ba970481-9804-435d-bb17-e7f972d98d6b
+        m_Id: 7b4999ae-a972-4f6f-b282-d2d4404593a0
         m_Path: <Gamepad>/rightStickPress
         m_Interactions: 
         m_Processors: 
@@ -652,15 +650,14 @@ MonoBehaviour:
         m_Action: Right Button
         m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: -2185481485913320682, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_ForwardButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Forward Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: ac06b733-46af-410a-b4f4-9ac052b4b9c7
+      m_Id: 61149b3e-6153-4c97-9270-3454948cf2bd
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
@@ -672,33 +669,32 @@ MonoBehaviour:
       m_Name: Back Button
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: 9353dd4f-6aea-431c-aceb-bfbb2f550b0a
+      m_Id: 18a0c609-e7e0-40a6-9b1f-bff0bcb3aed8
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: e32ea7d5-cf23-476d-8b08-634c8b69d36f
-        m_Path: <Gamepad>/buttonWest
+        m_Id: b66361c2-fce4-4f50-a078-dd01c51621e1
+        m_Path: <Gamepad>/buttonEast
         m_Interactions: 
         m_Processors: 
         m_Groups: 
         m_Action: Back Button
         m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: 7727032971491509709, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
   m_ScrollWheelAction:
     m_UseReference: 0
     m_Action:
       m_Name: Scroll Wheel
       m_Type: 0
       m_ExpectedControlType: 
-      m_Id: ca564c89-32be-4156-8e10-2c8b8760fb83
+      m_Id: 5cf28b94-c05e-405c-ad66-cff0ace4ca24
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: dff95c91-7911-4ab7-a1df-efe036a5acbc
+        m_Id: fb98105f-665b-4f80-b4e5-0999fd922846
         m_Path: <Gamepad>/rightStick
         m_Interactions: 
         m_Processors: 
@@ -706,5 +702,4 @@ MonoBehaviour:
         m_Action: Scroll Wheel
         m_Flags: 0
       m_Flags: 0
-    m_Reference: {fileID: 6240969308177333660, guid: 130e638908e1343488d66b7861adc776,
-      type: 3}
+    m_Reference: {fileID: 0}
