@@ -5004,7 +5004,7 @@ PrefabInstance:
     - target: {fileID: 1368717075121006169, guid: 4e1be4db9a4d83d4c8a3cf772d6fe231,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1368717075121006169, guid: 4e1be4db9a4d83d4c8a3cf772d6fe231,
         type: 3}
@@ -73198,18 +73198,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 428157246}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
-        m_MethodName: Select
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &3506723652932118886
 GameObject:
   m_ObjectHideFlags: 0
@@ -73994,18 +73982,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: 
         m_MethodName: SetActive
         m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3506723653551493909}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
-        m_MethodName: Select
-        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -76121,7 +76097,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -656.3547, y: -341.91003}
+  m_AnchoredPosition: {x: -656.3545, y: -341.91003}
   m_SizeDelta: {x: 235.13591, y: 224.88943}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3506723653252797951
@@ -77919,7 +77895,6 @@ GameObject:
   - component: {fileID: 3506723653438645334}
   - component: {fileID: 3506723653438645335}
   - component: {fileID: 3506723653438645342}
-  - component: {fileID: 3506723653438645341}
   - component: {fileID: 3506723653438645340}
   m_Layer: 5
   m_Name: Yes Button
@@ -78288,22 +78263,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &3506723653438645341
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3506723653438645333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0edda02537483548a3b896838f3fad2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectable: {fileID: 3506723653438645336}
-  forceSelection: 0
-  selectWhenStarted: 0
-  selectWhenEnabled: 1
 --- !u!114 &3506723653438645342
 MonoBehaviour:
   m_ObjectHideFlags: 0
