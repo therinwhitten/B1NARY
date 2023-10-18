@@ -85,6 +85,8 @@
 				{
 					if (m_name is null)
 					{
+						if (ChangingNames)
+							throw new InvalidOperationException("Tried to define name while it was trying to define the name!");
 						ChangingNameOf = this;
 						Document newDocument = new(ScriptHandler.Instance.document.ReadFile);
 						newDocument = newDocument.GetWithLanguage(Language);

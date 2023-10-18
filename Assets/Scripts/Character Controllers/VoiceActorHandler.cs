@@ -36,6 +36,13 @@
 			// - so.
 			["internalchar"] = ((Action<string, string, string>)((characterName, intRawVoice, newName) =>
 			{
+				// Switching names really, quirks n stuff
+				if (CharacterNames.ChangingNames)
+				{
+					CharacterNames.ChangingNameOf.Name = characterName;
+					return;
+				}
+				// Actual code
 				int mouthIndex = int.Parse(intRawVoice);
 				Character character = CharacterManager.Instance.GetCharacter(characterName);
 				IVoice voice = character.controller;
