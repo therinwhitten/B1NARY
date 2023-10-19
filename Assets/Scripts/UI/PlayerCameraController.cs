@@ -1,5 +1,6 @@
 ﻿namespace B1NARY
 {
+	using B1NARY.UI.Gamepads;
 	using System;
 	using System.Collections;
 	using UnityEngine;
@@ -11,6 +12,7 @@
 	{
 		[Header("Scrolling")]
 		public float speedMultiplier = 3.4f;
+		public float navigationSpeedMultiplier = 3.4f;
 
 		/// <summary>
 		/// The maximum zoom magnification that the camera can have.
@@ -22,8 +24,11 @@
 		public InputActionProperty Scroll;
 		public InputActionProperty RightClick;
 		public InputActionProperty MousePointer;
+		public InputActionProperty Navigation;
 		public Camera[] targetedCameras;
 		private float[] originalSizes;
+
+		private CoroutineWrapper wrapper;
 
 		private Vector3 originalPoint;
 		private Rect OriginRange 
@@ -58,6 +63,8 @@
 		{
 			if (!RightClick.action.IsPressed())
 				return;
+			if (GamepadAutoSelector.Instance.IsGamepadEnabled)
+				return;
 			float deltaScroll = callbackContext.ReadValue<Vector2>().y > 0f ? 1f : -1f;
 			currentMagnification = Mathf.Clamp(currentMagnification + deltaScroll, 1f, maxZoomMagnification);
 			for (int i = 0; i < targetedCameras.Length; i++)
@@ -67,8 +74,14 @@
 
 		private void OnStartHold(InputAction.CallbackContext callbackContext)
 		{
-			StartCoroutine(Enum());
-			IEnumerator Enum()
+			if (!CoroutineWrapper.IsNotRunningOrNull(wrapper))
+				throw new InvalidOperationException();
+
+			if (GamepadAutoSelector.Instance.IsGamepadEnabled)
+				wrapper = new CoroutineWrapper(this, Gamepad()).Start();
+			else
+				wrapper = new CoroutineWrapper(this, Cursor()).Start();
+			IEnumerator Cursor()
 			{
 				Vector2 original = MousePointer.action.ReadValue<Vector2>();
 				while (callbackContext.action.IsPressed())
@@ -79,6 +92,32 @@
 					delta /= currentMagnification;
 					original = @new;
 					SetOriginPosition((Vector3)delta + transform.position);
+					yield return new WaitForEndOfFrame();
+				}
+			}
+			IEnumerator Gamepad()
+			{
+				Vector2 originalScroll = Vector2.zero;
+				while (callbackContext.action.IsPressed())
+				{
+					Vector2 delta = Navigation.action.ReadValue<Vector2>();
+					delta *= navigationSpeedMultiplier;
+					delta /= currentMagnification;
+					SetOriginPosition((Vector3)delta + transform.position);
+
+					Vector2 newScroll = Scroll.action.ReadValue<Vector2>();
+					newScroll.x = 0f;
+					newScroll = newScroll.normalized;
+					if (newScroll != originalScroll)
+					{
+						originalScroll = newScroll;
+						Debug.Log(newScroll);
+						float deltaScroll = newScroll.y > 0f ? 1f : -1f;
+						currentMagnification = Mathf.Clamp(currentMagnification + deltaScroll, 1f, maxZoomMagnification);
+						for (int i = 0; i < targetedCameras.Length; i++)
+							targetedCameras[i].orthographicSize = originalSizes[i] / currentMagnification;
+						SetOriginPosition(transform.position);
+					}
 					yield return new WaitForEndOfFrame();
 				}
 			}
