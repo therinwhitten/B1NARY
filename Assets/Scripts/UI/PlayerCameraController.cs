@@ -19,7 +19,9 @@
 		public float maxZoomMagnification = 16f;
 		private float currentMagnification = 1f;
 
-		private InputSystemUIInputModule module;
+		public InputActionProperty Scroll;
+		public InputActionProperty RightClick;
+		public InputActionProperty MousePointer;
 		public Camera[] targetedCameras;
 		private float[] originalSizes;
 
@@ -44,18 +46,17 @@
 		}
 		private void OnEnable()
 		{
-			module = FindObjectOfType<InputSystemUIInputModule>();
-			module.scrollWheel.action.performed += OnScrollWheel;
-			module.rightClick.action.performed += OnStartHold;
+			Scroll.action.performed += OnScrollWheel;
+			RightClick.action.performed += OnStartHold;
 		}
 		private void OnDisable()
 		{
-			module.scrollWheel.action.performed -= OnScrollWheel;
-			module.rightClick.action.performed -= OnStartHold;
+			Scroll.action.performed -= OnScrollWheel;
+			RightClick.action.performed -= OnStartHold;
 		}
 		private void OnScrollWheel(InputAction.CallbackContext callbackContext)
 		{
-			if (!module.rightClick.action.IsPressed())
+			if (!RightClick.action.IsPressed())
 				return;
 			float deltaScroll = callbackContext.ReadValue<Vector2>().y > 0f ? 1f : -1f;
 			currentMagnification = Mathf.Clamp(currentMagnification + deltaScroll, 1f, maxZoomMagnification);
@@ -69,10 +70,10 @@
 			StartCoroutine(Enum());
 			IEnumerator Enum()
 			{
-				Vector2 original = module.point.action.ReadValue<Vector2>();
+				Vector2 original = MousePointer.action.ReadValue<Vector2>();
 				while (callbackContext.action.IsPressed())
 				{
-					Vector2 @new = module.point.action.ReadValue<Vector2>();
+					Vector2 @new = MousePointer.action.ReadValue<Vector2>();
 					Vector2 delta = original - @new;
 					delta *= speedMultiplier;
 					delta /= currentMagnification;
