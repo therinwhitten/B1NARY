@@ -32,7 +32,22 @@
 
 		private bool gamepadEnabledOnLastFrame = false;
 		private GameObject lastObject = null;
-		private GameObject GetNewAssigned() => lastObject == null ? AutoGamepadButtonSelector.Youngest.gameObject : lastObject;
+		private bool TryGetNewAssigned(out GameObject output)
+		{
+			if (lastObject != null)
+			{
+				output = lastObject;
+				return true;
+			}
+			if (AutoGamepadButtonSelector.Count == 0)
+			{
+				output = null;
+				return false;
+			}
+			output = AutoGamepadButtonSelector.Youngest.gameObject;
+			return true;
+		}
+
 		private void Update()
 		{
 			bool alreadySelecting = eventSystem.alreadySelecting;
@@ -47,9 +62,9 @@
 			if (currentFrame == gamepadEnabledOnLastFrame)
 				return;
 			gamepadEnabledOnLastFrame = currentFrame;
-			if (currentFrame & !alreadySelecting)
+			if ((currentFrame & !alreadySelecting) && TryGetNewAssigned(out GameObject output))
 			{
-				lastObject = GetNewAssigned();
+				lastObject = output;
 				Debug.Log(lastObject, lastObject);
 				eventSystem.SetSelectedGameObject(lastObject);
 
