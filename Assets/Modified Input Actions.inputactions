@@ -34,12 +34,12 @@
                 },
                 {
                     "name": "Point",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "32b35790-4ed0-4e9a-aa41-69ac6d629449",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Click",
@@ -178,7 +178,7 @@
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad;Keyboard&Mouse",
+                    "groups": "Gamepad",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -200,7 +200,7 @@
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Joystick;Touch;Gamepad",
+                    "groups": "Keyboard&Mouse;Joystick;Touch",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -211,7 +211,7 @@
                     "path": "<Gamepad>/leftStick",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Gamepad;Joystick",
+                    "groups": "Gamepad;Joystick;Keyboard&Mouse",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -244,7 +244,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Joystick;Gamepad",
+                    "groups": "Keyboard&Mouse;Joystick",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -277,7 +277,7 @@
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad;Keyboard&Mouse",
+                    "groups": "Gamepad",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -288,7 +288,7 @@
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Joystick",
+                    "groups": "Keyboard&Mouse;Joystick",
                     "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -376,7 +376,7 @@
                     "path": "<Gamepad>/rightStick",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Gamepad;Keyboard&Mouse",
                     "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -409,7 +409,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": "Keyboard&Mouse",
                     "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
