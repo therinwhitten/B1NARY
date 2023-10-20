@@ -577,34 +577,35 @@ MonoBehaviour:
   m_CursorMode: 1
   m_CursorGraphic: {fileID: 4701649727778890914}
   m_CursorTransform: {fileID: 2580813459516991254}
-  m_CursorSpeed: 1700
-  m_ScrollSpeed: 45
+  m_CursorSpeed: 1000
+  m_ScrollSpeed: 35
   m_StickAction:
     m_UseReference: 0
     m_Action:
       m_Name: Stick
-      m_Type: 0
-      m_ExpectedControlType: 
+      m_Type: 2
+      m_ExpectedControlType: Vector2
       m_Id: 55b628c4-445d-45d7-94c3-2eb91cf85f7b
       m_Processors: 
-      m_Interactions: 
+      m_Interactions: Hold
       m_SingletonActionBindings:
       - m_Name: 
         m_Id: b3f57be6-c360-44d0-a30f-9d0c60bd82d6
         m_Path: <Gamepad>/leftStick
-        m_Interactions: 
+        m_Interactions: Hold
         m_Processors: 
         m_Groups: 
         m_Action: Stick
         m_Flags: 0
-      m_Flags: 0
-    m_Reference: {fileID: 0}
+      m_Flags: 1
+    m_Reference: {fileID: -1654692200621890270, guid: 130e638908e1343488d66b7861adc776,
+      type: 3}
   m_LeftButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Left Button
-      m_Type: 0
-      m_ExpectedControlType: 
+      m_Type: 1
+      m_ExpectedControlType: Button
       m_Id: 9bd6d691-6671-4793-ad52-132d3cfdbd07
       m_Processors: 
       m_Interactions: 
@@ -635,15 +636,15 @@ MonoBehaviour:
     m_UseReference: 0
     m_Action:
       m_Name: Right Button
-      m_Type: 0
-      m_ExpectedControlType: 
+      m_Type: 1
+      m_ExpectedControlType: Button
       m_Id: 1795edd2-eac3-4f53-9781-0f7d579e3771
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings:
       - m_Name: 
-        m_Id: 7b4999ae-a972-4f6f-b282-d2d4404593a0
-        m_Path: <Gamepad>/rightStickPress
+        m_Id: 926e6e04-d9ee-4232-a7bd-2f6b262a1a7e
+        m_Path: <Gamepad>/rightTrigger
         m_Interactions: 
         m_Processors: 
         m_Groups: 
@@ -660,15 +661,23 @@ MonoBehaviour:
       m_Id: 61149b3e-6153-4c97-9270-3454948cf2bd
       m_Processors: 
       m_Interactions: 
-      m_SingletonActionBindings: []
+      m_SingletonActionBindings:
+      - m_Name: 
+        m_Id: 978e192f-21c5-402a-a3b1-ba7e0fa7b87d
+        m_Path: <Gamepad>/buttonSouth
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Forward Button
+        m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_BackButtonAction:
     m_UseReference: 0
     m_Action:
       m_Name: Back Button
-      m_Type: 0
-      m_ExpectedControlType: 
+      m_Type: 1
+      m_ExpectedControlType: Button
       m_Id: 18a0c609-e7e0-40a6-9b1f-bff0bcb3aed8
       m_Processors: 
       m_Interactions: 
@@ -688,15 +697,15 @@ MonoBehaviour:
     m_Action:
       m_Name: Scroll Wheel
       m_Type: 0
-      m_ExpectedControlType: 
+      m_ExpectedControlType: Vector2
       m_Id: 5cf28b94-c05e-405c-ad66-cff0ace4ca24
       m_Processors: 
-      m_Interactions: 
+      m_Interactions: Hold
       m_SingletonActionBindings:
       - m_Name: 
         m_Id: fb98105f-665b-4f80-b4e5-0999fd922846
         m_Path: <Gamepad>/rightStick
-        m_Interactions: 
+        m_Interactions: Hold
         m_Processors: 
         m_Groups: 
         m_Action: Scroll Wheel

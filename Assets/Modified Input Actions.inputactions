@@ -39,7 +39,7 @@
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 },
                 {
                     "name": "Click",
@@ -52,7 +52,7 @@
                 },
                 {
                     "name": "ScrollWheel",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "0489e84a-4833-4c40-bfae-cea84b696689",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -174,17 +174,6 @@
                 },
                 {
                     "name": "",
-                    "id": "8ee9659f-214d-4cd0-8770-7d4ea1ae3261",
-                    "path": "<Keyboard>/space",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Submit",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "b48fb375-86aa-47a7-a29e-6853934323af",
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
@@ -211,7 +200,7 @@
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Joystick;Gamepad;Touch",
+                    "groups": "Keyboard&Mouse;Joystick;Touch;Gamepad",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -385,7 +374,7 @@
                     "name": "",
                     "id": "9e30c1bc-cdcc-421c-9f3a-a76c86a1b51a",
                     "path": "<Gamepad>/rightStick",
-                    "interactions": "",
+                    "interactions": "Hold",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "ScrollWheel",
@@ -405,12 +394,23 @@
                 },
                 {
                     "name": "",
-                    "id": "4c7e034f-20dd-489d-9b07-5cfbfd81fd15",
-                    "path": "<Gamepad>/rightStickPress",
+                    "id": "230b56b3-9bce-4fae-99a2-967d710d0ab6",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "RightClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4fc7dab1-a3c5-4be6-beaa-7648ac3b9a5d",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad;Keyboard&Mouse",
-                    "action": "RightClick",
+                    "groups": "",
+                    "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
