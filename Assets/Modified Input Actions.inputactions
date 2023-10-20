@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "Navigate",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "c95b2375-e6d9-4b88-9c4c-c5e76515df4b",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -16,9 +16,9 @@
                 },
                 {
                     "name": "Submit",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "7607c7b6-cd76-4816-beef-bd0341cfe950",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -52,7 +52,7 @@
                 },
                 {
                     "name": "ScrollWheel",
-                    "type": "PassThrough",
+                    "type": "Value",
                     "id": "0489e84a-4833-4c40-bfae-cea84b696689",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -75,7 +75,7 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
                 },
                 {
                     "name": "Quicksave",
@@ -167,7 +167,7 @@
                     "path": "<Gamepad>/dpad",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad;Keyboard&Mouse",
+                    "groups": "Gamepad",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -200,7 +200,7 @@
                     "path": "<Mouse>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Joystick;Touch",
+                    "groups": "Keyboard&Mouse;Joystick;Touch;Gamepad",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -211,7 +211,7 @@
                     "path": "<Gamepad>/leftStick",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Gamepad;Joystick;Keyboard&Mouse",
+                    "groups": "Joystick;Keyboard&Mouse;Gamepad",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -288,7 +288,7 @@
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Joystick",
+                    "groups": "Keyboard&Mouse;Joystick;Gamepad",
                     "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -376,7 +376,7 @@
                     "path": "<Gamepad>/rightStick",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Gamepad;Keyboard&Mouse",
+                    "groups": "Gamepad",
                     "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -387,7 +387,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Joystick",
+                    "groups": "Joystick;Keyboard&Mouse",
                     "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -395,7 +395,7 @@
                 {
                     "name": "",
                     "id": "230b56b3-9bce-4fae-99a2-967d710d0ab6",
-                    "path": "<Gamepad>/rightTrigger",
+                    "path": "<Gamepad>/rightStickPress",
                     "interactions": "Hold",
                     "processors": "",
                     "groups": "Gamepad",
