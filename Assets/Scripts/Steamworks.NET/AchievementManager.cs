@@ -210,7 +210,7 @@ namespace B1NARY.Steamworks
 					PlayerConfig.Instance.savedAchievements.Add(AchievementIndex);
 					if (Exists)
 						SteamUserStats.SetAchievement(AchievementIndex);
-					AchievedAchievement?.Invoke();
+					AchievedAchievement?.Invoke(this);
 				}
 				else
 				{
