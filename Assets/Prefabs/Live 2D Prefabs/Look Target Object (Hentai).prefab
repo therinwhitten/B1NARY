@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1014438847350893070}
   - component: {fileID: 1014438847350893065}
   - component: {fileID: 440154587}
-  - component: {fileID: 440154592}
   m_Layer: 5
   m_Name: Look Target Object (Hentai)
   m_TagString: UI
@@ -73,7 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 2100000, guid: a501e8892e3526843b5dc020c44e794a, type: 2}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.003921569}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 0
@@ -102,24 +101,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b860ee0be0700544a913c464885782f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
---- !u!114 &440154592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1014438847350893064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f8fd09de1234840bdfdb7b138a2eef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  imageThemeName: Secondary
-  buttonHighlightedName: Primary
-  buttonPressedName: Primary
-  buttonSelectedName: Primary
-  buttonDisabledName: Primary
-  cacheColor: color
-  cacheColorblock: 
-  m_savedComponent: {fileID: 1014438847350893065}
+  speed: 800
