@@ -125,8 +125,10 @@ namespace B1NARY.Steamworks
 			for (int i = 0; i < AllAchievements.Count; i++)
 				AllAchievements[i].AchievedAchievement += TryUnlockCompleteDemo;
 		}
-		private static void TryUnlockCompleteDemo()
+		private static void TryUnlockCompleteDemo(Achievement sourceAchivement = null)
 		{
+			if (sourceAchivement is not null && ReferenceEquals(sourceAchivement, AllAchievementsCompleted))
+				return;
 #if !DISABLESTEAMWORKS
 			if (!SteamManager.HasInstanceOrInitialize())
 				return;
@@ -168,7 +170,7 @@ namespace B1NARY.Steamworks
 		private bool? m_exists = null;
 #endif
 
-		public event Action AchievedAchievement;
+		public event Action<Achievement> AchievedAchievement;
 		public bool Achieved
 		{
 #if DISABLESTEAMWORKS
@@ -178,7 +180,7 @@ namespace B1NARY.Steamworks
 				if (value)
 				{
 					PlayerConfig.Instance.savedAchievements.Add(AchievementIndex);
-					AchievedAchievement?.Invoke();
+					AchievedAchievement?.Invoke(this);
 				}
 				else
 				{
