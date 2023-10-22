@@ -167,7 +167,7 @@
                     "path": "<Gamepad>/dpad",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Gamepad;Keyboard&Mouse;Touch;Joystick",
                     "action": "Navigate",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -178,7 +178,7 @@
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Gamepad;Keyboard&Mouse",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -189,7 +189,7 @@
                     "path": "<Keyboard>/tab",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;Gamepad",
                     "action": "Cancel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -211,7 +211,7 @@
                     "path": "<Gamepad>/leftStick",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Joystick;Gamepad",
+                    "groups": "Joystick;Gamepad;Touch;Keyboard&Mouse",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -222,7 +222,7 @@
                     "path": "<Pen>/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Touch",
+                    "groups": "Keyboard&Mouse;Touch;Gamepad;Joystick",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -233,7 +233,7 @@
                     "path": "<Touchscreen>/touch*/position",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Touch",
+                    "groups": "Touch;Gamepad;Keyboard&Mouse;Joystick",
                     "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -244,7 +244,7 @@
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Joystick;Gamepad",
+                    "groups": "Keyboard&Mouse;Joystick;Gamepad;Touch",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -255,7 +255,7 @@
                     "path": "<Pen>/tip",
                     "interactions": "",
                     "processors": "",
-                    "groups": ";Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;Gamepad;Touch;Joystick",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -266,7 +266,7 @@
                     "path": "<Touchscreen>/touch*/press",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Touch",
+                    "groups": "Touch;Joystick;Gamepad;Keyboard&Mouse",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -277,7 +277,7 @@
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Gamepad;Keyboard&Mouse;Touch;Joystick",
                     "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -288,7 +288,7 @@
                     "path": "<Mouse>/scroll",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Joystick;Gamepad",
+                    "groups": "Keyboard&Mouse;Joystick;Gamepad;Touch",
                     "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -299,7 +299,7 @@
                     "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse;Gamepad;Joystick",
+                    "groups": "Keyboard&Mouse;Gamepad;Joystick;Touch",
                     "action": "MiddleClick",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -321,7 +321,7 @@
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Gamepad;Keyboard&Mouse",
                     "action": "Quicksave",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -343,7 +343,7 @@
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Gamepad;Keyboard&Mouse",
                     "action": "Quickload",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -376,7 +376,7 @@
                     "path": "<Gamepad>/rightStick",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Gamepad;Keyboard&Mouse;Touch;Joystick",
                     "action": "ScrollWheel",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -387,7 +387,7 @@
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Joystick;Keyboard&Mouse;Gamepad",
+                    "groups": "Joystick;Keyboard&Mouse;Gamepad;Touch",
                     "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -398,7 +398,7 @@
                     "path": "<Gamepad>/rightStickPress",
                     "interactions": "Hold",
                     "processors": "",
-                    "groups": "Gamepad",
+                    "groups": "Gamepad;Keyboard&Mouse",
                     "action": "RightClick",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -409,7 +409,7 @@
                     "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Keyboard&Mouse",
+                    "groups": "Keyboard&Mouse;Gamepad",
                     "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
