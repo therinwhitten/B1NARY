@@ -7483,6 +7483,7 @@ GameObject:
   - component: {fileID: 2231483402135248776}
   - component: {fileID: 5008373386573272083}
   - component: {fileID: 1516467701781943593}
+  - component: {fileID: 3691012039345898925}
   m_Layer: 10
   m_Name: lucas sex dungeon
   m_TagString: Live 2D Character
@@ -7964,7 +7965,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -607161077834703016, guid: e149b04e0d2c2174a925c5eaaf359315,
     type: 2}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -8049,6 +8050,31 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &3691012039345898925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6194111653202959401}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a94254fb1c4f2474eb5f678c1a96d831, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioClips:
+  - {fileID: 8300000, guid: d9a7fbf1c13ad2a4a938e25a39f8abb3, type: 3}
+  - {fileID: 8300000, guid: f8b24b9c1b5dc244ba35f19d04123112, type: 3}
+  - {fileID: 8300000, guid: 5da46311ed00e1d47b92a07e8c3f4889, type: 3}
+  - {fileID: 8300000, guid: 80bec05387886614bb22c744aa69b5c5, type: 3}
+  - {fileID: 8300000, guid: 61bac2ca00e54194bbfe9c45c5331abe, type: 3}
+  - {fileID: 8300000, guid: ef4ea915faef63147bfcf0d77c4ef4c8, type: 3}
+  - {fileID: 8300000, guid: 96370c97324810249b9217011507457a, type: 3}
+  - {fileID: 8300000, guid: e3a52e1c6f224cd4fb68ac2bc3db90a9, type: 3}
+  - {fileID: 8300000, guid: 4222e2dcd7d465549b680852ffca971f, type: 3}
+  - {fileID: 8300000, guid: e2ed78c2c43c61348904de88286c7222, type: 3}
+  minDelay: 1
+  maxDelay: 3
 --- !u!1 &6226702098481631546
 GameObject:
   m_ObjectHideFlags: 0
