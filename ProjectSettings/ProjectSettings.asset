@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Coffee and Cookies Dev Team
-  productName: B1NARY Demo
+  productName: B1NARY
   defaultCursor: {fileID: 2800000, guid: 24ad097c823f52f42a6907624b7da414, type: 3}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -141,7 +141,7 @@ PlayerSettings:
   vulkanEnableLateAcquireNextImage: 0
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
-  bundleVersion: 1.1
+  bundleVersion: 1.0
   preloadedAssets:
   - {fileID: 4227418926354388459, guid: 135af6989c2cd3546943edd0d2842d66, type: 3}
   - {fileID: 2043454530189865295, guid: 37551e6ee2be51c469c75b0a811ebe81, type: 3}
@@ -167,9 +167,9 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Standalone: com.Coffee-and-Cookies-Dev-Team.B1NARY-Demo
+    Standalone: com.Coffee-and-Cookies-Dev-Team.B1NARY
   buildNumber:
-    Standalone: Demo1.1
+    Standalone: 1.0
     VisionOS: 0
     iPhone: 0
     tvOS: 0
@@ -905,6 +905,7 @@ PlayerSettings:
   metroSplashScreenUseBackgroundColor: 0
   platformCapabilities:
     WindowsStoreApps:
+      CodeGeneration: False
       OfflineMapsManagement: False
       HumanInterfaceDevice: False
       Location: False
@@ -917,7 +918,6 @@ PlayerSettings:
       InternetClientServer: False
       VideosLibrary: False
       Objects3D: False
-      InternetClient: False
       RemoteSystem: False
       BlockedChatMessages: False
       PhoneCall: False
@@ -940,7 +940,7 @@ PlayerSettings:
       RecordedCallsFolder: False
       Contacts: False
       Proximity: False
-      CodeGeneration: False
+      InternetClient: False
       BackgroundMediaPlayback: False
       EnterpriseAuthentication: False
   metroTargetDeviceFamilies:
