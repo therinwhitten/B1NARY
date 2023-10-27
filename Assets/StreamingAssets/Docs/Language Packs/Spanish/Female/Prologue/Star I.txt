@@ -1,0 +1,359 @@
+{changeScene: Scenes/Star/Star Outside Night}
+{colorformat: Asterella}
+{fadeinsound: Star Piano, 1}
+{fadeinsound: Wind Heavy, 1}
+{fadeoutsound: Ears Ringing, 15}
+{fadeoutsound: Normal Heartbeat Prologue, 5}
+{movecube: .5, .1}
+{spawnChar: lucas butler, 2, Punk enmascarado}
+{spawnEmpty: Narrador, NPC}
+{spawnEmpty: MC, Player}
+Narrador::
+{usegameobject: Flashing Lights Complete Panel, true}
+MC::
+Con desesperación, vuelvo a meter todo lo que soy en mi cabeza.
+{additive: on}
+Visión borrosa, lágrimas que brotan, 
+Me acosté boca arriba.
+{additive: off}
+Respiraciones largas y profundas.
+La conciencia de mi cuerpo regresa a medida que disminuye el pánico de mi división cerebral.
+Siento dolor sin fuente, espasmos acosando mis músculos. 
+No te muevas. Todavía no. 
+Una ligera brisa me golpea, cálida y suave. 
+Abro los ojos con cuidado, el dolor me pincha en las pupilas.
+"¿Por qué?"
+Mi voz suena ronca y un poco quejumbrosa. 
+Coloco mi antebrazo sobre mis ojos y me concentro en mi respiración. 
+Noto la luz de la luna. 
+Luz de luna brillante. 
+¿Luz de la luna?
+Miro más allá de la parte inferior de mi antebrazo a la pálida luz que se derrama sobre mi cuerpo y la vegetación circundante.
+Siento que la humedad empapa mi espalda. 
+¿Rocío?
+El susurro de la hierba mientras me muevo enfoca mi mente aún más. 
+Muevo mi brazo lejos de mis ojos.
+{additive:on}
+La luna más grande que he visto domina el cielo nocturno.
+Puedo ver claramente la superficie, con detalles que me llaman. 
+Está tan cerca que casi puedo tocarlo.
+{additive:off} 
+"¡Es tan hermoso!"
+El asombro desenfrenado llena mi voz.
+Dónde... AM... ¿Yo?
+Tenso mi estómago y me levanto, para la protesta obstinada de mi cuerpo. 
+Estoy sentado en un campo, con hierba alta rodeándome. 
+La vista toma mi capacidad de hablar coherentemente.
+No esperaba esto.
+Este <i>no</i> es el servidor de prueba.
+{additive: on}
+El servidor de prueba iba a ser un entorno estéril. 
+Shirobi incluso me dijo que puede parecer una habitación blanca.
+{additive: off}
+En el mundo digital las cosas son más pronunciadas, según la teoría.
+La perspectiva gobierna el día. 
+El cerebro ve lo que quiere ver en el mundo digital. 
+Traduce lo que considera cómodo. 
+Nada de esta escena es familiar. 
+Se siente extraño. Mi mente no inventó esto, estoy seguro de ello. 
+Levantarse es una tarea, pero me las arreglo.
+No puedo hacer nada acostado. 
+Además, mi trasero está mojado.
+Con la hierba alta que ya no impedía mi vista, noto un bosque de pinos, balanceándose ligeramente con el viento.
+Detrás de ese bosque, se encuentra una mansión inminente y oscura.
+Lo compruebo de nuevo.
+¿Una mansión?
+Parpadeo dos veces. Por si acaso mis "ojos" decidieran jugarme una mala pasada. 
+Allí, a lo lejos, se encuentra un complejo muy grande. 
+En el antiguo estilo arquitectónico rumano: un gran edificio cuadrado, con torres sobresalientes que lo rodean. 
+La Mansión del Conde. 
+"No voy a chupar tu bloood. Mwhah."
+Me río a pesar de mí mismo.
+Punk enmascarado::
+[OWO]
+"Pervertido".
+{fadeinsound: Lucas Dark, 2}
+{fadeoutsound: Star Piano, 2}
+{fadeinsound: Flash Step, .3}
+{moveChar: Punk enmascarado, .50}
+MC::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+De repente, a dos pies frente a mí, se encuentra un hombre enmascarado. 
+Él está ahí.  
+El aire comprimido me golpea en la cara. 
+Su cuerpo se ve rígido, como una barra de hierro, listo para saltar.
+A pesar de mí mismo, doy un paso atrás.
+La máscara en su rostro, la luz azul brillando detrás de ella, <i>brilla</i> mientras la niebla se filtra por debajo de la sudadera con capucha negra.
+¡La máscara <i>es</i> su rostro!
+Punk enmascarado::
+[Default]
+"Probablemente sé a Flepsi..."
+MC::
+Me quedo sin palabras. ¡¿Quién?!
+{anim: Punk enmascarado, wind idle}
+Punk enmascarado::
+[Angry]
+{additive: on}
+"De todos modos.
+¿Quién <i>coño</i> eres?"
+MC::
+{additive:off}
+{choice: ¿Le doy una patada en las tuercas?}
+{
+    ¡Afirma tu dominio! ¡Dale una patada en las tuercas!
+    [
+       "EEEEEEKKKKK!!!!"
+       MC::
+       Entro en pánico, naturalmente.
+       Envío una patada sólida directamente a su región inferior.
+       {setachievement: nut_cracker}
+       {fadeinsound: body punch hard, .2}
+       Apenas me atrapa el pie. Su agarre es tan sólido como el acero.
+       Él silba en agradecimiento.
+       Punk enmascarado::
+       [OWO]
+       {additive:on}
+      "¡Santa mujer <i>de mierda</i>! 
+       Eso fue una patada infernal".
+       {additive:off}
+       MC::
+       Todo mi entrenamiento de jujistu no valió la pena, no contra un demonio.
+       Y ahora tiene mi pie. 
+       Deja caer mi pierna, una gran sonrisa se arrastra sobre esa máscara.
+       Punk enmascarado::
+       "No puedo jugar en este momento".
+       "Esa patada me está haciendo pensar dos veces".
+       MC::
+       "¡¿Qué se supone que significa eso ?!"
+       {changeScript: Female/Prologue/Star I, 154}
+    ]
+    ¡A la mierda eso! ¡¡Gritar!!
+    [
+      "¡AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH ¡ESCÁPATE!"
+    ]
+}
+Me grita. Burlonamente.
+Punk enmascarado::
+{anim: Punk enmascarado, Impatient Start}
+{anim: Punk enmascarado, Impatient Loop}
+"AHHHHHHHHHHHHH!!! ¡Aléjate, demonio aterrador!"
+"¡Dios mío! ¡Eres tan <i>aterrador!"</i>
+MC::
+{additive:on}
+"¿Por qué estás gritando??!! 
+¡No puedes hacer eso! 
+¡Estoy gritando!"
+{additive:off}
+"¡No es justo!"
+Punk enmascarado::
+{anim: Punk enmascarado, Impatient End}
+{anim: Punk enmascarado, Wind Idle}
+[Angry]
+"Pensé que era un saludo de tu dominio!!"
+"¡¿Qué demonios quieres que haga ?!"
+Punk enmascarado::
+[Default]
+"De todos modos. ¿Cómo <i>te llamas</i>?"
+MC::
+Señala su pecho, como explicándole a un niño, lento y deliberado.
+Punk enmascarado::
+"Mi nombre es Lucas".
+MC::
+{changeName: Punk enmascarado, Lucas}
+"¡Es MC! ¡Ahora deja de gritarme!"
+Lucas::
+"¡No! ¡Comenzaste esto, detente primero!"
+MC::
+{fadeinsound: Lucas Breathing, .2}
+{fadeinsound: Female MC Breathing, .2}
+{disableChar: Live 2D Bokeh}
+Ambos nos detenemos, resoplando y resoplando.  
+Acabo de llegar aquí y ya estoy teniendo que lidiar con algo para lo que no estoy listo.
+No puedo lastimar a este hombre. Es demasiado fuerte. Demasiado rápido. 
+¡Es imposible! No puedo vencerlo. Ni siquiera puedo lastimarlo.
+Cuadrados, con las piernas abiertas, nos enfrentamos.
+Sólo varios pies nos separan. Siento que puede atraparme instantáneamente si realmente quiere.
+Su postura es burlonamente idéntica a la mía. 
+Gustar... ¡Como este es un juego que quiero jugar!
+Nos miramos el uno al otro por unos momentos.
+Se siente mucho más largo que eso.
+El miedo, locamente, se disuelve lentamente.
+Toda la situación me tiene confundido.
+{additive:on}
+I expected many things.
+Cosas que <i>podrían</i> suceder. 
+Fallas del servidor, sentimientos de desorientación,
+incluso síntomas de degradación del patrón cerebral.
+{additive: off}
+No planeaba enfrentarme a un demonio con una máscara por cara.
+Lucas::
+{anim: Lucas, Wind Idle} 
+MC:: 
+Relaja su postura, una gran sonrisa mancha su "rostro".
+{fadeinsound: Lucas Laugh 5, .2}
+{fadeoutsound: Lucas Dark, 4}
+{fadeinsound: Star Piano, 4}
+De repente comienza a reír a carcajadas.
+Lo observo, parpadeando varias veces, sin saber qué decir o hacer.
+Lucas::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{additive:on}
+"Oh, Dios mío, MC.
+Oye, eso fue increíble".
+{additive:off}
+"Your fucking face was priceless!"
+MC::
+Su risa bramante empuja un poco más de vapor azul detrás de su máscara. 
+Es bastante desconcertante.
+Lucas::
+"Gracias por eso, MC. Si tuviera conductos lagrimales, estaría llorando ahora mismo".
+MC::
+Siento que mis mejillas se hinchan en un puchero.
+"¿Lucas?"
+Lucas::
+"¿Sí?"
+{if: n-b}
+{
+ MC::
+ "¡No vas por ahí asustando a la gente así! ¿De acuerdo?"
+}
+{if: !n-b}
+{
+ MC::
+ "¡No vas asustando a las mujeres que caminan por la noche!"
+}
+{disableChar: Live 2D Bokeh}
+El nombre Lucas, <i>lo sé</i>.
+Como una avalancha, el reconocimiento del nombre se estrella en mis pensamientos conscientes.
+<i>Sé</i> quién es. Sin embargo, no puedo creerlo. 
+No estoy en el servidor como estaba planeado en absoluto. 
+Ahora no tengo ni idea de dónde estoy realmente.
+"Dominio".
+Intento la palabra cuidadosamente.
+Lucas parece estar mirándome reflexionar sobre las cosas. Inclina un poco la cabeza hacia la izquierda.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Lucas::
+"Espera. Esperar. Esperar. Sabes quién soy, ¿no?"
+MC::
+Hincha un poco el pecho.
+Lucas::
+[Lewd]
+"¡Finalmente! ¡Alguien me reconoce!"
+"¡Demonios, sí, les gooooo!"
+MC::
+Hace una pausa y cierra los ojos conmigo.
+Lucas::
+"¡A la mansión! Quiero decir. Uh, vamos a la mansión".
+[Default]
+"Técnicamente eres un intruso, pero no pareces tan peligroso".
+MC::
+"Ciertamente no soy peligroso. Ni mucho menos".
+Él hace un gesto a la mansión, por el camino no muy lejos.
+Lucas::
+"Ven. Te llevaré a Star y resolveremos todo esto".
+{moveChar: Lucas, .3}
+{movecube: .3, .2}
+{fadeinsound: Walking on Gravel, 1}
+MC::
+Comienza a un ritmo pausado, suficiente para que una mujer baja lo siga.
+(<i>Suspiro</i>)
+Entro detrás de él. 
+"¿Estrella de Asterella?"
+Lucas::
+"Sí, aparentemente tú también la conoces. Eso hace las cosas mucho más fáciles".
+{additive:on}
+"Ella normalmente no ve a la gente tan tarde en la noche, 
+Pero ella <i>me pidió</i> específicamente que fuera a buscarte".
+{additive:off}
+MC::
+Mira hacia atrás para asegurarse de que lo estoy siguiendo, con un destello de humo con luz azul que se escapa.
+Vuelve la cabeza hacia atrás.
+Lucas::
+"Parece que no tienes ningún poder real".
+"Por otra parte, podrías estar escondiéndolo".
+MC::
+Se encoge de hombros, descartando la línea de pensamiento.
+Lucas::
+{additive:on}
+"Whelp, no es mi problema. 
+Siempre y cuando no dañe este dominio, 
+o Estrella, 
+Realmente no me importa una mierda lo que hagas".
+{additive:off}
+{additive:on}
+"Bienvenido al 69º Círculo del Infierno, MC.
+Espero que disfrutes de tu estancia."
+{additive:off}
+{disableChar: Live 2D Bokeh}
+MC::
+El saludo característico envía escalofríos por mi columna vertebral.
+¡Esto es <i>real</i>!
+¡No es una transmisión en línea, sino real!
+¡Y Lucas me está llevando a <i>la Estrella de</i> Asterella!
+¡No! 
+¡¿Qué hago?!
+Una repentina ola de nerviosismo me envuelve.
+Siempre la he admirado desde lejos.
+Sí, transmito, pero apenas chateo con la gente a nivel personal. 
+Ella es <i>enorme</i> ahora. Ella ha estado haciendo esto durante 20 años más o menos.
+Vuelvo a mí mismo, estudiando la espalda de Lucas. 
+Esto no se siente como un lugar desde el que transmitirías. 
+A medida que nos acercamos a la pared exterior del enorme complejo: los olores, el viento, todo.
+Me da un shock. Esto se siente real. Todo demasiado real. 
+Y Lucas, ¿es realmente un juego de roles? ¿O es él ...
+¿Siempre ha sido un demonio? ¿O simplemente están en sus roles en este mundo virtual?
+Llegamos a una entrada, la vieja puerta se abre sin que ninguna fuerza externa actúe sobre ella.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Lucas::
+"Hola MC, puedes mirar a medida que avanzamos. Mucho tiempo para eso más tarde".
+"Necesitamos ver a Star primero, ¿de acuerdo?"
+MC::
+{disableChar: Live 2D Bokeh}
+Asiento.
+¿Quién soy yo para estar en desacuerdo? Podía atarme en un instante. 
+No es que no quisiera que lo hiciera...
+No. No. ¡No quiero estar atado! ¡No! ¡Basta! ¡Deténgalo jugador!
+Al pasar por la entrada, mis ojos están bañados en belleza.
+{fadeoutsound: Walking on Gravel, 1}
+{fadeinsound: waterfountainstar, 2}
+{additive: on}
+Frondosos robles y fresnos salpican el paisaje en una simetría caótica.
+El viento acariciando sus hojas. 
+La brillante luz de la luna baña y se refleja en los bancos de mármol negro, su lugar cuidadosamente elegido.
+{additive:off}
+Frente a la mansión, se encuentra una gran fuente, el agua brilla a la luz de la luna.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Lucas::
+{movecube: .5, .1}
+[OWO]
+"¡Yo! ¿Vienes?"
+MC::
+Me doy cuenta de que no estoy caminando. 
+De pie congelado, disfrutando de las vistas, 
+Solo llegué a cuatro pies en los jardines principales. 
+Finalmente hablo. 
+"Lo siento. Es tan impresionante ..."
+Al no poder mantener el asombro fascinante fuera de mi voz, me apresuro a igualar su ritmo. 
+El demonio asiente con aprobación.
+Lucas::
+[Default]
+"Tienes buenos gustos. Creo que tú y Star se llevarán bastante bien".
+{fadeinsound: Walking on Gravel, 1}
+MC::
+Empiezo a caminar de nuevo. 
+La próxima vez. El turismo tendrá que esperar. 
+Me encantaría sentarme aquí, relajarme y comer un almuerzo ligero. 
+Pasamos junto a la fuente, mi suspiro de decepción se filtró.
+Subo los escalones...
+{fadeoutsound: waterfountainstar, 5}
+{fadeoutsound: Walking on Gravel, 6}
+{moveChar: Lucas, .50}
+Las puertas principales son altas, muy altas, de roble macizo con barras que las refuerzan.
+Lucas pulls on the handle.
+{fadeinsound: Castle Door, 1}
+{fadeoutsound: Wind Heavy, 2}
+{fadeoutsound: Star Piano, 2} 
+Lucas::
+"Espera hasta que veas el resto de la mansión, MC".
+"Te dejará boquiabierto".
+{changeScript: Female/Prologue/Star II}

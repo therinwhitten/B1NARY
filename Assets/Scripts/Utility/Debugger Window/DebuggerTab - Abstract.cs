@@ -12,7 +12,7 @@ namespace B1NARY.Editor.Debugger
 	public abstract class DebuggerTab : IComparable<DebuggerTab>
 	{
 		public static IReadOnlyList<DebuggerTab> AllTabs => m_allTabs.Value;
-		private static readonly Lazy<DebuggerTab[]> m_allTabs = new Lazy<DebuggerTab[]>(() =>
+		private static readonly Lazy<DebuggerTab[]> m_allTabs = new(() =>
 		{
 			return (
 				from type in typeof(DebuggerTab).Assembly.GetTypes()
@@ -23,7 +23,7 @@ namespace B1NARY.Editor.Debugger
 				).ToArray();
 		});
 		public static DebuggerPreferences Preferences => m_preferences.Value;
-		private static readonly Lazy<DebuggerPreferences> m_preferences = new Lazy<DebuggerPreferences>(() =>
+		private static readonly Lazy<DebuggerPreferences> m_preferences = new(() =>
 		{
 			var enumerator = AllTabs.SelectMany(tab => tab.DebuggerPreferences).GetEnumerator();
 			var prefs = new DebuggerPreferences();

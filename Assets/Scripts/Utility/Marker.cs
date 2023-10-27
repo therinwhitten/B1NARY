@@ -11,62 +11,46 @@
 	public sealed class Marker : MonoBehaviour
 	{
 		/// <summary>
-		/// Finds all gameobjects with the <paramref name="name"/> and with 
+		/// Finds all gameobjects with the <paramref name="targetName"/> and with 
 		/// <see cref="Marker"/> in the current scene. This ignores any 
 		/// enable-disable stuffs.
 		/// </summary>
-		/// <param name="name"> The name to get. </param>
+		/// <param name="targetName"> The name to get. </param>
 		/// <returns> 
 		/// An enumerable, due to possibly finding multiple. use something like
 		/// <see cref="Enumerable.First{TSource}(IEnumerable{TSource})"/> for a
 		/// single object.
 		/// </returns>
-		public static IEnumerable<GameObject> FindWithMarker(string name)
+		public static IEnumerable<Marker> GetMarkers(string targetName)
 		{
 			// https://docs.unity3d.com/ScriptReference/Resources.FindObjectsOfTypeAll.html
 			Marker[] markers = Resources.FindObjectsOfTypeAll<Marker>();
 			for (int i = 0; i < markers.Length; i++)
 			{
-				if (markers[i].name != name)
+				if (markers[i].Name != targetName)
+					continue;
+				if (markers[i] == null)
 					continue;
 				if (markers[i].hideFlags != HideFlags.None)
 					continue;
-				yield return markers[i].gameObject;
+				yield return markers[i];
 			}
 		}
-		///// <summary>
-		///// Finds all gameobjects with the <paramref name="name"/>. Unlike
-		///// <see cref="GameObject.Find(string)"/>, This ignores any enable-disable 
-		///// stuff.
-		///// </summary>
-		///// <param name="name"> The name to get. </param>
-		///// <returns> 
-		///// An enumerable, due to possibly finding multiple. use something like
-		///// <see cref="Enumerable.First{TSource}(IEnumerable{TSource})"/> for a
-		///// single object.
-		///// </returns>
-		//public static IEnumerable<GameObject> Find(string name)
-		//{
-		//	// https://docs.unity3d.com/ScriptReference/Resources.FindObjectsOfTypeAll.html
-		//	using (IEnumerator<GameObject> arr = (Resources.FindObjectsOfTypeAll(typeof(GameObject)) as GameObject[]).AsEnumerable().GetEnumerator())
-		//		while (arr.MoveNext())
-		//		{
-		//			GameObject currentObject = arr.Current;
-		//			if (currentObject.name != name)
-		//				continue;
-		//			if (!(currentObject.hideFlags == HideFlags.NotEditable || currentObject.hideFlags == HideFlags.HideAndDontSave))
-		//				continue;
-		//			yield return currentObject;
-		//		}
-		//}
-		//
-		//public bool SameName(string otherName)
-		//{
-		//	return gameObject.name == otherName;
-		//}
-		//public bool InScene()
-		//{
-		//	return gameObject.hideFlags == HideFlags.NotEditable || gameObject.hideFlags == HideFlags.HideAndDontSave;
-		//}
+		/// <summary>
+		/// Finds all gameobjects with the <paramref name="targetName"/> and with 
+		/// <see cref="Marker"/> in the current scene. This ignores any 
+		/// enable-disable stuffs.
+		/// </summary>
+		/// <param name="targetName"> The name to get. </param>
+		/// <returns> 
+		/// An enumerable, due to possibly finding multiple. use something like
+		/// <see cref="Enumerable.First{TSource}(IEnumerable{TSource})"/> for a
+		/// single object.
+		/// </returns>
+		public static IEnumerable<GameObject> GetInactiveGameobjects(string targetName)
+		{
+			return GetMarkers(targetName).Select(marker => marker.gameObject);
+		}
+		public string Name => name;
 	}
 }

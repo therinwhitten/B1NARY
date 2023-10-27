@@ -9,10 +9,8 @@ namespace B1NARY.Audio
 	[Serializable]
 	public class CustomAudioClip
 	{
-		public static explicit operator CustomAudioClip(AudioClip input)
-			=> new CustomAudioClip(input);
-		public static explicit operator AudioClip(CustomAudioClip input)
-			=> input.clip;
+		public static explicit operator CustomAudioClip(AudioClip input) => new(input);
+		public static explicit operator AudioClip(CustomAudioClip input) => input.clip;
 
 		public CustomAudioClip(AudioClip audioClip)
 		{
@@ -49,7 +47,7 @@ namespace B1NARY.Audio
 		/// Random type used for randomization of <see cref="pitchVariance"/> 
 		/// and <see cref="volumeVariance"/>. 
 		/// </summary>
-		public RandomFowarder.RandomType randomType;
+		public RandomForwarder.RandomType randomType;
 
 		/// <summary>
 		/// Final pitch by basing on <see cref="volume"/>, and adjusting it on 
@@ -63,7 +61,7 @@ namespace B1NARY.Audio
 					return volume;
 				float adjustedVolumeRandom = volumeVariance * volume,
 					randomVolume = volume - adjustedVolumeRandom;
-				randomVolume += RandomFowarder.NextFloat(randomType) * adjustedVolumeRandom;
+				randomVolume += RandomForwarder.NextFloat(randomType) * adjustedVolumeRandom;
 				return randomVolume;
 			}
 		}
@@ -79,9 +77,18 @@ namespace B1NARY.Audio
 					return pitch;
 				float adjustedPitchRandom = pitchVariance * pitch,
 					randomPitch = pitch - adjustedPitchRandom;
-				randomPitch += RandomFowarder.NextFloat(randomType) * adjustedPitchRandom;
+				randomPitch += RandomForwarder.NextFloat(randomType) * adjustedPitchRandom;
 				return randomPitch;
 			}
+		}
+
+		public void ApplyTo(AudioSource audioSource)
+		{
+			audioSource.clip = clip;
+			audioSource.outputAudioMixerGroup = audioMixerGroup;
+			audioSource.loop = loop;
+			audioSource.volume = FinalVolume;
+			audioSource.pitch = FinalPitch;
 		}
 
 		public override string ToString() => clip.ToString();

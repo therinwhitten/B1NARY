@@ -1,0 +1,292 @@
+{changeScene: Brain Sucking Chair side}
+{colorformat: Emerald}
+{fadeinsound: Laptop Lab Scene,2}
+{fadeinsound: Fast Keyboard Typing, 2}
+{fadeinsound: Lab Computer Room Beeps 2, 1}
+{fadeinsound: Lab Ambience Music Light, 1}
+{fadeinsound: LabAmbience, .4}
+{spawnChar: malesilo3, 2, Shirobi}
+{spawnEmpty: MC, Player}
+{fadeinsound: Fast Heartbeat, 1}
+Shirobi::
+{if: !n-b}
+{
+	„Er ist seit über einem Jahr ein Praktikant im Unternehmen gewesen."
+}
+{if: n-b}
+{
+ "Sie sind jetzt seit über einem Jahr Praktikanten im Unternehmen..."
+}
+„Der Unglaubliche, gutaussehende, und geradezu cooler Mensch, MC!"
+MC::
+Das Geräusch wird für den Bruchteil einer Sekunde als Worte registriert, als ich zum Gehirnsaugeraum eskortiert werde.
+{additive: on}
+Die Labortechniker hassen es, wenn ich es so nenne, aber dieses 
+<i>Ding</i> als etwas anderes zu betrachten,
+wäre eine Übung einer offensichtlichen Gehirnwäsche.
+{additive: off}
+{additive: on}
+Ich kann nicht aufhören zu schwitzen.
+Ich höre meinen Herzschlag rhythmisch in meinen Ohren pochen. 
+{additive: off} 
+Mechanisches surren von Laptops, Server Ventilatoren, und das Summen von den EM-Feldern umfassen den Stuhl, schwingen in meinem Schädel.
+{fadeinsound: slowfootsteps, .2}
+{additive:on}
+Links...
+Rechts...
+Links...
+Rechts...
+{additive: off}
+{additive: on}
+Ich fokussiere mich auf meine Füße.
+Das scheint zu funktionieren.
+{additive: off}
+Ablenkungen sind ein Segen für den Moment.
+Ich versuche das Gemurmel der Reporter auszublenden.
+{additive: on}
+Plötzlich,
+greift jemand meinen Schulter, sofort sprang ich auf.
+{additive: off}
+{spawnChar: Circle Wipe, .5, CircleWipe}
+{choice: Soll ich mich umdrehen?}
+{
+     Drehe dich nicht um.
+     [
+        Ich fühle wie die Hand mich fest greift. Und mich herumwirbelt.
+        {anim: CircleWipe, RightStart}
+     ]
+     Stell dich deinem Angreifer.
+     [
+        Ich wirbele.
+        {anim: CircleWipe, RightStart}
+     ]    
+}
+{fadeoutsound: Fast Heartbeat, 1}
+{anim: CircleWipe, LeftEnd}
+{fadeinsound: Press Cameras, .2}
+Meine Augen bekommen von den Hightech Kameras einen vollen Schuss von weißem Licht ab.
+Das Licht löscht meine Ablenkung und ich versuche die Helligkeit weg zu blinken.
+{spawnChar: malesilo, 2, Sumg Reporter}
+{anim: Sumg Reporter, kime1}
+{moveChar: Sumg Reporter, .75}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Sumg Reporter::
+„MC! 
+Bist du okay? Du siehst unsicher aus."
+MC::
+Der selbstgefällige Reporter lacht zu der klaren Anspannung in den Raum. 
+Sumg Reporter::
+„Muss nervenaufreibend sein für Milliarden Menschen zu sehen wie du Geschichte schreibst, hab ich recht?"
+MC::
+Verdammte Lichter!
+Ich blinzele.
+{additive: on}
+Yeah,
+<i>dude</i>,
+es ist scheiß Lampenfieber...
+Total.
+{additive: off}
+Normalerweise bin ich trocken, und ziemlich sarkastisch, erwidere ich zurück.
+„Yeeah. Nervenaufreibend." 
+Ich schluckte etwas Gift runter. Ich lecke meine rissigen Lippen ein wenig.
+Gestikulierend auf das Ungetüm, das in der Mitte des Raumes sitzt, kläre ich auf.
+„Ich würde lügen, wenn ich nicht sagen würde, dass das DIHI mich nervös macht."
+{spawnChar: malesilo2, -1, Cliff}
+{moveChar: Cliff, .25}
+{anim: Cliff, handwave}
+Augen beginnen sich anzupassen, und ich bemerke Cliff, der leitende Projektmanager, hinter der Presse, verschränkt seine Arme in Kombination zu einem strengen Gesicht.
+Seine Haltung sagt mit Sicherheit, „Wenn du hier versagst, dann verfliegt dein Gehalt für ein Jahr."
+Warum sagt niemand etwas? 
+Oh... Richtig...
+Ich öffne meinen Mund.
+„Zu wissen das Digital Horizons in Kontrolle ist, ist der <i>einzige</i> Grund weshalb ich 'nur' nervös bin." 
+„Ich weiß, dass sie mich wieder in einem Stück zurückbringen werden. Darüber, kannst du dir sicher sein."
+{disableChar: Live 2D Bokeh}
+Hoffnungsvoll, komme ich mit all meinen Erinnerungen zurück.
+So viele Sachen zum Vergessen: Mein Praktikum, Meine Eltern, Meine Hentai Kollektion...
+Wäre ich noch dieselbe Person, wenn ich meine Erinnerungen verlieren würde?
+Meine Mutter und Vater, haben sich nie interessiert wie es mir geht.
+Ich verbrachte die meiste Zeit nur Streams zu schauen, Anime, und bisschen Hentai so nebenbei.
+Also, die Vorstellung in die Digitale Welt zu gehen, hatte schon immer meine Neugierigkeit gefangen.  
+Wie cool wäre es im Internet zu leben? Wäre es möglich, dass ich einfach in einer Stream Seite sitzen könnte, oder ein Youbtube Video schaue?
+{additive: on}
+Müsste ich essen?
+Schlafen?
+{additive: off}
+Oder vielleicht, weitere fragliche Sachen? Würde ich dasselbe in der Digitalen Welt fühlen?
+Ich schiebe meine Gedanken mental weg. Sie können sehen, das ich jetzt geistesabwesend bin. 
+Ich fühle mich hier ein wenig unangenehm. Also, versuche ich ein Lächeln und hebe die Daumen hoch.
+Ich höre irgendwo ein Kichern... Die Stimme hört sich bekannt an.
+Scheiß Lichter!
+{moveChar: Cliff, -1}
+{moveChar: Smug Reporter, 2}
+{moveChar: Shirobi, .55}
+Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{anim: Shirobi, Glasses} 
+{if: !n-b}
+{
+ „Naja, jedenfalls scheint es, als ob er sich ein wenig beruhigt hat. Um ehrlich zu sein, war ich dabei mir Sorgen zu machen." 
+}
+{if: n-b}
+{
+ "Wenigstens scheinen sie sich beruhigt zu haben. Ich habe mir schon Sorgen gemacht, um ehrlich zu sein." 
+}
+MC::
+Meine Augen schießen Dolche auf ihn. 
+Dieser nasale, kleine Otaku Arsch!
+Hier ist Shirobi, mein Raumpartner, der leitend technische Praktikant. 
+So nervig, wenn er denkt er hat Recht, oder cool auszusehen, er schiebt seine Brille immer hoch, als ob er so ein Protagonist von einem Anime ist.
+{additive: on}
+Er ist, aber manchmal ein cooler Freund. Er ist immer bereit einem Kumpel auszuhelfen:
+entweder mit einem Ratschlag, oder mit einigen Light Novels. 
+{additive: off}
+Ich atme ein.
+"Hey Shirobi... Ich hoffe du bist bereit für mich..."
+Shirobi geht auf mir zu und legt eine Hand auf meine Schulter.
+Shirobi::
+{anim: Shirobi, Bow}
+„Mach dir keine Sorgen MC. Ich werde deine lebenswichtigen Organe beobachten, um sicher zu gehen, dass nichts passiert."
+„Du weißt... Ich würde dich nicht in die Nähe dieses Stuhls lassen, es sei denn es ist sicher. Richtig?" 
+„Vier Tage. Dann werden wir dich zurückholen. Ok?"
+MC::
+{disableChar: Live 2D Bokeh}
+Ich nicke, nehme es in den Raum auf.
+Die Presse wird nach draußen begleitet, außerhalb des Raumes. Die einzigen Personen im Raum waren die Laboranten, CLiff und Ich. 
+{fadeinsound: slowfootsteps, .3}
+{fadeinsound: openclosedoor, .1}
+{fadeoutsound: LabAmbience, .1}
+Der Ton von dem DIHI änderte sich plötzlich, auch das Gefühl vom Ionisieren in der Luft erhöht sich.
+Ich schaue in das Fenster der Aussichtslounge, wo Reporter, und Labortechniker sich unterhalten.
+Es sieht aus, als ob sie Kaffee holen und sich hinsetzen.
+Genau jetzt. Ich möchte eine Tasse Kaffee. Ich möchte wirklich, wirklich eine Tasse Kaffee.  
+{additive: on}
+Mein Körper wird nichts komisches machen  
+wie ein Zombie steif zu sein... richtig?
+{additive: off}
+Oh bitte nicht. Vielleicht sollte ich fragen... 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Shirobi schnaubt, offensichtlich erstickendes Gelächter.
+Shirobi::
+{additive: on}
+„Wirklich?
+Wirst auf einem Multi-Milliarden Dollar Stuhl sitzen, und dass ist worüber du nachdenkst?" 
+{additive: off} 
+MC::
+Warte...
+Hab ich das gerade laut gesagt?
+Besitzen Sie es.
+„Und? Werde ich?"
+Shirobi::
+"Die Antwort ist nein. Du wirst nicht mit einem Steifen in Stasis sitzen."
+MC::
+Er lehnt sich näher an, um den Mikrofonen auszuweichen. 
+{anim: Shirobi, Bow}  
+Shirobi::
+„Und hier werden keine Krankenschwestern einen Vorteil von dir ziehen, ich verspreche."
+MC:: 
+Er spricht in einem lauteren Ton als er sich um dreht. 
+Shirobi::
+„Die Stasiskapsel ist höchste Technik. Mann, erinner dich an die Einweisung..." 
+MC::
+Yeah, ich schlief durch die Einweisung...
+Als ob ich ihm, dass erzähle. 
+Shirobi::
+„Also keine Sorgen. Wir werden sicher gehen, dass dich ein Team 24/7 beobachtet."
+MC::
+Ich lache, es kommt lauter raus als ich wollte.
+„Ok dann, ich schätze keine Zeit wie die Gegenwart."
+Ich schau grimmig zu Shirobi, meine Augen flehen ihn an, dass ganze ernsthaft zu nehmen.
+„Shirobi, ich werde meinen absoluten Glauben in dich legen."
+{additive: on}
+„Niemand,
+und ich meine 
+<i>niemand</i>,
+berührt meine 'Kollektion'
+ok?"
+{additive: off}
+Shirobis vernichtender Blick ist eine gute Belohnung.  
+Shirobi::
+„Ja, kein berührendes Geschäft, Ich hab dich Mann. Nur konzentriere dich Geschichte zu schreiben ok?"
+MC::
+Ich gehe zu der Mitte des Raumes, schau gerade zum Stuhl.
+{changeScene: The Lab}
+{colorformat: Emerald}
+{fadeinsound: Fast Heartbeat, .5}
+{fadeinsound: DIHI Low Power, .1}
+{fadeinsound: DIHI High Power, .1}
+{fadeinsound: slowfootsteps, 1}
+{fadeoutsound: Lab Ambience Music Light, 2} 
+{spawnEmpty: MC, Player}
+{spawnEmpty: Shirobi, NPC}
+MC::
+Es vibriert in meinen Knochen als ich näher komme.
+Das DIHI füllt meine ganze Vision aus.
+{additive: on}
+Es fühlt sich wirklich wie ein Portal zu einer anderen Welt an,
+als würde ich wirklich Isekaied werden. 
+{additive: off}
+Und so schnell, dass die Realität von meiner Situation real wird. 
+Ich gehe die letzten Schritte, starre runter zum DIHI.
+Es sind nur vier Tage... Vier Tage in einem Server zu sein. 
+Genau jetzt, schau ich zu dem Höhepunkt einer Dekade von Erforschungen.
+Hunderte von Professoren haben seit gut 4 Jahren mit Erforschungen und Entwicklungen an diesem Stuhl gearbeitet. 
+Ranken vom dichten Nebel strahlen weiter von dem Apparat aus.
+Shirobi bewegt sich zu der Konsole die am Stuhl befestigt ist. Er drückt einige Knöpfe und die Scanner schalten sich ab, sowie öffnet sich ein Weg zu dem Stuhl. 
+Das Summen senkt die Lautstärke ein wenig.
+Shirobi::
+„Es ist soweit MC. Setz dich einfach hin und entspanne." 
+MC::
+Shirobi bewegt sich mit einem kurzen Nicken zu dem soliden, metallischen Stuhl.
+Der letzte Schritt.
+Ich kann nichts außer mein Herz hören, und das Hintergrundsummen von dem Gehirn saugendem Stuhl. 
+Es resoniert mit meinen Knochen.
+All die pulsierenden Lichter essen die Dunkelheit darum, mich eingeschlossen.
+Das Summen vibriert die Metallpanelen unter meinen Füßen. 
+Ich starre auf den „Digitationsthron von erschreckenden Auswirkungen".
+Mit plötzlichem Mut, drehe ich und setze mich, mit dem dröhnen des Summen in meinem Schädel.
+Ich kann kaum noch etwas hören. 
+Mit schnellem Atem in meinen Ohren atme ich aus und zwinge es langsamer zu werden.
+„Lass uns anfangen, Shirobi."
+Shirobi::
+„Jeez Dude! Schlechte Wahl von Worten." 
+MC::
+Er stöhnt, und schaut zu der erwartungsvollen Presse in dem Überwachungsraum.
+Shirobi::
+„Es wird alles gut werden Mann. Lehn dich einfach zurück, entspanne, und schließe deine Augen."
+MC::
+{additive: on}
+Ok.
+Ok.
+Du kannst das!
+{additive: off}
+Ich schließe meine Augen, verlor mich in der Vibration des Stuhls. 
+„Werde dich in ein paar Stunden sehen!"
+„Warte!"
+Ich öffne meine Augen und sende einen Seitenlangen Blick zu meinem Raumpartner.
+„Warte..."
+„werde ich wissen, wie ich atme und alles?" 
+Shirobis Gesicht, so ausdruckslos, wie er es möglicherweise schaffen könne...
+Shirobi::
+„Ah... ja, ich schätze wir haben vergessen dir das beizubringen, MC..."
+„Schließe einfach deine Augen."  
+MC::
+Ich schließe meine Augen, und fühle plötzlich, dass ich mehr zu verlieren habe, als ich vorher dachte.
+Sie hatten nie Erfolg. 
+Nicht mit einem Menschlichen Wesen. 
+Mein Herz setzt einen Schlag aus, laut in meinen Ohren.
+Eine Welle von Panik packt mich...
+Ich fange an zu tränen. 
+Ist das mein letzter Moment meiner selbst bewusst zu sein?
+{fadeinsound: DIHI Power Up, 1}
+Ich fühle, wie mein Kopf anfängt zu kribbeln.
+Die Geräusche von dem Stuhl sind alles, was ich außer meinen Herzschlag noch höre.
+Keine Presse, keine Mitarbeiter: nur mein Herzschlag, das Dröhnen vom Stuhl, und meine plötzliche Angst allein zu sein. 
+{fadeoutsound: Lab Computer Room Beeps 2, 1}
+{fadeoutsound: Fast Heartbeat, .1}
+{fadeoutsound: DIHI Low Power, .1}
+{fadeoutsound: DIHI High Power, .1}
+<i>Dann, mit einem herzzerreißendem Ruck, alles fühlt sich plötzlich an, als wenn es aus meinem Kopf gezogen wird...</i>
+{fadeoutsound: DIHI Power Up, 1}
+{fadeinsound: Brain Sucking Chair Activate, .5}
+{changeScript: Prologue/Prologue II}

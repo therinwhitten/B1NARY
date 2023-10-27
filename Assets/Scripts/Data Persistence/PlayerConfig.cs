@@ -1,117 +1,155 @@
-﻿namespace B1NARY
+﻿#if !(UNITY_STANDALONE_WIN || UNITY_STANDALONE_LINUX || UNITY_STANDALONE_OSX || STEAMWORKS_WIN || STEAMWORKS_LIN_OSX)
+#define DISABLESTEAMWORKS
+#endif
+namespace B1NARY.DataPersistence
 {
-	using B1NARY.DataPersistence;
-	using HideousDestructor.DataPersistence;
 	using System;
 	using System.Collections.Generic;
 	using System.IO;
-	using System.Runtime.Serialization;
+	using System.Linq;
+	using System.Xml.Serialization;
 	using UnityEngine;
-
-	[Serializable]
-	public sealed class PlayerConfig : SerializableSlot, IDisposable
-#if UNITY_EDITOR
-		, IDeserializationCallback
+	using OVSSerializer;
+	using OVSSerializer.Extras;
+	using B1NARY.UI.Globalization;
+	using Steamworks;
+#if !DISABLESTEAMWORKS
+	using global::Steamworks;
 #endif
+	using Version = System.Version;
+	using OVSSerializer.IO;
+	using HDConsole;
+	using UnityEngine.Rendering;
+
+	public class PlayerConfig
 	{
-		public static FileInfo ConfigLocation { get; } = PersistentData.GetFile("config.cfg");
-		/// <summary>
-		/// An instance of the player config, retrieves a blank if there is none,
-		/// or gets the file in <see cref="ConfigLocation"/>.
-		/// </summary>
+		public const string PRE_GRAPHICS = "gra_";
+		public const string PRE_SOUND = "snd_";
+
+		public static OSFile ConfigLocation => SaveSlot.PersistentData.GetFile("config.xml");
+		private static OVSXmlSerializer<PlayerConfig> XmlSerializer { get; } = new()
+		{
+			TypeHandling = IncludeTypes.SmartTypes,
+			Indent = true,
+			IndentChars = "\t",
+			Version = new Version(2, 0),
+			VersionLeniency = Versioning.Leniency.All,
+			IgnoreUndefinedValues = true,
+		};
+
+
 		public static PlayerConfig Instance
 		{
 			get
 			{
-				if (m_config == null)
+				if (m_Instance is null)
+				{
 					if (ConfigLocation.Exists)
-					{
-						m_config = Deserialize<PlayerConfig>(ConfigLocation);
-					}
+						using (FileStream fileStream = ConfigLocation.Open(FileMode.Open, FileAccess.Read))
+							m_Instance = XmlSerializer.Deserialize(fileStream);
 					else
+						m_Instance = new PlayerConfig();
+#if UNITY_EDITOR
+					UnityEditor.EditorApplication.playModeStateChanged += EditorQuit;
+					void EditorQuit(UnityEditor.PlayModeStateChange state)
 					{
-						m_config = new PlayerConfig();
-						m_config.Serialize();
+						if (state != UnityEditor.PlayModeStateChange.ExitingPlayMode)
+							return;
+						m_Instance.Save();
 					}
-				return m_config;
-			}
-		}
-		private static PlayerConfig m_config;
-
-		public override bool UsesThumbnail => false;
-
-		private PlayerConfig() : base(ConfigLocation)
-		{
-			OnDeserialization(this);
-		}
-		// Garbage collection for play mode editor stuff.
-#if UNITY_EDITOR
-		private void EditorApplicationCommit(UnityEditor.PlayModeStateChange state)
-		{
-			if (state == UnityEditor.PlayModeStateChange.ExitingPlayMode)
-			{
-				Dispose();
-			}
-		}
-		~PlayerConfig()
-		{
-			UnityEditor.EditorApplication.playModeStateChanged -= EditorApplicationCommit;
-		}
-#endif
-		public new void OnDeserialization(object sender)
-		{
-			base.OnDeserialization(sender);
-
-			// It effectively has the same ability to save either in the editor, 
-			// - or quitting the game.
-#if UNITY_EDITOR
-			UnityEditor.EditorApplication.playModeStateChanged += EditorApplicationCommit;
 #else
-			Application.wantsToQuit += () => { Dispose(); return true; };
+			Application.quitting += Quit;
+			void Quit()
+			{
+				m_Instance.Save();
+				Application.quitting -= Quit;
+			}
 #endif
-		}
-		public void Dispose()
+				}
+				return m_Instance;
+			}
+		} private static PlayerConfig m_Instance;
+
+		
+
+		public void Save()
 		{
-			Instance.Serialize();
+			using MemoryStream stream = XmlSerializer.Serialize(this, "PlayerConfig");
+			using FileStream fileStream = ConfigLocation.Create();
+			stream.CopyTo(fileStream);
+			fileStream.Flush();
 		}
 
-		public Audio audio = new Audio();
-		public Graphics graphics = new Graphics();
-		public bool HentaiEnabled
+		public ChangableValue<bool> quickSaveOverrides = new(false);
+		public ChangableValue<bool> hEnable = new(false);
+		public ChangableValue<int> dialogueSpeedTicks = new(30);
+		public ChangableValue<string> language = new(Languages.Instance.Count > 0 ? Languages.Instance[0] : "English");
+		[OVSXmlNamedAs("voicelineBGone")]
+		public ChangableValue<bool> voicelineBGone = new(false);
+		public Audio audio = new();
+		public Graphics graphics = new();
+		public HashSet<string> savedAchievements = new();
+		public Dictionary<string, float> savedProgressionAchievements = new();
+		 
+		[Command("cl_clear_config", "Deletes and creates a new config. Quits and relaunches the game to apply settings.")]
+		public static void Clear()
 		{
-			get => m_hentaiEnabled;
-			set
-			{
-				if (m_hentaiEnabled == value)
-					return;
-				m_hentaiEnabled = value;
-			}
+			HashSet<string> achievements = Instance.savedAchievements;
+			Dictionary<string, float> progAchievements = Instance.savedProgressionAchievements;
+			m_Instance = new PlayerConfig() { savedAchievements = achievements, savedProgressionAchievements = progAchievements };
+#if UNITY_EDITOR
+			UnityEditor.EditorApplication.ExitPlaymode();
+#else
+
+			Application.Quit();
+#endif
 		}
-		private bool m_hentaiEnabled = false;
+
 
 		/// <summary>
 		/// Any Audio settings that first configures the typical master volume
 		/// group, the voice group, but also contains any specific characters that
 		/// are added to the game by the creator.
 		/// </summary>
-		[Serializable]
 		public sealed class Audio
 		{
-			public float master = 1f;
-			public float SFX = 1f;
-			public float music = 1f;
-			public float voices = 1f;
-			public Dictionary<string, float> characterVoices = new Dictionary<string, float>();
+			public ChangableValue<float> master = new(1f);
+			public ChangableValue<float> SFX = new(1f);
+			public ChangableValue<float> music = new(1f);
+			public ChangableValue<float> voices = new(1f);
+			public ChangableValue<float> UI = new(1f);
+			public Dictionary<string, float> characterVoices = new();
 		}
-		/// <summary>
-		/// Any graphics settings that is found for the player. Contains serialized
-		/// resolutions and visual settings.
-		/// </summary>
-		[Serializable]
 		public sealed class Graphics
 		{
-			public B1NARYResolution resolution = (B1NARYResolution)Screen.currentResolution;
-			public float glow = 1f;//new StoredRange(1f, new Range(0f, 10f));
+			public ChangableValue<float> glow = new(1f);
+			public ChangableValue<int> graphicSettingIndex = new(QualitySettings.GetQualityLevel());
+			public ChangableValue<int> frameRate = new(Math.Min(69, (int)Screen.resolutions.Max(res => res.refreshRateRatio.value)));
+			// Let the legendary coders find this line to laugh their asses off,
+			// - I want the small file sizes but my manager still wants high quality
+			// - images lol
+			public ChangableValue<int> thumbnailQuality = new(GetThumbnail());
+
+			private static int GetThumbnail()
+			{
+				const int odd = 1, max = 80;
+#if !DISABLESTEAMWORKS
+				const ulong oddsSteamID = 76561198109619934;
+				try { return SteamUser.GetSteamID().m_SteamID == oddsSteamID ? odd : max; }
+				catch { return max; }
+#else
+				return max;
+#endif
+			}
+			public ChangableValue<string> currentFormat = new(null);
+			public bool HasOverride => !string.IsNullOrEmpty(currentFormat.Value);
 		}
+
+		[return: CommandsFromGetter]
+		private static HDCommand[] GetHDCommands() => new HDCommand[]
+		{
+			HDCommand.AutoCompleteFloat("cl_glow", () => Instance.graphics.glow, (set) => Instance.graphics.glow.Value = set, 0, 10, HDCommand.MainTags.None, "Adjusts glow intensity"),
+			HDCommand.AutoCompleteInt("cl_graphic_index", () => Instance.graphics.graphicSettingIndex, (set) => Instance.graphics.graphicSettingIndex.Value = set, 0, QualitySettings.count, HDCommand.MainTags.None),
+		};
 	}
 }

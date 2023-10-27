@@ -9,220 +9,162 @@
 	using B1NARY.Scripting;
 	using System.Linq;
 	using UnityEngine.Audio;
+	using System.Globalization;
+	using SceneManager = UnityEngine.SceneManagement.SceneManager;
+	using UnityEngine.SceneManagement;
+	using System.Diagnostics.CodeAnalysis;
 
 	public sealed class AudioController : Singleton<AudioController>
 	{
-		
-		public const string baseResourcesPath = "Sounds/Sound Libraries";
-		
-		public static readonly CommandArray Commands = new CommandArray()
+		public const string RESOURCES_SOUND_LIBRARY = "Sounds/Sound Libraries";
+
+		public static readonly CommandArray Commands = new()
 		{
 			["fadeinsound"] = (Action<string, string>)((name, floatStr) =>
 			{
 				name = name.Trim();
 				float fadeIn = float.Parse(floatStr);
-				try { Instance.PlaySound(name, fadeIn); }
-				catch (SoundNotFoundException ex)
-				{
-					Debug.LogWarning($"{name} is not a valid soundfile Path!\n" + ex, Instance);
-				}
+				Instance.AddSound(name, fadeIn);
 			}),
 			["fadeoutsound"] = (Action<string, string>)((name, floatStr) =>
 			{
 				name = name.Trim();
 				float fadeOut = float.Parse(floatStr);
-				try { Instance.StopSound(name, fadeOut); }
-				catch (SoundNotFoundException ex)
-				{
-					Debug.LogWarning($"{name} is not a valid soundfile Path!\n" + ex, Instance);
-				}
-				catch (KeyNotFoundException ex)
-				{
-					Debug.LogWarning($": Cannot find sound to close: {name}\n" + ex, Instance);
-				}
+				if (Instance.RemoveSound(name, fadeOut))
+					Debug.LogWarning($"{name} doesn't lead to any sounds and cannot be stopped!" +
+						$"\nStoppable sounds: {string.Join(", ", Instance.ActiveAudio)}");
 			}),
 			["playsound"] = (Action<string>)((name) =>
 			{
 				name = name.Trim();
-				try
-				{
-					Instance.PlaySound(name);
-				}
-				catch (SoundNotFoundException ex)
-				{
-					Debug.LogWarning($"{name} is not a valid soundfile Path!\n" + ex, Instance);
-				}
-				catch (KeyNotFoundException ex)
-				{
-					Debug.LogWarning($": Cannot find sound to play: {name}\n" + ex, Instance);
-				}
+				Instance.AddSound(name);
 			}),
 			["stopsound"] = (Action<string>)((name) =>
 			{
 				name = name.Trim();
-				try { Instance.StopSound(name); }
-				catch (SoundNotFoundException ex)
-				{
-					Debug.LogWarning($"{name} is not a valid soundfile Path!\n" + ex, Instance);
-				}
-				catch (KeyNotFoundException ex)
-				{
-					Debug.LogWarning($": Cannot find sound to play: {name}\n" + ex, Instance);
-				}
+				if (Instance.RemoveSound(name))
+					Debug.LogWarning($"{name} doesn't lead to any sounds and cannot be stopped!" +
+						$"\nStoppable sounds: {string.Join(", ", Instance.ActiveAudio)}");
 			}),
 		};
-		/// <summary>
-		/// Determines where it would convert a simple string name into an actual
-		/// <see cref="CustomAudioClip"/>
-		/// </summary>
-		public SoundLibrary CurrentSoundLibrary { get; private set; }
 
-		public IReadOnlyDictionary<(string name, int index), AudioTracker> ActiveAudioTrackers => m_activeAudioTrackers;
+		public SoundLibrary ActiveLibrary { get; internal set; } = null;
+		// List contains null values to reserve space
+		public IReadOnlyList<AudioTracker> ActiveAudio => audioTrackers;
+		private readonly List<AudioTracker> audioTrackers = new();
+		public readonly Queue<int> otherValues = new();
+		internal List<Func<bool>> fadeSounds = new();
 
-		private Dictionary<(string name, int index), AudioTracker> m_activeAudioTrackers;
-		private (string name, int index) AddAudioClipToDictionary(CustomAudioClip customAudioClip)
+		protected override void SingletonAwake()
 		{
-			int index = 0;
-			while (m_activeAudioTrackers.ContainsKey((customAudioClip.Name, index)))
-				index++;
-			var audioTracker = new AudioTracker(this);
-			m_activeAudioTrackers.Add((customAudioClip.Name, index), audioTracker);
-			return (customAudioClip.Name, index);
+			SceneManager.activeSceneChanged += OnSceneChange;
+			OnSceneChange(default, SceneManager.GetActiveScene());
 		}
 
-		private void Awake()
+		private void OnSceneChange(Scene oldScene, Scene newScene)
 		{
-			m_activeAudioTrackers = new Dictionary<(string name, int index), AudioTracker>();
-			oneShotSounds = new Dictionary<string, (CoroutineWrapper disposeWrapper, AudioSource source)>();
-			SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(ReloadSoundLibrary);
-		}
+			string resourcesPath = $"{RESOURCES_SOUND_LIBRARY}/{newScene.name}";
 
-		private void LateUpdate()
-		{
-			using (IEnumerator<KeyValuePair<(string name, int index), AudioTracker>> enumerator = ActiveAudioTrackers.GetEnumerator())
-				for (int i = 0; enumerator.MoveNext(); i++)
-				{
-					if (enumerator.Current.Value.IsPlaying)
-						continue;
-					enumerator.Current.Value.Dispose();
-					m_activeAudioTrackers.Remove(enumerator.Current.Key);
-					LateUpdate(); // Use a IEnumerator again to clear others
-					return;
-				}
-		}
-		private void ReloadSoundLibrary()
-		{
-			string resourcesPath = baseResourcesPath + '/' + SceneManager.ActiveScene.name;
-			using (var enumerator = ActiveAudioTrackers.GetEnumerator())
-				while (enumerator.MoveNext())
-				{
-					CustomAudioClip clip;
-					if (enumerator.Current.Value.CustomAudioClip != null)
-						clip = enumerator.Current.Value.CustomAudioClip;
-					else if (!CurrentSoundLibrary.TryGetCustomAudioClip(enumerator.Current.Value.ClipName, out clip))
-					{
-						Debug.LogError($"Cannot find fileInfo about {enumerator.Current.Key.name}!");
-						continue;
-					}
+			for (int i = 0; i < audioTrackers.Count; i++)
+			{
+				AudioTracker current = audioTrackers[i];
+				if (current is null)
+					continue;
+				if (current.CustomAudioClip.destroyWhenTransitioningScenes)
+					RemoveSound(i);
+			}
 
-					if (!clip.destroyWhenTransitioningScenes)
-						continue;
-					if (clip.fadeTime > 0f)
-						enumerator.Current.Value.Stop(clip.fadeTime);
-					else
-						enumerator.Current.Value.Stop();
-				}
 			SoundLibrary newSoundLibrary = Resources.Load<SoundLibrary>(resourcesPath);
 			if (newSoundLibrary == null)
 				throw new FileNotFoundException($"{resourcesPath} is not a valid resource path of sound library!");
-			CurrentSoundLibrary = newSoundLibrary;
+			ActiveLibrary = newSoundLibrary;
 			if (newSoundLibrary.ContainsPlayOnAwakeCommands)
 			{
-				using (IEnumerator<CustomAudioClip> enumerator = newSoundLibrary.PlayOnAwakeCommands.GetEnumerator())
-					while (enumerator.MoveNext())
-						AddAudioClipToDictionary(enumerator.Current);
+				using IEnumerator<CustomAudioClip> enumerator = newSoundLibrary.PlayOnAwakeCommands.GetEnumerator();
+				while (enumerator.MoveNext())
+					AddSound(enumerator.Current);
 			}
 		}
 
-		public void PlaySound(string soundName)
+		private void FixedUpdate()
 		{
-			if (!CurrentSoundLibrary.TryGetCustomAudioClip(soundName, out var audioClip))
+			for (int i = 0; i < fadeSounds.Count; i++)
 			{
-				Debug.LogError($"Sound Name'{soundName}' is not found in '{CurrentSoundLibrary.name}'!");
-				return;
+				Func<bool> current = fadeSounds[i];
+				if (current.Invoke())
+					continue;
+				fadeSounds.RemoveAt(i);
+				i--;
 			}
-			PlaySound(audioClip);
 		}
-		public void PlaySound(CustomAudioClip audioClip)
+		private void LateUpdate()
 		{
-			var pairKey = AddAudioClipToDictionary(audioClip);
-			ActiveAudioTrackers[pairKey].PlaySingle(audioClip);
-		}
-		public void PlaySound(string soundName, float fadeIn)
-		{
-			if (!CurrentSoundLibrary.TryGetCustomAudioClip(soundName, out var audioClip))
+			for (int i = 0; i < audioTrackers.Count; i++)
 			{
-				Debug.LogError($"Sound Name'{soundName}' is not found in '{CurrentSoundLibrary.name}'!");
-				return;
+				AudioTracker current = audioTrackers[i];
+				if (current is null)
+					continue;
+				if (!current.canAutoDispose)
+					continue;
+				if (current.IsPlaying)
+					continue;
+				current.Dispose();
+				RemoveSound(i);
+				i--;
 			}
-			PlaySound(audioClip, fadeIn);
-		}
-		public void PlaySound(CustomAudioClip audioClip, float fadeIn)
-		{
-			var pairKey = AddAudioClipToDictionary(audioClip);
-			ActiveAudioTrackers[pairKey].PlaySingle(audioClip, fadeIn);
-		}
-		public void StopSound(string soundName)
-		{
-			if (!CurrentSoundLibrary.TryGetCustomAudioClip(soundName, out var exampleClip))
-			{
-				Debug.LogError($"Sound Name'{soundName}' is not found in '{CurrentSoundLibrary.name}'!");
-				return;
-			}
-			IEnumerable<(string name, int index)> items = m_activeAudioTrackers.Keys.Where(pair => exampleClip.Name == pair.name);
-			if (items.Count() == 1)
-				m_activeAudioTrackers[items.Single()].Stop();
-			Debug.Log($"Stopping multiple sounds with '{exampleClip.Name}'");
-			Array.ForEach(items.ToArray(), pair => m_activeAudioTrackers[pair].Stop());
-		}
-		public void StopSound(string soundName, float fadeOut)
-		{
-			if (!CurrentSoundLibrary.TryGetCustomAudioClip(soundName, out var exampleClip))
-			{
-				Debug.LogError($"Sound Name'{soundName}' is not found in '{CurrentSoundLibrary.name}'!");
-				return;
-			}
-			IEnumerable<(string name, int index)> items = m_activeAudioTrackers.Keys.Where(pair => exampleClip.Name == pair.name);
-			if (items.Count() == 1)
-				m_activeAudioTrackers[items.Single()].Stop(fadeOut);
-			Debug.Log($"Stopping multiple sounds with '{exampleClip.Name}'");
-			Array.ForEach(items.ToArray(), pair => m_activeAudioTrackers[pair].Stop(fadeOut));
 		}
 
-		private Dictionary<string, (CoroutineWrapper disposeWrapper, AudioSource source)> oneShotSounds;
-		public void PlayOneShot(AudioClip clip, AudioMixerGroup audioMixerGroup, float volume = 1f)
+		public bool RemoveSound(int index, float fadeOut = 0f)
 		{
-			if (oneShotSounds.TryGetValue(audioMixerGroup.name, out var pair))
-			{
-				pair.source.PlayOneShot(clip, volume);
-				return;
-			}
-			AudioSource customAudioSource = gameObject.AddComponent<AudioSource>();
-			customAudioSource.outputAudioMixerGroup = audioMixerGroup;
-			customAudioSource.PlayOneShot(clip, volume);
-			var coroutineWrapper = new CoroutineWrapper(this, WaitUntil(audioMixerGroup.name));
-			coroutineWrapper.AfterActions += mono =>
-			{
-				Destroy(oneShotSounds[audioMixerGroup.name].source);
-				oneShotSounds[audioMixerGroup.name].disposeWrapper.Stop();
-				oneShotSounds.Remove(audioMixerGroup.name);
-			};
-			oneShotSounds.Add(audioMixerGroup.name, (coroutineWrapper, customAudioSource));
-			oneShotSounds[audioMixerGroup.name].disposeWrapper.Start();
+			if (audioTrackers.Count <= index)
+				return false;
+			if (audioTrackers[index] is null)
+				return false;
+			audioTrackers[index].Stop(fadeOut);
+			audioTrackers[index] = null;
+			otherValues.Enqueue(index);
+			return true;
 		}
-		private IEnumerator WaitUntil(string key)
+		public bool RemoveSound(string soundName, float fadeOut = 0f)
 		{
-			yield return new WaitUntil(() => !oneShotSounds[key].source.isPlaying);
+			for (int i = 0; i < audioTrackers.Count; i++)
+			{
+				AudioTracker tracker = audioTrackers[i];
+				if (tracker is null)
+					continue;
+				if (tracker.ClipName == soundName)
+					return RemoveSound(i, fadeOut);
+			}
+			return false;
+		}
+		public void RemoveAllSounds()
+		{
+			for (int i = 0; i < audioTrackers.Count; i++)
+				RemoveSound(i);
+		}
+		
+		public AudioTracker AddSound(CustomAudioClip clip, float fadeIn = 0f)
+		{
+			var tracker = new AudioTracker(clip);
+			if (otherValues.Count > 0)
+				audioTrackers[otherValues.Dequeue()] = tracker;
+			else
+				audioTrackers.Add(tracker);
+			tracker.Start(fadeIn);
+			return tracker;
+		}
+
+		[SuppressMessage("Correctness", "UNT0008:Null propagation on Unity objects", Justification = "<Pending>")]
+		public AudioTracker AddSound(string soundName, float fadeIn = 0f)
+		{
+			for (int i = 0; i < ActiveLibrary.customAudioClips.Count; i++)
+			{
+				CustomAudioClip clip = ActiveLibrary.customAudioClips[i];
+				if (clip.Name.ToLower() == soundName.ToLower())
+					return AddSound(clip, fadeIn);
+			}
+			Debug.LogException(new NullReferenceException($"sound '{soundName}' does not exist in library '{ActiveLibrary?.name}'"));
+			return null;
 		}
 	}
 }
@@ -233,7 +175,6 @@ namespace B1NARY.Audio.Editor
 	using B1NARY.Audio;
 	using UnityEngine;
 	using System.Collections.Generic;
-	using System.Runtime.InteropServices;
 
 	[CustomEditor(typeof(AudioController))]
 	public class AudioControllerEditor : Editor
@@ -241,7 +182,7 @@ namespace B1NARY.Audio.Editor
 		public static void DisplayAudioData(IAudioInfo audioInfo)
 		{
 			Rect fullNameRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f)),
-				toggleRect = new Rect(fullNameRect) { width = 20f };
+				toggleRect = new(fullNameRect) { width = 20f };
 			fullNameRect.xMin += toggleRect.xMax + 2;
 			audioInfo.IsPlaying = EditorGUI.Toggle(toggleRect, audioInfo.IsPlaying);
 			EditorGUI.LabelField(fullNameRect, audioInfo.ClipName, EditorStyles.boldLabel);
@@ -257,16 +198,17 @@ namespace B1NARY.Audio.Editor
 		}
 		public static void DisplayAudioController(AudioController audioController)
 		{
-			if (audioController.ActiveAudioTrackers == null || !Application.isPlaying)
+			if (!Application.isPlaying)
 			{
 				EditorGUILayout.LabelField("Reading data is only on runtime!");
 				return;
 			}
-			EditorGUILayout.LabelField($"Total {nameof(AudioTracker)}s tracked: {audioController.ActiveAudioTrackers.Count}", EditorStyles.boldLabel);
+			EditorGUILayout.LabelField($"Total {nameof(AudioTracker)}s tracked: {audioController.ActiveAudio.Count}", EditorStyles.boldLabel);
 			EditorGUI.indentLevel++;
-			using (IEnumerator<KeyValuePair<(string name, int index), AudioTracker>> enumerator = audioController.ActiveAudioTrackers.GetEnumerator())
-				while (enumerator.MoveNext())
-					DisplayAudioData(enumerator.Current.Value);
+			for (int i = 0; i < audioController.ActiveAudio.Count; i++)
+			{
+				DisplayAudioData(audioController.ActiveAudio[i]);
+			}
 			EditorGUI.indentLevel--;
 		}
 
@@ -277,11 +219,11 @@ namespace B1NARY.Audio.Editor
 
 		public override void OnInspectorGUI()
 		{
-			if (audioController.CurrentSoundLibrary != null)
-				EditorGUILayout.LabelField($"Current Library: '{audioController.CurrentSoundLibrary.name}'");
+			if (audioController.ActiveLibrary != null)
+				EditorGUILayout.LabelField($"Current Library: '{audioController.ActiveLibrary.name}'");
 			DisplayAudioController(audioController);
 		}
-		public override bool RequiresConstantRepaint() => audioController != null && audioController.ActiveAudioTrackers != null ? audioController.ActiveAudioTrackers.Count > 0 : false;
+		public override bool RequiresConstantRepaint() => audioController != null && audioController.ActiveAudio != null ? audioController.ActiveAudio.Count > 0 : false;
 	}
 }
 #endif

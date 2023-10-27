@@ -5,7 +5,7 @@
 	using System;
 	using B1NARY.Scripting;
 	using B1NARY.DesignPatterns;
-	using CharacterController = B1NARY.CharacterManagement.CharacterController;
+	using CharacterManager = B1NARY.CharacterManagement.CharacterManager;
 	using System.Collections.Generic;
 	using B1NARY.DataPersistence;
 
@@ -43,7 +43,7 @@
 		/// If the <see cref="MonoBehaviour"/> has been initialized, important
 		/// for using <see cref="IDisposable"/>.
 		/// </summary>
-		private bool hasBeenInitialized = false;
+		public bool HasBeenInitialized { get; private set; } = false;
 		/// <summary>
 		/// All the buttons attached to the choice panel. Usually they can also
 		/// be achieved via <see cref="Transform.GetChild(int)"/> with count
@@ -65,7 +65,7 @@
 		/// </summary>
 		public bool HasPickedChoice => CurrentlyPickedChoice.HasValue;
 
-		private void Awake()
+		protected override void SingletonAwake()
 		{
 			choiceButtons = new List<ChoiceButton>(2);
 		}
@@ -79,32 +79,29 @@
 		/// </exception>
 		public void Initialize(IEnumerable<ScriptLine> choices)
 		{
-			if (hasBeenInitialized)
+			if (HasBeenInitialized)
 				throw new InvalidOperationException($"{nameof(ChoicePanel)} is already" +
 					" been used to make a choice panel. Did you forget to dispose?");
-			hasBeenInitialized = true;
+			HasBeenInitialized = true;
 			enabled = true;
-			ScriptHandler.Instance.ShouldPause = true;
+			ScriptHandler.Instance.pauser.AddBlocker(this);
 			gameObject.SetActive(true);
 			PickedChoice = key =>
 			{
 				for (int i = 0; i < choiceButtons.Count; i++)
 					choiceButtons[i].gameObject.SetActive(false);
-#if DEBUG
-				Debug.Log($"Picked Choice: {key}", this);
-#endif
 			};
-			using (IEnumerator<ScriptLine> enumerator = choices.GetEnumerator())
-				for (int i = 0; enumerator.MoveNext(); i++)
-				{
-					GameObject obj = Instantiate(choiceButtonPrefab, transform);
-					choiceButtons.Add(obj.GetComponent<ChoiceButton>());
-					obj.SetActive(true);
-					choiceButtons[i].Text = enumerator.Current.lineData;
-					choiceButtons[i].tiedPanel = this;
-					choiceButtons[i].VoiceActor = CharacterController.Instance.ActiveCharacter.VoiceData;
-					choiceButtons[i].currentLine = enumerator.Current;
-				}
+			using IEnumerator<ScriptLine> enumerator = choices.GetEnumerator();
+			for (int i = 0; enumerator.MoveNext(); i++)
+			{
+				GameObject obj = Instantiate(choiceButtonPrefab, transform);
+				choiceButtons.Add(obj.GetComponent<ChoiceButton>());
+				obj.SetActive(true);
+				choiceButtons[i].Text = enumerator.Current.RawLine;
+				choiceButtons[i].tiedPanel = this;
+				choiceButtons[i].VoiceActor = CharacterManager.Instance.ActiveCharacter.Value.controller.Mouths[0];
+				choiceButtons[i].currentLine = enumerator.Current;
+			}
 		}
 		/// <summary>
 		/// What the button sends out when pressed. Make sure you to not use 
@@ -113,7 +110,7 @@
 		/// <param name="value"> The key to send out when pressed. </param>
 		public void HandlePress(ScriptLine value)
 		{
-			if (!hasBeenInitialized)
+			if (!HasBeenInitialized)
 				return;
 			CurrentlyPickedChoice = value;
 			PickedChoice.Invoke(value);
@@ -121,11 +118,11 @@
 
 		public void Dispose()
 		{
-			if (!hasBeenInitialized)
+			if (!HasBeenInitialized)
 				return;
-			hasBeenInitialized = false;
+			HasBeenInitialized = false;
 			CurrentlyPickedChoice = null;
-			ScriptHandler.Instance.ShouldPause = false;
+			ScriptHandler.Instance.pauser.RemoveBlocker(this);
 			gameObject.SetActive(false);
 			enabled = false;
 			for (int i = 0; i < choiceButtons.Count; i++)
@@ -133,8 +130,7 @@
 			choiceButtons.Clear();
 			PickedChoice = null;
 		}
-
-		private void OnDestroy()
+		protected override void OnSingletonDestroy()
 		{
 			Dispose();
 		}

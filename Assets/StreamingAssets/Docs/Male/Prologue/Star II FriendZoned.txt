@@ -1,16 +1,21 @@
-FriendZoned!
 {changeScene: Scenes/Star/Star Bedroom Night}
 {colorformat: Asterella}
+{fadeinsound: fireplace, 1}
+{fadeinsound: Star Dinner, 1}
 {spawnEmpty: Narrator, NPC}
 {spawnChar: star nightgown, .5, Asterella}
 {spawnEmpty: MC, Player}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{movecube: .5, .2}
 Asterella::
 [Confusion]
 "Well...I honestly didn't expect that."
+{movecube: .5, 0}
 MC::
 She bites her lip sensually.
 Asterella::
 [Disgust]
+{movecube: .5, .4}
 "Not very many have the nerve to deny me what I want, MC."
 MC::
 She looks gravely at me.
@@ -31,14 +36,14 @@ I feel pretty bad. My second brain isn't very happy with me.
 {additive:on}
 "I mean no disrespect.
 It's too sudden though. 
-I don't know you, nor your vassal, Szycrotic.
+I don't know you, nor your vassal, Lucas.
 And to be blunt.
 I don't want to die."
 {additive:off}
 It's the truth. 
 I feel like she knows that. 
 Asterella::
-"Well, Szycrotic will support whatever I want to do."
+"Well, Lucas will support whatever I want to do."
 "He may complain, but in the end he will respect my decisions."
 "You shouldn't worry about him in the future."
 {moveChar: Asterella, 2}
@@ -49,4 +54,7 @@ In the main game, these decisions may affect other routes profoundly.
 Do this with care. 
 Although, sometimes having a solid friend may help you win over others. 
 I hope you enjoyed the demo!
+{setachievement: male_route}
 THE END
+{colorformat: Default}
+{changeScene: Scenes/Main Menu}

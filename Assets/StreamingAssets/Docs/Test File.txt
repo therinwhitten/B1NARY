@@ -1,143 +1,53 @@
-﻿{changeScene: Times Square}
-{spawnEmpty: Gabriel Ultrakill}
-Gabriel Ultrakill::
-Starting Test Sequence. // Yes
-{choice: Test what?}
+﻿{changeScene: Star Bedroom Night}
+{colorformat: Default}
+{spawnEmpty: Narrator, NPC}
+Narrator::
+{choice: Closed Beta Achievement Or Therin's?}
 {
-	Backgrounds
+	[Closed Beta]
 	{
-		Looking at Background Changes
-		{playBG: Prologue/Times Square Pan Up}
-		{loopbg: false}
-		{queuebg: Prologue/Times Square Animated}
-		{queueloopbg: true }
+		Thank you for all your help! Hope to still have you on board to help in the main game!
+		{setachievement: closed_beta_demo}
+		Achievement Set~!
 	}
-	Character
+	[Therinwhitten]
 	{
-		Starting Move Char
-		{spawnChar: femalesilo, 0.5, Cindy}
-		Moving To Right
-		{moveChar: Cindy, .75}
-		Moving To Left
-		{moveChar: Cindy, .25}
-		Disabling Char...
-		{disablechar: Cindy}
-		Re-enabling Char...
-		{spawnChar: Cindy, 0.5}
+		{spawnChar: star nightgown, .5, Asterella}
+		{spawnChar: lucas butler, .2, Lucas}
+		{spawnChar: lucas sex dungeon, .8, Lucas Sexy}
+		Narrator::
+		Spawning Eye Track Object
+		Now checking to see if she looks. 
+		Tracking left....
+		{movecube: .3, .9}
+		Moving Right...
+		Bokeh Affect on.
+		{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+		{movecube: .9, .5}
+		Now looking at you you bad bad guh!
+		{movecube: .5, .1}
+		Bokeh Affect Off
+		{disableChar: Live 2D Bokeh}
+		Asterella::
+		Testing
+		[Horny]
+		Lucas::
+		[OWO]
+		Testing OWO
+		Testing Angry
+		[Angry]
+		Lucas Sexy::
+		Lewd Mode ON!
+		[Lewd]
+		It doesn't work then.
+		End of Script.
 	}
-	Gameobject Initialization
+	[AnOddDoorKnight]
 	{
-		{changeScene: Brain Sucking Chair Side}
-		{spawnEmpty: Gabriel Ultrakill}
-		Gabriel Ultrakill::
-		binary selection panel.
-		{usegameobject: Binary Selection Panel}
-		Char selection panel.
-		{usegameobject: Character Selection Panel}
-	}
-	Page 2
-	{
-		{choice: Page 2}
-		{
-			Exception Throwing
-			{
-				no
-			}
-			If Statements
-			{
-				Setting value named 'giga chad' as boolean.
-				{choice: set true or false?}
-				{
-					True
-					{
-						{setbool: giga chad, true}
-					}
-					False
-					{
-						{setbool: giga chad, false}
-					}
-					None
-					{
-					
-					}
-				}
-				{choice: 'giga chad' is now set, false as default. what path should we take?}
-				{
-					True
-					{
-						{if: giga chad}
-						{
-							Hit true
-						}
-						{else}
-						{
-							Hit false, as the 'else'
-						}
-					}
-					False
-					{
-						{if: !giga chad}
-						{
-							Hit false
-						}
-						{else}
-						{
-							Hit true, as the 'else'
-						}
-					}
-				}
-			}
-			Remote Nodes
-			{
-				Calling Remote node with name 'Bruh'..
-				{setbool: remoteTest, false}
-				{callremote: Bruh}
-				{if: !remoteTest}
-				{
-					Call remote failed to call!
-				}
-			}
-			Sound Library
-			{
-				Starting Nearly Instantly..
-				{fadeinsound: Modern News, .1}
-				Fading to full in 2 seconds..
-				{fadeinsound: Modern News, 2}
-				Starting loopable sound; Full in 5.
-				{fadeinsound: Times Square Crowd, 5}
-				Stopping sound via code with Fadeout manual.
-				{fadeoutsound: Times Square Crowd, 1}
-				Restarting sound and switching scenes for testing.
-				{fadeinsound: Times Square Crowd, .1}
-				Testing now.
-				{changeScene: Times Square}
-				{spawnEmpty: Gabriel Ultrakill}
-				Gabriel Ultrakill::
-				Swapped Scenes.
-			}
-			Page 3
-			{
-				{choice: page 3}
-				{
-					Return to main menu
-					{
-						{returnToMainMenu}
-					}
-				}
-			}
-		}
-	}
-	Skip
-	{
-	
+		{setachievement: closed_beta_demo}
+		IM GOING TO PUNCH YOUR BALL
+		{additive: true}
+		(plural)
 	}
 }
 
-Test Finished! Repeating.
-{changeScript: Test File}
-
-{remote: Bruh}
-{
-	Remote Line Tested and accessed!
-	{setbool: remoteTest, true}
-}

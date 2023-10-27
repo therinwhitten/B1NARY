@@ -37,14 +37,22 @@
 		/// When the object is first initialized, and doesn't have any data to
 		/// start with.
 		/// </summary>
-		public virtual List<KeyValuePair<string, TValue>> DefinedPairs => new List<KeyValuePair<string, TValue>>();
+		public virtual List<KeyValuePair<string, TValue>> DefinedPairs => new();
 		/// <summary>
 		/// The Currently stored values.
 		/// </summary>
 		public List<KeyValuePair<string, TValue>> Pairs
 		{
-			get => m_pairs;
-			set => m_pairs = value;
+			get
+			{
+				if (m_pairs is null && Application.isPlaying)
+					m_pairs = DefinedPairs;
+				return m_pairs;
+			}
+			set
+			{
+				m_pairs = value;
+			}
 		}
 		protected List<KeyValuePair<string, TValue>> m_pairs;
 		public IEnumerable<string> Keys => Pairs.Select(pair => pair.Key);
@@ -52,7 +60,6 @@
 
 		protected virtual void Awake()
 		{
-			m_pairs = DefinedPairs;
 			DefineDropdown();
 			dropdown.value = InitialValue;
 			dropdown.onValueChanged.AddListener(PickedChoice);

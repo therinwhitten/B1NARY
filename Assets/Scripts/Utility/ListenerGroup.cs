@@ -10,32 +10,13 @@
 	/// similar to <see cref="UnityEngine.Events.UnityEvent"/>.
 	/// </summary>
 	[Serializable]
-	public sealed class ListenerGroup
+	public class ListenerGroup
 	{
 		public static ListenerGroup operator +(ListenerGroup group, Action action)
 		{
 			group.AddPersistentListener(action);
 			return group;
 		}
-
-		/// <summary>
-		/// A single delegate that invokes all methods in the array. No clearing
-		/// needed, as long as <see cref="InvokeAll"/> is called.
-		/// </summary>
-		public Action<Action[]> loadingAPIDelegate = actions =>
-		{
-			for (int i = 0; i < actions.Length; i++)
-			{
-				try
-				{
-					actions[i]?.Invoke();
-				}
-				catch (Exception ex)
-				{
-					Debug.LogException(ex);
-				}
-			}
-		};
 
 		public ListenerGroup(IEnumerable<Action> persistentListeners, IEnumerable<Action> nonPersistentListeners)
 		{
@@ -58,16 +39,16 @@
 		/// <see cref="nonPersistentListeners"/>. Clears all 
 		/// <see cref="nonPersistentListeners"/> afterwards.
 		/// </summary>
-		public void InvokeAll()
+		public virtual void InvokeAll()
 		{
-			Action[] delegates =
-				new List<Action>[] { persistentListeners, nonPersistentListeners }
-				.SelectMany(list => list).ToArray();
+			for (int i = 0; i < persistentListeners.Count; i++)
+				persistentListeners[i].Invoke();
+			for (int i = 0; i < nonPersistentListeners.Count; i++)
+				nonPersistentListeners[i].Invoke();
 			nonPersistentListeners.Clear();
-			loadingAPIDelegate.Invoke(delegates);
 		}
-		private readonly List<Action> persistentListeners;
-		private readonly List<Action> nonPersistentListeners;
+		protected readonly List<Action> persistentListeners;
+		protected readonly List<Action> nonPersistentListeners;
 		/// <summary>
 		/// All persistent listeners that stay after being added so it would be
 		/// invoked multiple times.

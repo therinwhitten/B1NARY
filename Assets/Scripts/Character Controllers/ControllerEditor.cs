@@ -8,24 +8,23 @@ namespace B1NARY.CharacterManagement.Editor
 	using UnityEditor;
 
 
-	[CustomEditor(typeof(ICharacterController), true)]
+	[CustomEditor(typeof(IActor), true)]
 	public abstract class ControllerEditor : Editor
 	{
-		protected ICharacterController characterController;
-		private void Awake() => characterController = (ICharacterController)target;
+		protected IActor characterController;
+		private void Awake() => characterController = (IActor)target;
 
 		public override void OnInspectorGUI()
 		{
-			if (DialogueSystem.HasInstance)
-				EditorGUILayout.LabelField($"Is current speaker: {CharacterController.Instance.ActiveCharacter.CharacterName == characterController.CharacterName}");
-			if (characterController.VoiceData != null)
-				AudioControllerEditor.DisplayAudioData(characterController.VoiceData);
+			if (DialogueSystem.HasInstance && CharacterManager.Instance.ActiveCharacter.HasValue)
+				EditorGUILayout.LabelField($"Is current speaker: {CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName == characterController.CharacterNames.CurrentName}");
 		}
 
 		public override bool RequiresConstantRepaint() => 
 			characterController != null 
-			&& characterController.VoiceData != null 
-			? characterController.VoiceData.IsPlaying : false;
+			&& characterController.Mouths != null 
+			&& characterController.Mouths.Count > 0
+			&& characterController.Mouths[0].IsPlaying;
 	}
 }
 #endif

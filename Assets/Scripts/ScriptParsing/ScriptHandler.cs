@@ -1,181 +1,184 @@
 ﻿namespace B1NARY.Scripting
 {
+	using B1NARY.Audio;
+	using B1NARY.CharacterManagement;
+	using B1NARY.DataPersistence;
+	using B1NARY.DesignPatterns;
+	using OVSSerializer.IO;
+	using B1NARY.Steamworks;
+	using B1NARY.UI;
+	using B1NARY.UI.Colors;
+	using B1NARY.UI.Globalization;
+	using HDConsole;
 	using System;
-	using System.IO;
-	using System.Linq;
 	using System.Collections;
 	using System.Collections.Generic;
+	using System.IO;
+	using System.Linq;
+	using System.Text;
 	using UnityEngine;
-	using UnityEngine.Diagnostics;
 	using UnityEngine.InputSystem;
-	using B1NARY.UI;
-	using B1NARY.Audio;
-	using B1NARY.DesignPatterns;
-	using B1NARY.DataPersistence;
-	using CharacterController = CharacterManagement.CharacterController;
-	using HideousDestructor.DataPersistence;
+	using UnityEngine.InputSystem.UI;
+	using CharacterManager = CharacterManagement.CharacterManager;
 
-	/// <summary>
-	/// A controller of the <see cref="Scripting.ScriptDocument"/> in B1NARY.
-	/// This handles most of the behaviour of commands and initialization for
-	/// ease of use in the standard game, as it can be separated with 
-	/// <see cref="ScriptNode"/> to perhaps work on something else.
-	/// </summary>
 	[AddComponentMenu("B1NARY/Script Handler")]
-	public class ScriptHandler : Singleton<ScriptHandler>
+	public sealed class ScriptHandler : DesignPatterns.Singleton<ScriptHandler>
 	{
-		/// <summary>
-		/// All the commands that it will use for each document created. Separated
-		/// as a regular array due to some script editors wanting to see it.
-		/// </summary>
-		public static CommandArray[] AllCommands => 
-			new CommandArray[]
+		[return: CommandsFromGetter]
+		private static HDCommand[] GetHDCommands() => new HDCommand[]
+		{
+			new HDCommand("script", (args) =>
 			{
-				Commands,
-				DialogueSystem.Commands,
-				AudioController.Commands,
-				SceneManager.Commands,
-				CharacterController.Commands,
-				TransitionManager.Commands,
-				ColorFormat.Commands
-			};
-		/// <summary>
-		/// Uses recursion to get all the documents as a full path, including
-		/// the drive and such.
-		/// </summary>
-		/// <param name="currentPath"> The directory to interact with. </param>
-		/// <returns> 
-		/// All the file paths that start with .txt within the directory.
-		/// </returns>
-		public static List<string> GetFullDocumentsPaths(string currentPath)
-		{
-			var output = new List<string>(Directory.GetFiles(currentPath).Where(path => path.EndsWith(".txt")));
-			IEnumerable<string> directories = Directory.GetDirectories(currentPath);
-			if (directories.Any())
-			{
-				IEnumerator<string> enumerator = directories.GetEnumerator();
-				while (enumerator.MoveNext())
-					output.AddRange(GetFullDocumentsPaths(enumerator.Current));
-			}
-			return output;
-		}
-		/// <summary>
-		/// Uses recursion to get all the documents as a full path, including
-		/// the drive and such. This starts with <see cref="BasePath"/> as the
-		/// default parameter.
-		/// </summary>
-		/// <param name="currentPath"> The directory to interact with. </param>
-		/// <returns> 
-		/// All the file paths that start with .txt within the directory.
-		/// </returns>
-		public static List<string> GetFullDocumentsPaths()
-		{
-			return GetFullDocumentsPaths(BasePath);
-		}
-		/// <summary>
-		/// Converts all the paths, expecting coming from 
-		/// <see cref="GetFullDocumentsPaths"/>, to convert them to be more visual
-		/// and compatible with <see cref="Application.streamingAssetsPath"/>.
-		/// This creates a separate list instead of modifying the inputted list
-		/// as reference.
-		/// </summary>
-		/// <param name="fullPaths"> <see cref="GetFullDocumentsPaths"/> </param>
-		/// <returns> Gets all the inputted paths as <see cref="ToVisual(string)"/>. </returns>
-		public static List<string> GetVisualDocumentsPaths(in List<string> fullPaths)
-		{
-			var newList = new List<string>(fullPaths.Count);
-			for (int i = 0; i < newList.Capacity; i++)
-				newList.Add(ToVisual(fullPaths[i]));
-			return newList;
-		}
-		public static List<string> GetVisualDocumentsPaths()
-		{
-			return GetVisualDocumentsPaths(GetFullDocumentsPaths(BasePath));
-		}
-		/// <summary>
-		/// Converts a full path with drive mentioned, that will be replaced with
-		/// <see cref="BasePath"/> and .txt, leaving only the directories that 
-		/// start with <see cref="Application.streamingAssetsPath"/>.
-		/// </summary>
-		public static string ToVisual(string path) => path.Replace(BasePath, "").Replace(".txt", "");
-		/// <summary>
-		/// Converts a full path with drive mentioned, that will be replaced with
-		/// <see cref="BasePath"/> and .txt, leaving only the directories that 
-		/// start with <see cref="Application.streamingAssetsPath"/>.
-		/// </summary>
-		public static string ToVisual(FileInfo path) => path.FullName.Replace(BasePath, "").Replace(path.Extension, "");
+				ScriptHandler handler = Instance;
+				handler.NewDocument(args[0]);
+				Debug.Log($"Next document to line: {handler.NextLine()}");
 
-		public static string BasePath => $"{Application.streamingAssetsPath.Replace('/', '\\')}\\Docs\\";
-		/// <summary>
-		/// All script-based commands for the script itself and the 
-		/// <see cref="DialogueSystem"/>
-		/// </summary>
-		public static readonly CommandArray Commands = new CommandArray()
-		{
-			
-			["changescript"] = (Action<string>)(ChangeScript),
-			["changescript"] = (Action<string, string>)((path, line) => ChangeScript(path, int.Parse(line))),
-			["usegameobject"] = (Action<string>)(UseGameObject),
-			["setbool"] = (Action<string, string>)((name, value) =>
+			}) { description = "Switches the script via name." },
+
+			new HDCommand("scripts_all", (args) =>
 			{
-				SaveSlot.Instance.scriptDocumentInterface.bools[name] = bool.Parse(value);
-			}),
-			["callremote"] = ((Action<string>)((call) =>
-			{
-				Instance.ScriptDocument.returnValue = RemoteBlock.CallRemote(Instance.ScriptDocument, call);
-			})),
+				StringBuilder allScripts = new("<b><size=135%>Default/Core:</size></b>\n");
+				for (int i = 0; i < DocumentExplorer.CoreDocuments.Count; i++)
+				{
+					Document document = DocumentExplorer.CoreDocuments[i];
+					allScripts.AppendLine($"\t{document.FullPath.FullPath}");
+				}
+				using var enumerator = DocumentExplorer.LanguagedDocuments.GetEnumerator();
+				while (enumerator.MoveNext())
+				{
+					string language = enumerator.Current.Key;
+					IList<Document> documents = enumerator.Current.Value;
+					allScripts.AppendLine($"<b><size=135%>{language}:</size></b>");
+					for (int i = 0; i < documents.Count; i++)
+						allScripts.AppendLine($"\t{documents[i].FullPath.FullPath}");
+				}
+				HDConsole.WriteLine(allScripts.ToString());
+			}) { description = "Prints of all detected documents to console." },
 		};
 
+
+		internal static readonly ScriptDocumentConfig config;
+		static ScriptHandler()
+		{
+			config = new ScriptDocumentConfig();
+			config.AddConstructor(typeof(IfBlock), IfBlock.Predicate);
+			config.AddConstructor(typeof(ElseBlock), ElseBlock.Predicate);
+			config.AddConstructor(typeof(ChoiceBlock), ChoiceBlock.Predicate);
+			config.AddConstructor(typeof(RemoteBlock), RemoteBlock.Predicate);
+			config.Commands.AddRange(
+				new List<CommandArray>()
+				{
+					new CommandArray()
+					{
+						["changescript"] = (Action<string>)(ChangeScript),
+						["changescript"] = (Action<string, string>)(ChangeScript),
+						["usegameobject"] = (Action<string>)(UseGameObject),
+						["usegameobject"] = (Action<string, string>)((gameObjectName, pauseGame) => UseGameObject(gameObjectName, bool.Parse(pauseGame))),
+						["stoponline"] = (Action)(StopOnLine),
+						["setbool"] = (Action<string, string>)((name, value) =>
+						{
+							SaveSlot.ActiveSlot.booleans[name] = bool.Parse(value);
+						}),
+						["callremote"] = (Action<string>)((call) =>
+						{
+							RemoteBlock.CallRemote(Instance.document, call);
+						}),
+						["throwexception"] = (Action<string>)((message) =>
+						{
+							throw new Exception(message);
+						}),
+						// Invokes script commands through console; dont need commas so extra args doesn't do much.
+						["invokeconsolecommand"] = (Action<string>)((arg1) => HDConsole.InvokeThoughConsole(arg1)),
+						// Keeping these here for the hell of it lol
+						["invokeconsolecommand"] = (Action<string, string>)((arg1, arg2) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2))),
+						["invokeconsolecommand"] = (Action<string, string, string>)((arg1, arg2, arg3) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3))),
+						["invokeconsolecommand"] = (Action<string, string, string, string>)((arg1, arg2, arg3, arg4) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15))),
+						["invokeconsolecommand"] = (Action<string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string>)((arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16) => HDConsole.InvokeThoughConsole(CommandJoin(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16))),
+					},
+					DialogueSystem.Commands,
+					AudioController.Commands,
+					SceneManager.Commands,
+					CharacterManager.Commands,
+					TransitionManager.Commands,
+					ColorFormat.Commands,
+					FollowCube.Commands,
+					ButtonInvoker.Commands,
+					VoiceActorHandler.Commands,
+					AchievementManager.Commands,
+				}.SelectMany<CommandArray, OverloadableCommand>(commands => commands));
+			static string CommandJoin(params string[] args) => string.Join(", ", args);
+		}
 		[ForcePause]
 		internal static void ChangeScript(string scriptPath)
 		{
-			Instance.InitializeNewScript(scriptPath);
+			ScriptHandler handler = Instance;
+			handler.NewDocument(scriptPath);
+			Debug.Log($"Next document to line: {handler.NextLine()}");
 		}
 		[ForcePause]
-		internal static void ChangeScript(string scriptPath, int line)
+		internal static void ChangeScript(string scriptPath, string line)
 		{
 			ScriptHandler handler = Instance;
-			handler.InitializeNewScript(scriptPath);
-			handler.StartCoroutine(MoveFowardEnumerator());
-			IEnumerator MoveFowardEnumerator()
-			{
-				while (handler.NextLine().Index < line)
-				{
-					yield return new WaitForEndOfFrame();
-				}
-			}
+			handler.NewDocument(scriptPath, int.Parse(line) - 1);
+			Debug.Log($"Next document to line: {handler.NextLine()}");
 		}
 		[ForcePause]
 		internal static void UseGameObject(string objectName)
 		{
-			GameObject @object = Marker.FindWithMarker(objectName).SingleOrDefault();
+			GameObject @object = Marker.GetMarkers(objectName).SingleOrDefault().gameObject;
 			if (@object == null)
 				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
 			@object.SetActive(true);
-			Instance.ShouldPause = true;
+			Instance.pauser.AddBlocker(Instance);
 			Instance.StartCoroutine(Wait());
 			IEnumerator Wait()
 			{
 				yield return new WaitUntil(() => !@object.activeSelf);
-				Instance.ShouldPause = false;
+				Instance.pauser.RemoveBlocker(Instance);
 				Instance.NextLine();
 			}
 		}
+		[ForcePause]
+		internal static void StopOnLine()
+		{
 
-		public string FullScriptPath(string docName) =>
-			BasePath + (string.IsNullOrWhiteSpace(docName)
-				? StartupScriptPath
-				: docName) + ".txt";
-		/// <summary> Gets the name of the script loaded. </summary>
-		public string ScriptName { get; private set; } = string.Empty;
-		/// <summary> 
-		/// A read-only version of the currently stored 
-		/// <see cref="Experimental.ScriptDocument"/>. 
-		/// </summary>
-		public ScriptDocument ScriptDocument => scriptDocument;
-		private ScriptDocument scriptDocument;
-		[Tooltip("Where the script starts when it initializes a new script.")]
-		public string StartupScriptPath;
+		}
+		internal static void UseGameObject(string objectName, bool pauseGame)
+		{
+			if (pauseGame)
+			{
+				UseGameObject(objectName);
+				return;
+			}
+			GameObject @object = Marker.GetMarkers(objectName).SingleOrDefault().gameObject;
+			if (@object == null)
+				throw new MissingMemberException($"Gameobject '{objectName}' is not found");
+			@object.SetActive(true);
+		}
+		public static DocumentExplorer DocumentExplorer { get; } = new DocumentExplorer();
+
+
+
+		public Pauser pauser = new();
+		internal ScriptDocument document;
+		public bool HasDocument => document != null;
+		public bool IsActive { get; private set; } = false;
+		[SerializeField]
+		internal string defaultStreamingAssetsDocumentPath;
+		public IDocumentWatcher documentWatcher;
+		public InputSystemUIInputModule input;
+
 		/// <summary>
 		/// The player's input.
 		/// </summary>
@@ -185,119 +188,115 @@
 		/// go to the <see cref="NextLine"/> on press.
 		/// </summary>
 		public string[] nextLineButtons;
-		/// <summary>
-		/// From where the game session starts, or when 
-		/// <see cref="InitializeNewScript(string)"/> is called.
-		/// </summary>
-		public DateTime playedTime;
 
-		/// <summary>
-		/// If the game should pause input. Modifying the variable 
-		/// can be stacked with other scripts to allow compatibility. This comes 
-		/// into play if you a script allows it to continue, but another says it
-		/// shouldn't. In this case, it will read <see langword="true"/>.
-		/// </summary>
-		public bool ShouldPause 
-		{ 
-			get => m_pauseIterations > 0;
-			set 
-			{
-				const sbyte maxIterations = 12, 
-					halfIterations = maxIterations / 2,
-					negativeIterations = -maxIterations;
-				if (value)
-					m_pauseIterations++;
-				else
-					m_pauseIterations--; 
-				if (m_pauseIterations > maxIterations || m_pauseIterations < negativeIterations)
-					Utils.ForceCrash(ForcedCrashCategory.Abort);
-				if (m_pauseIterations < 0)
-					Debug.LogWarning($"The {nameof(ShouldPause)} count is found to be negative, make" +
-						" sure to avoid negative values as this will impact other" +
-						$" systems! Currently at {m_pauseIterations}");
-				else if (m_pauseIterations > halfIterations)
-					Debug.LogWarning($"The {nameof(ShouldPause)} is reaching it's" +
-						$" limit on the amount iterations it can have, currently" +
-						$"at {m_pauseIterations}");
-			}
-		}
-		private sbyte m_pauseIterations = 0;
-		/// <summary>
-		/// A value that determines if it is running a script and ready to use.
-		/// </summary>
-		public bool IsActive { get; private set; } = false;
-		/// <summary> Gets the current line. </summary>
-		public ScriptLine CurrentLine => ScriptDocument != null 
-			? scriptDocument.CurrentLine
-			: default;
 		protected override void SingletonAwake()
 		{
-			foreach (string key in nextLineButtons)
-				playerInput.actions.FindAction(key, true).performed += context => NextLine();
-			DontDestroyOnLoad(gameObject);
+			DontDestroyOnLoad(transform.root);
+			config.NormalLine += SayLine;
+			config.AttributeListeners += ChangeExpression;
+			config.EntryListeners += ChangeCharacter;
+			PlayerConfig.Instance.language.ValueChanged += UpdateDocumentViaLanguage;
+			for (int i = 0; i < nextLineButtons.Length; i++)
+				playerInput.actions.FindAction(nextLineButtons[i], true).performed += NextLineKey;
+		}
+		protected override void OnSingletonDestroy()
+		{
+			PlayerConfig.Instance.language.ValueChanged -= UpdateDocumentViaLanguage;
+			for (int i = 0; i < nextLineButtons.Length; i++)
+				playerInput.actions.FindAction(nextLineButtons[i], false).performed -= NextLineKey;
+		}
+		private void NextLineKey(InputAction.CallbackContext context) => NextLine();
+		private void UpdateDocumentViaLanguage(string newLanguage)
+		{
+			if (documentWatcher == null || documentWatcher.EndOfDocument)
+				return;
+			int currentIndex = documentWatcher.CurrentNode.GlobalIndex;
+			Document newDocument = new(document.ReadFile);
+			newDocument = newDocument.GetWithLanguage(newLanguage);
+			OSFile file = newDocument.FullPath;
+			if (!file.Exists)
+			{
+				Debug.LogWarning($"File '{file.FullPath}' doesn't exist, using core path instead.");
+				file = newDocument.GetWithoutLanguage().FullPath;
+			}
+			document = new ScriptDocument(config, file);
+			documentWatcher = document.StartAtLine(currentIndex - 1);
+			Pauser pausedPauser = this.pauser;
+			using (this.pauser = new Pauser())
+				NextLine(true);
+			this.pauser = pausedPauser;
+		}
+		private void SayLine(ScriptLine line)
+		{
+			if (CharacterManager.Instance.ActiveCharacter.HasValue)
+				CharacterManager.Instance.ActiveCharacter.Value.controller.SayLine(line);
+			else
+				throw new NullReferenceException($"There is no active character selected!");
 		}
 
-		public void InitializeNewScript(FileInfo file)
+		private void ChangeExpression(string expressionName)
 		{
-			Clear();
-			m_pauseIterations = 0;
-			var scriptFactory = new ScriptDocument.Factory(file);
-			scriptFactory.AddNodeParserFunctionality(
-				typeof(IfBlock),
-				typeof(ElseBlock),
-				typeof(ChoiceBlock),
-				typeof(RemoteBlock));
-			var allCommands = AllCommands;
-			for (int i = 0; i < allCommands.Length; i++)
-				scriptFactory.commands.AddRange(allCommands[i]);
-			scriptDocument = scriptFactory.Parse(false);
+			if (CharacterManager.Instance.ActiveCharacter.HasValue)
+				CharacterManager.Instance.ActiveCharacter.Value.controller.CurrentExpression = expressionName;
+			else
+				throw new NullReferenceException($"There is no active character selected!");
+		}
+
+		private void ChangeCharacter(string newCharacter)
+		{
+			CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(newCharacter);
+		}
+
+
+		public void NewDocument(int index = 0)
+		{
+			NewDocument(defaultStreamingAssetsDocumentPath, index);
+		}
+		public void NewDocument(string streamingAssetsDocument, int index = 0)
+		{
+			document = new ScriptDocument(config, DocumentExplorer.GetDocumentFromVisual(streamingAssetsDocument).FullPath);
+			documentWatcher = document.StartAtLine(index);
+		}
+
+		public ScriptNode NextLine(bool forceContinue = false)
+		{
+			if (pauser.Blocking)
+			{
+				Debug.Log("Pausing is enabled.");
+				return documentWatcher.CurrentNode;
+			}
+			if (document is null || documentWatcher is null)
+			{
+				return null;
+			}
+			if (!forceContinue && DialogueSystem.TryGetInstance(out var system))
+				if (system.IsSpeaking && !DateTimeTracker.IsAprilFools)
+				{ 
+					DialogueSystem.Instance.StopSpeaking(true);
+					return documentWatcher.CurrentNode;
+				}
 			IsActive = true;
-
-			playedTime = DateTime.Now;
-
-			NextLine();
-		}
-		/// <summary>
-		/// Starts a new script from stratch.
-		/// </summary>
-		/// <param name="scriptPath"> The path of the document. </param>
-		public void InitializeNewScript(string streamingAssetsPath = "")
-		{
-			string finalPath = FullScriptPath(streamingAssetsPath);
-			InitializeNewScript(new FileInfo(finalPath));
-		}
-		/// <summary>
-		/// Plays lines until it hits a normal dialogue or similar.
-		/// </summary>
-		/// <returns> The <see cref="ScriptLine"/> it stopped at. </returns>
-		public ScriptLine NextLine()
-		{
-			if (ShouldPause)
+			if (documentWatcher.EndOfDocument)
 			{
-				Debug.Log($"Cannot progress to next line due to {nameof(ShouldPause)} is active\n{m_pauseIterations} Instance(s)");
-				return default;
+				if (document.ReadFile != null)
+					Debug.LogWarning($"Reached to end of document, '{document.ReadFile}'!");
+				else
+					Debug.LogWarning($"Reached to end of document!");
+				Clear();
+				return null;
 			}
-			if (scriptDocument == null)
-				return default;
-			try
-			{
-				return scriptDocument.NextLine();
-			}
-			catch (IndexOutOfRangeException)
-			{
-				IsActive = false;
-				throw;
-			}
+			documentWatcher.NextNode(out var node);
+			return node;
 		}
 
-		public bool Clear()
+
+		public void Clear()
 		{
-			if (scriptDocument == null)
-				return false;
-			scriptDocument.Dispose();
-			scriptDocument = null;
+			if (!IsActive)
+				return;
 			IsActive = false;
-			return true;
+			document = null;
+			documentWatcher = null;
 		}
 	}
 }
@@ -319,24 +318,24 @@ namespace B1NARY.Editor
 		public override void OnInspectorGUI()
 		{
 			var scriptHandler = (ScriptHandler)target;
-			List<string> allFullPaths = ScriptHandler.GetVisualDocumentsPaths();
-			if (allFullPaths.Count > 0)
+			string[] allVisualPaths = ScriptHandler.DocumentExplorer.CoreDocuments.Select(doc => doc.VisualPath).ToArray();
+			if (allVisualPaths.Length > 0)
 			{
-				int oldIndex = allFullPaths.IndexOf(scriptHandler.StartupScriptPath);
+				int oldIndex = Array.IndexOf(allVisualPaths, scriptHandler.defaultStreamingAssetsDocumentPath);
 				if (oldIndex < 0)
 				{
 					oldIndex = 0;
-					scriptHandler.StartupScriptPath = allFullPaths[0];
+					scriptHandler.defaultStreamingAssetsDocumentPath = allVisualPaths[0];
 					EditorUtility.SetDirty(scriptHandler);
 				}
-				int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, allFullPaths.ToArray());
+				int newIndex = DirtyAuto.Popup(scriptHandler, new GUIContent("Starting Script"), oldIndex, allVisualPaths);
 				if (oldIndex != newIndex)
 				{
-					scriptHandler.StartupScriptPath = allFullPaths[newIndex];
+					scriptHandler.defaultStreamingAssetsDocumentPath = allVisualPaths[newIndex];
 					EditorUtility.SetDirty(scriptHandler);
 				}
 				if (GUILayout.Button("Open File"))
-					Process.Start(scriptHandler.FullScriptPath(scriptHandler.StartupScriptPath));
+					Process.Start(ScriptHandler.DocumentExplorer.CoreDocuments[newIndex].FullPath.FullPath);
 			}
 			else
 			{
@@ -345,7 +344,7 @@ namespace B1NARY.Editor
 			}
 			InputActions(scriptHandler);
 			if (scriptHandler.IsActive)
-				EditorGUILayout.LabelField($"Current Line: {scriptHandler.ScriptDocument.CurrentLine}");
+				EditorGUILayout.LabelField($"Current Line: {scriptHandler.documentWatcher.CurrentNode.PrimaryLine}");
 		}
 		private void InputActions(in ScriptHandler scriptHandler)
 		{
@@ -361,8 +360,8 @@ namespace B1NARY.Editor
 				for (int i = 0; i < scriptHandler.nextLineButtons.Length; i++)
 				{
 					Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20),
-						textEditorRect = new Rect(fullRect) { xMax = fullRect.xMax / 5 * 4 },
-						deleteButtonRect = new Rect(fullRect) { xMin = textEditorRect.xMax + 2 };
+						textEditorRect = new(fullRect) { xMax = fullRect.xMax / 5 * 4 },
+						deleteButtonRect = new(fullRect) { xMin = textEditorRect.xMax + 2 };
 					try
 					{
 						scriptHandler.playerInput.actions

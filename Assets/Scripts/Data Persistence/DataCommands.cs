@@ -1,59 +1,56 @@
 ﻿namespace B1NARY.DataPersistence
 {
 	using B1NARY.DesignPatterns;
-	using System;
-	using System.Collections;
-	using System.Collections.Generic;
+	using B1NARY.Scripting;
+	using B1NARY.UI;
 	using System.Linq;
-	using System.Xml.Linq;
 	using UnityEngine;
 	using UnityEngine.InputSystem;
+	using UnityEngine.UI;
 
 	public sealed class DataCommands : Singleton<DataCommands>
 	{
 		public PlayerInput input;
-		public string saveButton = "QuickSave";
-		public string loadButton = "LoadSave";
-		public List<string> toggledGameObjectNames;
-		private List<GameObject> Objects
-		{
-			get
-			{
-				var objects = new List<GameObject>(toggledGameObjectNames.Count);
-				for (int i = 0; i < toggledGameObjectNames.Count; i++)
-				{
-					GameObject obj = GameObject.Find(name);
-					if (obj != null)
-						objects.Add(obj);
-				}
-				return objects;
-			}
-		}
+		public string save;
+		public string load;
+		public string escape;
 
-		private void OnEnable()
+		[Space]
+		public string exitPopupTag;
+
+		protected override void SingletonAwake()
 		{
-			input.actions.FindAction(saveButton, true).performed += SaveGame;
-			input.actions.FindAction(loadButton, true).performed += LoadGame;
-		}
-		private void OnDisable()
-		{
-			input.actions.FindAction(saveButton, true).performed -= SaveGame;
-			input.actions.FindAction(loadButton, true).performed -= LoadGame;
+			InputAction action = input.actions.FindAction(save, true);
+			action.performed += SaveGame;
+			action.Enable();
+			action = input.actions.FindAction(load, true);
+			action.performed += LoadGame;
+			action.Enable();
+			action = input.actions.FindAction(escape, true);
+			action.performed += EscapeGame;
+			action.Enable();
 		}
 		public void SaveGame(InputAction.CallbackContext context)
 		{
-			StartCoroutine(ScreenshotDelay(Objects));
-		}
-		private IEnumerator ScreenshotDelay(List<GameObject> objects)
-		{
-			objects.ForEach(obj => obj.SetActive(!obj.activeSelf));
-			yield return new WaitForEndOfFrame();
-			SaveSlot.SaveGame();
-			objects.ForEach(obj => obj.SetActive(!obj.activeSelf));
+			SaveSlot.ActiveSlot.Save();
 		}
 		public void LoadGame(InputAction.CallbackContext context)
 		{
-			SaveSlot.QuickLoad();
+			SaveSlot.ActiveSlot.Load();
+		}
+		
+		public void EscapeGame(InputAction.CallbackContext context)
+		{
+			if (ScriptHandler.Instance.documentWatcher == null)
+			{
+				GameObject obj = GameObject.FindWithTag(exitPopupTag);
+				obj.SetActive(!obj.activeSelf);
+				return;
+			}
+			if (!OptionsMenuPauser.HasInstance)
+				OptionsMenuPauser.Instance = OptionsMenuPauser.ForceFind();
+			GameObject options = OptionsMenuPauser.Instance.gameObject;
+			options.SetActive(!options.activeSelf);
 		}
 	}
 }
@@ -76,9 +73,10 @@ namespace B1NARY.DataPersistence.Editor
 		{
 			serializedObject.Update();
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.input)));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.loadButton)));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.saveButton)));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.toggledGameObjectNames)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.save)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.load)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.escape)));
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DataCommands.exitPopupTag)));
 			serializedObject.ApplyModifiedProperties();
 			EditorGUILayout.Separator();
 			if (!Application.isPlaying)
@@ -86,27 +84,24 @@ namespace B1NARY.DataPersistence.Editor
 				EditorGUILayout.HelpBox("Enter play mode to inspect data values!", MessageType.Error);
 				return;
 			}
-			if (SaveSlot.Instance is null)
+			if (SaveSlot.ActiveSlot is null)
 			{
 				EditorGUILayout.HelpBox("Save slot not created yet!", MessageType.Error);
 				return;
 			}
-			UpdateTab("Strings", SaveSlot.Instance.scriptDocumentInterface.strings);
-			UpdateTab("Integers", SaveSlot.Instance.scriptDocumentInterface.ints);
-			UpdateTab("Booleans", SaveSlot.Instance.scriptDocumentInterface.bools);
-			UpdateTab("Singles", SaveSlot.Instance.scriptDocumentInterface.floats);
+			UpdateTab("Strings", SaveSlot.ActiveSlot.strings);
+			UpdateTab("Booleans", SaveSlot.ActiveSlot.booleans);
 
-			void UpdateTab<T>(string label, ScriptDocumentInterface.Collection<T> data)
+			static void UpdateTab<T>(string label, DataPersistence.Collection<T> data)
 			{
 				EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;
-				
-				using (var keys = data.Keys.GetEnumerator())
+				using (IEnumerator<string> keys = data.Keys.GetEnumerator())
 					while (keys.MoveNext())
 					{
 						Rect fullRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f)),
-							keyRect = new Rect(fullRect) { width = (fullRect.width / 2f) - 1f },
-							valueRect = new Rect(fullRect) { xMin = (fullRect.width / 2f) + 1f };
+							keyRect = new(fullRect) { width = (fullRect.width / 2f) - 1f },
+							valueRect = new(fullRect) { xMin = (fullRect.width / 2f) + 1f };
 						EditorGUI.LabelField(keyRect, keys.Current);
 						object value = data[keys.Current];
 						if (data.IsPointer(keys.Current) == true)

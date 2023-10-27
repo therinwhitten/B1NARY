@@ -1,0 +1,282 @@
+{changeScene: Brain Sucking Chair side}
+{colorformat: Emerald}
+{fadeinsound: Laptop Lab Scene, 2}
+{fadeinsound: Fast Keyboard Typing, 2}
+{fadeinsound: DIHI Low Power, 1}
+{fadeinsound: Lab Computer Room Beeps 2, 1}
+{fadeinsound: Lab Ambience Music Light, 1}
+{fadeinsound: LabAmbience, .4}
+{fadeinsound: Fast Heartbeat, 1}
+{spawnEmpty: MC, Player}
+{spawnChar: malesilo3, 1.5, Shirobi}
+Shirobi::
+{if: !n-b}
+{ 
+ "¡MC! Ella ha sido pasante en la compañía durante más de un año ..."
+}
+{if: n-b}
+{
+ "Han sido pasantes de la compañía durante más de un año ..."
+}
+MC::
+La silla chupadora de cerebro ...
+Todos los técnicos de laboratorio se estremecen cuando lo llamo así, pero no me importa.
+El zumbido mecánico de las computadoras portátiles, los ventiladores del servidor y el zumbido de los campos de EM que rodean la silla, resuenan dentro de mi cráneo.
+Los reporteros aún no me han notado.
+Trago saliva nerviosamente.
+Incluso alrededor de todas estas personas, siento que estoy realmente solo.
+Doy unos pasos hacia la habitación.
+{fadeinsound: slowfootsteps, .2}
+{additive:on}
+Izquierda...
+Derecha...
+Izquierda...
+Derecha...
+{additive:off}
+Alguien me agarra del hombro, haciéndome saltar al instante.
+Chirrido, el sonido sale por su propia voluntad.
+{spawnChar: Circle Wipe, .5, CircleWipe}
+{choice: ¿Me enfrento a ellos?}
+{
+     ¡Tengo miedo! Probablemente debería quedarme quieto.
+     [
+      Siento que la mano me agarra con fuerza. Y me da vueltas.
+       {anim: CircleWipe, RightStart}
+     ]
+    Darle la cara al problema.
+     [
+       Doy vueltas.
+       {anim: CircleWipe, RightStart}
+     ]    
+}
+{fadeoutsound: Fast Heartbeat, 1} 
+{anim: CircleWipe, LeftEnd}
+{fadeinsound: Press Cameras, .2}
+Las luces de las cámaras me ciegan.
+Intento parpadear el brillo deslumbrante, levantando la mano para sombrear mis ojos.
+{spawnChar: malesilo, 2, Reportero antiguo}
+{disablechar: CircleWipe}
+Reportero antiguo::
+{anim: Reportero antiguo, kime1}
+{moveChar: Reportero antiguo, .85}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{if: !n-b}
+{
+ "¡Ahí está! MC?"
+}
+{if: n-b}
+{
+ "¡Ahí están! MC?"
+}
+"¿Estás bien? No te ves muy chispeante".
+La vieja focha se ríe, el sonido se esfuerza por combatir la tensión en el aire.
+"Debe ser estresante para miles de millones de personas verte hacer historia, ¿estoy en lo cierto?"
+MC::
+¡¿Por qué tienen que hacer que la iluminación sea tan dura aquí?! 
+¡¿Y por qué tuvo que señalar cuántos están mirando?! 
+Creo que voy a vomitar...
+Controlo mi respiración, tratando de hacer retroceder las náuseas con pura fuerza de voluntad.
+"Sí, estoy bien".
+Pinto en mi mejor sonrisa. No pasa nada, periodista.
+Mis ojos se entrecerraron por un segundo.
+"Estoy un poco nervioso con todos mirándome".
+{additive: on}
+"¡Pero se ha hecho tanto para que esto suceda!
+¡Estoy emocionado para ir a trabajar!"
+{additive:off}
+Miro a la cámara más cercana a mí.
+"¡No te defraudaré!"
+{additive: off}
+{spawnChar: malesilo2, -1, Cliff}
+Cliff::
+{moveChar: Cliff, .25}  
+{anim: Cliff, kime2}
+{disableChar: Live 2D Bokeh}
+MC::
+Mis ojos comienzan a ajustarse. Noto a Cliff, el gerente principal del proyecto, detrás de la prensa, con los brazos cruzados y una expresión de preocupación en su rostro.
+¿Por qué nadie dice nada?
+Repentinamente incómodo, guardo silencio, observando a todos estudiarme.
+{additive: on}
+Hay una sorprendente cantidad de personas susurrando en esta pequeña habitación.
+Me siento muy pequeño, con ganas de comprimirme, 
+pero no hay a dónde ir,
+excepto la silla.
+{additive: off}
+En mis bolsillos, está la carta de mi madre que recibí esta mañana, llena de elogios y emoción.
+{additive: on}
+Para ser parte de este proyecto,
+y encabezar un cambio de dirección tan grande en el futuro de la humanidad,
+llena a mis padres de tanto orgullo... Y preocúpate.
+{additive: off}
+Mis pobres padres, pero tendrán que aceptar mi decisión aquí.
+{additive: on}
+La declaración jurada que firmé ayer fue bastante clara:
+posible pérdida de memoria,
+pérdida de sí mismo,
+coma
+muerte.
+{additive: off}
+El NDA es permanente. <i>No</i> hay fecha de caducidad. 
+No creía que tal cosa existiera. 
+Es un experimento muy peligroso, solo había unos pocos candidatos audicionando.
+En una nota positiva, podría transmitir dentro de Internet a mis fans.
+Puede que sea un pequeño streamer, pero fui uno de los pocos que no pasó por el proceso de copiarme a mí mismo.
+Simplemente no se siente bien para la gente que mira.
+No condeno a otros por elegir lo contrario. Tienen sus propias razones, seguramente. 
+Y respeto eso. 
+Cuando se me dio la oportunidad, salté a ella.
+Imagínese si las personas pueden transportarse a Internet a voluntad en el futuro debido a este experimento.
+No pienses demasiado en eso, MC. Ya estás increíblemente nervioso.
+Miro hacia abajo, mis manos temblando por su propia voluntad.
+{moveChar: Cliff, -1}
+{moveChar: Reportero antiguo, 2}
+{moveChar: Shirobi, .70}
+{additive: on}
+{anim: Shirobi, Checktime}
+Rascándome la nuca,
+Escaneo a la pequeña multitud a través de las luces cegadoras para encontrar a Shirobi,
+El pasante de laboratorio.
+{additive: off}
+Lo conocí en la universidad. Solo unas pocas clases. 
+Después de un par de meses, nos hicimos amigos rápidamente. 
+Es demasiado alto para su propio bien, y un poco tonto. Sin embargo, es un buen tipo.
+Y... Es hilarantemente lindo cuando empuja sus gafas por el puente de su nariz.
+Puede ser, para la mayoría, una persona molesta. ¿Para mí? Es un amigo digno de confianza. 
+Míralo, PDA en mano, observando mi expresión, su rostro traicionando su preocupación.
+{additive: on}
+Sonrío mi mejor sonrisa,
+lo que siempre lo hace sonrojarse un poco.
+Shirobi::
+{anim: Shirobi, Glasses}
+MC:: 
+Su postura se relaja abruptamente.
+{additive: off}
+Me encanta burlarme de él, y él lo sabe. 
+Podía escuchar a algunos de la prensa reírse por eso.
+"¡Shibi, MC informando según lo ordenado!" 
+Mi tono es burlonamente serio. Incluso lanzo un saludo.
+También odia cuando lo llamo Shibi. A veces se toma demasiado en serio. 
+Él asiente sabiamente, una leve sonrisa curva sus labios.
+Él hace un gesto hacia el DIHI.
+{anim: Shirobi, Thisway}
+Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{additive: on}
+"Estoy a cargo de vigilar todos tus signos vitales.
+{anim: Shirobi, Bow}
+Así que por favor... ¿Tomar esto en serio?
+{additive:off}
+"Han pasado cuatro días. Eso es todo".
+"No tratar de permanecer en los servidores, MC. ¿De acuerdo?"
+MC::
+Mis cejas se levantan por su propia cuenta. 
+"Seré bueno, lo prometo. No querría que te preocupes".  
+{disableChar: Live 2D Bokeh}
+Oblicuamente noto que la prensa es escoltada fuera de la sala DIHI.
+{fadeinsound: LabCrewLeavingFootsteps, .3}
+{fadeinsound: openclosedoor, .5}
+{fadeoutsound: LabAmbience, 5}
+El sonido del DIHI cambia repentinamente y la sensación de ionización en el aire aumenta.
+Toda la habitación <i>vibra</i>.
+No hay otra palabra para ello.
+Se siente como si la silla estuviera creando su propio reino dentro de esta habitación.
+Observo cómo la prensa se sienta detrás del cristal de observación, tomando café y charlando. 
+Por un breve segundo, dudo.
+Ok, <i>eso</i> está trayendo de vuelta mi impulso de huir.
+Shibi habla, su tono es forzosamente casual.
+Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+"El proceso es bastante mundano en realidad".
+{additive: on}
+"Tu cuerpo estará inerte,
+Respiración 
+latido...
+{additive:off}
+MC::
+Shibi golpea su sien.
+Shirobi::
+"Sin embargo, nadie estará allí".
+"Almacenaremos tu cuerpo inmediatamente en estasis". 
+"Entonces, no te preocupes MC, serás atendido". 
+"Lo prometo."
+{changeScene: The Lab}
+{colorformat: Emerald}
+{fadeinsound: Fast Heartbeat, .5}
+{fadeinsound: DIHI Low Power, .1}
+{fadeinsound: DIHI High Power, .1}
+{fadeinsound: slowfootsteps, 1}
+{fadeoutsound: Lab Ambience Music Light, 2} 
+{spawnEmpty: MC, Player}
+{spawnEmpty: Shirobi, NPC}
+MC::
+Me centro frente al portal al Reino Digital.
+Se siente tan surrealista.
+Una pequeña parte de mí está en pánico, gritándome que salga de la habitación.
+¡Es demasiado peligroso quedarse!
+Las vibraciones comienzan a resonar incluso en mis pulmones, como lo hacen en un concierto cuando estás demasiado cerca de los altavoces. 
+<i>Salir. ¡Ahora!</i>
+Está empezando a afectar mi estado de ánimo. Empujo el miedo hacia abajo y doy un paso. 
+Zarcillos de niebla refrigerante emanan del artilugio.
+Shirobi se mueve a la consola al lado de la silla.
+Cuando apaga los pre-escáneres, el camino se abre a la silla. El zumbido baja un poco de volumen.
+Shirobi::
+"Está bien. Comienza aquí".
+"Solo toma asiento".
+"Te veré al otro lado, ¿de acuerdo?"
+MC:: 
+Shirobi, luciendo un poco nervioso, hace un gesto hacia el asiento.
+Me trago mi miedo, dándome cuenta de que ya es demasiado tarde para regresar.
+{additive: on}
+Doy otro paso, y la resonancia aumenta,
+zumbador
+pulsante
+El ritmo de mi cuerpo tratando de coincidir.
+{additive: off}
+La luz coincide con los pulsos, como si estuviera viva, comiendo la oscuridad del resto de la habitación.
+Incluso el piso está vibrando.
+Doy otro paso, giro y me siento. 
+El cojín hace poco para consolarme, la silla de metal se clava en mi parte trasera.
+Es como sentarse en el ojo de un huracán. Es inquietantemente tranquilo.
+"Estoy listo, Shibi. No presiones el botón equivocado, ¿de acuerdo?"
+{additive: on}
+Siento los dedos en la frente,
+fresco al tacto,
+Empuje suavemente mi cabeza hacia atrás contra el reposacabezas palpitante.
+El toque calmante me permite respirar.
+{additive: off}
+Giro ligeramente la cabeza, mis ojos se encuentran con los de Shirobi. Sonríe brevemente una vez más.
+Shirobi::
+"Solo cierra los ojos ... BAAAAKA".
+MC::
+"¿Baka?"
+Me río a la fuerza.
+"Realmente necesitas salir más, Shirobi". 
+Cumplo, cerrando los ojos.
+"Sabes, tengo algunos amigos que estarían interesados en un weeb ..." 
+Me las arreglo con ironía.
+El miedo me mantiene hablando más de lo que normalmente lo hubiera hecho. Cualquier cosa para liberar algo de tensión en este punto.
+Shirobi mueve ligeramente mi frente.
+{fadeinsound: Finger Flick, .01}
+"¡Oye!"
+Shirobi::
+"Cállate. Trata de contenerte ¿de acuerdo? ¿Y dejarás de tratar de igualarme ya?"
+MC::
+{fadeinsound: touchscreentaps, .01}
+Podía oírlo jugar con los interruptores y tocar la pantalla de su almohadilla.
+Es extraño lo fuerte que es sobre el sonido de la silla.
+Honestamente, no sé qué esperar, y esa incógnita me asusta más a medida que avanzan los segundos.
+{fadeinsound: DIHI Power Up, .5}
+Puedo escuchar la acumulación de poder. La resonancia de la silla se sincroniza y se convierte en un solo sonido, chirriando dentro de mi cráneo.
+Poner una cara valiente ya no me conviene. Aprieto los reposabrazos de la silla. Contengo un grito. 
+No quiero morir. 
+La parte superior de mi cabeza comienza a hormiguear. 
+Oh, Dios mío, creo que estoy ...
+{fadeoutsound: Fast Heartbeat, .1}
+{fadeoutsound: Fast Keyboard Typing, .1}
+{fadeoutsound: Lab Computer Room Beeps 2, .1}
+{fadeoutsound: DIHI Low Power, .1}
+{fadeoutsound: DIHI High Power, .1}
+{fadeoutsound: Laptop-Lab,.1}
+Luego, con una sacudida casi desgarradora, todo se escapa de la parte superior de mi cabeza ...
+{fadeinsound: Brain Sucking Chair Activate, .5}
+{changeScript: Female/Prologue/Prologue II}

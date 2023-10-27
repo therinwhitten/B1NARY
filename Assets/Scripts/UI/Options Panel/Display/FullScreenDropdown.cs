@@ -7,7 +7,7 @@
 
 	public sealed class FullScreenDropdown : DropdownPanel<FullScreenMode>
 	{
-		public override List<KeyValuePair<string, FullScreenMode>> DefinedPairs => new List<KeyValuePair<string, FullScreenMode>>(3)
+		public override List<KeyValuePair<string, FullScreenMode>> DefinedPairs => new(3)
 		{
 			new KeyValuePair<string, FullScreenMode>("Fullscreen", FullScreenMode.ExclusiveFullScreen),
 			new KeyValuePair<string, FullScreenMode>("Borderless", FullScreenMode.FullScreenWindow),
@@ -19,7 +19,7 @@
 		{
 			base.PickedChoice(index);
 			Resolution currentResolution = Screen.currentResolution;
-			Screen.SetResolution(currentResolution.width, currentResolution.height, CurrentValue, currentResolution.refreshRate);
+			Screen.SetResolution(currentResolution.width, currentResolution.height, CurrentValue, currentResolution.refreshRateRatio);
 		}
 	}
 }

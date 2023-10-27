@@ -16,6 +16,7 @@ On the screen, a diagnostic runs on the DIHI.
 Shirobi, pale as a ghost, just stares at the screen without looking at it. 
 {moveChar: Shirobi, .75}
 {moveChar: Cliff, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Shirobi::
 {if: !n-b}
 {
@@ -101,6 +102,7 @@ Cliff rubs the bridge of his nose in frustration.
 Shirobi, 
 pale, and obviously worrying for his friend, 
 visibly shakes his head and gets back to work.
+{disableChar: Live 2D Bokeh}
 {anim: Shirobi: Checktime}
 {additive: off} 
 Silence reigns as the techs systematically check ports, settings on the DIHI, and the laptops.
@@ -112,6 +114,7 @@ looks up from the laptop from across the room,
 her auburn hair a mess, betraying the long hours of preparation for this experiment.
 {additive: off}
 {anim: Becks, Pensive}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Becks::
 "Sir, I think I found the problem."
 Narrator::
@@ -255,7 +258,7 @@ He ends the sentence with a bit of irony.
 Cliff::
 "We at least can use that stereotype to buy us some time."
 "In the meantime, try to figure out a good way to explain to the world what is happening."
- {if: !n-b}
+{if: !n-b}
 {
  "If we can't find her by then, there will be some serious backlash on this."
 }
@@ -268,6 +271,7 @@ Cliff's path clear, his confidence comes back.
 Cliff::
 "And get someone to do a complete diagnostic on the DIHI. Ensure the report is..."
 Narrator::
+{disableChar: Live 2D Bokeh}
 {if: !n-b}
 {
  As Cliff continues to push out instructions to his team, he couldn't help but feel a pang of incredible sadness. 
@@ -294,10 +298,7 @@ Narrator::
  From their profile, they are competent.
  He hopes that whereever MC is, they will be smart enough to pace herself and make careful decisions...
 }
-Narrator::
-WARNING! 
-NEXT SCENE CONTAINS FLASHING LIGHTS AND CAN INDUCE NAUSEA OR AN EPILEPTIC SEIZURE. 
-TRANSITION STARTS NOW.
+{usegameobject: Flashing Warning Panel, true}
 {fadeoutsound: Discovery Music, 5}
 {fadeoutsound: Laptop Lab Scene, 5}
 {changeScript: Female/Prologue/Denizen}

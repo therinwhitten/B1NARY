@@ -37,7 +37,7 @@ namespace B1NARY.Editor.Debugger
 		};
 
 
-		public override GUIContent Name => new GUIContent("Scripts");
+		public override GUIContent Name => new("Scripts");
 		public override bool ConstantlyRepaint => false;
 		public override void DisplayTab()
 		{
@@ -54,7 +54,7 @@ namespace B1NARY.Editor.Debugger
 				return;
 
 			}
-			if (ScriptHandler.Instance.ScriptDocument == null)
+			if (ScriptHandler.Instance.HasDocument)
 			{
 				EditorGUILayout.HelpBox("Script Document Contents cannot be " +
 					"loaded due to not being properly intialized yet.", MessageType.Info);
@@ -78,37 +78,28 @@ namespace B1NARY.Editor.Debugger
 				colors[EditorPrefs.GetInt("Command B1NARY Color", 3)],
 				colors[EditorPrefs.GetInt("Emote B1NARY Color", 4)],
 			};
-			for (int i = 0; i < scriptHandler.ScriptDocument.documentData.Count; i++)
+			for (int i = 0; i < scriptHandler.document.Lines.Count; i++)
 			{
 				Rect rect = GUILayoutUtility.GetRect(EditorGUIUtility.currentViewWidth - 26, 16);
 				rect.x += 6;
-				ScriptLine OnLine() => scriptHandler.ScriptDocument.documentData[i];
-				if (OnLine().Index == i)
+				ScriptLine onLine =  scriptHandler.document.Lines[i].PrimaryLine;
+				if (onLine.Index == i)
 					GUI.color = assignedColors[1];
-				else switch (OnLine().type)
-					{
-						default:
-						case ScriptLine.Type.Normal:
-							GUI.color = assignedColors[0];
-							break;
-						case ScriptLine.Type.Speaker:
-							GUI.color = assignedColors[2];
-							break;
-						case ScriptLine.Type.Command:
-							GUI.color = assignedColors[3];
-							break;
-						case ScriptLine.Type.Emotion:
-							GUI.color = assignedColors[4];
-							break;
-					}
-				GUI.Label(rect, $"{(OnLine().Index == i && EditorPrefs.GetBool("Script B1NARY Pointer", true) ? ">" : (i + 1).ToString())}\t{OnLine().lineData}");
+				else GUI.color = onLine.Type switch
+				{
+					ScriptLine.LineType.Entry => assignedColors[2],
+					ScriptLine.LineType.Command => assignedColors[3],
+					ScriptLine.LineType.Attribute => assignedColors[4],
+					_ => assignedColors[0],
+				};
+				GUI.Label(rect, $"{(onLine.Index == i && EditorPrefs.GetBool("Script B1NARY Pointer", true) ? ">" : (i + 1).ToString())}\t{onLine.RawLine}");
 			}
 			GUILayout.EndScrollView();
 		}
 
 
 		public override int Order => 5;
-		public override DebuggerPreferences DebuggerPreferences => new DebuggerPreferences()
+		public override DebuggerPreferences DebuggerPreferences => new()
 		{
 			[DebuggerPreferences.DataType.Bool] = new List<(string name, object @default)>()
 			{

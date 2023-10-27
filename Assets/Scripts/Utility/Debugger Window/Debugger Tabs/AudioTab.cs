@@ -9,7 +9,7 @@ namespace B1NARY.Editor.Debugger
 
 	public sealed class AudioTab : DebuggerTab
 	{
-		public override GUIContent Name => new GUIContent("Audio");
+		public override GUIContent Name => new("Audio");
 		public override bool ConstantlyRepaint => true;
 
 		public override void DisplayTab()
@@ -28,7 +28,7 @@ namespace B1NARY.Editor.Debugger
 
 			}
 			var audioHandler = AudioController.Instance;
-			EditorGUILayout.LabelField($"Current Library: {(audioHandler == null || audioHandler.CurrentSoundLibrary == null ? "Null" : audioHandler.CurrentSoundLibrary.name)}");
+			EditorGUILayout.LabelField($"Current Library: {(audioHandler == null || audioHandler.ActiveLibrary == null ? "Null" : audioHandler.ActiveLibrary.name)}");
 			AudioControllerEditor.DisplayAudioController(audioHandler);
 		}
 	}

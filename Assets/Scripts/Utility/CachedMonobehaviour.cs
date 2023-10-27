@@ -30,8 +30,7 @@
 		{
 			get
 			{
-				if (m_cachedComponents is null)
-					m_cachedComponents = new Dictionary<string, Component>();
+				m_cachedComponents ??= new Dictionary<string, Component>();
 				return m_cachedComponents;
 			}
 		}
@@ -102,6 +101,14 @@
 			bool includeParentObjects = false) where TComponent : Component
 		{
 			return GetComponent<TComponent>(includeChildObjects, includeParentObjects) != null;
+		}
+
+		public bool TryGetComponent<TComponent>(out TComponent component, 
+			bool includeChildObjects = false,
+			bool includeParentObjects = false) where TComponent : Component
+		{
+			component = GetComponent<TComponent>(includeChildObjects, includeParentObjects);
+			return component != null;
 		}
 	}
 }

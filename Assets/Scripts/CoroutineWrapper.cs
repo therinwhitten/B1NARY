@@ -108,15 +108,18 @@
 		/// What <see cref="MonoBehaviour"/> to tie into for the <see cref="Coroutine"/>.
 		/// </param>
 		/// <param name="enumerator"> The coroutine enumerator itself. </param>
-		public CoroutineWrapper(MonoBehaviour tiedMonoBehaviour, IEnumerator enumerator)
+		public CoroutineWrapper(MonoBehaviour tiedMonoBehaviour, params IEnumerator[] enumerators)
 		{
+			if (tiedMonoBehaviour == null)
+				throw new ArgumentNullException(nameof(tiedMonoBehaviour));
 			this.tiedMonoBehaviour = tiedMonoBehaviour;
-			enumCopy = enumerator;
+			enumCopy = new List<IEnumerator>(enumerators.Length);
+			enumCopy.AddRange(enumerators);
 		}
 
 		// General Data
 		/// <summary> The copy of the enumerator. </summary>
-		private readonly IEnumerator enumCopy;
+		private readonly List<IEnumerator> enumCopy;
 		/// <summary> The place where the coroutine is tied to. </summary>
 		public readonly MonoBehaviour tiedMonoBehaviour;
 		public bool IsRunning { get; private set; } = false;
@@ -157,6 +160,13 @@
 			return this;
 		}
 
+		public void Add(params IEnumerator[] enumerators)
+		{
+			if (IsRunning)
+				throw new InvalidOperationException();
+			enumCopy.AddRange(enumerators);
+		}
+
 		/// <summary>
 		/// Stops the wrapper.
 		/// </summary>
@@ -177,29 +187,28 @@
 		/// </summary>
 		/// <param name="enumerator"></param>
 		/// <returns> <paramref name="enumerator"/>'s value. </returns>
-		private IEnumerator Wrapper(IEnumerator enumerator)
+		private IEnumerator Wrapper(List<IEnumerator> enumerators)
 		{
-			bool hasMovedNext = true;
-			object yieldInstruction;
-			while (true)
-			{
-				try
+			for (int i = 0; i < enumerators.Count; i++)
+				while (true)
 				{
-					hasMovedNext = enumerator.MoveNext();
-					if (hasMovedNext == false)
+					bool hasMovedNext;
+					object yieldInstruction;
+					try
+					{
+						hasMovedNext = enumerators[i].MoveNext();
+						if (hasMovedNext == false)
+							break;
+						yieldInstruction = enumerators[i].Current;
+					}
+					catch
 					{
 						FinishedCoroutine();
-						yield break;
+						throw;
 					}
-					yieldInstruction = enumerator.Current;
+					yield return yieldInstruction;
 				}
-				catch
-				{
-					FinishedCoroutine();
-					throw;
-				}
-				yield return yieldInstruction;
-			}
+			FinishedCoroutine();
 			void FinishedCoroutine()
 			{
 				InvokeAfterActions();

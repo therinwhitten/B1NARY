@@ -3,50 +3,33 @@
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
+	using System.Diagnostics.CodeAnalysis;
 	using UnityEngine;
 	using UnityEngine.Audio;
 
 	public sealed class AudioTracker : IDisposable, IAudioInfo
 	{
-		//TODO: add custom audio data to regular audiosources!
-		public static void ApplyCustomSoundData(AudioSource audioSource, CustomAudioClip clip)
-		{
-			audioSource.clip = clip.clip;
-			audioSource.outputAudioMixerGroup = clip.audioMixerGroup;
-			audioSource.loop = clip.loop;
-			audioSource.volume = clip.FinalVolume;
-			audioSource.pitch = clip.FinalPitch;
-		}
+		public readonly AudioSource audioSource;
 
-		public event Action FinishedPlaying;
-		public event Action Disposing;
-
-		private readonly AudioSource audioSource;
-		private readonly MonoBehaviour monoBehaviour;
-
-		private CoroutineWrapper garbageCollector;
-		
-		public CustomAudioClip CustomAudioClip { get; private set; }
+		[SuppressMessage("Correctness", "UNT0008:Null propagation on Unity objects", Justification = "<Pending>")]
 		public bool IsPlaying
 		{
-			get => audioSource.isPlaying;
+			get => audioSource?.isPlaying == true;
 			set
 			{
 				if (IsPlaying == value)
 					return;
 				if (value)
-				{
-					CreateAutoDisposableCoroutine = true;
-					PlaySingle(CustomAudioClip);
-					return;
-				}
-				Stop();
+					Start();
+				else
+					Stop();
 			}
 		}
+		public CustomAudioClip CustomAudioClip { get; }
 		public string ClipName => audioSource.clip.name;
-		public float Volume 
+		public float Volume
 		{
-			get => audioSource.volume; 
+			get => audioSource.volume;
 			set => audioSource.volume = value;
 		}
 		public float Pitch
@@ -54,7 +37,6 @@
 			get => audioSource.pitch;
 			set => audioSource.pitch = value;
 		}
-
 		public bool Loop
 		{
 			get => audioSource.loop;
@@ -65,83 +47,81 @@
 			get => audioSource.outputAudioMixerGroup;
 			set => audioSource.outputAudioMixerGroup = value;
 		}
-
-		public bool CreateAutoDisposableCoroutine { get; private set; }
-		public TimeSpan PlayedSeconds => TimeSpan.FromSeconds(audioSource.time);
+		public TimeSpan PlayedSeconds
+		{
+			get => TimeSpan.FromSeconds(audioSource.time);
+			set => audioSource.time = (float)value.TotalSeconds;
+		}
 		public TimeSpan TotalSeconds => TimeSpan.FromSeconds(audioSource.clip.length);
-		public float CompletionPercent => audioSource.time / audioSource.clip.length;
 		public string TimeInfo => $"{audioSource.time:N2} : {audioSource.clip.length:N2}";
-		public AudioTracker(MonoBehaviour monoBehaviour)
-		{
-			CreateAutoDisposableCoroutine = true;
-			this.monoBehaviour = monoBehaviour;
-			audioSource = monoBehaviour.gameObject.AddComponent<AudioSource>();
-		}
-		public AudioTracker(MonoBehaviour monoBehaviour, AudioSource audioSource)
-		{
-			CreateAutoDisposableCoroutine = true;
-			this.monoBehaviour = monoBehaviour;
-			this.audioSource = audioSource;
-		}
+		public string SceneName { get; }
+		public bool canAutoDispose = true;
 
-		public void PlaySingle(CustomAudioClip audioClip)
+		public AudioTracker(CustomAudioClip customAudioClip)
 		{
-			if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
-				throw new InvalidOperationException("It is already being played!");
-			CustomAudioClip = audioClip;
-			ApplyCustomSoundData(audioSource, audioClip);
-			if (CreateAutoDisposableCoroutine)
-				garbageCollector = new CoroutineWrapper(monoBehaviour, WaitUntil()).Start();
+			audioSource = AudioController.Instance.gameObject.AddComponent<AudioSource>();
+			customAudioClip.ApplyTo(audioSource);
+			CustomAudioClip = customAudioClip;
+			SceneName = SceneManager.ActiveScene.name;
+		}
+		public AudioTracker(CustomAudioClip customAudioClip, AudioSource source)
+		{
+			audioSource = source;
+			customAudioClip.ApplyTo(audioSource);
+			CustomAudioClip = customAudioClip;
+			SceneName = SceneManager.ActiveScene.name;
+		}
+		public AudioTracker Start(float fadeIn = 0f)
+		{
+			if (fadeIn < 0f)
+				fadeIn = 0f;
+			if (fadeIn > Time.fixedDeltaTime)
+			{
+				float desiredVolume = audioSource.volume;
+				audioSource.volume = 0f;
+				AudioController.Instance.fadeSounds.Add(() =>
+				{
+					float volume = audioSource.volume;
+					volume += Time.fixedDeltaTime / fadeIn;
+					if (volume >= desiredVolume)
+					{
+						audioSource.volume = desiredVolume;
+						return false;
+					}
+					audioSource.volume = volume;
+					return true;
+				});
+			}
 			audioSource.Play();
-		}
-		public void PlaySingle(CustomAudioClip audioClip, float fadeIn)
-		{
-			if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
-				throw new InvalidOperationException("It is already being played!");
-			CustomAudioClip = audioClip;
-			ApplyCustomSoundData(audioSource, audioClip);
-			if (CreateAutoDisposableCoroutine)
-				garbageCollector = new CoroutineWrapper(monoBehaviour, WaitUntil()).Start();
-			float finalVolume = audioSource.volume;
-			audioSource.volume = 0f;
-			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume, 
-				volume => audioSource.volume = volume), finalVolume, fadeIn);
-			audioSource.Play();
-		}
-		
-		public void PlayOneShot(AudioClip audioClip, float volume)
-		{
-			audioSource.PlayOneShot(audioClip, volume);
+			return this;
 		}
 
 
-		private void StopOneShots()
+		public void Stop(float fadeOut = 0f)
 		{
-			//audioSource.Stop();
+			if (fadeOut < 0f)
+				fadeOut = 0f;
+			if (fadeOut > Time.fixedDeltaTime)
+			{
+				AudioController.Instance.fadeSounds.Add(() =>
+				{
+					float volume = audioSource.volume;
+					volume -= Time.fixedDeltaTime / fadeOut;
+					audioSource.volume = volume;
+					return volume > 0f;
+				});
+				return;
+			}
+			audioSource.Stop();
 		}
-		public void Stop()
-		{
-			if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector))
-				garbageCollector.Stop();
-			StopOneShots();
-		}
-		public void Stop(float fadeOut)
-		{
-			monoBehaviour.ChangeFloat(new Ref<float>(() => audioSource.volume,
-				volume => audioSource.volume = volume), 0, fadeOut, () => { if (!CoroutineWrapper.IsNotRunningOrNull(garbageCollector)) garbageCollector.Stop(); });
-			StopOneShots();
-		}
-
 		public void Dispose()
 		{
-			if (audioSource != null)
-				GameObject.Destroy(audioSource);
-			Disposing?.Invoke();
+			Stop();
 		}
-		public IEnumerator WaitUntil()
+
+		public override string ToString()
 		{
-			yield return new WaitUntil(() => !audioSource.isPlaying);
-			FinishedPlaying?.Invoke();
+			return $"AudioTracker ({ClipName})";
 		}
 	}
 }

@@ -7,25 +7,18 @@
 
 	public class PlayerAssignmentPanel : MonoBehaviour
 	{
-		public string MaleAssignmentKey = "MalePath";
-
-
 		public TMP_InputField nameInput;
 		public Button male, female;
-		private bool isFemale = false;
-		private void MaleTrue() => isFemale = false;
-		private void FemaleTrue() => isFemale = true;
-
-		private void Awake()
+		private Gender gender = Gender.Male;
+		private void Start()
 		{
-			male.onClick.AddListener(MaleTrue);
-			female.onClick.AddListener(FemaleTrue);
+			male.onClick.AddListener(() => gender = Gender.Male);
+			female.onClick.AddListener(() => gender = Gender.Female);
 		}
-
 		public void OnDisable()
 		{
-			SaveSlot.Instance.scriptDocumentInterface.PlayerName = nameInput.text;
-			SaveSlot.Instance.scriptDocumentInterface.bools[MaleAssignmentKey] = !isFemale;
+			SaveSlot.ActiveSlot.PlayerName = nameInput.text;
+			SaveSlot.ActiveSlot.Gender = gender;
 		}
 	}
 }

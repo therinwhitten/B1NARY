@@ -1,9 +1,11 @@
 ﻿namespace B1NARY
 {
+	using B1NARY.Audio;
 	using B1NARY.DataPersistence;
 	using B1NARY.DesignPatterns;
 	using B1NARY.Scripting;
 	using B1NARY.UI;
+	using B1NARY.UI.Colors;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
@@ -31,20 +33,28 @@
 		/// <summary>
 		/// All script-based commands for <see cref="ScriptDocument"/>
 		/// </summary>
-		public static readonly CommandArray Commands = new CommandArray()
+		public static readonly CommandArray Commands = new()
 		{
-			["changescene"] = (Action<string>)ChangeSceneCommand,//["changescene"] = (Action<string>)ChangeSceneCommand,
+			["changescene"] = (Action<string>)ChangeSceneCommand,
 			["returntomainmenu"] = (Action)ReturnToMainMenuCommand,
 		};
 		[ForcePause]
 		private static void ChangeSceneCommand(string newScene)
 		{
-			InstanceOrDefault.StartCoroutine(InstanceOrDefault.ChangeScene(newScene));
+			InstanceOrDefault.StartCoroutine(InstanceOrDefault.ChangeScene(newScene, true));
 		}
 		[ForcePause]
 		internal static void ReturnToMainMenuCommand()
 		{
-			InstanceOrDefault.StartCoroutine(InstanceOrDefault.ReturnToMainMenu());
+			CoroutineWrapper wrapper = new(InstanceOrDefault, InstanceOrDefault.ReturnToMainMenu());
+			wrapper.AfterActions += (mono) =>
+			{
+				if (!ScriptHandler.TryGetInstance(out var handler))
+					return;
+				handler.document = null;
+				handler.documentWatcher = null;
+			};
+			wrapper.Start();
 		}
 		/// <summary> Gets the currently active/main scene. </summary>
 		public static Scene ActiveScene => UnitySceneManager.GetActiveScene();
@@ -83,7 +93,7 @@
 			if (!scene.IsValid())
 				throw new ArgumentNullException($"build index of '{sceneIndex}'"
 					+ " does not lead to anything!");
-			return ChangeScene(scene.name);
+			return ChangeScene(scene.name, true);
 		}
 		/// <summary>
 		/// A coroutine that changes the scene to a new scene via the name.
@@ -92,9 +102,10 @@
 		/// </summary>
 		/// <param name="sceneName"> The scene to transition to. </param>
 		/// <returns> The Coroutine. </returns>
-		public IEnumerator ChangeScene(string sceneName)
+		public IEnumerator ChangeScene(string sceneName, bool handleScripts)
 		{
-			ScriptHandler.Instance.ShouldPause = true;
+			if (handleScripts)
+				ScriptHandler.Instance.pauser.AddBlocker(this);
 			IEnumerator fadeEnum = FadeScene();
 			while (fadeEnum.MoveNext())
 				yield return fadeEnum.Current;
@@ -110,23 +121,25 @@
 				if (Application.isEditor)
 				{
 					Debug.LogException(new MissingReferenceException($"'{sceneName}' does not exist as a scene, fix this before production! IT WILL BREAK YOUR SHIT!"));
-					ScriptHandler.Instance.ShouldPause = true;
+					ScriptHandler.Instance.pauser.Break();
 				}
 				else
 					Utils.ForceCrash(ForcedCrashCategory.FatalError);
 			}
 
 			yield return new WaitUntil(() => async.isDone);
-				
-
 			do yield return new WaitForFixedUpdate();
 			while (cannotPerformNext);
-			ScriptHandler.Instance.ShouldPause = false;
-			ScriptHandler.Instance.NextLine(); 
+
+			if (handleScripts)
+			{
+				ScriptHandler.Instance.pauser.RemoveBlocker(this);
+				ScriptHandler.Instance.NextLine();
+			}
 		}
 		public IEnumerator ReturnToMainMenu()
 		{
-			ScriptHandler.Instance.ShouldPause = true;
+			ScriptHandler.Instance.pauser.AddBlocker(this);
 			IEnumerator fadeEnum = FadeScene();
 			while (fadeEnum.MoveNext())
 				yield return fadeEnum.Current;
@@ -136,16 +149,17 @@
 			var async = UnitySceneManager.LoadSceneAsync(MainMenuSceneIndex);
 			if (async == null)
 			{
-				if (Application.isEditor)
-				{
-					Debug.LogException(new MissingReferenceException($"'{MainMenuSceneIndex}' does not exist as a scene index, fix this before production! IT WILL BREAK YOUR SHIT!"));
-					ScriptHandler.Instance.ShouldPause = true;
-				}
-				else
-					Utils.ForceCrash(ForcedCrashCategory.FatalError);
+#if UNITY_EDITOR
+				Debug.LogException(new MissingReferenceException($"'{MainMenuSceneIndex}' does not exist as a scene index, fix this before production! IT WILL BREAK YOUR SHIT!"));
+				UnityEditor.EditorApplication.ExitPlaymode();
+#else
+				Utils.ForceCrash(ForcedCrashCategory.FatalError);
+#endif
 			}
-			ScriptHandler.Instance.ShouldPause = false;
+			ScriptHandler.Instance.pauser.RemoveBlocker(this);
 			ScriptHandler.Instance.Clear();
+			AudioController.Instance.RemoveAllSounds();
+			ColorFormat.SetFormat(ColorFormat.DefaultFormat, false);
 		}
 		/// <summary>
 		/// Initializes the <see cref="ScriptHandler"/>, the system expects the
@@ -153,8 +167,9 @@
 		/// </summary>
 		public void InitializeGame()
 		{
-			SaveSlot.Instance = new SaveSlot();
-			ScriptHandler.Instance.InitializeNewScript();
+			SaveSlot.ActiveSlot =new SaveSlot();
+			ScriptHandler.Instance.NewDocument();
+			ScriptHandler.Instance.NextLine();
 		}
 		/// <summary>
 		/// Initializes the <see cref="ScriptHandler"/>, the system expects the
@@ -162,8 +177,9 @@
 		/// </summary>
 		public void InitializeScript(string docPath)
 		{
-			SaveSlot.Instance = new SaveSlot();
-			ScriptHandler.Instance.InitializeNewScript(docPath);
+			SaveSlot.ActiveSlot = new SaveSlot();
+			ScriptHandler.Instance.NewDocument(docPath);
+			ScriptHandler.Instance.NextLine();
 		}
 
 		/// <summary>
@@ -179,7 +195,7 @@
 				Debug.LogWarning($"Was called to fade scene, but there are no {nameof(TransitionObject)}s to transition with!\n{nameof(SceneManager)}");
 				yield break;
 			}
-			IEnumerator transition = TransitionObject.First.SetToOpaqueEnumerator();
+			IEnumerator transition = TransitionObject.Youngest.SetToOpaqueEnumerator();
 			while (transition.MoveNext())
 				yield return transition.Current;
 		}
@@ -227,7 +243,8 @@ namespace B1NARY.Editor
 			DisplaySubCategory("Persistent Listeners", group.PersistentListeners);
 			DisplaySubCategory("Non-Persistent Listeners", group.NonPersistentListeners);
 			EditorGUI.indentLevel--;
-			void DisplaySubCategory(string subHeader, IReadOnlyList<Action> delegates)
+
+			static void DisplaySubCategory(string subHeader, IReadOnlyList<Action> delegates)
 			{
 				EditorGUILayout.LabelField(subHeader, EditorStyles.boldLabel);
 				EditorGUI.indentLevel++;

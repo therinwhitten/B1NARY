@@ -11,6 +11,13 @@
 	/// <typeparam name="T">A MonoBehaviour Script to tie it to.</typeparam>
 	public abstract class Singleton<T> : InstanceHolder<T> where T : MonoBehaviour
 	{
+		public static T ForceFind()
+		{
+			T toughFind = Resources.FindObjectsOfTypeAll(typeof(T)).FirstOrDefault() as T;
+			if (toughFind == null)
+				throw new System.Exception("Sexy");
+			return toughFind;
+		}
 		public static bool HasInstance
 		{
 			get
@@ -20,16 +27,29 @@
 				return instance != null;
 			}
 		}
+		public static bool HasInstanceOrInitialize()
+		{
+			bool output = HasInstance;
+			if (output == false && !ThrowErrorIfEmpty)
+			{
+				_ = InstanceOrDefault;
+				return true;
+			}
+			return output;
+		}
 
-		private static T instance;
+		protected static T instance;
 
 		/// <summary> A Single instance. </summary>
 		public static T InstanceOrDefault
 		{
 			get
 			{
+				bool oldValue = ThrowErrorIfEmpty;
 				ThrowErrorIfEmpty = false;
-				return Instance;
+				T instance = Instance;
+				ThrowErrorIfEmpty = oldValue;
+				return instance;
 			}
 		}
 		/// <summary> A Single instance. </summary>
@@ -61,6 +81,17 @@
 			set => instance = value;
 		}
 
+		public static bool TryGetInstance(out T instance)
+		{
+			if (!HasInstance)
+			{
+				instance = null;
+				return false;
+			}
+			instance = Instance;
+			return true;
+		}
+
 		/// <summary>
 		///		Override <see cref="Instance"/> with a new Instance.
 		/// </summary>
@@ -71,7 +102,7 @@
 			Instance = @object.AddComponent<T>();
 		}
 
-		private void Awake()
+		protected void Awake()
 		{
 			if (instance != null && instance != this)
 			{
@@ -84,7 +115,7 @@
 			SingletonAwake();
 		}
 
-		private void OnDestroy()
+		protected void OnDestroy()
 		{
 			instance = null;
 			OnSingletonDestroy();
@@ -110,6 +141,6 @@
 		///		of creating a custom GameObject for it.
 		/// </summary>
 		public static bool ThrowErrorIfEmpty { get; set; } = true;
-		protected static object _lock = new object();
+		protected static object _lock = new();
 	}
 }

@@ -11,6 +11,7 @@ namespace B1NARY.Editor.Debugger
 	using B1NARY.DesignPatterns;
 	using System.Collections.Generic;
 	using System.Text;
+	using B1NARY.CharacterManagement;
 
 	public sealed class DebuggerWindow : EditorWindow
 	{
@@ -23,7 +24,7 @@ namespace B1NARY.Editor.Debugger
 		}
 		public const string slotsLengthKey = "B1NARY Slots Debugger";
 
-		private static readonly Vector2Int defaultMinSize = new Vector2Int(300, 350);
+		private static readonly Vector2Int defaultMinSize = new(300, 350);
 
 
 		[MenuItem("B1NARY/Debugger", priority = 1)]
@@ -63,18 +64,18 @@ namespace B1NARY.Editor.Debugger
 				var onSpeaker = new StringBuilder("On Speaker: ");
 				if (!Application.isPlaying)
 					return onSpeaker.Append(notPlaying).ToString();
-				if (!DialogueSystem.HasInstance || string.IsNullOrEmpty(DialogueSystem.Instance.SpeakerName))
+				if (!DialogueSystem.HasInstance || string.IsNullOrEmpty(CharacterManager.Instance.ActiveCharacter?.controller.CharacterNames.CurrentName))
 					return onSpeaker.Append(@null).ToString();
-				return onSpeaker.Append(DialogueSystem.Instance.SpeakerName).ToString();
+				return onSpeaker.Append(CharacterManager.Instance.ActiveCharacter.Value.controller.CharacterNames.CurrentName).ToString();
 			}
 			string CurrentLine()
 			{
 				var onLine = new StringBuilder("On Line: ");
 				if (!Application.isPlaying)
 					return onLine.Append(notPlaying).ToString();
-				if (!ScriptHandler.HasInstance || ScriptHandler.Instance.CurrentLine.Equals(default))
+				if (!ScriptHandler.HasInstance || ScriptHandler.Instance.documentWatcher.CurrentNode.Equals(default))
 					return onLine.Append(@null).ToString();
-				return onLine.Append(ScriptHandler.Instance.CurrentLine).ToString();
+				return onLine.Append(ScriptHandler.Instance.documentWatcher.CurrentNode.PrimaryLine).ToString();
 			}
 			void DisplayTabs()
 			{

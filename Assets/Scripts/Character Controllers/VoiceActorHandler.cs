@@ -7,60 +7,136 @@
 	using B1NARY.Audio;
 	using Live2D.Cubism.Framework.MouthMovement;
 	using UnityEngine.Audio;
+	using System.IO;
 
-	public class VoiceActorHandler : Multiton<VoiceActorHandler>, IAudioInfo
+	public class VoiceActorHandler : MonoBehaviour, IAudioInfo
 	{
+		public static CommandArray Commands = new()
+		{
+			["switchvoice"] = ((Action<string>)((intRaw) =>
+			{
+				int mouthIndex = int.Parse(intRaw);
+				IVoice voice = CharacterManager.Instance.ActiveCharacter.Value.controller;
+				voice.CurrentMouth = mouthIndex;
+			})),
+			["switchvoice"] = ((Action<string, string>)((character, intRaw) =>
+			{
+				int mouthIndex = int.Parse(intRaw);
+				IVoice voice = CharacterManager.Instance.GetCharacter(character).controller;
+				voice.CurrentMouth = mouthIndex;
+			})),
+			["stopvoices"] = ((Action<string>)((boolean) =>
+			{
+				bool setter = bool.Parse(boolean);
+				BlockPreviousSpeakersOnNextLine = setter;
+			})),
+
+			// Because of H scenes and the technical stuff where you cannot have different
+			// - character names per voice, this is a bit of a hacky solution to appear
+			// - so.
+			["internalchar"] = ((Action<string, string, string>)((characterName, intRawVoice, newName) =>
+			{
+				// Switching names really, quirks n stuff
+				if (CharacterNames.ChangingNames)
+				{
+					CharacterNames.ChangingNameOf.Name = characterName;
+					return;
+				}
+				// Actual code
+				int mouthIndex = int.Parse(intRawVoice);
+				Character character = CharacterManager.Instance.GetCharacter(characterName);
+				IVoice voice = character.controller;
+				voice.CurrentMouth = mouthIndex;
+				character.ChangeCharacterName(newName);
+			})),
+			["internalchar"] = ((Action<string, string>)((intRawVoice, newName) =>
+			{
+				int mouthIndex = int.Parse(intRawVoice);
+				Character character = CharacterManager.Instance.ActiveCharacter.Value;
+				IVoice voice = character.controller;
+				voice.CurrentMouth = mouthIndex;
+				character.ChangeCharacterName(newName);
+			})),
+		};
+		public static AudioClip GetVoiceLine(int index, ScriptHandler handler)
+		{
+			Document current = new(handler.document.ReadFile);
+			string currentVisualPath = GetVisualPath(current);
+			string filePath = $"Voice\\{currentVisualPath}\\{index}";
+			AudioClip clip = Resources.Load<AudioClip>(filePath);
+			if (clip == null)
+			{
+				// try again but with default
+				string coreFilePath = $"Voice\\{GetVisualPath(current.GetWithoutLanguage())}\\{index}";
+				Debug.Log($"'{filePath}' doesn't appear to work to get the normal voice line, using '{coreFilePath}' instead.");
+				clip = Resources.Load<AudioClip>(coreFilePath);
+				if (clip == null)
+					Debug.LogWarning(new IOException($"Voiceline in resources path '{filePath}' " +
+						"could not be retrieved.").ToString());
+			}
+			return clip;
+
+			string GetVisualPath(Document doc) => doc.VisualPath.Remove(current.VisualPath.LastIndexOf('.'));
+		}
+		public static VoiceActorHandler GetNewActor(AudioSource source)
+		{
+			var output = source.gameObject.AddComponent<VoiceActorHandler>();
+			output.AudioSource = source;
+			return output;
+		}
 		public static bool BlockPreviousSpeakersOnNextLine { get; set; } = true;
 
-		private AudioSource audioSource;
+		public AudioSource AudioSource { get; set; }
 		private AudioClip currentVoiceLine;
 		public bool IsPlaying
 		{
-			get => audioSource != null ? audioSource.isPlaying : false;
+			get => AudioSource != null && AudioSource.isPlaying;
 			set 
 			{
-				if (audioSource != null && audioSource.isPlaying != value)
+				if (AudioSource != null && AudioSource.isPlaying != value)
 					if (value)
-						audioSource.Play();
+						AudioSource.Play();
 					else
-						audioSource.Stop();
+						AudioSource.Stop();
 			}
 		}
 
-		public string ClipName => audioSource != null ? audioSource.clip.name : string.Empty;
+		public string ClipName => AudioSource != null ? AudioSource.clip.name : string.Empty;
 		public float Volume 
 		{ 
-			get => audioSource != null ? audioSource.volume : float.NaN;
-			set { if (audioSource != null) audioSource.volume = value; }
+			get => AudioSource != null ? AudioSource.volume : float.NaN;
+			set { if (AudioSource != null) AudioSource.volume = value; }
 		}
 		float IAudioInfo.Pitch 
 		{ 
-			get => audioSource != null ? audioSource.pitch : float.NaN;
-			set { if (audioSource != null) audioSource.pitch = value; } 
+			get => AudioSource != null ? AudioSource.pitch : float.NaN;
+			set { if (AudioSource != null) AudioSource.pitch = value; } 
 		}
 		bool IAudioInfo.Loop
 		{
-			get => audioSource != null ? audioSource.loop : false;
-			set { if (audioSource != null) audioSource.loop = value; }
+			get => AudioSource != null ? AudioSource.loop : false;
+			set { if (AudioSource != null) AudioSource.loop = value; }
 		}
 		public AudioMixerGroup CurrentGroup
 		{
-			get => audioSource.outputAudioMixerGroup;
-			set => audioSource.outputAudioMixerGroup = value;
+			get => AudioSource.outputAudioMixerGroup;
+			set => AudioSource.outputAudioMixerGroup = value;
 		}
-		public TimeSpan PlayedSeconds => audioSource != null ? TimeSpan.FromSeconds(audioSource.time) : TimeSpan.Zero;
-		public TimeSpan TotalSeconds => audioSource != null ? TimeSpan.FromSeconds(audioSource.clip.length) : TimeSpan.Zero;
+		public TimeSpan PlayedSeconds => AudioSource != null ? TimeSpan.FromSeconds(AudioSource.time) : TimeSpan.Zero;
+		public TimeSpan TotalSeconds => AudioSource != null ? TimeSpan.FromSeconds(AudioSource.clip.length) : TimeSpan.Zero;
 
-		private void Awake()
+		private void OnEnable()
 		{
-			audioSource = GetSource();
+			if (AudioSource != null)
+				return;
+			AudioSource = GetSource();
 
 			AudioSource GetSource()
 			{
-				if (gameObject.TryGetComponent<AudioSource>(out var audioSource))
+				if (gameObject.TryGetComponent(out AudioSource audioSource))
 					return audioSource;
 				AudioSource output;
-				if (gameObject.TryGetComponent<CubismAudioMouthInput>(out var cubismAudioMouthInput) && cubismAudioMouthInput.AudioInput != null)
+				if (gameObject.TryGetComponent(out CubismAudioMouthInput cubismAudioMouthInput) && cubismAudioMouthInput.AudioInput != null)
 					return cubismAudioMouthInput.AudioInput;
 				output = gameObject.AddComponent<AudioSource>();
 				if (cubismAudioMouthInput != null)
@@ -70,18 +146,24 @@
 		}
 		public void Stop()
 		{
-			if (audioSource != null)
-				audioSource.Stop();
+			if (AudioSource != null)
+				AudioSource.Stop();
 		}
 		public void Play(ScriptLine line)
 		{
-			currentVoiceLine = line.GetVoiceActorLine();
-			if (BlockPreviousSpeakersOnNextLine)
-				using (var enumerator = CharacterController.Instance.charactersInScene.Values.GetEnumerator())
-					while (enumerator.MoveNext())
-						enumerator.Current.characterScript.VoiceData.Stop();
-			audioSource.clip = currentVoiceLine;
-			audioSource.Play();
+			Play(GetVoiceLine(line.Index, ScriptHandler.Instance));
+		}
+		public void Play(AudioClip clip)
+		{
+			currentVoiceLine = clip;
+			if (BlockPreviousSpeakersOnNextLine && CharacterManager.HasInstance)
+				for (int i = 0; i < CharacterManager.Instance.CharactersInScene.Count; i++)
+					using (var enumerator2 = CharacterManager.Instance.CharactersInScene[i].controller.Mouths.GetEnumerator())
+						while (enumerator2.MoveNext())
+							enumerator2.Current.Value.Stop();
+			AudioSource.loop = false;
+			AudioSource.clip = currentVoiceLine;
+			AudioSource.Play();
 		}
 	}
 }

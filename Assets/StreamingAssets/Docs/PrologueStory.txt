@@ -1,7 +1,8 @@
 {changeScene: Times Square}
 {fadeinsound: Times Square Crowd, 1}
-{colorformat: Default}
+{colorformat: Times}
 {spawnEmpty: Narrator, NPC}
+{setachievement: intern_UwU}
 Narrator::
 New York City in Times Square: the year is 2040. Midday on a blistering Summer Day.
 On any normal day, most people can be seen milling about, heading to work, the cacophony of vehicles, pedestrians, and advertisements matching beat in perfect harmony.
@@ -17,11 +18,12 @@ Today marks man's first attempt at digitizing one of their own.
 {spawnChar: malesilo1, -1, Male Bystander}
 {anim: Male Bystander, Thinking}
 {moveChar: Male Bystander, 0.27}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Male Bystander::
 "I can't believe they are going through with this!"
 "Who gave this project a green light?"
 "The test subject is either a frickin idiot, or they just want to die... I can't decide which." 
-{spawnChar: femalesilo1, -.4,Female Bystander}
+{spawnChar: femalesilo1, -.4, Female Bystander}
 {moveChar: Female Bystander, .50}
 Female Bystander::
 {additive: on} 
@@ -78,6 +80,7 @@ Just <i>imagine</i> the pressure of sitting in that chair, in front of millions.
 {moveChar: Male Bystander, -1}
 {moveChar: Female Bystander, -1}
 {moveChar: Male Bystander 2, 2}
+{disableChar: Live 2D Bokeh}
 {loopBG: false}
 {playBG: Prologue/Times Square Pan Up}
 {spawnChar: femalesilo, 2, Cindy}
@@ -102,6 +105,7 @@ Let's find out together. LIVE!"
 "On scene at the Digital Horizons Lab, we have our correspondent and lead news reporter, John Casnik."
 "John? Are you there?"
 {changeScene: Brain Sucking Chair Side}
+{fadeoutsound: Times Square Crowd, 1}
 {colorformat: Emerald}
 {fadeinsound: Laptop Lab Scene, 1.5}
 {fadeinsound: Fast Keyboard Typing, 1.5}
@@ -121,6 +125,7 @@ Narrator::
 In front of the screen is a man in his 40s, dressed in a sharp dark-grey suit, one hand fiddling with his ear piece.
 As the news correspondent listens in, he nods curtly. 
 John smiles broadly at the camera.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 John::
 "Thanks Cindy! How have you been?"
 Cindy::
@@ -219,6 +224,7 @@ John::
 "It's original purpose was to transfer a cancer patient's mind into a cyborg, or to allow astronauts time to learn new skills in cryostasis."
 "But there are many applications this technology can be used for." 
 "Hence the name. Digital Imaging Human Interface. It transfers the image of a human as a whole."
+{disableChar: Live 2D Bokeh}
 Narrator::
 The female bystander scoffs openly on the street, gazing up in border-line horror.
 Female Bystander::
@@ -272,6 +278,7 @@ His dark hair is tousled, as if he has been in a lab for days without proper bed
 On screen, his shoulders are slumped a bit, as if he is being crushed by all the camera's gazes. His voice, however, defies that impression.
 The Lab Tech fingers his large glasses back up his nose.
 {anim: Lab Tech, Glasses}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Lab Tech::
 "Once transferred, the testee will remain in our closed servers for a period of around four days, give or take." 
 "While they're in there, the subject's body will remain in a form of warm air stasis. This is to prevent any abrupt changes in the chemical makeup." 
@@ -320,7 +327,7 @@ John::
 "What if you do see deterioration, and need to get them out as fast as possible?" 
 "What are the steps to that process?"
 Narrator::
-Shrobi shrugs nonchalantly, unperturbed.
+Shirobi shrugs nonchalantly, unperturbed.
 Shirobi::
 "If there are any issues that cause alarm, we will immediately transfer them back to their body."
 "There will be a crew 24/7 monitoring both the body and the mind in the server." 
@@ -332,13 +339,14 @@ Shirobi::
 "That is <i>my</i> personal opinion, of course." 
 John::
 "And who is this pioneer of the future? The person that has decided to brave the unknown of the internet?"
-{fadeinsound: openclosedoor,0.1}
+{fadeinsound: openclosedoor, 0.1}
 Narrator::
 The lab tech smiles for the first time at the sound of the door.
 He starts guiding all the press out of the lab with an air of excitement.
 {anim: Shirobi, Thisway}
 Shirobi::
 "Why, the courageous, pioneering spirit..."
+{disableChar: Live 2D Bokeh}
 Narrator:: 
 It's time to make your first choice. You will also be able to put in your own name, and add the non-binary option at this point.
 Do you prefer to identify as binary or non-binary? This choice will allow characters to refer to your person in a gender neutral fashion.

@@ -9,10 +9,11 @@
 	using System.Text;
 	using System;
 	using TMPro;
-	using CharacterController = B1NARY.CharacterManagement.CharacterController;
+	using CharacterManager = B1NARY.CharacterManagement.CharacterManager;
 	using B1NARY.Scripting;
 	using B1NARY.DataPersistence;
 	using B1NARY.CharacterManagement;
+	using System.Globalization;
 
 	/// <summary>
 	/// 
@@ -57,11 +58,12 @@
 				parsableText.Add((activeSlot.ToString(), false));
 			return parsableText;
 		}
-		public static CommandArray Commands = new CommandArray
+		public static CommandArray Commands = new()
 		{
-			["textspeed"] = (Action<string>)(speedRaw =>
+			["textspeed"] = (Action<string>)(speedMultRaw =>
 			{
-				Instance.TicksPerCharacter = int.Parse(speedRaw);
+				float multiplier = float.Parse(speedMultRaw);
+				Instance.TickMultiplier = multiplier;
 			}),
 			["additive"] = (Action<string>)(boolRaw =>
 			{
@@ -73,64 +75,47 @@
 					setting = false;
 				else
 					throw new InvalidCastException(boolRaw);
-				Instance.Additive = setting;
+				Additive = setting;
 			}),
 		};
 
-		public int TicksPerCharacter
-		{
-			get => m_ticksPerChar;
-			set
-			{
-				m_ticksPerChar = Math.Max(0, value);
-				m_secondsChar = m_ticksPerChar / 1000f;
-			}
-		}
-		[Tooltip("How many ticks or milliseconds should the game wait per character?")]
-		private int m_ticksPerChar = 30;
-		private float m_secondsChar = 30f / 1000f;
-		public WaitForSeconds WaitSecondsPerChar => new WaitForSeconds(m_secondsChar);
+		public float TickMultiplier = 1f;
+		private float m_secondsChar;
+		public WaitForSeconds WaitSecondsPerChar => new(m_secondsChar);
 
 		/// <summary>
 		/// If the current dialogue should be added instead of skipping to a newString
 		/// line. Uses <see cref="ScriptHandler.ScriptDocument"/> in order to store
 		/// the field.
 		/// </summary>
-		public bool Additive
+		public static bool Additive
 		{
-			get => m_additive;
+			get => SaveSlot.ActiveSlot.Additive;
 			set
 			{
-				if (m_additive == value)
+				if (Additive == value)
 					return;
-				m_additive = value;
+				SaveSlot.ActiveSlot.Additive = value;
 				if (value)
-				{
-					CurrentText = string.Empty;
-				}
+					Instance.CurrentText = string.Empty;
 			}
 		}
-		private bool m_additive = false;
-		public TMP_Text speakerBox, textBox;
+		public TMP_Text textBox;
 
 
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>.
-		/// Use <see cref="CharacterController.ActiveCharacterName"/> instead 
+		/// Use <see cref="CharacterManager.ActiveCharacterName"/> instead 
 		/// for a more accurate name, as this can change visually within the game.
 		/// </summary>
-		public string SpeakerName
-		{
-			get => speakerBox.text;
-			set => speakerBox.text = value;
-		}
-		private void ChangeSpeakerName(ICharacterController characterController)
-		{
-			if (characterController.CharacterName == "MC")
-				SpeakerName = SaveSlot.Instance.scriptDocumentInterface.PlayerName;
-			else
-				SpeakerName = characterController.CharacterName;
-		}
+		//public string SpeakerName
+		//{
+		//	get => speakerBox.text;
+		//	set
+		//	{
+		//		speakerBox.text = value.Replace(SaveSlot.DEFAULT_NAME, SaveSlot.ActiveSlot.PlayerName);
+		//	}
+		//}
 		/// <summary>
 		/// A property that directly points to the text box of <see cref="Text"/>
 		/// </summary>
@@ -148,7 +133,7 @@
 		/// If both speaker and line are both finished playing and it should
 		/// automatically move to the next line.
 		/// </summary>
-		public bool AutoSkip
+		public static bool AutoSkip
 		{
 			get => m_autoSkip;
 			set
@@ -157,19 +142,19 @@
 					return;
 				FastSkip = false;
 				m_autoSkip = value;
-				if (!CoroutineWrapper.IsNotRunningOrNull(eventCoroutine))
-					eventCoroutine.Stop();
+				if (!CoroutineWrapper.IsNotRunningOrNull(Instance.eventCoroutine))
+					Instance.eventCoroutine.Stop();
 				if (value)
-					eventCoroutine = new CoroutineWrapper(this, AutoSkipCoroutine()).Start();
+					Instance.eventCoroutine = new CoroutineWrapper(Instance, AutoSkipCoroutine()).Start();
 
-				IEnumerator AutoSkipCoroutine()
+				static IEnumerator AutoSkipCoroutine()
 				{
 					while (AutoSkip)
 					{
 						yield return new WaitForEndOfFrame();
-						if (!CoroutineWrapper.IsNotRunningOrNull(speakCoroutine))
+						if (!CoroutineWrapper.IsNotRunningOrNull(Instance.speakCoroutine))
 							continue;
-						if (CharacterController.Instance.charactersInScene.Values.Any(pair => pair.characterScript.VoiceData.IsPlaying))
+						if (CharacterManager.Instance.CharactersInScene.Any(character => character.controller.Mouths.Any(mouth => mouth.Value.IsPlaying)))
 							continue;
 						ScriptHandler.Instance.NextLine();
 					}
@@ -177,19 +162,19 @@
 			}
 
 		}
-		private bool m_autoSkip = false;
+		private static bool m_autoSkip = false;
 		/// <summary>
 		/// Helper method that inverts <see cref="AutoSkip"/>, used by 
 		/// <see cref="UnityEngine.Events.UnityEvent"/>
 		/// </summary>
-		public void ToggleAutoSkip() => AutoSkip = !AutoSkip;
+		public void SetAutoSkip(bool autoSkip) => AutoSkip = autoSkip;
 
 		/// <summary>
 		/// A toggle between if it should move foward within a fast, fixed 
 		/// timeframe. Regardless of what is the current status of the text and 
 		/// audio speech.
 		/// </summary>
-		public bool FastSkip
+		public static bool FastSkip
 		{
 			get => m_fastSkip;
 			set
@@ -198,12 +183,12 @@
 					return;
 				AutoSkip = false;
 				m_fastSkip = value;
-				if (!CoroutineWrapper.IsNotRunningOrNull(eventCoroutine))
-					eventCoroutine.Stop();
+				if (!CoroutineWrapper.IsNotRunningOrNull(Instance.eventCoroutine))
+					Instance.eventCoroutine.Stop();
 				if (value)
-					eventCoroutine = new CoroutineWrapper(this, FastSkipCoroutine()).Start();
+					Instance.eventCoroutine = new CoroutineWrapper(Instance, FastSkipCoroutine()).Start();
 
-				IEnumerator FastSkipCoroutine()
+				static IEnumerator FastSkipCoroutine()
 				{
 					while (FastSkip)
 					{
@@ -213,12 +198,12 @@
 				}
 			}
 		}
-		private bool m_fastSkip = false;
+		private static bool m_fastSkip = false;
 		/// <summary>
 		/// Helper method that inverts <see cref="FastSkip"/>, used by 
 		/// <see cref="UnityEngine.Events.UnityEvent"/>
 		/// </summary>
-		public void ToggleFastSkip() => FastSkip = !FastSkip;
+		public void SetFastSkip(bool value) => FastSkip = value;
 
 		private string NewLine()
 		{
@@ -229,11 +214,26 @@
 
 		private CoroutineWrapper eventCoroutine;
 		private CoroutineWrapper speakCoroutine;
+		public bool IsSpeaking => !CoroutineWrapper.IsNotRunningOrNull(speakCoroutine);
 
-		private void Awake()
+		protected override void SingletonAwake()
 		{
-			m_secondsChar = m_ticksPerChar / 1000f;
-			CharacterController.Instance.ActiveCharacterChanged += ChangeSpeakerName;
+			PlayerConfig.Instance.dialogueSpeedTicks.AttachValue((integer) =>
+			{
+				m_secondsChar = (integer * TickMultiplier) / 1000f;
+			});
+			if (FastSkip)
+			{
+				FastSkip = false;
+				FastSkip = true;
+				GameObject.Find("Fast Forward").GetComponent<Toggle>().isOn = true;
+			}
+			if (AutoSkip)
+			{
+				AutoSkip = false;
+				AutoSkip = true;
+				GameObject.Find("Autoskip").GetComponent<Toggle>().isOn = true;
+			}
 		}
 
 		/// <summary>
@@ -245,12 +245,6 @@
 			if (!DateTimeTracker.IsAprilFools)
 				StopSpeaking(null);
 			speakCoroutine = new CoroutineWrapper(this, Speaking(message)).Start();
-		}
-
-		public void Say(string message, string speaker)
-		{
-			CharacterController.Instance.ChangeActiveCharacter(speaker);
-			Say(message);
 		}
 
 		/// <summary>
@@ -294,7 +288,7 @@
 		{
 			CurrentText = NewLine();
 			FinalText = NewLine() + speech;
-			FinalText = FinalText.Replace("MC", SaveSlot.Instance.scriptDocumentInterface.PlayerName);
+			FinalText = FinalText.Replace(SaveSlot.DEFAULT_NAME, SaveSlot.ActiveSlot.PlayerName);
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];
@@ -311,7 +305,8 @@
 				{
 					splitText[i] += parsableText[i].value[ii];
 					CurrentText = string.Join("", splitText);
-					yield return WaitSecondsPerChar;
+					if (PlayerConfig.Instance.dialogueSpeedTicks.Value > 0)
+						yield return WaitSecondsPerChar;
 				}
 			}
 			CurrentText = FinalText;
@@ -319,11 +314,15 @@
 
 		public void QuickSave()
 		{
-			SaveSlot.Instance.Serialize();
+			SaveSlot.Quicksave();
 		}
 		public void QuickLoad()
 		{
-			SaveSlot.QuickLoad();
+			SaveSlot.ActiveSlot.Load();
+		}
+		public void NextLine()
+		{
+			ScriptHandler.Instance.NextLine();
 		}
 	} 
 }
@@ -346,9 +345,7 @@ namespace B1NARY.Editor
 		public override void OnInspectorGUI()
 		{
 			//EditorGUILayout.LabelField("Current Font: " + dialogueSystem.CurrentFontAsset.name);
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.speakerBox)));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(DialogueSystem.textBox)));
-			dialogueSystem.TicksPerCharacter = DirtyAuto.Slider(target, new GUIContent("Ticks Waited Per Character", "How long the text box will wait per character within milliseconds, with 0 being instantaneous. 30 by default."), dialogueSystem.TicksPerCharacter, 0, 200);
 			serializedObject.ApplyModifiedProperties();
 		}
 

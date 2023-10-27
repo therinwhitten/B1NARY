@@ -1,6 +1,5 @@
 ﻿namespace B1NARY.UI
 {
-	using System;
 	using System.Collections.Generic;
 	using UnityEngine;
 
@@ -20,7 +19,7 @@
 			internalCounter = objectsPerRow;
 			m_rows = new List<(GameObject row, List<GameObject> columns)>();
 		}
-		public void Clear()
+		public virtual void Clear()
 		{
 			internalCounter = objectsPerRow;
 			m_rows.ForEach(row => Destroy(row.row));
@@ -34,11 +33,9 @@
 				m_rows.Add((gameObject.InstantiateChildObject(row), new List<GameObject>()));
 			}
 			internalCounter++;
-			GameObject slot = m_rows[m_rows.Count - 1].row.InstantiateChildObject(copy);
-			m_rows[m_rows.Count - 1].columns.Add(slot);
+			GameObject slot = m_rows[^1].row.InstantiateChildObject(copy);
+			m_rows[^1].columns.Add(slot);
 			return slot;
 		}
 	}
-
-	
 }

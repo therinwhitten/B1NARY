@@ -1,270 +1,381 @@
-﻿namespace B1NARY
+﻿namespace B1NARY.UI.Colors
 {
 	using System;
-	using UnityEngine;
-	using TMPro;
-	using UnityEngine.UI;
-	using UI;
-	using System.Text;
+	using System.Collections.Generic;
 	using System.Linq;
 	using System.Reflection;
-	using B1NARY.DesignPatterns;
-	using System.Collections.Generic;
-	using UnityEngine.Rendering;
-	using B1NARY.Scripting;
+	using UnityEngine;
+	using UnityEngine.UI;
 
-	/// <summary>
-	/// Allows you to easily change a single gameObject with the <see cref="Image"/>
-	/// component to a color. By enabling, you change it via the parameters the
-	/// component stores. Disabling reverts to it's previous known color.
-	/// </summary>
-	/// <seealso cref="MonoBehaviour"/>
-	public class UIThemeHandler : Multiton<UIThemeHandler>
+	[DisallowMultipleComponent]
+	public class UIThemeHandler : MonoBehaviour
 	{
-		public enum Option
+		public string imageThemeName = ColorFormat.COLOR_NAME_SECONDARY,
+			buttonHighlightedName = ColorFormat.COLOR_NAME_PRIMARY,
+			buttonPressedName = ColorFormat.COLOR_NAME_PRIMARY,
+			buttonSelectedName = ColorFormat.COLOR_NAME_PRIMARY,
+			buttonDisabledName = ColorFormat.COLOR_NAME_PRIMARY;
+
+		public bool PointersDefined => Color != null || ColorBlock != null;
+		public Ref<Color> Color { get; private set; } = null;
+		public string cacheColor = null;
+		public Ref<ColorBlock> ColorBlock { get; private set; } = null;
+		public string cacheColorblock = null;
+		internal void UpdateColors()
 		{
-			Primary,
-			Secondary,
-			Custom
-		}
-
-
-
-		public static Color GetColor(Option option)
-		{
-			switch (option)
+			DefineReferences();
+			if (Color != null)
 			{
-				case Option.Primary:
-					return ColorFormat.CurrentFormat.primaryUI;
-				case Option.Secondary:
-					return ColorFormat.CurrentFormat.SecondaryUI;
-				case Option.Custom:
-					throw new ArgumentException($"although {option} is a enum, you need" +
-						$"another argument or name to differentiate other settings!");
-				default:
-					throw new IndexOutOfRangeException(option.ToString());
+				Color.Value = GetColor(imageThemeName);
+				return;
 			}
-		}
-		public static Color GetColor(string name)
-		{
-			if (Enum.TryParse(name, out Option option))
-				return GetColor(option);
-			if (ColorFormat.CurrentFormat.ExtraUIValues.TryGetValue(name, out Color color))
-				return color;
-			throw new NullReferenceException($"'{name}' is not located within the currently " +
-				$"equipped format: {ColorFormat.CurrentFormat.name}.");
-		}
-
-
-		public string imageThemeName = Option.Secondary.ToString(),
-			buttonHighlightedName = Option.Primary.ToString(),
-			buttonPressedName = Option.Primary.ToString(),
-			buttonSelectedName = Option.Primary.ToString(),
-			buttonDisabledName = Option.Primary.ToString();
-		public Color Color => GetColor(imageThemeName);
-
-		/// <summary>
-		/// Contains the first <see cref="UnityEngine.Color"/> or <see cref="ColorBlock"/>,
-		/// these are always value types, so these are referenced via Func.
-		/// </summary>
-		public Ref<object> ColorEdit 
-		{
-			get
+			if (ColorBlock != null)
 			{
-				if (m_colorEdit == null || m_colorEdit.Value == null)
+				ColorBlock.Value = new ColorBlock
 				{
-					m_currentTarget = null;
-					_ = CurrentTarget;
-				}
-
-				if (m_colorEdit == null)
-					throw new NullReferenceException($"despite {nameof(CurrentTarget)} being called, there is no reference for the color!");
-				return m_colorEdit;
-			} 
-			private set => m_colorEdit = value; 
-		}
-		private Ref<object> m_colorEdit;
-
-		public Component CurrentTarget 
-		{ 
-			get 
-			{
-				if (m_currentTarget != null)
-					return m_currentTarget;
-				Component[] components = GetComponents<Component>();
-				for (int i = 0; i < components.Length; i++)
-				{
-					// Get any color properties in the component that has any color parameter.
-					var colorEnum = components[i].GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(info => info.PropertyType == typeof(Color));
-					if (colorEnum.Any())
-					{
-						m_colorEdit = new Ref<object>(() => colorEnum.Single().GetValue(components[i]), set => colorEnum.Single().SetValue(components[i], set));
-						m_currentTarget = components[i];
-						return m_currentTarget;
-					}
-					// Get any color block properties in the component that has any color block parameter.
-					var colorBlockEnum = components[i].GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(info => info.PropertyType == typeof(ColorBlock));
-					if (colorBlockEnum.Any())
-					{
-						m_colorEdit = new Ref<object>(() => colorBlockEnum.Single().GetValue(components[i]), set => colorBlockEnum.Single().SetValue(components[i], set));
-						m_currentTarget = components[i];
-						return m_currentTarget;
-					}
-				}
-				throw new MissingComponentException("There is no components " +
-					$"to hold onto that has a {nameof(UnityEngine.Color)} or {nameof(ColorBlock)}");
-			}
-		}
-		private Component m_currentTarget;
-
-
-		protected override void MultitonAwake()
-		{
-			UpdateColors();
-		}
-		private void OnEnable()
-		{
-			ColorFormat.CurrentFormatChanged += UpdateColors;
-		}
-		private void OnDisable()
-		{
-			ColorFormat.CurrentFormatChanged -= UpdateColors;
-		}
-		public void UpdateColors(ColorFormat format = null)
-		{
-			if (ColorEdit.Value is Color)
-				ColorEdit.Value = GetColor(imageThemeName);
-			else if (ColorEdit.Value is ColorBlock block)
-				ColorEdit.Value = new ColorBlock()
-				{
-					colorMultiplier = block.colorMultiplier,
+					colorMultiplier = ColorBlock.Value.colorMultiplier,
 					disabledColor = GetColor(buttonDisabledName),
-					fadeDuration = block.fadeDuration,
+					fadeDuration = ColorBlock.Value.fadeDuration,
 					highlightedColor = GetColor(buttonHighlightedName),
 					normalColor = GetColor(imageThemeName),
 					pressedColor = GetColor(buttonPressedName),
 					selectedColor = GetColor(buttonSelectedName),
 				};
+				return;
+			}
+			if (TargetComponent != null)
+				throw new IndexOutOfRangeException($"The graphic {TargetComponent} doesn't contain a color");
 			else
-				throw new IndexOutOfRangeException(CurrentTarget.ToString());
+				throw new IndexOutOfRangeException($"Graphic component isn't assigned!");
+
+			static Color GetColor(string key)
+			{
+				if (ColorFormat.ActiveFormat.TryGetColor(key, out Color color))
+					return color;
+				throw new NullReferenceException($"'{key}' is not located within the currently " +
+					$"equipped format: {ColorFormat.ActiveFormat.FormatName}.");
+			}
 		}
+		private void UpdateColorsDelegate(ColorFormat format)
+		{
+			try { UpdateColors(); } catch (Exception ex) { Debug.LogException(ex); }
+		}
+
+		internal bool CheckForColor(out PropertyInfo info)
+		{
+			if (TargetComponent == null)
+			{
+				Debug.LogWarning($"Target graphic is null!", this);
+				info = null;
+				return false;
+			}
+			Type componentType = TargetComponent.GetType();
+			if (!string.IsNullOrEmpty(cacheColor))
+			{
+				PropertyInfo suspected = componentType.GetProperty(cacheColor, BindingFlags.Public | BindingFlags.Instance);
+				if (suspected != null)
+				{
+					info = suspected;
+					return true;
+				}
+				cacheColor = null;
+			}
+			PropertyInfo[] properties = componentType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+			for (int ii = 0; ii < properties.Length; ii++)
+			{
+				PropertyInfo currentProperty = properties[ii];
+				if (currentProperty.PropertyType != typeof(Color))
+					continue;
+				cacheColor = currentProperty.Name;
+				info = currentProperty;
+				return true;
+			}
+			info = null;
+			return false;
+		}
+		internal bool CheckForColorBlock(out PropertyInfo info)
+		{
+			if (TargetComponent == null)
+			{
+				Debug.LogWarning($"Target graphic is null!", this);
+				info = null;
+				return false;
+			}
+			Type componentType = TargetComponent.GetType();
+			if (!string.IsNullOrEmpty(cacheColorblock))
+			{
+				PropertyInfo suspected = componentType.GetProperty(cacheColorblock, BindingFlags.Public | BindingFlags.Instance);
+				if (suspected != null)
+				{
+					info = suspected;
+					return true;
+				}
+				cacheColorblock = null;
+			}
+			PropertyInfo[] properties = componentType.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+			for (int ii = 0; ii < properties.Length; ii++)
+			{
+				PropertyInfo currentProperty = properties[ii];
+				if (currentProperty.PropertyType != typeof(ColorBlock))
+					continue;
+				cacheColorblock = currentProperty.Name;
+				info = currentProperty;
+				return true;
+			}
+			info = null;
+			return false;
+		}
+		internal bool DefineReferences()
+		{
+			if (TargetComponent == null)
+				return false;
+			if (Color is not null || ColorBlock is not null)
+				return true;
+			if (CheckForColor(out PropertyInfo info))
+			{
+				Color = new Ref<Color>(() => (Color)info.GetValue(TargetComponent), set => info.SetValue(TargetComponent, set));
+				return true;
+			}
+			if (CheckForColorBlock(out info))
+			{
+				ColorBlock = new Ref<ColorBlock>(() => (ColorBlock)info.GetValue(TargetComponent), set => info.SetValue(TargetComponent, set));
+				return true;
+			}
+			return false;
+		}
+
+		public Component TargetComponent
+		{
+			get
+			{
+				//if (m_savedComponent == null)
+				//	TargetComponent = GetComponent<Graphic>();
+				return m_savedComponent;
+			}
+
+			set
+			{
+				if (value == null)
+				{
+					m_savedComponent = null;
+					return;
+				}
+				Component savedGraphic = m_savedComponent;
+				m_savedComponent = value;
+				if (CheckForColor(out _) || CheckForColorBlock(out _))
+					return;
+				m_savedComponent = savedGraphic;
+				Debug.LogWarning($"Couldn't save graphic {savedGraphic} as it doesn't have a {nameof(Color)} or {nameof(ColorBlock)} component!", this);
+			}
+		}
+		[SerializeField]
+		private Component m_savedComponent;
+
+		private void Reset()
+		{
+			TargetComponent = GetComponent<Graphic>();
+			// Serializing strings on creation
+			if (CheckForColor(out _))
+				CheckForColorBlock(out _);
+		}
+
+#if UNITY_EDITOR
+		private void Awake()
+		{
+			if (TargetComponent == null)
+				Debug.LogWarning($"component target is null!", this);
+			if (CheckForColor(out _) == false && CheckForColorBlock(out _) == false)
+				Debug.LogWarning($"'{name}' doesn't lead to a graphic with a {nameof(Color)} or {nameof(ColorBlock)} properties!\n" +
+					$"This message will only appear in the editor; Click on the error to easily locate the source.", this);
+		}
+#endif
+		private void Start()
+		{
+			if (TargetComponent == null)
+			{
+				Debug.LogWarning($"Target graphic is null!", this);
+				return;
+			}
+			UpdateColors();
+		}
+		private void OnEnable()
+		{
+			ColorFormat.ChangedFormat += UpdateColorsDelegate;
+		}
+		private void OnDisable()
+		{
+			ColorFormat.ChangedFormat -= UpdateColorsDelegate;
+		}
+
 	}
 }
 #if UNITY_EDITOR
-namespace B1NARY.Editor
+namespace B1NARY.UI.Colors.Editor
 {
-	using B1NARY.UI;
+	using B1NARY.Editor;
+	using DG.DemiEditor;
+	using DG.Tweening;
 	using System;
+	using System.Collections.Generic;
 	using System.Collections.ObjectModel;
+	using System.IO;
 	using System.Linq;
 	using System.Reflection;
+	using System.Text;
 	using UnityEditor;
 	using UnityEngine;
 	using UnityEngine.UI;
-	using Object = UnityEngine.Object;
 
 	[CustomEditor(typeof(UIThemeHandler))]
 	public class UIThemeHandlerEditor : Editor
 	{
-		internal static UIThemeHandler.Option[] options = (UIThemeHandler.Option[])Enum.GetValues(typeof(UIThemeHandler.Option));
-		internal static string[] optionNames = Enum.GetNames(typeof(UIThemeHandler.Option));
-
-
+		private static readonly ReadOnlyCollection<string> defaultValues = 
+			new(new string[]
+			{
+				ColorFormat.COLOR_NAME_PRIMARY,
+				ColorFormat.COLOR_NAME_SECONDARY
+			});
+		private static List<string> GetAllColorNames()
+		{
+			var hashSet = new HashSet<string>();
+			var list = new List<string>(defaultValues);
+			IReadOnlyList<ColorFormat> allFormats = ColorFormat.GetCombinedAllFormats();
+			for (int i = 0; i < allFormats.Count; i++)
+			{
+				string[] allKeys = new string[allFormats[i].ExtraUIColors.Count];
+				allFormats[i].ExtraUIColors.Keys.CopyTo(allKeys, 0);
+				for (int ii = 0; ii < allKeys.Length; ii++)
+					if (!hashSet.Contains(allKeys[ii]))
+					{
+						list.Add(allKeys[ii]);
+						hashSet.Add(allKeys[ii]);
+					}
+			}
+			return list;
+		}
 
 		UIThemeHandler currentHandler;
 		private void Awake() => currentHandler = (UIThemeHandler)target;
 
 		public override void OnInspectorGUI()
 		{
-			if (!Application.isPlaying)
+			//if (GUILayout.Button("Update Prefabs"))
+			//	TestSwitch();
+			currentHandler.TargetComponent = DirtyAuto.Field(target, new("Target Component"), currentHandler.TargetComponent, true);
+			if (!currentHandler.DefineReferences())
 			{
-				int count = 0;
-				Transform transform = currentHandler.transform;
-				for (int i = 0; i < transform.childCount; i++)
-				{
-					if (transform.GetChild(i).GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-						.Any(info => info.PropertyType == typeof(Color) || info.PropertyType == typeof(ColorBlock)))
-						count++;
-				}
-				if (count > 1)
-					EditorGUILayout.HelpBox("There is more than one " +
-						"color-related blocks detected in the components, " +
-						"make sure that the one you want to modify is at the top!",
-						MessageType.Info);
-				//EditorGUILayout.ObjectField(new GUIContent("Color Format [readonly]", "The currently used format across all Theme Handlers"), , typeof(ColorFormat), false);
-				EditorGUILayout.Space();
+				if (currentHandler.TargetComponent == null)
+					return;
+				else if (currentHandler.Color is null && currentHandler.ColorBlock is null)
+					EditorGUILayout.HelpBox("The graphic has no customizable colors", MessageType.Warning);
+				else
+					EditorGUILayout.HelpBox("what is going on", MessageType.Warning);
+				return;
 			}
-			try
+			// Update variables
+
+			EditorGUILayout.Space();
+
+			if (currentHandler.Color != null)
 			{
-				string componentName = currentHandler.CurrentTarget.GetType().ToString();
-				EditorGUILayout.LabelField($"Current Configuration: {componentName.Substring(componentName.LastIndexOf('.') + 1).Replace('_', ' ')}", EditorStyles.boldLabel);
+				ModifyColor("Color Option", new Ref<string>(() => currentHandler.imageThemeName, str => currentHandler.imageThemeName = str));
 			}
-			catch (MissingComponentException ex)
+			else if (currentHandler.ColorBlock != null)
 			{
-				EditorGUILayout.HelpBox(ex.Message, MessageType.Error);
-				throw;
+				ModifyColor("Normal Color", new Ref<string>(() => currentHandler.imageThemeName, str => currentHandler.imageThemeName = str));
+				ModifyColor("Highlighted Color", new Ref<string>(() => currentHandler.buttonHighlightedName, str => currentHandler.buttonHighlightedName = str));
+				ModifyColor("Pressed Color", new Ref<string>(() => currentHandler.buttonPressedName, str => currentHandler.buttonPressedName = str));
+				ModifyColor("Selected Color", new Ref<string>(() => currentHandler.buttonSelectedName, str => currentHandler.buttonSelectedName = str));
+				ModifyColor("Disabled Color", new Ref<string>(() => currentHandler.buttonDisabledName, str => currentHandler.buttonDisabledName = str));
 			}
-			bool hasChanges = false;
-			if (currentHandler.ColorEdit.Value is Color)
-				hasChanges = ModifyColor("Color Option", new Ref<string>(() => currentHandler.imageThemeName, str => currentHandler.imageThemeName = str));
-			else if (currentHandler.ColorEdit.Value is ColorBlock)
-				hasChanges = ModifyColor("Normal Color", new Ref<string>(() => currentHandler.imageThemeName, str => currentHandler.imageThemeName = str))
-				 | ModifyColor("Highlighted Color", new Ref<string>(() => currentHandler.buttonHighlightedName, str => currentHandler.buttonHighlightedName = str))
-				 | ModifyColor("Pressed Color", new Ref<string>(() => currentHandler.buttonPressedName, str => currentHandler.buttonPressedName = str))
-				 | ModifyColor("Selected Color", new Ref<string>(() => currentHandler.buttonSelectedName, str => currentHandler.buttonSelectedName = str))
-				 | ModifyColor("Disabled Color", new Ref<string>(() => currentHandler.buttonDisabledName, str => currentHandler.buttonDisabledName = str));
 			else
-				throw new IndexOutOfRangeException(currentHandler.CurrentTarget.ToString());
-			if (hasChanges)
 			{
+				EditorGUILayout.HelpBox("What the fuck is going on", MessageType.Error);
+			}
+		}
+
+		public void ModifyColor(string label, Ref<string> colorName)
+		{
+			// Display warning message if its not present in all available formats
+			List<string> unsupportedFormats = new();
+			IReadOnlyList<ColorFormat> available = ColorFormat.GetAllFormats().developerFormats;
+			for (int i = 0; i < available.Count; i++)
+				if (!available[i].TryGetColor(colorName, out _))
+					unsupportedFormats.Add(available[i].FormatName);
+			if (unsupportedFormats.Count > 0)
+				EditorGUILayout.HelpBox($"There are some available color themes that does not support the assigned color: {string.Join(", ", unsupportedFormats)}", MessageType.Warning, true);
+			// Starting here normally
+			List<string> colorNames = GetAllColorNames();
+			// Popup for changing name, taking from default
+			int currentIndex = colorNames.IndexOf(colorName);
+			if (currentIndex == -1)
+			{
+				colorName.Value = defaultValues[0];
+				currentIndex = 0;
+			}
+			var menu = new GenericMenu();
+			for (int i = 0; i < defaultValues.Count; i++)
+			{
+				int delegateIndex = i;
+				menu.AddItem(new GUIContent($"{defaultValues[i]}"), i == currentIndex, () => SetDirty(delegateIndex));
+			}
+			menu.AddSeparator("");
+			for (int i = defaultValues.Count; i < colorNames.Count; i++)
+			{
+				int delegateIndex = i;
+				menu.AddItem(new GUIContent($"{colorNames[i]}"), i == currentIndex, () => SetDirty(delegateIndex));
+			}
+			Rect fullRect = GUILayoutUtility.GetRect(Screen.width, 20f);
+			Rect textRect = fullRect;
+			textRect.width *= 0.4f;
+			Rect popupRect = fullRect;
+			popupRect.xMin = textRect.xMax + 2;
+			EditorGUI.LabelField(textRect, label);
+			if (GUI.Button(popupRect, new GUIContent(colorNames[currentIndex]), EditorStyles.popup))
+				menu.ShowAsContext();
+
+			void SetDirty(int setValue)
+			{
+				colorName.Value = colorNames[setValue];
 				if (Application.isPlaying)
 					currentHandler.UpdateColors();
 				else
-					EditorUtility.SetDirty(currentHandler);
+					DirtyAuto.SetDirty(currentHandler);
 			}
 		}
 
-		public bool ModifyColor(string label, Ref<string> colorName)
+		private static void TestSwitch()
 		{
-			string old = colorName;
-			// Popup box for defaults
-			int currentIndex = Array.IndexOf(optionNames, colorName);
-			if (currentIndex == -1)
-				currentIndex = Array.IndexOf(options, UIThemeHandler.Option.Custom);
-			int newIndex = EditorGUILayout.Popup(label, currentIndex, optionNames);
-			if (newIndex != currentIndex)
-				colorName.Value = optionNames[newIndex];
-			if (Array.IndexOf(options, UIThemeHandler.Option.Custom) == currentIndex)
+			StringBuilder modified = new("Modified:\n");
+			string[] guids = AssetDatabase.FindAssets("t:Prefab");
+			for (int i = 0; i < guids.Length; i++)
 			{
-				CustomMenu(colorName);
+				string path = AssetDatabase.GUIDToAssetPath(guids[i]);
+				GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(path);
+
+				if (RecursiveCheck(prefab.transform))
+					PrefabUtility.SaveAsPrefabAsset(prefab, path);
+
+				bool RecursiveCheck(Transform targetTransform)
+				{
+					// Do recursive checks first
+					bool falseOut = false;
+					for (int i = 0; i < targetTransform.childCount; i++)
+						falseOut |= RecursiveCheck(targetTransform.GetChild(i));
+
+					if (!targetTransform.TryGetComponent(out UIThemeHandler handler))
+						return falseOut;
+					Component old = handler.TargetComponent;
+					if (old == null && targetTransform.TryGetComponent(out Graphic graphic))
+					{
+						handler.TargetComponent = graphic;
+						modified.AppendLine($"\t{prefab.name}");
+						return true;
+					}
+					return falseOut;
+				}
 			}
-			return colorName != old;
-		}
-
-		public void CustomMenu(Ref<string> newValueAction)
-		{
-			Rect fullRect = EditorGUI.IndentedRect(GUILayoutUtility.GetRect(Screen.width, 20f)),
-						popupRect = new Rect(fullRect) { width = 20f };
-			fullRect.xMin += 22f;
-			newValueAction.Value = EditorGUI.TextField(fullRect, newValueAction);
-
-			if (!GUI.Button(popupRect, "", EditorStyles.foldout))
-				return;
-			// Context Menu
-			//var menu = new GenericMenu();
-			////menu.AddDisabledItem(new GUIContent($"Current Selection: {ColorFormat..name}"));
-			//menu.AddSeparator("");
-			//for (int i = 0; i < UIThemeHandler.CurrentlyEquippedFormat.SavedPairs.Amount; i++)
-			//{
-			//	int currentIterative = i;
-			//	string capturedKey = UIThemeHandler.CurrentlyEquippedFormat.SavedPairs[i].Key;
-			//	menu.AddItem(new GUIContent(capturedKey), newValueAction.Value == capturedKey, () =>
-			//	{
-			//		newValueAction.Value = capturedKey;
-			//		EditorUtility.SetDirty(target);
-			//	});
-			//}
-			//menu.ShowAsContext();
+			Debug.Log(modified.ToString());
 		}
 	}
 }

@@ -1,196 +1,373 @@
 ﻿namespace B1NARY.DataPersistence
 {
-	using HideousDestructor.DataPersistence;
 	using B1NARY.Scripting;
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.IO;
-	using System.Runtime.Serialization;
 	using UnityEngine;
+	using OVSSerializer;
+	using B1NARY.CharacterManagement;
+	using B1NARY.Audio;
+	using B1NARY.UI.Colors;
+	using System.Threading.Tasks;
+	using Stopwatch = System.Diagnostics.Stopwatch;
 	using System.Linq;
+	using OVSSerializer.IO;
+	using HDConsole;
+	using System.Text;
 
-	/// <summary>
-	/// An instance of data about a current spot in a story, storing various 
-	/// dictionaries and choices
-	/// </summary>
-	[Serializable]
-	public class SaveSlot : SerializableSlot, IDisposable, IDeserializationCallback
+	public enum Gender : byte
 	{
-		public const string StartingName = "Slot_",
-			extension = ".sv";
-
-		// STATIC INTERFACE ----------------------
-		/// <summary>
-		/// The current save slot loaded. Use helper methods such as <see cref="LoadGame(string)"/>.
-		/// To create a new save slot, create a new instance of <see cref="SaveSlot"/>
-		/// and assign it to here.
-		/// </summary>
-		public static SaveSlot Instance
+		Male = 0,
+		Female = 1,
+	}
+	
+	public class SaveSlot
+	{
+		[return: CommandsFromGetter]
+		private static HDCommand[] GetHDCommands() => new HDCommand[]
 		{
-			get => m_instance;
-			set
+			new HDCommand("save_active", (args) =>
 			{
-				m_instance?.Dispose();
-				m_instance = value;
-				NewSlotChanged?.Invoke(m_instance);
-			}
-		}
-		private static SaveSlot m_instance;
-		public static Action<SaveSlot> NewSlotChanged;
-		public static bool LoadingSave { get; private set; } = false;
+				if (args.Length == 0)
+				{
+					SaveSlot mainSlot = ActiveSlot;
+					StringBuilder line = new($"<b>{mainSlot.SaveName}</b>");
+					line.AppendLine($"\n\tpath: {mainSlot.metadata.DirectoryInfo.FullPath}");
+					if (mainSlot.strings.Count > 0)
+					{
+						line.AppendLine("strings:\n\t");
+						line.AppendJoin("\n\t", mainSlot.strings.Keys);
+					}
+					if (mainSlot.booleans.Count > 0)
+					{
+						line.AppendLine("booleans:\n\t");
+						line.AppendJoin("\n\t", mainSlot.booleans.Keys);
+					}
+					return;
+				}
+				throw new NotImplementedException();
 
-		public static void SaveGame()
-		{
-			Instance.Serialize();
-		}
-		/// <summary>
-		/// Loads a game through a index
-		/// </summary>
-		/// <param name="index">the index number, should start at 0. </param>
-		public static void LoadGame(int index) =>
-			LoadGame(Deserialize<SaveSlot>(FilePath(StartingName + index)));
-		/// <summary>
-		/// Loads the game with the name.
-		/// </summary>
-		/// <param name="name"> The name of the file. </param>
-		public static void LoadGame(string name) =>
-			LoadGame(Deserialize<SaveSlot>(FilePath(name)));
-		/// <summary>
-		/// Loads the previous state of the current <see cref="SaveSlot"/> in the
-		/// game files.
-		/// </summary>
-		public static void QuickLoad() =>
-			LoadGame(Deserialize<SaveSlot>(Instance.fileInfo));
-		/// <summary>
-		/// Sets <see cref="Instance"/> with <paramref name="slot"/> and loads it.
-		/// </summary>
-		public static void LoadGame(SaveSlot slot)
-		{
-			Instance = slot;
-			Instance.Load();
-		}
+			}) { description = "Gets the existing save slot, or sets a new saveslot from an existing save list.", optionalArguments = { "save name" } },
 
+			new HDCommand("save_quicksave", args => Quicksave()) { description = "Saves the save into the saved saves list" },
+		};
 
-
-		public static DirectoryInfo SavedData { get; } =
-			PersistentData.CreateSubdirectory("Saved");
 		/// <summary>
-		/// Completes <see cref="SavesDirectory"/> by adding <see cref="extension"/>
-		/// and the <paramref name="saveName"/>.
+		/// Gets the local appdata folder for saving settings, configs, etc.
 		/// </summary>
-		/// <param name="saveName"> The fileData. </param>
-		/// <returns> The file fileInfo about the save file. May be non-existant. </returns>
-		private static FileInfo FilePath(object saveName) =>
-			SavedData.GetFile($"{saveName}{extension}");
-		/// <summary>
-		/// Retrieves a collection that is found in the saves folder.
-		/// </summary>
-		public static IReadOnlyList<SaveSlot> AllFiles
+		/// <remarks>
+		/// Uses window's <see cref="Environment.GetFolderPath(Environment.SpecialFolder)"/> 
+		/// structure due to <see cref="Application.persistentDataPath"/>
+		/// being incredibly buggy, especially when the folder is missing 
+		/// from the appdata; causing it to not display any directory location 
+		/// at all.
+		/// </remarks>
+		public static OSDirectory PersistentData
 		{
 			get
 			{
-				if (m_files == null)
-				{
-					FileInfo[] files = SavedData.GetFiles();
-					var slots = new List<SaveSlot>(files.Length);
-					for (int i = 0; i < files.Length; i++)
-						if (files[i].Extension == extension)
-							slots.Add(Deserialize<SaveSlot>(files[i]));
-					Debug.Log($"Slots: {slots.Count}\n" + string.Join(",\n", files.Select(info => $"{info.Name}: {info.Extension == extension}")));
-					m_files = slots;
-				}
-				return m_files;
+				try { return m_persist = new OSDirectory(Application.persistentDataPath); }
+				catch { return m_persist; }
 			}
-			set => m_files = value;
 		}
-		private static IReadOnlyList<SaveSlot> m_files;
-		public static FileInfo AvailableSlot => SavedData.GetFile($"{DateTime.Now.ToString().Replace('/', '-').Replace(':', '-')}{extension}");
-
-		public ScriptDocumentInterface scriptDocumentInterface;
-		public ScriptPosition scriptPosition;
-
-
-		private void RefreshOnScene()
-		{
-			scriptDocumentInterface.choice.Clear();
-		}
-
-
-		public SaveSlot() : base(AvailableSlot)
-		{
-			scriptDocumentInterface = new ScriptDocumentInterface();
-		}
-		public override void OnDeserialization(object sender)
-		{
-			base.OnDeserialization(sender);
-			SceneManager.Instance.SwitchingScenes.AddPersistentListener(RefreshOnScene);
-		}
-
-		public override void Serialize()
-		{
-			scriptPosition = new ScriptPosition();
-			m_files = null;
-			base.Serialize();
-		}
+		private static OSDirectory m_persist;
 
 		/// <summary>
-		/// Loads the save slot to the game.
+		/// Gets the streaming assets folder with a <see cref="DirectoryInfo"/>.
 		/// </summary>
+		public static OSDirectory StreamingAssets
+		{
+			get
+			{
+				try { return m_streaming = new OSDirectory(Application.streamingAssetsPath); }
+				catch { return m_streaming; }
+			}
+		}
+		private static OSDirectory m_streaming;
+
+		public enum QuicksaveType
+		{
+			/// <summary>
+			/// Creates a new save every time the player quicksaves
+			/// </summary>
+			NewSave,
+			/// <summary>
+			/// Quicksaves on an existing save, or a new save if it doesn't exist
+			/// </summary>
+			ExistingSave,
+		}
+		public const string NAME_START = "SaveSlot_",
+			NAME_EXT = ".xml";
+		public const string KEY_PLAYER_NAME = "Player Name";
+		public const string KEY_ADDITIVE = "Additive";
+		public const int MAX_SAVES = 69;
+		public static OSDirectory SavesDirectory => PersistentData.GetSubdirectories("Saves");
+		
+		public static OVSXmlSerializer<SaveSlot> SlotSerializer { get; } =
+		new OVSXmlSerializer<SaveSlot>()
+		{
+			TypeHandling = IncludeTypes.SmartTypes,
+			VersionLeniency = Versioning.Leniency.All,
+			Version = new Version(2, 0, 0),
+			IndentChars = "\t",
+			Indent = true,
+			IgnoreUndefinedValues = true,
+		};
+
+		public static SaveSlot ActiveSlot
+		{
+			get => m_activeSlot;
+			set
+			{
+				m_activeSlot = value;
+				if (m_activeSlot != null)
+				{
+					if (!m_activeSlot.booleans.ContainsKey("henable"))
+						m_activeSlot.booleans.Add("henable", () => PlayerConfig.Instance.hEnable.Value);
+				}
+			}
+		}
+		private static SaveSlot m_activeSlot;
+		public static void Quicksave()
+		{
+			if (!PlayerConfig.Instance.quickSaveOverrides.Value)
+				ActiveSlot.metadata.ChangeFileTo(null);
+			ActiveSlot.Save();
+		}
+
+		public static SaveSlot LoadIntoMemory(OSFile loadSlot)
+		{
+			using FileStream fileStream = loadSlot.OpenRead();
+			SaveSlot slot = SlotSerializer.Deserialize(fileStream);
+			slot.metadata.ChangeFileTo(loadSlot);
+			return slot;
+		}
+
+		public static IReadOnlyList<KeyValuePair<OSFile, Lazy<SaveSlot>>> AllSaves
+		{
+			get
+			{
+				if (m_saves == null)
+				{
+					OSFile[] array = SavesDirectory.GetFiles();
+					var files = new List<KeyValuePair<OSFile, Lazy<SaveSlot>>>(array.Length);
+					for (int i = 0; i < array.Length; i++)
+					{
+						OSFile currentFile = array[i];
+						Lazy<SaveSlot> lazy = new(() => LoadIntoMemory(currentFile));
+						if (currentFile.Name.Contains(NAME_START) && currentFile.Extension.Contains(NAME_EXT))
+							files.Add(new KeyValuePair<OSFile, Lazy<SaveSlot>>(currentFile, lazy));
+					}
+					m_saves = files;
+				}
+				return m_saves;
+			}
+		}
+		private static IReadOnlyList<KeyValuePair<OSFile, Lazy<SaveSlot>>> m_saves;
+		public static void EmptySaveCache()
+		{
+			m_saves = null;
+			EmptiedSaveCache?.Invoke();
+		}
+
+		public static event Action EmptiedSaveCache;
+
+		static SaveSlot()
+		{
+
+		}
+		public string DisplaySaveContents =>
+			$"<size=125%><b>{SaveName}</b></size>\n" +
+			$"{PlayerName} : {scriptPosition.SceneName}\n" +
+			$"{metadata.lastSaved}";
+
+		[field: OVSXmlAttribute("name")]
+		public string SaveName { get; set; } = "QuickSave";
+		public Metadata metadata;
+		public Collection<bool> booleans;
+		public const string DEFAULT_NAME = "MC";
+		public string PlayerName
+		{
+			get => strings.TryGetValue(KEY_PLAYER_NAME, out var str)
+				? str
+				: DEFAULT_NAME;
+			set => strings[KEY_PLAYER_NAME] = value;
+		}
+		public bool Additive
+		{
+			get => booleans.TryGetValue(KEY_ADDITIVE, out var additive)
+				? additive
+				: false;
+			set => booleans[KEY_ADDITIVE] = value;
+		}
+
+		public const string BINARY_KEY = "n-b";
+		public bool IsBinary
+		{
+			get => booleans.TryGetValue(BINARY_KEY, out var nonbinary)
+				? !nonbinary
+				: true;
+			set => booleans[BINARY_KEY] = !value;
+		}
+		public const string GENDER_KEY = "MalePath";
+		public Gender Gender
+		{
+			get => booleans.TryGetValue(GENDER_KEY, out var isMale)
+				? (isMale ? Gender.Male : Gender.Female)
+				: Gender.Male;
+			set => booleans[GENDER_KEY] = value == Gender.Male;
+		}
+		public Collection<string> strings;
+		public string formatName;
+		public ScriptPosition scriptPosition;
+		public ActorSnapshot[] characterSnapshots;
+		public List<SerializedAudio> audio;
+
+		[OVSXmlIgnore]
+		public bool hasSaved = false;
+
+		public SaveSlot()
+		{
+			metadata = new Metadata();
+			booleans = new Collection<bool>();
+			strings = new Collection<string>();
+		}
+
+		public void Save()
+		{
+			try
+			{
+				bool completedTask = false;
+				Debug.Log($"Starting save '{SaveName}' into {metadata.DirectoryInfo.FullPath}..");
+				SceneManager.Instance.StartCoroutine(MainThread());
+
+				hasSaved = true;
+				Debug.Log($"Defining metadata of {SaveName}..");
+				metadata.lastSaved = DateTime.Now;
+				Stopwatch stopwatch = Stopwatch.StartNew();
+				Debug.Log($"Now retrieving scene data for {SaveName}..");
+				scriptPosition = ScriptPosition.Define();
+				characterSnapshots = ActorSnapshot.GetCurrentSnapshots();
+				audio = SerializedAudio.SerializeAudio();
+				formatName = ColorFormat.ActiveFormat.FormatName;
+
+				Debug.Log($"Getting thumbnail for {SaveName}..");
+				byte[] thumbnail = ScreenCapture.CaptureScreenshotAsTexture().EncodeToJPG();
+				Task.Run(() =>
+				{
+					Debug.Log($"Thumbnail created for {SaveName}, now encrypting & compressing..");
+					metadata.thumbnail = new Thumbnail(new Vector2Int(128, 128), thumbnail);
+					Debug.Log($"Serializing '{SaveName}' filepath {metadata.DirectoryInfo.FullPath}..");
+					using FileStream fileStream = metadata.DirectoryInfo.Create();
+					SlotSerializer.Serialize(fileStream, this);
+
+				}).ContinueWith((task) =>
+				{
+					completedTask = true;
+					if (task.IsFaulted)
+						DisplayException(task.Exception);
+					else
+						Debug.Log($"Saved! \n{stopwatch.Elapsed}");
+					stopwatch.Stop();
+				});
+
+				IEnumerator MainThread()
+				{
+					yield return new WaitUntil(() => completedTask);
+					Debug.Log("Clearing save cache..");
+					EmptySaveCache();
+				}
+			}
+			catch (Exception ex) { DisplayException(ex); }
+
+			void DisplayException(Exception ex) => Debug.LogException(new InvalidProgramException("Unable to save!", ex));
+		}
+
 		public void Load()
 		{
-			SceneManager.InstanceOrDefault.StartCoroutine(scriptPosition.LoadEnumerator());
-		}
-
-		public void Dispose()
-		{
-			SceneManager.Instance.SwitchingScenes.RemovePersistentListener(RefreshOnScene);
-		}
-
-		/// <summary>
-		/// Shows the contents of the slot file to the user.
-		/// </summary>
-		/// <returns></returns>
-		public string UserContents =>
-			// Shows fileName
-			$"\"{fileInfo.NameWithoutExtension()}\""
-			// Adds the player name to same line
-			+ $"\n{scriptDocumentInterface.PlayerName}"
-			// Shows the time played on the next line
-			+ $"\n{TimeUsed}";
-		public override string ToString()
-		{
-			return base.ToString();
-		}
-
-		/// <summary>
-		/// Where it was saved at.
-		/// </summary>
-		[Serializable]
-		public sealed class ScriptPosition
-		{
-			public readonly string sceneName;
-			public readonly FileInfo documentPath;
-			public readonly ScriptLine lastLine;
-			public ScriptPosition()
+			if (!hasSaved)
+				throw new InvalidOperationException("Currently active save has not saved properly! Did you press quickload without saving?");
+			ActiveSlot = this;
+			CoroutineWrapper wrapper = new(ScriptHandler.Instance, scriptPosition.LoadToPosition());
+			wrapper.AfterActions += (mono) =>
 			{
-				documentPath = ScriptHandler.Instance.ScriptDocument.DocumentPath;
-				sceneName = SceneManager.ActiveScene.name;
-				lastLine = ScriptHandler.Instance.CurrentLine;
-			}
-			public IEnumerator LoadEnumerator()
-			{
-				var enumerator = SceneManager.InstanceOrDefault.ChangeScene(sceneName);
-				while (enumerator.MoveNext())
-					yield return enumerator.Current;
-				ScriptHandler.Instance.InitializeNewScript(documentPath);
-				while (ScriptHandler.Instance.CurrentLine != lastLine)
+				for (int i = 0; i < characterSnapshots.Length; i++)
 				{
-					ScriptHandler.Instance.NextLine();
-					yield return new WaitForEndOfFrame();
+					ActorSnapshot currentSnapshot = characterSnapshots[i];
+					if (currentSnapshot.Load(out _))
+						if (currentSnapshot.selected)
+							CharacterManager.Instance.ChangeActiveCharacterViaCharacterName(currentSnapshot.characterNames.CurrentName);
+				}
+			};
+			wrapper.AfterActions += (mono) =>
+			{
+				if (AudioController.TryGetInstance(out var controller))
+					controller.RemoveAllSounds();
+				for (int i = 0; i < audio.Count; i++)
+					audio[i].Play();
+			};
+			wrapper.AfterActions += (mono) =>
+			{
+				ColorFormat.SetFormat(formatName);
+			};
+			wrapper.AfterActions += (mono) => ScriptHandler.Instance.NextLine();
+			wrapper.Start();
+		}
+		/// <summary>
+		/// Data that mainly concerns around the file itself and B1NARY.
+		/// </summary>
+		public class Metadata
+		{
+			public OSFile DirectoryInfo
+			{
+				get
+				{
+					if (string.IsNullOrEmpty(m_directoryInfo))
+					{
+						OSFile returnVal = SavesDirectory.GetFileIncremental(NAME_START + NAME_EXT, true);
+						m_directoryInfo = returnVal.FullPath;
+						return returnVal;
+					}
+					return new OSFile(m_directoryInfo);
 				}
 			}
+			public void ChangeFileTo(OSFile fileInfo, bool deleteOnMove = false)
+			{
+				if (deleteOnMove && File.Exists(m_directoryInfo))
+					File.Delete(m_directoryInfo);
+				m_directoryInfo = fileInfo?.FullPath;
+			}
+			[OVSXmlIgnore]
+			private string m_directoryInfo;
+			public DateTime lastSaved;
+			public Thumbnail thumbnail;
 		}
-		
+	}
+
+	[Serializable]
+	public struct ScriptPosition
+	{
+		public static ScriptPosition Define()
+		{
+			return new ScriptPosition()
+			{
+				SceneName = SceneManager.ActiveScene.name,
+				Line = ScriptHandler.Instance.documentWatcher.CurrentNode.GlobalIndex,
+				StreamingAssetsPath = new Document(ScriptHandler.Instance.document.ReadFile).VisualPath,
+			};
+		}
+		public string SceneName { get; set; }
+		public string StreamingAssetsPath { get; set; }
+		public int Line { get; set; }
+
+		public IEnumerator LoadToPosition()
+		{
+			var changeSceneEnumerator = SceneManager.Instance.ChangeScene(SceneName, false);
+			while (changeSceneEnumerator.MoveNext())
+				yield return changeSceneEnumerator.Current;
+			ScriptHandler.Instance.NewDocument(StreamingAssetsPath, Line - 1);
+		}
 	}
 }

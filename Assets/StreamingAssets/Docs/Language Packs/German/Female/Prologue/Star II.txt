@@ -1,0 +1,619 @@
+{changeScene: Star Bedroom Night}
+{colorformat: Asterella}
+{fadeinsound: Star Dinner, 1}
+{fadeinsound: fireplace, 1}
+{spawnChar: lucas butler, -.5, Lucas}
+{spawnChar: star nightgown, 1.3, Asterella}
+{spawnEmpty: MC, Player}
+{movecube: .4, .4}
+{moveChar: Lucas, .3}
+MC::
+Große Flächen mit königlicher Orchidee kontrastieren mit dunkler Eiche im größten Teil des Anwesens.
+Nach den Dutzenden von Zimmern zu urteilen, durch die ich gegangen bin, sind hier mindestens 40 Personen beschäftigt. Vielleicht auch mehr.
+{additive:on} 
+Einige der Personen waren nicht mal Menschen.
+Sie sahen eher nach Halbmenschen aus, wie aus Videospielen oder von Anime die Shirobi schauen würde.
+Da waren sogar Arten die ich nicht kannte. 
+Waren die anderen andere V-Tuber? Oder etwas komplett verschiedenes?
+{additive:off}
+So viele Räume. Ich konnte mindestens zwei Warteräume, einen Ballsaal und eine Bibliothek sehen. 
+Lucas summte einen nicht identifizierbaren Ton, welchen ich nicht erkannte. 
+Jedes Mal als ich versuchte ihn zu fragen, hat er mich zum Schweigen gebracht und bewegt sich nach vorn. 
+Dieser Raum stimmt mit dem Rest der Villa überein.
+Eingerichtet in einer simplen, dennoch eleganter Dekoration. 
+Dunkles Violett und Antike Eiche.
+Oh!
+Dort ist sie!
+{moveChar: Asterella, .65}
+{additive:on}
+Am lesen eines vielseitigen Buch, 
+Asterella Star, 
+Lord des 69. Kreis der Hölle,
+zurückgelehnt in Gemütlichkeit auf dem zerknittertem Samt-Sofa.
+{additive:off}
+Sie blickt auf, als wir reinkommen, bewegt sich ein wenig und entblößt blasse, nackte Haut unter einem verblendeten, lavendelfarbenen Kleid.
+Ich kann sie nicht verwechseln. Die langen, zarten Hörner. Die schwebende Krone von blauen Diamanten. 
+Sie ist kleiner, als ich dachte. Ihre Kurven jedoch.
+Ara Ara...
+{fadeinsound: Heart Thump, .1}
+Sie öffnet ihren Mund, ein Eindruck von Ungeduld und leichter Verärgerung färbt ihre Rede.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Asterella::
+[Annoyed]
+„Bruh."
+„Es wurde an der Zeit, dass du unseren 'Gast' herbringst."
+MC::
+Sie schließt ihr Buch mit Endgültigkeit.
+{fadeinsound: bookclose1, .1}
+Lucas erwidert lässig. 
+{if: n-b}
+{
+ Lucas::
+ "Frau, sie wollten den Garten sehen, nimm es mir nicht übel."
+ MC::
+ Lucas wirft mir einen Seitenblick zu. 
+ Oh nein. Ein Funke einer Idee. Ich kann sehen, wie sie hinter dieser Maske brodelt.
+ Mit einer dramatischen Pose deutet er auf mein Gesicht. 
+ Lucas::
+ [Lewd]
+ {additive:on}
+ "Wie kannst du dieses Gesicht leugnen? 
+ Seht sie euch an! 
+ Sie schwebten fast auf Wolken, als sie im Garten waren!"
+ {additive:off} 
+ [Default]
+}
+{if: !n-b}
+{
+ Lucas::
+ „Frau, sie wollte den Garten sehen! Gib mir nicht die Schuld!"
+ MC::
+ Lucas schießt einen seitenlangen Blick auf mich. 
+ Oh oh. Ein Funke einer Idee. Ich kann es hinter der Maske brauen sehen.
+ Mit einer dramatischen Pose gestikuliert er auf mein Gesicht. 
+ Lucas::
+ [Lewd]
+ {additive:on}
+ „Wie kannst du dieses Gesicht ablehnen?"
+ Schau zu ihr! 
+ Sie schwebte beinahe auf Wolken wenn sie in dem Garten war!"
+ {additive:off} 
+ [Default]
+}
+{movecube: .65, .2}
+MC::
+Asterella nimmt Blickkontakt mit mir auf. Ich merke wie das rot zu meinen Wangen rennt. 
+{if: !n-b}
+{
+ Asterella::
+ [Happy]
+ „Sie <i>ist</i> süß."
+ „So süß, dass ich sie <i>essen</i> könnte!"
+}
+{if: n-b}
+{
+ Asterella::
+ [Happy]
+ "Sie <i>sind</i> süß."
+ "So süß, ich könnte sie <i>einfach</i> aufessen!"
+}
+MC::
+Panik steigt auf. 
+Star lacht und platziert das Buch auf den Kaffeetisch.
+Asterella::
+„Ich esse keine Menschen, Liebes. Also beruhige dich."
+{movecube: .4, .4}
+[Default]
+MC::
+Ihre Stimme wird spöttisch ernst. 
+Asterella::
+[Indifference]
+{anim: Asterella, Pouting}
+„Lucas, du weißt ich mag es nicht wenn du mich warten lässt." 
+MC::
+Sie berührt ihr Kinn nachdenklich.
+Asterella::
+[Default]
+{anim: Asterella, Smug}
+„Ich weiß. Deine Bestrafung ist... eine Million Jahre im Kerker!"
+MC::
+Was?
+{additive:on}
+„Warte! Du kannst nicht! 
+Er war so nett zu mir!"
+{movecube: .65, .2}
+{additive:off}
+Was mache ich gerade?
+{choice: Nimm die Schuld?}
+{
+        Es ist meine Schuld!
+        [
+            {setbool: starbed, true}
+            MC::
+            „Bitte es war meine Schuld. Ich bin es, die du beschuldigen solltest."
+            Das Geständnis fühlt sich komisch an, dieser Mann erschreckte mich so sehr. Am Anfang zumindest.
+            Er ist auch ein Dämon.
+            „Es war meine Schuld, Lord Star, dass wir zu spät waren!"
+            „Wenn mein Leiden seines verringert, werde ich es nehmen!"
+            Asterella lächelt entschuldigend. 
+            Asterella::
+            [Happy]
+            „Es ist nur eine Spaßbestrafung. Er ist nicht <i>wirklich</i> in Gefahr."
+            [Default]
+            „Aber ihr könnt es teilen, wenn du das wirklich möchtest."
+            „Bist du wirklich sicher?"
+            MC::
+        ]
+        Sag nichts mehr. 
+        [
+            {setbool: starbed, false}
+            Ich kann nicht. 
+            Er hatte mich zu Tode erschreckt. 
+            Ich bin gerade technisch gesehen ein Gefangener. 
+            Ein kleiner Teil von mir weiß, dass er ein guter „Dämon" ist.
+            Naja. Wenn es so was geben sollte.
+        ]
+    }
+{if: starbed}
+{
+    {choice: Willst du Stars Angebot annehmen?}
+    {
+        Ja, ich bin bereit auf was auch immer sie geplant hat. 
+        [
+           MC::
+           „Ja, wenn es seine Strafe vermindert. Ich werde nehmen was auf mich zu kommt."
+           Welche Form der Bestrafung wird es sein?
+           Ich bin mir der Sache sicher. 
+           Ich werde nicht nachgeben!
+           Asterella::
+           [Happy]
+           {anim: Asterella, Pouting}
+           „Schau dir das süße und entschlossene Gesicht an, Lucas."
+           „Das ist so wertvoll!"That's so precious!"
+           Lucas::
+           [OWO]
+           „Ich bin berührt, MC. Du kennst mich nicht mal!"
+           [Default]
+           „Ich werde nicht lügen, du <i>scheinst</i> ein wenig verrückt zu sein."
+           Asterella:: 
+           [Default]
+           {additive:on}
+           „Also gut.
+           Wenn du bereit bist, die Strafe für Lucas's mangelnden Respekt zu übernehmen,
+           dann schließe deine Augen."
+           {additive:off}
+           MC::
+           {spawnChar: EyeBlink, .5, EyeBlink}
+           {anim: EyeBlink, Close}
+           Ich schließe meine Augen. Plötzlich kommt die Nervosität.
+           Was wird mit mir geschehen?
+           Ich fühle eine Welle der Reue. 
+           Ich <i>werde</i> meinen Mann stehen!
+           Ich höre das Schlurfen von nackten Füßen auf dem Boden, die auf mich zukommen.
+           {moveChar: Asterella, .5}
+           {moveChar: Lucas, .25}
+           {movecube: .5, .2}
+           Lucas::
+           „Star nicht das! Nicht mal ich bin so beschissen!"
+           MC::
+           ...
+           Asterella::
+           „Ok, bist du bereit MC?"
+           [Happy]
+           MC::
+           Ich sehe nichts und Stars Stimme ist ziemlich nah.
+           Ich kann das Gleiten der Seide auf der Haut und das Knistern des Feuers in der Stille des Raumes hören. 
+           „Ja."
+           Ich mach mich bereit zu zucken.
+           {fadeinsound: body punch hard, 1}
+           Die Mitte meiner Stirn bricht in einen sofortigen und scharfen Schmerz aus.
+           „OWWWWW!"
+           {anim: EyeBlink, Open}
+           {additive:on}
+           {anim: EyeBlink, Open}
+           Ich öffne meine Augen um Star zu sehen, 
+           Zentimeter von meinem Gesicht entfernt,
+           ihr leichter Atem streicht mein Gesicht.
+           {additive:off}
+           Hat sie mich mit dem Finger geschnippt?
+           Der Ausdruck in Stars Gesicht, ist ein Ausdruck von leichter Belustigung. 
+           Asterella::
+           {anim: Asterella, Smug}
+           „Da. Alles gemacht."
+           MC:: 
+           Star scheint befriedigt und nah am lachen zu sein.
+           Asterella::
+           „Es gibt wirklich keinen Grund jemanden zu beschützen, speziell Lucas nicht."
+           MC::
+           Star streicht mein Haar weg und küsst meine verletzte Stirn leicht. 
+           {movecube: .5, .4} 
+           {fadeinsound: Heart Thump, 1}
+           Asterella::
+           {anim: Asterella, Thinking}
+           {movecube: .5, .2}
+           „Er wird in Ordnung sein. Lucas liebt seine Bestrafungen, und es hat nichts mit seiner Performance zu tun." 
+           "Ich verspreche es, ok?"
+           MC::
+           Ich bin ein wenig unerfahren, aber ich spüre ernsthafte BDSM Stimmungen hier...
+           Lucas::
+           „Wo wir gerade dabei sind, Ich werde euch zwei Spaß haben lassen. Einige von uns müssen Sachen erledigen." 
+           {moveChar: Lucas, .1}
+           MC::
+           Lucas stoppt an der Tür.
+           {movecube: .2, .3}
+           {if: !n-b}
+           {
+             Lucas::
+             [Angry]
+             „Star, wenn sie <i>irgendwas</i> macht."
+           }
+           {if: n-b}
+           {
+             Lucas::
+             [Angry]
+             "Star, wenn sie <i>irgendwas tun.</i>"
+           }
+           MC::
+           Asterella lächelt, und schickt Lucass Kommentar mit einem Handschwung fort.
+           Asterella::
+           [Happy]
+           {additive:on}
+           „Lucas, du machst dir zu viele Sorgen. 
+           Ich bin ein großes Mädchen."
+           {additive:off}
+           {additive:on}
+           [Indifference]
+           {anim: Asterella, Pouting}
+           „Und als dein <i>Lord</i>...
+           <i>musst</i> du dich mir fügen."
+           {additive:off}
+           MC::
+           Er verbeugt sich tief auf eine spielerische Art, ein Kichern bricht durch seine sonst ernste Performance.
+           Lucas::
+           [Default]
+           „Ich lebe nur um dir zu dienen, Milady."
+            Asterella::
+           [Happy]
+           MC::
+           {fadeinsound: Star Laugh 2, .1}
+           {fadeinsound: Lucas Laugh 5, .5}
+           Er hat es fast geschafft. Beide fangen an zu lachen.
+           {fadeinsound: openclosedoor, 1}
+           {moveChar: Lucas, -1}
+           {moveChar: Asterella, .45}
+           {movecube: .45, .2}
+           {disableChar: Live 2D Bokeh}
+           Als Lucas geht, sind wir alleine. Star und ich.
+           Der Kuss auf meiner Stirn brennt mehr, als der Stich in meinen Stolz oder der Fingerschnipser.
+           She is so captivating.
+           Majestätisch, selbstbewusst und leicht sadistisch.
+           Alles Eigenschaften die ein Dämonenlord haben soll?
+           Ich berühre meine Stirn sanft.
+           Asterella::
+           {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+           [Default]
+           „Hat es geschmerzt?"
+           MC::
+           Ich lache nervös.
+           „Es war nicht der Fingerschnipser..."
+           Asterella::
+           „Naja, MC. Wir müssen uns über einiges reden."
+           {changeScript: Female/Prologue/Star II, 386}
+        ]
+        Vergiss es, ich kann das nicht!
+        [
+            MC::
+            Es sollte nicht so schlimm für ihn sein richtig? 
+            Vielleicht gehe ich zu weit...
+            Ich schau zu Lucas. 
+            Asterella::
+            {anim: Asterella, Thinking}
+            „Hast du den Mut verloren?"
+            MC::
+        ]
+    }
+}
+Oh mein Gott ich ersticke.
+Ich muss mich beruhigen.
+Asterella hebt ihre Augenbrauen und steht auf. 
+{movecube: .3, .4}
+{if: !n-b}
+{ 
+ Asterella::
+ „Sie scheint dich ziemlich zu beschützen. Muss ich die Bestrafung erhöhen?"
+}
+{if: n-b}
+{
+ Asterella::
+ "Sie scheinen dich ziemlich zu beschützen, Lucas. Soll ich die Strafe erhöhen?"
+}
+MC::
+Ich stehe erstaunt. Ich möchte nicht noch mehr zu seinen Schmerzen hinzufügen.
+Lucas::
+[Lewd]
+„Oh yeah dommy mommy, gib mir die Strafe die ich verdiene."
+MC::
+{fadeinsound: Lucas Laugh 5, .5}
+Er lacht herzlich, geht auf Star zu und küsst sie auf die Stirn. 
+Mit einem winken, öffnet er die Tür.
+Lucas::
+[Default]
+„Ihr beide habt Spaß."
+{fadeinsound: openclosedoor, 1}
+{moveChar: Lucas, -1}
+{moveChar: Asterella, .45}
+{movecube: .45, .2}
+MC::
+{disableChar: Live 2D Bokeh}
+Wir sind alleine.Star und ich.
+Wie aufs Stichwort schreitet sie selbstbewusst auf mich zu.
+Wenige Schritte entfernt, studiert sie mich. 
+Sie ist ein bisschen kleiner als ich, aber ihre Präsenz von Autorität ist greifbar.
+Trotz meiner selbst spüre ich, dass ich mich ihr hingeben möchte. 
+Sie ist ganz und gar ein Lord. 
+Asterella::
+{anim: Asterella, Thinking}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+„Also, hast du einen Namen?"
+MC::
+Sie lässt die Frage offen stehen. 
+Oh!
+„Mein Name ist MC, Lord Star."
+{if: n-b}
+{
+ "Mein Pronomen ist sie..."
+}
+{disableChar: Live 2D Bokeh}
+Ich stottere es.  
+Innerlich bin ich am stöhnen.
+Damit hab ich meinen ersten Eindruck zerstört.
+Ihr Gesicht ist unleserlich. Ihr bestes Pokerface.
+Von wo sie steht, kann ich sehen, dass ihre Unterwäsche viel enthüllt.
+Fast transparent. 
+Ich kann Lavendel und can smell lavender and... brimstone?
+Sie ist so nah. 
+{anim: Asterella, Pouting}
+Sie nickt und lächelt in einem aufrichtigem Lächeln.  
+Asterella::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+[Happy]
+„Das ist ein sehr toller Name, MC."
+{if: n-b}
+{
+ "Das habe ich aus Lucas's Rede entnommen. Sehr gut."
+}
+{additive: on}
+[Default]
+„Bevor wir uns über das Geschäftliche sprechen, 
+würde ich gerne ein wenig entspannen.
+Hast du vielleicht Lust auf ein Glas Wein?"
+{additive:off}
+MC::
+Alles um diese Trance zu brechen. 
+„Ja, bitte."
+„Dass wäre sehr nett. Ich bin tatsächlich ziemlich durstig."
+Sie bewegt sich anmutig zu dem Sofa.
+Asterella::
+{anim: Asterella, Pouting}
+„Bitte setze dich. Ich bringe den Wein."
+MC::
+{moveChar: Asterella, .65}
+{movecube: .8, .3}
+Sie bewegt den Tisch gegen die Wand und fordert mich auf, mich zu bewegen.
+Ich gehe meines Weges zu dem Sofa. 
+Der ganze Raum schreit nach bescheidenen königlichen Verhältnissen, als ob sie es nicht nötig hätte, auffällig zu demonstrieren, wer sie ist.
+Sie weiß es.
+Asterella::
+„Du weißt, als ein Einbrecher, hätte ich nicht diese Art von Gastfreundschaft erwartet."
+„Ich sehe dich nicht wirklich als einen Einbrecher, MC."
+MC::
+{disableChar: Live 2D Bokeh}
+Ich setze mich auf eine Seite, damit sie viel Platz hat. Das Buch das sie las.
+Ich kann den Titel nicht lesen. 
+{additive: on}
+Ich lehne mich nach vorne und sehe ob ich die Sprache erkenne, 
+aber es sieht für mich aus wie Kauderwelsch.
+Eine alte, veraltete Sprache denke ich.
+Aber ich bin kein Experte.
+{additive:off}
+Weiß sie irgendwas?
+„Wenn du mich nicht als ein Eindringling siehst, was bin ich dann für dich?"
+Ich schließe mich dem schnell an.
+Vielleicht ein wenig zu verzweifelt.
+„Ich kann dir versichern, es war keine Absicht, dass ich hier bin."
+{movecube: .65, .2}
+Sie schaut zurück mit einem unlesbaren Ausdruck.
+{fadeinsound: woodwine1, .1}
+Asterella::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+„Ich hatte so viel schon vermutet." 
+„Aber, dass rettet dich nicht. Noch nicht."
+{movecube: .8, .3}
+{anim: Asterella, Thinking}
+{fadeinsound: woodwine2, .1}
+{fadeinsound: Pouring, 1}
+„Und du hast mir immer noch nicht gesagt von wo du kommst."
+„Und auch scheinst du nicht ein Synthgen zu sein. Jedenfalls scheine ich nichts zu <i>fühlen</i>."
+{fadeinsound: Pouring, 1}
+MC::
+Sie greift das Glas und gleitet anmutig zum Sofa, um mir danach ein Glas anzubieten.
+{moveChar: Asterella, .45}
+{movecube: .45, .2}
+Ich nehme es anmutig an.
+„Domo arigatou."
+{choice: Was soll ich sagen?}
+{
+        Sei ehrlich und offen.
+        [
+            „Ich kann dir das nicht sagen, ohne dass ich mehr von dir weiß und wie ich hier her kam."
+            „Es gibt eine Möglichkeit, dass ich weniger weiß als du, aber ich will dir nichts böses noch deiner Untertanen."
+            Da. Die Wahrheit, aber ich halte die Informationen zurück, die ich <i>preiszugeben wage</i>. 
+            Ich hoffe, dass war gut genug...
+            Sie führt ihren Finger überlegend über die Kante des Weinglases.
+            {anim: Asterella, Thinking}
+            Asterella::
+            „In Ordnung. Ich kann das erstmal akzeptieren."
+            „Später werden trotzdem Fragen kommen, Ich verspreche es."
+            MC::
+        ]
+        Erfinde etwas.
+        [
+          MC::
+          „Ich bin nur durch den Wald gelaufen und habe dabei deine Villa gefunden. Ich wollte nicht in dein Land eindringen."
+          Es ist teilweise wahr, aber selbst ich glaube nicht, dass ich das Glauben würde...
+          Und sie wird's auch nicht.
+          Star runzelt die Stirn. Die Luft fühlt sich plötzlich kalt an. 
+          Asterella::
+          [Annoyed]
+          {additive: on}
+          „Es gibt einige Sachen die ich nicht toleriere.
+          Eine davon ist lügen.
+          Das ist meine einzige Warnung."
+          {additive:off}
+          MC::
+          Ich wusste es. Ich erbleiche.
+          {additive:on}
+          „Es tut mir leid.
+          Du hast recht. 
+          Ich weiß bestimmt weniger als du, über meiner momentanen Situation."
+          {additive: off}
+          „Ich fühle mich noch nicht bereit mit dir darüber zu sprechen."
+          Fügte ich schnell hinzu.
+          „Ich möchte deinem Gebiet noch deiner Leute irgendetwas Böses. So viel ist sicher."
+          Sie studiert mich. Hat sie in diesem Blick ein wenig Misstrauen entdeckt?
+          [Default]
+          Asterella::
+          „Ich werde, dass vorerst akzeptieren. Ich verstehe deine Position."
+          MC::
+        ]
+    }
+{additive:on}
+Sie setzt sich in meine Nähe. 
+Nur ein oder zwei Fuß sind zwischen uns.
+{additive:off}
+Ich starre auf das Glas, die dunkle stechende Flüssigkeit strahlt in dem Licht des knisternden Feuers.
+Asterella::
+[Happy]
+„Auf zukünftige Beziehungen."
+MC::
+Sie bringt ihr Glas an meines und wir stoßen an.
+{fadeinsound: Wine Toast, .1} 
+MC::
+„Zukünftige Beziehungen."
+{disableChar: Live 2D Bokeh}
+{movecube: .45, 0}
+{anim: Asterella, Impatient}
+Wir nehmen die ersten Schluck in Stille. Der Geschmack ist sehr rauchig und rein. 
+Ich widerstehe der Versuchung es zu schnell zu trinken.  
+„Also, warum die ganze Zeremonie nur für mich?"
+Ein kleines Lächeln berührt ihre Lippen.
+Asterella::
+{movecube: .45, .3}
+{additive:on}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+„Direkt auf den Punkt. 
+Ich mag das."
+{additive:off}
+[Horny]
+MC::
+Ihre Stimme ist fast schwül, als sie ihren Blick von ihrem Glas erhebt.
+Sie nimmt einen weiteren Schluck und platziert das Glas auf den Tisch.
+{movecube: .45, .0}
+{fadeinsound: wineglassdown, 1}
+Eine Pause.
+{movecube: .45, .3}
+Asterella::
+[Default]
+„Zwei Sachen..."
+MC::
+Sie hält einen Finger nach oben. 
+Asterella::
+„Nummer Eins."
+„Du kamst in mein Reich ohne meine Erlaubnis."
+{additive:on}
+{anim: Asterella, Pouting}
+„Das ist hier nicht so einfach möglich. 
+Also... entweder hast du ein unglaubliches Level an Macht...
+oder du bist kein Teil des Systems welches alles hier laufen lässt, was du um dich herum erkennst."
+{additive:off}
+MC::
+Sie schaut mich an, während sie nachdenkt.
+Asterella::
+{anim: Asterella, Thinking}
+{additive:on}
+„Ich möchte annehmen, dass es sich um Letzteres handelt. Aber offensichtlich,
+kann ich das nicht ohne...
+{movecube: .45, .2}
+[Happy]
+dich zu studieren."
+{additive:off}
+MC::
+Sie probiert meine Augen zu lesen, um etwas zu suchen?
+Asterella::
+[Indifference]
+{anim: Asterella, Pouting}
+MC::
+Ein wenig Frustration kommt aus ihrem Seufzer.
+Asterella::
+{additive:on}
+„Schau, MC,
+du hast mein Interesse geweckt.
+Ich versichere dir, das ist eine gute Sache."
+{additive:off}
+MC::
+Sie stellt gezielt direkten Augenkontakt her. 
+Asterella::
+[Horny]
+[Happy]
+„Viel besser als die Alternative."
+MC::
+Ich schlucke ein wenig, so dass man es hört. Sie ist unheimlich und sinnlich zugleich.
+„Und die zweite Sache"
+Stars Augen werden hungrig.
+Asterella::
+„Zweite?"
+MC::
+Sie lehnt sich nach vorne und legt ihre Hand auf meinen Oberschenkel.
+Asterella::
+„MC, du bist genau mein Typ."
+MC::
+Sie beobachtet, wie ihre Hand träge Kreise auf meinem Oberschenkel zieht. 
+MC::
+Ich kann nicht glauben was ich höre.
+Fragt sie für... 
+„Ich?"
+{disableChar: Live 2D Bokeh}
+Es ist alles was ich sagen kann.
+Ich nehme einen tiefen Schluck, um mein errötetes Gesicht, hinter der Aktion zu azulcken.
+Asterella Star fragt mich, mit ihr „die Nacht zu verbringen." 
+Sie schaut mich an, mit den Fragen in ihren Augen. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{choice: Keine Panik...} 
+{
+    Ja, ich bin damit einverstanden.
+    [
+        MC::
+        Zögernd strecke ich die Hand aus, berühre ihre Hand und lege sie auf mein Bein.
+        Sie schaut zu mir mit sanften Augen. 
+        „Es wird mein erstes Mal mit einer Frau sein."
+        „Sei zahm."          
+        MC:: 
+        {if: !henable}
+        {
+	        {setachievement: female_route}
+            {colorformat: Default}
+            {fadeoutsound: fireplace, 1}
+            {fadeoutsound: Star Dinner, 1} 
+	        {changeScene: Main Menu}
+        }
+        {setachievement: female_route}
+        {usegameobject: Hentai Warning Panel, true}
+        {fadeoutsound: fireplace, 1}
+        {fadeoutsound: Star Dinner, 1} 
+        {changeScript: Female/Prologue/Star II Hentai}
+    ]
+    Nein. Das geht zu schnell. 
+    [
+        {changeScript: Female/Prologue/Star II FriendZoned}
+    ]
+}

@@ -1,0 +1,292 @@
+{changeScene: Brain Sucking Chair side}
+{colorformat: Emerald}
+{fadeinsound: Laptop Lab Scene,2}
+{fadeinsound: Fast Keyboard Typing, 2}
+{fadeinsound: Lab Computer Room Beeps 2, 1}
+{fadeinsound: Lab Ambience Music Light, 1}
+{fadeinsound: LabAmbience, .4}
+{spawnChar: malesilo3, 2, Shirobi}
+{spawnEmpty: MC, Player}
+{fadeinsound: Fast Heartbeat, 1}
+Shirobi::
+ {if: !n-b}
+{ 
+   "彼は1年以上会社のインターンをしています。-"
+}
+{if: n-b}
+{
+   "彼らはもう1年以上、この会社でインターンをしている..."
+}
+"驚くべき、ハンサムな、そして実にクールな人間, MC!" 
+MC::
+俺が脳吸引室に案内されている間、ノイズは一瞬の言葉として記録される。
+{additive: on}
+ラボテックは、俺がそれをそれと呼ぶのは嫌いだけど、
+それを他のものと見なすと、
+露骨な洗脳の練習になるだろう。
+{additive: off}
+{additive: on}
+発汗が止まらない。
+鼓動がリズミカルに耳に響くのが聞こえる。
+{additive: off} 
+ラップトップ、サーバーファンの機械的な回転、および椅子を囲むEMフィールドのハム音は、俺の頭蓋骨の中で共鳴する。
+{fadeinsound: slowfootsteps, .2}
+{additive:on}
+左。
+右。
+左。
+右。
+{additive: off}
+{additive: on}
+自分の足に焦点を合わせる。
+それはうまくいくよう。
+{additive: off}
+気晴らしは今のところ恩恵。
+俺は記者のつぶやきをすべてブロックしようとする。
+{additive: on}
+突然,
+誰かが俺の肩をつかんで、すぐに俺をジャンプさせる。
+{additive: off}
+{spawnChar: Circle Wipe, .5, CircleWipe}
+{choice: 振り返りますか？}
+{
+     振り向かないで。
+     [
+        手がしっかり握ってる感じ. そして俺をぐるぐる回す。
+        {anim: CircleWipe, RightStart}
+     ]
+     あなたの加害者に直面します。
+     [
+        ぐるぐる回す.
+        {anim: CircleWipe, RightStart}
+     ]    
+}
+{fadeoutsound: Fast Heartbeat, 1}
+{anim: CircleWipe, LeftEnd}
+{fadeinsound: Press Cameras, .2}
+俺の目は、それらのハイテクカメラから白い光を一気に浴びる。
+光は俺の気を散らすものを消し去り、俺は明るさを瞬きさせようとする。
+{spawnChar: malesilo, 2, Smug Reporter}
+{anim: Smug Reporter, kime1}
+{moveChar: Smug Reporter, .75}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Smug Reporter::
+"MC! 
+大丈夫ですか。? あなたは不安定に見えます。"
+MC::
+独善的な記者は、部屋の明らかな緊張を和らげるために笑う。 
+Smug Reporter::
+"何十億もの人々があなたが歴史を作るのを見るのは神経質になっているに違いありません、私は正しいですか？"
+MC::
+くそーライト！
+目を細める。
+{additive: on}
+はい,
+ヤバい,
+それはクソステージ恐怖。。。
+完全に。
+{additive: off}
+だから当然、俺は乾いて、そして非常に皮肉なことに、反論する。
+"えええ。 神経を掻き立てる。" 
+酸を飲み込む。 荒れ狂う唇を少し舐める。
+部屋の中央に座っている巨大なものに身振りで示す、俺は明確にする。
+"DIHIが緊張すると言わなかったら嘘をつく。"
+{spawnChar: malesilo2, -1, Cliff}
+{moveChar: Cliff, .25}
+{anim: Cliff, handwave}
+目が調整され始め、プレスの後ろで主任プロジェクトマネージャーのCliffが腕を組んで厳しい顔をしているのに気づく。
+彼の姿勢ははっきりと言っています。「これを台無しにすると、一年間の支払いがあります。"
+なぜ誰も何も言わないか？
+ああ。。。 そう。。。
+口を開ける。
+「Digital Horizonsが管理していることを知っていることが、俺が「ただ」緊張している唯一の理由だ。」 
+"彼らが俺を一枚に戻すことを俺は知っている。その中で、あなたは安心することができる。"
+{disableChar: Live 2D Bokeh}
+うまくいけば、俺のすべての思い出を持って戻ってくる。
+忘れてしまうことがたくさんある: 俺のインターンシップ、俺の両親、俺の変態コレクション。。。
+思い出を失ったら、俺も同じ人になる？
+俺の母と父は俺がどのようにやっているのか本当に気にしなかった。
+俺はほとんどの時間をストリーム、アニメ、そしていくつかの変態を見ているだけで過ごしている。
+デジタルの世界に入るという考えは常に俺の好奇心をかき立ててきた。 
+インターネットに住むのはどれほどクールだろうか？ ストリームサイトに座ったり、Youbtubeのビデオを見たりすることはできる？
+{additive: on}
+食べる必要がある？
+寝る?
+{additive: off}
+それとも、もっと疑わしいこと？ デジタルの世界でも同じように感じる？
+俺は自分の考えを精神的に脇に押しやった。 彼らは俺が今間隔を空けていると言うことができる。 
+ここは少しぎこちない感じがする。 だから, 笑顔で親指を立てようとする。
+どこかで笑い声が聞こえる。。。声は聞き覚えがある。
+くそーライト！
+{moveChar: Cliff, -1}
+{moveChar: Smug Reporter, 2}
+{moveChar: Shirobi, .55}
+Shirobi::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+{anim: Shirobi, Glasses} 
+{if: !n-b}
+{
+ "まあ、少なくとも彼は少し落ち着いたようです。正直，心配し始めました。" 
+}
+{if: n-b}
+{
+ 「少なくとも、彼らは落ち着いたようだ。はっきり言って、心配になってきたよ" 
+}
+MC::
+俺の目は彼に短剣を撃つ。
+その鼻、小さなオタクの野郎。
+俺のルームメイトであり、技術インターンのリーダーであるShirobi。 
+自分が正しいと思ったり、かっこよく見えたりすると、いつもイライラして、アニメの主人公のようにメガネを押し上げげる。
+{additive: on}
+彼は時々かっこいい友達。彼はいつも仲間を助けてくれる:
+いくつかのアドバイス、またはいくつかのライトノベルのいずれか。 
+{additive: off}
+息を吸う。
+"ね Shirobi... 準備ができているといい。。。"
+Shirobiが歩いて肩に手を当てる。
+Shirobi::
+{anim: Shirobi, Bow} 
+"心配するな MC. 何も起こらないように、私はあなたのバイタルを監視する."
+"あのね... 安全でない限り、この椅子には近づかせない。そうだろ？" 
+"四日. その後、私たちはあなたを引き出す. いい?"
+MC::
+{disableChar: Live 2D Bokeh}
+俺はうなずいて、部屋を取る。
+プレスは部屋の外に案内されている。 中にいるのは俺、ラボテック達、そしてCliffだけだった。
+{fadeinsound: slowfootsteps, .3}
+{fadeinsound: openclosedoor, .1}
+{fadeoutsound: LabAmbience, .1}
+DIHIの音が急変し、空気中の電離感が増する。
+記者や検査技師がおしゃべりをしている観察ラウンジの窓を覗く。
+彼らはコーヒーを飲みながら座っているよう。
+今. コーヒが欲しい. 本当、本当にコーヒを飲みたい。  
+{additive: on}
+俺の体は変なことは何もしない
+ゾンビがこわばっているような…そうか？
+{additive: off}
+ないかな. 多分尋ねるべき。。。
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Shirobiは鼻を鳴らし、明らかに息苦しい笑い声を上げる。
+Shirobi::
+{additive: on}
+"本当に?
+あなたは数十億ドルの椅子に座る、そしてそれはあなたが考えていること？" 
+{additive: off} 
+MC::
+待って...
+俺はそれを大声で言いた？
+ま、いい.
+「それで？私が？
+Shirobi::
+"答えはＮＯだ. あなたはすべてが固い状態で停滞することはない。."
+MC::
+彼はマイクを避けるために寄りかかっている。
+{anim: Shirobi, Bow}  
+Shirobi::
+"そして、あなたを利用する看護師はいない、約束する。"
+MC:: 
+彼は向きを変えると大きな声で話す 
+Shirobi::
+"スタシスポッドはトップテクノロジー。お前、ブリーフィングを覚える。。。" 
+MC::
+ええ、俺が寝たブリーフィング。。。
+俺は彼にそれを言うつもりはねえ。 
+Shirobi::
+"心配しないで. 私たちは24時間年中無休であなたを監視しているチームを持っていることを確認する。"
+MC::
+俺は笑い、意図したよりも少し大きな音で爆発した。
+"それじゃ, 今のような時間はないと思う。"
+俺はShirobiをひどく見つめ、これを真剣に受け止めてほしいと彼に懇願する。
+"Shirobi, 俺はあなたに完全で完全な信仰を置いている。"
+{additive: on}
+"だれも,
+つまり
+だれも、
+俺の「コレクション」に触るな
+な?"
+{additive: off}
+Shirobiのしおれた表情は大きな見返り。 
+Shirobi::
+"はい, 分かった, 信じて. 歴史を作ることに集中するだけ、ね？"
+MC::
+俺は椅子をまっすぐ見ながら、部屋の中央に歩いて行く。
+{changeScene: The Lab}
+{colorformat: Emerald}
+{fadeinsound: Fast Heartbeat, .5}
+{fadeinsound: DIHI Low Power, .1}
+{fadeinsound: DIHI High Power, .1}
+{fadeinsound: slowfootsteps, 1}
+{fadeoutsound: Lab Ambience Music Light, 2} 
+{spawnEmpty: MC, Player}
+{spawnEmpty: Shirobi, NPC}
+MC::
+近づくと骨が振動する。
+DIHIは俺のビジョン全体を満たしている。
+{additive: on}
+それは本当に別の世界へのポータルのように感じる,
+まるで、異世界。 
+{additive: off}
+そして、その速さで、私の状況の現実は家に帰った。 
+俺は最後のいくつかのステップを踏み、DIHIを見下ろする. 
+ただ四日.. サーバーにいる四日間.
+今、目の前にある十年の研究の集大成を見ている。
+何百人もの博士レベルの科学者が、この椅子で少なくとも四年間研究開発に取り組んできた。
+クーラントミストの巻きひげは、矛盾から発生し続ける。
+Shirobiは椅子に取り付けられたコンソールに移動する。 彼はいくつかのボタンを押すとスキャナーがシャットダウンし、椅子への道が開かれる。 
+ハムの音量が少し下がる。 
+Shirobi::
+"準備OK、 MC. ただ座って、リラックスして。" 
+MC::
+頑丈な金属製の椅子に向かってうなずくShirobiの動き。
+最後のステップ。
+心と脳を吸う椅子の背景のハム以外は何も聞こえない。 
+それは俺の骨と共鳴している。
+脈打つ光はすべて、それを取り巻く暗闇を食い尽くし、俺も包み込む。
+ハムは俺の足の下の金属パネルを振動させる。 
+俺は「恐ろしい意味のデジタル化の玉座」を見つめている。
+突然の勇気で、頭蓋骨にハミングしながら、ピボットして座る。
+ほとんど何も聞こえない。
+耳元で息を速くして息を吐き、息を遅くする。
+"俺をテレポートさせろ、Shirobi."
+Shirobi::
+"もう! 言葉の選択が悪い。" 
+MC::
+彼は観察室のマスコミを見ながらため息をついた。
+Shirobi::
+"大丈夫だよ。 頭を後ろに傾けてリラックスし、目を閉じて。"
+MC::
+{additive: on}
+よし。
+よし。
+出来る!
+{additive: off}
+目を閉じて、椅子の振動に負けて。 
+"数時間後に会おう！"
+"待って!"
+目を開けてルームメイトを横目で見つめる。
+"待って。。。"
+"呼吸の仕方などを知っているか？" 
+Shirobiの顔、真面目な顔。。。
+Shirobi::
+"ああ。。。うん, 方法を教えるのを忘れたと思った, MC..."
+"目を閉じるだけ。" 
+MC::
+目を閉じて、突然、思っていたよりも失うものがたくさんあるような気がした。
+彼らは成功したことがない。
+人間ではない。 
+俺の心は俺の耳の中で大声で、ビートをスキップした。
+パニックの波が俺を掴む。。。
+涙が出始める。 
+これが自分自身に気づいた最後の瞬間か？
+{fadeinsound: DIHI Power Up, 1}
+頭がチクチクし始めた気がする。
+椅子の音は俺自身の鼓動以外は俺が聞くすべて。
+プレスも同僚もいない: ただ俺の鼓動、椅子の鼓動、そして一人でいることへの突然の恐怖。 
+{fadeoutsound: Lab Computer Room Beeps 2, 1}
+{fadeoutsound: Fast Heartbeat, .1}
+{fadeoutsound: DIHI Low Power, .1}
+{fadeoutsound: DIHI High Power, .1}
+<i>すると、ガチガチになりそうな腰を下ろして、突然頭のてっぺんに引っ張られているような気がする。。。</i>
+{fadeoutsound: DIHI Power Up, 1}
+{fadeinsound: Brain Sucking Chair Activate, .5}
+{changeScript: Male/Prologue/Prologue II}

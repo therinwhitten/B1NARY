@@ -1,15 +1,15 @@
-{changeScene: Scenes/Star/Star Outside Night}
+{changeScene: Star Outside Night}
 {colorformat: Asterella}
 {fadeoutsound: Normal Heartbeat Prologue, 5}
 {fadeinsound: Star Piano, 10}
 {fadeinsound: Wind Heavy, 1}
 {fadeoutsound: Ears Ringing, 15}
-{spawnChar: szycrotic default, 2, Masked Punk}
-{anim: Masked Punk, idle} 
+{spawnChar: lucas butler, 2, Masked Punk}
+{movecube: .5, .2}
 {spawnEmpty: MC, Player}
 {spawnEmpty: Narrator, NPC}
 Narrator::
-FLASHING LIGHTS SCENE IS COMPLETE. 
+{usegameobject: Flashing Lights Complete Panel, true}
 MC::
 My mind becomes one piece again in a violent snap, like a rubber band stretching too taut..
 I'm suddenly me again, muscle spasms and tingling all over. 
@@ -64,10 +64,11 @@ Masked Punk::
 "What the fuck?
 Who the <i>fuck</i> are you?"
 {additive: off}
-{fadeinsound: Szy Dark, 3}
+{fadeinsound: Lucas Dark, 3}
 {fadeoutsound: Star Piano, 2}
 {fadeinsound: Flash Step, .3}
 {moveChar: Masked Punk, .50}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 "Are you serious? I come here only to find a loser sneaking around?"
 MC::
 With inhuman speed, this demon comes flying out of the tree line.
@@ -81,7 +82,7 @@ The wind of his movement buffets my face.
 He's not human. He may be wearing normal clothes but...
 He stands before me, his mask like an extension of his face. 
 Like it <i>is</i> his face. His mask even blinks.
-An eerie green glow pulses from under his hood. 
+An eerie glow pulses from under his hood. 
 No, this is <i>not</i> the server I was meant to land in.
 I am either somewhere else, or this is a bad dream. 
 My body still recuperating, I can only remain silent and watch.
@@ -112,6 +113,7 @@ and get beat down.
 I need to show I'm not a threat. 
 <i>Not hard to do.</i>  
 So, the only thing I can do is offer my hand.
+{movecube: .5, 0}
 Stay calm MC. 
 "I was teleported here. I didn't mean to encroach on your property."
 Masked Punk::
@@ -120,6 +122,7 @@ MC::
 He looks at my hand, pausing, as if waiting for something.
 It feels like a couple of seconds before his mask lights up in annoyance.
 Masked Punk::
+{movecube: .5, .5}
 [Angry]
 "Encroach? What the fuck?" 
 "What does that even mean?"
@@ -135,21 +138,24 @@ Masked Punk::
 "Huh? Well..."
 [Default]
 MC::
-He pauses. 
+He pauses.
+{movecube: .5, 0} 
 He looks down at my hand and takes it. 
-{changeName: Masked Punk, Szycrotic}
-Szycrotic:: 
-"In that case, name's Szycrotic."
+{changeName: Masked Punk, Lucas}
+Lucas:: 
+"In that case, name's Lucas."
 MC::
 Whew!
 He grabs my hand, pulling me close in one motion.
 The mask is almost touching my nose. 
 I swallow with careful deliberation.
+{fadeinsound: no_one_expects_whisper, .1}
+{setachievement: second_swallow}
 This close up, the smell of sulfur fills my nostrils. 
-Szycrotic::
+Lucas::
 "If you hurt this realm, I'll cut you like a pig. Got it?"
 MC::
-He grins, his mask, glowing, with green smoke leaking out.
+He grins, his mask, glowing, with smoke leaking out.
 When the handshake starts to get unbearably uncomfortable, he suddenly pushes me back. 
 My arm hits my chest, and I adjust to keep balance, taking a step back.
 There was no effort on his part. 
@@ -157,29 +163,33 @@ He is insanely strong.
 He turns and starts walking to the manor, hand in pocket.
 After a few steps, he stops, his head pivoting a little too far for a human.
 His gaze pierces right through me. 
-Szycrotic::
-{anim: Szycrotic, Impatient End}
+Lucas::
+{anim: Lucas, Impatient End}
 "It wasn't a request. You <i>will</i> come with me." 
 "Star will figure out what to do with you."
 "You are <i>encroaching</i> after all."
+{disableChar: Live 2D Bokeh}
 MC::
 I only have a few seconds of reaction here. 
 The dude is fast. 
 If I go with him, this "Star" may skewer me. 
 Then again, I might be able to dodge him enough and get into the forest. 
 We have about 10 feet of distance between us. I <i>might</i> just be able to get to full speed.
+{spawnChar: Circle Wipe, .5, CircleWipe}
 {choice: What should I do? Try not to get me killed here player.}
 {
     Are you stupid? Run!
     [
        Ok, here goes nothing!
-       {changeBG: Star Default Animated}}
-       {moveChar: Szycrotic, -1}
+       {anim: CircleWipe, RightStart}
+       {moveChar: Lucas, -1}
        MC::
+       {anim: CircleWipe, LeftEnd}
        {fadeinsound: footsteps run forest, .5}
        Off through the trees and tall grass I run, forcing my stride to widen.
        My body immediately protests loudly at the sudden movement. 
        Grunts escape my clenching teeth. 
+       {disablechar: CircleWipe}
        This was a bad idea.
        This was an <i>incredibly</i> bad idea.
        My body, not exactly prime-fitness material to begin with, is still reeling from the teleportation.
@@ -188,17 +198,18 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        OUCH!
        My leg hits a branch, the thump hard enough to be audible. I almost fall on my face.
        I feel a hand, solid as iron, grasp my shoulder. 
-       {anim: Szycrotic, wind idle}
-       {moveChar: Szycrotic, .5}
-       Szycrotic::
+       {anim: Lucas, Wind Idle}
+       {moveChar: Lucas, .5}
+       {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+       Lucas::
        [Lewd]
        "So. You want to do this the hard way eh?"
        "Haha very well. I like it rough!"
        MC::
        "I panicked ok?! I beg you! Don't cut me!"
        His mask takes on a look of confusion.
-       Szycrotic::
-       [Default]
+       Lucas::
+       [OWO]
        "What are you stupid? I won't cut you."
        "Well. Not yet."
        "No seriously, you haven't hurt this realm at all."
@@ -207,9 +218,8 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        I look down, and see a small bit of blood oozing through my pants. 
        By the time I notice the blood, the throbbing pain catches up to my brain. 
        I groan a bit, a sharp intake of breath coming after. 
-       Szycrotic laughs behind me.
-       {fadeinsound: Szy Laugh 2, .1}
-       Szycrotic::
+       Lucas laughs behind me.
+       Lucas::
        [Lewd]
        {if: henable}
        {
@@ -226,19 +236,20 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        His strength far exceeds mine. 
        I give up, and soon enough, ropes are around my wrists behind my back. 
        {additive: on}
-       Szycrotic moves around to face me, 
+       Lucas moves around to face me, 
        studying me. 
        {additive: off}
        Although, with his mask, it is kind of hard to read his expressions.
        Not this time though.
        His mask cracks in a smile. 
-       Szycrotic::
+       {movecube: .5, .0}
+       Lucas::
        [Lewd]
        "And one more rope should work... And another rope, and another rope, and another rope."
        "Oooh that kinda turns me on a bit."
        MC::
        He places a rope around my neck, securing it with just enough room to breathe.
-       Szycrotic::
+       Lucas::
        "Oh, this is fun! I'm <i>glad</i> you ran."
        MC::
        {additive: on}
@@ -246,8 +257,9 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        I do the only thing I am capable of doing: I scowl.
        {additive:off}
        Five fucking minutes in the digital realm, and I'm already a prisoner.
-       Szycrotic turns around, satisfied with his handiwork.
-       Szycrotic::
+       Lucas turns around, satisfied with his handiwork.
+       Lucas::
+       {movecube: .5, .4}
        [Default]
         "Ok boy. Let's go."
        MC::
@@ -257,82 +269,86 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
           "And I prefer 'they' please."
        }
        He tugs on the rope, and I follow grudgingly.
-       Szycrotic::
+       Lucas::
        "You got some balls man, all tied up like that."
        "Ok <i>MC</i>. We will see if those balls will stay after meeting Star."
-       {moveChar: Szycrotic, .25}
+       {moveChar: Lucas, .25}
+       {movecube: .25, .2}
        [Default]
        {fadeinsound: Walking on Gravel, 1}
        {fadeinsound: Star Piano, 4}
-       {fadeoutsound: Szy Dark, 3}
+       {fadeoutsound: Lucas Dark, 3}
        MC::
        That name tickles my memory.
        Asterella... Star?
        It hits me like a truck. 
        "Asterella Star? I <i>do</i> know that name."
        As we walk, he grunts appreciatively.
-       Szycrotic::
+       Lucas::
        "Pretty calm for being tied up. Yes, Asterella Star."
        "You seem to know her at least. Be sure to show her proper fucking respect. She's a busy woman."
        MC::
        Asterella Star: A V-Tuber known as the Demon Lord of the 69th Circle of Hell. 
        She is just a streamer though.
-       And Szycrotic, that name might actually be a streamer's as well. 
+       And Lucas, that name might actually be a streamer's as well. 
        The name is very familiar.
        Yet, a streamer doesn't move like a damn demon either. 
        Am I on Twatch??
        No fucking way.
        No way.
-       "Hey Szycrotic!"
-       Szycrotic::
+       "Hey Lucas!"
+       Lucas::
        "Yeah?"
        MC::
        "Are we actually in the 69th Circle of Hell?"
-       {fadeinsound: szylaugh4, .2}
+       {fadeinsound: Lucas Laugh 4, .2}
        He laughs. 
        The shadows concealed how very well built the path we were on is. 
        Old stone, hewn by hand, and worn over a very long time. It is almost like pavement.
-       Szycrotic:: 
+       Lucas:: 
        "Where else would we be? Of course we are!"
        MC:: 
        He lets out a breath, audible to even me. 
-       Szycrotic::
+       Lucas::
        "Look, you did this to yourself. Nobody comes here without her express permission."
        "And yet, some weak ass punk was able to just waltz in here."
        MC::
-       Szycrotic shakes his head in disbelief.
-       {moveChar: Szycrotic, .50}
+       Lucas shakes his head in disbelief.
+       {moveChar: Lucas, .50}
+       {movecube: .5, .1}
        {fadeoutsound: Walking on Gravel, 1}
        He stops for a second, and studies me for a moment. 
-       Szycrotic::
+       Lucas::
        [Lewd]
        "You know, it's possible you are <i>pretending</i> to be weak and just into this shit."
        MC::
        The smile is bigger, like he <i>wants</i> that to be true. 
        "Seriously, who likes to be tied up and manhandled like a sack of potatoes?"
        I mumble this in defiance a bit. 
-       Szycrotic::
+       Lucas::
        "Hurt Me Daddy... OH!"
        MC::
        {fadeinsound: Walking on Gravel, 1}
-       {moveChar: Szycrotic, .25}
-       Szycrotic::
+       {moveChar: Lucas, .25}
+       {movecube: .25, .1}
+       Lucas::
        [Default]
        MC::
-       {fadeinsound: Szy Laugh 1, .2}
+       {disableChar: Live 2D Bokeh}
+       {fadeinsound: Lucas Laugh 3, .2}
        He laughs as he jerks the rope and starts moving again.
        I have no control over my situation. 
        I know of Asterella Star. In fact, I have watched many of her streams in the past. 
        If she is really here, then maybe I can get some help.
        I feel myself frown a bit. 
-       Yet Szycrotic doesn't seem like he is roleplaying at all.
+       Yet Lucas doesn't seem like he is roleplaying at all.
        He thinks he <i>is</i> a demon. 
        Will Star be the same way?
        I feel a jerk on my ropes, the knot digging into my wrists a bit. 
        It almost pulls me off balance, and I instinctively adjust against it. 
-       Szycrotic::
+       Lucas::
        "We are wasting time. Speed up! No dragging your heels."
-       {fadeoutsound: Szy Dark, 5}
+       {fadeoutsound: Lucas Dark, 5}
        {fadeinsound: Walking on Gravel, 1}
        MC::
        We trudge closer to the manor, step by step.
@@ -350,15 +366,17 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
        {fadeoutsound: waterfountainstar, 4} 
        {fadeoutsound: Walking on Gravel, 1}
        {fadeoutsound: Star Piano, 3}
-       {moveChar: Szycrotic, .50}
-       {anim: Szycrotic, Idle}
+       {moveChar: Lucas, .50}
+       {movecube: .5, .3}
+       {anim: Lucas, Idle}
        We stop in front of the 10 foot tall, ancient wooden doors. 
-       Szycrotic::
+       {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+       Lucas::
        "I noticed you admiring the grounds. You think <i>that</i> is beautiful, wait until you go inside."
        MC::
        He pulls on the handles.
        {fadeinsound: Castle Door, 1}
-       Szycrotic::
+       Lucas::
        "Better yet, wait until you meet Her."
        MC::
        We go into the largest mansion I have ever seen...
@@ -373,14 +391,16 @@ We have about 10 feet of distance between us. I <i>might</i> just be able to get
 Nothing to do but hope I don't get killed. 
 Or worse, tortured. This "guy" seems to be the type to enjoy pain.
 For a brief second, disappointment flashes across his mask.
-Szycrotic turns around and starts walking. 
-{moveChar: Szycrotic, .25}
-{anim: Szycrotic, wind idle}
+Lucas turns around and starts walking. 
+{moveChar: Lucas, .25}
+{movecube: .25, .1}
+{anim: Lucas, Wind Idle}
 {fadeinsound: Walking on Gravel, 1}
-{fadeoutsound: Szy Dark, 5}
+{fadeoutsound: Lucas Dark, 5}
 {fadeinsound: Star Piano, 5}
-Szycrotic looks over his shoulder to make sure I am still following. 
-Szycrotic::
+Lucas looks over his shoulder to make sure I am still following. 
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Lucas::
 "You know, you are lucky Star felt you before I did."
 "I don't generally tolerate 'uninvited guests' as well as she does."
 "Where did you even come from?"
@@ -396,8 +416,8 @@ I mean, who would believe me?
 I almost walk beside him. I mean there is only one path.
 MC::
 "Asterella Star? Is that who is in charge here?"
-Szycrotic nods approvingly, glancing sideways at me, reassessing me.
-Szycrotic::
+Lucas nods approvingly, glancing sideways at me, reassessing me.
+Lucas::
 "Yes. You seem to know her. Are you a Demon Lord? Or..."
 MC::
 The disbelief dominates his expression.
@@ -406,56 +426,37 @@ I can't say I watched her streams. That skirts way too close to the actual truth
 I have a feeling he might catch me in a lie as well. 
 "I know <i>of</i>  her through friends. I hear she is very beautiful."
 "And do I look like a demon lord to you?"
-{fadeinsound: Szy Laugh 3, .1}
-Szycrotic chuckles.
-Szycrotic::
+{fadeinsound: Lucas Laugh 4, .1}
+Lucas chuckles.
+Lucas::
 "Yeah. I didn't think so. No offense but..."
 "Just wait until you meet her. She is beyond beautiful."
-{anim: Szycrotic, Wind Idle}
+{anim: Lucas, Wind Idle}
 MC::
 He pauses, kicking a rock off the path as he thinks.
-Szycrotic::
-{additive:on}
-"Bruh, she's like, the sexiest demon lord ever.
-Only one other matches her, and that's Satan herself, yo."
-{additive:off}
+Lucas::
+"Bruh, she's like, the sexiest demon lord ever."
 MC::
 He laughs openly.
-Szycrotic::
-{additive: on}
-"They both disagree often. 
-Ironmouse and Star are like sisters."
-{additive: off}
+{disableChar: Live 2D Bokeh}
 MC::
-Wait Ironmouse too?
 What did I walk into? This brings up so many questions.
 Maybe they are just roleplaying? A live stream event?
-"Are you saying Ironmouse is in charge of all the demon lords in Hell?"
-"And Asterella is one of them?"
-Szycrotic::
-"That's what I said, MC."
-"Ironmouse doesn't take her job that serious man." 
-MC::
-I can hear frustration in his tone. 
 I can't help but just stare down the path at the outer wall.
 This is crazy! Are they not human streamers?
 The demon looks back at me with an amused glance.
-Szycrotic::
-{additive: on}
-"And Star doesn't approve.
-Star treats Mousey like she is the younger sister, 
-running off and playing instead of being responsible."
+Lucas::
 [Default]
-{additive: off}
-"The sparks that sometimes fly between these two... You can't help but grab some popcorn and watch."
 MC::
 I mull over this.
 "So where is this place that I accidentally fell into?"
 In front of us, an outer wall looms, hewn of ancient stone.
 Vegetation grows in the cracks and crevices. 
-Szycrotic waves a hand, and the main gate opens.
-Szycrotic::
+Lucas waves a hand, and the main gate opens.
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Lucas::
 "Welcome to the 69th Circle of Hell, MC."
+{disableChar: Live 2D Bokeh}
 MC::
 {additive:on}
 We pass through the entrance in silence. 
@@ -474,29 +475,30 @@ I still have to maintain speed, so I try to soak in more.
 {fadeoutsound: waterfountainstar, 5}
 Like the <i>enormous,</i> waist deep, fountain directly center of the main doors into the manor proper. 
 {fadeoutsound: Walking on Gravel, 1}
-{moveChar: Szycrotic, .50}
+{moveChar: Lucas, .50}
+{movecube: .5, .3}
 We stop in front of the 10 foot tall ancient wooden doors. 
-Szycrotic::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Lucas::
 "I noticed you admiring the grounds. You think <i>that</i> is beautiful, wait until you go inside."
 MC::
 He pulls on the handle.
 {fadeinsound: Castle Door, 1}
 {fadeoutsound: Wind Heavy, 2}
 {fadeoutsound: Star Piano, 2} 
-Szycrotic::
+Lucas::
 "Better yet, wait until you meet Her."
 MC::
 And with those words, we saunter into the largest mansion I have ever seen...
-{changeScene: Scenes/Star/Star Bedroom Night}
+{changeScene: Star Bedroom Night}
 {colorformat: Asterella}
-{fadeinsound:Szy and Star Dinner, 1}
+{fadeinsound: Star Dinner, 1}
 {fadeinsound: fireplace, 1}
 {spawnEmpty: MC, Player}
-{spawnChar: szycrotic default, -1, Szycrotic}
+{spawnChar: lucas butler, -1, Lucas}
 {spawnChar: star nightgown, 2, Asterella}
-{anim: Szycrotic, Idle}
-{anim: Asterella, Idle}
-{moveChar: Szycrotic, .3}
+{movecube: .5, .1}
+{moveChar: Lucas, .3}
 MC::
 It took at least 5 mins of walking to get here. 
 The mansion is almost a small village by itself, with many different rooms.
@@ -506,8 +508,9 @@ Some cat girls too.
 MC::
 Mah Heart! 
 And...
-Szycrotic has been humming songs under his breath the entire way. 
+Lucas has been humming songs under his breath the entire way. 
 I don't recognize the tune at all. It's alien to me.
+{movecube: .4, .4}
 {moveChar: Asterella, .70}
 {additive: on}
 As we come in, 
@@ -527,7 +530,8 @@ hugging her form in a very sensual way.
 Seeing her in person, with no screen. No barriers...
 {fadeinsound: Heart Thump, .1}
 My heart thumps in response. 
-Szycrotic::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Lucas::
 "Hello, my Lord. I bring back the intruder, as requested."
 MC::
 He bows deeply, in a very formal manner. 
@@ -539,7 +543,7 @@ It brings its own problems though.
 Asterella Star is a Demon Lord in charge of a realm.
 Whether or not I believe it to be genuine. <i>They do.</i>
 I remain silent.
-Szycrotic::
+Lucas::
 [OWO]
 "Was that good? I feel like that was good. Yeah?"
 MC::
@@ -549,29 +553,31 @@ Star's light chuckle locks her identity down.
 {fadeinsound: Star Laugh Bowing, 1}
 MC::
 "Do I look like an expert on etiquette?"
-Szycrotic::
+Lucas::
 [Angry]
 MC::
 I get a very satisfying scowl.
 Asterella::
 [Happy]
 {anim: Asterella, Thinking}
-"Szy. That wasn't too bad, actually."
-Szycrotic::
+"That wasn't too bad, actually."
+Lucas::
 [Default]
 Asterella::
 "Don't do that again, though. It freaks me out when <i>you</i> do it."
+{disableChar: Live 2D Bokeh}
 MC::
 The surprise in her voice reflects mine.
 She closes the book with an air of finality, placing it on the table.
 {fadeinsound: bookclose1,  .1}
 For the first time since entering the room, she looks at both of us.
 In one smooth motion she is standing.
-I stay in the half bow position with Szy.
+I stay in the half bow position with Lucas.
 The voice confirmed it. This is the Asterella Star from Twatch.
 I know that voice all too well. Her streams are hilariously cursed at times. 
 Her audience loves it. 
-Szycrotic::
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Lucas::
 "Do I get my reward then <i>Master</i>?"
 MC::
 The blank look from Asterella was priceless.
@@ -583,6 +589,7 @@ MC::
 A slight turn of her lips suggests a smile.
 Asterella::
 "And almost sarcastic."
+{movecube: .65, .2}
 MC::
 She motions to me, looking at me for the first time.
 Asterella::
@@ -606,12 +613,14 @@ Asterella::
  "And very well, MC. I'll respect your request."
 }
 MC::
-After trying out my name, she turns to Szycrotic.
+After trying out my name, she turns to Lucas.
+{movecube: .4, .4}
 Asterella::
 [Default]
 "Yes, you may be rewarded."
 "Go. See the Dungeon Master for your nightly punishment."
 "I will attend to this...intruder."
+{disableChar: Live 2D Bokeh}
 MC::
 Nightly punishment?
 Uh oh. 
@@ -621,17 +630,18 @@ Up close, the whole experience is surreal.
 This is not some V-Tuber stream.
 They seem to <i>live</i> here. 
 {additive: off}
-{moveChar: Szycrotic, .1}
-Szycrotic nudges me suggestively in the ribs as he heads out.
-Szycrotic::
+{moveChar: Lucas, .1}
+Lucas nudges me suggestively in the ribs as he heads out.
+Lucas::
 "I'm weak compared to her. My advice? Don't piss her off."
-{moveChar: Szycrotic, -1}
+{moveChar: Lucas, -1}
 {moveChar: Asterella, .5}
+{movecube: .1, .4}
 {anim: Asterella, Smug}
 Asterella::
 [Happy]
 MC::
 {fadeinsound: openclosedoor, 1}
-Star watches Szy close the door, with a look of satisfaction on her face. 
+Star watches Lucas close the door, with a look of satisfaction on her face. 
 When the door closes, she sighs, closing her eyes for a brief moment.
-{changeScript: Male/Prologue/Star II, 134}
+{changeScript: Male/Prologue/Star II, 174}

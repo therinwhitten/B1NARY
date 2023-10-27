@@ -1,0 +1,304 @@
+{changeScene: Brain Sucking Chair Side}
+{colorformat: Emerald}
+{fadeinsound: Fast Keyboard Typing, .5}
+{fadeinsound: Discovery Music, 4}
+{spawnChar: malesilo3, 2, Shirobi}
+{spawnChar: malesilo, -1, Cliff}
+{spawnChar: femalesilo, -1.5, Becks}
+{spawnEmpty: Narrador, NPC}
+Narrador::
+La ventana cambia, oscureciéndose como la medianoche.
+Nadie se atreve a hacer un sonido.
+La charla rápida de las computadoras portátiles revela la sensación de urgencia y tensión que impregna la habitación.
+{fadeinsound: Cliff Wood Tap, .1}
+Cliff se apoya en el respaldo de la silla de Shirobi, golpeando con impaciencia la espalda de madera.
+En la pantalla, se ejecuta un diagnóstico en el DIHI. 
+Shirobi, pálido como un fantasma, solo mira la pantalla sin mirarla.
+{moveChar: Shirobi, .75}
+{moveChar: Cliff, .2}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Shirobi::
+{if: !n-b}
+{
+ "Se lo prometí, señor. Que ella estaría bien.... Le dije que solo serían cuatro días. Y ..."
+}
+{if: n-b}
+{
+ "Se lo prometí, señor. Que estarían bien... Les dije que solo serían cuatro días. Y ..."
+}
+Narrador::
+Shirobi ahoga el pánico, suspirando derrotado.
+{anim: Shirobi, Bow}
+Shirobi::
+{if: !n-b}
+{
+ <i>Llorar no la traerá de vuelta a salvo ...</i>
+}
+{if: n-b}
+{
+ <i>Llorar no los traerá de vuelta sanos y salvos...</i>
+}
+{additive: on}
+"No hay patrones de pensamiento en ninguno de los servidores.
+¿Es posible que el DIHI simplemente ...
+{if: !n-b}
+{
+ ¿Pelearla?"
+}
+{if: n-b}
+{
+ ¿Pelearlos?"
+}
+{additive: off}
+Narrador::
+Cliff sacude la cabeza. Se niega a aceptar ese destino.
+Cliff::
+"No podemos descartar eso, pero estoy seguro de que el DIHI está funcionando según lo previsto".
+{additive: on}
+"Ya se han hecho muchas pruebas:
+Seis meses de preparación en esa silla.
+Seis meses enteros ..."
+{additive: off}
+Narrador::
+Cliff se aleja, su cuerpo comienza a temblar.
+Cliff::
+{if: !n-b}
+{
+ "¡¡Ella es solo una niña maldita !!"
+}
+{if: n-b}
+{
+ ¡¡Son solo un niño maldito !!"
+}
+{fadeinsound: Cliff Fist Wood, 1} 
+{additive: off}
+Narrador::
+{additive: on}
+El sonido de un puño, 
+ruidoso en la habitación, por lo demás tranquila, 
+hace que el equipo salte.
+{additive: off}
+Cliff::
+"Si la prensa hubiera sospechado que algo andaba mal..."
+Narrador::
+Cliff mira su puño, relajándolo a la fuerza.
+Cliff::
+{additive: on}
+"Está bien.
+{if: !n-b}
+{
+ Tenemos cuatro días para encontrarla.
+}
+{if: n-b}
+{
+ Tenemos cuatro días para encontrarlos.
+}
+Verifica esa prueba para mí Shirobi, ¿quieres? Estoy cansado...
+Tan cansado".
+{additive: off}
+Narrador::
+Cliff se frota el puente de la nariz con frustración.
+{additive: on}
+Shirobi, 
+pálido, y obviamente preocupado por su amigo, 
+Visiblemente sacude la cabeza y vuelve al trabajo.
+{disableChar: Live 2D Bokeh}
+{anim: Shirobi: Checktime}
+{additive: off} 
+El silencio reina mientras los técnicos verifican sistemáticamente los puertos, la configuración del DIHI y las computadoras portátiles.
+Pasan varios minutos. De repente, alguien se levanta.
+{moveChar: Becks, .55}
+{additive: on}
+AJoven técnico de laboratorio, recién salido de la pasantía, 
+mira hacia arriba desde la computadora portátil desde el otro lado de la habitación, 
+Su cabello castaño es un desastre, traicionando las largas horas de preparación para este experimento.
+{additive: off}
+{anim: Becks, Pensive}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
+Becks::
+"Señor, creo que encontré el problema".
+Narrador::
+Se recuesta en su silla y gira, frente a ellos.
+Becks::
+"Es grande".
+Narrador::
+Cliff apenas puede contener la impaciencia y el agotamiento en su voz.
+Cliff::
+"Becks solo lo dice. ¿Qué encontraste?"
+Narrador::
+Becks abre la boca, vacila y luego la cierra.
+{anim: Becks, Shy}
+Becks::
+"Señor, necesita ver esto usted mismo".
+Narrador::
+{additive: on}
+Se acerca el acantilado,
+No estoy seguro de lo que se supone que debe ver.
+Se está ejecutando un diagnóstico normal en la pantalla. Su ceño se frunce y mira a Becks.
+{additive: off}
+Cliff::
+"El escaneo aún no ha terminado. ¿Qué estoy buscando?" 
+"¿Becks?"
+Becks::
+"Mira el estado de la lan".
+Narrador::
+Becks mueve el ratón sobre y hace clic para abrir la configuración de red.
+Becks::
+"Here."
+{anim: Becks, Headbow}
+Narrador::
+Cuando Becks hace clic en el estado de la red, ambos ven el problema.
+No hay servidores locales... ninguno. Del uno al diez debería estar allí ... 
+Una cosa llama la atención de Cliff, haciendo que respire bruscamente.
+El supervisor de laboratorio de repente mira a Becks cuestionablemente, y Becks asiente.
+Becks::
+"Se ha conectado todo el experimento".
+Narrador::
+Cliff comienza a caminar, murmurando para sí mismo, las palabras irreconocibles, incluso para el equipo del laboratorio. 
+Hace una pausa en su divagación y centra su atención en Shirobi.
+El pánico, la ira y una ligera dosis de desesperación pintan sus rasgos claramente.
+Cliff::
+"Buenas noticias, el DIHI está bien. Al menos no estaban revueltos".
+Narrador::
+{fadeoutsound: Fast Keyboard Typing, .5}
+Shirobi deja de escribir, mirando hacia arriba.
+Cliff::
+"Ese no es el problema: el problema es que el DIHI no está conectado a los servidores. Está conectado a Internet".
+Narrador::
+{anim: Shirobi, Bow}
+{anim: Cliff, kime2}
+Shirobi gime mientras coloca su cabeza entre sus manos.
+Shirobi::
+"¡Oh MIERDA!"
+Narrador::
+Silencio. Varios segundos pasan en silencio sepulcral.
+Masajeando su frente, la voz de Shirobi se levanta.
+Shirobi::
+{anim: Shirobi, Glasses}
+{if: !n-b}
+{
+ "Señor, ¿tenemos siquiera la oportunidad de encontrarla allí? Quiero decir que ella es la <i>única</i> humana en Internet, pero ..."
+}
+{if: n-b}
+{
+ "Señor, ¿tenemos siquiera la oportunidad de encontrarlos? Quiero decir que son el <i>único</i> humano en Internet, pero..."
+}
+Narrador::
+El anciano, mirando la pantalla de su computadora portátil, suspira y responde.
+Cliff::
+{if: !n-b}
+{
+ {additive: on}
+ "Es posible, 
+ pero tendríamos que enviar una IA al código para buscar sus patrones cerebrales, y <i>esperar que</i> sus patrones no se alteren demasiado. 
+ Si lo hacen, no podremos encontrarla".
+ {additive: off}
+ "Rezo para que aterrice en un lugar semiseguro".
+ "¿El ransomware o el malware la lastimará? Hay tantos peligros desconocidos de los que no tenemos ni idea..."
+}
+{if: n-b}
+{
+ {additive: on}
+ "Es posible, 
+ pero tendríamos que enviar IA al código para buscar sus patrones cerebrales, y <i>esperar que</i> sus patrones no se alteren demasiado. 
+ Si lo hacen, no podremos encontrarlos".
+ {additive: off}
+ "Rezo para que MC aterrice en un lugar semiseguro".
+ "¿El ransomware o el malware les hará daño? Hay tantos peligros desconocidos de los que no tenemos ni idea..."
+}
+Narrador::
+Shirobi, escuchando atentamente, se ilumina.
+{anim: Shirobi, Thisway}
+Shirobi::
+"¡Lo tengo! ¡El historial del navegador! ¡Es tan simple!"
+{additive: on}
+"Podemos empezar por ahí. 
+¿Cómo suena eso Jefe? 
+Al menos puede centrar nuestros esfuerzos. Youbtube es tan <i>grande</i> ahora ...
+No sabríamos dónde habita realmente la IA sin ser parte de la estructura".
+{additive: off}
+Narrador:: 
+Cliff asiente, sin apartar la vista de la pantalla, la determinación sombría reemplaza el pánico.
+Cliff::
+{if: !n-b}
+{
+ "MC, ella nos necesita".
+ {additive: on}
+ "Ella será valiente, pero despistada.
+ Más sola que cualquier mujer. 
+ El único humano en el mundo digital. 
+ Espero que eso sea suficiente para encontrarla".
+ {additive: off} 
+}
+{if: n-b}
+{
+ "MC, nos necesitan".
+ {additive: on}
+"Serán valientes, pero despistados.
+ Más solo que cualquier otra persona. 
+ El único humano en el mundo digital. 
+ Podría ser suficiente ventaja para encontrarlos rápidamente".
+ {additive: off} 
+}
+Narrador::
+Sus ojos se centran en Shirobi. El comando en su voz fuerte.
+Cliff::
+"Obtenga las impresiones del patrón de pensamiento de MC ingresadas en el mainframe y comience a entrenar a la IA".
+"Con suerte, podemos comenzar un patrón de búsqueda completo en 12 horas".
+Becks::
+{anim: Becks, Thiswayleft}
+"¿Qué pasa con la prensa, señor?"
+Narrador::
+Cliff mira a Becks.
+Cliff:: 
+"Tenemos cuatro días. Cuatro días para encontrar la respuesta".
+"Por ahora, lo interpretaremos como los típicos técnicos de laboratorio corporativos secretos".
+Narrador::
+Termina la frase con un poco de ironía.
+Cliff::
+"Al menos podemos usar ese estereotipo para ganar algo de tiempo".
+"Mientras tanto, trate de encontrar una buena manera de explicar al mundo lo que está sucediendo".
+{if: !n-b}
+{
+ "Si no podemos encontrarla para entonces, habrá una reacción seria en esto".
+}
+{if: n-b}
+{
+ "Si no podemos encontrarlos para entonces, habrá una reacción seria en esto".
+}
+Narrador::
+El camino de Cliff se despeja, su confianza vuelve.
+Cliff::
+"Y conseguir que alguien haga un diagnóstico completo sobre el DIHI. Asegúrese de que el informe sea ..."
+Narrador::
+{disableChar: Live 2D Bokeh}
+{if: !n-b}
+{
+ Mientras Cliff continúa enviando instrucciones a su equipo, no pudo evitar sentir una punzada de tristeza increíble. 
+ El niño acaba de salir de la universidad.
+ El jefe realmente conoce a los padres del niño, y se sentirán devastados al escuchar lo que le sucedió a su hija.
+ {additive: on}
+ Ella es tranquila, serena, y con un ingenio rápido, reflexiona.
+ Una joven brillante sin duda,
+ pero propenso a saltar sin mirar.
+ {additive: off}
+ Desde su perfil, ella es bastante competente.
+ Él espera que donde quiera que esté, ella sea lo suficientemente inteligente como para mantener el ritmo y tomar decisiones cuidadosas ...
+}
+{if: n-b}
+{
+ Mientras Cliff continúa enviando instrucciones a su equipo, no pudo evitar sentir una punzada de tristeza increíble. 
+ El niño acaba de salir de la universidad.
+ El jefe realmente conoce a los padres del niño, y se sentirán devastados al escuchar lo que le sucedió a su hijo.
+ {additive: on}
+  MC es tranquilo, sereno, con un ingenio rápido. Él reflexiona.
+ Un joven brillante para estar seguro,
+ pero propenso a saltar sin mirar.
+ {additive: off}
+ Desde su perfil, son competentes.
+ Espera que dondequiera que esté MC, sean lo suficientemente inteligentes como para mantener el ritmo y tomar decisiones cuidadosas ...
+}
+{usegameobject: Flashing Warning Panel, true}
+{fadeoutsound: Discovery Music, 5}
+{fadeoutsound: Laptop Lab Scene, 5}
+{changeScript: Female/Prologue/Denizen}

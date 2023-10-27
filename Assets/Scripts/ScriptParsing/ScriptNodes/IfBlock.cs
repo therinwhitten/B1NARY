@@ -7,13 +7,10 @@
 	using B1NARY.DataPersistence;
 	using UnityEngine;
 
-	[NodeCommandCondition("if")]
-	public sealed class IfBlock : ScriptNode
+	public sealed class IfBlock : ScriptElement
 	{
-		public IfBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
-		{
+		public static Predicate<List<ScriptLine>> Predicate => (lines) => lines[0].Type == ScriptLine.LineType.Command && lines[0].RawLine.Contains("if");
 
-		}
 		/// <summary>
 		/// Gets a value indicating whether this block can perform.
 		/// </summary>
@@ -21,7 +18,7 @@
 		{
 			get
 			{
-				string[] argumentName = ScriptLine.CastCommand(rootLine).arguments;
+				string[] argumentName = ScriptLine.CastCommand(PrimaryLine).arguments;
 				if (argumentName.Length > 1 || argumentName.Length <= 0)
 					throw new IndexOutOfRangeException($"This should have only one parameter, and it is for the name of the parameter!");
 				bool output = true;
@@ -31,49 +28,45 @@
 					argumentName[0] = argumentName[0].Substring(1);
 				}
 
-				if (SaveSlot.Instance.scriptDocumentInterface.bools.TryGetValue(argumentName[0], out bool value))
+				if (SaveSlot.ActiveSlot.booleans.TryGetValue(argumentName[0], out bool value))
 					return output == value;
 				throw new MissingFieldException($"{argumentName[0]} doesn't exist in the saves!");
 			}
 		}
-
-
-		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
+		public IfBlock(ScriptDocumentConfig config, List<ScriptLine> blockNodeData) : base(config, blockNodeData)
 		{
-			Debug.Log($"Starting If Statement in line {rootLine.Index}: {CanPerform}");
-			if (!CanPerform)
+
+		}
+		public override IEnumerator<ScriptNode> EnumerateThrough(int localIndex)
+		{
+			if (CanPerform)
+				return base.EnumerateThrough(localIndex);
+			for (int i = 0; i < Parent.Elements.Count; i++)
 			{
-				// The else block behaviour
-				if (document.nodes.Count >= nodeIndex + 1)
-					yield break;
-				if (document.nodes[nodeIndex + 1] is ElseBlock elseBlock)
-				{
-					using (var elseEnumerator = elseBlock.IfStatementPerform(pauseOnCommands)) 
-						while (elseEnumerator.MoveNext())
-							yield return elseEnumerator.Current;
-				}
-				yield break;
+				if (ReferenceEquals(Parent.Elements[i], this))
+					if (i + 1 < Parent.Elements.Count)
+						if (Parent.Elements[i + 1] is ElseBlock elseBlock)
+							return elseBlock.ElseEnumerate();
 			}
-			using (IEnumerator<ScriptLine> @base = base.Perform(pauseOnCommands))
-				while (@base.MoveNext())
-					yield return @base.Current;
+			return Array.Empty<ScriptNode>().AsEnumerable().GetEnumerator();
 		}
 	}
-	[NodeCommandCondition("else")]
-	public sealed class ElseBlock : ScriptNode
+	public sealed class ElseBlock : ScriptElement
 	{
-		public ElseBlock(ScriptDocument scriptDocument, ScriptPair[] subLines, int index) : base(scriptDocument, subLines, index)
+		public static Predicate<List<ScriptLine>> Predicate => (lines) => lines[0].Type == ScriptLine.LineType.Command && lines[0].RawLine.Contains("else");
+		public ElseBlock(ScriptDocumentConfig config, List<ScriptLine> blockNodeData) : base(config, blockNodeData)
 		{
 
 		}
-
-		public override IEnumerator<ScriptLine> Perform(bool pauseOnCommands)
+		public override IEnumerator<ScriptNode> EnumerateThrough(int localIndex)
 		{
 			yield break;
 		}
-		internal IEnumerator<ScriptLine> IfStatementPerform(bool pauseOnCommands)
+		internal IEnumerator<ScriptNode> ElseEnumerate()
 		{
-			return base.Perform(pauseOnCommands);
+			using var enumerator = base.EnumerateThrough(0);
+			while (enumerator.MoveNext())
+				yield return enumerator.Current;
 		}
 	}
 }

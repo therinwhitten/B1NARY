@@ -6,15 +6,16 @@
 
 	public sealed class ResolutionsDropdown : DropdownPanel<Resolution>
 	{
+		public static KeyValuePair<string, Resolution> ResolutionDisplay(Resolution resolution)
+			=> new($"{resolution.width}p x {resolution.height}p", resolution);
 		public override List<KeyValuePair<string, Resolution>> DefinedPairs
 		{
 			get
 			{
-				return B1NARYResolution.MonitorResolutions
-					.Where(resolution => resolution.RefreshRate == Screen.currentResolution.refreshRate)
-					.OrderByDescending(resolution => (resolution.Width * 100) + resolution.Height)
-					.Select(resolution => new KeyValuePair<string, Resolution>(resolution.ToString(), resolution))
-					.ToList();
+				List<KeyValuePair<string, Resolution>> pairs = new(ResolutionUtility.OrderedResolutions.Count);
+				for (int i = 0; i < ResolutionUtility.OrderedResolutions.Count; i++)
+					pairs.Add(ResolutionDisplay(ResolutionUtility.OrderedResolutions[i]));
+				return pairs;
 			}
 		}
 
@@ -27,7 +28,7 @@
 		protected override void PickedChoice(int index)
 		{
 			base.PickedChoice(index);
-			B1NARYResolution.ActiveResolution = (B1NARYResolution)CurrentValue;
+			Screen.SetResolution(CurrentValue.width, CurrentValue.height, Screen.fullScreenMode, CurrentValue.refreshRateRatio);
 		}
 	}
 }

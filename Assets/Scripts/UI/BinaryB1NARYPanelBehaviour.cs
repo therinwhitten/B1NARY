@@ -10,23 +10,16 @@
 	/// </summary>
 	public class BinaryB1NARYPanelBehaviour : MonoBehaviour
 	{
-		public string BinaryKeyName = "n-b";
-
 		public Button binaryButton, nonBinaryButton;
-		private void Awake()
+		private void Start()
 		{
-			binaryButton.onClick.AddListener(OnBinaryClick);
-			nonBinaryButton.onClick.AddListener(OnNonBinaryClick);
-		}
-		private void OnBinaryClick()
-		{
-			SaveSlot.Instance.scriptDocumentInterface.bools[BinaryKeyName] = true;
-			gameObject.SetActive(false);
-		}
-		private void OnNonBinaryClick()
-		{
-			SaveSlot.Instance.scriptDocumentInterface.bools[BinaryKeyName] = false;
-			gameObject.SetActive(false);
+			binaryButton.onClick.AddListener(() => Commit(true));
+			nonBinaryButton.onClick.AddListener(() => Commit(false));
+			void Commit(bool isBinary)
+			{
+				SaveSlot.ActiveSlot.IsBinary = isBinary;
+				gameObject.SetActive(false);
+			}
 		}
 	}
 }

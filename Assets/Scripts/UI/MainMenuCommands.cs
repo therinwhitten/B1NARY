@@ -4,17 +4,37 @@
 	using UI;
 	using System.Threading.Tasks;
 	using System.Collections;
+	using B1NARY.Scripting;
 
 	public class MainMenuCommands : MonoBehaviour
 	{
 		// Buttons
 		public void NewGame()
 		{
+			ScriptHandler.Instance.pauser?.Dispose();
+			ScriptHandler.Instance.pauser = new Pauser();
 			SceneManager.Instance.InitializeGame();
 		}
-		public void  QuitGame ()
+		public void NewGame(string streamingAssetsFilePath)
 		{
-
+			ScriptHandler.Instance.pauser?.Dispose();
+			ScriptHandler.Instance.pauser = new Pauser();
+			SceneManager.Instance.InitializeScript(streamingAssetsFilePath);
+		}
+		public void QuitToMainMenu()
+		{
+			CoroutineWrapper wrapper = new(SceneManager.InstanceOrDefault, SceneManager.InstanceOrDefault.ReturnToMainMenu());
+			wrapper.AfterActions += (mono) =>
+			{
+				if (!ScriptHandler.TryGetInstance(out var handler))
+					return;
+				handler.document = null;
+				handler.documentWatcher = null;
+			};
+			wrapper.Start();
+		}
+		public void QuitGame()
+		{
 #if UNITY_EDITOR
 			UnityEditor.EditorApplication.ExitPlaymode();
 #else
@@ -39,6 +59,8 @@ namespace B1NARY.UI.Editor
 		{
 			if (AddButton("New Game") && Application.isPlaying)
 				commands.NewGame();
+			if (AddButton("Quit To Main Menu") && Application.isPlaying)
+				commands.QuitToMainMenu();
 			if (AddButton("Quit Game") && Application.isPlaying)
 				commands.QuitGame();
 		}

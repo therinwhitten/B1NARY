@@ -19,6 +19,7 @@ On the screen, a diagnostic runs on the DIHI.
 Shirobi, pale as a ghost, just stares at the screen without really looking at it. 
 {moveChar: Shirobi, .75}
 {moveChar: Cliff, .20}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Shirobi::
 {if: !n-b}
 {
@@ -101,6 +102,7 @@ The supervisor looks at Shirobi.
 Cliff::
 "Verify that test for me Shirobi, will you? I'm tired...
 So tired."
+{disableChar: Live 2D Bokeh}
 {additive: off}
 Narrator::
 Cliff rubs the bridge of his nose in frustration.
@@ -119,6 +121,7 @@ A young lab tech, fresh out of internship,
 looks up from the laptop from across the room, 
 her auburn hair a mess, betraying the long hours of preparation for this experiment.
 {additive: off}
+{spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
 Becks::
 "Sir... I think I found the problem."
 Narrator::
@@ -281,6 +284,7 @@ Cliff's path clear, his confidence comes back.
 Cliff::
 "And get someone to do a complete diagnostic on the DIHI. Ensure the report is..."
 Narrator::
+{disableChar: Live 2D Bokeh}
 As Cliff continues to push out instructions to his team, he can't help but feel a pang of incredible sadness. 
 The kid is fresh out of college.
 {if: !n-b}
@@ -288,7 +292,7 @@ The kid is fresh out of college.
  Cliff knows about the kid's parents, and they really wouldn't care if he vanishes.
  From Cliff's meeting with them, the parents seemed annoyed he was involved in the project.
  {additive: on}
- The MC is socially inept, and normally withdrawn.
+ MC is socially inept, and normally withdrawn.
  A bright young man to be sure,
  but inclusive to the ones around him.
  {additive: off}
@@ -297,10 +301,10 @@ The kid is fresh out of college.
 }
 {if: n-b}
 {
- Cliff knows about the kid's parents, and they really wouldn't care if MC vanishes.
+ Cliff knows about the kid's parents, and they really wouldn't care less if MC vanishes.
  From Cliff's meeting with them, the parents seemed annoyed they were involved in the project.
  {additive: on}
- The MC is socially inept, and normally withdrawn.
+ MC is socially inept, and normally withdrawn.
  A bright young person to be sure,
  but inclusive to the ones around them.
  {additive: off}
@@ -310,10 +314,7 @@ The kid is fresh out of college.
 Cliff::
 "Don't be stupid, MC. You have to be very careful. There is no telling what's in there."
 "There are things in the internet that we can't even begin to comprehend..."
-Narrator::
-WARNING! 
-NEXT SCENE CONTAINS FLASHING LIGHTS AND CAN INDUCE NAUSEA OR AN EPILEPTIC SEIZURE. 
-TRANSITION STARTS NOW.
+{usegameobject: Flashing Warning Panel, true}
 {fadeoutsound: Discovery Music, 5}
 {fadeoutsound: Laptop Lab Scene, 5}
 {changeScript: Male/Prologue/Denizen}
