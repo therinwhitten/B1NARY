@@ -1,4 +1,7 @@
-# B1NARY
-Live 2D Visual Novel with Modularity.
+# B1NARY Main Game
 
-Main Branch Master for the Main game. 
+Before committing to master, we have this as the main game "Master" that will be for testing and verification.
+
+Any addition items, like PDA work, or Refactor, will be done on their own branch before being approved to merge with this branch. 
+
+Please respect these rules. 
