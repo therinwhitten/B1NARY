@@ -5,6 +5,95 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
+## [5-r.1-beta.2] - 2023-09-28
+
+### Added
+
+* Added configuration file so that assemblies are split.
+
+### Changed
+
+* Replace the sample model `Mao` with the updated version that is compatible with Cubism 5.0.
+
+### Fixed
+
+* Fix an issue where 1 byte of memory was allocated unnecessarily.
+* Fix a bug where automatic eye blinking did not close the eyes fully.
+
+
+## [5-r.1-beta.1] - 2023-08-17
+
+### Changed
+
+* When importing a Cubism Model in Unity Workflow, the AnimatorController is now set to the Animator in the Model Prefab.
+* Change so that multiply and screen colors applied to parent parts are propagated to child parts.
+
+### Fixed
+
+* Fix an issue where information was being got using indexes instead of IDs when getting cdi3.json data.
+* Fix a bug that prevented proper operation when the Unity Transition was longer than the motion fade.
+
+
+## [4-r.7] - 2023-05-25
+
+### Added
+
+* The number of render textures used can now be increased arbitrarily.
+  * The maximum number of masks when using multiple render textures has been increased to "number of render textures * 32".
+  * You can also continue to use the pre-R6_2 method.
+* Importing a model now generates a MaskTexture asset containing the model's name.
+  * It is generated only if the model prefab has not been generated.
+* Add the function of checking consistency on importing a MOC3. (`CubismMoc.CreateFrom`)
+  * This feature is enabled by default.Please see the following manual for more information.
+    * https://docs.live2d.com/cubism-sdk-manual/moc3-consistency/
+* Add component for changing Multiply Color / Screen Color from parent part.
+  * Components are automatically added to each part object of the model when the model is imported.
+
+### Fixed
+
+* Fix to improve physics and rendering performance. by [@ppcuni](https://github.com/ppcuni)
+* Fix an issue with `ResetSwapInfoFlags` function where flags were not initialized correctly. by [@ppcuni](https://github.com/ppcuni)
+
+
+## [4-r.6.2] - 2023-03-16
+
+### Fixed
+
+* Fix some problems related to Cubism Core.
+  * See `CHANGELOG.md` in Core.
+
+
+## [4-r.6.1] - 2023-03-10
+
+### Added
+
+* Add function to validate MOC3 files.
+
+
+## [4-r.6] - 2023-01-26
+
+### Added
+
+* Add the feature to search for Subrig objects by the name of the physics group. by [@ppcuni](https://github.com/ppcuni)
+* Add the feature to set the magnification of the output of the physics group uniformly to an arbitrary value. by [@ppcuni](https://github.com/ppcuni)
+* Add the feature to uniformly set the inversion flag for the output of the physics group. by [@ppcuni](https://github.com/ppcuni)
+* Add editor extension to the Inspector of CubismPhysicsController to display physics group names. by [@ppcuni](https://github.com/ppcuni)
+  * To apply this feature to sample models, we regenerated sample models prefab, etc.
+
+### Changed
+
+* Sample model assets are brought up to date.
+* Change the version of the development project to `2020.3.41f1`.
+
+### Fixed
+
+* Fix a bug that caused a warning to appear when importing a model with an unmatched Object Name.
+* Fix an issue where unwanted curves on `.anim` were not correctly erased when re-importing a model where Pose3.json exists.
+* Fix wrong condition for getter in HandlerInterface of Multiply Color and Screen Color. by [@qualice-hirakawa](https://github.com/qualice-hirakawa)
+* After setting the multiply color (or screen color) and related flags on the inspector, the changes are now retained when starting play mode. by [@qualice-hirakawa](https://github.com/qualice-hirakawa)
+* Fix a bug that caused `.fadeMotionList` to be created incorrectly when loading a model containing `.pose3.json`, depending on the order in which the `CubismPoseMotionImporter` was executed.
+
+
 ## [4-r.5] - 2022-09-08
 
 ### Added
@@ -243,6 +332,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fix issue where Priority value was not reset after playing motion with CubismMotionController.
 
 
+[5-r.1-beta.2]: https://github.com/Live2D/CubismUnityComponents/compare/5-r.1-beta.1...5-r.1-beta.2
+[5-r.1-beta.1]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.7...5-r.1-beta.1
+[4-r.7]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.6.2...4-r.7
+[4-r.6.2]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.6.1...4-r.6.2
+[4-r.6.1]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.6...4-r.6.1
+[4-r.6]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.5...4-r.6
 [4-r.5]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.5-beta.5...4-r.5
 [4-r.5-beta.5]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.5-beta.4...4-r.5-beta.5
 [4-r.5-beta.4]: https://github.com/Live2D/CubismUnityComponents/compare/4-r.5-beta.3...4-r.5-beta.4

@@ -25,12 +25,27 @@ namespace Live2D.Cubism.Core
         #region Factory Methods
 
         /// <summary>
+        /// Checks consistency of a moc.
+        /// </summary>
+        public static bool HasMocConsistency(byte[] moc3)
+        {
+            return CubismUnmanagedMoc.HasMocConsistency(moc3);
+        }
+
+        /// <summary>
         /// Creates a <see cref="CubismMoc"/> asset from raw bytes.
         /// </summary>
         /// <param name="moc3">Source.</param>
+        /// <param name="shouldCheckMocConsistency">Use the verification function?</param>
         /// <returns>Instance.</returns>
-        public static CubismMoc CreateFrom(byte[] moc3)
+        public static CubismMoc CreateFrom(byte[] moc3, bool shouldCheckMocConsistency = true)
         {
+            if (shouldCheckMocConsistency && !HasMocConsistency(moc3))
+            {
+                Debug.LogError("This Moc3 is Invalid. This model generation process is aborted and prefab is not created.");
+                return null;
+            }
+
             var moc = CreateInstance<CubismMoc>();
 
 

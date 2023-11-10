@@ -5819,16 +5819,16 @@ GameObject:
   - component: {fileID: 6554737657320403824}
   - component: {fileID: 6554737657320403831}
   - component: {fileID: 6554737657320403830}
+  - component: {fileID: 7625019629469207526}
   - component: {fileID: 6554737657320403829}
   - component: {fileID: 6554737657320403828}
   - component: {fileID: 6554737657320403835}
   - component: {fileID: 6554737657320403834}
-  - component: {fileID: 2321200479139628024}
-  - component: {fileID: 1199725961897046482}
   - component: {fileID: 6554737657320403833}
+  - component: {fileID: 6554039548301316505}
   - component: {fileID: 6554737657320403832}
   m_Layer: 10
-  m_Name: malesilo(old)
+  m_Name: malesilo2
   m_TagString: Live 2D Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5934,6 +5934,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BlendMode: 2
   EyeOpening: 1
+--- !u!114 &7625019629469207526
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6554737657320403838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd9e6647bfff7542acb0200ab74bdd1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CubismFadeMotionList: {fileID: 11400000, guid: 07cd52796bb28a34ea1b1df7c5aeb2f8,
+    type: 2}
 --- !u!114 &6554737657320403829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6109,34 +6123,6 @@ MonoBehaviour:
   _target: {fileID: 0}
   Center: {fileID: 0}
   Damping: 0.15
---- !u!114 &2321200479139628024
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6554737657320403838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b893d4d32dd60bc4c9a2e447d31c6e88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ExpressionsList: {fileID: 11400000, guid: 9cc59636309dab34e93200de69a920df, type: 2}
-  CurrentExpressionIndex: -1
---- !u!114 &1199725961897046482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6554737657320403838}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd9e6647bfff7542acb0200ab74bdd1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CubismFadeMotionList: {fileID: 11400000, guid: 07cd52796bb28a34ea1b1df7c5aeb2f8,
-    type: 2}
 --- !u!114 &6554737657320403833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6150,8 +6136,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedSizeIncreaseMultiplier: 1.1
-  expressionController: {fileID: 2321200479139628024}
+  expressionController: {fileID: 6554039548301316505}
   <FollowCubeParent>k__BackingField: {fileID: 0}
+--- !u!114 &6554039548301316505
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6554737657320403838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b893d4d32dd60bc4c9a2e447d31c6e88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ExpressionsList: {fileID: 11400000, guid: 9cc59636309dab34e93200de69a920df, type: 2}
+  CurrentExpressionIndex: -1
 --- !u!82 &6554737657320403832
 AudioSource:
   m_ObjectHideFlags: 0

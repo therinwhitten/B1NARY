@@ -56,9 +56,13 @@ namespace Live2D.Cubism.Core.Unmanaged
         /// </sumamry>
         public const int MocVersion_40 = 3;
         /// <sumamry>
-        /// .moc3 file version 4.2.00 -
+        /// .moc3 file version 4.2.00 - 4.2.04
         /// </sumamry>
         public const int MocVersion_42 = 4;
+        /// <sumamry>
+        /// .moc3 file version 5.0.00 -
+        /// </sumamry>
+        public const int MocVersion_50 = 5;
 
 
         /// <sumamry>
@@ -154,6 +158,11 @@ namespace Live2D.Cubism.Core.Unmanaged
         /// </summary>
         [DllImport(DllName, EntryPoint = "csmInitializeModelInPlace")]
         public static extern IntPtr InitializeModelInPlace(IntPtr moc, IntPtr memory, uint modelSize);
+        /// <summary>
+        /// Checks consistency of a moc.
+        /// </summary>
+        [DllImport(DllName, EntryPoint = "csmHasMocConsistency")]
+        public static extern int HasMocConsistency(IntPtr memory, uint mocSize);
         /// <summary>
         /// Updates model.
         /// </summary>
