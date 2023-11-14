@@ -7275,7 +7275,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Axis: 0
-  Factor: 5
+  Factor: 10
 --- !u!1 &2989915598095230305
 GameObject:
   m_ObjectHideFlags: 0
@@ -17384,6 +17384,7 @@ GameObject:
   - component: {fileID: 2989915599077554831}
   - component: {fileID: 2989915599077554829}
   - component: {fileID: 2989915599077554828}
+  - component: {fileID: 2639176887287790237}
   m_Layer: 10
   m_Name: ParamBodyAngleY
   m_TagString: Untagged
@@ -17434,6 +17435,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Body Y
   DisplayName: 
+--- !u!114 &2639176887287790237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2989915599077554830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c253e62b97ba834bac8dd1c531f2b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Axis: 1
+  Factor: 10
 --- !u!1 &2989915599079997907
 GameObject:
   m_ObjectHideFlags: 0
@@ -18334,12 +18349,12 @@ GameObject:
   - component: {fileID: 2989915599178063608}
   - component: {fileID: 2989915599178063611}
   m_Layer: 10
-  m_Name: star default(old)
+  m_Name: star default
   m_TagString: Live 2D Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2989915599178063610
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18349,7 +18364,7 @@ RectTransform:
   m_GameObject: {fileID: 2989915599178063613}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1000, y: 1000, z: 1}
+  m_LocalScale: {x: 1400, y: 1400, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2989915599250261445}
@@ -18512,7 +18527,7 @@ Animator:
   m_GameObject: {fileID: 2989915599178063613}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: f77c53f6a336f1d41a23fafcf08a7284, type: 2}
+  m_Controller: {fileID: 9100000, guid: 583417a5b8447fe4e8c2d35f000aabfd, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -19911,7 +19926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a17cf993df9fb848981f506d270195a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedSizeIncreaseMultiplier: 1.1
+  selectedSizeIncreaseMultiplier: 1
   expressionController: {fileID: 2989915599178063599}
   <FollowCubeParent>k__BackingField: {fileID: 0}
 --- !u!82 &2989915599178063611
@@ -19925,11 +19940,11 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -6093018754180893463, guid: e149b04e0d2c2174a925c5eaaf359315,
     type: 2}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 9de113cbec7c3144ab19d602780aa23e, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
