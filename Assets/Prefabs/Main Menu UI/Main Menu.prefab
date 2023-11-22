@@ -6880,6 +6880,7 @@ GameObject:
   - component: {fileID: 6094002358849317109}
   - component: {fileID: 6094002358849317110}
   - component: {fileID: 984573120056027245}
+  - component: {fileID: 6895935399224953995}
   m_Layer: 5
   m_Name: Fan Art
   m_TagString: Untagged
@@ -7419,6 +7420,19 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 6895935399224953995}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -7431,6 +7445,23 @@ MonoBehaviour:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6895935399224953995}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: -1
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -7458,6 +7489,19 @@ MonoBehaviour:
   - Fan Art
   - "\u30D5\u30A1\u30F3\u30A2\u30FC\u30C8"
   - Arte de fan
+--- !u!114 &6895935399224953995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094002358849317100}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b3134664b501f48874af8b222e799e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actor: {fileID: 0}
 --- !u!1 &6094002359020479445
 GameObject:
   m_ObjectHideFlags: 0
@@ -8071,6 +8115,7 @@ GameObject:
   - component: {fileID: 2610260660428255803}
   - component: {fileID: 6094002359242114047}
   - component: {fileID: 5823364571884193019}
+  - component: {fileID: 8011427049899784635}
   m_Layer: 5
   m_Name: New Game
   m_TagString: Untagged
@@ -8550,6 +8595,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Impatient
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -8601,6 +8658,19 @@ MonoBehaviour:
   - Neu
   - "\u65B0\u3057\u3044"
   - Nuevo
+--- !u!114 &8011427049899784635
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094002359242114046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b3134664b501f48874af8b222e799e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actor: {fileID: 0}
 --- !u!1 &6094002359243133855
 GameObject:
   m_ObjectHideFlags: 0
@@ -8618,6 +8688,7 @@ GameObject:
   - component: {fileID: 6094002359243133848}
   - component: {fileID: 6094002359243133849}
   - component: {fileID: 4659471686281668526}
+  - component: {fileID: 8975938936788405587}
   m_Layer: 5
   m_Name: Quit
   m_TagString: Untagged
@@ -9097,6 +9168,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Pouting
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -9136,6 +9219,19 @@ MonoBehaviour:
   - Beenden
   - "\u3084\u3081\u308B"
   - Deje
+--- !u!114 &8975938936788405587
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094002359243133855}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b3134664b501f48874af8b222e799e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actor: {fileID: 0}
 --- !u!1 &6094002359253956822
 GameObject:
   m_ObjectHideFlags: 0
@@ -10450,6 +10546,7 @@ GameObject:
   - component: {fileID: 6094002359982842171}
   - component: {fileID: 6094002359982842169}
   - component: {fileID: 6380012041611938318}
+  - component: {fileID: 2525821322697480574}
   m_Layer: 5
   m_Name: Credits
   m_TagString: Untagged
@@ -10917,6 +11014,19 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 2525821322697480574}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -10931,6 +11041,23 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 2525821322697480574}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: -1
+            m_FloatArgument: 0
+            m_StringArgument: -1
             m_BoolArgument: 0
           m_CallState: 2
 --- !u!114 &6380012041611938318
@@ -10956,6 +11083,19 @@ MonoBehaviour:
   - Credits
   - "\u30AF\u30EC\u30B8\u30C3\u30C8"
   - "Cr\xE9ditos"
+--- !u!114 &2525821322697480574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094002359982842161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b3134664b501f48874af8b222e799e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actor: {fileID: 0}
 --- !u!1 &6094002360275936319
 GameObject:
   m_ObjectHideFlags: 0
