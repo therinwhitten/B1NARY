@@ -20,38 +20,41 @@ namespace B1NARY.DLC
             // Build asset bundles for the current build target
             BuildAssetBundles(outputFolder, BuildAssetBundleOptions.None, activeBuildTarget);
 
+            // Exclude the hentaiscenes.dlc and hentaiart.dlc asset bundles from the build
+            ExcludeAssetBundles(outputFolder, new string[] { "hentaiscenes.dlc", "hentaiart.dlc" });
+
             // Log whether or not the asset bundles are in the game
-            Debug.Log("Asset Bundles are " + (AssetBundlesExistInGame()? "in the game" : "not in the game"));
+            Debug.Log("Asset Bundles are " + (AssetBundlesExistInGame(outputFolder)? "in the game" : "not in the game"));
         }
 
         private static void BuildAssetBundles(string outputPath, BuildAssetBundleOptions options, BuildTarget target)
         {
-            // Exclude the hentaiscenes.dlc and hentaiart.dlc asset bundles from the build
-            string[] assetBundleNamesToExclude = { "hentaiscenes.dlc", "hentaiart.dlc" };
+            // Build asset bundles for the current build target
+            BuildPipeline.BuildAssetBundles(outputPath, options, target);
+        }
 
-            AssetBundleBuild[] assetBundleBuilds = new AssetBundleBuild[1];
-            assetBundleBuilds[0] = new AssetBundleBuild()
-            {
-                assetBundleName = "all_asset_bundles",
-                assetNames = new string[] { }
-            };
-
-            foreach (string assetBundleName in assetBundleNamesToExclude)
+        private static void ExcludeAssetBundles(string outputPath, string[] assetBundleNames)
+        {
+            // Exclude the specified asset bundles from the build
+            foreach (string assetBundleName in assetBundleNames)
             {
                 string assetBundlePath = Path.Combine(outputPath, assetBundleName);
-                assetBundleBuilds[0].assetNames = assetBundleBuilds[0].assetNames.Concat(AssetDatabase.GetAssetPathsFromAssetBundle(assetBundleName)).ToArray();
-                AssetDatabase.RemoveAssetBundleName(assetBundleName, true);
+                File.Delete(assetBundlePath);
             }
-
-            BuildPipeline.BuildAssetBundles(outputPath, assetBundleBuilds, options, target);
         }
 
-        private static bool AssetBundlesExistInGame()
+        private static bool AssetBundlesExistInGame(string outputPath)
         {
-            // Check if asset bundles exist in the game by looking for a scene from the asset bundles
-            string sceneNameToCheck = "Star Bedroom Male H Scene"; // Change this to the scene name from the asset bundle
-            return EditorBuildSettings.scenes.Any(scene => scene.path.EndsWith(sceneNameToCheck + ".unity"));
+            // Check if asset bundles exist in the game by looking for scenes from the asset bundles
+            string sceneNameMale = "Star Bedroom Male H Scene"; // Change this to the scene name from the male asset bundle
+            string sceneNameFemale = "Star Bedroom Female H Scene"; // Change this to the scene name from the female asset bundle
+
+            string scenePathMale = Path.Combine(outputPath, sceneNameMale + ".unity");
+            string scenePathFemale = Path.Combine(outputPath, sceneNameFemale + ".unity");
+
+            return File.Exists(scenePathMale) && File.Exists(scenePathFemale);
         }
+
     }
 }
 #endif

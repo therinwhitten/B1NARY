@@ -199,7 +199,17 @@
 			while (transition.MoveNext())
 				yield return transition.Current;
 		}
-	}
+
+        internal static AsyncOperation LoadSceneAsync(string sceneName1, LoadSceneMode additive)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal static void SetActiveScene(Scene scene2)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 	
 }

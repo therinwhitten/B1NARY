@@ -1,10 +1,11 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
+using System.IO;
+
 namespace B1NARY.DLC
 {
-    using System.Collections;
-    using UnityEngine;
-    using UnityEngine.SceneManagement;
-    using System.IO;
-
     public class LoadAssetBundleRuntime : MonoBehaviour
     {
         public string hentaiArtBundleName = "hentaiart.dlc";
@@ -29,7 +30,7 @@ namespace B1NARY.DLC
         IEnumerator LoadAssetBundle(string bundleName)
         {
             // Construct the path to the asset bundle
-            string path = Path.Combine(Application.streamingAssetsPath, "AssetBundles", bundleName);
+            string path = Path.Combine(Application.streamingAssetsPath, "HentaiDLC", bundleName);
             Debug.Log("Asset Bundle Path: " + path);
 
             var request = AssetBundle.LoadFromFileAsync(path);
@@ -49,25 +50,68 @@ namespace B1NARY.DLC
             if (bundleName.Equals(hentaiScenesBundleName))
             {
                 // If it's the scenes bundle, load the scenes
-                LoadScenesFromAssetBundle(assetBundle);
+                StartCoroutine(LoadScenesFromAssetBundle(assetBundle));
             }
 
             // Unload the asset bundle when done
-            assetBundle.Unload(false);
-            Debug.Log("Asset Bundle unloaded: " + bundleName);
+            //assetBundle.Unload(false);
+            //Debug.Log("Asset Bundle unloaded: " + bundleName);
         }
 
-        void LoadScenesFromAssetBundle(AssetBundle assetBundle)
+        IEnumerator LoadScenesFromAssetBundle(AssetBundle assetBundle)
         {
             // Replace with the actual scene names in your asset bundle
             string sceneName1 = "StarBedroomFemaleHScene";
             string sceneName2 = "StarBedroomMaleHScene";
 
-            // Load scenes from the asset bundle
-            SceneManager.LoadScene(sceneName1, LoadSceneMode.Additive);
-            SceneManager.LoadScene(sceneName2, LoadSceneMode.Additive);
+#if UNITY_EDITOR
+            // Check if the scenes are in the build settings
+            if (SceneInBuildSettings(sceneName1) && SceneInBuildSettings(sceneName2))
+#endif
+            {
+                // Load the first scene asynchronously
+                AsyncOperation asyncOperation1 = UnitySceneManager.LoadSceneAsync(sceneName1, LoadSceneMode.Additive);
+                asyncOperation1.allowSceneActivation = false;
 
-            Debug.Log("Scenes loaded from the Asset Bundle.");
+                // Load the second scene asynchronously
+                AsyncOperation asyncOperation2 = UnitySceneManager.LoadSceneAsync(sceneName2, LoadSceneMode.Additive);
+                asyncOperation2.allowSceneActivation = false;
+
+                // Wait for both scenes to finish loading
+                while (!asyncOperation1.isDone || !asyncOperation2.isDone)
+                {
+                    yield return null;
+                }
+
+                // Activate the scenes
+                Scene scene1 = UnitySceneManager.GetSceneByName(sceneName1);
+                Scene scene2 = UnitySceneManager.GetSceneByName(sceneName2);
+                UnitySceneManager.SetActiveScene(scene1);
+                UnitySceneManager.SetActiveScene(scene2);
+
+                Debug.Log("Scenes loaded from the Asset Bundle.");
+            }
+#if UNITY_EDITOR
+            else
+            {
+                Debug.LogError("One or more scenes are not in the build settings.");
+            }
+#endif
         }
+
+#if UNITY_EDITOR
+        // Check if the scene is in the build settings
+        private bool SceneInBuildSettings(string sceneName)
+        {
+            foreach (var scene in UnityEditor.EditorBuildSettings.scenes)
+            {
+                if (scene.path.Contains(sceneName))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+#endif
     }
 }
