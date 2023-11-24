@@ -60,6 +60,25 @@
 		public static Scene ActiveScene => UnitySceneManager.GetActiveScene();
 
 		/// <summary>
+		/// Activates a scene by name.
+		/// </summary>
+		/// <param name="sceneName"> The name of the scene to activate. </param>
+		public void ActivateSceneByName(string sceneName)
+		{
+			UnityEngine.SceneManagement.Scene scene = UnityEngine.SceneManagement.SceneManager.GetSceneByName(sceneName);
+
+			if (scene.IsValid())
+			{
+				UnityEngine.SceneManagement.SceneManager.SetActiveScene(scene);
+			}
+			else
+			{
+				Debug.LogError($"Scene with name '{sceneName}' is not valid or not found.");
+			}
+		}
+
+
+		/// <summary>
 		/// A group of events that is invoked when the scene is starting to being 
 		/// switched by various helper methods such as <see cref="ChangeScene(string)"/>
 		/// </summary>

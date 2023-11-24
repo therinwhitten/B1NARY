@@ -414,6 +414,7 @@ GameObject:
   - component: {fileID: 3643117768800082112}
   - component: {fileID: 3643117768800082115}
   - component: {fileID: 3643117768800082114}
+  - component: {fileID: 5420376381449694637}
   m_Layer: 5
   m_Name: Chat Box
   m_TagString: UI
@@ -736,6 +737,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5420376381449694637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3643117768800082125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc7de1e14d22544bd78e645c37e1f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hentaiArtBundleName: hentaiart.dlc
+  hentaiScenesBundleName: hentaiscenes.dlc
+  activateWhenLoaded:
+  - {fileID: 4608989409391157162}
+  - {fileID: 4608989408761937873}
+  deactivateWhenLoaded:
+  - {fileID: 6588884449188134759}
 --- !u!1 &3643117768809800504
 GameObject:
   m_ObjectHideFlags: 0
@@ -19090,9 +19110,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6277425525696722507}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4608989408761937873 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7560292749196757402, guid: f3da0fccc71c39347bd1db38272608a9,
+    type: 3}
+  m_PrefabInstance: {fileID: 6277425525696722507}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4608989409083866209 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7560292749550045738, guid: f3da0fccc71c39347bd1db38272608a9,
+    type: 3}
+  m_PrefabInstance: {fileID: 6277425525696722507}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4608989409391157162 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7560292750966614497, guid: f3da0fccc71c39347bd1db38272608a9,
     type: 3}
   m_PrefabInstance: {fileID: 6277425525696722507}
   m_PrefabAsset: {fileID: 0}
@@ -19114,6 +19146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &6588884449188134759 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 895528301629229356, guid: f3da0fccc71c39347bd1db38272608a9,
+    type: 3}
+  m_PrefabInstance: {fileID: 6277425525696722507}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6325620229163433217
 PrefabInstance:
   m_ObjectHideFlags: 0
