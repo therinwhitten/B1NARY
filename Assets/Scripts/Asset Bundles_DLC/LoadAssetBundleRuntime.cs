@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 using System.IO;
+using System.Linq;
 
 namespace B1NARY.DLC
 {
@@ -20,11 +21,36 @@ namespace B1NARY.DLC
         {
             Debug.Log("Start loading asset bundles...");
 
-            yield return LoadAssetBundle(hentaiArtBundleName);
-            yield return LoadAssetBundle(hentaiScenesBundleName);
+            // Check if there are asset bundles to load
+            if (!AssetBundleExists(hentaiArtBundleName) && !AssetBundleExists(hentaiScenesBundleName))
+            {
+                Debug.Log("No asset bundles to load.");
+                yield break;
+            }
+
+            if (AssetBundleExists(hentaiArtBundleName) && !IsAssetBundleLoaded(hentaiArtBundleName))
+            {
+                yield return LoadAssetBundle(hentaiArtBundleName);
+            }
+
+            if (AssetBundleExists(hentaiScenesBundleName) && !IsAssetBundleLoaded(hentaiScenesBundleName))
+            {
+                yield return LoadAssetBundle(hentaiScenesBundleName);
+            }
 
             // Log that asset bundles are loaded
             Debug.Log("Asset Bundles are loaded.");
+        }
+
+        bool AssetBundleExists(string bundleName)
+        {
+            string path = Path.Combine(Application.streamingAssetsPath, "HentaiDLC", bundleName);
+            return File.Exists(path);
+        }
+
+        bool IsAssetBundleLoaded(string bundleName)
+        {
+            return AssetBundle.GetAllLoadedAssetBundles().Any(bundle => bundle.name == bundleName);
         }
 
         IEnumerator LoadAssetBundle(string bundleName)
@@ -61,8 +87,8 @@ namespace B1NARY.DLC
         IEnumerator LoadScenesFromAssetBundle(AssetBundle assetBundle)
         {
             // Replace with the actual scene names in your asset bundle
-            string sceneName1 = "StarBedroomFemaleHScene";
-            string sceneName2 = "StarBedroomMaleHScene";
+            string sceneName1 = "Star Bedroom Male H Scene";
+            string sceneName2 = "Star Bedroom Female H Scene";
 
 #if UNITY_EDITOR
             // Check if the scenes are in the build settings
