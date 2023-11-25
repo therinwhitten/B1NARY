@@ -283,7 +283,7 @@
 		/// previous text.
 		/// </summary>
 		/// <param name="speech"> The newString text to add to. </param>
-				/// <returns> <see cref="WaitForSeconds"/> with <see cref="WaitSecondsPerChar"/>. </returns>
+		/// <returns> <see cref="WaitForSeconds"/> with <see cref="WaitSecondsPerChar"/>. </returns>
 		private IEnumerator Speaking(string speech)
 		{
 			CurrentText = NewLine();
@@ -292,31 +292,25 @@
 			List<(string value, bool isTag)> parsableText = SplitDialogue(CurrentText, speech);
 
 			string[] splitText = new string[parsableText.Count];
-
 			// Adding all tags n' stuff beforehand.
 			for (int i = 0; i < parsableText.Count; i++)
 				if (parsableText[i].isTag)
 					splitText[i] = parsableText[i].value;
-
 			// Iterating per char here, printing them in the process.
 			for (int i = 0; i < parsableText.Count; i++)
 			{
 				if (parsableText[i].isTag)
 					continue;
-
 				for (int ii = 0; ii < parsableText[i].value.Length; ii++)
 				{
 					splitText[i] += parsableText[i].value[ii];
 					CurrentText = string.Join("", splitText);
-
 					if (PlayerConfig.Instance.dialogueSpeedTicks.Value > 0)
 						yield return WaitSecondsPerChar;
 				}
 			}
-
 			CurrentText = FinalText;
 		}
-
 
 		public void QuickSave()
 		{
