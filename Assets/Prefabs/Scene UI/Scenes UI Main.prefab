@@ -207,6 +207,7 @@ GameObject:
   - component: {fileID: 3643117768881461701}
   - component: {fileID: 3643117768881461700}
   - component: {fileID: 3643117768881461703}
+  - component: {fileID: 712620781713306110}
   m_Layer: 5
   m_Name: UI (Scene Only)
   m_TagString: UI
@@ -306,6 +307,27 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &712620781713306110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3643117768881461697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bfc7de1e14d22544bd78e645c37e1f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hentaiArtBundleName: hentaiart.dlc
+  hentaiScenesBundleName: hentaiscenes.dlc
+  activateWhenLoaded:
+  - {fileID: 4608989409391157162}
+  - {fileID: 4608989408761937873}
+  - {fileID: 3643117769895574185}
+  - {fileID: 3643117769966030920}
+  deactivateWhenLoaded:
+  - {fileID: 6588884449188134759}
 --- !u!1 &3643117768953246200
 GameObject:
   m_ObjectHideFlags: 0
@@ -4163,7 +4185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3643117769895574190
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4711,7 +4733,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3643117769895574185}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ba4abafe9f650cc4cad76894261b162a, type: 3}
   m_Name: 
@@ -8463,7 +8485,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hentai
+  m_text: DLC
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
   m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
@@ -8552,10 +8574,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - Hentai
-  - Hentai
-  - "\u30D8\u30F3\u30BF\u30A4"
-  - Hentai
+  - DLC
+  - DLC
+  - DLC
+  - DLC
 --- !u!1 &3643117770394238311
 GameObject:
   m_ObjectHideFlags: 0
@@ -10258,6 +10280,12 @@ GameObject:
 --- !u!1 &3643117769369726948 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3477914026635061907, guid: eb4a0c81e9fc2d24abaa61931c957187,
+    type: 3}
+  m_PrefabInstance: {fileID: 201250408991835511}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3643117769966030920 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3477914025132643647, guid: eb4a0c81e9fc2d24abaa61931c957187,
     type: 3}
   m_PrefabInstance: {fileID: 201250408991835511}
   m_PrefabAsset: {fileID: 0}
@@ -12375,21 +12403,6 @@ PrefabInstance:
       propertyPath: m_Navigation.m_SelectOnUp
       value: 
       objectReference: {fileID: 7372527410572487430}
-    - target: {fileID: 7032637776024133547, guid: 879063950cda8e240a3e39b39b5e5669,
-        type: 3}
-      propertyPath: activateWhenLoaded.Array.data[0]
-      value: 
-      objectReference: {fileID: 4608989409391157162}
-    - target: {fileID: 7032637776024133547, guid: 879063950cda8e240a3e39b39b5e5669,
-        type: 3}
-      propertyPath: activateWhenLoaded.Array.data[1]
-      value: 
-      objectReference: {fileID: 4608989408761937873}
-    - target: {fileID: 7032637776024133547, guid: 879063950cda8e240a3e39b39b5e5669,
-        type: 3}
-      propertyPath: deactivateWhenLoaded.Array.data[0]
-      value: 
-      objectReference: {fileID: 6588884449188134759}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

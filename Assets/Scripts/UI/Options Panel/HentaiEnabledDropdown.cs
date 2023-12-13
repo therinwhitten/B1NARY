@@ -12,7 +12,7 @@
 		public override List<KeyValuePair<string, bool>> DefinedPairs => new()
 		{
 			new KeyValuePair<string, bool>("Twitch", false),
-			new KeyValuePair<string, bool>("Hentai", true),
+			new KeyValuePair<string, bool>("Uncut", true),
 		};
 		protected override void Awake()
 		{
