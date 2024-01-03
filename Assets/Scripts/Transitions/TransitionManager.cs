@@ -46,10 +46,6 @@
 				InstanceOrDefault.AddAnimatedQueueBackground("Backgrounds/" + backgroundName);
 				InstanceOrDefault.LoopingAnimBG = false;
 			}),
-			//["queuebgwait"] = (Action<string>)(length =>
-			//{
-			//	InstanceOrDefault.queueWait = float.Parse(length);
-			//}),
 			["queueloopbg"] = (Action<string>)(str =>
 			{
 				InstanceOrDefault.Queued.Enqueue((Action)(() =>
@@ -63,10 +59,6 @@
 				}));
 			}),
 		};
-
-
-
-
 		[SerializeField] private string BGCanvasName = "BG-Canvas";
 
 		public Sprite StaticBackground
@@ -179,99 +171,5 @@
 		}
 		#endregion
 	}
-	/*
-	public class TransitionManager : Singleton<TransitionManager>
-	{
-		public static readonly CommandArray Commands = new()
-		{
-			["changebg"] = (Action<string>)(backgroundName =>
-			{
-				InstanceOrDefault.SetNewStaticBackground(backgroundName);
-				InstanceOrDefault.SetNewAnimatedBackground("Backgrounds/" + backgroundName);
-			}),
-			["loopbg"] = (Action<string>)(str =>
-			{
-				if (ScriptDocument.enabledHashset.Contains(str))
-					InstanceOrDefault.LoopingAnimBG = true;
-				else if (ScriptDocument.disabledHashset.Contains(str))
-					InstanceOrDefault.LoopingAnimBG = false;
-				else throw new ArgumentException($"{str} is not a valid " +
-					$"argument for loopbg!");
-			}),
-			["playbg"] = (Action<string>)(backgroundName =>
-			{
-				InstanceOrDefault.SetNewAnimatedBackground("Backgrounds/" + backgroundName);
-			}),
-			["queuebg"] = (Action<string>)(backgroundName =>
-			{
-				InstanceOrDefault.AddQueueBackground("Backgrounds/" + backgroundName);
-				InstanceOrDefault.LoopingAnimBG = false;
-			}),
-			["queuebgwait"] = (Action<string>)(length =>
-			{
-				InstanceOrDefault.queueWait = float.Parse(length);
-			}),
-			["queueloopbg"] = (Action<string>)(str =>
-			{
-				InstanceOrDefault.queuedActions.Enqueue((Action)(() =>
-				{
-					if (ScriptDocument.enabledHashset.Contains(str))
-						InstanceOrDefault.LoopingAnimBG = true;
-					else if (ScriptDocument.disabledHashset.Contains(str))
-						InstanceOrDefault.LoopingAnimBG = false;
-					else throw new ArgumentException($"{str} is not a valid " +
-						$"argument for loopbg!");
-				}));
-			}),
-		};
-	*/
+	
 }
-#if UNITY_EDITOR
-namespace B1NARY.Editor
-{
-	using System;
-	using UnityEditor;
-
-	[CustomEditor(typeof(TransitionManager)), Obsolete]
-	public class TransitionHandlerEditor : Editor
-	{
-		private TransitionManager m_Handler;
-		public TransitionManager TransitionHandler
-		{
-			get
-			{
-				if (m_Handler == null)
-					m_Handler = (TransitionManager)target;
-				return m_Handler;
-			}
-		}
-
-		public override void OnInspectorGUI()
-		{
-			base.OnInspectorGUI();
-			/*
-			SerializedObject serializedObject = new SerializedObject(TransitionManager);
-			serializedObject.Update();
-
-			// Transitions
-			EditorGUILayout.LabelField("Transitions", EditorStyles.boldLabel);
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionManager.transitionShader)));
-			TransitionManager.useTransitionValue = EditorGUILayout.Toggle("Use Transition Value", TransitionManager.useTransitionValue);
-			if (TransitionManager.transitionShader != null && TransitionManager.useTransitionValue)
-				TransitionManager.fadePercentageName = EditorGUILayout
-					.DelayedTextField("Fade Percentage Name", TransitionManager.fadePercentageName);
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionManager.textureIn)));
-			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(TransitionManager.textureOut)));
-
-			// Backgrounds
-			EditorGUILayout.Space();
-			EditorGUILayout.LabelField("Backgrounds", EditorStyles.boldLabel);
-			TransitionManager.backgroundCanvasName = EditorGUILayout.DelayedTextField("Background Canvas Name", TransitionManager.backgroundCanvasName);
-			TransitionManager.AutomaticallyAssignAnimatedBG = EditorGUILayout.ToggleLeft("Automatically Assign Animated Background", TransitionManager.AutomaticallyAssignAnimatedBG);
-
-			serializedObject.ApplyModifiedProperties();
-			*/
-		}
-	}
-}
-#endif
