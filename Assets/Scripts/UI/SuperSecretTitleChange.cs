@@ -12,7 +12,9 @@
 			if (RandomForwarder.Next(0, 1000) == 0)
 				title.text = "B1NARDY";
 			else if (RandomForwarder.Next(0, 1000) == 0)
-				title.text = "HEX6DEC1MAL";
+				title.text = "HEXADEC1M6L";
+			else if (RandomForwarder.Next(0, 1000) == 0)
+				title.text = "B2NARY";
 		}
 		private void Reset()
 		{
