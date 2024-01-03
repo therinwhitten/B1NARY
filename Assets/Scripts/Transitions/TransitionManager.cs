@@ -15,6 +15,171 @@
 	using B1NARY.Scripting;
 	using System.Globalization;
 
+	/// <summary>
+	/// A manager that handles the backgrounds, and allows to queue them to branch
+	/// between non-looping videos.
+	/// </summary>
+	public class TransitionManager : Singleton<TransitionManager>
+	{
+		public static readonly CommandArray Commands = new()
+		{
+			["changebg"] = (Action<string>)(backgroundName =>
+			{
+				InstanceOrDefault.SetNewStaticBackground(backgroundName);
+				InstanceOrDefault.SetNewAnimatedBackground("Backgrounds/" + backgroundName);
+			}),
+			["loopbg"] = (Action<string>)(str =>
+			{
+				if (ScriptDocument.enabledHashset.Contains(str))
+					InstanceOrDefault.LoopingAnimBG = true;
+				else if (ScriptDocument.disabledHashset.Contains(str))
+					InstanceOrDefault.LoopingAnimBG = false;
+				else throw new ArgumentException($"{str} is not a valid " +
+					$"argument for loopbg!");
+			}),
+			["playbg"] = (Action<string>)(backgroundName =>
+			{
+				InstanceOrDefault.SetNewAnimatedBackground("Backgrounds/" + backgroundName);
+			}),
+			["queuebg"] = (Action<string>)(backgroundName =>
+			{
+				InstanceOrDefault.AddAnimatedQueueBackground("Backgrounds/" + backgroundName);
+				InstanceOrDefault.LoopingAnimBG = false;
+			}),
+			//["queuebgwait"] = (Action<string>)(length =>
+			//{
+			//	InstanceOrDefault.queueWait = float.Parse(length);
+			//}),
+			["queueloopbg"] = (Action<string>)(str =>
+			{
+				InstanceOrDefault.Queued.Enqueue((Action)(() =>
+				{
+					if (ScriptDocument.enabledHashset.Contains(str))
+						InstanceOrDefault.LoopingAnimBG = true;
+					else if (ScriptDocument.disabledHashset.Contains(str))
+						InstanceOrDefault.LoopingAnimBG = false;
+					else throw new ArgumentException($"{str} is not a valid " +
+						$"argument for loopbg!");
+				}));
+			}),
+		};
+
+
+
+
+		[SerializeField] private string BGCanvasName = "BG-Canvas";
+
+		public Sprite StaticBackground
+		{
+			get => _staticBackground.sprite;
+			set
+			{
+				_staticBackground.sprite = value;
+				_animatedBackground.Stop();
+				_animatedBackground.clip = null;
+				ClearQueued();
+			}
+		}
+		private Image _staticBackground;
+
+		public bool SetNewStaticBackground(string resourcesPath)
+		{
+			Sprite sprite = Resources.Load<Sprite>(resourcesPath);
+			if (sprite == null)
+				return false;
+			StaticBackground = sprite;
+			return true;
+		}
+
+		public VideoClip AnimatedBackground 
+		{ 
+			get => _animatedBackground.clip; 
+			set
+			{
+				_animatedBackground.Stop();
+				_animatedBackground.clip = value;
+				_animatedBackground.Play();
+				ClearQueued();
+			}
+		}
+		private VideoPlayer _animatedBackground;
+		public bool LoopingAnimBG
+		{
+			get => _animatedBackground.isLooping;
+			set => _animatedBackground.isLooping = value;
+		}
+
+		public bool SetNewAnimatedBackground(string resourcesPath)
+		{
+			var clip = Resources.Load<VideoClip>(resourcesPath);
+			if (clip == null)
+				return false;
+			AnimatedBackground = clip;
+			return true;
+		}
+
+		protected override void SingletonAwake()
+		{
+			UpdateBackgroundReferences();
+			SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(UpdateBackgroundReferences);
+		}
+		private void UpdateBackgroundReferences()
+		{
+			var obj = GameObject.Find(BGCanvasName);
+			if (obj == null)
+				throw new NullReferenceException(BGCanvasName);
+			_staticBackground = obj.GetComponentInChildren<Image>();
+			_animatedBackground = obj.GetComponentInChildren<VideoPlayer>();
+		}
+
+
+		private void LateUpdate()
+		{
+			QueueUpdate();
+		}
+		protected override void OnSingletonDestroy()
+		{
+			base.OnSingletonDestroy();
+		}
+
+
+		#region Queueing System
+		private readonly Queue<Action> Queued = new();
+
+		private void QueueUpdate()
+		{
+			if (Queued.Count <= 0)
+				return;
+			if (_animatedBackground.isPlaying)
+				return;
+			Queued.Dequeue().Invoke();
+		}
+
+		private void ClearQueued()
+		{
+			Queued.Clear();
+		}
+
+
+		public bool AddAnimatedQueueBackground(string resourcesPath)
+		{
+			var clip = Resources.Load<VideoClip>(resourcesPath);
+			if (clip == null)
+				return false;
+			Queued.Enqueue(() => AnimatedBackground = clip);
+			return true;
+		}
+		public bool AddStaticQueueBackground(string resourcesPath)
+		{
+			var clip = Resources.Load<Sprite>(resourcesPath);
+			if (clip == null)
+				return false;
+			Queued.Enqueue(() => StaticBackground = clip);
+			return true;
+		}
+		#endregion
+	}
+	/*
 	public class TransitionManager : Singleton<TransitionManager>
 	{
 		public static readonly CommandArray Commands = new()
@@ -59,89 +224,7 @@
 				}));
 			}),
 		};
-
-		[SerializeField] private string BGCanvasName = "BG-Canvas";
-		//private BackgroundHandler m_backgroundHandler;
-		//public BackgroundHandler Backgrounds => m_backgroundHandler;
-
-		protected override void SingletonAwake()
-		{
-			UpdateBackgroundReferences();
-			SceneManager.InstanceOrDefault.SwitchedScenes.AddPersistentListener(UpdateBackgroundReferences);
-			void UpdateBackgroundReferences()
-			{
-				var obj = GameObject.Find(BGCanvasName);
-				if (obj == null)
-					throw new NullReferenceException(BGCanvasName);
-				m_staticBackground = obj.GetComponentInChildren<Image>();
-				m_animatedBackground = obj.GetComponentInChildren<VideoPlayer>();
-			}
-		}
-		private float queueWait = 0f;
-		protected virtual void LateUpdate()
-		{
-			if (m_animatedBackground == null)
-				return;
-			if (m_animatedBackground.isLooping || m_animatedBackground.isPlaying || !m_animatedBackground.isPaused)
-				return;
-			if (queueWait > 0f)
-			{
-				queueWait -= Time.deltaTime;
-				return;
-			}
-			while (queuedActions.Count > 0 && queuedActions.Peek() is not VideoClip)
-			{
-				object current = queuedActions.Dequeue();
-				if (current is Action action)
-					action.Invoke();
-			}
-			if (queuedActions.Count > 0 && queuedActions.Dequeue() is VideoClip clip)
-				AnimatedBackground = clip;
-		}
-
-		public Sprite StaticBackground
-		{
-			get => m_staticBackground.sprite;
-			set => m_staticBackground.sprite = value;
-		}
-		private Image m_staticBackground;
-		public void SetNewStaticBackground(string resourcesPath)
-			=> StaticBackground = Resources.Load<Sprite>(resourcesPath);
-
-		public VideoClip AnimatedBackground
-		{
-			get => m_animatedBackground.clip;
-			set
-			{
-				m_animatedBackground.Stop();
-				m_animatedBackground.clip = value;
-				m_animatedBackground.Play();
-			}
-		}
-		private VideoPlayer m_animatedBackground;
-		public bool LoopingAnimBG
-		{
-			get => m_animatedBackground.isLooping;
-			set => m_animatedBackground.isLooping = value;
-		}
-		public void SetNewAnimatedBackground(string resourcesPath)
-		{
-			var clip = Resources.Load<VideoClip>(resourcesPath);
-			if (clip == null)
-				throw new InvalidOperationException($"'{resourcesPath}' animated background does not exist!");
-			AnimatedBackground = clip;
-			queuedActions.Clear();
-			queueWait = 0f;
-		}
-		private Queue<object> queuedActions = new();
-		public void AddQueueBackground(string resourcesPath)
-		{
-			var clip = Resources.Load<VideoClip>(resourcesPath);
-			if (clip == null)
-				throw new InvalidOperationException($"'{resourcesPath}' animated background does not exist!");
-			queuedActions.Enqueue(clip);
-		}
-	}
+	*/
 }
 #if UNITY_EDITOR
 namespace B1NARY.Editor
