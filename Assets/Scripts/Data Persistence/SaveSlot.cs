@@ -243,25 +243,25 @@
 			try
 			{
 				bool completedTask = false;
-				Debug.Log($"Starting save '{SaveName}' into {metadata.DirectoryInfo.FullPath}..");
+				//Debug.Log($"Starting save '{SaveName}' into {metadata.DirectoryInfo.FullPath}..");
 				SceneManager.Instance.StartCoroutine(MainThread());
 
 				hasSaved = true;
-				Debug.Log($"Defining metadata of {SaveName}..");
+				//Debug.Log($"Defining metadata of {SaveName}..");
 				metadata.lastSaved = DateTime.Now;
-				Debug.Log($"Now retrieving scene data for {SaveName}..");
+				//Debug.Log($"Now retrieving scene data for {SaveName}..");
 				scriptPosition = ScriptPosition.Define();
 				characterSnapshots = ActorSnapshot.GetCurrentSnapshots();
 				audio = SerializedAudio.SerializeAudio();
 				formatName = ColorFormat.ActiveFormat.FormatName;
 
-				Debug.Log($"Getting thumbnail for {SaveName}..");
+				//Debug.Log($"Getting thumbnail for {SaveName}..");
 				byte[] thumbnail = ScreenCapture.CaptureScreenshotAsTexture().EncodeToJPG();
 				Task.Run(() =>
 				{
-					Debug.Log($"Thumbnail created for {SaveName}, now encrypting & compressing..");
+					//Debug.Log($"Thumbnail created for {SaveName}, now encrypting & compressing..");
 					metadata.thumbnail = new Thumbnail(new Vector2Int(128, 128), thumbnail);
-					Debug.Log($"Serializing '{SaveName}' filepath {metadata.DirectoryInfo.FullPath}..");
+					//Debug.Log($"Serializing '{SaveName}' filepath {metadata.DirectoryInfo.FullPath}..");
 					fileStream = metadata.DirectoryInfo.Create();
 
 				}).ContinueWith((task) =>
@@ -269,8 +269,8 @@
 					completedTask = true;
 					if (task.IsFaulted)
 						DisplayException(task.Exception);
-					else
-						Debug.Log($"Saving finalized! Waiting to serialize on main loop. \n{stopwatch.Elapsed}");
+					//else
+					//	Debug.Log($"Saving finalized! Waiting to serialize on main loop. \n{stopwatch.Elapsed}");
 				});
 
 				IEnumerator MainThread()
@@ -278,7 +278,7 @@
 					yield return new WaitUntil(() => completedTask);
 					SlotSerializer.Serialize(fileStream, this);
 					fileStream.Dispose();
-					Debug.Log($"Saving finished! {stopwatch.Elapsed}\nClearing save cache..");
+					//Debug.Log($"Saving finished! {stopwatch.Elapsed}\nClearing save cache..");
 					stopwatch.Stop();
 					EmptySaveCache();
 				}
