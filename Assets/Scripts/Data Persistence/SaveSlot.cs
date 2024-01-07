@@ -277,6 +277,7 @@
 				{
 					yield return new WaitUntil(() => completedTask);
 					SlotSerializer.Serialize(fileStream, this);
+					fileStream.Dispose();
 					Debug.Log($"Saving finished! {stopwatch.Elapsed}\nClearing save cache..");
 					stopwatch.Stop();
 					EmptySaveCache();
