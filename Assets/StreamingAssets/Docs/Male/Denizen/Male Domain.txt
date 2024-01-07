@@ -5,21 +5,24 @@
 {spawnEmpty: Shirobi, NPC}
 {fadeoutsound: Ears Ringing, 30}
 {setbool: Male Check PC, false}
+{spawnChar: EyeBlink, .5, EyeBlink}
 MC::
 Pain. So much pain!
 Ground? Ground!
-(Blink animation)
-Ceiling...
+{anim: EyeBlink, Close}
+Ceiling..
+{anim: EyeBlink, Open}
 Not <i>my</i> ceiling. 
+{anim: EyeBlink, Open}
 It's a very nice ceiling though. 
+{anim: EyeBlink, DefaultOpen}
 More importantly, it means that I'm <i>alive</i>.
 Why does it look familiar? 
+{disablechar: EyeBlink}
 The music is nice. 
 I can see again, and the pain is easing pretty quick. 
 Maybe it's just a shock to my nervous system?  
-{spawnChar: Circle Wipe, .5, CircleWipe}
 Hmmmm...
-{changeBG: Prologue/DIHI Front Animated}
 I may be overthinking this, if I am just digital here, then did my my brain create this body?
 I blink again to remove any residual blurriness in my vision, and look down at my chest.
 I'm not naked. Why did I think I <i>would</i> be?
@@ -33,9 +36,7 @@ I spy a wooden floor near the door of the bedroom, polished from age.
 I crane my neck to see the other side of the room, beyond the window. 
 UGH
 Blurry vision greets me. Nausea deep in the pit of my belly awakens. I blink again.
-{changeBG: Prologue/Times Square Animated}
 There is a desk. 
-{changeBG: Prologue/Times Square Static}
 A simple one: dorm style with a small reading lamp and some managa on the bookcase. 
 Wait...
 That is <i>my</i> PC on the desk. That is fricken odd. 
