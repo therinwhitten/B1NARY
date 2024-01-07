@@ -2,7 +2,7 @@
 {colorformat: Emerald}
 {fadeinsound: Fast Keyboard Typing, .5}
 {fadeinsound: Discovery Music, 4}
-{spawnChar: malesilo3, 2, シロビ}
+{spawnChar: malesilo3, 2, Shirobi}
 {spawnChar: malesilo, -1, クリフ}
 {spawnChar: femalesilo, -1.5, ベックス}
 {spawnEmpty: ナレーター, NPC}
@@ -14,10 +14,10 @@
 CliffはShirobiの椅子の後ろに寄りかかって、木の後ろを焦ってたたきます。
 画面では、DIHIで診断が実行されます。 
 幽霊のように青白いShirobiは、画面を見ずに見つめているだけです。 
-{moveChar: シロビ, .75}
+{moveChar: Shirobi, .75}
 {moveChar: クリフ, .2}
 {spawnChar: Live 2D Bokeh, .5, Live 2D Bokeh}
-シロビ::
+Shirobi::
 {if: !n-b}
 {
  "約束した。 彼女は大丈夫だと。。。 たった4日だと彼女に言った。なのに。。。"
@@ -28,8 +28,8 @@ CliffはShirobiの椅子の後ろに寄りかかって、木の後ろを焦っ�
 }
 ナレーター::
 はパニックを抑え、敗北のためにため息をついた。
-{anim: シロビ, Bow}
-シロビ::
+{anim: Shirobi, Bow}
+Shirobi::
 {if: !n-b}
 {
  泣いても彼女は無事に戻ってこない。..
@@ -99,11 +99,11 @@ Shirobiさん、テストを確認してくれませんか？つかれました.
 ナレーター::
 Cliffは欲求不満で彼の鼻の橋をこすります。
 {additive: on}
-シロビ, 
+Shirobi, 
 淡く、明らかに彼の友人を心配している、
 目に見えて頭を振って仕事に戻ります。
 {disableChar: Live 2D Bokeh}
-{anim: シロビ: Checktime}
+{anim: Shirobi: Checktime}
 {additive: off} 
 技術者がポート、DIHIの設定、およびラップトップを体系的にチェックするとき、沈黙が支配します。
 数分経ちます。突然、誰かが声を上げます。
@@ -165,16 +165,16 @@ Shirobiはタイピングをやめ、見上げます。
 クリフ::
 "それは問題ではありません:問題は、DIHIがサーバーに接続されていないことです。インターネットに接続されています。"
 ナレーター::
-{anim: シロビ, Bow}
+{anim: Shirobi, Bow}
 {anim: クリフ, kime2}
 Shirobiは頭を両手で挟むとうめきます。
-シロビ::
+Shirobi::
 "おおおお、くそ!"
 ナレーター::
 沈黙。沈黙の中で数秒が経過します。
 額を揉みしだき、Shirobiの声が響く。
-シロビ::
-{anim: シロビ, Glasses}
+Shirobi::
+{anim: Shirobi, Glasses}
 {if: !n-b}
 {
  "そこに彼女を見つけるチャンスさえある？私は彼女がインターネットで唯一の人間であることを意味するが。。。"
@@ -208,8 +208,8 @@ Shirobiは頭を両手で挟むとうめきます。
 }
 ナレーター::
 Shirobiは注意深く耳を傾け、明るくなります。 
-{anim: シロビ, Thisway}
-シロビ::
+{anim: Shirobi, Thisway}
+Shirobi::
 "わかった！ブラウザの履歴！とても簡単だ！" 
 {additive: on}
 "そこから始めることができる。

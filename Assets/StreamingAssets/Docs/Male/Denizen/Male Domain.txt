@@ -3,15 +3,22 @@
 {colorformat: MaleMC}
 {spawnEmpty: MC, Player}
 {spawnEmpty: Shirobi, NPC}
+{fadeoutsound: Ears Ringing, 30}
+{setbool: Male Check PC, false}
+{spawnChar: EyeBlink, .5, EyeBlink}
 MC::
 Pain. So much pain!
 Ground? Ground!
-(Blink animation)
-Ceiling...
+{anim: EyeBlink, Close}
+Ceiling..
+{anim: EyeBlink, Open}
 Not <i>my</i> ceiling. 
+{anim: EyeBlink, Open}
 It's a very nice ceiling though. 
+{anim: EyeBlink, DefaultOpen}
 More importantly, it means that I'm <i>alive</i>.
 Why does it look familiar? 
+{disablechar: EyeBlink}
 The music is nice. 
 I can see again, and the pain is easing pretty quick. 
 Maybe it's just a shock to my nervous system?  
@@ -154,6 +161,7 @@ So...
     ]
     I'm starving! Grab something fast from the kitchen.
     [
+        {setbool: maleatepickle, true}
         Maybe just a touch of food, if there is any in the house. Will only take a few minutes.
         Besides, exploring where I fell makes sense. And might find some food at the same time. 
         I don't even know how food works here? Do I have to poop? 
@@ -231,6 +239,7 @@ So...
     ]
     Too lazy, want to see what's out there. Lets go on a walk!
     [
+        {setbool: maleatepickle, false}
         Shirobi can wait. I would like to have more information before I face him.
         I am having issues focusing anyway.
         With money in my wallet, I <i>know</i> the house keys are near the exit of the house. Somehow I do.
