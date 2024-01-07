@@ -16,6 +16,7 @@
 	using OVSSerializer.IO;
 	using HDConsole;
 	using System.Text;
+	using System.IO.Pipes;
 
 	public enum Gender : byte
 	{
@@ -237,6 +238,8 @@
 
 		public void Save()
 		{
+			FileStream fileStream = null;
+			Stopwatch stopwatch = Stopwatch.StartNew();
 			try
 			{
 				bool completedTask = false;
@@ -246,7 +249,6 @@
 				hasSaved = true;
 				Debug.Log($"Defining metadata of {SaveName}..");
 				metadata.lastSaved = DateTime.Now;
-				Stopwatch stopwatch = Stopwatch.StartNew();
 				Debug.Log($"Now retrieving scene data for {SaveName}..");
 				scriptPosition = ScriptPosition.Define();
 				characterSnapshots = ActorSnapshot.GetCurrentSnapshots();
@@ -260,8 +262,7 @@
 					Debug.Log($"Thumbnail created for {SaveName}, now encrypting & compressing..");
 					metadata.thumbnail = new Thumbnail(new Vector2Int(128, 128), thumbnail);
 					Debug.Log($"Serializing '{SaveName}' filepath {metadata.DirectoryInfo.FullPath}..");
-					using FileStream fileStream = metadata.DirectoryInfo.Create();
-					SlotSerializer.Serialize(fileStream, this);
+					fileStream = metadata.DirectoryInfo.Create();
 
 				}).ContinueWith((task) =>
 				{
@@ -269,14 +270,15 @@
 					if (task.IsFaulted)
 						DisplayException(task.Exception);
 					else
-						Debug.Log($"Saved! \n{stopwatch.Elapsed}");
-					stopwatch.Stop();
+						Debug.Log($"Saving finalized! Waiting to serialize on main loop. \n{stopwatch.Elapsed}");
 				});
 
 				IEnumerator MainThread()
 				{
 					yield return new WaitUntil(() => completedTask);
-					Debug.Log("Clearing save cache..");
+					SlotSerializer.Serialize(fileStream, this);
+					Debug.Log($"Saving finished! {stopwatch.Elapsed}\nClearing save cache..");
+					stopwatch.Stop();
 					EmptySaveCache();
 				}
 			}
