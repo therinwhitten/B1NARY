@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.896, y: 226.85}
-  m_SizeDelta: {x: 391.81348, y: 45.474396}
+  m_AnchoredPosition: {x: -1.896, y: 239.71513}
+  m_SizeDelta: {x: 391.8135, y: 49.8841}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &262564001
 CanvasRenderer:
@@ -130,7 +130,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: -4.409689}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -214,7 +214,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 881683312}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -4372,7 +4372,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Input Map is in Display Options
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -4400,7 +4400,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
+  m_fontSize: 30
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4461,10 +4461,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Input Map is in Display Options
+  - Eingabekarte ist in den Anzeigeoptionen
+  - "\u5165\u529B\u30DE\u30C3\u30D7\u306F\u8868\u793A\u30AA\u30D7\u30B7\u30E7\u30F3\u306B\u3042\u308B"
+  - "El mapa de entrada est\xE1 en Opciones de visualizaci\xF3n"
 --- !u!1 &4767852762946766645
 GameObject:
   m_ObjectHideFlags: 0
@@ -5655,7 +5655,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Use Proton Layer if on the Steam Deck
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 900f64a34168d754691b448807f93072, type: 2}
   m_sharedMaterial: {fileID: -9140214897193126813, guid: 900f64a34168d754691b448807f93072,
@@ -5683,7 +5683,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
+  m_fontSize: 30
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5744,10 +5744,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 
-  - 
-  - 
-  - 
+  - Use Proton Layer if on the Steam Deck
+  - Protonenschicht verwenden, wenn auf dem Dampfdeck
+  - "\u30B9\u30C1\u30FC\u30E0\u30C7\u30C3\u30AD\u306B\u3044\u308B\u5834\u5408\u306F\u30D7\u30ED\u30C8\u30F3\u30EC\u30A4\u30E4\u30FC\u3092\u4F7F\u7528\u3059\u308B\u3002"
+  - "Usa la Capa de Protones si est\xE1s en la Cubierta de Vapor"
 --- !u!1 &5811744239119629651
 GameObject:
   m_ObjectHideFlags: 0
@@ -6745,6 +6745,7 @@ GameObject:
   - component: {fileID: 6094002358459902367}
   - component: {fileID: 6094002358459902352}
   - component: {fileID: 1132460834}
+  - component: {fileID: 1940319854001226523}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -6794,7 +6795,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6094002358459902354}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -6863,6 +6864,19 @@ MonoBehaviour:
   cacheColor: color
   cacheColorblock: 
   m_savedComponent: {fileID: 6094002358459902367}
+--- !u!114 &1940319854001226523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6094002358459902354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75b3134664b501f48874af8b222e799e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actor: {fileID: 0}
 --- !u!1 &6094002358849317100
 GameObject:
   m_ObjectHideFlags: 0
@@ -7417,6 +7431,18 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Woozy
             m_BoolArgument: 0
           m_CallState: 2
   - eventID: 2
@@ -8014,6 +8040,19 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1940319854001226523}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -8026,6 +8065,23 @@ MonoBehaviour:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1940319854001226523}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: -1
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -8548,6 +8604,18 @@ MonoBehaviour:
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Impatient
             m_BoolArgument: 0
           m_CallState: 2
   - eventID: 2
@@ -9097,6 +9165,19 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1940319854001226523}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 7
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -9109,6 +9190,23 @@ MonoBehaviour:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1940319854001226523}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: -1
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0
@@ -9156,7 +9254,7 @@ GameObject:
   - component: {fileID: 4220234520875885685}
   - component: {fileID: 7552237545405931435}
   m_Layer: 5
-  m_Name: Hentai Gallery
+  m_Name: DLC Gallery
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9209,7 +9307,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Hentai '
+  m_text: 'DLC '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9865f5a1b491fc14eaf01b530f24d1f9, type: 2}
   m_sharedMaterial: {fileID: -6959299561055187382, guid: 9865f5a1b491fc14eaf01b530f24d1f9,
@@ -9772,10 +9870,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - 'Hentai '
-  - Hentai
-  - "\u30D8\u30F3\u30BF\u30A4"
-  - hentai
+  - 'DLC '
+  - DLC
+  - DLC
+  - DLC
 --- !u!114 &7552237545405931435
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10394,6 +10492,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Smug
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -10917,6 +11027,31 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_MethodName: Play
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Thinking
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1940319854001226523}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 2
     callback:
       m_PersistentCalls:
@@ -10929,6 +11064,23 @@ MonoBehaviour:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1940319854001226523}
+          m_TargetAssemblyTypeName: B1NARY.CharacterManagement.CharacterEmotionInvoker,
+            B1NARY
+          m_MethodName: ChangeExpression
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: -1
             m_FloatArgument: 0
             m_StringArgument: 
             m_BoolArgument: 0

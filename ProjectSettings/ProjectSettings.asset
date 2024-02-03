@@ -144,7 +144,7 @@ PlayerSettings:
   vulkanEnableLateAcquireNextImage: 0
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
-  bundleVersion: 1.1
+  bundleVersion: 1.11
   preloadedAssets:
   - {fileID: 4227418926354388459, guid: 135af6989c2cd3546943edd0d2842d66, type: 3}
   - {fileID: 2043454530189865295, guid: 37551e6ee2be51c469c75b0a811ebe81, type: 3}
@@ -911,6 +911,7 @@ PlayerSettings:
   metroSplashScreenUseBackgroundColor: 0
   platformCapabilities:
     WindowsStoreApps:
+      CodeGeneration: False
       OfflineMapsManagement: False
       HumanInterfaceDevice: False
       Location: False
@@ -922,7 +923,6 @@ PlayerSettings:
       PrivateNetworkClientServer: False
       InternetClientServer: False
       VideosLibrary: False
-      BackgroundMediaPlayback: False
       Objects3D: False
       RemoteSystem: False
       BlockedChatMessages: False
@@ -945,9 +945,9 @@ PlayerSettings:
       PointOfService: False
       RecordedCallsFolder: False
       Contacts: False
-      InternetClient: False
       Proximity: False
-      CodeGeneration: False
+      InternetClient: False
+      BackgroundMediaPlayback: False
       EnterpriseAuthentication: False
   metroTargetDeviceFamilies:
     Desktop: False
