@@ -4,13 +4,13 @@
 Narrator::
 {choice: Closed Beta Achievement Or Therin's?}
 {
-	[Closed Beta]
+	[Closed Beta Achievement]
 	{
 		Thank you for all your help! Hope to still have you on board to help in the main game!
 		{setachievement: closed_beta_demo}
 		Achievement Set~!
 	}
-	[Therinwhitten]
+	[Motion Tracking Test]
 	{
 		{spawnChar: star nightgown, .5, Asterella}
 		{spawnChar: lucas butler, .2, Lucas}
@@ -42,12 +42,13 @@ Narrator::
 		It doesn't work then.
 		End of Script.
 	}
-	[AnOddDoorKnight]
+	[AnOddDoorKnight's Version (Beta Achievement)]
 	{
 		{setachievement: closed_beta_demo}
 		IM GOING TO PUNCH YOUR BALL
 		{additive: true}
 		(plural)
+		Balls punched.
 	}
 }
 

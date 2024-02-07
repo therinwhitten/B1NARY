@@ -100,7 +100,7 @@ namespace B1NARY.Steamworks
 			NutCracker = new("nut_cracker", "Nut Cracker", "Defend against Lucas"),
 			SecondSwallow = new("second_swallow", "Second Swallow", "Make the Male Player say Swallow Twice in Game"),
 			InternUWU = new("intern_UwU", "Intern", "First New Game"),
-			ClosedBetaDemo = new("closed_beta_demo", "Beta Tester", "Performed Beta Testing for the Demo!");
+			ClosedBetaDemo = new("closed_beta_demo", "Beta Tester", "Beta Branch Smuggler!");
 
 		// The Best Achievement
 		private static readonly Achievement VeryCool = new("very_cool", "Very Cool", "Very Cool");
