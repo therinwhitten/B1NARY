@@ -144,7 +144,7 @@ PlayerSettings:
   vulkanEnableLateAcquireNextImage: 0
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
-  bundleVersion: 1.11
+  bundleVersion: 1.12
   preloadedAssets:
   - {fileID: 4227418926354388459, guid: 135af6989c2cd3546943edd0d2842d66, type: 3}
   - {fileID: 2043454530189865295, guid: 37551e6ee2be51c469c75b0a811ebe81, type: 3}
@@ -173,7 +173,7 @@ PlayerSettings:
   applicationIdentifier:
     Standalone: com.Coffee-and-Cookies-Dev-Team.B1NARY-Demo
   buildNumber:
-    Standalone: Demo1.1
+    Standalone: Demo1.12
     VisionOS: 0
     iPhone: 0
     tvOS: 0
@@ -854,7 +854,7 @@ PlayerSettings:
   webGLMemoryGeometricGrowthCap: 96
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Standalone: STEAMWORKS_NET
+    Standalone: STEAMWORKS_NET;DISABLESTEAMWORKS
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
@@ -911,6 +911,7 @@ PlayerSettings:
   metroSplashScreenUseBackgroundColor: 0
   platformCapabilities:
     WindowsStoreApps:
+      EnterpriseAuthentication: False
       OfflineMapsManagement: False
       HumanInterfaceDevice: False
       Location: False
@@ -923,7 +924,6 @@ PlayerSettings:
       InternetClientServer: False
       VideosLibrary: False
       Objects3D: False
-      InternetClient: False
       RemoteSystem: False
       BlockedChatMessages: False
       PhoneCall: False
@@ -946,9 +946,9 @@ PlayerSettings:
       RecordedCallsFolder: False
       Contacts: False
       Proximity: False
+      InternetClient: False
       CodeGeneration: False
       BackgroundMediaPlayback: False
-      EnterpriseAuthentication: False
   metroTargetDeviceFamilies:
     Desktop: False
     Holographic: False
