@@ -61,7 +61,7 @@ namespace B1NARY.DLC
         bool IsAssetBundleInstalled(string bundleName)
         {
             // Construct the path to the asset bundle
-            string path = System.IO.Path.Combine(Application.streamingAssetsPath, "HentaiDLC", bundleName);
+            string path = System.IO.Path.Combine(Application.streamingAssetsPath, "DLC", bundleName);
 
             // Check if the asset bundle file exists
             return System.IO.File.Exists(path);

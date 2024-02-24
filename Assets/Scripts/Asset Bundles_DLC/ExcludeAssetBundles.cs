@@ -1,106 +1,62 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using System.Collections.Generic;
 using System.IO;
 
 namespace B1NARY.DLC
 {
     public class ExcludeFromMainProject
     {
-        [MenuItem("Assets/Build AssetBundles")]
-        public static void BuildAllAssetBundles()
+        [MenuItem("Assets/Exclude DLC Asset Bundles from Build")]
+        public static void ExcludeDLCAssetBundlesFromBuild()
         {
-            // Get the current build target
-            BuildTarget activeBuildTarget = EditorUserBuildSettings.activeBuildTarget;
+            // Specify the folder where the asset bundles are located
+            string assetBundleFolder = "Assets/AssetBundles";
 
-            // Specify the folder where the asset bundles should be built
-            string outputFolder = "Assets/AssetBundles";
+            // Specify the folder where the DLC .txt files are located within the StreamingAssets folder
+            string dlcDocsFolder = Path.Combine(Application.streamingAssetsPath, "Docs", "DLC");
 
-            // Build asset bundles for the current build target
-            BuildAssetBundles(outputFolder, BuildAssetBundleOptions.None, activeBuildTarget);
+            // Specify the folder where the voice files are located within the Resources folder
+            string voiceFolder = "Assets/Resources/Voice/DLC";
 
-            // Get the names of documents in hentaiart.dlc
-            List<string> documentNames = GetDocumentNamesFromAssetBundle("hentai.dlc");
+            // Get all asset bundle paths in the asset bundle folder
+            string[] assetBundlePaths = Directory.GetFiles(assetBundleFolder, "*.dlc");
 
-            // Exclude the hentaiscenes.dlc and hentaiart.dlc asset bundles from the build
-            ExcludeAssetBundlesAndDocuments(outputFolder, new string[] { "hentaiscenes.dlc", "hentaiart.dlc" }, documentNames);
-
-            // Log whether or not the asset bundles are in the game
-            Debug.Log("Asset Bundles are " + (AssetBundlesExistInGame(outputFolder)? "in the game" : "not in the game"));
-        }
-
-        private static void BuildAssetBundles(string outputPath, BuildAssetBundleOptions options, BuildTarget target)
-        {
-            // Build asset bundles for the current build target
-            BuildPipeline.BuildAssetBundles(outputPath, options, target);
-        }
-
-        private static List<string> GetDocumentNamesFromAssetBundle(string assetBundleName)
-        {
-            List<string> documentNames = new List<string>();
-
-            // Load the asset bundle
-            AssetBundle assetBundle = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, assetBundleName));
-
-            if (assetBundle != null)
+            // Iterate through each asset bundle
+            foreach (string assetBundlePath in assetBundlePaths)
             {
-                // Get all asset paths in the asset bundle
-                string[] assetPaths = assetBundle.GetAllAssetNames();
+                string assetBundleName = Path.GetFileName(assetBundlePath);
 
-                // Filter out document names
-                foreach (string assetPath in assetPaths)
-                {
-                    // Check if the asset path represents a document
-                    if (IsDocument(assetPath))
-                    {
-                        // Get the document name and add it to the list
-                        string documentName = Path.GetFileName(assetPath);
-                        documentNames.Add(documentName);
-                    }
-                }
-
-                // Unload the asset bundle
-                assetBundle.Unload(false);
-            }
-
-            return documentNames;
-        }
-
-        private static bool IsDocument(string assetPath)
-        {
-            // Customize this method to determine if the asset path represents a document
-            // For example, you can check if the asset path ends with ".txt" or any other criterion
-            return assetPath.EndsWith(".txt");
-        }
-
-        private static void ExcludeAssetBundlesAndDocuments(string outputPath, string[] assetBundleNames, List<string> documentNames)
-        {
-            // Exclude the specified asset bundles from the build
-            foreach (string assetBundleName in assetBundleNames)
-            {
-                string assetBundlePath = Path.Combine(outputPath, assetBundleName);
+                // Exclude asset bundle from the build
                 File.Delete(assetBundlePath);
             }
 
-            // Exclude the specified documents from the build
-            foreach (string documentName in documentNames)
-            {
-                string documentPath = Path.Combine(outputPath, documentName);
-                File.Delete(documentPath);
-            }
+            // Mark all .txt files in the DLC documents folder and its subfolders as Editor only
+            MarkFilesAsEditorOnly(dlcDocsFolder, "*.txt");
+
+            // Mark all voice files in the DLC voice folder and its subfolders as Editor only
+            MarkFilesAsEditorOnly(voiceFolder, "*.*");
+
+            Debug.Log("DLC asset bundles, associated .txt files, and voice files excluded from the build.");
         }
 
-        private static bool AssetBundlesExistInGame(string outputPath)
+        private static void MarkFilesAsEditorOnly(string folderPath, string searchPattern)
         {
-            // Check if asset bundles exist in the game by looking for scenes from the asset bundles
-            string sceneNameMale = "Star Bedroom Male H Scene"; // Change this to the scene name from the male asset bundle
-            string sceneNameFemale = "Star Bedroom Female H Scene"; // Change this to the scene name from the female asset bundle
+            // Get all files in the specified folder and its subfolders
+            string[] files = Directory.GetFiles(folderPath, searchPattern, SearchOption.AllDirectories);
 
-            string scenePathMale = Path.Combine(outputPath, sceneNameMale + ".unity");
-            string scenePathFemale = Path.Combine(outputPath, sceneNameFemale + ".unity");
-
-            return File.Exists(scenePathMale) && File.Exists(scenePathFemale);
+            // Iterate through each file
+            foreach (string filePath in files)
+            {
+                // Mark the file as Editor only
+                AssetImporter assetImporter = AssetImporter.GetAtPath(filePath);
+                if (assetImporter != null)
+                {
+                    assetImporter.assetBundleName = null; // Clear asset bundle name
+                    assetImporter.SetAssetBundleNameAndVariant(null, null);
+                    assetImporter.SaveAndReimport();
+                }
+            }
         }
     }
 }

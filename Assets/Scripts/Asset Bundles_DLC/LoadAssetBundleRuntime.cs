@@ -40,7 +40,7 @@ namespace B1NARY.DLC
 
         bool AssetBundleExists(string bundleName)
         {
-            string path = Path.Combine(Application.streamingAssetsPath, "HentaiDLC", bundleName);
+            string path = Path.Combine(Application.streamingAssetsPath, "DLC", bundleName);
             return File.Exists(path);
         }
 
@@ -52,7 +52,7 @@ namespace B1NARY.DLC
         IEnumerator LoadAssetBundle(string bundleName)
         {
             // Construct the path to the asset bundle
-            string path = Path.Combine(Application.streamingAssetsPath, "HentaiDLC", bundleName);
+            string path = Path.Combine(Application.streamingAssetsPath, "DLC", bundleName);
 
             var request = AssetBundle.LoadFromFileAsync(path);
             yield return request;
