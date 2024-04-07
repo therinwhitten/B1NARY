@@ -11,7 +11,7 @@
 		public override int InitialValue => HentaiEnabledToInt;
 		public override List<KeyValuePair<string, bool>> DefinedPairs => new()
 		{
-			new KeyValuePair<string, bool>("Twitch", false),
+			new KeyValuePair<string, bool>("Twatch", false),
 			new KeyValuePair<string, bool>("Uncut", true),
 		};
 		protected override void Awake()
