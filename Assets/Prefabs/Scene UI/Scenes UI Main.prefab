@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 3643117768881461701}
   - component: {fileID: 3643117768881461700}
   - component: {fileID: 3643117768881461703}
-  - component: {fileID: 712620781713306110}
+  - component: {fileID: 8881887862279686613}
   m_Layer: 5
   m_Name: UI (Scene Only)
   m_TagString: UI
@@ -533,7 +533,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &712620781713306110
+--- !u!114 &8881887862279686613
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -548,12 +548,8 @@ MonoBehaviour:
   hentaiArtBundleName: hentaiart.dlc
   hentaiScenesBundleName: hentaiscenes.dlc
   activateWhenLoaded:
-  - {fileID: 4608989409391157162}
-  - {fileID: 4608989408761937873}
   - {fileID: 3643117769895574185}
-  - {fileID: 3643117769966030920}
-  deactivateWhenLoaded:
-  - {fileID: 6588884449188134759}
+  deactivateWhenLoaded: []
 --- !u!1 &3643117768953246200
 GameObject:
   m_ObjectHideFlags: 0
@@ -4404,7 +4400,6 @@ GameObject:
   - component: {fileID: 3643117769895574189}
   - component: {fileID: 3643117769895574188}
   - component: {fileID: 3643117769895574191}
-  - component: {fileID: 648985259256172032}
   m_Layer: 5
   m_Name: Hentai Gallery Button
   m_TagString: Untagged
@@ -4952,19 +4947,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &648985259256172032
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3643117769895574185}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba4abafe9f650cc4cad76894261b162a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  totalToggle: 1
 --- !u!1 &3643117769968304719
 GameObject:
   m_ObjectHideFlags: 0
@@ -10639,12 +10621,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 201250408991835511}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3643117769966030920 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3477914025132643647, guid: eb4a0c81e9fc2d24abaa61931c957187,
-    type: 3}
-  m_PrefabInstance: {fileID: 201250408991835511}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3643117769971925159 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3477914025089254864, guid: eb4a0c81e9fc2d24abaa61931c957187,
@@ -14300,21 +14276,9 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 6277425525696722507}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &4608989408761937873 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7560292749196757402, guid: f3da0fccc71c39347bd1db38272608a9,
-    type: 3}
-  m_PrefabInstance: {fileID: 6277425525696722507}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4608989409083866209 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7560292749550045738, guid: f3da0fccc71c39347bd1db38272608a9,
-    type: 3}
-  m_PrefabInstance: {fileID: 6277425525696722507}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4608989409391157162 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7560292750966614497, guid: f3da0fccc71c39347bd1db38272608a9,
     type: 3}
   m_PrefabInstance: {fileID: 6277425525696722507}
   m_PrefabAsset: {fileID: 0}
@@ -14336,12 +14300,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &6588884449188134759 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 895528301629229356, guid: f3da0fccc71c39347bd1db38272608a9,
-    type: 3}
-  m_PrefabInstance: {fileID: 6277425525696722507}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6325620229163433217
 PrefabInstance:
   m_ObjectHideFlags: 0
