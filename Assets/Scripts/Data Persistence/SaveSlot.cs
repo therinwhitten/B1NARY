@@ -17,6 +17,8 @@
 	using HDConsole;
 	using System.Text;
 	using System.IO.Pipes;
+	using System.Xml;
+	using OVSSerializer.Extras;
 
 	public enum Gender : byte
 	{
@@ -349,56 +351,7 @@
 		}
 
 		// Unlockable items
-		public const string UNLOCKED_GALLERY_KEY = "UnlockedGallery";
-		public const string UNLOCKED_MAP_KEY = "UnlockedMap";
-		public const string UNLOCKED_CHAR_KEY = "UnlockedChar";
-
-		// Unlock gallery pictures
-		public HashSet<int> UnlockedGallery
-		{
-			get => GetStringHashSet(UNLOCKED_GALLERY_KEY);
-			set => SetStringHashSet(UNLOCKED_GALLERY_KEY, value);
-		}
-
-		// Unlock maps
-		public HashSet<int> UnlockedMap
-		{
-			get => GetStringHashSet(UNLOCKED_MAP_KEY);
-			set => SetStringHashSet(UNLOCKED_MAP_KEY, value);
-		}
-
-		// Unlock character profiles
-		public HashSet<int> UnlockedChar
-		{
-			get => GetStringHashSet(UNLOCKED_CHAR_KEY);
-			set => SetStringHashSet(UNLOCKED_CHAR_KEY, value);
-		}
-
-		private HashSet<int> GetStringHashSet(string key)
-		{
-			if (strings.TryGetValue(key, out string outArrayString) && !string.IsNullOrEmpty(outArrayString))
-			{
-				try
-				{
-					string[] strings = outArrayString.Split(',');
-					HashSet<int> result = new HashSet<int>(strings.Length);
-					Array.ForEach(strings, str => result.Add(Decompress(str)));
-					return result;
-				}
-				catch (FormatException)
-				{
-					Debug.LogWarning($"Error parsing HashSet for key {key}. Returning empty HashSet.");
-				}
-			}
-			return new HashSet<int>();
-			static int Decompress(string @string) => BitConverter.ToInt32(Convert.FromBase64String(@string), 0);
-		}
-
-		private void SetStringHashSet(string key, HashSet<int> value)
-		{
-			strings[key] = string.Join(",", value.Select(integer => Compress(integer)));
-			static string Compress(int integer) => Convert.ToBase64String(BitConverter.GetBytes(integer));
-		}
+		internal UnlockerCollection UnlockerCollection = new();
 	}
 
 	[Serializable]
@@ -423,6 +376,44 @@
 			while (changeSceneEnumerator.MoveNext())
 				yield return changeSceneEnumerator.Current;
 			ScriptHandler.Instance.NewDocument(StreamingAssetsPath, Line - 1);
+		}
+	}
+
+	/// <summary>
+	/// Stores flags for unlocking various things.
+	/// </summary>
+	/// <param name="Gallery"></param>
+	/// <param name="Map"></param>
+	/// <param name="Chars"></param>
+	[Serializable]
+	internal record UnlockerCollection(List<string> Gallery, List<string> Map, List<string> Chars) : IOVSXmlSerializable
+	{
+		public const string UNLOCKED_GALLERY_KEY = "UnlockedGallery";
+		public const string UNLOCKED_MAP_KEY = "UnlockedMap";
+		public const string UNLOCKED_CHAR_KEY = "UnlockedChar";
+
+		public UnlockerCollection() : this(new(), new(), new()) { }
+
+		bool IOVSXmlSerializable.ShouldWrite => true;
+		void IOVSXmlSerializable.Read(XmlNode value)
+		{
+			Gallery.AddRange(Read(UNLOCKED_GALLERY_KEY)); 
+			Map.AddRange(Read(UNLOCKED_MAP_KEY)); 
+			Chars.AddRange(Read(UNLOCKED_CHAR_KEY));
+			string[] Read(string name) => value.ChildNodes.FindNamedNode(name).InnerText.Split(',');
+		}
+		void IOVSXmlSerializable.Write(XmlNode currentNode)
+		{
+			XmlDocument document = currentNode.OwnerDocument;
+			Merge(Gallery, UNLOCKED_GALLERY_KEY); 
+			Merge(Map, UNLOCKED_MAP_KEY); 
+			Merge(Chars, UNLOCKED_CHAR_KEY);
+			void Merge(IEnumerable<string> strings, string name)
+			{
+				XmlElement element = document.CreateElement(name);
+				element.InnerText = string.Join(',', strings);
+				document.AppendChild(element);
+			}
 		}
 	}
 }
