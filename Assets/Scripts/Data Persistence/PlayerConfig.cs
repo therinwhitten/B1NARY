@@ -153,6 +153,11 @@ namespace B1NARY.DataPersistence
 		{
 			HDCommand.AutoCompleteFloat("cl_glow", () => Instance.graphics.glow, (set) => Instance.graphics.glow.Value = set, 0, 10, HDCommand.MainTags.None, "Adjusts glow intensity"),
 			HDCommand.AutoCompleteInt("cl_graphic_index", () => Instance.graphics.graphicSettingIndex, (set) => Instance.graphics.graphicSettingIndex.Value = set, 0, QualitySettings.count, HDCommand.MainTags.None),
+			new HDCommand("bny_add_collectible_gallery", name =>
+			{
+				SaveSlot.ActiveSlot.collectibles.Gallery.Add(name[0]);
+				Instance.collectibles.Gallery.Add(name[0]);
+			}),
 		};
 
 		[Serializable]
