@@ -23,7 +23,7 @@ namespace B1NARY.DataPersistence
 	using System.Xml;
 	using System.Collections;
 
-	public class PlayerConfig
+	public class PlayerConfig : IDisposable
 	{
 		public const string PRE_GRAPHICS = "gra_";
 		public const string PRE_SOUND = "snd_";
@@ -58,14 +58,16 @@ namespace B1NARY.DataPersistence
 						if (state != UnityEditor.PlayModeStateChange.ExitingPlayMode)
 							return;
 						m_Instance.Save();
+						m_Instance.Dispose();
 					}
 #else
-			Application.quitting += Quit;
-			void Quit()
-			{
-				m_Instance.Save();
-				Application.quitting -= Quit;
-			}
+					Application.quitting += Quit;
+					void Quit()
+					{
+						m_Instance.Save();
+						Application.quitting -= Quit;
+						m_Instance.Dispose();
+					}
 #endif
 				}
 				return m_Instance;
@@ -76,12 +78,11 @@ namespace B1NARY.DataPersistence
 		public PlayerConfig()
 		{
 			// Artificial delay to prevent trying to load the same file multiple times.
-			SceneManager.Instance.StartCoroutine(SyncCoroutine());
-			IEnumerator SyncCoroutine()
-			{
-				yield return new WaitForEndOfFrame();
-				collectibles.MergeSaves(SaveSlot.AllSaves.Select(pair => pair.Value.Value).ToArray());
-			}
+			SaveSlot.EmptiedSaveCache += UpdateSaveCollectibles;
+		}
+		private void UpdateSaveCollectibles()
+		{
+			collectibles.MergeSaves(SaveSlot.AllSaves.Select(pair => pair.Value.Value).ToArray());
 		}
 
 
@@ -119,6 +120,11 @@ namespace B1NARY.DataPersistence
 #endif
 		}
 
+
+		public void Dispose()
+		{
+			SaveSlot.EmptiedSaveCache -= UpdateSaveCollectibles;
+		}
 
 		/// <summary>
 		/// Any Audio settings that first configures the typical master volume
@@ -228,5 +234,6 @@ namespace B1NARY.DataPersistence
 				}
 			}
 		}
+
 	}
 }
