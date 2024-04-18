@@ -156,7 +156,7 @@ namespace B1NARY.DataPersistence
 		};
 
 		[Serializable]
-		public record CollectibleMerger(HashSet<string> Gallery, HashSet<string> Map, HashSet<string> Chars) : IOVSXmlSerializable
+		public record CollectibleMerger(HashSet<string> Gallery, HashSet<string> Map, HashSet<string> CharacterProfiles) : IOVSXmlSerializable
 		{
 			public const string UNLOCKED_GALLERY_KEY = "UnlockedGallery";
 			public const string UNLOCKED_MAP_KEY = "UnlockedMap";
@@ -174,7 +174,7 @@ namespace B1NARY.DataPersistence
 					DataPersistence.CollectibleCollection collection = slots[i].collectibles;
 					MergeList(collection.Gallery, Gallery);
 					MergeList(collection.Map, Map);
-					MergeList(collection.Chars, Chars);
+					MergeList(collection.CharacterProfiles, CharacterProfiles);
 					static void MergeList(List<string> with, HashSet<string> to)
 					{
 						for (int i = 0; i < with.Count; i++)
@@ -188,7 +188,7 @@ namespace B1NARY.DataPersistence
 			{
 				AddRange(Gallery, Read(UNLOCKED_GALLERY_KEY));
 				AddRange(Map, Read(UNLOCKED_MAP_KEY));
-				AddRange(Chars, Read(UNLOCKED_CHAR_KEY));
+				AddRange(CharacterProfiles, Read(UNLOCKED_CHAR_KEY));
 
 
 				string[] Read(string name) => value.ChildNodes.FindNamedNode(name).InnerText.Split(',');
