@@ -21,6 +21,7 @@ namespace B1NARY.DataPersistence
 	using HDConsole;
 	using UnityEngine.Rendering;
 	using System.Xml;
+	using System.Collections;
 
 	public class PlayerConfig
 	{
@@ -72,6 +73,16 @@ namespace B1NARY.DataPersistence
 		}
 		private static PlayerConfig m_Instance;
 
+		public PlayerConfig()
+		{
+			// Artificial delay to prevent trying to load the same file multiple times.
+			SceneManager.Instance.StartCoroutine(SyncCoroutine());
+			IEnumerator SyncCoroutine()
+			{
+				yield return new WaitForEndOfFrame();
+				collectibles.MergeSaves(SaveSlot.AllSaves.Select(pair => pair.Value.Value).ToArray());
+			}
+		}
 
 
 		public void Save()
@@ -169,7 +180,7 @@ namespace B1NARY.DataPersistence
 
 			public CollectibleMerger() : this(new(), new(), new())
 			{
-				MergeSaves(SaveSlot.AllSaves.Select(pair => pair.Value.Value).ToArray());
+				
 			}
 
 			public void MergeSaves(params SaveSlot[] slots)
