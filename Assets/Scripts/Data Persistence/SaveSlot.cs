@@ -351,7 +351,7 @@
 		}
 
 		// Unlockable items
-		internal UnlockerCollection UnlockerCollection = new();
+		internal CollectibleCollection collectibles = new();
 	}
 
 	[Serializable]
@@ -386,13 +386,13 @@
 	/// <param name="Map"></param>
 	/// <param name="Chars"></param>
 	[Serializable]
-	internal record UnlockerCollection(List<string> Gallery, List<string> Map, List<string> Chars) : IOVSXmlSerializable
+	internal record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> Chars) : IOVSXmlSerializable
 	{
 		public const string UNLOCKED_GALLERY_KEY = "UnlockedGallery";
 		public const string UNLOCKED_MAP_KEY = "UnlockedMap";
 		public const string UNLOCKED_CHAR_KEY = "UnlockedChar";
 
-		public UnlockerCollection() : this(new(), new(), new()) { }
+		public CollectibleCollection() : this(new(), new(), new()) { }
 
 		bool IOVSXmlSerializable.ShouldWrite => true;
 		void IOVSXmlSerializable.Read(XmlNode value)

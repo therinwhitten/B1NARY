@@ -91,7 +91,7 @@ namespace B1NARY.DataPersistence
 		public Audio audio = new();
 		public Graphics graphics = new();
 		public HashSet<string> savedAchievements = new();
-		public UnlockerCollection unlockerCollection = new();
+		public CollectibleMerger collectibles = new();
 		public Dictionary<string, float> savedProgressionAchievements = new();
 
 		[Command("cl_clear_config", "Deletes and creates a new config. Quits and relaunches the game to apply settings.")]
@@ -156,13 +156,13 @@ namespace B1NARY.DataPersistence
 		};
 
 		[Serializable]
-		public record UnlockerCollection(HashSet<string> Gallery, HashSet<string> Map, HashSet<string> Chars) : IOVSXmlSerializable
+		public record CollectibleMerger(HashSet<string> Gallery, HashSet<string> Map, HashSet<string> Chars) : IOVSXmlSerializable
 		{
 			public const string UNLOCKED_GALLERY_KEY = "UnlockedGallery";
 			public const string UNLOCKED_MAP_KEY = "UnlockedMap";
 			public const string UNLOCKED_CHAR_KEY = "UnlockedChar";
 
-			public UnlockerCollection() : this(new(), new(), new())
+			public CollectibleMerger() : this(new(), new(), new())
 			{
 				MergeSaves(SaveSlot.AllSaves.Select(pair => pair.Value.Value).ToArray());
 			}
@@ -171,7 +171,7 @@ namespace B1NARY.DataPersistence
 			{
 				for (int i = 0; i < slots.Length; i++)
 				{
-					DataPersistence.UnlockerCollection collection = slots[i].UnlockerCollection;
+					DataPersistence.CollectibleCollection collection = slots[i].collectibles;
 					MergeList(collection.Gallery, Gallery);
 					MergeList(collection.Map, Map);
 					MergeList(collection.Chars, Chars);
