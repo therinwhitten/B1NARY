@@ -386,7 +386,7 @@
 	/// <param name="Map"></param>
 	/// <param name="Chars"></param>
 	[Serializable]
-	internal record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> Chars) : IOVSXmlSerializable
+	internal record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> CharacterProfiles) : IOVSXmlSerializable
 	{
 		public const string UNLOCKED_GALLERY_KEY = "UnlockedGallery";
 		public const string UNLOCKED_MAP_KEY = "UnlockedMap";
@@ -399,7 +399,7 @@
 		{
 			Gallery.AddRange(Read(UNLOCKED_GALLERY_KEY)); 
 			Map.AddRange(Read(UNLOCKED_MAP_KEY)); 
-			Chars.AddRange(Read(UNLOCKED_CHAR_KEY));
+			CharacterProfiles.AddRange(Read(UNLOCKED_CHAR_KEY));
 			string[] Read(string name) => value.ChildNodes.FindNamedNode(name).InnerText.Split(',');
 		}
 		void IOVSXmlSerializable.Write(XmlNode currentNode)
@@ -407,7 +407,7 @@
 			XmlDocument document = currentNode.OwnerDocument;
 			Merge(Gallery, UNLOCKED_GALLERY_KEY); 
 			Merge(Map, UNLOCKED_MAP_KEY); 
-			Merge(Chars, UNLOCKED_CHAR_KEY);
+			Merge(CharacterProfiles, UNLOCKED_CHAR_KEY);
 			void Merge(IEnumerable<string> strings, string name)
 			{
 				XmlElement element = document.CreateElement(name);
