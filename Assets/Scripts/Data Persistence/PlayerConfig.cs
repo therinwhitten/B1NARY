@@ -200,6 +200,10 @@ namespace B1NARY.DataPersistence
 				
 			}
 
+			public void MergeSavesFromSingleton()
+			{
+				MergeSaves(SaveSlot.AllSaves.Select(pair => pair.Value.Value).ToArray());
+			}
 			public void MergeSaves(params SaveSlot[] slots)
 			{
 				for (int i = 0; i < slots.Length; i++)
@@ -241,7 +245,7 @@ namespace B1NARY.DataPersistence
 				{
 					XmlElement element = document.CreateElement(name);
 					element.InnerText = string.Join(',', strings);
-					document.AppendChild(element);
+					currentNode.AppendChild(element);
 				}
 			}
 		}

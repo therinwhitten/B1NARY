@@ -14,15 +14,16 @@
 		private CanvasGroup _canvasGroup;
 		public CanvasGroup CanvasGroup => _canvasGroup == null ? _canvasGroup = GetComponent<CanvasGroup>() : _canvasGroup;
 
-		public string FlagName = "GalleryFlag";
+		public string FlagName = "PlaceholderFlagName";
 		private void OnEnable()
 		{
 			UpdateCanvasGroup();
 		}
 
+		// Has to be a separate togglable gameobject to avoid same-sync loading times
 		public void UpdateCanvasGroup()
 		{
-			bool hide = PlayerConfig.Instance.collectibles.Gallery.Contains(FlagName);
+			bool hide = FanartPanel.Instance.GalleryFlags.Contains(FlagName);
 			CanvasGroup.blocksRaycasts = !hide;
 			CanvasGroup.alpha = hide ? 0f : 1f;
 			CanvasGroup.interactable = !hide;

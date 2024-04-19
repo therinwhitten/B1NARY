@@ -412,7 +412,7 @@
 			{
 				XmlElement element = document.CreateElement(name);
 				element.InnerText = string.Join(',', strings);
-				document.AppendChild(element);
+				currentNode.AppendChild(element);
 			}
 		}
 	}
