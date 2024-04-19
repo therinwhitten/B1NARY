@@ -82,7 +82,18 @@ namespace B1NARY.DataPersistence
 		}
 		private void UpdateSaveCollectibles()
 		{
-			collectibles.MergeSaves(SaveSlot.AllSaves.Select(pair => pair.Value.Value).ToArray());
+			var list = SaveSlot.AllSaves;
+			for (int i = 0; i < list.Count; i++)
+			{
+				try
+				{
+					collectibles.MergeSaves(list[i].Value.Value);
+				}
+				catch (Exception ex)
+				{
+					Debug.LogException(ex);
+				}
+			}
 		}
 
 
