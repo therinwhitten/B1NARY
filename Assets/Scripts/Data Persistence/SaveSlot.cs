@@ -386,8 +386,36 @@
 	/// <param name="Map"></param>
 	/// <param name="Chars"></param>
 	[Serializable]
-	internal record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> CharacterProfiles) : IOVSXmlSerializable
+	public record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> CharacterProfiles) : IOVSXmlSerializable
 	{
+		[Command]
+		public static void UnlockUnlockable(string type, string flagName)
+		{
+			if (SaveSlot.ActiveSlot == null)
+			{
+				// Missing savefile, saving directly to config instead.
+				HashSet<string> saveTo = type switch
+				{
+					UNLOCKED_GALLERY_KEY => PlayerConfig.Instance.collectibles.Gallery,
+					UNLOCKED_MAP_KEY => PlayerConfig.Instance.collectibles.Map,
+					UNLOCKED_CHAR_KEY => PlayerConfig.Instance.collectibles.CharacterProfiles,
+					_ => throw new InvalidOperationException($"type '{type}' is not valid!")
+				};
+				saveTo.Add(flagName);
+				return;
+			}
+			// Saving onto existing savefile
+			List<string> target = type switch
+			{
+				UNLOCKED_GALLERY_KEY => SaveSlot.ActiveSlot.collectibles.Gallery,
+				UNLOCKED_MAP_KEY => SaveSlot.ActiveSlot.collectibles.Map,
+				UNLOCKED_CHAR_KEY => SaveSlot.ActiveSlot.collectibles.CharacterProfiles,
+				_ => throw new InvalidOperationException($"type '{type}' is not valid!")
+			};
+			if (!target.Contains(flagName))
+				target.Add(flagName);
+		}
+
 		public const string UNLOCKED_GALLERY_KEY = "UnlockedGallery";
 		public const string UNLOCKED_MAP_KEY = "UnlockedMap";
 		public const string UNLOCKED_CHAR_KEY = "UnlockedChar";
