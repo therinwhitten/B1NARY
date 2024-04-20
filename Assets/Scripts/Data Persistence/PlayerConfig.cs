@@ -228,7 +228,12 @@ namespace B1NARY.DataPersistence
 				AddRange(CharacterProfiles, Read(UNLOCKED_CHAR_KEY));
 
 
-				string[] Read(string name) => value.ChildNodes.FindNamedNode(name).InnerText.Split(',');
+				string[] Read(string name)
+				{
+					try { return value.ChildNodes.FindNamedNode(name).InnerText.Split(','); }
+					catch { return Array.Empty<string>(); }
+				}
+
 				void AddRange(HashSet<string> values, in string[] strings)
 				{
 					for (int i = 0; i < strings.Length; i++)

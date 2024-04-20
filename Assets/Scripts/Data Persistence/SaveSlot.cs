@@ -19,6 +19,7 @@
 	using System.IO.Pipes;
 	using System.Xml;
 	using OVSSerializer.Extras;
+	using System.Linq.Expressions;
 
 	public enum Gender : byte
 	{
@@ -429,7 +430,11 @@
 			Gallery.AddRange(Read(UNLOCKED_GALLERY_KEY)); 
 			Map.AddRange(Read(UNLOCKED_MAP_KEY)); 
 			CharacterProfiles.AddRange(Read(UNLOCKED_CHAR_KEY));
-			string[] Read(string name) => value.ChildNodes.FindNamedNode(name).InnerText.Split(',');
+			string[] Read(string name)
+			{
+				try { return value.ChildNodes.FindNamedNode(name).InnerText.Split(','); }
+				catch { return Array.Empty<string>(); }
+			}
 		}
 		void IOVSXmlSerializable.Write(XmlNode currentNode)
 		{
