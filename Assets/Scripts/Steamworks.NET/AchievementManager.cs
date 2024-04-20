@@ -32,7 +32,7 @@ namespace B1NARY.Steamworks
 #endif
 				target.Achieved = true;
 			}),
-			["addcollectible"] = (Action<string, string>)((type, flagName) =>
+			["unlockunlockable"] = (Action<string, string>)((type, flagName) =>
 			{
 				// see Fanart Panel, Saveslot, or Player Config for more info
 				CollectibleCollection.UnlockUnlockable(type, flagName);
