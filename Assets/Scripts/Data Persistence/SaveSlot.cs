@@ -416,10 +416,10 @@
 			if (!target.Contains(flagName))
 				target.Add(flagName);
 		}
-
+		//Sub Label for Unlockables
 		public const string UNLOCKED_GALLERY_KEY = "gallery";
 		public const string UNLOCKED_MAP_KEY = "map";
-		public const string UNLOCKED_CHAR_KEY = "characterprofiles";
+		public const string UNLOCKED_CHAR_KEY = "charprofile";
 
 		public CollectibleCollection() : this(new(), new(), new()) { }
 
