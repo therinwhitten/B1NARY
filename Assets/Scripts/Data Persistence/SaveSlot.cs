@@ -388,9 +388,10 @@
 	[Serializable]
 	public record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> CharacterProfiles) : IOVSXmlSerializable
 	{
-		[Command]
+		[Command("bny_unlock_unlockable")]
 		public static void UnlockUnlockable(string type, string flagName)
 		{
+			type = type.ToLower();
 			if (SaveSlot.ActiveSlot == null)
 			{
 				// Missing savefile, saving directly to config instead.
@@ -416,9 +417,9 @@
 				target.Add(flagName);
 		}
 
-		public const string UNLOCKED_GALLERY_KEY = "UnlockedGallery";
-		public const string UNLOCKED_MAP_KEY = "UnlockedMap";
-		public const string UNLOCKED_CHAR_KEY = "UnlockedChar";
+		public const string UNLOCKED_GALLERY_KEY = "gallery";
+		public const string UNLOCKED_MAP_KEY = "map";
+		public const string UNLOCKED_CHAR_KEY = "characterprofiles";
 
 		public CollectibleCollection() : this(new(), new(), new()) { }
 
