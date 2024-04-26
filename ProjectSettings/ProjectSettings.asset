@@ -865,7 +865,7 @@ PlayerSettings:
     PS5: DOTWEEN
     QNX: DOTWEEN
     Stadia: DOTWEEN
-    Standalone: STEAMWORKS_NET
+    Standalone: STEAMWORKS_NET;DISABLESTEAMWORKS
     VisionOS: DOTWEEN
     WebGL: DOTWEEN
     Windows Store Apps: DOTWEEN
@@ -928,7 +928,6 @@ PlayerSettings:
   metroSplashScreenUseBackgroundColor: 0
   platformCapabilities:
     WindowsStoreApps:
-      CodeGeneration: False
       OfflineMapsManagement: False
       HumanInterfaceDevice: False
       Location: False
@@ -941,6 +940,7 @@ PlayerSettings:
       InternetClientServer: False
       VideosLibrary: False
       Objects3D: False
+      InternetClient: False
       RemoteSystem: False
       BlockedChatMessages: False
       PhoneCall: False
@@ -963,7 +963,7 @@ PlayerSettings:
       RecordedCallsFolder: False
       Contacts: False
       Proximity: False
-      InternetClient: False
+      CodeGeneration: False
       BackgroundMediaPlayback: False
       EnterpriseAuthentication: False
   metroTargetDeviceFamilies:
