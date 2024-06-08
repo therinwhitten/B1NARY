@@ -11,6 +11,19 @@
 	[RequireComponent(typeof(CanvasGroup))]
 	public class LockBoxToggler : MonoBehaviour
 	{
+		public static HashSet<string> GalleryFlags
+		{
+			get
+			{
+				if (_galleryFlags is not null)
+					return _galleryFlags;
+				PlayerConfig.Instance.collectibles.MergeSavesFromSingleton();
+				_galleryFlags = PlayerConfig.Instance.collectibles.Gallery;
+				return _galleryFlags;
+			}
+		}
+		private static HashSet<string> _galleryFlags;
+
 		private CanvasGroup _canvasGroup;
 		public CanvasGroup CanvasGroup => _canvasGroup == null ? _canvasGroup = GetComponent<CanvasGroup>() : _canvasGroup;
 
@@ -19,11 +32,15 @@
 		{
 			UpdateCanvasGroup();
 		}
+		private void OnDestroy()
+		{
+			_galleryFlags = null;
+		}
 
 		// Has to be a separate togglable gameobject to avoid same-sync loading times
 		public void UpdateCanvasGroup()
 		{
-			bool hide = FanartPanel.Instance.GalleryFlags.Contains(FlagName);
+			bool hide = GalleryFlags.Contains(FlagName);
 			CanvasGroup.blocksRaycasts = !hide;
 			CanvasGroup.alpha = hide ? 0f : 1f;
 			CanvasGroup.interactable = !hide;

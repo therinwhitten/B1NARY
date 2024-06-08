@@ -11,19 +11,6 @@
 
 	public class FanartPanel : Singleton<FanartPanel>
 	{
-		public HashSet<string> GalleryFlags
-		{
-			get
-			{
-				if (_galleryFlags is not null)
-					return _galleryFlags;
-				PlayerConfig.Instance.collectibles.MergeSavesFromSingleton();
-				_galleryFlags = PlayerConfig.Instance.collectibles.Gallery;
-				return _galleryFlags;
-			}
-		}
-		private HashSet<string> _galleryFlags;
-
 		protected virtual void OnEnable()
 		{
 			SaveSlot.EmptiedSaveCache += UpdateSaves;
