@@ -1,4 +1,4 @@
-﻿namespace B1NARY.UI
+namespace B1NARY.UI
 {
 	using B1NARY.DataPersistence;
 	using System;
