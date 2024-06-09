@@ -14,3 +14,5 @@
 
 	}
 }
+// This basically does nothing right now. It's only here to prevent errors being thrown when removed. 
+// Might have something to do with Design Patterns and DataPersistence. I may remove later when I have time. 
