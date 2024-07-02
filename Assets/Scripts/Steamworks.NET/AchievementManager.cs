@@ -32,10 +32,10 @@ namespace B1NARY.Steamworks
 #endif
 				target.Achieved = true;
 			}),
-			   //Unlock Command 
+			   //Unlock Command for UnLockables (Non Steam)
 			["unlock"] = (Action<string, string>)((type, flagName) =>
 			{
-				// see Fanart Panel, Saveslot, or Player Config for more info
+				// see Fanart Panel, Saveslot, or Player Config CS for more info
 				CollectibleCollection.UnlockUnlockable(type, flagName);
 			}),
 		};
