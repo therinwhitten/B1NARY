@@ -414,9 +414,12 @@
 				UNLOCKED_CHAR_KEY => SaveSlot.ActiveSlot.collectibles.CharacterProfiles,
 				_ => throw new InvalidOperationException($"type '{type}' is not valid!")
 			};
-			if (!target.Contains(flagName))
+			bool alreadyContains = target.Contains(flagName);
+			if (!alreadyContains)
 				target.Add(flagName);
+			UnlockedUnlockableEvent?.Invoke(type, flagName, alreadyContains);
 		}
+		public static event Action<string, string, bool> UnlockedUnlockableEvent;
 		//Sub Label for Unlockables
 		public const string UNLOCKED_GALLERY_KEY = "gallery";
 		public const string UNLOCKED_MAP_KEY = "map";
