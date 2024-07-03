@@ -15,7 +15,7 @@
 	{
 		internal List<NotificationBehaviour> Notifications = new();
 		[SerializeField]
-		public GameObject NotificationPrefab = new();
+		public GameObject NotificationPrefab;
 
 		[SerializeField]
 		public UnityEvent<int> NotificationRecieved = new();
