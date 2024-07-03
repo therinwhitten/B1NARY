@@ -37,7 +37,7 @@
 					return;
 				int index = -1;
 				try { index = ScriptHandler.Instance.documentWatcher.CurrentNode.GlobalIndex; }
-				catch { Debug.LogError($"Failed to retrieve languaged name '{CurrentName}' for '{language}'!"); throw; }
+				catch { /*Debug.LogError($"Failed to retrieve languaged name '{CurrentName}' for '{language}'!"); */ throw; }
 				for (int i = 0; i < Languages.Instance.Count; i++)
 				{
 					string targetLanguage = Languages.Instance[i];

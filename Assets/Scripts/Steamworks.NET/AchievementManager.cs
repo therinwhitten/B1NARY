@@ -33,10 +33,10 @@ namespace B1NARY.Steamworks
 				target.Achieved = true;
 			}),
 			   //Unlock Command for UnLockables (Non Steam)
-			["unlock"] = (Action<string, string>)((type, flagName) =>
+			["unlock"] = (Action<string, string, string>)((type, flagName, formalName) =>
 			{
 				// see Fanart Panel, Saveslot, or Player Config CS for more info
-				CollectibleCollection.UnlockUnlockable(type, flagName);
+				CollectibleCollection.UnlockUnlockable(type, flagName, formalName);
 			}),
 		};
 

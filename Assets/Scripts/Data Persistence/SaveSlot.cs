@@ -389,8 +389,9 @@
 	[Serializable]
 	public record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> CharacterProfiles) : IOVSXmlSerializable
 	{
+		public record NewFlag(string Type, string FlagName, string FormalName);
 		[Command("bny_unlock_unlockable")]
-		public static void UnlockUnlockable(string type, string flagName)
+		public static void UnlockUnlockable(string type, string flagName, string formalName)
 		{
 			type = type.ToLower();
 			if (SaveSlot.ActiveSlot == null)
@@ -414,12 +415,12 @@
 				UNLOCKED_CHAR_KEY => SaveSlot.ActiveSlot.collectibles.CharacterProfiles,
 				_ => throw new InvalidOperationException($"type '{type}' is not valid!")
 			};
-			bool alreadyContains = target.Contains(flagName);
-			if (!alreadyContains)
-				target.Add(flagName);
-			UnlockedUnlockableEvent?.Invoke(type, flagName, alreadyContains);
+			if (target.Contains(flagName))
+				return;
+			target.Add(flagName);
+			UnlockedUnlockableEvent?.Invoke(new(type, flagName, formalName));
 		}
-		public static event Action<string, string, bool> UnlockedUnlockableEvent;
+		public static event Action<NewFlag> UnlockedUnlockableEvent;
 		//Sub Label for Unlockables
 		public const string UNLOCKED_GALLERY_KEY = "gallery";
 		public const string UNLOCKED_MAP_KEY = "map";

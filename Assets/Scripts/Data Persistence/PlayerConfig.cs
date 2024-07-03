@@ -116,6 +116,7 @@ namespace B1NARY.DataPersistence
 		public HashSet<string> savedAchievements = new();
 		public CollectibleMerger collectibles = new();
 		public Dictionary<string, float> savedProgressionAchievements = new();
+		public List<string> uncheckedNotifications = new();
 
 		[Command("cl_clear_config", "Deletes and creates a new config. Quits and relaunches the game to apply settings.")]
 		public static void Clear()
@@ -189,7 +190,7 @@ namespace B1NARY.DataPersistence
 		};
 
 		[Serializable]
-		public record CollectibleMerger(HashSet<string> Gallery, HashSet<string> Map, HashSet<string> CharacterProfiles) : IOVSXmlSerializable
+		public record CollectibleMerger(HashSet<string> Gallery, HashSet<string> Map, HashSet<string> CharacterProfiles) : IEnumerable<string>, IOVSXmlSerializable
 		{
 			public const string UNLOCKED_GALLERY_KEY = "UnlockedGallery";
 			public const string UNLOCKED_MAP_KEY = "UnlockedMap";
@@ -221,6 +222,18 @@ namespace B1NARY.DataPersistence
 			}
 
 			bool IOVSXmlSerializable.ShouldWrite => true;
+
+			public IEnumerator<string> GetEnumerator()
+			{
+				IEnumerable<string>[] enumerables = { Gallery, Map, CharacterProfiles };
+				for (int i = 0; i < enumerables.Length; i++)
+					using (var enumerator = enumerables[i].GetEnumerator())
+						while (enumerator.MoveNext())
+							yield return enumerator.Current;
+			}
+
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
 			void IOVSXmlSerializable.Read(XmlNode value)
 			{
 				AddRange(Gallery, Read(UNLOCKED_GALLERY_KEY));
@@ -253,6 +266,7 @@ namespace B1NARY.DataPersistence
 					currentNode.AppendChild(element);
 				}
 			}
+
 		}
 
 	}
