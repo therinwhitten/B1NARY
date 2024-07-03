@@ -38,6 +38,12 @@ namespace B1NARY.Steamworks
 				// see Fanart Panel, Saveslot, or Player Config CS for more info
 				CollectibleCollection.UnlockUnlockable(type, flagName, formalName);
 			}),
+			["unlock"] = (Action<string, string>)((type, flagName) =>
+			{
+				Debug.LogWarning($"Special note that theres a command that unlocks without a formal name! Remove this before it fully becomes deprecated.");
+				// see Fanart Panel, Saveslot, or Player Config CS for more info
+				CollectibleCollection.UnlockUnlockable(type, flagName, flagName);
+			}),
 		};
 
 		[return: CommandsFromGetter]
