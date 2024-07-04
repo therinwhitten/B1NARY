@@ -16,17 +16,9 @@
 		[SerializeField]
 		public Button closeButton;
 
-		
-
-		public void Awake()
-		{
-			closeButton.onClick.AddListener(() => Destroy(gameObject));
-		}
-
 		public void SetText(CollectibleCollection.NewFlag flag)
 		{
-			UpdateLanguage(PlayerConfig.Instance.language.Value);
-			text.text = text.text.Replace("{0}", flag.FlagName).Replace("{1}", flag.FormalName);
+			SetText(flag.FlagName, flag.FormalName);
 		}
 	}
 }

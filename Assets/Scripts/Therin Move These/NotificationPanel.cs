@@ -1,5 +1,6 @@
 ﻿namespace B1NARY
 {
+	using B1NARY.Audio;
 	using B1NARY.DataPersistence;
 	using System;
 	using System.Collections.Generic;
@@ -13,13 +14,22 @@
 
 	public class NotificationPanel : MonoBehaviour
 	{
-		internal List<NotificationBehaviour> Notifications = new();
+		public IReadOnlyList<NotificationBehaviour> Notifications => notifications;
+		internal List<NotificationBehaviour> notifications = new();
 		[SerializeField]
 		public GameObject NotificationPrefab;
 
 		[SerializeField]
 		public UnityEvent<int> NotificationRecieved = new();
+		[SerializeField]
+		public UnityEvent<bool> SetActived = new();
+		[SerializeField]
+		public UnityEvent NoNewNotifications = new();
 
+		[SerializeField]
+		public CustomAudioClip NotificationNotification;
+
+		private readonly Dictionary<string, NotificationBehaviour> existingNotifications = new();
 
 		public void Awake()
 		{
@@ -27,25 +37,55 @@
 			IReadOnlyList<string> notifs = PlayerConfig.Instance.uncheckedNotifications;
 			for (int i = 0; i < notifs.Count; i++)
 				PlayNewNotification(new CollectibleCollection.NewFlag("", "", notifs[i]));
+			NotificationBehaviour[] collection = gameObject.GetComponentsInChildren<NotificationBehaviour>();
+			existingNotifications.EnsureCapacity(collection.Length);
+			for (int i = 0; i < collection.Length; i++)
+				existingNotifications.Add(collection[i].name, collection[i]);
 		}
 		public void OnDestroy()
 		{
 			CollectibleCollection.UnlockedUnlockableEvent -= PlayNewNotification;
 		}
+		public void OnEnable()
+		{
+			SetActived.Invoke(true);
+		}
+		public void OnDisable()
+		{
+			SetActived.Invoke(false);
+		}
 
 
 		public void PlayNewNotification(CollectibleCollection.NewFlag flag)
 		{
-			// Create new notification
-			GameObject obj = Instantiate(NotificationPrefab, transform, false);
-			obj.SetActive(false);
-			var behaviour = obj.GetComponentInChildren<NotificationBehaviour>();
 			string formalName = flag.FormalName;
-			behaviour.SetText(flag);
-			behaviour.closeButton.onClick.AddListener(() => PlayerConfig.Instance.uncheckedNotifications.Remove(formalName));
-			obj.SetActive(true);
+			if (TryGetExistingNotification(flag, out NotificationBehaviour behaviour))
+			{
+				behaviour.gameObject.SetActive(true);
+			}
+			else // Try fallback option, creates new notif from prefab
+			{
+				Debug.LogWarning($"Missing notification for flag '{flag.FlagName}'! languages may be inaccurate!");
+				GameObject obj = Instantiate(NotificationPrefab, transform, false);
+				obj.SetActive(false);
+				behaviour = obj.GetComponentInChildren<NotificationBehaviour>();
+				behaviour.SetText(flag);
+				obj.SetActive(true);
+			}
+			behaviour.closeButton.onClick.AddListener(RemovedNotification);
 			PlayerConfig.Instance.uncheckedNotifications.Add(formalName);
-			NotificationRecieved.Invoke(Notifications.Count - 1);
+			NotificationRecieved.Invoke(notifications.Count - 1);
+			AudioController.Instance.AddSound(NotificationNotification);
+
+			void RemovedNotification()
+			{
+				PlayerConfig.Instance.uncheckedNotifications.Remove(formalName);
+				if (PlayerConfig.Instance.uncheckedNotifications.Count <= 0)
+					NoNewNotifications.Invoke();
+			}
 		}
+
+		public bool TryGetExistingNotification(CollectibleCollection.NewFlag flag, out NotificationBehaviour existingObject) 
+			=> existingNotifications.TryGetValue(flag.FlagName, out existingObject);
 	}
 }
