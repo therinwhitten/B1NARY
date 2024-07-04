@@ -62,15 +62,14 @@
 			PlayerConfig.Instance.language.ValueChanged -= UpdateLanguage;
 		}
 
-		protected void UpdateLanguage() => UpdateLanguage(Languages.CurrentLanguage);
+		protected void UpdateLanguage() => UpdateLanguage(PlayerConfig.Instance.language);
 		protected virtual void UpdateLanguage(string newLanguage)
 		{
 			string setText = this[newLanguage];
 			if (specialOverrides is not null)
 				for (int i = 0; i < specialOverrides.Length; i++)
 					setText = setText.Replace($"{{{i}}}", specialOverrides[i]);
-			else
-				text.text = setText;
+			text.text = setText;
 		}
 
 		public virtual void SetText(params string[] text)

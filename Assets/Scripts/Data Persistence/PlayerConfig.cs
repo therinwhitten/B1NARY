@@ -164,8 +164,9 @@ namespace B1NARY.DataPersistence
 
 			private static int GetThumbnail()
 			{
-				const int odd = 1, max = 80;
+				const int max = 80;
 #if !DISABLESTEAMWORKS
+				const int odd = 1;
 				const ulong oddsSteamID = 76561198109619934;
 				try { return SteamUser.GetSteamID().m_SteamID == oddsSteamID ? odd : max; }
 				catch { return max; }
