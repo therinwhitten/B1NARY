@@ -389,7 +389,15 @@
 	[Serializable]
 	public record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> CharacterProfiles) : IOVSXmlSerializable
 	{
-		public record NewFlag(string Type, string FlagName, string FormalName);
+		public record NewFlag(string Type, string FlagName, string FormalName)
+		{
+			public override string ToString() => $"{Type}/{FlagName}/{FormalName}";
+			public static NewFlag FromString(string value)
+			{
+				string[] split = value.Split('/');
+				return new NewFlag(split[0], split[1], split[2]);
+			}
+		}
 		[Command("bny_unlock_unlockable")]
 		public static void UnlockUnlockable(string type, string flagName, string formalName)
 		{
