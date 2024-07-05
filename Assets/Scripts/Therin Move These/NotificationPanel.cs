@@ -73,7 +73,8 @@
 				obj.SetActive(true);
 			}
 			behaviour.closeButton.onClick.AddListener(RemovedNotification);
-			PlayerConfig.Instance.uncheckedNotifications.Add(formalName);
+			if (!PlayerConfig.Instance.uncheckedNotifications.Contains(formalName))
+				PlayerConfig.Instance.uncheckedNotifications.Add(formalName);
 			NotificationRecieved.Invoke(notifications.Count - 1);
 			AudioController.Instance.AddSound(NotificationNotification);
 
