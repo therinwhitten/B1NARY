@@ -389,18 +389,20 @@
 	[Serializable]
 	public record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> CharacterProfiles) : IOVSXmlSerializable
 	{
-		public record NewFlag(string Type, string FlagName, string FormalName)
+		public record NewFlag(string Type, string FlagName)
 		{
-			public override string ToString() => $"{Type}/{FlagName}/{FormalName}";
+			public override string ToString() => $"{Type}/{FlagName}";
 			public static NewFlag FromString(string value)
 			{
 				string[] split = value.Split('/');
-				return new NewFlag(split[0], split[1], split[2]);
+				return new NewFlag(split[0], split[1]);
 			}
 		}
 		[Command("bny_unlock_unlockable")]
-		public static void UnlockUnlockable(string type, string flagName, string formalName)
+		public static void UnlockUnlockable(string type, string flagName)
 		{
+			NewFlag flag = new(type, flagName);
+			BeforeUnlocking?.Invoke(new Ref<NewFlag>(() => flag, set => flag = set));
 			type = type.ToLower();
 			if (SaveSlot.ActiveSlot == null)
 			{
@@ -426,8 +428,9 @@
 			if (target.Contains(flagName))
 				return;
 			target.Add(flagName);
-			UnlockedUnlockableEvent?.Invoke(new(type, flagName, formalName));
+			UnlockedUnlockableEvent?.Invoke(flag);
 		}
+		public static event Action<Ref<NewFlag>> BeforeUnlocking;
 		public static event Action<NewFlag> UnlockedUnlockableEvent;
 		//Sub Label for Unlockables
 		public const string UNLOCKED_GALLERY_KEY = "gallery";

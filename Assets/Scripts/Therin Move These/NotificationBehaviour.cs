@@ -6,6 +6,7 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
+	using System.Text.RegularExpressions;
 	using System.Threading.Tasks;
 	using TMPro;
 	using UnityEngine;
@@ -18,9 +19,12 @@
 		[SerializeField]
 		public string flagKey;
 
+
+		private static readonly Regex nameRegex = new(@"([a-z])([A-Z])");
+
 		public void SetText(CollectibleCollection.NewFlag flag)
 		{
-			SetText(flag.FlagName, flag.FormalName);
+			SetText(flag.FlagName, nameRegex.Replace(flag.FlagName, "$1 $2"));
 		}
 	}
 }

@@ -80,7 +80,7 @@
 		{
 			if (ignoreNotifications.Contains(flag.FlagName))
 				return;
-			string formalName = flag.FormalName;
+			string formalName = flag.FlagName;
 			int index = PlayerConfig.Instance.uncheckedNotifications.IndexOf(flag.FlagName);
 			if (index == -1)
 			{ 
@@ -120,11 +120,11 @@
 
 		public record PersistentFlag(bool VeryCool, NewFlag Flag)
 		{
-			public override string ToString() => $"{VeryCool}/{Flag.Type}/{Flag.FlagName}/{Flag.FormalName}";
+			public override string ToString() => $"{VeryCool}/{Flag.Type}/{Flag.FlagName}";
 			public static PersistentFlag FromString(string value)
 			{
 				string[] split = value.Split('/');
-				return new PersistentFlag(bool.Parse(split[0]), new NewFlag(split[1], split[2], split[3]));
+				return new PersistentFlag(bool.Parse(split[0]), new NewFlag(split[1], split[2]));
 			}
 		}
 	}
