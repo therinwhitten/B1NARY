@@ -44,7 +44,7 @@ namespace B1NARY.Globalization.Editor
 			globalizer.UpdateLanguageList();
 			globalizer.closeButton = DirtyAuto.Field<Button>(target, new GUIContent("Button"), globalizer.closeButton, true);
 			globalizer.text = DirtyAuto.Field(target, new GUIContent("Text"), globalizer.text, true);
-			globalizer.flagKey = DirtyAuto.Field(target, new GUIContent("Flag"), globalizer.flagKey);
+			globalizer.flagKey = DirtyAuto.Field(target, new GUIContent("Flag (?)", ""), globalizer.flagKey);
 			EditorGUILayout.Space();
 			for (int i = 0; i < globalizer.languageKeys.Count; i++)
 			{

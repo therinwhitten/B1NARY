@@ -11,6 +11,7 @@
 	using UnityEngine;
 	using UnityEngine.Events;
 	using UnityEngine.UI;
+	using static B1NARY.DataPersistence.CollectibleCollection;
 
 	public class NotificationPanel : MonoBehaviour
 	{
@@ -31,16 +32,30 @@
 
 		private readonly Dictionary<string, NotificationBehaviour> existingNotifications = new();
 
+		private HashSet<string> ignoreNotifications = new();
+
+		private PersistentFlag this[int index]
+		{
+			get => PersistentFlag.FromString(PlayerConfig.Instance.uncheckedNotifications[index]);
+			set => PlayerConfig.Instance.uncheckedNotifications[index] = value.ToString();
+		}
+
 		public void Awake()
 		{
 			CollectibleCollection.UnlockedUnlockableEvent += PlayNewNotification;
 			IReadOnlyList<string> notifs = PlayerConfig.Instance.uncheckedNotifications;
 			for (int i = 0; i < notifs.Count; i++)
-				PlayNewNotification(CollectibleCollection.NewFlag.FromString(notifs[i]));
+			{
+				PersistentFlag newFlag = PersistentFlag.FromString(notifs[i]);
+				PlayNewNotification(newFlag);
+				if (!newFlag.VeryCool)
+					ignoreNotifications.Add(newFlag.Flag.FlagName);
+			}
 			NotificationBehaviour[] collection = gameObject.GetComponentsInChildren<NotificationBehaviour>();
 			existingNotifications.EnsureCapacity(collection.Length);
 			for (int i = 0; i < collection.Length; i++)
-				existingNotifications.Add(collection[i].flagKey, collection[i]);
+				if (!string.IsNullOrWhiteSpace(collection[i].flagKey))
+					existingNotifications[collection[i].flagKey] = collection[i];
 		}
 		public void OnDestroy()
 		{
@@ -55,10 +70,24 @@
 			SetActived.Invoke(false);
 		}
 
-
-		public void PlayNewNotification(CollectibleCollection.NewFlag flag)
+		public void PlayNewNotification(PersistentFlag flag)
 		{
+			if (!flag.VeryCool)
+				return;
+			PlayNewNotification(flag.Flag);
+		}
+		public void PlayNewNotification(NewFlag flag)
+		{
+			if (ignoreNotifications.Contains(flag.FlagName))
+				return;
 			string formalName = flag.FormalName;
+			int index = PlayerConfig.Instance.uncheckedNotifications.IndexOf(flag.FlagName);
+			if (index == -1)
+			{ 
+				PlayerConfig.Instance.uncheckedNotifications.Add(null); 
+				index = PlayerConfig.Instance.uncheckedNotifications.Count - 1; 
+			}
+			this[index] = new(true, flag);
 			if (TryGetExistingNotification(flag, out NotificationBehaviour behaviour))
 			{
 				behaviour.gameObject.SetActive(true);
@@ -74,20 +103,29 @@
 			}
 			string parsedValue = flag.ToString();
 			behaviour.closeButton.onClick.AddListener(RemovedNotification);
-			if (!PlayerConfig.Instance.uncheckedNotifications.Contains(parsedValue))
-				PlayerConfig.Instance.uncheckedNotifications.Add(parsedValue);
 			NotificationRecieved.Invoke(notifications.Count - 1);
 			AudioController.Instance.AddSound(NotificationNotification);
 
 			void RemovedNotification()
 			{
-				PlayerConfig.Instance.uncheckedNotifications.Remove(parsedValue);
-				if (PlayerConfig.Instance.uncheckedNotifications.Count <= 0)
+				ignoreNotifications.Add(flag.FlagName);
+				this[index] = new(false, flag);
+				if (PlayerConfig.Instance.uncheckedNotifications.Count == ignoreNotifications.Count)
 					NoNewNotifications.Invoke();
 			}
 		}
 
-		public bool TryGetExistingNotification(CollectibleCollection.NewFlag flag, out NotificationBehaviour existingObject) 
+		public bool TryGetExistingNotification(NewFlag flag, out NotificationBehaviour existingObject) 
 			=> existingNotifications.TryGetValue(flag.FlagName, out existingObject);
+
+		public record PersistentFlag(bool VeryCool, NewFlag Flag)
+		{
+			public override string ToString() => $"{VeryCool}/{Flag.Type}/{Flag.FlagName}/{Flag.FormalName}";
+			public static PersistentFlag FromString(string value)
+			{
+				string[] split = value.Split('/');
+				return new PersistentFlag(bool.Parse(split[0]), new NewFlag(split[1], split[2], split[3]));
+			}
+		}
 	}
 }
