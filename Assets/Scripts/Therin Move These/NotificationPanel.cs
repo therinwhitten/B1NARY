@@ -40,7 +40,7 @@
 			NotificationBehaviour[] collection = gameObject.GetComponentsInChildren<NotificationBehaviour>();
 			existingNotifications.EnsureCapacity(collection.Length);
 			for (int i = 0; i < collection.Length; i++)
-				existingNotifications.Add(collection[i].name, collection[i]);
+				existingNotifications.Add(collection[i].flagKey, collection[i]);
 		}
 		public void OnDestroy()
 		{
