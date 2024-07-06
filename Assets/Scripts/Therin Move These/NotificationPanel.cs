@@ -43,6 +43,11 @@
 		public void Awake()
 		{
 			CollectibleCollection.UnlockedUnlockableEvent += PlayNewNotification;
+			NotificationBehaviour[] collection = gameObject.GetComponentsInChildren<NotificationBehaviour>(true);
+			existingNotifications.EnsureCapacity(collection.Length);
+			for (int i = 0; i < collection.Length; i++)
+				if (!string.IsNullOrWhiteSpace(collection[i].flagKey))
+					existingNotifications[collection[i].flagKey] = collection[i];
 			IReadOnlyList<string> notifs = PlayerConfig.Instance.uncheckedNotifications;
 			for (int i = 0; i < notifs.Count; i++)
 			{
@@ -51,11 +56,6 @@
 				if (!newFlag.VeryCool)
 					ignoreNotifications.Add(newFlag.Flag.FlagName);
 			}
-			NotificationBehaviour[] collection = gameObject.GetComponentsInChildren<NotificationBehaviour>();
-			existingNotifications.EnsureCapacity(collection.Length);
-			for (int i = 0; i < collection.Length; i++)
-				if (!string.IsNullOrWhiteSpace(collection[i].flagKey))
-					existingNotifications[collection[i].flagKey] = collection[i];
 		}
 		public void OnDestroy()
 		{
