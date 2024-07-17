@@ -20,8 +20,10 @@ namespace B1NARY.DataPersistence
 	using OVSSerializer.IO;
 	using HDConsole;
 	using UnityEngine.Rendering;
+	using System.Xml;
+	using System.Collections;
 
-	public class PlayerConfig
+	public class PlayerConfig : IDisposable
 	{
 		public const string PRE_GRAPHICS = "gra_";
 		public const string PRE_SOUND = "snd_";
@@ -56,21 +58,44 @@ namespace B1NARY.DataPersistence
 						if (state != UnityEditor.PlayModeStateChange.ExitingPlayMode)
 							return;
 						m_Instance.Save();
+						m_Instance.Dispose();
 					}
 #else
-			Application.quitting += Quit;
-			void Quit()
-			{
-				m_Instance.Save();
-				Application.quitting -= Quit;
-			}
+					Application.quitting += Quit;
+					void Quit()
+					{
+						m_Instance.Save();
+						Application.quitting -= Quit;
+						m_Instance.Dispose();
+					}
 #endif
 				}
 				return m_Instance;
 			}
-		} private static PlayerConfig m_Instance;
+		}
+		private static PlayerConfig m_Instance;
 
-		
+		public PlayerConfig()
+		{
+			// Artificial delay to prevent trying to load the same file multiple times.
+			SaveSlot.EmptiedSaveCache += UpdateSaveCollectibles;
+		}
+		private void UpdateSaveCollectibles()
+		{
+			var list = SaveSlot.AllSaves;
+			for (int i = 0; i < list.Count; i++)
+			{
+				try
+				{
+					collectibles.MergeSaves(list[i].Value.Value);
+				}
+				catch (Exception ex)
+				{
+					Debug.LogException(ex);
+				}
+			}
+		}
+
 
 		public void Save()
 		{
@@ -89,8 +114,10 @@ namespace B1NARY.DataPersistence
 		public Audio audio = new();
 		public Graphics graphics = new();
 		public HashSet<string> savedAchievements = new();
+		public CollectibleMerger collectibles = new();
 		public Dictionary<string, float> savedProgressionAchievements = new();
-		 
+		public List<string> uncheckedNotifications = new();
+
 		[Command("cl_clear_config", "Deletes and creates a new config. Quits and relaunches the game to apply settings.")]
 		public static void Clear()
 		{
@@ -105,6 +132,11 @@ namespace B1NARY.DataPersistence
 #endif
 		}
 
+
+		public void Dispose()
+		{
+			SaveSlot.EmptiedSaveCache -= UpdateSaveCollectibles;
+		}
 
 		/// <summary>
 		/// Any Audio settings that first configures the typical master volume
@@ -132,8 +164,9 @@ namespace B1NARY.DataPersistence
 
 			private static int GetThumbnail()
 			{
-				const int odd = 1, max = 80;
+				const int max = 80;
 #if !DISABLESTEAMWORKS
+				const int odd = 1;
 				const ulong oddsSteamID = 76561198109619934;
 				try { return SteamUser.GetSteamID().m_SteamID == oddsSteamID ? odd : max; }
 				catch { return max; }
@@ -150,6 +183,92 @@ namespace B1NARY.DataPersistence
 		{
 			HDCommand.AutoCompleteFloat("cl_glow", () => Instance.graphics.glow, (set) => Instance.graphics.glow.Value = set, 0, 10, HDCommand.MainTags.None, "Adjusts glow intensity"),
 			HDCommand.AutoCompleteInt("cl_graphic_index", () => Instance.graphics.graphicSettingIndex, (set) => Instance.graphics.graphicSettingIndex.Value = set, 0, QualitySettings.count, HDCommand.MainTags.None),
+			new HDCommand("bny_add_collectible_gallery", name =>
+			{
+				SaveSlot.ActiveSlot.collectibles.Gallery.Add(name[0]);
+				Instance.collectibles.Gallery.Add(name[0]);
+			}),
 		};
+
+		[Serializable]
+		public record CollectibleMerger(HashSet<string> Gallery, HashSet<string> Map, HashSet<string> CharacterProfiles) : IEnumerable<string>, IOVSXmlSerializable
+		{
+			public const string UNLOCKED_GALLERY_KEY = "UnlockedGallery";
+			public const string UNLOCKED_MAP_KEY = "UnlockedMap";
+			public const string UNLOCKED_CHAR_KEY = "UnlockedChar";
+
+			public CollectibleMerger() : this(new(), new(), new())
+			{
+				
+			}
+
+			public void MergeSavesFromSingleton()
+			{
+				MergeSaves(SaveSlot.AllSaves.Select(pair => pair.Value.Value).ToArray());
+			}
+			public void MergeSaves(params SaveSlot[] slots)
+			{
+				for (int i = 0; i < slots.Length; i++)
+				{
+					DataPersistence.CollectibleCollection collection = slots[i].collectibles;
+					MergeList(collection.Gallery, Gallery);
+					MergeList(collection.Map, Map);
+					MergeList(collection.CharacterProfiles, CharacterProfiles);
+					static void MergeList(List<string> with, HashSet<string> to)
+					{
+						for (int i = 0; i < with.Count; i++)
+							to.Add(with[i]);
+					}
+				}
+			}
+
+			bool IOVSXmlSerializable.ShouldWrite => true;
+
+			public IEnumerator<string> GetEnumerator()
+			{
+				IEnumerable<string>[] enumerables = { Gallery, Map, CharacterProfiles };
+				for (int i = 0; i < enumerables.Length; i++)
+					using (var enumerator = enumerables[i].GetEnumerator())
+						while (enumerator.MoveNext())
+							yield return enumerator.Current;
+			}
+
+			IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+			void IOVSXmlSerializable.Read(XmlNode value)
+			{
+				AddRange(Gallery, Read(UNLOCKED_GALLERY_KEY));
+				AddRange(Map, Read(UNLOCKED_MAP_KEY));
+				AddRange(CharacterProfiles, Read(UNLOCKED_CHAR_KEY));
+
+
+				string[] Read(string name)
+				{
+					try { return value.ChildNodes.FindNamedNode(name).InnerText.Split(','); }
+					catch { return Array.Empty<string>(); }
+				}
+
+				void AddRange(HashSet<string> values, in string[] strings)
+				{
+					for (int i = 0; i < strings.Length; i++)
+						values.Add(strings[i]);
+				}
+			}
+			void IOVSXmlSerializable.Write(XmlNode currentNode)
+			{
+				XmlDocument document = currentNode.OwnerDocument;
+				Merge(Gallery, UNLOCKED_GALLERY_KEY);
+				Merge(Map, UNLOCKED_MAP_KEY);
+				Merge(CharacterProfiles, UNLOCKED_CHAR_KEY);
+				void Merge(IEnumerable<string> strings, string name)
+				{
+					XmlElement element = document.CreateElement(name);
+					element.InnerText = string.Join(',', strings);
+					currentNode.AppendChild(element);
+				}
+			}
+
+		}
+
 	}
 }

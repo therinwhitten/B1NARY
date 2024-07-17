@@ -14,6 +14,7 @@ namespace B1NARY.Steamworks
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Text;
+	using System.Text.RegularExpressions;
 	using System.Threading.Tasks;
 	using UnityEngine;
 	using UnityEngine.SocialPlatforms.Impl;
@@ -31,6 +32,12 @@ namespace B1NARY.Steamworks
 					Debug.Log($"{key} is not real");
 #endif
 				target.Achieved = true;
+			}),
+			   //Unlock Command for UnLockables (Non Steam)
+			["unlock"] = (Action<string, string>)((type, flagName) =>
+			{
+				// see Fanart Panel, Saveslot, or Player Config CS for more info
+				CollectibleCollection.UnlockUnlockable(type, flagName);
 			}),
 		};
 

@@ -17,13 +17,16 @@
 	using HDConsole;
 	using System.Text;
 	using System.IO.Pipes;
+	using System.Xml;
+	using OVSSerializer.Extras;
+	using System.Linq.Expressions;
 
 	public enum Gender : byte
 	{
 		Male = 0,
 		Female = 1,
 	}
-	
+
 	public class SaveSlot
 	{
 		[return: CommandsFromGetter]
@@ -105,7 +108,7 @@
 		public const string KEY_ADDITIVE = "Additive";
 		public const int MAX_SAVES = 69;
 		public static OSDirectory SavesDirectory => PersistentData.GetSubdirectories("Saves");
-		
+
 		public static OVSXmlSerializer<SaveSlot> SlotSerializer { get; } =
 		new OVSXmlSerializer<SaveSlot>()
 		{
@@ -270,7 +273,7 @@
 					if (task.IsFaulted)
 						DisplayException(task.Exception);
 					//else
-					//	Debug.Log($"Saving finalized! Waiting to serialize on main loop. \n{stopwatch.Elapsed}");
+					//    Debug.Log($"Saving finalized! Waiting to serialize on main loop. \n{stopwatch.Elapsed}");
 				});
 
 				IEnumerator MainThread()
@@ -347,6 +350,9 @@
 			public DateTime lastSaved;
 			public Thumbnail thumbnail;
 		}
+
+		// Unlockable items
+		internal CollectibleCollection collectibles = new();
 	}
 
 	[Serializable]
@@ -371,6 +377,92 @@
 			while (changeSceneEnumerator.MoveNext())
 				yield return changeSceneEnumerator.Current;
 			ScriptHandler.Instance.NewDocument(StreamingAssetsPath, Line - 1);
+		}
+	}
+
+	/// <summary>
+	/// Stores flags for unlocking various things.
+	/// </summary>
+	/// <param name="Gallery"></param>
+	/// <param name="Map"></param>
+	/// <param name="Chars"></param>
+	[Serializable]
+	public record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> CharacterProfiles) : IOVSXmlSerializable
+	{
+		public record NewFlag(string Type, string FlagName)
+		{
+			public override string ToString() => $"{Type}/{FlagName}";
+			public static NewFlag FromString(string value)
+			{
+				string[] split = value.Split('/');
+				return new NewFlag(split[0], split[1]);
+			}
+		}
+		[Command("bny_unlock_unlockable")]
+		public static void UnlockUnlockable(string type, string flagName)
+		{
+			NewFlag flag = new(type, flagName);
+			BeforeUnlocking?.Invoke(new Ref<NewFlag>(() => flag, set => flag = set));
+			type = type.ToLower();
+			if (SaveSlot.ActiveSlot == null)
+			{
+				// Missing savefile, saving directly to config instead.
+				HashSet<string> saveTo = type switch
+				{
+					UNLOCKED_GALLERY_KEY => PlayerConfig.Instance.collectibles.Gallery,
+					UNLOCKED_MAP_KEY => PlayerConfig.Instance.collectibles.Map,
+					UNLOCKED_CHAR_KEY => PlayerConfig.Instance.collectibles.CharacterProfiles,
+					_ => throw new InvalidOperationException($"type '{type}' is not valid!")
+				};
+				saveTo.Add(flagName);
+				return;
+			}
+			// Saving onto existing savefile
+			List<string> target = type switch
+			{
+				UNLOCKED_GALLERY_KEY => SaveSlot.ActiveSlot.collectibles.Gallery,
+				UNLOCKED_MAP_KEY => SaveSlot.ActiveSlot.collectibles.Map,
+				UNLOCKED_CHAR_KEY => SaveSlot.ActiveSlot.collectibles.CharacterProfiles,
+				_ => throw new InvalidOperationException($"type '{type}' is not valid!")
+			};
+			if (target.Contains(flagName))
+				return;
+			target.Add(flagName);
+			UnlockedUnlockableEvent?.Invoke(flag);
+		}
+		public static event Action<Ref<NewFlag>> BeforeUnlocking;
+		public static event Action<NewFlag> UnlockedUnlockableEvent;
+		//Sub Label for Unlockables
+		public const string UNLOCKED_GALLERY_KEY = "gallery";
+		public const string UNLOCKED_MAP_KEY = "map";
+		public const string UNLOCKED_CHAR_KEY = "charprofile";
+
+		public CollectibleCollection() : this(new(), new(), new()) { }
+
+		bool IOVSXmlSerializable.ShouldWrite => true;
+		void IOVSXmlSerializable.Read(XmlNode value)
+		{
+			Gallery.AddRange(Read(UNLOCKED_GALLERY_KEY)); 
+			Map.AddRange(Read(UNLOCKED_MAP_KEY)); 
+			CharacterProfiles.AddRange(Read(UNLOCKED_CHAR_KEY));
+			string[] Read(string name)
+			{
+				try { return value.ChildNodes.FindNamedNode(name).InnerText.Split(','); }
+				catch { return Array.Empty<string>(); }
+			}
+		}
+		void IOVSXmlSerializable.Write(XmlNode currentNode)
+		{
+			XmlDocument document = currentNode.OwnerDocument;
+			Merge(Gallery, UNLOCKED_GALLERY_KEY); 
+			Merge(Map, UNLOCKED_MAP_KEY); 
+			Merge(CharacterProfiles, UNLOCKED_CHAR_KEY);
+			void Merge(IEnumerable<string> strings, string name)
+			{
+				XmlElement element = document.CreateElement(name);
+				element.InnerText = string.Join(',', strings);
+				currentNode.AppendChild(element);
+			}
 		}
 	}
 }
