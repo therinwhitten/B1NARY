@@ -120,7 +120,7 @@
 
 		public record PersistentFlag(bool VeryCool, NewFlag Flag)
 		{
-			public override string ToString() => $"{VeryCool}/{Flag.Type}/{Flag.FlagName}";
+			public override string ToString() => $"{VeryCool}/{Flag.Type}/{Flag.FlagName}"; 
 			public static PersistentFlag FromString(string value)
 			{
 				string[] split = value.Split('/');
