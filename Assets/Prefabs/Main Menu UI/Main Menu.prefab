@@ -169,8 +169,6 @@ GameObject:
   m_Component:
   - component: {fileID: 881683313}
   - component: {fileID: 881683316}
-  - component: {fileID: 881683315}
-  - component: {fileID: 881683314}
   m_Layer: 5
   m_Name: Change Log Panel (Beta)
   m_TagString: Untagged
@@ -207,56 +205,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 881683312}
   m_CullTransparentMesh: 0
---- !u!114 &881683315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881683312}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.09411765}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e89867d2f5fe62c44a7ae4f20fb99a9f, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!114 &881683314
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 881683312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f8fd09de1234840bdfdb7b138a2eef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  imageThemeName: Main Menu
-  buttonHighlightedName: Primary
-  buttonPressedName: Primary
-  buttonSelectedName: Primary
-  buttonDisabledName: Primary
-  cacheColor: color
-  cacheColorblock: 
-  m_savedComponent: {fileID: 881683315}
 --- !u!1 &1194529602
 GameObject:
   m_ObjectHideFlags: 0
@@ -6742,9 +6690,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6094002358459902353}
   - component: {fileID: 6094002358459902366}
-  - component: {fileID: 6094002358459902367}
   - component: {fileID: 6094002358459902352}
-  - component: {fileID: 1132460834}
   - component: {fileID: 1940319854001226523}
   m_Layer: 5
   m_Name: Panel
@@ -6788,36 +6734,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6094002358459902354}
   m_CullTransparentMesh: 0
---- !u!114 &6094002358459902367
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6094002358459902354}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.16470589}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e89867d2f5fe62c44a7ae4f20fb99a9f, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
 --- !u!114 &6094002358459902352
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6844,26 +6760,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1132460834
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6094002358459902354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05f8fd09de1234840bdfdb7b138a2eef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  imageThemeName: Main Menu
-  buttonHighlightedName: Primary
-  buttonPressedName: Primary
-  buttonSelectedName: Primary
-  buttonDisabledName: Primary
-  cacheColor: color
-  cacheColorblock: 
-  m_savedComponent: {fileID: 6094002358459902367}
 --- !u!114 &1940319854001226523
 MonoBehaviour:
   m_ObjectHideFlags: 0
