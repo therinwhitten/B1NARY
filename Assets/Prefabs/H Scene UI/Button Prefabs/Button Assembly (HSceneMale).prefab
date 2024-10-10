@@ -224,7 +224,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: B1NARY.UI.DialogueSystem, B1NARY
-        m_MethodName: SetAutoSkip
+        m_MethodName: set_AutoSkip
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -750,10 +750,10 @@ MonoBehaviour:
   - Japanese
   - Spanish
   languageValues:
-  - Story
-  - Artikel
-  - "\u30B9\u30C8\u30FC\u30EA\u30FC"
-  - Relato
+  - Reload
+  - Neu laden
+  - "\u30EA\u30ED\u30FC\u30C9"
+  - Recargar
 --- !u!1 &7852124107818311230
 GameObject:
   m_ObjectHideFlags: 0
@@ -8596,7 +8596,7 @@ GameObject:
   - component: {fileID: 7852124109522251295}
   - component: {fileID: 7852124109522251293}
   m_Layer: 5
-  m_Name: Story Button
+  m_Name: Reload Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8688,7 +8688,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 7960023945817529747, guid: 135af6989c2cd3546943edd0d2842d66,
           type: 3}
-        m_TargetAssemblyTypeName: 
+        m_TargetAssemblyTypeName: B1NARY.SceneManager, B1NARY
         m_MethodName: InitializeScript
         m_Mode: 5
         m_Arguments:
