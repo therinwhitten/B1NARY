@@ -15,7 +15,7 @@
 		{
 			T toughFind = Resources.FindObjectsOfTypeAll(typeof(T)).FirstOrDefault() as T;
 			if (toughFind == null)
-				throw new System.Exception("Sexy");
+				throw new System.Exception($"Tried to force find for {typeof(T).Name}, but cannot find the resource or object!");
 			return toughFind;
 		}
 		public static bool HasInstance
@@ -70,7 +70,7 @@
 						return instFind;
 					}
 					if (ThrowErrorIfEmpty)
-						throw new MissingComponentException($"{typeof(T)} does not " +
+						throw new MissingComponentException($"{typeof(T)} does not " + 
 							"have an instance created!");
 					var @object = new GameObject($"{typeof(T)} (Singleton)");
 					DontDestroyOnLoad(@object);
