@@ -124,6 +124,8 @@
 			public static PersistentFlag FromString(string value)
 			{
 				string[] split = value.Split('/');
+				if (!bool.TryParse(split[0], out bool resultBool))
+					throw new FormatException($"Failed to serialize bool from '{value}'!");
 				return new PersistentFlag(bool.Parse(split[0]), new NewFlag(split[1], split[2]));
 			}
 		}
