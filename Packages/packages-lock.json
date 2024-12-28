@@ -123,7 +123,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.cinemachine": {
-      "version": "2.10.1",
+      "version": "2.10.3",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -132,7 +132,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
-      "version": "2.5.2",
+      "version": "2.6.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -169,7 +169,7 @@
       "dependencies": {
         "com.unity.animation.rigging": "1.2.1",
         "com.unity.timeline": "1.7.6",
-        "com.unity.cinemachine": "2.10.1",
+        "com.unity.cinemachine": "2.10.3",
         "com.unity.formats.fbx": "4.2.1"
       }
     },
@@ -178,7 +178,7 @@
       "depth": 0,
       "source": "builtin",
       "dependencies": {
-        "com.unity.cinemachine": "2.10.1",
+        "com.unity.cinemachine": "2.10.3",
         "com.unity.timeline": "1.7.6",
         "com.unity.visualscripting": "1.9.4"
       }
@@ -221,6 +221,13 @@
     "com.unity.mathematics": {
       "version": "1.2.6",
       "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -331,7 +338,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.toolchain.macos-x86_64-linux-x86_64": {
-      "version": "2.0.9",
+      "version": "2.0.10",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -341,7 +348,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.toolchain.win-x86_64-linux-x86_64": {
-      "version": "2.0.9",
+      "version": "2.0.10",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -368,6 +375,15 @@
         "com.unity.modules.jsonserialize": "1.0.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.veugeljame.steambuilduploader": {
+      "version": "https://github.com/JamesVeug/UnitySteamBuildUploader.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      },
+      "hash": "05ed5fce5fef6ce80016c219f9e33ab5e97b39fc"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
