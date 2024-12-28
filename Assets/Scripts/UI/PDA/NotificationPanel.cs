@@ -15,24 +15,30 @@
 
 	public class NotificationPanel : MonoBehaviour
 	{
-		public IReadOnlyList<NotificationBehaviour> Notifications => notifications;
-		internal List<NotificationBehaviour> notifications = new();
+		public IReadOnlyList<NotificationBehaviour> ActiveNotifications => activeNotifications;
+		internal List<NotificationBehaviour> activeNotifications = new();
 		[SerializeField]
 		public GameObject NotificationPrefab;
 
 		[SerializeField]
 		public UnityEvent<int> NotificationRecieved = new();
 		[SerializeField]
-		public UnityEvent<bool> SetActived = new();
-		[SerializeField]
 		public UnityEvent NoNewNotifications = new();
 
+		/// <summary>
+		/// Sound that plays when a new notif appears.
+		/// </summary>
 		[SerializeField]
 		public CustomAudioClip NotificationNotification;
 
+		/// <summary>
+		/// All the notifications that are disabled inside the notifications panel.
+		/// </summary>
 		private readonly Dictionary<string, NotificationBehaviour> existingNotifications = new();
-
-		private HashSet<string> ignoreNotifications = new();
+		/// <summary>
+		/// Blocks certain notifications from playing again.
+		/// </summary>
+		private readonly HashSet<string> ignoreNotifications = new();
 
 		private PersistentFlag this[int index]
 		{
@@ -53,7 +59,7 @@
 			{
 				PersistentFlag newFlag = PersistentFlag.FromString(notifs[i]);
 				PlayNewNotification(newFlag);
-				if (!newFlag.VeryCool)
+				if (!newFlag.NotPlayed)
 					ignoreNotifications.Add(newFlag.Flag.FlagName);
 			}
 		}
@@ -61,18 +67,10 @@
 		{
 			CollectibleCollection.UnlockedUnlockableEvent -= PlayNewNotification;
 		}
-		public void OnEnable()
-		{
-			SetActived.Invoke(true);
-		}
-		public void OnDisable()
-		{
-			SetActived.Invoke(false);
-		}
 
 		public void PlayNewNotification(PersistentFlag flag)
 		{
-			if (!flag.VeryCool)
+			if (!flag.NotPlayed)
 				return;
 			PlayNewNotification(flag.Flag);
 		}
@@ -102,15 +100,17 @@
 				obj.SetActive(true);
 			}
 			string parsedValue = flag.ToString();
+			activeNotifications.Add(behaviour);
 			behaviour.closeButton.onClick.AddListener(RemovedNotification);
-			NotificationRecieved.Invoke(notifications.Count - 1);
+			NotificationRecieved.Invoke(activeNotifications.Count - 1);
 			AudioController.Instance.AddSound(NotificationNotification);
 
 			void RemovedNotification()
 			{
 				ignoreNotifications.Add(flag.FlagName);
 				this[index] = new(false, flag);
-				if (PlayerConfig.Instance.uncheckedNotifications.Count == ignoreNotifications.Count)
+				activeNotifications.Remove(behaviour);
+				if (activeNotifications.Count <= 0)
 					NoNewNotifications.Invoke();
 			}
 		}
@@ -118,12 +118,14 @@
 		public bool TryGetExistingNotification(NewFlag flag, out NotificationBehaviour existingObject) 
 			=> existingNotifications.TryGetValue(flag.FlagName, out existingObject);
 
-		public record PersistentFlag(bool VeryCool, NewFlag Flag)
+		public record PersistentFlag(bool NotPlayed, NewFlag Flag)
 		{
-			public override string ToString() => $"{VeryCool}/{Flag.Type}/{Flag.FlagName}";
+			public override string ToString() => $"{NotPlayed}/{Flag.Type}/{Flag.FlagName}"; 
 			public static PersistentFlag FromString(string value)
 			{
 				string[] split = value.Split('/');
+				if (!bool.TryParse(split[0], out bool resultBool))
+					throw new FormatException($"Failed to serialize bool from '{value}'!");
 				return new PersistentFlag(bool.Parse(split[0]), new NewFlag(split[1], split[2]));
 			}
 		}

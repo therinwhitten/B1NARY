@@ -2,7 +2,6 @@
 {
 	using B1NARY.DataPersistence;
 	using B1NARY.UI.Globalization;
-	using Codice.CM.Common;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
