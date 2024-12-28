@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>OVSXmlSerializer</id>
+    <version>4.0.0-pre2</version>
+    <title>OVSXmlSerializer</title>
+    <authors>AnOddDoorKnight</authors>
+    <license type="file">LICENSE.txt</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <readme>Readme.md</readme>
+    <projectUrl>https://github.com/AnOddDoorKnight/OVSXmlSerializer</projectUrl>
+    <description>Odd's Very Special Xml Serializer is a Xml Serializer that is revolved around smart types; Explicit-type naming if needed.
+
+			The system functions very simply: You put an object inside and it will serialize into a file or such in around 1-2 lines of code. Additionally, is meant to be worked with the `object` or more 'undefined' data that the ordinary XML serializer have difficulty handling, along with simulating reference types via ID.
+
+			Unlike the traditional XML Serializer, this will use the type parameters in the class to automatically differentiate enums and arrays, which will remove the need to mark fields as `[XmlArray]` or `[XmlEnum]`. In place, there are custom serializers that you can insert in the config.</description>
+    <releaseNotes>- Nongeneric serializer and generic serializers are no longer connected to eachother; no inheritance in attempt to fix an apparent issue with godot.
+			- Some OS/IO updates to make it cooler with zips and makes a bit more sense without the use of extension methods
+			- Fixed a bug where it would use the file array with directory length when copying directories
+			- Fixed a bug where it does some funky stuff with directory names in OSDirectory.Name
+			- Added a few static directory creation stuff related to System.Environment to make it slightly easier to use
+			- Not relevant but properly added some tests for IO stuff</releaseNotes>
+    <copyright>MIT license</copyright>
+    <tags>C# Serialization XML XML-Parsing IO</tags>
+    <repository type="git" url="https://github.com/AnOddDoorKnight/OVSXmlSerializer" />
+    <dependencies>
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+</package>
