@@ -50,7 +50,7 @@
 					if (extraSources.Count > 0)
 						m_mouth = extraSources.Dequeue();
 					else
-						m_mouth = lastAnimator.GetComponents<CubismAudioMouthInput>().First(input => input.TargetMouth == TargetSpeaker);
+						m_mouth = lastAnimator.GetComponents<CubismAudioMouthInput>().First(input => input.TargetMouth == TargetSpeaker); 
 				}
 				return m_mouth;
 			}
