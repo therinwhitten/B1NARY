@@ -235,3 +235,4 @@ namespace Live2D.Cubism.Framework.MouthMovement.Editor
 		}
 	}
 }
+#endif

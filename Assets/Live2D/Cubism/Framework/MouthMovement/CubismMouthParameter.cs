@@ -16,5 +16,6 @@ namespace Live2D.Cubism.Framework.MouthMovement
     /// </summary>
     public sealed class CubismMouthParameter : MonoBehaviour
     {
-    }
+		public int mouthType = 0;
+	}
 }
