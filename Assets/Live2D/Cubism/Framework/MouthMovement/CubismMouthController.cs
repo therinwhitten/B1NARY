@@ -167,38 +167,3 @@ namespace Live2D.Cubism.Framework.MouthMovement
 		#endregion
 	}
 }
-#if UNITY_EDITOR
-namespace Live2D.Cubism.Framework.MouthMovement.Editor
-{
-	using Live2D.Cubism.Framework.Editor;
-	using System;
-	using UnityEditor;
-	using UnityEngine.Rendering;
-
-	[CustomEditor(typeof(CubismMouthController))]
-	public class CubismMouthControllerEditor : Editor
-	{
-		public override void OnInspectorGUI()
-		{
-			CubismMouthController controller = (CubismMouthController)target;
-
-			controller.BlendMode = DirtyAuto.Popup(controller, new GUIContent("Blend Mode"), controller.BlendMode);
-			controller.MouthOpening = DirtyAuto.Slider(controller, new GUIContent("Mouth Opening"), controller.MouthOpening, 0f, 1f);
-
-			CubismMouthController[] otherControllers = controller.gameObject.GetComponents<CubismMouthController>();
-			if (otherControllers.Length > 1)
-			{
-				controller.TargetMouth = DirtyAuto.Field(controller, new GUIContent("Target Mouth"), controller.TargetMouth);
-				for (int i = 0; i < otherControllers.Length; i++)
-					if (!ReferenceEquals(controller, otherControllers[i]) && otherControllers[i].TargetMouth == controller.TargetMouth)
-						EditorGUILayout.HelpBox($"{controller.TargetMouth} matches other components of '{nameof(CubismMouthController)}' and may cause errors!", MessageType.Warning);
-			}
-			else if (controller.TargetMouth != 0)
-			{
-				controller.TargetMouth = 0;
-				controller.SetDirty();
-			}
-		}
-	}
-}
-#endif
