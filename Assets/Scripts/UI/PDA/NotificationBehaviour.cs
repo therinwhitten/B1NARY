@@ -19,12 +19,9 @@
 		[SerializeField]
 		public string flagKey;
 
-
-		private static readonly Regex nameRegex = new(@"([a-z])([A-Z])");
-
-		public void SetText(CollectibleCollection.NewFlag flag)
+		public void SetText(UnlockableFlag flag)
 		{
-			SetText(flag.FlagName, nameRegex.Replace(flag.FlagName, "$1 $2"));
+			flag.Globalize(this);
 		}
 	}
 }

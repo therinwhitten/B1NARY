@@ -385,53 +385,10 @@
 	/// </summary>
 	/// <param name="Gallery"></param>
 	/// <param name="Map"></param>
-	/// <param name="Chars"></param>
+	/// <param name="CharacterProfiles"></param>
 	[Serializable]
 	public record CollectibleCollection(List<string> Gallery, List<string> Map, List<string> CharacterProfiles) : IOVSXmlSerializable
 	{
-		public record NewFlag(string Type, string FlagName)
-		{
-			public override string ToString() => $"{Type}/{FlagName}";
-			public static NewFlag FromString(string value)
-			{
-				string[] split = value.Split('/');
-				return new NewFlag(split[0], split[1]);
-			}
-		}
-		[Command("bny_unlock_unlockable")]
-		public static void UnlockUnlockable(string type, string flagName)
-		{
-			NewFlag flag = new(type, flagName);
-			BeforeUnlocking?.Invoke(new Ref<NewFlag>(() => flag, set => flag = set));
-			type = type.ToLower();
-			if (SaveSlot.ActiveSlot == null)
-			{
-				// Missing savefile, saving directly to config instead.
-				HashSet<string> saveTo = type switch
-				{
-					UNLOCKED_GALLERY_KEY => PlayerConfig.Instance.collectibles.Gallery,
-					UNLOCKED_MAP_KEY => PlayerConfig.Instance.collectibles.Map,
-					UNLOCKED_CHAR_KEY => PlayerConfig.Instance.collectibles.CharacterProfiles,
-					_ => throw new InvalidOperationException($"type '{type}' is not valid!")
-				};
-				saveTo.Add(flagName);
-				return;
-			}
-			// Saving onto existing savefile
-			List<string> target = type switch
-			{
-				UNLOCKED_GALLERY_KEY => SaveSlot.ActiveSlot.collectibles.Gallery,
-				UNLOCKED_MAP_KEY => SaveSlot.ActiveSlot.collectibles.Map,
-				UNLOCKED_CHAR_KEY => SaveSlot.ActiveSlot.collectibles.CharacterProfiles,
-				_ => throw new InvalidOperationException($"type '{type}' is not valid!")
-			};
-			if (target.Contains(flagName))
-				return;
-			target.Add(flagName);
-			UnlockedUnlockableEvent?.Invoke(flag);
-		}
-		public static event Action<Ref<NewFlag>> BeforeUnlocking;
-		public static event Action<NewFlag> UnlockedUnlockableEvent;
 		//Sub Label for Unlockables
 		public const string UNLOCKED_GALLERY_KEY = "gallery";
 		public const string UNLOCKED_MAP_KEY = "map";
