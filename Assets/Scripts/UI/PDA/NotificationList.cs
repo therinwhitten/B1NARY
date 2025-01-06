@@ -35,7 +35,7 @@
 			for (int i = 0; i < allNotifications.Count; i++)
 				if (allNotifications[i].IsActive)
 				{
-					// Remove it temporarily and re-added by 
+					panelTo.ForceAddNotification(allNotifications[i]);
 				}
 		}
 
