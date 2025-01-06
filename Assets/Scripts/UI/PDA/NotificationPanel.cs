@@ -28,7 +28,7 @@
 		[Command("bny_unlock_unlockable")]
 		public static void UnlockUnlockable(string type, string flagName)
 		{
-			UnlockableFlag flag = new() { flag = flagName, active = true, category = type };
+			UnlockableFlag flag = new() { FlagName = flagName, IsActive = true, Category = type };
 			type = type.ToLower();
 			if (SaveSlot.ActiveSlot == null)
 			{
@@ -65,6 +65,9 @@
 		public CustomAudioClip NotificationNotification;
 
 		public IReadOnlyList<NotificationBehaviour> ActiveNotifications => activeNotifications;
+		/// <summary>
+		/// Notifications that are shown to the player.
+		/// </summary>
 		internal List<NotificationBehaviour> activeNotifications = new();
 
 		[SerializeField]
@@ -79,8 +82,12 @@
 		/// </summary>
 		private readonly Dictionary<string, NotificationBehaviour> premadeNotifications = new();
 		public bool TryGetExistingNotification(UnlockableFlag flag, out NotificationBehaviour existingObject)
-			=> premadeNotifications.TryGetValue(flag.flag, out existingObject);
+			=> premadeNotifications.TryGetValue(flag.FlagName, out existingObject);
 
+		/// <summary>
+		/// A list that tracks all notifications that has been played or playing,
+		/// not specifically active.
+		/// </summary>
 		public NotificationList PairedList { get; private set; }
 
 		protected override void SingletonAwake()
@@ -102,23 +109,39 @@
 		}
 
 		private void _notifEvent(UnlockableFlag flag) => AddNewNotification(flag);
+		
+		/// <summary>
+		/// This checks (and adds to) the <see cref="PairedList"/> before invoking
+		/// <see cref="ForceAddNotification(UnlockableFlag)"/>.
+		/// </summary>
+		/// <param name="flag"></param>
+		/// <returns></returns>
 		internal bool AddNewNotification(UnlockableFlag flag)
 		{
 			bool pass = PairedList.AddNewNotificationToList(flag);
 			if (!pass)
 				return false;
+			ForceAddNotification(flag);
+			return true;
 		}
 
+		/// <summary>
+		/// Forcefully adds a new active notification that is seen by the player,
+		/// doesn't interact with <see cref="PairedList"/>.
+		/// </summary>
+		/// <param name="flag"></param>
 		internal void ForceAddNotification(UnlockableFlag flag)
 		{
+			flag.IsActive = true; // Just in case
+
 			// Delivering Notification
-			if (TryGetExistingNotification(flag, out NotificationBehaviour behaviour))
+			if (premadeNotifications.TryGetValue(flag.FlagName, out NotificationBehaviour behaviour))
 			{
 				behaviour.gameObject.SetActive(true);
 			}
 			else // Try fallback option, creates new notif from prefab
 			{
-				Debug.LogWarning($"Missing notification for flag '{flag.flag}'! languages may be inaccurate!");
+				Debug.LogWarning($"Missing notification for flag '{flag.FlagName}'! languages may be inaccurate!");
 				GameObject obj = Instantiate(NotificationPrefab, transform, false);
 				obj.SetActive(false);
 				behaviour = obj.GetComponentInChildren<NotificationBehaviour>();
@@ -129,14 +152,14 @@
 			// Attaching behaviour to panel
 			string parsedValue = flag.ToString();
 			activeNotifications.Add(behaviour);
+			behaviour.pairedFlag = flag;
 			behaviour.closeButton.onClick.AddListener(RemovedNotification);
-			NotificationRecieved.Invoke(activeNotifications.Count - 1);
 			AudioController.Instance.AddSound(NotificationNotification);
 			void RemovedNotification()
 			{
-				ignoreNotifications.Add(flag.FlagName);
-				this[index] = new(false, flag);
 				activeNotifications.Remove(behaviour);
+				behaviour.pairedFlag.IsActive = false;
+
 				if (activeNotifications.Count <= 0)
 					NoNewNotifications.Invoke();
 			}

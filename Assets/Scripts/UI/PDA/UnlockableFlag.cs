@@ -32,12 +32,19 @@
 		}
 		#endregion
 
+		public string FlagName { get => flag; set { flag = value; FlagNameChanged?.Invoke(value); } }
+		public event Action<string> FlagNameChanged;
+		public string Category { get => category; set { category = value; CategoryChanged?.Invoke(value); } }
+		public event Action<string> CategoryChanged;
+		public bool IsActive { get => active; set { active = value; ActiveChanged?.Invoke(value); } }
+		public event Action<bool> ActiveChanged;
+
 		[OVSXmlText]
-		public string flag;
+		private string flag;
 		[OVSXmlAttribute]
-		public string category;
+		private string category;
 		[OVSXmlAttribute]
-		public bool active;
+		private bool active;
 
 
 		private static readonly Regex nameRegex = new(@"([a-z])([A-Z])");
@@ -48,6 +55,5 @@
 		{
 			textBox.SetText(flag, nameRegex.Replace(flag, "$1 $2"));
 		}
-	}
 	}
 }

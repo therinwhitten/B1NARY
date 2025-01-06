@@ -19,6 +19,9 @@
 		[SerializeField]
 		public string flagKey;
 
+		[HideInInspector]
+		internal UnlockableFlag pairedFlag;
+
 		public void SetText(UnlockableFlag flag)
 		{
 			flag.Globalize(this);

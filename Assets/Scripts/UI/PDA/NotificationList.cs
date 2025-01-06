@@ -32,7 +32,11 @@
 		/// <param name="panelTo"></param>
 		public void Restart(NotificationPanel panelTo)
 		{
-
+			for (int i = 0; i < allNotifications.Count; i++)
+				if (allNotifications[i].IsActive)
+				{
+					// Remove it temporarily and re-added by 
+				}
 		}
 
 		/// <summary>
@@ -43,12 +47,12 @@
 		/// and must be active. Otherwise, <see langword="false"/>.</returns>
 		public bool AddNewNotificationToList(UnlockableFlag flag)
 		{
-			if (!flag.active)
+			if (!flag.IsActive)
 				return false;
-			if (flags.Contains(flag.flag))
+			if (flags.Contains(flag.FlagName))
 				return false;
 			allNotifications.Add(flag);
-			flags.Add(flag.flag);
+			flags.Add(flag.FlagName);
 			NewNotification?.Invoke(flag);
 			return true;
 		}
