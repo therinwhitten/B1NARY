@@ -75,6 +75,8 @@
 
 		[SerializeField]
 		public UnityEvent NoNewNotifications = new();
+		[SerializeField]
+		public UnityEvent<int> NewNotifications = new();
 
 
 		/// <summary>
@@ -155,6 +157,7 @@
 			behaviour.pairedFlag = flag;
 			behaviour.closeButton.onClick.AddListener(RemovedNotification);
 			AudioController.Instance.AddSound(NotificationNotification);
+			NewNotifications.Invoke(activeNotifications.Count);
 			void RemovedNotification()
 			{
 				activeNotifications.Remove(behaviour);
