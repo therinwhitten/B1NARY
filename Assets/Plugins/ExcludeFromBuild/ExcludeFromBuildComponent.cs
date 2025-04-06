@@ -51,7 +51,7 @@ namespace Kamgam.ExcludeFromBuild
             if (GameObject)
             {
                 if(this.gameObject != null)
-                    DestroyImmediate(this.gameObject);
+                    DestroyImmediate(this.gameObject, allowDestroyingAssets: true);
             }
             else if (Components != null && Components.Count > 0)
             {
