@@ -1,12 +1,8 @@
+using UnityEngine;
+using Live2D.Cubism.Core;
+
 namespace Character_Controllers
 {
-    using UnityEngine;
-    using Live2D.Cubism.Core;  // ← Needed for CubismModel reference
-
-    /// <summary>
-    /// Restores prefab name only if Unity auto-resets it to the moc model name.
-    /// Lets your game logic rename it if needed.
-    /// </summary>
     [DisallowMultipleComponent]
     public class ForceModelName : MonoBehaviour
     {
@@ -14,24 +10,52 @@ namespace Character_Controllers
         private string expectedName;
 
         private string mocAutoName;
+        private bool nameFixed;
 
         private void Awake()
         {
             if (string.IsNullOrEmpty(expectedName))
-            {
                 expectedName = gameObject.name;
-            }
 
-            // Get the name Unity seems to reset it to (typically the moc filename)
             mocAutoName = GetComponent<CubismModel>()?.name;
+            FixName();
+        }
+
+        private void OnEnable()
+        {
+            FixName();
         }
 
         private void LateUpdate()
         {
-            if (gameObject.name == mocAutoName && gameObject.name != expectedName)
+            FixName();
+        }
+
+        // Ensure name fix can run when inactive (called manually from editor or other scripts)
+        public void FixName()
+        {
+            if (!nameFixed && gameObject.name == mocAutoName && gameObject.name != expectedName)
             {
                 gameObject.name = expectedName;
+                nameFixed = true;
             }
         }
+
+        // Manually call FixName when inactive
+        public void InvokeFixNameOnInactive()
+        {
+            if (!nameFixed && gameObject.name == mocAutoName && gameObject.name != expectedName)
+            {
+                gameObject.name = expectedName;
+                nameFixed = true;
+            }
+        }
+
+#if UNITY_EDITOR
+        public void SetExpectedNameInEditor()
+        {
+            expectedName = gameObject.name;
+        }
+#endif
     }
 }
