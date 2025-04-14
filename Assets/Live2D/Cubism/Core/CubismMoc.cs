@@ -95,9 +95,9 @@ namespace Live2D.Cubism.Core
             get { return _bytes; }
             set { _bytes = value; }
         }
+		public new string name { get; set; }
 
-
-        private CubismUnmanagedMoc UnmanagedMoc { get; set; }
+		private CubismUnmanagedMoc UnmanagedMoc { get; set; }
 
         private int ReferenceCount { get; set; }
 
