@@ -2,6 +2,8 @@
 {
 	using B1NARY.Audio;
 	using B1NARY.DataPersistence;
+	using B1NARY.DesignPatterns;
+	using HDConsole;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
@@ -13,80 +15,129 @@
 	using UnityEngine.UI;
 	using static B1NARY.DataPersistence.CollectibleCollection;
 
-	public class NotificationPanel : MonoBehaviour
+	public class NotificationPanel : DesignPatterns.Singleton<NotificationPanel>
 	{
-		public IReadOnlyList<NotificationBehaviour> ActiveNotifications => activeNotifications;
-		internal List<NotificationBehaviour> activeNotifications = new();
-		[SerializeField]
-		public GameObject NotificationPrefab;
-
-		[SerializeField]
-		public UnityEvent<int> NotificationRecieved = new();
-		[SerializeField]
-		public UnityEvent NoNewNotifications = new();
-
+		#region Events
+		/// <summary>
+		/// Unlocks unlockables, usually by <see cref="SaveSlot"/> first, but if it
+		/// is not available, then <see cref="PlayerConfig"/> instead.
+		/// </summary>
+		/// <param name="type">the library it will add to.</param>
+		/// <param name="flagName">the actual flag name.</param>
+		/// <exception cref="InvalidOperationException"></exception>
+		[Command("bny_unlock_unlockable")]
+		public static void UnlockUnlockable(string type, string flagName)
+		{
+			UnlockableFlag flag = new() { FlagName = flagName, IsActive = true, Category = type };
+			type = type.ToLower();
+			if (SaveSlot.ActiveSlot == null)
+			{
+				// Missing savefile, saving directly to config instead.
+				HashSet<string> saveTo = type switch
+				{
+					UNLOCKED_GALLERY_KEY => PlayerConfig.Instance.collectibles.Gallery,
+					UNLOCKED_MAP_KEY => PlayerConfig.Instance.collectibles.Map,
+					UNLOCKED_CHAR_KEY => PlayerConfig.Instance.collectibles.CharacterProfiles,
+					_ => throw new InvalidOperationException($"type '{type}' is not valid!")
+				};
+				saveTo.Add(flagName);
+				return;
+			}
+			// Saving onto existing savefile
+			List<string> target = type switch
+			{
+				UNLOCKED_GALLERY_KEY => SaveSlot.ActiveSlot.collectibles.Gallery,
+				UNLOCKED_MAP_KEY => SaveSlot.ActiveSlot.collectibles.Map,
+				UNLOCKED_CHAR_KEY => SaveSlot.ActiveSlot.collectibles.CharacterProfiles,
+				_ => throw new InvalidOperationException($"type '{type}' is not valid!")
+			};
+			if (target.Contains(flagName))
+				return;
+			target.Add(flagName);
+			UnlockedUnlockableEvent?.Invoke(flag);
+		}
+		public static event Action<UnlockableFlag> UnlockedUnlockableEvent;
+		#endregion
 		/// <summary>
 		/// Sound that plays when a new notif appears.
 		/// </summary>
 		[SerializeField]
 		public CustomAudioClip NotificationNotification;
 
+		public IReadOnlyList<NotificationBehaviour> ActiveNotifications => activeNotifications;
+		/// <summary>
+		/// Notifications that are shown to the player.
+		/// </summary>
+		internal List<NotificationBehaviour> activeNotifications = new();
+
+		[SerializeField]
+		public GameObject NotificationPrefab;
+
+		[SerializeField]
+		public UnityEvent NoNewNotifications = new();
+		[SerializeField]
+		public UnityEvent<int> NewNotifications = new();
+
+
 		/// <summary>
 		/// All the notifications that are disabled inside the notifications panel.
 		/// </summary>
-		private readonly Dictionary<string, NotificationBehaviour> existingNotifications = new();
+		private readonly Dictionary<string, NotificationBehaviour> premadeNotifications = new();
+		public bool TryGetExistingNotification(UnlockableFlag flag, out NotificationBehaviour existingObject)
+			=> premadeNotifications.TryGetValue(flag.FlagName, out existingObject);
+
 		/// <summary>
-		/// Blocks certain notifications from playing again.
+		/// A list that tracks all notifications that has been played or playing,
+		/// not specifically active.
 		/// </summary>
-		private readonly HashSet<string> ignoreNotifications = new();
+		public NotificationList PairedList { get; private set; }
 
-		private PersistentFlag this[int index]
+		protected override void SingletonAwake()
 		{
-			get => PersistentFlag.FromString(PlayerConfig.Instance.uncheckedNotifications[index]);
-			set => PlayerConfig.Instance.uncheckedNotifications[index] = value.ToString();
-		}
+			PairedList = new NotificationList();
+			PairedList.Restart(this);
+			UnlockedUnlockableEvent += _notifEvent;
 
-		public void Awake()
-		{
-			CollectibleCollection.UnlockedUnlockableEvent += PlayNewNotification;
+			// Find existing/preparsed notifications
 			NotificationBehaviour[] collection = gameObject.GetComponentsInChildren<NotificationBehaviour>(true);
-			existingNotifications.EnsureCapacity(collection.Length);
+			premadeNotifications.EnsureCapacity(collection.Length);
 			for (int i = 0; i < collection.Length; i++)
 				if (!string.IsNullOrWhiteSpace(collection[i].flagKey))
-					existingNotifications[collection[i].flagKey] = collection[i];
-			IReadOnlyList<string> notifs = PlayerConfig.Instance.uncheckedNotifications;
-			for (int i = 0; i < notifs.Count; i++)
-			{
-				PersistentFlag newFlag = PersistentFlag.FromString(notifs[i]);
-				PlayNewNotification(newFlag);
-				if (!newFlag.NotPlayed)
-					ignoreNotifications.Add(newFlag.Flag.FlagName);
-			}
+					premadeNotifications[collection[i].flagKey] = collection[i];
 		}
-		public void OnDestroy()
+		protected override void OnSingletonDestroy()
 		{
-			CollectibleCollection.UnlockedUnlockableEvent -= PlayNewNotification;
+			UnlockedUnlockableEvent -= _notifEvent;
 		}
 
-		public void PlayNewNotification(PersistentFlag flag)
+		private void _notifEvent(UnlockableFlag flag) => AddNewNotification(flag);
+		
+		/// <summary>
+		/// This checks (and adds to) the <see cref="PairedList"/> before invoking
+		/// <see cref="ForceAddNotification(UnlockableFlag)"/>.
+		/// </summary>
+		/// <param name="flag"></param>
+		/// <returns></returns>
+		internal bool AddNewNotification(UnlockableFlag flag)
 		{
-			if (!flag.NotPlayed)
-				return;
-			PlayNewNotification(flag.Flag);
+			bool pass = PairedList.AddNewNotificationToList(flag);
+			if (!pass)
+				return false;
+			ForceAddNotification(flag);
+			return true;
 		}
-		public void PlayNewNotification(NewFlag flag)
+
+		/// <summary>
+		/// Forcefully adds a new active notification that is seen by the player,
+		/// doesn't interact with <see cref="PairedList"/>.
+		/// </summary>
+		/// <param name="flag"></param>
+		internal void ForceAddNotification(UnlockableFlag flag)
 		{
-			if (ignoreNotifications.Contains(flag.FlagName))
-				return;
-			string formalName = flag.FlagName;
-			int index = PlayerConfig.Instance.uncheckedNotifications.IndexOf(flag.FlagName);
-			if (index == -1)
-			{ 
-				PlayerConfig.Instance.uncheckedNotifications.Add(null); 
-				index = PlayerConfig.Instance.uncheckedNotifications.Count - 1; 
-			}
-			this[index] = new(true, flag);
-			if (TryGetExistingNotification(flag, out NotificationBehaviour behaviour))
+			flag.IsActive = true; // Just in case
+
+			// Delivering Notification
+			if (premadeNotifications.TryGetValue(flag.FlagName, out NotificationBehaviour behaviour))
 			{
 				behaviour.gameObject.SetActive(true);
 			}
@@ -99,34 +150,21 @@
 				behaviour.SetText(flag);
 				obj.SetActive(true);
 			}
+
+			// Attaching behaviour to panel
 			string parsedValue = flag.ToString();
 			activeNotifications.Add(behaviour);
+			behaviour.pairedFlag = flag;
 			behaviour.closeButton.onClick.AddListener(RemovedNotification);
-			NotificationRecieved.Invoke(activeNotifications.Count - 1);
 			AudioController.Instance.AddSound(NotificationNotification);
-
+			NewNotifications.Invoke(activeNotifications.Count);
 			void RemovedNotification()
 			{
-				ignoreNotifications.Add(flag.FlagName);
-				this[index] = new(false, flag);
 				activeNotifications.Remove(behaviour);
+				behaviour.pairedFlag.IsActive = false;
+
 				if (activeNotifications.Count <= 0)
 					NoNewNotifications.Invoke();
-			}
-		}
-
-		public bool TryGetExistingNotification(NewFlag flag, out NotificationBehaviour existingObject) 
-			=> existingNotifications.TryGetValue(flag.FlagName, out existingObject);
-
-		public record PersistentFlag(bool NotPlayed, NewFlag Flag)
-		{
-			public override string ToString() => $"{NotPlayed}/{Flag.Type}/{Flag.FlagName}"; 
-			public static PersistentFlag FromString(string value)
-			{
-				string[] split = value.Split('/');
-				if (!bool.TryParse(split[0], out bool resultBool))
-					throw new FormatException($"Failed to serialize bool from '{value}'!");
-				return new PersistentFlag(bool.Parse(split[0]), new NewFlag(split[1], split[2]));
 			}
 		}
 	}

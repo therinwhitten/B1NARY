@@ -67,6 +67,22 @@ namespace Kamgam.ExcludeFromBuild
             }
         }
 
+        /// <summary>
+        /// Returns false if the asset does not exists OR if the entry is not asset (check IsAsset before using this).
+        /// </summary>
+        /// <returns></returns>
+        public bool AssetExists()
+        {
+            if (IsAsset)
+            {
+                return System.IO.File.Exists(AssetPath) || System.IO.Directory.Exists(AssetPath);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public ExcludedObject(string sceneGUID, string sceneName, string componentGUID, string path, List<int> componentGroupIds, bool componentAllGroups)
         {
             ComponentSceneGUID = sceneGUID;

@@ -19,18 +19,14 @@ namespace B1NARY.DLC
 
         IEnumerator CheckAssetBundlesWithDelay()
         {
-            Debug.Log("Checking asset bundles...");
-
             // Wait for a short delay before checking AssetBundles
             yield return new WaitForSeconds(1.0f); // Adjust the delay time as needed
 
             // Check if hentaiart.dlc is installed
             bool isHentaiArtInstalled = IsAssetBundleInstalled(hentaiArtBundleName);
-            Debug.Log($"Hentai Art Bundle Installed: {isHentaiArtInstalled}");
 
             // Check if hentaiscenes.dlc is installed
             bool isHentaiScenesInstalled = IsAssetBundleInstalled(hentaiScenesBundleName);
-            Debug.Log($"Hentai Scenes Bundle Installed: {isHentaiScenesInstalled}");
 
             // If either of the asset bundles is installed, enable the objects and disable others
             if (isHentaiArtInstalled || isHentaiScenesInstalled)

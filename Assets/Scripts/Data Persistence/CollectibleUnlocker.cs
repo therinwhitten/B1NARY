@@ -15,7 +15,7 @@
 
 		public void GiveCollectible()
 		{
-			CollectibleCollection.UnlockUnlockable(category, collectibleName);
+			NotificationPanel.UnlockUnlockable(category, collectibleName);
 		}
 	}
 }

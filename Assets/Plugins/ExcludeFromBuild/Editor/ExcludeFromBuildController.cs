@@ -120,21 +120,82 @@ namespace Kamgam.ExcludeFromBuild
             bool selectionAddsStreamingAssets = false;
             foreach (UnityEngine.Object obj in Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.Assets))
             {
-                if (isExcluded)
-                    RemoveFromExclusion(obj);
-                else
-                    AddToExclusion(obj);
+                string path = AssetDatabase.GetAssetPath(obj);
 
-                /// check if streaming asset
+                if (isExcluded)
+                {
+                    RemoveFromExclusion(obj);
+                }
+                else
+                {
+                    bool isPackage = false;
+                    bool isEmbeddedPackage = false;
+                    bool isPackageRoot = false;
+                    if (path.StartsWith("Packages/"))
+                    {
+                        isPackage = true;
+
+                        // Check if embedded
+                        var ds = System.IO.Path.DirectorySeparatorChar;
+                        isEmbeddedPackage = !System.IO.Path.GetFullPath(path).Contains(ds + "PackageCache" + ds);
+
+                        // Check if root directory (roots are locked by Unity and can not be changed/excluded).
+                        if (isEmbeddedPackage)
+                        {
+                            var pathParts = path.Split('/');
+                            if (pathParts.Length <= 2)
+                            {
+                                isPackageRoot = true;
+                            }
+                        }
+                    }
+
+                    if (isPackage)
+                    {
+                        bool exclude = true;
+                        if (!isEmbeddedPackage)
+                        {
+                            exclude = false;
+                            string msg = "Sorry but only parts of embedded packages can be excluded.\n\n" +
+                                "Why?\n" +
+                                "Because normal packages are IMMUTABLE since they are not copied to your project." +
+                                "They are just references to Library/Package/Cache/.. and therefore the exclusion tool can not modify them." +
+                                "\n\n" +
+                                "If you really have to exclude parts of the package then please make it an embedded package first.\n" +
+                                "Here is how: https://docs.unity3d.com/Manual/upm-embed.html";
+                            Debug.LogWarning("Exclude from Build > Exclusion aborted: " + msg);
+                            EditorUtility.DisplayDialog("Only embedded packages can be excluded!", msg, "Damn");
+                        }
+                        else if (isPackageRoot)
+                        {
+                            exclude = false;
+                            string msg = "Sorry but whole packages can not be excluded.\n\n" +
+                                "Why?\n" +
+                                "Sadly the Unity Editor locks embedded package ROOT folders and thus the tool can not hide them from Unity.\n" +
+                                "Instead please exclude all the subfolders and files inside the package.\n\n" +
+                                "I know that's cumbersome but sadly at the moment that's the only workaround we have.";
+                            Debug.LogWarning("Exclude from Build > Exclusion aborted: " + msg);
+                            EditorUtility.DisplayDialog("Whole packages can not be excluded!", msg, "Damn");
+                        }
+                        if (exclude)
+                        {
+                            AddToExclusion(obj);
+                        }
+                    }
+                    else
+                    {
+                        AddToExclusion(obj);
+                    }
+                }
+
+                // Check if streaming asset
                 if (!isExcluded && !selectionAddsStreamingAssets)
                 {
-                    string path = AssetDatabase.GetAssetPath(obj);
                     if (!string.IsNullOrEmpty(path) && path.Contains("/StreamingAssets"))
                         selectionAddsStreamingAssets = true;
                 }
 
-
-                // handle scene assets (add/remove them from the build)
+                // Handle scene assets (add/remove them from the build)
                 if (modifyScenesInBuild)
                 {
                     var scene = obj as SceneAsset;
@@ -175,7 +236,15 @@ namespace Kamgam.ExcludeFromBuild
         [MenuItem("Assets/Exclude From Build", isValidateFunction: true)]
         static bool ValidateAddSelectionToExclusions()
         {
-            if (Selection.objects.Length == 0)
+            bool noAssetSelected = Selection.objects.Length == 0;
+            bool noFileOrFolderSelected = true;
+            foreach (UnityEngine.Object obj in Selection.GetFiltered(typeof(UnityEngine.Object), SelectionMode.Assets))
+            {
+                noFileOrFolderSelected = false;
+                break;
+            }
+
+            if (noAssetSelected && noFileOrFolderSelected)
                 return false;
 
             bool isExcluded = isSelectionExcluded();
@@ -225,11 +294,13 @@ namespace Kamgam.ExcludeFromBuild
                 LogMessage("Excluding the whole /Assets folder is not such a good idea :D", LogLevel.Warning);
                 return;
             }
-            if (path.EndsWith("/Editor") || path.EndsWith("\\Editor") || path.Contains("/Editor/") || path.Contains("\\Editor\\"))
-            {
-                LogMessage("Editor folders are not included in the build anyways. Ignoring.", LogLevel.Warning);
-                return;
-            }
+            // Removed as a fix for Editor folder that are part of the build due to assembly definitions.
+            // See: https://discussions.unity.com/t/player-build-error-with-editor-folders/715126/2
+            //if (!settings.AllowEditorExclusion && (path.EndsWith("/Editor") || path.EndsWith("\\Editor") || path.Contains("/Editor/") || path.Contains("\\Editor\\")))
+            //{
+            //    LogMessage("Editor folders are not included in the build anyways. Ignoring.", LogLevel.Warning);
+            //    return;
+            //}
 
             if (obj == data)
             {
@@ -585,7 +656,7 @@ namespace Kamgam.ExcludeFromBuild
 
         static void preprocessBuild()
         {
-            // Warn if the current build targets to not align
+            // Warn if the current build targets do not align
             var data = ExcludeFromBuildData.GetOrCreateData();
             SessionState.SetInt(PreBuildGroupSessionKey, data.CurrentGroup.Id);
 
@@ -609,15 +680,25 @@ namespace Kamgam.ExcludeFromBuild
             // If TestAwareBuild is active and a test is running then don't execute the exclude logic.
             var settings = ExcludeFromBuildSettings.GetOrCreateSettings();
             if (!(settings.TestAwareBuild && ExcludeFromBuildWindow.IsTesting))
+            {
                 ApplyExcludedFileAndDirNames();
+            }
         }
 
         public static bool ApplyExcludedFileAndDirNames()
         {
             bool succeeded = true;
 
+            var settings = ExcludeFromBuildSettings.GetOrCreateSettings();
+
             try
             {
+                if (settings.PreProcessPrefabs)
+                    PrefabPreProcessor.PreProcess();
+
+                if (settings.AutoDisableExcludedScenes)
+                    DisableExcludedScenes(); // <- Only working if delayed build is enabled. TODO: investigate, it seems Unity takes inventory of all build scenes before this is called.
+
                 string projectDir = Path.GetFullPath(Path.Combine(Application.dataPath, "../")).Replace("\\", "/");
                 var data = ExcludeFromBuildData.GetOrCreateData();
 
@@ -631,9 +712,9 @@ namespace Kamgam.ExcludeFromBuild
                     LogMessage("Moving '" + obj.AssetPath + "'.");
 
                     var path = projectDir + obj.AssetPath;
-                    bool renameSuccess = rename(path, "~", true);
+                    bool renameSuccess = rename(path, "~", add: true, settings.IgnoreMissingAssets);
                     if (renameSuccess)
-                        renameSuccess = rename(path + ".meta", "~", true);
+                        renameSuccess = rename(path + ".meta", "~", add: true, settings.IgnoreMissingAssets);
 
                     if (renameSuccess)
                     {
@@ -663,8 +744,70 @@ namespace Kamgam.ExcludeFromBuild
             return succeeded;
         }
 
+        public static void DisableExcludedScenes()
+        {
+            var data = ExcludeFromBuildData.GetOrCreateData();
+
+            var scenesInBuild = EditorBuildSettings.scenes;
+            for (int i = 0; i < scenesInBuild.Length; i++)
+            {
+                if (!scenesInBuild[i].enabled)
+                    continue;
+
+                foreach (var obj in data.ExcludedObjects)
+                {
+                    if (obj.IsAsset && obj.AssetPath.EndsWith(scenesInBuild[i].path))
+                    {
+                        LogMessage($"Scene {scenesInBuild[i].path} is excluded and will be disabled in the build settings.");
+                        scenesInBuild[i].enabled = false;
+                        data.DisabledSceneIndices.Add(i);
+                    }
+                }
+
+                if (!File.Exists(scenesInBuild[i].path))
+                {
+                    LogMessage($"Scene {scenesInBuild[i].path} does not exist and will be disabled in the build settings.");
+                    scenesInBuild[i].enabled = false;
+                    data.DisabledSceneIndices.Add(i);
+                }
+            }
+            EditorBuildSettings.scenes = scenesInBuild;
+
+            EditorUtility.SetDirty(data);
+#if UNITY_2021_3_OR_NEWER
+            AssetDatabase.SaveAssetIfDirty(data); 
+#else
+            AssetDatabase.SaveAssets();
+#endif
+        }
+
+        public static void RevertDisabledScenes()
+        {
+            var data = ExcludeFromBuildData.GetOrCreateData();
+
+            var scenesInBuild = EditorBuildSettings.scenes;
+            for (int i = 0; i < scenesInBuild.Length; i++)
+            {
+                if (data.DisabledSceneIndices.Contains(i))
+                {
+                    scenesInBuild[i].enabled = true;
+                }
+            }
+            EditorBuildSettings.scenes = scenesInBuild;
+
+            data.DisabledSceneIndices.Clear();
+            EditorUtility.SetDirty(data);
+#if UNITY_2021_3_OR_NEWER
+            AssetDatabase.SaveAssetIfDirty(data); 
+#else
+            AssetDatabase.SaveAssets();
+#endif
+        }
+
         public static void RevertExcludedFileAndDirNames()
         {
+            var settings = ExcludeFromBuildSettings.GetOrCreateSettings();
+
             string projectDir = Path.GetFullPath(Path.Combine(Application.dataPath, "../")).Replace("\\", "/");
             var data = ExcludeFromBuildData.GetOrCreateData();
 
@@ -697,16 +840,16 @@ namespace Kamgam.ExcludeFromBuild
                 LogMessage("Reverting '" + obj.AssetPath + "'.");
 
                 var path = projectDir + obj.AssetPath;
-                bool succeeded = rename(path, "~", false);
+                bool succeeded = rename(path, "~", add: false, settings.IgnoreMissingAssets);
                 if (succeeded)
                 {
-                    succeeded = rename(path + ".meta", "~", false);
+                    succeeded = rename(path + ".meta", "~", add: false, settings.IgnoreMissingAssets);
                 }
 
                 if (succeeded)
                     LogMessage("   Successfully reverted '" + obj.AssetPath + "'.");
                 else
-                    LogMessage("   Error while reverting '" + path + "~" + "' to '" + path + "'.", LogLevel.Error);
+                    LogMessage("   Error while reverting '" + path + "~" + "' to '" + path + "'. Maybe there was a file or directly excluded that was deleted? If so then please remove it from the exclusion list. See logs above or the exclusion window for missing assets.", LogLevel.Error);
             }
 
             try
@@ -733,9 +876,17 @@ namespace Kamgam.ExcludeFromBuild
             }
 
             AssetDatabase.Refresh();
+
+            PrefabPreProcessor.PostProcess();
+
+            // Disabled because it's not working automatically.
+            if (settings.AutoDisableExcludedScenes)
+                RevertDisabledScenes();
+
+            AssetDatabase.Refresh();
         }
 
-        static bool rename(string path, string extension, bool add)
+        static bool rename(string path, string extension, bool add, bool ignoreMissing = false)
         {
             try
             {
@@ -787,6 +938,10 @@ namespace Kamgam.ExcludeFromBuild
                     else
                     {
                         LogMessage("File or directory does not exist. Skipping '" + path + "'. Maybe you have already excluded a parent directory or it has been deleted?", LogLevel.Warning);
+                        if (ignoreMissing)
+                        {
+                            return true;
+                        }
                     }
                 }
                 else
@@ -848,15 +1003,32 @@ namespace Kamgam.ExcludeFromBuild
                         }
 
                         if (!Directory.Exists(path))
+                        {
                             Directory.Move(extendedPath, path);
+                        }
                         else
+                        {
+                            LogMessage("File or directory does not exist. Skipping '" + path + "'. Probably was a deleted asset or directory.", LogLevel.Warning);
+                            if (ignoreMissing)
+                            {
+                                return true;
+                            }
                             return false;
+                        }
 
                         return true;
                     }
                     else if (Directory.Exists(path))
                     {
                         return true;
+                    }
+                    else if (!Directory.Exists(extendedPath))
+                    {
+                        LogMessage("File or directory does not exist. Skipping '" + path + "'. Probably was a deleted asset or directory.", LogLevel.Warning);
+                        if (ignoreMissing)
+                        {
+                            return true; 
+                        }
                     }
                 }
             }
