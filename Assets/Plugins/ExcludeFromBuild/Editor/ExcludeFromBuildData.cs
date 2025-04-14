@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Build;
+#if UNITY_6000_0_OR_NEWER
+using UnityEditor.Build.Profile;
+#endif
 using UnityEngine;
 
 namespace Kamgam.ExcludeFromBuild
@@ -8,6 +11,10 @@ namespace Kamgam.ExcludeFromBuild
     public class ExcludeFromBuildData : ScriptableObject, ISerializationCallbackReceiver
     {
         public const string DataFilePath = "Assets/ExcludeFromBuildData.asset";
+
+        public string PreProcessedPrefabPaths = "";
+
+        public List<int> DisabledSceneIndices = new List<int>();
 
         /// <summary>
         /// Mirror of StandaloneBuildSubtarget on old Unity versions since this has only been added in Unity 2021.2.
@@ -239,11 +246,16 @@ namespace Kamgam.ExcludeFromBuild
 
             protected bool containsDefine(string definesString, string defineName)
             {
-                return definesString == defineName || definesString.Contains("," + defineName) || definesString.Contains(defineName + ",");
+                return definesString == defineName
+                    || definesString.Contains("," + defineName)
+                    || definesString.Contains(";" + defineName) // Unity 6+ changed the format from "," to ";" separated.
+                    || definesString.Contains(defineName + ",")
+                    || definesString.Contains(defineName + ";");  // Unity 6+ changed the format from "," to ";" separated. 
             }
 
             protected string getCurrentBuildTargetDefinesString()
             {
+                // Get defines from classic build target groups.
                 var group = EditorUserBuildSettings.selectedBuildTargetGroup;
 
 #if UNITY_2023_1_OR_NEWER
@@ -251,6 +263,27 @@ namespace Kamgam.ExcludeFromBuild
 #else
                 string currentDefineSymbols = PlayerSettings.GetScriptingDefineSymbolsForGroup(group);
 #endif
+
+                // Add all defines from current profile.
+#if UNITY_6000_0_OR_NEWER
+                var profile = BuildProfile.GetActiveBuildProfile();
+                if (profile != null)
+                {
+                    var defineSymbols = profile.scriptingDefines;
+                    if (defineSymbols != null && defineSymbols.Length > 0)
+                    {
+                        if(string.IsNullOrEmpty(currentDefineSymbols))
+                            currentDefineSymbols = defineSymbols[0];
+                        else
+                            currentDefineSymbols += ";" + defineSymbols[0];
+                        for (int i = 1; i < defineSymbols.Length; i++)
+                        {
+                            currentDefineSymbols += ";" + defineSymbols[i];
+                        }
+                    }
+                }
+#endif
+
                 return currentDefineSymbols.Replace(" ", "");
             }
         }

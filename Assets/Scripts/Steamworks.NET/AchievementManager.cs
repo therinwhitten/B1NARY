@@ -37,7 +37,7 @@ namespace B1NARY.Steamworks
 			["unlock"] = (Action<string, string>)((type, flagName) =>
 			{
 				// see Fanart Panel, Saveslot, or Player Config CS for more info
-				CollectibleCollection.UnlockUnlockable(type, flagName);
+				NotificationPanel.UnlockUnlockable(type, flagName);
 			}),
 		};
 

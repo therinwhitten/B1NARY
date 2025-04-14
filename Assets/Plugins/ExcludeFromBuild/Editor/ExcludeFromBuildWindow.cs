@@ -423,6 +423,8 @@ namespace Kamgam.ExcludeFromBuild
             GUILayout.Space(4);
             bool _previousDelayBuildStartValue = settings.DelayBuildStart;
             settings.DelayBuildStart = GUILayout.Toggle(settings.DelayBuildStart, new GUIContent("Delay Build Start", ExcludeFromBuildSettings._DelayBuildStartTooltip));
+            bool _previousPreProcessPrefabsValue = settings.PreProcessPrefabs;
+            settings.PreProcessPrefabs = GUILayout.Toggle(settings.PreProcessPrefabs, new GUIContent("Prefabs", ExcludeFromBuildSettings._PreProcessPrefabsTooltip));
             GUILayout.Space(4);
             GUILayout.EndHorizontal();
 
@@ -438,7 +440,11 @@ namespace Kamgam.ExcludeFromBuild
                     {
                         var fileName = Path.GetFileName(excludedObj.AssetPath);
                         var filePath = excludedObj.AssetPath.Replace(fileName, "");
-                        DrawLabel(WrapInRichTextColor(filePath, new Color(0.6f, 0.6f, 0.6f)) + fileName, wordwrap: true, icon: excludedObj.MiniThumbnail);
+                        var exists = !excludedObj.IsAsset || (excludedObj.AssetExists() && !IsTesting);
+                        DrawLabel(
+                            WrapInRichTextColor(filePath, new Color(0.6f, 0.6f, 0.6f)) + fileName + (exists ? "" : " <color=#ff6666>(Missing)</color>"),
+                            wordwrap: true, icon: excludedObj.MiniThumbnail,
+                            tooltip: exists ? "" : "This asset is missing. Did you delete it?");
 
                         if (GUILayout.Button(" Remove ", GUILayout.Width(90)))
                         {
@@ -477,8 +483,9 @@ namespace Kamgam.ExcludeFromBuild
             }
 
             // save settings if change
-            if (_previousTestAwareBuildValue != settings.TestAwareBuild
-                || _previousDelayBuildStartValue != settings.DelayBuildStart)
+            if (   _previousTestAwareBuildValue != settings.TestAwareBuild
+                || _previousDelayBuildStartValue != settings.DelayBuildStart
+                || _previousPreProcessPrefabsValue != settings.PreProcessPrefabs)
             {
                 EditorUtility.SetDirty(settings);
                 AssetDatabase.SaveAssets();
